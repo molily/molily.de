@@ -1,0 +1,86 @@
+---
+layout: post
+title: "Progressive Enhancement: Die Zeit ist gekommen"
+---
+
+<p>Dass eine Website in allen Browser gleich aussehen muss, ist ein Dogma, das schon seit Jahren <a href="http://webkrauts.de/artikel/2006/webseiten-sind-keine-gem%C3%A4lde">unter heftigem Beschuss liegt</a>. Es ist nämlich unvermeidlich und zudem ein Feature des Webs, dass Websites nicht unter allen Lesebedingungen genau gleich aussehen. Während vor einigen Jahren niemand dem Argument glauben schenken wollte, die Zukunft liege in alternativen Webzugangsgeräten, so verbreiten sich heute Tablet-Computer, Netbooks, Smartphones und Handheld-Spielekonsolen mit Internetzugang explosiv. Höchste Zeit also, das Gestalten für einen als Norm angenommenen Desktop-Rechner zu überwinden.</p>
+
+<p>Diese Diversifizierung des Webs findet auf viele Ebenen statt. Mit der Unterstützung von experimentellen Techniken wie CSS3, HTML5 und angeschlossenen JavaScript-Schnittstellen kommt es zu einem neuen Gefälle zwischen verbreiteten Browsern: Sie besitzen eklakant unterschiedliche Fähigkeiten. Eine bestimmte Funktionalität oder einen grafischen Effekt zu erzielen, mag in dem einem Browser nur fünf Minuten dauern. In einem anderen ist eine Alternativlösung nötig, welche zwei Stunden Photoshop-Gepixel und die Einbindung großer JavaScript-Bibliotheken beansprucht.</p>
+
+<h2><a href="http://dowebsitesneedtolookexactlythesameineverybrowser.com/">Do websites need to look exactly the same in every browser?</a></h2>
+
+<p>Trotzdem stemmen sich die Webdesigner immer noch gegen diese Realität, indem sie nicht jeden Browser <a href="http://blog.selfhtml.org/2008/03/19/browser-kompatibilitaet/">nach seinen Fähigkeiten</a> und damit nach seinen Stärken beliefern, sondern alle Browser an einem Maßstab messen. Damit verliert sich das Webdesign in unwesentlichen Details, wenn es z.B. Dekorationen, Schatten, Verläufe, die berühmt-berüchtigten abgerundete Ecken sowie Animationen auf Teufel komm raus browserübergreifend identisch umsetzen will.</p>
+
+<p>Dieser Konflikt liegt, so meine Vermutung, in einer klassischen Arbeitsteilung begründet. Aus den vielen Aufgabenbereichen bei der Webseitenentwicklung möchte ich zwei herausgreifen: Design und Frontend-Entwicklung.</p>
+
+<ul>
+
+<li>Die Frontend-Entwicklung hat ihre Stärken im Wissen um die verfügbaren Techniken und um effiziente Umsetzungen. Frontend-Entwickler kennen die Konventionen der Web-Interaktion und sind sich der vielschichtigen Anforderungen bewusst, denen ein Seitenaufbau genügen muss. Sie sind Experten für den Dreiklang von HTML, CSS und JavaScript.</li>
+
+<li>Das Design hingegen baut benutzbare Interfaces, die Information und Struktur wahrnehmbar machen und erfolgreich übermitteln. Designer setzen Typographie, Farb- und Formgestaltung und andere Mittel ein, um Interaktion möglich zu machen und den Benutzer zu führen. Gute Designer wissen, welche Gestaltung die Aufmerksamkeit wie beabsichtigt lenkt. Ihr Hauptwerkzeug ist die Adobe Creative Suite.</li>
+
+</ul>
+
+<p>Die tatsächliche Arbeitsteilung ist freilich differenzierter. Meine These ist jedenfalls: Dass es überhaupt Konflikte bei technischen Umsetzung gibt, liegt offenbar daran, dass sich Design und Frontend-Entwicklung nicht ausreichend verstehen und sich zu wenig abstimmen. Das letztliche Aussehen einer Site müsste im Austausch dieser und weiterer Disziplinen entstehen. Allen Beteiligten müsste bekannt sein, welche Elemente des Designs Priorität haben – so etwa ein klares, prägnantes Erscheinungsbild – und welche technischen Möglichkeiten existieren, diese zuverlässig umzusetzen. Allen sollte bewusst sein, dass die Umsetzung verschiedenen Webzugangsbedingungen genügen muss.</p>
+
+<h2><a href="http://dowebsitesneedtobeexperiencedexactlythesameineverybrowser.com/">Do websites need to be experienced exactly the same in every browser?</a></h2>
+
+<p>Es sind demnach verschiedene Umsetzungen, die gemein haben, dass das Design immer funktionieren muss – auf die eine oder andere Art. Die Mittel, wie es funktioniert, müssen sich zwangsläufig nach den technischen Gegebenheiten richten. Das heißt beispielsweise, dass in jedem Browser die jeweils zur Verfügung stehenden Techniken verwendet werden:</p>
+
+<ul>
+<li>Ein neuerer Browser mit CSS-3-Unterstützung und hervorragender JavaScript-Performance bietet die feinste Kontrolle über die User Experience. Hier erstrahlt das Design in vollster Pracht.</li>
+<li>Ein Browser, der bloß CSS 2.1 unterstützt und JavaScript-Dynamik nur mittelmäßig beherrscht, erlaubt immer noch, die Grundlagen des Designs herüberzubringen. Wenn das Design gut durchdacht ist, kann der Look & Feel auch unter diesen Bedingungen hervorragend sein.</li>
+<li>Ein hoffnungslos veralteter Browser, der für CSS-Layout und das »Web 2.0« nicht geschaffen wurde, kann ebenfalls alle Inhalte gut strukturiert und ansprechend gestaltet  darstellen. Manche grafischen Details und Effekte fallen weg, die Interaktion funktioniert trotzdem und wird dadurch nicht beeinträchtigt. Die wesentlichen Elemente des Designs bleiben erhalten.</li>
+</ul>
+
+<p>Drei Browser bekommen also drei voneinander im Detail abweichende Darstellungen. Alle zeichnen sich durch eine stimmige User Experience aus, allerdings mit anderen Mitteln und anderen Schwerpunkten. Die Usability sollte gleich bleiben, denn diese ist tiefer verankert. Die Ziele der Website können in allen Fällen erreicht werden. Was ich hier beschreibe, ist nichts anderes als angewandtes <em>Progressive Enhancement</em> (schrittweise Verbesserung).</p>
+
+<h2>Progressive Enhancement</h2>
+
+<p>Die wenigsten Designer sind begnadete Enthusiasten von neuen Frontend-Techniken wie HTML5 und CSS3. Die besten Techniker wissen zwar, wie clevere Techniken das Gestalten vereinfachen, wissen aber nicht, diese als Gestaltungsmittel in einen größeren Zusammenhang einzuordnen. Offenbar ist es bisher nur wenigen Professionellen vorbehalten, die Herausforderung der Browservielfalt an das Design mittels Progressive Enhancement zu überwinden: Nämlich denen, die sich in <em>beiden</em> Bereichen exzellent auskennen. Das trifft auf einige bekannte Persönlichkeiten aus der Webstandards-Bewegung zu.</p>
+
+<p>Zwei richtungsweisende Beiträge aus dem <a href="http://24ways.org/2009">24ways-Adventskalender von 2009</a> bemühen sich, das bisherige Webdesign auf eine neue Ebene zu hieven. Die am 23. und 24. Dezember veröffentlichten Artikel sind ein subversives Weihnachtsgeschenk, das mit guten Argumenten Unruhe stiften soll.<p>
+
+<p>In <strong><a href="http://24ways.org/2009/ignorance-is-bliss">Ignorance Is Bliss</a></strong> beschreibt <a href="http://www.stuffandnonsense.co.uk/">Andy Clarke</a> eine wahre Geschichte über eine Website, die durch Progressive Enhancement in unterschiedlichen Browsern unterschiedlich aussieht – aber trotzdem begeistert aufgenommen wird. <q>»How could both of [the users] be happy when they experienced the Web site differently?«</q>, fragt sich Clarke. Seine Strategie: Er hat nicht mit statischen Photoshop-Vorlagen beim Kunden falsche Erwartungen geweckt, sondern das Resultat von Anfang an vom jeweiligen Browser abhängig gemacht. Und weil das Design durchdacht ist, funktioniert es auch im Internet Explorer ohne CSS3-Schnickschnack hervorragend.</p>
+
+<p>Diese sicher radikale Vorgehensweise beschreibt Clarke in seinem <a href="http://stuffandnonsense.co.uk/company/profile">Firmenprofil</a>:</p>
+
+<blockquote cite="http://stuffandnonsense.co.uk/company/profile"><p>Unlike web designers who spend hours or days of their time (and your money) making impressions of how a web site might look in Photoshop or Fireworks, we demonstrate how your design will really look using markup and style-sheets (the stuff that web pages are made of). It's a process that is more accurate because you will immediately see how your site will look to those people at home or in offices who you want to become your customers.</p></blockquote>
+
+<p>Ein anspruchsvolles Design mit HTML und CSS direkt im Browser entwerfen? Ist das nicht einem Photoshop-Design zwangsläufig unterlegen und der Designer hat bloß eingeschränkte Möglichkeiten? Darauf würde Clarke wohl antworten: Nein, denn neuere Browser mit CSS3-Fähigkeiten bieten durchaus das, was üblicherweise mit Photoshop umgesetzt wird. Außerdem geht es hier nicht um die Feinarbeit, sondern um erste Entwürfe. Diese veranschaulichen den Seitenaufbau und die gestalterischen Grundzüge, die anschließend nach und nach verbessert und ausgearbeitet werden.</p>
+
+<h2>Vereinfachter Designprozess durch Designen im Browser</h2>
+
+<p>Mit dem zweiten der besagten Artikel, <strong><a href="http://24ways.org/2009/make-your-mockup-in-markup">Make Your Mockup in Markup</a></strong>, schlägt <a href="http://owltastic.com/">Meagan Fisher</a> in dieselbe Kerbe: <q>»The real issue with using Photoshop for mockups is the expectations you’re setting for a client. When you send the client a static image of the design, you’re not giving them the whole picture«</q>.</p>
+
+<p>Für den Verzicht auf Photoshop für den Designentwurf führt Fisher erst einmal praktische Gründe an: Er soll den Designprozess vereinfachen. Angenommen wird, dass sich mit direktem HTML und CSS viel schneller ein aussagekräftiger, im Gegensatz zu PSDs wirklich interaktiver Click-Dummy umsetzen lässt. Das umständliche »Pixeln« in Photoshop fällt weg. Änderungen am Design können schneller umgesetzt werden, wie Fisher an einem Beispiel demonstriert.</p>
+
+<p>Mit dem Mockup steht das grundlegende HTML und CSS bereits, die Übertragung eines rein grafischen, statischen Mockups aus Photoshop nach HTML und CSS entfällt. Ist das Design abgenommen, wird zusammen mit dem Kunden entschieden, welche grafischen Detail-Features in älteren Browsern unbedingt nötig sind. Auch Fisher bricht eine Lanze dafür, Browser nach ihren Fähigkeiten zu behandeln und auf umständliche Workarounds möglichst zu verzichten.</p>
+
+<p>Das könnte man nun als bloßen Angriff gegen klassische Photoshop-Designer missverstehen, die selbst vielleicht wenig HTML und CSS beherrschen. Meinem Verständnis nach ist der entscheidende Punkt dieser Methodik nicht, Photoshop und ähnliche Werkzeuge gänzlich wegzulassen. Es sind vielmehr folgende Grundideen, die sich meiner Meinung nach stärker verbreiten sollten:</p>
+
+<ul>
+<li>Interdisziplinäres Design, das Design und Technik vereint</li>
+<li>Designen möglichst nahe am Browser mit den letztlichen Techniken wie CSS im Sinn</li>
+<li>Ein flexibles Design, das Progressive Enhancement ermöglicht</li>
+<li>Der starke Einsatz von experimentellen Techniken wie CSS3, selbst wenn nicht alle Browser diese unterstützen</li>
+</ul>
+
+<p>Nachtrag: Ein praxisorientierter Artikel, der die neuen CSS3-Eigenschaften vorstellt (englischsprachig): <a href="http://perishablepress.com/press/2010/01/11/css3-progressive-enhancement-smart-design/">CSS3 + Progressive Enhancement = Smart Design</a> von Jeff Starr</p>
+
+<h2>Weitere Artikel zum Thema Progressive Enhancement</h2>
+
+<ul class="compact-list">
+  <li>
+    <a href="/interaction-is-key/" hreflang="en" lang="en">Interaction is Key: Progressive Enhancement and JavaScript</a>
+  </li>
+  <li>
+    <a href="/single-page-apps/" hreflang="en" lang="en">Progressive enhancement for JavaScript web apps</a>
+  </li>
+  <li>
+    <a href="/javascript-failure/" hreflang="en" lang="en">Progressive enhancement and JavaScript failure</a>
+  </li>
+  <li>
+    <a href="/progressive-enhancement-pottjs/">Slides des Vortrags: Progressive Enhancement – Robuste Websites entwickeln</a>
+  </li>
+</ul>

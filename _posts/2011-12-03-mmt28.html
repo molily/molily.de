@@ -1,0 +1,181 @@
+---
+layout: post
+title: "JavaScript: Von einfachen Scripten zu komplexen Anwendungen"
+---
+
+<p>Am 2. Dezember habe ich beim <a href="http://multimediatreff.de/">Multimediatreff 28 – Webtechnologien – HTML5, CSS3 & Co</a> den Vortrag <strong>JavaScript: Von einfachen Scripten zu komplexen Anwendungen</strong> gehalten. Hier können Sie die Vortragsfolien herunterladen und Linkliste zu den angesprochenen Themen.</p>
+
+<h2>Vortragsankündigung</h2>
+
+<p>JavaScript hat sich von einer beschränkten Scriptsprache zu einer mächtigen Sprache entwickelt, in der umfangreiche clientseitige Anwendungen geschrieben werden. Doch der Sprung von einfachem DOM-Scripting mit Hilfsmittel wie jQuery zu komplexen Anwendungen ist schwierig und verlangt Know-How. Der Vortrag gibt einen Einblick in aktuelle Konzepte und Techniken, die Struktur in die Entwicklung von JavaScript-Anwendungen bringen.</p>
+
+<h2>Folien herunterladen</h2>
+
+<p><a href="/assets/mmt28.pdf">JavaScript: Von einfachen Scripten zu komplexen Anwendungen (PDF)</a></p>
+
+<p style="position: relative; padding-bottom: 60%">
+<iframe src="//de.slideshare.net/slideshow/embed_code/key/bu1xMWMpvA1D51" scrolling="no" style="position: absolute; width: 100%; height: 100%; border: 1px solid #CCC;" allowfullscreen></iframe>
+</p>
+
+<h2>Videomitschnitt</h2>
+
+<p><iframe width="640" height="360" src="http://www.youtube-nocookie.com/embed/ADqmoY8Fl-Y" frameborder="0" allowfullscreen></iframe></p>
+
+<h2>Korrekturen</h2>
+
+<p>Bastian Sackermann hat mich freundlicherweise darauf <a href="https://twitter.com/#!/Samisdat/status/142987904279523328">aufmerksam gemacht</a>, dass im jQuery-Beispielcode auf der Folie 10 etwas fehlt. Das Szenario ist ein Link zu einer Folgeseite z.B. im Rahmen einer Blätternavigation. Das Script fügt dem Link JavaScript-Funktionalität hinzu, sodass das Linkziel per Ajax im Hintergrund geladen und die Serverrückgabe ins Dokument eingefügt wird. Damit das klappt und nicht das Linkziel auf gewöhnliche Weise angesurft wird, fehlte das <a href="/js/event-handling-objekt.html#standardaktion">Unterdrücken der Standardaktion</a> z.B. mit <a href="http://api.jquery.com/event.preventDefault/"><code>event.preventDefault()</code></a>. Der korrigierte Code:</p>
+
+<pre>
+jQuery(document).ready(function ($) {
+   $("#loadmore").click(function (<code>event</code>) {
+    <strong>event.preventDefault();</strong>
+     var href = $(this).attr("href"); 
+    $("#content").load(href);
+   });
+ });
+</pre>
+
+<h2>Linksammlung</h2>
+
+<h3>Einleitendes</h3>
+
+<ul>
+  <li><a href="https://9elements.com">9elements</a> – mein Arbeitgeber</a></li>
+  <li><a href="http://javascript.jstruebig.de/">JavaScript ist Toll!</a> – das Motto habe ich dem lesenswerten Blog von Struppi entlehnt</li>
+  <li><a href="http://javascript.crockford.com/javascript.html">The World’s Most Misunderstood Programming Language</a> – Douglas Crockfords berühmter Essay aus dem Jahr 2001</li>
+  <li><a href="http://javascript.crockford.com/popular.html">…Has Become the World’s Most Popular Programming Language</a> – Folgeartikel aus dem Jahr 2008</li>
+  <li><a href="http://jquery.com/">jQuery</a> – die bekannte und verbreitete JavaScript/DOM-Bibliothek</a></li>
+</ul>
+
+<h3>Objekt-Literal</h3>
+
+<ul>
+  <li><a href="http://christianheilmann.com/2006/02/16/show-love-to-the-object-literal/">Show love to the object literal</a> – Christian Heilmann 2006</li>
+  <li><a href="/js/organisation-module.html#object-literal">Einfache Module mit dem Objekt-Literal</a> – in meiner JavaScript-Einführung</li>
+</ul>
+
+<h3>Module-Pattern</h3>
+
+<ul>
+  <li><a href="/js/organisation-module.html#scope">Kapselung mit privatem Funktions-Scope</a> – in meiner JavaScript-Einführung</li>
+  <li><a href="http://yuiblog.com/blog/2007/06/12/module-pattern/">A JavaScript Module Pattern</a> – Eric Miraglia 2007</li>
+</ul>
+
+<h3>Revealing Module Pattern</h3>
+<ul>
+  <li><a href="http://christianheilmann.com/2007/08/22/again-with-the-module-pattern-reveal-something-to-the-world/">Again with the Module Pattern – reveal something to the world</a> – Christian Heilmann 2007</li>
+  <li><a href="/js/organisation-module.html#revealing-module">Das Revealing Module Pattern: Kapselung plus öffentliche Schnittstelle</a> – in meiner JavaScript-Einführung</li>
+  <li><a href="http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth">JavaScript Module Pattern: In-Depth</a> – Ben Cherry 2010</li>
+</ul>
+
+<h3>Pseudoklassen</h3>
+<ul>
+  <li><a href="http://www.crockford.com/javascript/inheritance.html">Classical Inheritance in JavaScript</a> – Douglas Crockford</li>
+  <li><a href="/js/organisation-instanzen.html">Organisation von JavaScripten: Konstruktoren, Prototypen und Instanzen</a> – in meiner JavaScript-Einführung</li>
+  <li><a href="/javascript-pseudoklassen/">Pseudoklassische Vererbung in JavaScript</a> – Artikel von mir</li>
+  <li><a href="https://github.com/ded/klass">Klass: a utility for creating expressive classes in JavaScript </a> – kleine Bibliothek für pseudoklassische Vererbung, aus der Ender-Bibliothekenfamilie</li>
+  <li><a href="http://bolinfest.com/javascript/inheritance.php">Inheritance Patterns in JavaScript</a> – Übersicht über Vererbungstechniken</li>
+
+</ul>
+
+<h3>Sinnvolle JavaScript-Anwendung: Behaviour Layer und Unobtrusive JavaScript</h3>
+<ul>
+  <li><a href="http://www.digital-web.com/articles/the_behavior_layer/">The Behavior Layer</a> – Grundlagenartikel von Peter-Paul Koch aus dem Jahr 2004</li>
+  <li><a href="http://www.digital-web.com/articles/separating_behavior_and_structure_2/">Separating behavior and structure</a> – dito</li>
+  <li><a href="http://www.maxdesign.com.au/articles/workshop/">Basic webstandards Workshop</a> – propagiert das Layer-Prinzip, Russ Weakley 2005</li>
+  <li><a href="http://www.onlinetools.org/articles/unobtrusivejavascript/">Unobtrusive Javascript</a> – Tutorial von Christian Heilmann</li>
+  <li><a href="http://blog.selfhtml.org/2005/12/17/javascript-einsatz/">Der sinnvolle Einsatz von JavaScript: Mögliche Modelle und Theorien für den JavaScript-Einsatz</a> – ein Übersichtsartikel von mir aus dem Jahr 2005</li>
+</ul>
+
+<h3>Beispielanwendung Moviepilot</h3>
+<ul>
+  <li><a href="http://www.moviepilot.de">Moviepilot.de</a> – bekannte deutschsprachige Site</li>
+  <li><a href="http://moviepilot.com">Moviepilot.com</a> – englischsprachige JavaScript-Webanwendung, an der 9elements mitentwickelt hat</li>
+  <li><a href="http://rubyonrails.org">Ruby on Rails</a> – serverseitiges Webframework, das die Grundlage für Moviepilot.com bereitstellt</li>
+  <li><a href="http://coffeescript.org">CoffeeScript</a> – die Metasprache, in der wir JavaScript schreiben</li>
+  <li><a href="http://www.handlebarsjs.com/">Handlebars</a> – Templating-Bibliothek</li>
+  <li><a href="http://underscorejs.org">Underscore</a> – JavaScript-Bibliothek u.a. für komfortable funktionale und objektorientierte Programmierung</li>
+  <li><a href="http://backbonejs.org">Backbone</a> – kleines MVC-Framework, das bei Moviepilot.com im Einsatz ist</li>
+</ul>
+
+<h3>The Good Parts</h3>
+<ul>
+  <li><a href="/js/organisation-ueberblick.html">Grundpfeiler der fortgeschrittenen JavaScript-Programmierung</a> – in meiner JavaScript-Einführung</li>
+  <li><a href="http://www.oreilly.de/catalog/9780596517748/index.html">JavaScript: The Good Parts</a> – Buch von Douglas Crockford</li>
+  <li><a href="http://www.jshint.com/">JSHint</a> – Tool zur Qualitätskontrolle von Douglas Crockford</li>
+  <li><a href="http://www.jslint.com/">JSLint</a> – Konfigurierbare Community-Variante von JSLint</li>
+</ul>
+
+<h3>ECMAScript 5 &amp; 6</h3>
+<ul>
+  <li><a href="http://es5.github.io">ECMAScript5-Standard</a> – inoffizielle, aber zugängliche HTML-Version</li>
+  <li><a href="http://wiki.ecmascript.org/">ECMAScript-Wiki</a> – Wiki der TC-39-Arbeitsgruppe</li>
+  <li><a href="http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts">ECMAScript Edition 6 Drafts</a> – aktuelle Version des kommenden Standards</li>
+  <li><a href="http://brendaneich.com/">Brendan Eich</a> – Der JavaScript-Erfinder bloggt über die Weiterentwicklung</li>
+  <li><a href="http://www.aminutewithbrendan.com/">A Minute With Brendan</a> – Podcast von Brendan Eich</li>
+  <li><a href="http://www.slideshare.net/dmitrysoshnikov/falsyvalues-dmitry-soshnikov-ecmascript-6">FalsyValues. Dmitry Soshnikov - ECMAScript 6</a> – Vortragsfolien zu ES6</li>
+  <li><a href="http://www.youtube.com/watch?v=u4IdoBU1uKE">Dave Herman: The Future of JavaScript</a> – Mitschnitt eines Vortrags über ES6</li>
+  <li><a href="http://speakerdeck.com/u/dherman/p/the-future-of-javascript">The future of JavaScript</a> – die zugehörigen Folien</li>
+</ul>
+
+<h3>Google Closure Compiler</h3>
+<ul>
+  <li><a href="https://developers.google.com/closure/compiler/">Google Closure Compiler</a> – Werkzeug zum Komprimieren, Optimieren und zur Qualitätskontrolle</li>
+  <li><a href="https://developers.google.com/closure/compiler/docs/js-for-compiler">Annotating JavaScript for the Closure Compiler</a> – Anweisungen für den Compiler</li>
+  <li><a href="https://developers.google.com/closure/utilities/docs/linter_howto">How to Use Closure Linter</a> – Qualitätskontrolle mit dem Closure Linter</li>
+  <li><a href="https://google.github.io/styleguide/jsguide.html">Google JavaScript Style Guide</a> – Die Regeln für JavaScript-Code bei Google</li>
+
+</ul>
+
+<h3>CoffeeScript</h3>
+<ul>
+  <li><a href="http://coffeescript.org">CoffeeScript</a> – populäre Metasprache, die nach JavaScript kompiliert</li>
+  <li><a href="http://arcturo.github.io/library/coffeescript/">The Little Book on CoffeeScript</a></li>
+  <li><a href="http://brendaneich.com/2011/05/my-jsconf-us-presentation">My JSConf.US Presentation</a> – Brendan Eich über CoffeeScript und ECMAScript 6</li>
+  <li><a href="https://github.com/jashkenas/coffeescript/wiki/List-of-languages-that-compile-to-JS">List of languages that compile to JS</a> – Sammlung weiterer Metasprachen</li>
+
+</ul>
+
+<h3>Google Web Toolkit und weitere Metasprachen</h3>
+<ul>
+  <li><a href="http://www.gwtproject.org/">Google Web Toolkit</a> – ausgereiftes Framework zur JavaScript-Anwendungsentwicklung</li>
+  <li><a href="http://www.cappuccino-project.org/">Cappucino &amp; Objective-J</a> – weiteres umfangreiches GUI-Framework</li>
+  <li><a href="https://github.com/google/traceur-compiler">Traceur</a> – Metasprache/Compiler für ES6-Features</li>
+  <li><a href="http://www.dartlang.org/">Dart</a> – Programmiersprache für »structured code«, kann nach JavaScript kompiliert werden</li>
+</ul>
+
+<h3>MVC-Bibliotheken</h3>
+<ul>
+  <li><a href="http://net.tutsplus.com/articles/web-roundups/20-javascript-frameworks-worth-checking-out">20 JavaScript Frameworks Worth Checking Out</a> – Übersicht über mittlere und größere MVC-Bibliotheken</li>
+  <li><a href="https://github.com/addyosmani/todomvc">MVC Todo apps for JavaScriptMVC, SproutCore, Backbone.js, Spine.js, YUILibrary, Knockout.js and more</a> – eine einfache Beispielanwendung mit vielen Bibliotheken umgesetzt</li>
+  <li><a href="http://backbonejs.org">Backbone</a> – kleines MVC-Framework</li>
+  <li><a href="https://github.com/spine/spine">Spine</a> – Backbone-Alternative mit ähnliches Schwerpunkten, aber anderer Umsetzung</li>
+  <li><a href="http://knockoutjs.com/">Knockout</a> – MVC-Framework mit deklarativem Binding</li>
+  <li><a href="http://javascriptmvc.com/">JavaScripMVC</a> – modulares, umfangreicheres Anwendungs-Framework</li>
+  <li>Allgemeine größere Frameworks für JavaScript-Webanwendungen: <a href="http://developer.yahoo.com/yui/">Yahoo YUI</a>, <a href="http://dojotoolkit.org/">Dojo Toolkit</a>, <a href="http://www.sencha.com/products/extjs/">ExtJS</a></li>
+</ul>
+
+<h3>Publish/Subscribe</h3>
+<ul>
+  <li><a href="http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Publish/Subscribe pattern</a> – Wikipedia</li>
+  <li><a href="http://net.tutsplus.com/tutorials/javascript-ajax/loose-coupling-with-the-pubsub-plugin/">Loose Coupling with the pubsub Plugin</a> – Videotutorial von Rebecca Murphey</li>
+  <li><a href="http://msdn.microsoft.com/en-us/scriptjunkie/hh201955">Understanding the Publish/Subscribe Pattern for Greater JavaScript Scalability</a> – Addy Osmani</li>
+</ul>
+
+<h3>Build-Tools</h3>
+<ul>
+  <li><a href="https://developers.google.com/closure/compiler/">Google Closure Compiler</a> – Werkzeug zum Zusammenfassen, Komprimieren und Optimieren</li>
+  <li><a href="http://developer.yahoo.com/yui/compressor/">YUI Compressor</a> – Zusammenfassen und Komprimieren von JS und CSS</li>
+  <li><a href="http://requirejs.org/">RequireJS</a> – Bibliothek für Modularisierung</li>
+
+</ul>
+
+<h3>Allgemeine Links zu JavaScript-Webanwendungen</h3>
+<ul>
+  <li><a href="http://blog.rebeccamurphey.com/">Rebecca Murphey</a>, <a href="http://rmurphey.com/">Adventures in JavaScript Development</a> – Blogs einer Expertin auf dem Gebiet</li>
+  <li><a href="http://blog.rebeccamurphey.com/on-jquery-large-applications">On jQuery & Large Applications</a> – Rebecca Murphey</li>
+  <li><a href="http://vimeo.com/27664632">Lessons from a Rewrite</a> – Vortragsmitschnitt von Rebecca Murphey</li>
+  <li><a href="http://www.slideshare.net/rmurphey/lessons-from-a-rewrite">Lessons from a Rewrite</a> – die zugehörigen Folien</li>
+  <li><a href="http://addyosmani.com/largescalejavascript/">Patterns For Large-Scale JavaScript Application Architecture</a> – Übersicht/Sammlung von unzähligen Pattern von Addy Osmani</li>
+  <li><a href="http://addyosmani.com/blog/large-scale-jquery/">Building Large-Scale jQuery Applications</a> – Linksammlung mit Fokus auf jQuery-Tools</li>
+</ul>

@@ -1,0 +1,127 @@
+---
+layout: post
+title: "JavaScript/DOM: Rekursive Auflistung aller Kindknoten"
+---
+
+<style>
+#anzeige {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: small;
+}
+#anzeige ol {
+  margin: 0 0.2em;
+  padding: 0;
+  list-style: none;
+}
+#anzeige li {
+  margin: 0.5em 0;
+  padding: 0 0.5em;
+  border: 1px solid #bbb;
+}
+</style>
+
+<script>
+function liste_unterknoten (knoten) {
+  var ausgabe;
+  ausgabe = '<li>';
+  switch (knoten.nodeType) {
+    case 1 :
+      ausgabe += '<strong>' + knoten.nodeName + '<\/strong>-Element';
+      if (knoten.hasChildNodes()) {
+        ausgabe += ', ' + knoten.childNodes.length + ' Unterknoten';
+      }
+      break;
+    case 3 :
+      var knotenwert = knoten.nodeValue.replace(/</g, '&lt;').replace(/\n/g, '\\n');
+      ausgabe += 'Textknoten: [<strong>' + knotenwert + '<\/strong>]';
+      break;
+    case 8 :
+      var knotenwert = knoten.nodeValue.replace(/</g, '&lt;').replace(/\n/g, '\\n');
+      ausgabe += 'Kommentarknoten: [' + knotenwert + ']';
+      break;
+    default :
+      ausgabe += 'Knoten des Typs ' + knoten.nodeType +
+        ', Wert: [' + knoten.nodeValue + ']';
+  }
+  if (knoten.hasChildNodes()) {
+    ausgabe += '\n<ol>\n';
+    for (var i = 0; i < knoten.childNodes.length; i++) {
+      knotenneu = knoten.childNodes[i];
+      ausgabe += liste_unterknoten(knotenneu); /* Rekursion */
+    }
+    ausgabe += '</ol>\n';
+  }
+  ausgabe += '</li>\n';
+  return ausgabe;
+}
+
+window.onload = function () {
+  var obj = document.documentElement;
+  var ausgabe = liste_unterknoten(obj);
+  document.getElementById('anzeige').innerHTML = ausgabe;
+};
+</script>
+
+<!-- Beispieldokument (dieser Kommentar ist auch ein Unterknoten) -->
+
+<p>Dieses Script durchläuft den <abbr title="Document Object Model">DOM</abbr>-Objektbaum des <abbr title="Hypertext Markup Language">HTML</abbr>-Dokuments und gibt alle Kindknoten eines Elements aus. Es wurde ab Mozilla 0.9, Internet Explorer 5.0 und Opera 7.0 Beta getestet. Mozilla und Opera 7 erachten im Gegensatz zum Internet Explorer Zeilenumbrüche (<span lang="en">newlines</span> bzw. <span lang="en">carriage returns</span>) als eigene Textknoten.</p>
+
+<p>Interessant in diesem Kontext ist auch Ian Hicksons <a href="http://software.hixie.ch/utilities/js/live-dom-viewer/" hreflang="en" lang="en">Live DOM Viewer</a>.</p>
+
+<h2>Der Scriptcode</h2>
+
+<pre>function liste_unterknoten (knoten) {
+    var ausgabe;
+    ausgabe = '&lt;li>';
+    switch (knoten.nodeType) {
+        case 1 :
+            ausgabe += '&lt;strong>' + knoten.nodeName + '&lt;\/strong>-Element';
+            if (knoten.hasChildNodes()) {
+                ausgabe += ', ' + knoten.childNodes.length + ' Unterknoten';
+            }
+            break;
+        case 3 :
+            var knotenwert = knoten.nodeValue.replace(/&lt;/g, '&amp;lt;').replace(/\n/g, '\\n');
+            ausgabe += 'Textknoten: [&lt;strong>' + knotenwert + '&lt;\/strong>]';
+            break;
+        case 8 :
+            var knotenwert = knoten.nodeValue.replace(/&lt;/g, '&amp;lt;').replace(/\n/g, '\\n');
+            ausgabe += 'Kommentarknoten: [' + knotenwert + ']';
+            break;
+        default :
+            ausgabe += 'Knoten des Typs ' + knoten.nodeType +
+                ', Wert: [' + knoten.nodeValue + ']';
+    }
+    if (knoten.hasChildNodes()) {
+        ausgabe += '\n&lt;ol>\n';
+        for (var i = 0; i &lt; knoten.childNodes.length; i++) {
+            knotenneu = knoten.childNodes[i];
+            ausgabe += liste_unterknoten(knotenneu); // Rekursion
+        }
+        ausgabe += '&lt;/ol>\n';
+    }
+    ausgabe += '&lt;/li>\n';
+    return ausgabe;
+}</pre>
+
+<p>Es wird beispielhaft nach dem vollständigen Laden des Dokuments mit dem <code>html</code>-Element als Anfangsknoten gestartet. Die produzierte Ausgabe wird mit <code>innerHTML</code> in ein <code>ol</code>-Element geschrieben (mit der ID <code>anzeige</code>).</p>
+
+<pre>window.onload = function () {
+    var obj = document.documentElement;
+    var ausgabe = liste_unterknoten(obj);
+    document.getElementById('anzeige').innerHTML = ausgabe;
+};</pre>
+
+<h2>Beispielausgabe</h2>
+
+<ol id="anzeige">
+<li>
+<noscript>
+<p><em>Sie haben JavaScript deaktiviert; falls Sie die Demonstration sehen möchten, wäre es ratsam, einen JavaScript-kompatiblen Browser zu verwenden und JavaScript zu aktivieren.</em></p>
+</noscript>
+</li>
+</ol>
+
+<p>Letzte Änderung: 03.02.2006</p>

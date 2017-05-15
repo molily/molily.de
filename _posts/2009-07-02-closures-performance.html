@@ -1,0 +1,530 @@
+---
+layout: post
+title: Performance von JavaScript-Closures
+---
+
+<p>Closures sind in JavaScript ein mächtiges Werkzeug. Wer die funktionale Natur von JavaScript verstanden hat, wird schnell erfahren, wie <a href="/js/organisation-verfuegbarkeit.html#closures">Closures die JavaScript-Programmierung vereinfachen</a> und elegantere Lösungswege ermöglichen.</p>
+
+<h2>Funktionen in JavaScript</h2>
+
+<h3>Funktionen als vollwertige Objekte</h3>
+
+<p>In JavaScript sind Funktionen vollwertige Objekte (»first-class objects«). Funktionen können zur Laufzeit angelegt, gelöscht, übergeben und mit Unterobjekten erweitert werden. Funktionen haben wie alle Objekte eine Konstruktorfunktion (nämlich <code>Function</code>) und ein prototypisches Objekt (nämlich <code>Function.prototype</code>).</p>
+
+<h3>Funktionen erzeugen Scopes</h3>
+
+<p>Funktionen sind ferner die einzige Möglichkeit, in JavaScript einen <dfn>Scope</dfn> (Variablen-Gültigkeitsbereich) zu erzeugen. Verschachtelt man Funktionen, so entsteht eine Scope-Kette (Scope Chain) mit den internen Variablen-Objekten, an denen die lokalen Funktionsvariablen gespeichert werden. Notiert man einen Bezeichner wie z.B. <code>foo</code>, so wird diese Objekt-Kette von unten bis zum globalen Objekt <code>window</code> durchsucht, um den Bezeichner aufzulösen, also die zugehörige Variable zu finden. Das bietet die Grundlage dafür, dass eine verschachtelte Funktion die Variablen einer äußeren Funktion einschließen und konservieren kann - über den Ablauf der äußeren Funktion hinaus.</p>
+
+<h2>Closures und Performance</h2>
+
+<p>Ich habe mit Artikeln und Forumsbeiträgen stets versucht, das Wissen über funktionale JavaScript-Programmierung und <a href="http://molily.de/js/organisation-verfuegbarkeit.html#closures">sinnvolle Anwendungsfälle von Closures</a> zu verbreiten. In letzter Zeit frage ich mich aber zunehmend, ob der Closures-Einsatz nicht überstrapaziert wird nach dem Sprichwort: Beherrscht man einmal den Hammer, so sieht jedes Problem wie ein Nagel aus.</p>
+
+<p>Wenn Funktionen vollwertige individuelle Objekte sind, lokale Variablen konserviert werden und Scope-Ketten durch Verschachtelung lang werden, dann hat das massive Auswirkungen auf die Performance von JavaScripten. Zum einen frisst das Anlegen von zusätzlichen Funktionen Zeit, zum anderen belegt die Persistenz »eingeschlossener« Daten den Arbeitsspeicher. Vielen JavaScript-Programmierern ist nicht bewusst, dass ihre Closures mehr als die von ihnen gewünschten Daten konservieren und sie damit der automatischen Speicherbereinigung des JavaScript-Interpreters, dem Garbage Collector, entziehen.</p>
+
+<p>Closures sowie die damit möglichen zirkulären Referenzen waren in der Vergangenheit Auslöser für Speicherlecks in Browsern. Mein Augenmerk gilt jedoch nicht diesen größtenteils behobenen Fehlern, auch wenn fehlerhafte Browser wie IE 6 und 7 immer noch eine Rolle in der Webentwicklung spielen. Ich möchte Programmiertechniken untersuchen, die sich durch hohe Geschwindigkeit und geringe Speichernutzung in den JavaScript-Engines aktueller Browser auszeichnen.</p>
+
+<h2>Erzeugen von Event-Handler-Funktionen</h2>
+
+<p>Das Erzeugen von Funktionen zur Laufzeit ist mittlerweile sehr schnell. Totzdem ist ein sparsamer Umgang mit Funktionsobjekten geboten. Besonders beim Event-Handling werden massenhaft Funktionen an DOM-Elemente angehangen. Eine solche häufige Struktur zeigt folgendes Beispiel:</p>
+
+<pre>function vegebeHandler () {
+	var elements = document.getElementByTagName("p");
+	for (var i = 0; l = elements.length; i < l; i++) {
+		elements[i].onclick = function () {
+			alert("Absatz wurde angeklickt.");
+		};
+	}
+}
+window.onload = vegebeHandler;</pre>
+
+<p>Aus Performance-Sicht ist folgendes festzustellen:</p>
+
+<dl>
+
+<dt>Langsames Erzeugen von Funktionsobjekten</dt>
+<dd>Wenn das Dokument 100 p-Elemente besitzt, so werden hier 100 neue Funktionsobjekte erzeugt, auch wenn der Funktionskörper gleich ist. Es wird (wenn der Interpreter nicht optimiert) hundertmal soviel Speicher belegt, wie eigentlich nötig wäre.</dd>
+
+<dt>Closures konservieren Daten, die den Speicher belegen</dt>
+<dd>Noch schwerwiegender ist, dass all diese Funktionen auch Closures darstellen. Sie schließen die Variable <code>elements</code> ein und verhindern die Freigabe des belegten Speichers. <code>elements</code> ist eine »Live«-Knotenliste, die vom Browser immer auf dem aktuellen Stand gehalten werden muss. Daraus folgen meiner Vermutung auch geringe Geschwindigkeitseinbußen bei DOM-Operationen.</dd>
+
+<dt>Die längere Scope Chain verlangsamt die Auflösung von Bezeichnern</dt>
+<dd>
+<p>Die Scope Chain der Handler-Funktionen enthält nicht nur den eigenen Funktions-Scope und den globalen Scope, sondern ist durch den von <code>vergebeHandler</code> erweitert. Das verlangsamt die Auflösung von Bezeichnern (<dfn>Identifier Resolution</dfn>) und damit die Ausführung der Handler-Funktion. (Siehe: <a href="http://www.nczonline.net/blog/2009/02/10/javascript-variable-performance/">JavaScript variable performance</a> von Nicholas C. Zakas</a>).</p>
+<p>Konkret heißt das, dass der Bezeichner »<code>alert</code>« an drei anstatt an zwei Objekten gesucht wird. Fündig wird der Interpreter im globalen Scope, denn mit <code>alert</code> ist freilich <code>window.alert</code> gemeint.</p>
+</dd>
+
+</dl>
+
+<h2>Referenzen statt neue Funktionen</h2>
+
+<p>Schon bei diesem einfachen Beispiel sehen wir, dass das gedankenlose Anlegen von Funktionsobjekten mit Performance-Tücken verbunden ist. JavaScript hat zwar dieses tolle Feature, aber wenn wir stattdessen mehrere Referenzen auf ein und dieselbe Funktion anlegen können, so sollten wir diesen Weg wählen.</p>
+
+<pre>function handler () {
+	alert("Absatz wurde angeklickt.");
+}
+function vegebeHandler () {
+	var elements = document.getElementByTagName("p");
+	for (var i = 0, l = elements.length; i < l; i++) {
+		elements[i].onclick = handler;
+	}
+}</pre>
+
+<p>Nun will ich mit diesem Beispiel nicht sagen, dass alle Funktionen global sein sollten. Die Handler-Funktion <code>handler</code> könnte beispielsweise an einem Object hängen, das als <a href="http://molily.de/js/organisation-module.html#object-literal">Object-Literal</a> notiert wurde. Das Beispiel soll nur eine Variante demonstrieren, bei der Funktionen nicht verschachtelt werden und damit die Performance-Nachteile wegfallen.</p>
+
+<p>Unter <em>Laborbedingungen</em> habe ich das Erzeugen von Referenzen auf dieselbe Funktion mit dem Anhängen immer neuer Funktionen an einen Array verglichen.</p>
+
+<table class="compact">
+<caption>Browser: Chrome 2.0.172.33, 4.000.000 Iterationen</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/1-push-f.html">1 Referenzieren</a></td>
+<td>14.148 k</td>
+<td>0,003537 k/n</td>
+<td>366 ms</td>
+<td>0,0915 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/2-push-function.html">2 Erzeugen</a></td>
+<td>70.216 k</td>
+<td>0,017554 k/n<br><strong>× 4,96</strong></td>
+<td>1.811 ms</td>
+<td>0,45275 µs/n<br><strong>× 4,95</strong></td>
+</tr>
+</tbody>
+</table>
+
+<table class="compact">
+<caption>Browser: Internet Explorer 8, 400.000 Iterationen</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/1-push-f.html">1 Referenzieren</a></td>
+<td>35.284 k</td>
+<td>0,08821 k/n</td>
+<td>588 ms</td>
+<td>1,47 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/2-push-function.html">2 Erzeugen</a></td>
+<td>96.772 k</td>
+<td>0,24193 k/n<br><strong>× 2,74</strong></td>
+<td>830 ms</td>
+<td>2,075 µs/n<br><strong>× 1,41</strong></td>
+</tr>
+</tbody>
+</table>
+
+<p>Laufzeit und Speicherverbrauch stehen in keinem Verhältnis.</p>
+
+<h2>Wenn Closures nötig scheinen</h2>
+
+<p>In diesem einfachen Fall ist es offensichtlich unnötig, die Funktion immer wieder neu innerhalb der Schleife zu erzeugen. Es verschlechtert bloß die Performance, unzählige Closures zu erzeugen.</p>
+
+<p>Spannend wird es den den Fällen, in den man gängige Probleme der <strong>Datenverfügbarkeit</strong> mit Closures löst. Eine häufig gestellte Frage ist etwa: Eine Funktion berechnet in einer Schleife gewisse Daten und registriert einen Event-Handler. In dieser Handler-Funktion sollen nun die gerade in diesem Schleifendurchlauf berechneten Daten zur Verfügung stehen - und sei es nur die Laufvariable der Schleife.</p>
+
+<p>Eine Standardlösung verwendet in jedem Schleifendurchlauf 1.) einen Funktionsausdruck zum notieren einer anonymen Funktion, die sofort ausgeführt wird, und 2.) eine Closure, die den Scope der äußeren anonymen Funktion einschließt.</p>
+
+<pre>function vegebeHandler () {
+	var elements = document.getElementByTagName("p");
+	for (var i = 0; l = elements.length; i < l; i++) {
+		/* Funktionsausdruck (anonyme Funktion): */
+		(function (i) {
+			/* Closure: */
+			elements[i].onclick = function () {
+				alert("Absatz Nummer " + i + " wurde angeklickt.");
+			};
+		})(i);
+		/* Sofortige Ausführung der anonymen Funktion, übergeben des Schleifenzählers */
+	}
+}</pre>
+
+<p>Performance-Profil:</p>
+
+<dl>
+
+<dt>Erzeugung von Funktionen, das Variablen-Objekt bleibt erhalten</dt>
+<dd>Bei 100 <code>p</code>-Elementen werden 100 anonyme Funktionen erzeugt, ausgeführt und sofort wieder automatisch gelöscht, da sie nirgends gespeichert werden. Der Garbage Collector räumt zwar die Funktion weg, allerdings bleibt das Variablen-Objekt mit der Variable <code>i</code> erhalten.</dd>
+
+<dt>Erzeugung der Closure-Funktionen</dt>
+<dd>Bei 100 <code>p</code>-Elementen werden 100 individuelle Handler-Funktionen erzeugt.</dd>
+
+<dt>Vier Objekte in der Scope Chain</dt>
+<dd>Der Scope einer Handler-Funktion enthält vier Variablen-Objekte, an denen ein Bezeichner gesucht wird. Der Zugriff auf »<code>i</code>« ist schnell, der Zugriff auf »<code>alert</code>« ist langsam.</dd>
+
+</dl>
+
+<p>Unter Laborbedingungen habe ich Closures erzeugt und wiederum an Arrays gehängt anstatt an DOM-Elemente. Da der Knackpunkt beim Anlegen von Closures gerade darin besteht, neue Funktionen zu erzeugen, dient als Vergleichsfall das zweite Beispiel, welches bei jedem Array-Durchlauf eine Closure erzeugt, aber keine anonyme Funktion für den Einschluss von <code>i</code> erzeugt und ausführt.</p>
+
+<table class="compact">
+<caption>Browser: Chrome 2.0.172.33, 4.000.000 Iterationen</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/2-push-function.html">2 Erzeugen</a></td>
+<td>70216 k</td>
+<td>0,017554 k/n</td>
+<td>1811 ms</td>
+<td>0,45275 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/3-closure-push-function.html">3 Closures</a></td>
+<td>75344 k</td>
+<td>0,018836 k/n<br><strong>× 1,073</strong></td>
+<td>3929 ms</td>
+<td>0,98225 µs/n<br><strong>× 2,17</strong></td>
+</tr>
+</tbody>
+</table>
+
+<p>Die Speicherung der Variablen-Objekte führt nur zu einer vergleichsweise kleinen Steigerung des Speicherverbrauchs. Das Anlegen und Ausführen der anonymen Funktionen hingegen macht das Unternehmen gleich mehr als doppelt so langsam.</p>
+
+<p>Chromes V8 ist eine weit entwickelte und hochoptimierte JavaScript-Engine, deren würdige Konkurrenten derzeit Safaris Squirrelfish (auch »Nitro« oder »Squirrelfish Extreme« genannt) und Firefox’ TraceMonkey sind. Den Labortest mit 4 Millionen Durchläufen meistert V9 in nicht einmal vier Sekunden und verbraucht dabei für heutige Rechnerkapazitäten relativ wenig Arbeitsspeicher.</p>
+
+<p>Im Internet Explorer 8 stellt sich ein ganz anderes Bild dar:</p>
+
+<table class="compact">
+<caption>Browser: Internet Explorer 8, 400.000 Iterationen</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/2-push-function.html">2 Erzeugen</a></td>
+<td>96.772 k</td>
+<td>0,24193 k/n</td>
+<td>830 ms</td>
+<td>2,075 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/3-closure-push-function.html">3 Closures</a></td>
+<td>341.828 k</td>
+<td>0,85457 k/n<br>
+<strong>× 3,53</strong><br>
+<strong>× 45,4 ggü. Chrome</strong></td>
+<td>2.298 ms</td>
+<td>5,745 µs/n<br>
+<strong>× 2,77</strong><br>
+<strong>× 12,7 ggü. Chrome</strong></td>
+</tr></tbody>
+</table>
+
+<p>Da er fast 13 Mal soviel Zeit benötigt und 45 Mal soviel Speicher belegt, testen wir nur 400.000 Durchläufe. Es ist unglaublich, wie man mit Funktionen und Closures den Arbeitsspeicher in wenigen Sekunden belegen kann.</p>
+
+<p>In der Praxis enthält ein Dokument selten mehr als tausend Elemente zur gleichen Zeit. Insofern sagt dieser Labortest wenig darüber aus, ob es zu massivem Speicherverbrauch in JavaScript-Webanwendungen kommt. Aber das ist auch nicht Zweck des Tests - vielmehr soll der Zuwachs gegenüber Lösungen ohne Closures gezeigt werden.</p>
+
+<h2>Kontrolliertes Anlegen von Closures: Currying und Binding</h2>
+
+<p>JavaScript-Bibliotheken wie <a href="http://api.prototypejs.org/language/Function/">Prototype</a> und <a href="http://mootools.net/core/docs/1.6.0/Types/Function">Mootools</a> erleichtern die JavaScript-Programmierung, indem sie Funktionsobjekte protoypisch erweitern und mit Methoden versehen, die Currying und Binding erlauben.</p>
+
+<p>Currying ist das geordnete Anlegen von Closures, die gewisse Parameter einschließen und sie an die Ursprungsfunktion übergeben. So wird eine neue Funktion erzeugt, die die Ursprungsfunktion mit vorbelegten Parametern aufruft und ihre Parameter hinzufügt und weitergibt. Mit Binding kommt die Möglichkeit hinzu, die Ursprungsfunktion in Kontext eines Objektes auszuführen, damit »<code>this</code>« in der Funktion auf das gewünschte Objekt zeigt.</p>
+
+<p>Currying und Binding sind in Prototype über <a href="http://api.prototypejs.org/language/Function/prototype/curry/">curry</a> bzw. <a href="http://api.prototypejs.org/language/Function/prototype/bind/">bind</a> möglich. In Mootools gibt es dafür <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Deprecated-Functions:create">create</a> und ebenfalls <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Function:bind">bind</a>. Speziell für den Einsatz bei Event-Handlern existiert bei Prototype <a href="http://api.prototypejs.org/language/Function/prototype/bindAsEventListener/">bindAsEventListener</a> und bei Mootools <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Deprecated-Functions:bindWithEvent">bindWithEvent</a>. All diese sind durch prototypische Erweiterung Methoden von beliebigen Funktionsobjekten. Wir erinnern uns: Funktionen sind Objekte erster Klasse, daher geht das in JavaScript.</p>
+
+<p><code>bind</code> und <code>bindAsEventListener</code> habe ich auch unter <a href="http://molily.de/js/organisation-verfuegbarkeit.html#bind-bindaseventlistener">Alternativlösungen zur Kontext-Problematik: bind und bindAsEventListener</a> beschrieben.</p>
+
+<p><code>Function.prototype.bind</code> wird ECMAScript 5 (<a href="http://es5.github.io/#x15.3.4.5">Abschnitt 15.3.4.5</a>) standardisiert werden. Allerdings gibt es noch keinen mir bekannten Browser, der <code>bind</code> nativ unterstützt, und man ist derzeit auf die Erweiterung des <code>Function</code>-Prototyps angewiesen. Sobald eine native Implementierung existiert, ist mit einer enorm verbesserten Performance zu rechnen.</p>
+
+<p>Mit Currying können wir das Beispiel eleganter und funktionaler lösen:</p>
+
+<pre>function handler (i) {
+	alert("Absatz Nummer " + i + " wurde angeklickt");
+}
+function vegebeHandler () {
+	var elements = document.getElementByTagName("p");
+	for (var i = 0, element; l = elements.length; i < l; i++) {
+		element[i].onclick = handler.curry(i);
+	}
+}</pre>
+
+<p>Wie gesagt wäre hier <code>bindAsEventListener</code> bzw. <code>bindWithEvent</code> angebracht, damit die Handler-Funktion das Event-Objekt browserübergreifend als ersten Parameter übergeben bekommt. Hier geht es jedoch nur um die Weitergabe des korrekten Wertes der Variable <code>i</code>.</p>
+
+<p>In meinem Labortest speichere ich die von <code>curry</code> erzeugen Closures in einem Array. Mit Erschrecken musste ich feststellen, dass diese Variante unverhältnismäßig langsamer ist als alle bisher diskutierten. Ich habe daher nur die Hälfte der Iterationen verwendet:</p>
+
+<table class="compact">
+<caption>Browser: Chrome 2.0.172.33</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/3-closure-push-function.html">3 Closures</a><br>4.000.000 Iterationen</td>
+<td>75.344 k</td>
+<td>0,018836 k/n</td>
+<td>3929 ms</td>
+<td>0,98225 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/4-curry-std.html">4 Currying</a><br>2.000.000 Iterationen</td>
+<td>174.612 k</td>
+<td>0,087306 k/n<br><strong>× 4,6</strong></td>
+<td>11433 ms</td>
+<td>5,7165 µs/n<br><strong>× 5,8</strong></td>
+</tr></tbody>
+</table>
+
+<table class="compact">
+<caption>Browser: Internet Explorer 8</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/3-closure-push-function.html">3 Closures</a><br>400.000 Iterationen</td>
+<td>341828 k</td>
+<td>0,85457 k/n</td>
+<td>2298 ms</td>
+<td>5,745 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/4-curry-std.html">4 Currying</a><br>200.000 Iterationen</td>
+<td>331120 k</td>
+<td>1,6556 k/n<br><strong>× 0,97</strong></td>
+<td>2186 ms</td>
+<td>10,93 µs/n<br><strong>× 1,9</strong></td>
+</tr>
+</tbody>
+</table>
+
+<p>Pro Iteration ist das Currying fast sechs Mal (Chrome) bzw. fast doppelt so langsam (IE). Warum, erklärt sich sehr schnell. Die Standard-Currying-Funktionen müssen wegen einem »Bad Part« (Douglas Crockford) in der ECMAScript-Spezifikation die Parameter-Listen (<code>arguments</code>) von Hand in Arrays umwandeln. Die <code>curry</code>-Funktion hat in der Regel eine solche oder ähnliche Struktur:</p>
+
+<pre id="classic-curry">Function.prototype.curry = (function () {
+	var slice = Array.prototype.slice;
+	return function () {
+		var func = this, args = slice.apply(arguments);
+		return function () {
+			return func.apply(this, args.concat(slice.apply(arguments)));
+		};
+	};
+})();</pre>
+
+<p>Hier wird zweimal <code>Array.prototype.slice</code> für die <code>arguments</code>-Listen aufgerufen, um sie in normale JavaScript-Arrays umzuwandeln. Die Geschwindigkeitseinbuße rührt zum großen Teil von diesen <code>slice</code>-Aufrufen her, die mit dem eigentlichen Anlegen der Closures nichts zu tun haben.</p>
+
+<p>Leider bleibt einer praxistauglichen, flexiblen Currying-Funktion nichts anderes übrig, als solche Umwandlungen vorzunehmen. Juriy Zaytsev hat im Ticketsystem für Prototype eine <a href="https://prototype.lighthouseapp.com/projects/8886/tickets/215-optimize-bind-bindaseventlistener#ticket-215-9">hochoptimierte Variante von Function.prototype.bind</a> vorgeschlagen, die das Anlegen neuer Funktionen und das Aufrufen von <code>slice</code> verringert. (Nachtrag: Dieser Patch wurde in <a href="http://prototypejs.org/2009/09/01/prototype-1-6-1-released/">Prototype 1.6.1</a> aufgenommen.) Eine weitere Möglichkeit wäre ein Memoizer, der eine Funktion nur einmal an ein Objekt bindet und diese Closures zwischenspeichert (bspw. <a href="http://web.archive.org/web/20051028022229/http://laurens.vd.oever.nl/weblog/items2005/closures/">Leak Free Javascript Closures</a>).</p>
+
+<h2>Vereinfachtes, Performance-optimiertes Currying</h2>
+
+<p>Unter Berücksichtigung dieser Ideen habe ich eine vereinfachte, auf den Testfall zugeschnittene und sehr rudimentäre Currying-Funktion hinsichtlich Performance getestet. Sie nimmt nur ein Parameter entgegen und gibt nur diesen Parameter weiter. <code>Array.prototype.slice</code> kann dadurch gänzlich vermieden werden.</p>
+
+<pre>Function.prototype.simpleCurry = function (arg) {
+	var func = this;
+	return function () {
+		return func.call(this, arg);
+	};
+};</pre>
+
+<p>Ein Vergleich zwischen dieser stark reduzierten Currying-Funktion und dem umständlichen Anlegen der Closures von Hand ist schon eher möglich:</p>
+
+<table class="compact">
+<caption>Browser: Chrome 2.0.172.33</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/3-closure-push-function.html">3 Closures</a><br>4.000.000 Iterationen</td>
+<td>75344 k</td>
+<td>0,018836 k/n</td>
+<td>3929 ms</td>
+<td>0,98225 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/5-curry-simple.html">5 Simple Currying</a><br>2.000.000 Iterationen</td>
+<td>77244 k</td>
+<td>0,038622 k/n<br><strong>× 2,05</strong></td>
+<td>2870 ms</td>
+<td>1,435 µs/n<br><strong>× 1,46</strong></td>
+</tr></tbody>
+</table>
+
+<p>Auch das zugeschnittene zentrale Anlegen von Closures ist im Chrome signifikant langsamer und verbraucht doppelt soviel Speicher. Dies ist ein Hinweis darauf, dass das »händische« Anlegen von Closures unter Umständen hinsichtlich Performance besser sein kann.</p>
+
+<table class="compact">
+<caption>Browser: Internet Explorer 8</caption>
+<thead>
+<tr>
+<th>Testfall</th>
+<th>Speicherverbrauch</h2>
+<th>Speicherverbrauch<br>pro Iteration</h2>
+<th>Gesamtlaufzeit</h2>
+<th>Laufzeit<br>pro Iteration</h2>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/assets/jsperf/3-closure-push-function.html">3 Closures</a><br>400.000 Iterationen</td>
+<td>341.828 k</td>
+<td>0,85457 k/n</td>
+<td>2.298 ms</td>
+<td>5,745 µs/n</td>
+</tr>
+<tr>
+<td><a href="/assets/jsperf/5-curry-simple.html">5 Simple Currying</a><br>200.000 Iterationen</td>
+<td>172.592 k</td>
+<td>0,86296 k/n<br><strong>× 1,00</strong></td>
+<td>940 ms</td>
+<td>4,7 µs/n<br><strong>× 0,82</strong></td>
+</tr>
+</tbody>
+</table>
+
+<p>Das zentralisierte Anlegen von Closures ist im IE etwas schneller, der Speicherverbrauch bleibt jedoch gleich schlecht.</p>
+
+<p>Performance-Profil dieses Ansatzes:</p>
+
+<ul>
+<li>Bei 100 p-Elementen werden wird 100 mal <code>curry</code> ausgeführt. Die Variablen-Objekte dieser Auführungen bleiben im Speicher erhalten.</li>
+<li>Bei 100 p-Elementen werden 100 Closures erzeugt.</li>
+<li>
+<p>Die Scope Chain enthält ebenfalls vier Objekte:</p>
+<ol>
+<li>das Variablen-Objekt der Handler-Funktion <code>handler</code> selbst</li>
+<li>das Variablen-Objekt der Closure, die in <code>simpleCurry</code> angelegt wurde</li>
+<li>das Variablen-Objekt der Helfer-Funktion <code>simpleCurry</code></li>
+<li>schließlich das globale Objekt <code>window</code>.</li>
+</ol>
+<p>Das bedeutet, der Zugriff auf die Variable »<code>i</code>« ist schnell, denn sie wird schon beim ersten Objekt in der Scope Chain gefunden. Der Zugriff auf die Methode »<code>alert</code>« ist verlangsamt, denn sie wird erst an vierter Stelle gefunden.</li>
+</ul>
+
+<p>Meine Schlussfolgerung anhand dieser Labortests lautet: Das kontrollierte Anlegen von Closures macht den Code übersichtlicher und eindeutiger, jedoch sind die üblichen Currying-Methoden zu allgemein, als dass sie hinsichtlich Performance mit einer Low-Level-Umsetzung mithalten könnten.</p>
+
+<h2>Vermeidung von Closures – Verfügbarkeit von Daten</h2>
+
+<p>Des Lerneffektes halber habe ich ein wenig gemogelt, indem ich ein simples Beispiel aus dem Event-Handling gewählt habe, das üblicherweise mit Closures umgesetzt wird, aber auch hervorragend ohne gelöst werden kann.</p>
+
+<p>Wenn es nämlich bloß darum geht, dass eine Handler-Funktion Zugriff auf gewisse Kontextinformationen bekommt, so besteht die Möglichkeit, diese Informationen im Dokument selbst in Form von Eigenschaften der jeweiligen Elementobjekte zu speichern. Die DOM-Knotenobjekte sind beliebig mit eigenen Unterobjekten erweiterbar.</p>
+
+<pre>function handler () {
+	alert("Absatz Nummer " + element.__absatznummer + " wurde angeklickt");
+	/* Stoppe Event-Handling bei diesem Element */
+	this.onclick = undefined;
+	delete element.__absatznummer;
+}
+function vegebeHandler () {
+	var elements = document.getElementByTagName("p");
+	for (var i = 0, element; element = elements[i]; i++) {
+		element.onclick = handler;
+		element.__absatznummer = i;
+	}
+}</pre>
+
+<p>Um den jeweiligen Wert der Variable <code>i</code> der Handler-Funktion bereitzustellen, wird er in der Eigenschaft <code>__absatznummer</code> des Elementobjektes gespeichert. In der Handler-Funktion wird diese Information genutzt. Gleichzeitig wird demonstriert, wie die Eigenschaft nach der Nutzung mit <code>delete</code> entfernt werden kann.</p>
+
+<p>Wenn das Element z.B. Teil eines Widgets ist, kann eine Referenz auf das Widget-Objekt angelegt werden. Zur Sicherheit lässt sich ein eigener Namespace am Element anlegen, sodass sich verschiedene Scripte, die Kontextdaten speichern, sich nicht in die Quere kommen.</p>
+
+<p>Manche JavaScript-Frameworks bieten für das Verknüpfen von JavaScript-Werten mit Elementen eine einheitliche API an. Beispielsweise jQuery bietet die <a href="http://docs.jquery.com/Core/data">data-Methode</a>, um Daten zu einem oder mehreren Elementen zu speichern. (Nachtrag: Prototype 1.6.1 bietet eine gleichwertige Funktionalität über die Methoden <a href="http://api.prototypejs.org/dom/Element/store/">store()</a> und <a href="http://api.prototypejs.org/dom/Element/retrieve/">retrieve()</a>.) Die Werte werden nicht wirklich am Elementobjekt gespeichert, sondern in dem Hash <code>jQuery.cache</code>. Die Daten darin werden über eine eindeutige Nummer (UUID) mit dem Element verknüpft. <code>jQuery.cache</code> benutzt jQuery auch dazu, um registrierte Event-Handler mit einem Element zu verknüpfen.</p>
+
+<p>Der Vorteil dieser Variante, die auf das direkte Verknüpfen von Elementobjekten mit eigenen JavaScript-Objekten verzichtet, ist die Verhinderung von Speicherlecks in Browsern mit fehlerhaftem Garbage Collector – namentlich der Internet Explorer. Der Nachteil ist, dass der Cache-Eintrag für ein Element meines Wissens bestehen bleibt, wenn das Element nicht mit jQuery-eigenen Methoden gelöscht wurde. jQuery-Methoden wie <code>html()</code> überschreiben daher nicht einfach <code>innerHTML</code>-Eigenschaft, sondern entfernen vorher alle Nachfahrenelemente rekursiv und löschen zugehörige Cache-Einträge. Das ist mit entsprechendem Aufwand verbunden, garantiert aber einen kleinstmöglichen Speicherverbrauch.</p>
+
+<p>Mit Referenzen bei DOM-Elementen auf Kontextdaten lassen sich natürlich keinesfalls alle nützlichen Closures ersetzen - nicht einmal im Event-Handling. Dies soll lediglich ein Beispiel dafür sein, den <em>Funktionen- und Closures-Gebrauch zu reflektieren</em> und nach Lösungen zu suchen, die weniger komplex sind, daher schneller laufen und weniger Speicher verbrauchen.</p>
+
+<h2>Kapselung durch Closures bei Modulen (Private Member)</h2>
+
+<p>An anderen Stellen der JavaScript-Programmierung sind Closures unerlässlich. Da JavaScript nicht über das Konzept von Klassen und einer Sichtbarkeit von Membern verfügt, werden <a href="http://www.crockford.com/javascript/private.html">private Member mit Closures</a> emuliert. In diesen Fällen sollte man sich der Auswirkungen auf die Performance zumindest bewusst sein. Benchmarking kann im Einzelfall zeigen, ob eine effektive Kapselung die Performance merklich verschlechtert.</p>
+
+<p>Das <a href="http://molily.de/js/organisation-module.html#revealing-module">Module-Pattern</a> ist eine prominente Anwendung des Konzept von Closures zur Kapselung. Es erzeugt einen Funktions-Scope und notiert darin verschiedene lokale Objekte und Funktionen. Die verschachtelten Funktionen haben Zugriff auf die restlichen Objekte im selben Scope. Schließlich gibt die äußere Wrapper-Funktion ein Objekt zurück, das einige der »privaten« Eigenschaften und Methoden »öffentlich« macht.</p>
+
+<pre>MeinModul = (function () { // anonyme Funktion, die sofort ausgeführt wird
+	var privateEigenschaft = 123;
+	function privateMethode () {
+		alert(privateEigenschaft);
+	}
+	function priviligierteMethode () {
+		privateMethode();
+	}
+	return {
+		priviligierteMethode : priviligierteMethode
+	};
+})();
+MeinModul.priviligierteMethode();</pre>
+
+<p>(Das Beispiel zeigt das <a href="http://www.wait-till-i.com/2007/08/22/again-with-the-module-pattern-reveal-something-to-the-world/">Revealing Module Pattern</a>.)</p>
+
+<p>Closures mit diesem Zweck haben ein großes Potenzial. Sie können immer verwendet werden, wenn Daten zwischen verschiedenen »öffentlichen« Funktionen geteilt werden sollen, ohne dass diese Daten selbst öffentlich sein oder sogar direkt im globalen Scope liegen müssen. Prinzipiell eignet sich diese Technik hervorragend dazu, die Performance von Scripten zu verbessern, weil man mehrfach genutzte Objekte einmal anlegen, verschiedenen Funktionen ohne Umwege bereitstellen kann und somit später vielfach nutzen kann.</p>
+
+<h2>Kapselung durch Closures in Konstruktoren</h2>
+
+<p>Beim Module Pattern wird eine Wrapper-Funktion erzeugt und nur <em>ein</em> »öffentliches«Objekt angelegt, dessen Closure-Funktionen gewisse »private« Objekte einschließen. Die Anzahl der Closures sowie der Umfang der eingeschlossenen Daten bleiben dabei noch überschaubar. Problematischer wird es, wenn private Member sowie öffentliche Methoden komplett in einem Konstruktor notiert werden, der mehrere Instanzen erzeugt:</p>
+
+<pre>function Konstruktor () {
+	var privateEigenschaft = new Date().getTime();
+	function privateMethode () {
+		alert(privateEigenschaft);
+	}
+	this.priviligierteMethode = function () {
+		privateMethode();
+	};
+}
+var instanz = new Konstruktor;
+instanz.priviligierteMethode();</pre>
+
+<p>Obwohl <code>privateMethode</code> und <code>priviligierteMethode</code> bei verschiedenen Instanzen gleich sind, werden für jede Instanz neue Funktionsobjekte angelegt, denn sie sollen als Closures wirken. Um private Member zu bekommen, die nicht zwischen Objektinstanzen geteilt werden, zahlen wir einen hohen Performance-Preis im Vergleich zur klassischen Methode, die alle Member über das <code>prototype</code>-Objekt definiert. Diese sind dann notwendig öffentlich:</p>
+
+<pre>function Konstruktor () {
+	this.öffentlicheEigenschaft = new Date().getTime();
+}
+Konstruktor.prototype = {
+	öffentlicheMethode : function () {
+		alert(this.öffentlicheEigenschaft);
+	}
+};
+var instanz = new Konstruktor;
+instanz.öffentlicheMethode();</pre>
+
+<p>Alle Instanzen teilen hier dasselbe Funktionsobjekt. Sie besitzen Referenzen auf die öffentlichen Methoden, beim Erzeugen werden keine neuen Funktionsobjekte erzeugt.</p>
+
+<p>Die Wahl der geeigneten Technik hängt von der benötigten Funktionalität ab. Die unterschiedliche Performance zeigt sich vermutlich nur dann, wenn besonders viele Instanzen erzeugt werden oder der Konstruktor besonders viele Objekte erzeugt. Auf Praxiserfahrungen und Benchmarks konkreter Anwendungsfälle kann ich hier nicht zurückgreifen. Ich persönlich halte private Member bei Objekten, die durch Konstruktoren erzeugt werden, in vielen Fällen für verzichtbar. Zur besseren Strukturierung von Membern reichen mir Präfixe wie »<code>_</code>« für private Member. Die effektive Kapselung, d.h. die unüberwindbare Trennung zwischen öffentlicher API und internen Objekten, erscheint mir nur selten vonnöten.</p>
+
+<p>Matt Snider hat darauf <a href="http://mattsnider.com/languages/javascript/prototype-vs-yui-round-1-oop-architecture/">hingewiesen</a>, dass der Konstruktor-Ansatz mit privaten Membern, wie er bei der Programmierung mit der Bibliothek Yahoo! UI (YUI) verwendet wird, immer noch schneller ist als das Klassen-Konzept von Prototype (<code>Class.create</code>), welches mit prototypischer Vererbung anstatt dem Anlegen immer neuer Funktionen für jede Instanz arbeitet. Das liegt vermutlich daran, dass der »Overhead« von Prototype an dieser Stelle sehr groß ist im Vergleich zur Low-Level-Lösung von YUI - wir kennen dieses Phänomen von <code>bind</code> und <code>curry</code>.</p>
+
+<h2>Anmerkungen zur Testmethodik</h2>
+
+<p>Das Testsystem für die Benchmarks war ein Intel Core 2 Duo T5550 mit 1,83 GHz, 2 GB RAM, Windows Vista. Chrome und IE 8 wurden gewählt, weil sie für jeden Tab in einem eigenen Browser-Prozess starten und somit eine genaue Angabe des Speicherverbrauchs möglich ist. Die Zahlen für Chrome stammen aus <code>about:memory</code>, die für IE 8 aus dem Windows Task-Manager (jeweils totaler Speicherverbrauch).</p>

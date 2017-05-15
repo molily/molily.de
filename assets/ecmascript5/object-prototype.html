@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Exkurs: Kernobjekte wie Object.prototype erweitern</title>
+<style>
+body {
+  font-family: Lucida Grande, sans-serif;
+  line-height: 1.6;
+  margin: 2em 10%;
+}
+p {
+  margin: 1.5em 0;
+  max-width: 60em;
+}
+pre, code {
+  color: navy;
+  font-family: Monaco, monospace;
+}
+</style>
+</head>
+<body>
+
+<h2>Exkurs: Kernobjekte wie <code>Object.prototype</code> erweitern</h2>
+
+<p><img src="warning.png" alt="Warnung: Experimentelle und kontroverse Punkte folgen. Vorsicht ist geboten."></p>
+
+<p>Eine derzeitige Grundregel der JavaScript-Programmierung lautet, dass ein Script möglichst gekapselt sein sollte und möglichst wenig Spuren im globalen Namensraum (dem globalen Objekt <code>window</code>) hinterlassen sollte. Die öffentliche API sollte – wie etwa bei jQuery und Yahoo YUI – möglichst an einem einzigen globalen Objekt hängen. Dadurch ist gewährleistet, dass Scripte verschiedener Herkunft nebeneinander existieren können und sich nicht in die Quere kommen, indem sie gegenseitig Eigenschaften überschreiben.</p>
+
+<p>Bibliotheken wie PrototypeJS und Mootools hingegen erweitern das globale Objekt <code>window</code>, die vordefinierten ECMAScript-Kernobjekte und deren Prototypen (<code>Function</code>, <code>Array</code>, <code>String</code>, <code>Boolean</code>, <code>Number</code>, <code>Date</code>, <code>RegExp</code> usw.) sowie DOM-Elementobjekte extensiv. Dies hat immer wieder zu Kollisionen geführt. Auf die Erweiterung von vordefinierten Host-Objekten reagierten die Browser sehr unterschiedlich. Zudem unterliegen der ECMAScript-Standard, das HTML-DOM und die Browser einer ständigen Weiterentwicklung. Es spricht daher vieles dafür, auf »minimal-invasive« Bibliotheken zu setzen.</p>
+
+<p>Besonders verpönt ist es, <code>Object.prototype</code> zu erweitern. Dies ist der Prototyp aller Objekte. Erzeugt man daran neue Methoden und Eigenschaften, so stehen sie bei allen Objekten durch prototypische Delegation zur Verfügung. Dies ist im Grunde eine geniale Idee, die JavaScript zu einer mächtigen Sprache macht. Viele Scripte sind jedoch nicht darauf ausgelegt, dass beliebige Eigenschaften von oben in Prototypenkette vererbt werden. Die Erweiterung von Object.prototype macht daher die meisten Scripte kaputt. Es verlangt einen sehr vorausschauenden Programmierstil, um damit kompatibel zu sein. Die JavaScript-Community hielt es für einfacher, <code>Object.prototype</code> kurzerhand mit einem Tabu zu belegen.</p>
+
+<p>ECMAScript 5 nimmt aus der prototypischen Erweiterung zentraler Objekte ein wenig die Spannung. Mithilfe der beschriebenen Property Descriptors kann festgelegt werden, dass eine Eigenschaft nicht enumerable (zählbar) ist und <code>for-in</code>-Schleifen sie nicht finden. Andere Probleme, die die Erweiterung von <code>Object.prototype</code> mit sich bringen kann, löst dies allerdings nicht.</p>
+
+<p>Die besagten Regeln sind bewusste Selbstbeschränkungen. Sie haben dafür gesorgt, dass Scripte in manchen Punkten sehr einfach gehalten werden können und sehr einfach koexistieren können. Sie haben gleichzeitig dafür gesorgt, dass JavaScript nicht so expressiv ist, wie es sein könnte.</p>
+
+<p>Lange Rede, kurzer Sinn: Ich bin der Überzeugung, dass die JavaScript-Programmierung diese Ansätze für spezielle Anwendungsbereiche prüfen sollte und dabei gewinnen kann. Das heißt nicht, dass gewöhnliche clientseitige Scripte, die auf Websites mit fremden koexistieren müssen, plötzlich aus ihrer Kapselung ausbrechen und sämtliche Kernobjekte erweitern sollen. Es gibt aber klar begrenzte Bereiche und Nischen, in denen die JavaScript-Programmierung sich austoben kann und sollte. Die beschriebene Bibliothek should.js ist ein Beispiel für eine sinnvolle beschränkte Erweiterung von <code>Object.prototype</code>. </p>
+
+<p>Zu den Hintergründen siehe:</p>
+
+<ul>
+  <li><a href="http://erik.eae.net/archives/2005/06/06/22.13.54/">Object.prototype is verboten</a></li>
+  <li><a href="http://www.nczonline.net/blog/2010/03/02/maintainable-javascript-dont-modify-objects-you-down-own/">Maintainable JavaScript: Don’t modify objects you don’t own</a></li>
+  <li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/">What’s wrong with extending the DOM</a></li>
+  <li><a href="http://icant.co.uk/articles/seven-rules-of-unobtrusive-javascript/">The seven rules of Unobtrusive JavaScript</a></li>
+</ul>
+
+</body>
+</html>

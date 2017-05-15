@@ -1,0 +1,76 @@
+---
+layout: post
+title: JavaScript-Profiling über benannte Funktionsausdrücke
+---
+
+<p>Juriy Zaytsev, seines Zeichens Mitentwickler des Prototype-JavaScript-Frameworks, hat einen tollen (englischsprachigen) Artikel über Funktionen in JavaScript und im speziellen benannte Funktionsausdrücke geschrieben:</p>
+
+<p><strong><a href="https://kangax.github.io/nfe/">Named function expressions demystified</a></strong></p>
+
+<p>Nicht nur gibt er eine Einführung in die möglichen Notierweisen von Funktionen - Deklarationen versus Ausdrücke -, sondern diskutiert auch den Nutzen von benannten Funktionsausdrücken und Browserfehler, die die Anwendung erschweren.</p>
+
+<p>Warum sind benannte Funktionsausdrücke so sinnvoll? Bei neueren JavaScript-Pattern wie etwa <a href="http://molily.de/js/organisation-module.html#object-literal">Objektliteralen</a> zur Strukturierung von JavaScript-Programmen verwendet man ständig <a href="http://molily.de/js/organisation-module.html#scope">Funktionsausdrücke</a>. Objektliterale finden auch bei dem populären <a href="http://molily.de/js/organisation-module.html#revealing-module">Module-Pattern</a> Verwendung.</p>
+
+<p>Ein paar Beispiele für Funktionsausdrücke in diesem Kontext:</p>
+
+<pre>var Modul = {
+   methode : function () {
+      // Funktionsausdruck
+   }
+};
+
+var Modul = (function () { // Anonymer Funktionsausdruck
+   var privateMethode = function () {
+       // Funktionsausdruck
+   };
+   return {
+      öffentlichePriviligierteMethode : function () {
+         // Funktionsausdruck
+      }
+   };
+})();</pre>
+
+<p>Aber auch bei der restlichen JavaScript-Programmierung werden ständig anonyme Funktionen notiert, etwa beim Event-Handling und in Form von Callbacks. Beispiel jQuery, in anderen Bibliotheken prinzipiell gleich:</p>
+
+<pre>jQuery("#element").bind("click", function (e) {
+   // Funktionsausdruck
+});
+jQuery.get("/ajax", function () {
+   // Funktionsausdruck
+});
+jQuery("#element")..fadeIn("slow", function () {
+   // Funktionsausdruck
+});
+</pre>
+
+<p>Bei Timeouts und Intervallen:</p>
+
+<pre>window.setTimeout(function () {
+   // Funktionsausdruck
+}, 1000);
+var interval = window.setInterval(function () {
+   // Funktionsausdruck
+}, 1000);
+</pre>
+
+<p>Oder generell bei der funktionalen Programmierung, z.B. beim Verarbeiten von Arrays mit den <a href="http://www.robertnyman.com/javascript/javascript-1.6.html">neuen Methoden</a> aus <a href="https://developer.mozilla.org/en/New_in_JavaScript_1.6#Array_extras">JavaScript 1.6</a> bzw. ECMAScript  5:</p>
+
+<pre>[1, 2, 3].forEach(function () {
+   // Funktionsausdruck
+});</pre>
+
+<p>Je weiter man in JavaScript eintaucht und je mehr man funktionale Bibliotheks-Schnittstellen nutzt, desto stärker nutzt man die Möglichkeit, während der Laufzeit Funktionen zu erzeugen. Oftmals wegen der Fähigkeiten von <a href="http://molily.de/js/organisation-verfuegbarkeit.html#closures">Closures</a>.</p>
+
+Das Problem dieser namenlosen (anonymen) Funktionen ist, dass sie das <a href="http://de.wikipedia.org/wiki/Profiler_(Programmierung)">Profiling</a> von großen JavaScript-Anwendungen erschweren. Damit ist eine Statistik aller Funktionsaufrufe gemeint, bei der die Anzahl der Aufrufe sowie deren mittlere Laufzeit gemessen wird. Diese wichtige Methode zur Performance-Optimierung von JavaScripten ist beispielsweise mit der Firefox-Erweiterung <a href="http://getfirebug.com/js.html">Firebug</a> und mit dem <a href="http://webkit.org/blog/197/web-inspector-redesign/">Web Inspector</a> von Safari und Chrome möglich.
+
+<p>Ohne aussagekräftige Funktionsnamen sind die Messdaten eines Profils sehr schwer lesbar:</p>
+
+<p></p><img src="/img/js-profiling-anon.png" alt="" /></p>
+
+<p>Firebug erlaubt es zwar, beim Klick auf den Namens-Platzhalter in den Quelltext zu springen, allerdings lässt sich die Verbesserung der Performance viel besser mit einem schnellen Überblick über alle Funktionen vornehmen.</p>
+
+<p>Auch beim Debugging stellen anonyme Funktionen ein Problem dar: Bei Javascript-Fehlern zeigen Werkzeuge wie Firefox den Stacktrace an, das ist die Liste der verschachtelten Funktionsaufrufe bis zu dem Punkt, an dem der Fehler auftrat. Diese Stacktraces sind unverständlich, wenn die meisten Funktionen keine Namen besitzen und nur Codezeilen angegeben sind.</p>
+
+<p>Wenn die meisten Funktionen Namen besitzen, dann ist ein aussagekräftiges Profiling möglich wie hier bei meinem JavaScript für das SELFHTML-Forum:</p>
+
+<p><img src="/img/js-profiling-named.png" alt="" /></p>

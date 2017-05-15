@@ -1,0 +1,207 @@
+---
+layout: post
+title: Standardkonforme und zukunftsfähige JavaScript-Bibliotheken
+---
+
+<p style="font-size: 0.9em; text-align: right"><a href="/javascript-libraries/" lang="en" hreflang="en">[EN] Read the English version</a></p>
+
+<p>Das <a href="https://9elements.com/">Unternehmen, für das ich arbeite</a>, entwickelt derzeit verschiedene JavaScript-Webanwendungen mit jQuery, Backbone und Underscore. Wir schreiben diese hauptsächlich in der Sprache CoffeeScript, die nach JavaScript kompiliert wird.</p>
+
+<p>Ich möchte diese Software-Toolchain im Folgenden kritisch diskutieren und Vor- und Nachteile aufzeigen. Ich halte die besagten Bibliotheken für nicht oder nur bedingt standardkonform und möchte schließlich für zukunftsfähige Bibliotheken plädieren.</p>
+
+<h2>jQuery</h2>
+
+<p>jQuery ist der De-facto-Standard für DOM-Scripting, Animationen und HTTP-Kommunikation (»Ajax«). Mit jQuery lassen sich die üblichen DOM-Aufgaben mit kurzer und sprechender Syntax umsetzen.</p>
+
+<p>jQuery war stets nur eine Helferbibliothek, die einem jenseits des Patterns »Wrapper-Liste mit DOM-Elementen« nichts zur übergreifenden Organisation bietet. jQuery verzichtet bewusst darauf, einen Programmierstil vorzuschreiben, und beschränkt sich darauf, Operationen auf DOM-Knotenlisten zu vereinfachen. Andere Frameworks speziell für clientseitige Webanwendungen wie YUI, Dojo und Ext.JS hatten schon immer einen umfassenderen Anspruch.</p>
+
+<p>jQuery ist auf dem Siegeszug und hat Konkurrenten wie Prototype und Mootools den Rang abgelaufen. Auch wenn es sich auf einen Kernbereich des clientseitigen JavaScripts beschränkt, handelt es sich um ein riesiges, stetig wachsendes JavaScript, von dem man in der Regel nur wenige Teile verwendet. Besonders aus der Ecke der <a href="http://microjs.com/">Micro-Frameworks</a> erntet jQuery als monolithische Software Kritik. <a href="http://vimeo.com/26113527">Zur Verteidigung</a> wird die testgetriebene Entwicklung sowie die Browserkompatibilität angeführt.</p>
+
+<h2>Underscore</h2>
+
+<p><a href="http://underscorejs.org/">Underscore</a> ist eine kleine eigenständige Bibliothek, die häufig im Zusammenhang mit jQuery eingesetzt wird. Sie bietet vieles, was jQuery auslässt; sie vereinfacht die JavaScript-Programmierung selbst. Underscore erlaubt einen komfortablen Umgang mit Objekten/Hashes, Listen und Funktionen, wie man es in Sprachen wie Python, Ruby sowie in der funktionalen Programmierung gewöhnt ist. Insofern sind seine Features unverzichtbar für die fortgeschrittene JavaScript-Programmierung.</p>
+
+<p>Ähnliche Helferlein bieten Prototype und Mootools durch prototypische Erweiterung der Kernobjekte. In der Philosophie ähnelt Underscore jQuery: Alle Funktionalität ist im Namespace <code>_</code> bzw. <code>underscore</code> gekapselt. Das heißt, man muss immer <code>_.methode(…)</code> oder <code>_(…).methode(…)</code> schreiben, um die Underscore-Funktionen zu nutzen.</p>
+
+<h2>Backbone</h2>
+
+<p><a href="http://backbonejs.org/">Backbone</a> soll ein einfach einsetzbares, an das <a href="http://de.wikipedia.org/wiki/Model_View_Controller">Model-View-Controller</a>-Pattern angelehntes Framework für Webanwendungen sein. Es gibt Models und Collections von Models, ferner gibt es Views sowie Router (vormals Controller). Backbone stammt vom selben Autor wie Underscore und ist auf Underscore angewiesen. jQuery, Underscore und Backbone sind ein häufiges Team.</p>
+
+<p>Viele Ideen sind brauchbar und an anderer Stelle bewährt, z.B. bei serverseitigen Web-Frameworks wie Ruby on Rails. Während sich jedoch bei Rails starke Konventionen ausgeprägt haben, was unter dem Motto »<a href="http://en.wikipedia.org/wiki/Convention_over_configuration">Convention over Configuration</a>« als eine seiner Stärken gilt, so gibt es bei Backbone bisher wenig Anleitung. Das MVC-Konzept ist unklar und m.E. nicht ausgereift. Die Beispiele sind eher schlecht und Best Practises für größere Anwendungen scheinen noch zu fehlen.</p>
+
+<p>Die Backbone-Anwendungen, die wir geschrieben haben, unterscheiden sich in der Architektur stark. Das heißt, man muss viele Konventionen wie etwa <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">Separation of Concerns</a> selbst aufstellen und etablieren. Um Wiederholungen zu vermeiden, muss man sich selbst wiederverwendbare Grundmodule schaffen und landet so schnell bei einer stattlichen Klassenhierarchie.</p>
+
+<h2>CoffeeScript</h2>
+
+<p><a href="http://coffeescript.org/">CoffeeScript</a> ist eine alternative Syntax für JavaScript, die einem vieles vereinfacht. Die Schreibweise soll übliche Fehler verhindern, ist durch massig <a href="http://en.wikipedia.org/wiki/Syntactic_sugar">Syntactic Sugar</a> sowie Significant Whitespace weitaus übersichtlicher und kompakter. Zudem wird trotz der guten Lesbarkeit relativ performanter Code erzeugt. Essentielle Features wie Function-Binding sind direkt in die Syntax integriert. CoffeeScript bietet fernen »Klassen«. Diese versuchen nicht, fremde Konzepte zu JavaScript zu bringen, sondern sind bloß eine konventionelle, verständliche und performante Anwendung von <a href="/js/organisation-instanzen.html">Konstruktoren, Prototypen</a> und <a href="/javascript-pseudoklassen/">prototypischer Delegation (Vererbung)</a>.</p>
+
+<p>CoffeeScript vereinfacht vieles, ist aufgrund seiner freien, flexiblen Syntax aber auch sehr fragil. Häufig muss man den kompilierten JavaScript-Code prüfen und muss beurteilen können, ob das gewünschte herausgekommen ist. CoffeeScript ist bewusst einseitig und versucht einen bestimmten Programmierstil zu forcieren, der sich an »JavaScript: The Good Parts« von Douglas Crockford anlehnt. Manches lässt sich in CoffeeScript einfacher lösen, anderes schwieriger. Selbst CoffeeScript-Befürworter sind der Meinung, dass man JavaScript gut beherrschen sollte, bevor man sich an CoffeeScript wagt. CoffeeScript nimmt einem nur begrenzt ab, die Funktionsweise der Sprache verstehen zu müssen: Unter der Zuckerschicht liegt ganz normales JavaScript.</p>
+
+<h2>CoffeeScript + jQuery + Underscore = Tohuwabohu</h2>
+
+<p>Nun geht es mir nicht nur darum, die einzelnen Komponenten dieser Werkzeugkette vorzustellen. Ich bin mit dieser Toolchain unzufrieden, weil sie keinem übergreifenden Konzept folgt und die einzelnen Teile nicht ineinander greifen, sondern Funktionalität  duplizieren. Dazu einige Beispiele:</p>
+
+<table>
+<caption>Einen Array durchlaufen, für jedes Element eine Methode aufrufen und den Index übergeben</caption>
+
+<tr>
+<th>ECMAScript 3</th>
+<td>
+<pre>
+for (var index = 0, l = array.length, item; index < l; index++) {
+   item = array[index];
+   item.foo(index)
+}
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>CoffeeScript</th>
+<td>
+<pre>
+item.foo(index) for item, index in array
+</pre>
+<p>Kompiliert zu:</p>
+<pre>
+var index, item, _len;
+for (index = 0, _len = array.length; index < _len; index++) {
+  item = array[index];
+  item.foo(index);
+}
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>Underscore in CoffeeScript</th>
+<td>
+<pre>
+_.each array, (item, index) -> item.foo(index)
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>jQuery in CoffeeScript</th>
+<td>
+<pre>
+$.each array, (index, item) -> item.foo(index)
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>ECMAScript 5 in CoffeeScript</th>
+<td>
+<pre>
+array.forEach (item, index) -> item.foo(index)
+</pre>
+</td>
+</tr>
+
+</table>
+
+
+<table>
+<caption>Eine Methode beim Event-Handling an das Instanzobjekt (<code>this</code>) binden</caption>
+<tr>
+<th>ECMAScript 3 (eine einfache Möglichkeit, eine Closure zu erzeugen)</th>
+<td>
+<pre>
+var instance = this;
+$('#elem').click(function () {
+  instance.method();
+})
+</pre>
+<p>Zur Erklärung siehe <a href="/js/organisation-verfuegbarkeit.html">Organisation von JavaScripten: Objektverfügbarkeit und this-Kontext</a></p>
+</td>
+</tr>
+
+<tr>
+<th>CoffeeScript</th>
+<td>
+<pre>
+$('#elem').click => @method()
+</pre>
+<p>Kompiliert zu:</p>
+<pre>
+var __bind = function(fn, me){ return function(){
+  return fn.apply(me, arguments); }; };
+$('#elem').click(__bind(function() {
+  return this.method();
+}, this));
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>Underscore in CoffeeScript</th>
+<td>
+<pre>
+$('#elem').click _.bind(@method, @)
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>jQuery in CoffeeScript</th>
+<td>
+<pre>
+$('#elem').click $.proxy(@method, @)
+</pre>
+</td>
+</tr>
+
+<tr>
+<th>
+ECMAScript 5 in CoffeeScript</th>
+<td>
+<pre>
+$('#elem').click @method.bind(@)
+</pre>
+</td>
+</tr>
+
+</table>
+
+<p>Bei der gleichzeitigen Verwendung von CoffeeScript, jQuery und Underscore hat man keine Standardlösungen, da alle Bibliotheken in sich geschlossen sind. Es gibt nicht eine richtige, standardisierte Umsetzung, sondern mehrere äquivalente. Es fehlt der übergreifende Kitt, der die verschiedenen Ansätze zusammenbringt und vereinigt.</p>
+
+<p>Welche der obigen Lösungen sollte man wählen? Ich würde zunächst für CoffeeScript plädieren, da das die primäre Sprache ist, in der man schreibt. Letztlich erzeugt Binding in CoffeeScript aber eine redundante Helferfunktion, welche nicht die standardisierte <code>bind</code>-Methode aus ECMAScript 5 verwendet (siehe <a href="https://github.com/jashkenas/coffee-script/pull/1408">Diskussion auf Github</a>), falls die JavaScript-Engine diese nativ unterstützt.</p>
+
+
+<h2>Grundlagen für zukünftiges JavaScript</h2>
+
+<p>Bereits Anfang 2010 hatte ich gefragt: <a href="/javascript-zukunft-2010/#js-zukunft-5">Wo bleiben neue Architekturen für JavaScript-Frameworks?</a> Getan hat sich seitdem nichts. Ein großer neuer Ansatz, der eine robuste und ausbaubare Grundlage schaffen will, ist nicht aufgekommen. Stattdessen werden Lösungen für Teilprobleme wie etwa <a href="https://spreadsheets0.google.com/spreadsheet/ccc?key=tDdcrv9wNQRCNCRCflWxhYQ">asynchrones Laden von Scripten</a>, <a href="http://requirejs.org/">Modularisierung</a> und <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">Polyfills für HTML5-APIs</a> erarbeitet – damit will ich nicht infrage stellen, dass diese Arbeit wichtig ist und die JavaScript-Programmierung voranbringt.</p>
+
+<p>Im Gegensatz zu Prototype und Mootools fassen jQuery, Underscore und CoffeeScript die Kern-Prototypen nicht an. Das hat seine Gründe, insbesondere der Verzicht auf die <a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/">Erweiterung von DOM-Elementobjekten</a>. Langfristig halte ich aber nichts davon, grundlegende Funktionalitäten in separaten Bibliotheken zu kapseln – und dadurch ständig zu wiederholen. Wir sollten langsam dazu kommen, für Grundfragen gemeinsame Antworten finden. Übergreifende Konventionen würden die JavaScript-Programmierung gleichzeitig vereinfachen und weiter professionalisieren.</p>
+
+<p>Welche Ansätze sind zukunftsfähig und werden unabhängig von einzelnen Bibliotheken bleiben?</p>
+
+
+<h3>Der ECMAScript-Standard wird bleiben</h3>
+
+<p><a href="http://es5.github.io/">ECMAScript 5</a> ist der aktuelle Standard hinter JavaScript. Er wurde vor mittlerweile eineinhalb Jahren verabschiedet und erfreut sich <a href="http://kangax.github.io/compat-table/es5/">immer besserer Browserunterstützung</a>.</p>
+
+<p>Die <a href="http://www.peterkroener.de/ecmascript-5-die-nachste-version-von-javascript-teil-4-kleine-helferlein-fur-objekte/">neuen Object-</a> und <a href="http://www.peterkroener.de/ecmascript-5-die-nachste-version-von-javascript-teil-5-kleine-helferlein-fur-arrays/">Array-Methoden</a>, <a href="/ecmascript5/#property-descriptors-1">Property-Descriptoren und Zugriffsrechte</a> und nicht zuletzt der <a href="http://www.peterkroener.de/ecmascript-5-die-nachste-version-von-javascript-teil-2-der-strict-mode/">Strict-Mode</a> bieten eine hervorragende Grundlage für für JavaScript-Programmierung. Viele der Funktionen aus Underscore sind in ECMAScript 5 standardisiert und Underscore delegiert an diese vorhandene Methoden, sofern der Browser sie unterstützt.</p>
+
+<p>Meine Forderung lautet daher: Die Standardbibliothek von ECMAScript 5 sollte die Grundlage für alle kommenden Scripte ein. Wir sollten in erster Linie den Standard nutzen und in älteren Browsern soweit es geht nachbauen – auch durch prototypische Erweiterung. <a href="http://perfectionkills.com/extending-native-builtins/">Prototypische Erweiterung von Kernobjekten ist unproblematisch</a>, solange man standardisierte Methoden gemäß dem Standard implementiert. Zukunftsfähige Bibliotheken sollten demnach nicht das Rad neu erfinden, sondern konsequent ES5-Syntax nutzen und sprachtypische APIs bereitstellen.</p>
+
+<p>Es gibt bereits einige Polyfills für ECMAScript-5-Features:</p>
+
+<ul class="compact-list">
+	<li><a href="https://github.com/kriskowal/es5-shim/">es5-shim: ECMAScript 5 compatibility shims for legacy JavaScript engines</a></li>
+	<li><a href="http://augmentjs.com/">Augment.js: Enables use of modern JavaScript by augmenting built in objects</a></li>
+	<li><a href="http://code.google.com/p/ddr-ecma5/">ddr-ecma5: Brings ECMAScript5 features to any browser</a></li>
+	<li><a href="https://bitbucket.org/JustinLove/es5/src">es5: Parts of JavaScript/EcmaScript 5 which can be implemented in EcmaScript 3</a></li>
+</ul>
+
+<p>Es spricht also nichts dagegen, bei neuen Projekten auf die praxistauglichen Features von ECMAScript 5 zu setzen, die sich in älteren Browsern nachrüsten lassen.
+
+<h3>CoffeeScript wird – bis auf weiteres – bleiben und ECMAScript beeinflussen</h3>
+
+<p>CoffeeScript ist zurückhaltend und ermöglicht einem, schlichtes JavaScript mit einer angenehmeren Syntax zu schreiben. CoffeeScript-Pseudoklassen sind genial einfach im Vergleich zu denen in Prototype, Mootools und anderen Klassenbibliotheken. Der JavaScript-Erfinder Brendan Eich <a href="http://brendaneich.com/2011/05/my-jsconf-us-presentation/">macht sich im ECMAScript-Komitee dafür stark</a>, dass Ideen aus CoffeeScript in den kommenden ECMAScript-Standard zurückfließen werden – siehe auch <a href="http://blip.tv/jsconf/jsconf2011-jeremy-ashkenas-5258082">diesen gemeinsamen Vortrag</a> von Brendan Eich und Jeremy Ashkenas, dem Maintainer von CoffeeScript, Underscore und Backbone.</p>
+
+<p>Es sollte dabei nicht vergessen werden, dass CoffeeScript nicht die Antwort auf sämtliche (Verständnis-)Probleme mit JavaScript ist. Die Sprache erbt viele Vor- und Nachteile von JavaScript und führt selbst einige Vor- und Nachteile ein, beispielsweise aufgrund der kompakten, aber mehrdeutigen Syntax.</p>
+
+<p>Sicher gibt es auch Dopplungen zwischen reinem ECMAScript und CoffeeScript-Syntaxzucker. Beim Durchlaufen eines Arrays etwa hat man die Wahl zwischen der ECMAScript-Standardlösung mit einer Iteratorfunktion oder der CoffeeScript-Lösung. Letztere arbeitet mit einer herkömmlichen for-Schleife und ist daher performanter. Es liegt hier weiterhin in der Entscheidung des Programmierers. Die Wahl sollte möglichst einheitlich nach klaren Regeln erfolgen.</p>

@@ -1,0 +1,361 @@
+/**
+ * Content Styles
+ *
+ */
+
+@import 'variables';
+
+ /**
+  * @section Mixins
+  *
+  */
+
+@import 'clearfix';
+@import 'accessible-hide';
+
+/**
+ * @section Text selection
+ *
+ */
+
+::selection {
+  background-color: hsl($hue, 100%, 90%);
+}
+
+/**
+ * @section Root element
+ *
+ */
+
+html {
+  color: $text-color;
+  background-color: white;
+  font-family: $sans-serif-font;
+  // Enable kerning and ligatures
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures discretionary-ligatures historical-ligatures contextual;
+}
+
+.fonts-loaded {
+  font-family: $base-font;
+}
+
+/**
+ * @section Headings
+ *
+ */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 1.8rem 0 1rem;
+  color: $heading-color;
+  font-family: $heading-font;
+  line-height: $heading-line-height;
+}
+
+h1 {
+  font-size: 1.4rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+h4, h5, h6 {
+  font-size: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  code {
+    font-family: inherit;
+  }
+}
+
+/**
+ * @section All Copy Text Elements
+ *
+ */
+
+p, ul, ol, dl, pre, address, blockquote {
+  margin: 0 0 1rem 0;
+  line-height: $content-line-height;
+}
+
+/**
+ * @section Lists
+ *
+ */
+
+ul, ol {
+  margin-left: 1.5rem;
+  padding-left: 0;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+li, li p {
+  margin: 0 0 1rem;
+}
+
+/* Verschachtelte Listen */
+/*
+ul ul, ul ol, ol ul {
+  margin-bottom: 1rem;
+}
+*/
+
+/* Kompakte Listen */
+
+.compact-list li,
+.ultra-compact-list li {
+  margin: 0 0 0.2rem;
+}
+
+.compact-list,
+.ultra-compact-list {
+  .compact-list,
+  .ultra-compact-list {
+    margin-bottom: 0;
+  }
+}
+
+.ultra-compact-list {
+  @extend %clearfix;
+
+  li {
+    float: left;
+    width: 33%;
+  }
+}
+
+@media (max-width: 57rem) {
+  .ultra-compact-list li {
+    width: 50%;
+  }
+}
+
+/**
+ * @section Definition Lists
+ *
+ */
+
+dt {
+  margin: 0 0 0.5rem;
+  font-weight: bold;
+}
+
+dd {
+  margin: 0 0 0.5rem 2.5rem;
+}
+
+dd p {
+  margin: 0 0 0.5rem;
+}
+
+/**
+ * @section Preformatted text and code
+ *
+ */
+
+pre {
+  padding: 1rem;
+  background-color: $highlight-background-color;
+  overflow: auto;
+  font-size: 90%;
+}
+
+pre, code, samp {
+  color: $code-text-color;
+  font-family: $monospace-font;
+}
+
+p code {
+  font-family: inherit;
+}
+
+/**
+ * @section Block quotations
+ *
+ */
+
+blockquote {
+  padding: 1px 2rem;
+  background-color: $highlight-background-color;
+  color: $citation-text-color;
+
+  blockquote {
+    border: 1px solid #eaeaf0;
+  }
+
+  h2, p, ol, ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  cite {
+    font-style: normal;
+  }
+
+}
+
+/**
+ * @section Addresses
+ *
+ */
+
+address {
+  font-size: 80%;
+  font-style: normal;
+}
+
+/**
+ * @section Links
+ *
+ */
+
+a {
+
+  &:link {
+    color: $link-color;
+    text-decoration: none;
+    border-bottom: 1px solid $link-border-color;
+    transition: border-color 250ms ease;
+  }
+
+  &:visited {
+    color: $link-visited-color;
+    border-bottom: 1px solid $link-visited-border-color;
+  }
+
+  &:hover, &:focus, &:active {
+    color: $link-active-color;
+    border-color: $link-active-border-color;
+  }
+
+  &.blanklink {
+    border-bottom-style: none;
+  }
+
+  & img {
+    text-decoration: none;
+  }
+}
+
+/**
+ * @section Inline quotations
+ *
+ */
+
+q {
+  color: $citation-text-color;
+}
+
+/**
+ * @section Abbreviations
+ *
+ */
+
+abbr, acronym {
+  border-bottom-style: none;
+  cursor: help;
+  font-style: normal;
+}
+
+/**
+ * @section Data tables
+ *
+ */
+
+table {
+  border-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+caption {
+  font-size: 110%;
+  font-weight: bold;
+  margin: 0 0 0.5rem;
+}
+
+th, td {
+  border: 1px solid gray;
+  padding: 0.5rem;
+}
+
+th {
+  background-color: #fefefe;
+}
+
+table.compact th {
+  font-size: 80%;
+}
+
+/**
+ * @section Clearfix utility class
+ *
+ */
+
+.clearfix {
+  @extend %clearfix;
+}
+
+/**
+ * @section Accessible hide utility class
+ *
+ */
+
+.accessible-hide {
+  @extend %accessible-hide;
+}
+
+/**
+ * @section Less important annotations
+ *
+ */
+
+.unwichtig {
+  font-size: 90%;
+}
+
+/**
+ * @section Images
+ *
+ */
+
+.image-left,
+.image-right {
+  padding: 0.5rem;
+  box-shadow: 1px 1px 4px #aaa;
+  text-align: center;
+}
+
+.image-left {
+  float: left;
+  margin-right: 2rem;
+}
+
+.image-right {
+  float: right;
+  margin-left: 2rem;
+}
+
+.image-left p,
+.image-right p {
+  margin: 0;
+  font-size: 90%;
+}
+
+.image-full {
+  display: block;
+  width: 100%;
+}

@@ -1,0 +1,44 @@
+/**
+ * Variables
+ *
+ */
+
+/**
+ * @section Colors
+ *
+ */
+
+// Accent colors
+$hue: 258;
+$hue2: 220;
+
+// Text and background colors
+$text-color: #252527;
+$gray-text-color: #777;
+$heading-color: hsl($hue, 100%, 25%);
+$highlight-background-color: hsl($hue2, 40%, 98%);
+$code-text-color: #007;
+$citation-text-color: #505070;
+
+// Link colors
+$link-color: #2000a0;
+$link-color: hsl($hue2, 100%, 30%);
+$link-border-color: #e0e0f0;
+$link-visited-color: $text-color;
+$link-visited-border-color: lighten($link-border-color, 1%);
+$link-active-color: #2015C0;
+$link-active-border-color: #8080c0;
+
+/**
+ * @section Typography
+ *
+ */
+
+$sans-serif-font: 'Segoe UI', Calibri, "-apple-system", system-ui, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$base-font: 'Noto Sans', $sans-serif-font;
+$heading-font: Geneva, 'Fira Sans', 'Trebuchet MS', $sans-serif-font;
+$monospace-font: 'Consolas', 'Monaco', 'Droid Sans Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Lucida Console', 'Liberation Mono', 'Courier New', monospace;
+$citation-font: 'Century Schoolbook', 'Book Antiqua', 'Palatino Linotype', Didot, 'URW Palladio L', Georgia, serif;
+
+$content-line-height: 1.8;
+$heading-line-height: 1.5;

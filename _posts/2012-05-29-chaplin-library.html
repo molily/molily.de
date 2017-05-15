@@ -1,0 +1,32 @@
+---
+layout: post
+title: Chaplin as a Fully-Tested, Reusable Application Library
+lang: en
+---
+
+<p>It’s been three months since <a href="/chaplin/">we released Chaplin</a>, an application architecture for JavaScript applications using the popular Backbone.js library. Since then, Chaplin evolved significantly.</p>
+
+<p>First of all, Chaplin took off as a community project. Two maintainers joined the team, Karel Ledru-Mathé and Paul Miller. More than 900 people are watching <a href="https://github.com/chaplinjs/chaplin">Chaplin on Github</a>, and several people contributed bug reports and pull requests.</p>
+
+<p>After the release of Chaplin, I held several meet-up talks on Chaplin and similar topics:
+<a href="https://speakerdeck.com/molily/javascript-applications-on-top-of-rails-rug-b">at the Ruby User Group Berlin</a>,
+<a href="https://speakerdeck.com/molily/chaplin-application-architecture-with-backbone-dot-js-berlin-dot-js">at Berlin.JS</a>,
+<a href="https://speakerdeck.com/molily/chaplin-javascript-application-architecture-with-backbone-dot-js-adcloud-techtalk">at AdCloud in Cologne</a>
+and recently
+<a href="https://speakerdeck.com/molily/application-frameworks-on-top-of-backbone-dot-js-talk-at-apps-dot-berlin-dot-js">at the apps.berlin.js meet-up</a>.</p>
+
+<p>More importantly, Chaplin evolved into a library. The initial release was a just small example application which demonstrated the architectural ideas we had developed for <a href="http://moviepilot.com/">moviepilot.com</a>. It also contained some utility code which helped us with asynchronous programming. In the example application, general framework code and application-specific code were mixed up.</p>
+
+<p>Therefore our first goal was to split up this code. Chaplin is now an external, reusable and generic library for JavaScript applications. It still consists of several AMD modules internally, but it can be included as one super-module (<code>chaplin</code>). Chaplin now has a build script which packages all core modules into one CoffeeScript or JavaScript file, minified and gzipped if you like. (See also: <a href="https://github.com/chaplinjs/chaplin#building-chaplin">Building Chaplin</a>.) Of course, you can still use the r.js compiler to package your application code together with Chaplin’s modules.</p>
+
+<p>The original Facebook example application is now located <a href="https://github.com/chaplinjs/facebook-example">in a separate repository</a>. Most of the utility code was also moved to this repository. We’re going to create some more repositories, for example a simple Hello World boilerplate and <a href="https://github.com/chaplinjs/chaplinjs.github.com">a comprehensive API documentation</a>.</p>
+
+<p>Once we released Chaplin, the code was quite stable because it was derived from the field-tested <a href="http://moviepilot.com/">moviepilot.com</a> codebase. But Chaplin went its own way, diverged and also served as a testbed for new approaches. So it was necessary to write a <a href="https://github.com/chaplinjs/chaplin/tree/master/test">full test suite</a> which automatically checks the Chaplin features. For any software project nowadays, test-driven development is essential. In short, we’re proud that Chaplin now is almost completely unit-tested with <a href="http://jasmine.github.io/">Jasmine</a>. (See also: <a href="https://github.com/chaplinjs/chaplin#running-the-tests">Running the tests</a>.)</p>
+
+<p>So Chaplin made a huge leap forward, but there is still much to do. We overhauled <a href="https://github.com/chaplinjs/chaplin/blob/master/README.md">the README</a> to reflect the code changes, but we need an extensive documentation which explains the architecture, provides examples and describes all core module features. If you would like to help, feel free.</p>
+
+<p>I’m also glad to see that projects like <a href="https://github.com/marionettejs/backbone.marionette">Marionette</a>, <a href="http://thoraxjs.org/">Thorax</a> and <a href="https://github.com/tbranyen/backbone.layoutmanager">Layoutmanager</a> are thriving and prospering. They are adressing similar problems, incorporate great ideas and improve the JavaScript and Backbone ecosystem as a whole. That’s why <a href="https://speakerdeck.com/molily/application-frameworks-on-top-of-backbone-dot-js-talk-at-apps-dot-berlin-dot-js">my latest talk</a> wasn’t about Chaplin alone, but introduced three libraries and compared them in a non-competitive way.</p>
+
+<p>So far, thanks a lot to everyone who contributed to Chaplin, attended the talks, spread the word and so on.</p>
+
+<p><a href="https://twitter.com/chaplinjs">Follow ChaplinJS on Twitter to get updates</a>.</p>

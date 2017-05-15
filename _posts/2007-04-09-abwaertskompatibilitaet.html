@@ -1,0 +1,203 @@
+---
+layout: post
+title: Abwärtskompatibilität aus Sicht des Designs und der Barrierefreiheit
+categories: html css javascript
+keywords: Webdesign, Webauthoring, Kompatibilität, Abwärtskompatibilität, Rückwärtskompatibilität, Browserunterstützung, Design, Layout, CSS, Stylesheet, Netscape 4, Internet Explorer 6
+description: Von der leidigen Diskussion über die Unterstützung alter Browser – was Design leisten kann und soll
+---
+
+<p>Die Debatte um aktive Unterstützung alter Browser wird seit dem Beginn des Web-Booms geführt, als sich die technischen Innovationen überschlugen. In den letzten Jahren bekam sie besonderen Aufwind dadurch, dass sich die technischen Fähigkeiten der Browser zunehmend auseinanderentwickelten. Damit ist nicht nur die Kluft zwischen technisch führenden, aber wenig verbreiteten und technisch veralteten, aber marktführenden Browsern gemeint, sondern auch die Breite des Spektrums von besonders überholten Browsern mit wenig Verbreitung, über den breiten Mainstream bis zur Spitze der technisch aktuellsten Browser.</p>
+
+<h2>Die Trennung von Struktur und Präsentation</h2>
+
+<p>Das moderne Webdesign hat den Anspruch, konform zu den technischen Standards, interoperabel, ästhetisch anspruchsvoll, benutzerfreundlich und barrierefrei zu arbeiten. Als ein wichtiger Schlüssel dazu wird das Prinzip der Trennung der logischen Inhalts- und Informationsstruktur (HTML) von der Präsentationslogik (CSS) gehandelt. (Die Benennung dieser Pole variiert. Mal sollen »<span lang="en">style</span>« und »<span lang="en">content</span>« getrennt werden, mal »<span lang="en">presentation</span>« und »<span lang="en">content</span>«. Einige reden davon, »<span lang="en">data</span>« und »<span lang="en">design</span>« voneinander zu trennen &ndash; ein feiner Unterschied, der uns später noch beschäftigen wird, wenn es um Design geht.) Während früher für jede gestalterische Kleinigkeit unverhältnismäßiger Codieraufwand nötig war, ermöglichen es aktuelle Webtechniken, die Präsentation effizient, wartbar und ausbaubar umzusetzen &ndash; zumindest prinzipiell.</p>
+
+<p>Der Grundstein für diese Bewegung, welche verschiedene technische Weiterentwicklungen umfasste, wurde bereits früh gelegt. Doch Ende der 90er Jahre gab es nur dürftige Bemühungen seitens der Browserhersteller, die entstehenden Webstandards zu implementieren. Nach und nach erschienen Browser, die zumindest teilweise standardgetreu arbeiteten, wenngleich es sich auch um Jahre alte und zum Teil überholte Techniken handelte, die nun endlich unterstützt wurden. Der Weg war frei für Webseiten, die sich die überlegenen Methoden zu Nutze machen und im genannten Sinne davon profitieren konnten. Straighter, abgespeckter und »semantischer« HTML-Code zusammen mit CSS-Layout trat erstmals als praktisches Leitziel zu Tage.</p>
+
+<h2>Die traurige Browser-Realität und deren Sachzwänge</h2>
+
+<p>Anfang 2001 existierten zwar einigermaßen brauchbare Browser, die auch breite Anwendung fanden. Doch nach wie vor spielten die »<span lang="en">legacy browsers</span>«, die inkompatiblen Altlasten aus der grauen Vorzeit, eine Ton angebende Rolle: Man kam nicht um sie herum. Bis dato war eine Grundanforderung qualitativen Webdesigns, Seiten in einer Weise zu schreiben, dass sie auch von Browsern der jeweils älteren, überholten Generation im vollen Umfang dargestellt werden können. Nicht nur das, diese Praxis gehörte zum Ethos des Webdesigns, was freilich die Bemühungen um die Nutzung fortschrittlicher Webtechniken konterkarierte.</p>
+
+<h2>Die <span lang="en">Browser Upgrade Campaign</span></h2>
+
+<blockquote lang="en">
+<p>»In fact, since the latest versions of IE, Navigator, and Opera already support many web standards, <em>if we are willing to let go of the notion that backward compatibility is a virtue</em>, we can stop making excuses and start using these standards now.«</p>
+<p><a href="http://web.archive.org/web/20010410210031/www.alistapart.com/stories/tohell/" hreflang="en">
+»Take No Prisoners« Issue</a>, A List Apart, 16. Februar 2001</p>
+</blockquote>
+
+<p>Geboren aus den Nöten der »Browserkriege«, setzte sich das <a href="http://webstandards.org/" lang="en" hreflang="en">Web Standards Projects (WaSP)</a> seit 1998 für die Verbreitung von Webstandards und standardkonformer Browser ein. Die Initiative begleitete die Browserentwicklung stets kritisch, trat in Kontakt mit den Browserherstellern und machte auf die miserable Standardunterstützung aufmerksam.</p>
+
+<p>Im Februar 2001 wollten die selbsternannten »Evangelisten« des WaSP endgültig einen Schlusstrich unter die Geschichte der <span lang="en">legacy browsers</span> ziehen: Sie initiierten die <a href="http://web.archive.org/web/20010218084242/http://www.webstandards.org/upgrade/pr.html" lang="en" hreflang="en">Browser Upgrade Campaign</a>. Die Kampagne zielte darauf, die Nutzer dieser Browser zum Umstieg auf neue, fähigere Browser mit akzeptabler Standardunterstützung zu überreden. Die Zeit der Zugeständnisse und Kompromisse sollte durch einen umwälzenden Eingriff in die Geschichte beendet werden, der propagierte »<span lang="en">Modern Way</span>« sollte auf überholte Browser keine Rücksicht mehr nehmen.</p>
+
+<p><a href="http://web.archive.org/web/20010218153728/http://www.webstandards.org/upgrade/tips.html" lang="en" hreflang="en">Das WaSP rief die Webautoren dazu auf</a>, Webseiten konsequent gemäß den Standards zu entwickeln. Alle Browser, die diese nicht ausreichend unterstützten, sollten einen entsprechenden zusätzlichen Hinweis am Dokumentanfang erhalten, der den Websurfer zum Aktualisieren des Browsers aufforderte (»<span lang="en">This site will look much better in a browser that supports web standards, but is accessible to any browser or Internet device.</span>«). Gleichzeitig sollte das Stylesheet vor solchen Browsern versteckt werden &ndash; wodurch aufgrund der konsequenten Trennung von Style und Content jegliche <em>Formgebung</em>, Ausgestaltung beziehungsweise Präsentation verloren ging.</p>
+
+<h2>Zur Hölle mit der Abwärtskompatibilität</h2>
+
+<p>Diese Nichtbeachtung war jedoch der vergleichsweise moderate Alternativweg, denn der primär empfohlene Weg war das Weiterleiten aller alten Browser auf eine Seite, die zum Update aufforderte. Anfang 2001 bedeutete dieses bewusst radikale Aussperren von Browsern der sogenannten vierten Generation mitunter, zwanzig bis dreißig Prozent der Besucher den Zugang zu verwehren. Zur gleichen Zeit erschien vom Macher der Kampagne auf A List Apart ein Artikel mit dem programmatischen Namen <a href="http://web.archive.org/web/20010410210031/www.alistapart.com/stories/tohell/" lang="en" hreflang="en">To Hell With Bad Browsers</a> (<a href="http://www.alistapart.com/articles/tohell/" lang="en" hreflang="en">aktuelle Version</a>, vergleiche auch <a href="http://www.alistapart.com/articles/netscape/" lang="en" hreflang="en">Why Don&#8217;t You Code for Netscape?</a>, Dezember 2001).</p>
+
+<blockquote>
+<p>»It would be swell if we could have backward compatibility and pure standards compliance. But we can't. We have to choose.«</p>
+<p><a href="http://web.archive.org/web/20010410210031/www.alistapart.com/stories/tohell/">To Hell With Bad Browsers</a>, A List Apart, 16. Februar 2001</p>
+</blockquote>
+
+<p>Das <abbr title="Web Standards Project" lang="en">WaSP</abbr> sah die Auswirkungen dieser Methode ein und reagierte auf die <a href="http://gutfeldt.ch/matthias/articles/bestwievedwith.html">Kritik</a> an der <a href="http://www.html-faq.com/faq.php?category=webhost&amp;fid=127">Radikalität</a> der ursprünglichen Kampagne. Der Initiative wurde Bigotterie vorgeworfen, denn sie hatte sich einerseits »interoperability« und »accessibility« auf die Fahnen geschrieben und rief andererseits &ndash; wenn auch von Anfang an unter Vorbehalten &ndash; dazu auf, alten Browser jegliches Design vorzuenthalten, ja sie sogar komplett auszusperren und sich nicht um Kompatibilität zu bemühen, selbst wenn sie möglich wäre.</p>
+
+<p>Kurze Zeit später wurden <a href="http://web.archive.org/web/20010330070533/http://www.webstandards.org/upgrade/tips.html">die Empfehlungen entsprechend entschärft</a> (vergleiche auch die <a href="http://webstandards.org/act/campaign/buc/tips.html">aktuelle Version</a>) und mit Warnungen wie »<span lang="en">no matter how politely you word your ›upgrade‹ message, some visitors will dislike it</span>« versehen. Nichtsdestoweniger übernahmen viele Webautoren die Tipps im ursprünglichen Sinne: Alte Browser wurden pauschal und rigoros ausgesperrt.</p>
+
+<h2>Aktionismus und Paradigmenwechsel</h2>
+
+<blockquote>
+<p>»In ihrer Pressemeldung erläuterte das WaSP seine Ziele. Webdesigner sollen in Sites die W3C-Standards verwenden, auch wenn diese Sites dadurch für einige Browser gar nicht mehr, oder nicht korrekt angezeigt werden können.</p>
+<p>Dies ist in der Tat ein wichtiger Paradigmenwechsel der eingefordert wird, galt doch bisher die Prämisse der Selbstbeschränkung (nicht alle Features ausnutzen, damit die Site für viele Browser lesbar bleibt) oder des Fleißes (Programmierung von verschiedenen Versionen einer Seite, jeweils angepaßt an die Marotten der jeweiligen Browser).«</p>
+<p><a href="http://web.archive.org/web/20010412034152/www.kaipahl.de/brain/upgrade_your_browser.html" lang="en">Upgrade your Browser</a>, Kai Pahl (<a href="http://www.kaipahl.de/brain/upgrade_your_browser.html">aktuelle Version</a>)</p>
+</blockquote>
+
+<p>Die Geschehnisse rund um die Browser Upgrade Campaign sind insofern bemerkenswert und bahnbrechend, als sich eine Grundhaltung des Webauthorings herausschälte, die heute den Diskurs maßgeblich prägt. Freilich hat diese Denkrichtung mittlerweile differenziertere, behutsamere Ausdrucksformen gefunden. Es trat auf allen Seiten eine Versachlichung in der Auseinandersetzung ein, die ein bemerkenswertes inhaltliches Vorankommen ermöglichte. Auch wenn die Tendenz unverändert blieb, das Mittel ist nicht mehr der Aktionismus, der vor allem dazu diente, dem eigenen Ärger Luft zu machen und Öffentlichkeit zu schaffen. Er passte in seine Zeit, aber man hat daraus gelernt, ist daran gewachsen.</p>
+
+<h2>(Gescheiterte) Gemeinschaftlichkeit und Solidarität</h2>
+
+<p>Die mit der <span lang="en">Browser Upgrade Campaign</span> eingeläutete Umwendung war tatsächlich fundamental: Die (Abwärts-)Kompatibilität wurde als hoher moralischer Wert verworfen, da sie die Vorwärtskompatibilität im Kern ersticke und damit die Entwicklung des Webs ingesamt verhindere. Diese Zukunftsfähigkeit wurde als gleichbedeutend mit der reinen Standardkonformität verstanden. Das neue Credo lautete: »<span lang="en">If the web page is valid and you can't view it in your browser, the problem is your browser</span>«. Damit machten die Webautoren nicht nur auf die beschwerlichen Umstände des Publizierens aufmerksam, sondern entbanden sich von der bisher selbstverständlichen Aufgabe bzw. der selbst auferlegten Pflicht, dem Seitenbesucher in jedem Fall eine vollwertige Seite zu bieten.</p>
+
+<p>Dass sich dadurch Besucher grob vor den Kopf gestoßen fühlten, war Teil der Strategie, welche die konsequente Umkehrung der Verantwortung mit sich brachte. Waren vorher die Webautoren die Leidtragenden der Browsersituation, so waren es nun die Besucher, welche die Befreiung der Webautoren (mit-)tragen mussten. Obwohl sie sich in ihrer Rolle als Webteilnehmer nicht der Tatsache verschließen konnten, dass sie letztlich mit den Webautoren in einem Boot sitzen, gelang es der <span lang="en">Browser Upgrade Campaign</span> nicht, die Webbenutzer solidarisch zu stimmen und für die Problematik zu sensibilisieren.</p>
+
+<h2><span lang="en">History Repeating</span> – die gegenwärtige Situation</h2>
+
+<p>In den vergangenen Jahren hat sich die Browsersituation in einer Weise gewandelt, dass die 2001 bekämpften, aus heutiger Sicht prähistorischen Browser keine Rolle mehr spielen. Diesen Browser Aufmerksamkeit vorzuenthalten, hat nicht mehr das subversive Potenzial wie vor drei Jahren.</p>
+
+<p>Dennoch ist die Frage der Unterstützung technisch veralteter Browser weder entschieden, noch hat sie an Aktualität verloren. Einerseits entfallen immer noch einige Prozente auf die Browser der vierten Generation, andererseits bahnt sich ein neues Missverhältnis an. Die Rolle der <a href="http://web.archive.org/web/20030624164357/http://www.einfach-fuer-alle.de/artikel/handbremse/">Fortschrittsbremse</a> haben andere Browser übernommen.</p>
+
+<p>Die Grenzen des Machbarens im Rahmen des besagten modernen Webdesigns wurden im Laufe der letzten Jahre stetig ausgedehnt. Die Fortschritte sind enorm. Zur Zeiten der Browser Upgrade Campaign wurden Drei-Spalten-Layouts mit CSS noch für unmöglich gehalten, einige Jahre später demonstrierte der <a href="http://www.csszengarden.com/">CSS Zen Garden</a> die unbegrenzte Vielfalt, die CSS-Layout ermöglicht. Doch das technische Niveau, das heute die Arbeitsgrundlage darstellt, liegt hinter den Standards von 1998 zurück. So stehen erneut die Unzulänglichkeiten der Mainstream-Browser im Fokus der Kritik. Genau wie im Jahr 2001 ist keine mittelfristige Wendung der Lage im Sicht. Die <span lang="en">»pure standards compliance«</span>, die sich um einzelne Implementationen keine Gedanken macht (<span lang="en">»I support standards, not browsers«</span>), ist heute genauso inpraktikabel wie 2001.</p>
+
+<h2>Pragmatismus schlägt Kompromisslosigkeit</h2>
+
+<p>Lediglich neu entdeckte Behelfstechniken (»<a href="http://www.dithered.com/css_filters/css_only/" hreflang="en">Hacks</a>«) vereinfachen es, mit den Fehlern der Browser umzugehen und trotzdem anspruchsvolles CSS-Design produktiv einzusetzen. Insbesondere wurden Möglichkeiten entdeckt, mit modernem Webdesign ohne Zugeständnisse auch die verschmähten Browser der vierten Generation zu erreichen. Selbst wenn von straightem Code nicht mehr gesprochen werden kann, zeigt dies im Nachhinein, dass die Kompromisslosigkeit der <span lang="en">Browser Upgrade Campaign</span> aus den Umständen heraus zwar einleuchtet &ndash; denn das WaSP wollte dem lähmenden Pragmatismus ein Ende bereiten &ndash;, doch das Argument der Unvereinbarkeit von Abwärtskompatibilität und Fortschrittlichkeit bzw. Zukunftssicherheit erwies sich als unbegründet.</p>
+
+<h2>Lassen sich Form und Inhalt überhaupt trennen?</h2>
+
+<p>Dies stellt nur die nötige Vorgeschichte für die Behandlung des Kernthema dieses Artikels dar. Es soll im Folgenden um das damals entstandene Konzept gehen, den Inhalt einer Webseite zwar für alle Browser »zugänglich« zu machen, das »Design« aber nur für bestimmte Browsern zu erarbeiten. (Griffig artikuliert in der <a href="http://www.webstandards.org/act/campaign/buc/tips.html" lang="en">Browser Upgrade campaign</a>: »<span lang="en">This site will look much better in a browser that supports web standards, but is accessible to any browser or Internet device.</span>« beziehungsweise enthüllender in <a href="http://www.alistapart.com/articles/tohell/" lang="en" hreflang="en">To Hell With Bad Browsers</a>: »<span lang="en">The content of this site will be accessible in any browser, but the design will only work in browsers that support CSS1.</span>«) Dieses schon anfangs umrissene Konzept der Trennung von Inhalt und Präsentation bei einer Abwärtskompatibilität des Inhalts und nicht des Designs ist mittlerweile ein Paradigma des modernen Webdesigns und bestimmt den Umgang mit den Browsern, die den jeweiligen Mindestanforderungen des Designs nicht entsprechen.</p>
+
+<h2>Begriffliche Trennung und Definition</h2>
+
+<p>Zur näheren Erörterung ist zunächst die Klärung der Begriffe notwendig: Was bedeutet »content«, was bedeutet »design« bzw. Präsentation in diesem Kontext? Wie lassen sie sich unterscheiden? Was heißt es, wenn sie voneinander losgekoppelt werden, was passiert, wenn das Design fehlt bzw. nicht »funktioniert«? Und ferner: Was will und soll solches Design? Darüber hinaus wird das Konzept auch mit dem Thema <span lang="en">Accessibility</span> bzw. Barrierefreiheit in Verbindung gebracht, daher muss auch werden, ob die Seite tatsächlich <span lang="en">accessible</span> im Sinne von barrierefrei ist.</p>
+
+<h2>Content</h2>
+
+<p>Als Content ist im Rahmen des besagten Konzeptes all das zu verstehen, was direkt aus einem HTML-Dokument hervorgeht: Reiner Text, der durch HTML ausgezeichnet, angereichert und strukturiert ist. Durch »semantische« Textauszeichnung lässt sich eine Fülle von Zusatzinformationen im HTML-Dokument unterbringen.</p>
+
+<p>Doch ohne weiteres werden diese nicht kommuniziert, kommen nicht beim Leser an, erschließen sich für den Leser nicht. Die den Text mit Bedeutung füllenden Markup-Strukturen, die von jedem noch so primitiven Browser eindeutig vermittelt werden können, sind letztlich nur Überschriften, Listen/Aufzählungen, Absätze, grobe Tabellenstrukturen, Formularelemente, Hyperlinks und einfache Hervorhebungen (Emphasen).</p>
+
+<p>Darüber hinaus wird semantisches Markup nur implizit von den Browsern umgesetzt. Die Semantik auf Codeebene ist letztlich nicht mehr erkennbar. Ein <code>cite</code>-Element erzeugt für gewöhnlich dieselbe Darstellung wie ein <code>em</code>-, ein <code>dfn</code>-, ein <code>q</code>- und manchmal wie ein <code>abbr</code>- und <code>acronym</code>-Element. Unterteilungen des Dokumentinhalts in strukturelle Bereiche mittels <code>div</code>, die eindeutige Benennung über IDs, die Zusammenfassung von Elementen in Klassen und so weiter finden sich in der Darstellung überhaupt nicht wieder.</p>
+
+<h2>Bedeutungsvolle Auszeichnung muss kommuniziert werden</h2>
+
+<p>Der Content ist somit nicht an sich rudimentär, sondern stellt eine komplexe, bedeutungsreiche Datenstruktur dar. Im Vergleich zu reinem, nicht ausgezeichneten Text hat solcher Hypertext ohne Zweifel mehr Wert und Gehalt. Doch in den gängigen visuellen und akustischen Präsentationen des Contents bleibt der Mehrwert des semantischen Markups gegenüber den besagten simplen Inhaltsstrukturen meist formlos. Formlos in dem Sinne, dass die Bedeutung nicht wahrnehmbar ist. Die entscheidende Ordnung des Dokuments erreicht den Leser nicht. Doch gerade diese Ordnung ist der Leitfaden des Lesers zur Bedienung des Dokuments &ndash; das Dokument muss an sich bereits als Interface begriffen werden.</p>
+
+<h2>Die essentielle Notwendigkeit der Formgebung</h2>
+
+<p>Die Präsentation, hier gleichzusetzen mit dem Stylesheet, setzt an, um dieses Missverhältnis auszugleichen. Der Content fordert das Design gleichsam, damit er sich entfalten kann. Erst eine elaborierte Präsentation transportiert die im Markup steckenden Informationen zum Leser und macht sie aufnehmbar.</p>
+
+<p>Es führt in die Irre, das Stylesheet als reine Anhäufung von Formatierungsregeln zu verstehen. Das besprochene Konzept sieht CSS als Mittel vor, die <em>Präsentation</em> zu beeinflussen. Das Konzept enthält aber auch die aufschlussreiche weiterführende Idee, dass in der Präsentation zumeist das <em>Design</em> zu finden ist. Die Information ändert sich bekanntlich, wenn sich deren Präsentation ändert. So bringt eine Präsentation die Information an sich treffender und zuverlässiger herüber als eine andere.</p>
+
+<blockquote>
+	<blockquote>
+		<p>»Aber Design sollte immer nur schmückendes Beiwerk sein und niemals vor den eigentlichen Zweck der Seite (Informationen irgend einer Art zu vermitteln) gestellt zu werden.«</p>
+	</blockquote>
+	<p>»Nein, schmückendes Beiwerk ist unnötig. Design ist nicht die Blümchentapete einer Website, sondern die Form ihrer Inhalte. Design setzt sich aus den von dir verwendeten Elementen "irgend einer Art" und "vermitteln" zusammen.</p>
+	<p>Genau wie für Kommunikation gilt dabei: Alles ist Design, man kann nicht nicht designen.«</p>
+	<p><a href="http://forum.de.selfhtml.org/archiv/2005/9/t115585/#m740058">Dirk Schürjohann</a> im SELFHTML-Forum</p>
+</blockquote>
+
+<p>Die Präsentation kann nicht als plumpes Aussehen, als Oberfläche abgetan werden, deren Einfluss letztlich nicht relevant ist. Das Entwickeln des Stylesheets gibt der Information die nötige, passende Form. Freilich fängt das Design schon beim Content an, etwa bei der dokumentübergreifenden Inhaltsstruktur. Ebenso kann Design im Grunde nicht als reine Form des Contents verstanden werden, sondern stellt mitunter selbst eine Information dar &ndash; dies wird hier außen vor gelassen.</p>
+
+<h2>Design</h2>
+
+<p>Was bedeutet nun Design in diesem Kontext? Design kann zunächst einmal als der Prozess beschrieben werden, der Mittel erarbeitet und umsetzt, damit die Kommunikation zwischen Seitenautor und Leser gelingt. Design muss also dafür sorgen, dass eine Seite »<em>funktioniert</em>«, dass sie ergonomisch, verständlich und komfortabel les- und bedienbar ist, dass sie »gefällt« in verschiedener Hinsicht. Design muss dafür sorgen, dass die Informationsvermittlung gelingt, Design muss die Informationsaufnahme ermöglichen.</p>
+
+<p>Das Design arbeitet die Differenzierungen des Markups und der Dokumentstruktur heraus, lässt aus einem Haufen Gruppierungen und Strukturierungen Sinn entstehen, gibt ihnen eine Form und reichert sie an. Wenngleich sich Content (Inhalt/Gehalt) und Präsentation im obigen Wortsinne technisch voneinander trennen lassen, das Design ist das notwendige Mittel, wenn eine Seite Funktionsfähigkeit, Benutzerfreundlichkeit und dergleichen anstrebt.</p>
+
+<h2>Was bleibt, wenn das Design wegfällt?</h2>
+
+<p>Was zeigen diese Überlegungen mit Blick auf das besagte Konzept, alten Browsern kein Stylesheet zu liefern? Wenn angenommen wird, dass das Design für die Funktionsfähigkeit des Contents von entscheidender Wichtigkeit ist, hat es tiefgreifende Auswirkungen, manchen Benutzern selbiges vorzuenthalten. Das stellt das Konzept nicht grundsätzlich in Frage. Es zeigt allerdings, dass der Wegfall des Designs dazu führt, dass die Seite entscheidend an Funktionstüchtigkeit und Ergonomie verliert.</p>
+
+<h2>Ohne Design keine Barrierefreiheit</h2>
+
+<p>Von der Warte der Barrierefreiheit gesehen entsprechen Webseiten ohne derartiges Design dem Konzept der »Textversion«. Darüber gibt es folgende gehaltvolle Auseinandersetzungen: <a href="http://www.barrierefreies-webdesign.de/knowhow/alternative-version/parallel.html">Das große Missverständnis: Mythos »Textversion«</a> und <a href="https://www.einfach-fuer-alle.de/artikel/textversion/">Barrierefrei gleich Textversion?</a>.</p>
+
+<p>Diese Plädoyers legen dar, dass eine Textversion nicht hinreichend barrierefrei ist, sondern das »Design« von besonderer Wichtigkeit für die Barrierefreiheit ist: »Bisher sind wir immer davon ausgegangen, dass die grafische Wirkung einer Website ein ganz wichtiger Bestandteil einer barrierefreien Konzeption und Umsetzung ist. Eine gelungene grafische Gestaltung ist gerade für Netz-Anfänger oder Menschen mit Lernbehinderungen ein wichtiges Mittel, um sich überhaupt orientieren zu können und um die Funktionen einer Website zu verstehen und zu bedienen.«</p>
+
+<p>Insofern kann »<span lang="en">The content of this site will be accessible in any browser</span>« nicht bedeuten, dass die Seite <span lang="en">accessible</span> im Sinne der <span lang="en">Accessibility</span> ist, wenn das Design in Form des Stylesheet fehlt, obwohl der Browser grundlegendes CSS versteht. Mit »<span lang="en">accessible</span>« kann lediglich gemeint sein, dass alle Texte wiedergegeben werden, also etwa auf dem Bildschirm auftauchen und interaktive Elemente wie Hyperlinks aktivierbar sind. Mit guter Benutzbarkeit hat dies wenig zu tun, geschweige denn mit Komfort. Das fehlende Design erschwert die Aufnahme der Inhalte eher und gibt die innewohnende Struktur nicht wieder.</p>
+
+<hr />
+
+<p><strong>Dieselbe Frage behandelt folgender Text auf eine konkretere Weise.</strong></p>
+
+<h1>In wie weit sollten alte, problembehaftete Browser berücksichtigt werden?</h1>
+
+<p>In Diskussionen um die Notwendigkeit und das Ausmaß von Kompatibilität zu alten Browser, welche aktuelle Layouttechniken nicht unterstützen, taucht immer wieder die die Frage auf, ob man eine zeitraubende und umständliche Sonderlösung in Betracht ziehen sollte, um beispielsweise alten Browsern ein gleichwertiges Layout zu liefern. Diese Diskussionen arten allzu oft in einen Grundsatzstreit darüber aus, was eine Webseite überhaupt ausmacht und welche Rolle der Gestaltung zukommt. Während der Zankapfel früher Netscape 4 war, so sind es heutzutage alte Versionen des Internet Explorers &ndash; der grundlegende Konflikt hat nicht an Aktualität verloren.</p>
+
+<h2>Was ist der Inhalt einer Webdokuments und was die Form bzw. Präsentation?</h2>
+
+<p>Der Konflikt dreht sich um verschiedene Auffassung der Begriffe »Inhalt«, »Funktionalität« und »Benutzbarkeit«. Gerne wird von denjenigen, die Kompatibilität mit alten Browsern auf der Layout-Ebene ablehnen, der Standpunkt verbreitet, dass der letztlich einzig relevante Inhalt der reine, durch Markup strukturierte Text sei. Wenn die Seite folglich ohne Stylesheet dargestellt wird, seien demnach alle Inhalte dennoch »voll zugänglich« und die Seite »voll funktionsfähig«. Dies zu gewährleisten, sei das wichtigste Ziel beim Schreiben einer Webseite. Beispielhaft dazu ein Zitat aus <a href="http://web.archive.org/web/20050305130418/http://www.mywebresource.de/html/guides/nn4.html">Rücksicht auf Netscape 4?</a>:</p>
+
+<blockquote>
+<p>»Die Usability und Accessibility Ihrer Webseite sollten [...] immer gegeben sein. [...] Die Gestaltung einer Homepage ist [...] nur sekundär. Ihre Homepage sollte auch ohne CSS- oder Javascript-Unterstützung funktionieren. Wenn Sie dies sichergestellt haben, kann es egal sein, ob ein Browser Ihre Layoutvorstellungen übernimmt.«</p>
+</blockquote>
+
+<h2>Ausweitung des Begriffes »Inhalt«</h2>
+
+<p>Zweifelsohne »funktioniert« eine gut geschriebene Seite auch ohne das Stylesheet &ndash; in der Weise, dass die Textinhalte entzifferbar bleiben. Nichtsdestoweniger ist es nicht dasselbe und es sollte dem Autor auch nicht gleichgültig sein.</p>
+
+<p>Denn wenn die fraglichen Begriffe anders gefüllt werden, zerfällt diese Argumentation: Was wäre, wenn als Funktion der Webseite die Inhaltsvermittlung definiert wird und die Gestaltung als Mittel und Weg zur erfolgreichen Inhaltsvermittlung aufgefasst wird? Was wäre, wenn der Begriff des Inhalts auf die Gesamtwirkung ausgeweitet wird und damit auch die Form und Gestaltung einschließt? Wie verhält es sich mit der »vollen Zugänglichkeit« und »uneingeschränkten Funktionalität aller Inhalte«, wenn die Form den Inhalt bestimmt, das Layout aber nicht hinreichend kompatibel ist?</p>
+
+<p>Unter diesen Umständen kann man nicht von äquivalenter Zugänglichkeit und Funktionalität sprechen. Dies würde ignorieren, dass die Gestaltung für das erfolgreiche Vermitteln der Inhalte eine wesentliche Rolle spielt.</p>
+
+<p>Grundlegendes, funktionales Design garantiert die Lesbarkeit. Die im Markup enthaltene Struktur wird herausgearbeitet, damit diese vom Benutzer erkannt und verstanden wird. Solches Design ist direkt gebrauchsunterstützend, es sichert die Benutzbarkeit und Funktionalität der Seite. Mit Ästhetik und anspruchsvollem Layout hat das nur nachrangig zu tun, noch weniger mit Dekoration, »Aufmachung« und »Verschönerung«.</p>
+
+<h2>Vernachlässigbare Gestaltung erfüllt keinen Zweck</h2>
+
+<p>Wenn diese grundlegende Gestaltung nur vernachlässigbares Beiwerk und dessen Umsetzung letztlich »egal« ist, hat sie keinen Existenzzweck und der Autor hat das Ziel verfehlt, da sie die Kommunikation der Inhalte nicht fördert. Das bedeutet im Umkehrschluss, dass gutes Kommunikationsdesign Sinn stiftet und beileibe nicht vernachlässigbar ist.</p>
+
+<p>Es stimmt zwar, dass die Kommunikation nicht komplett fehlschlagen darf, wenn alles bis auf den reinen Text und dessen rudimentäre Struktur wegfällt. Aber es lässt sich nicht leugnen, dass sie in dem Falle eingeschränkt ist. In den Fällen, in denen dies vermeidbar ist, sollte es auch vermieden werden. Das bedeutet in der Regel, dass Minimallayouts ein akzeptabler Weg sind, da sie mehr nützen als kosten.</p>
+
+<h2>Zugänglichkeit hängt von der Gestaltung ab</h2>
+
+<p>Eine Seite komplett ohne Formatierungen, die die Aufnahme der Inhalte erleichtern, ist keinesfalls »voll zugänglich«, sofern man Grade der Zugänglichkeit berücksichtigt. Im Hinblick auf <span lang="en">Accessibility</span> bzw. Barrierefreiheit finden sich weitere Argumente gegen fehlende oder unzureichende Gestaltung.</p>
+
+<p>In einem Arbeitsentwurf der Zugänglichkeitsrichtlinien für Webinhalte wird beispielsweise ausdrücklich dazu geraten, die Struktur durch die Präsentation herauszuarbeiten und das Dokument durch andere Medienarten als Text aufzuwerten: <q lang="en" cite="http://www.w3.org/TR/2003/WD-WCAG20-20030624/#structure-emphasis">Structure has been made perceivable to more people through presentation(s), positioning, and labels</q> beziehungsweise <q lang="en" cite="http://www.w3.org/TR/2003/WD-WCAG20-20030429/#use-style-to-emphasize">Emphasize structure through presentation(s), positioning, and labels.</q> Ferner: <q lang="en" cite="http://www.w3.org/TR/2003/WD-WCAG20-20030624/#structure-emphasis">The structural elements present have a different visual appearance or auditory characteristic from each other and from body text</q>, <q lang="en" cite="http://www.w3.org/TR/2003/WD-WCAG20-20030624/#structure-emphasis">for visual presentations, use font variations, styles, size and white space to emphasize structure</q>, <q lang="en" cite="http://www.w3.org/TR/2003/WD-WCAG20-20030624/#structure-emphasis">use color and graphics to emphasize structure</q>. <a href="http://www.w3.org/TR/2003/WD-WCAG20-20030624/#structure-emphasis" hreflang="en">Richtlinie 1.5 der <abbr title="Web Content Accessibility Guidelines" lang="en">WCAG</abbr> 2.0 (Arbeitsentwurf)</a>.</p>
+
+<h2>Fazit</h2>
+
+<p>Es ist, zunächst abgesehen von Einschränkungen wie Zeitmangel, prinzipiell ratsam, allen hinreichend <abbr title="Cascading Style Sheets" lang="en">CSS</abbr>-kompatiblen Browsern eine Darstellung zu bieten, welche die Seitenbausteine ihrer Funktion und Struktur gemäß angemessen präsentiert (sie voneinander abhebt, gruppiert, vereinheitlicht und so weiter).</p>
+
+<hr />
+
+<h2>Weitere Wortmeldungen und Fragmente</h2>
+
+<dl>
+
+<dt>Kurze Zusammenfassung <a href="https://forum.selfhtml.org/self/2004/mar/17/homepage-aufbau/581285#m581285">zur Kompatibilität von CSS-Layout</a>:</dt>
+
+<dd>
+
+<p>Die Gestaltung über das Stylesheet ist ein wesentliches, wenn nicht das wichtigste Mittel, um ein benutzbares Interface zu schaffen. Gutes Design heißt vor allem erst einmal, dem Benutzer eine Orientierung zu geben, grundlegende Sinnstrukturierungen herauszuarbeiten, Bereiche voneinander abgrenzen. Das ist elementares funktionales, zweckmäßiges Design, das Bedeutung schafft. Wenn dieses Design fehlt, ist die Seite nicht gleichermaßen ergonomisch.</p>
+
+<p>Wenn Barrierefreiheit mehr sein soll, als die reine Entzifferbarkeit der Textinhalte, muss mit einbezogen werden, dass durch fehlende Gestaltung ebenso Barrieren entstehen können und die Benutzbarkeit beeinträchtigt wird. Diesen Zusammenhang habe ich auch in <a href="https://forum.selfhtml.org/self/2002/dec/23/barrierefreiheit-vs-design-oder-barrierefreiheit-und-design/327132#m327132">Barrierefreiheit vs. Design oder Barrierefreiheit und Design?</a> und <a href="https://forum.selfhtml.org/self/2003/jun/19/bottommargin-0/419954#m419954">Volle Zugänglichkeit beim Verstecken aller Styles?</a> geschildert.</p>
+
+<p>Es kann demnach nicht davon gesprochen werden, dass eine Kraut-und-Rüben-Darstellung barrierefrei ist, zumal grundlegendes Design auch in alten Browsern möglich ist. Ob man sich das antut, ist eine andere Frage, Hauptsache man ist sich im Klaren, welche Auswirkungen der Verzicht auf ein ausgearbeitetes Design hat - nämlich keine guten auf die Barrierefreiheit.</p>
+
+</dd>
+
+<dt>In Antwort auf <a href="https://forum.selfhtml.org/self/2003/apr/15/was-ist-das-denn-nun/385563#m385563">Entgegenkommen ist beiderseitig notwendig</a>:</dt>
+
+<dd>
+
+<p>Früher wurde für einen bestimmten Browser »optimiert« oder nur für »beide Browser«. Auch heute noch wird »optimiert« und nicht möglichst allen verbreiteten Browsern eine funktionsfähige Seite geboten. Die Vorzeichen aber haben sich geändert: Heute sind die Browser benachteiligt und ausgesperrt, die die Standards nicht hinreichend unterstützen. Auch wenn dahinter entgegengesetzte Programmatiken stehen und sie anders zu bewerten sind, teilen sie ein rücksichtsloses Verhalten.</p>
+
+<p>Bei Usability und Accessibility dreht es sich genau um das Gegenteil: Man analysiert, wie man auf Browserunzulänglichkeiten reagieren kann und wie man den Benutzern entgegenkommen kann. Die Wissenschaft der benutzerfreundlichen und barrierefreien Webgestaltung beschäftigt sich nicht damit, wie die Benutzer am besten zum Softwareupdate oder Browserwechsel gebracht werden können, damit sie die Hürden überwinden können. Benutzerfreundlichkeit heißt eher, das Mögliche als Seitenautor zu tun, nicht ein solches »Entgegenkommen« vom Benutzer zu verlangen.</p>
+
+<p>Usability so zu definieren, dass es nicht das Problem des Autors ist, wenn der Benutzer Probleme mit der Seite hat, ist denkbar einfach. Genauso einfach ist es, als Lösung die Benutzer z.B. bei der Schriftgrößenproblematik in der Verantwortung zu sehen: »Wenn sie Probleme mit der Lesbarkeit des Textes haben, müssen sie sich selbst um eine Lösung kümmern und den Text nachskalieren. Wenn sie das nicht können, weil es ihr Browser nicht erlaubt, müssen sie auf einen anderen umsteigen.« Was hat diese Benachteiligung mit Benutzerfreundlichkeit zu tun? Damit schwinden die Unterschiede zur Unsitte der »Optimierung«.</p>
+
+</dd>
+
+</dl>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<script>
+startTime = new Date;
+document.addEventListener('DOMContentLoaded', function () {
+	var el = document.getElementById('element');
+	var style = getComputedStyle(el, null);
+	var endTime = new Date;
+	alert('DOMContentLoaded fired after ' + ((endTime - startTime) / 1000) + 's\ncolor: ' + style.color);
+}, false);
+</script>
+<link rel="stylesheet" href="resource.php?type=css&delay=3">
+<script></script>
+</head>
+<body>
+
+<h2>script + link@rel=stylesheet + empty script (no whitespace)</h2>
+<div id="element">The element</div>
+
+<h2>Results</h2>
+
+<ul>
+<li>Firefox 3.6: 0s, stylesheet not loaded</li>
+<li>Chrome 4: 0s, stylesheet not loaded</li>
+<li>Safari 4: 0s, stylesheet not loaded</li>
+<li>Opera 10.10: 0s, stylesheet not loaded</li>
+<li></li>
+</ul>
+
+</body>
+</html>

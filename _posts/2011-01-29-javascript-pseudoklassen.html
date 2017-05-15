@@ -1,0 +1,298 @@
+---
+layout: post
+title: Pseudoklassische Vererbung in JavaScript
+---
+
+<h2>Pseudoklassen in JavaScript</h2>
+
+<p>Objektorientierte Programmierung in JavaScript funktioniert anders als in anderen verbreiteten Programmiersprachen. JavaScript <a href="/js/organisation-ueberblick.html#oop">kennt keine Klassen</a>, sondern veränderbare Objekte und <a href="/js/organisation-instanzen.html#prototyp-vererbung">prototypische Delegation</a>.</p>
+
+<p>Ferner kennt JavaScript <a href="/js/organisation-instanzen.html#instanzen">Konstruktoren</a>. Das sind Funktionen, die mittels <code>new</code> aufgerufen werden und Instanzen erzeugen. Sie erben prototypisch von einem Objekt, welches in der <code>prototype</code>-Eigenschaft des Konstruktors gespeichert ist. Dies wird von manchen als Inkonsistenz angesehen, da es abseits der funktionalen und prototypischen Ausrichtung von JavaScript steht. Die Nutzung von Funktionen als Konstruktoren mittels <code>new</code> ist eine Anleihe von klassenbasierten Sprachen – JavaScript ist jedoch keine solche. Douglas Crockford schildert diese Hybridtechnik in seinem Buch <cite>JavaScript. The Good Parts</cite>:</p>
+
+<blockquote lang="en">
+<p>JavaScript is conflicted about its prototypal nature. Its prototype mechanism is obscured by some complicated syntactic business that looks vaguely classical. Instead of having objects inherit directly from other objects, an unnecessary level of indirection is inserted such that objects are produced by constructor functions.</p>
+</blockquote>
+
+<p>Diese Kombination aus Konstruktor, Prototyp und <code>new</code>-Instanzen wird <em>Pseudoklasse</em> genannt, da sie den Anschein einer Klassendeklaration erweckt, von der Instanzen erzeugen werden. Ein Beispiel:</p>
+
+<pre>
+function Katze () {}
+Katze.prototype.miau = function () {
+   alert('Miau!');
+};
+var maunzi = new Katze();
+maunzi.miau();
+</pre>
+
+<p>Douglas Crockford bezeichnet diese Fähigkeit als hilfreich, aber irreführend für JavaScript-EinsteigerInnen:</p>
+
+<blockquote lang="en">
+<p>The pseudoclassical form can provide comfort to programmers who are unfamiliar with JavaScript, but it also hides the true nature of the language.</p>
+</blockquote>
+
+<p>Worauf seine Kritik letztlich abzielt, ist nicht das bloße Deklarieren von Pseudoklassen und das Erzeugen von Instanzen. Ihm geht es darum, dass EntwicklerInnen klassenbasierter Sprachen daran gewöhnt sind, komplexe Vererbungshierarchien zwischen Klassen anzulegen:</p>
+
+<blockquote lang="en">
+<p>The classically inspired notation can induce programmers to compose hierarchies that are unnecessarily deep and complicated.</p>
+</blockquote>
+
+<p>Da JavaScript keine statisch getypte Sprache ist, sondern sämtliche Objekte veränderbar sind, ergeben starre Vererbungshierarchien in JavaScript keinen Sinn.</p>
+
+<p>Eine direkte Vererbung, wie sie Crockford als Alternative vorschwebt, kann etwa mit <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/create">Object.create() aus ECMAScript 5</a> erreicht werden.</p>
+
+<h2>Vererbung zwischen Pseudoklassen</h2>
+
+<p>Ich habe die Kritik an pseudoklassischer Vererbung bewusst vorangestellt, denn im Folgenden soll es darum gehen, wie sie sich praktisch umgesetzt lässt. Bibliotheken wie Prototype, Mootools, Dojo und Yahoo YUI bieten leistungsfähige Helfer zum Erzeugen und Ableiten von »Klassen« an. Diese zu diskutieren und ihre Funktionsweise zu erklären, wäre ein größeres Unterfangen. (Ich habe dies bisher mit Yahoo YUI getan.) Darum soll es hier nicht gehen, sondern um eine mögliche einfachere Umsetzung.</p>
+
+<p>Unter der Haube funktioniert sämtliche Vererbung in JavaScript prototypisch. Das heißt, ein Objekt delegiert Anfragen an nicht existierende Eigenschaften an ein anderes Objekt, das sozusagen hinter ihm steht und ihm aushilft – siehe <a href="/js/organisation-instanzen.html#prototypen-verstehen">Prototypen verstehen</a>.</p>
+
+<p>In der Ausgangssituation liegen zwei Pseudoklassen vor, von denen eine von der anderen erben soll:</p>
+
+<pre>
+function Auto () {}
+Auto.prototype.fahr = function () {
+   alert('Brumm, brumm');
+};
+
+function Elektroauto () {}
+Elektroauto.prototype.lade = function () {
+   alert('Wird geladen');
+};
+</pre>
+
+<p>Wenn ein <code>Elektroauto</code> erzeugt wird, soll es wie jedes <code>Auto</code> auch fahren können.</p>
+
+<h2>Einfache, verbreitete Umsetzung</h2>
+
+<p>Eine verbreitete Umsetzung erzeugt eine Instanz von <code>Auto</code> und verwendet diese als <code>Elektroauto</code>-Prototyp:</p>
+
+<pre>
+Elektroauto.prototype = new Auto();
+</pre>
+
+<p>Dies ist von der Idee schon ganz gut: Ein neues Objekt, welches <code>Auto.prototype</code> als Prototyp besitzt, wird als <code>Elektroauto</code>-Prototyp verwendet. Allerdings ergibt es in der Regel keinen Sinn, dazu den <code>Auto</code>-Konstruktor aufzurufen und eine <code>Auto</code>-Instanz zu erzeugen. Es ist ja kein spezifisches <code>Auto</code>, das als Prototyp dienen soll. Besonders wenn der <code>Auto</code>-Konstruktor noch Parameter entgegennimmt, um die Instanz zu initialisieren, passt dieses Konzept nicht.</p>
+
+<p>Stattdessen möchte ich eine Umsetzung vorstellen, bei der der <code>Auto</code>-Konstruktor nicht zum Zwecke der Vererbung zwischen den Pseudoklassen aufgerufen wird.</p>
+
+<h2>Robustere Umsetzung</h2>
+
+<div class="image-right">
+	<p><img src="../img/eauto1.jpg" alt="" title=""></p>
+	<p><a href="http://de.wikipedia.org/wiki/La_Jamais_Contente">La Jamais Content</a>, 1899</p>
+	<p>Quelle: <a href="http://commons.wikimedia.org/wiki/File:Jamais_contente.jpg">Wikipedia Commons</a>, gemeinfrei</p>
+</div>
+
+<p>Dieser Weg umfasst folgende Schritte:</p>
+
+<ol>
+<li>Erzeuge ein neues, leeres Objekt, welches <code>Auto.prototype</code> als Prototyp hat. Das heißt, der Prototyp-Verweis – die interne <code>[[Prototype]]</code>-Eigenschaft – zeigt auf <code>Auto.prototype</code>.</li>
+<li>Nutze dieses Objekt als Prototyp für alle Elektroautos. Das heißt, speichere es in <code>Elektroauto.prototype</code>.</li>
+<li>Fülle selbiges Objekt mit den besonderen Eigenschaften und Methoden von <code>Elektroauto</code>s.</li>
+<li>Rufe im <code>Elektroauto</code>-Konstruktor den Konstruktor der Super-Klasse auf; das ist <code>Auto</code>.</li>
+</ol>
+
+<p>Schauen wir uns nun die konkrete Implementierung der einzelnen Schritte an.</p>
+
+<h3>Schritt 1: Sub-Prototyp vom Super-Prototyp ableiten</h3>
+
+<p>Für das Erzeugen eines neuen Objekts, welches ein gegebenes Objekt als Prototyp besitzt, gibt es in ECMAScript 5 die besagte Methode <code>Object.create()</code>. Bis alle Browser diese unterstützen, kann man sich mit folgender Helferfunktion <code>Object_create</code> abhelfen:</p>
+
+<pre>
+Object_create = Object.create || function (o) {
+   var F = function() {};
+   F.prototype = o;
+   return new F();
+};
+</pre>
+
+<p>Es wird davon abgesehen, <code>Object.create</code> in den Browsern anzulegen, die die Methode noch nicht kennen. Denn die Originalmethode aus ECMAScript 5 kann noch viel mehr (Stichwort <a href="http://dmitrysoshnikov.com/ecmascript/es5-chapter-1-properties-and-property-descriptors/">Property Descriptors</a>). Es soll nicht der Eindruck erweckt werden, dass diese kleine Helferfunktion ebenbürtig ist und die Browserlücke vollständig schließen kann.</p>
+
+<p>Die Anwendung sieht in unserem Fall wie folgt aus: <code>Object_create(Auto.prototype)</code> erzeugt ein Objekt, das Anfragen an unbekannte Eigenschaften an <code>Auto.prototype</code> delegiert.</p>
+
+<h3>Schritt 2: Sub-Prototyp zuweisen und <code>constructor</code>-Verweis korrigieren</h3>
+
+<p>Das soeben erzeugte Objekt wird nun in der <code>prototype</code>-Eigenschaft des <code>Elektroauto</code>-Konstruktors gespeichert:</p>
+
+<pre>
+Elektroauto.prototype = Object_create(Auto.prototype);
+</pre>
+
+<p>Damit wird das Objekt zum Prototyp aller künftig erzeugten <code>Elektroauto</code>-Instanzen.</p>
+
+<p>In der <code>prototype</code>-Eigenschaft einer jeden Funktion ist anfangs ein Objekt gespeichert, welches eine Eigenschaft <code>constructor</code> besitzt. Diese verweist zurück auf die Funktion, in Beispiel <code>Elektroauto</code>. Wenn das bestehende <code>prototype</code>-Objekt wie in obigem Code überschrieben wird, geht diese Eigenschaft verloren. Damit die <code>constructor</code>-Eigenschaft bei <code>Elektroauto</code>-Instanzen auf <code>Elektroauto</code> und nicht auf <code>Auto</code> zeigt, wird der <code>constructor</code>-Verweis korrigieren:</p>
+
+<pre>
+Elektroauto.prototype.constructor = Elektroauto;
+</pre>
+
+<h3>Schritt 3: Eigenschaften und Methoden hinzufügen</h3>
+
+<p>An den soeben erzeugen Sub-Prototyp können wir nun Eigenschaften und Methoden von <code>Elektroautos</code> anhängen. Beispielsweise eine <code>lade</code>-Methode:</p>
+
+<pre>
+Elektroauto.prototype.lade = function () {
+   alert('Wird geladen');
+};
+</pre>
+
+<h3>Schritt 4: Super-Konstruktor aufrufen</h3>
+
+<p>Im <code>Elektroauto</code>-Konstruktor ist es nützlich, den Super-Konstruktor <code>Auto</code> aufzurufen, damit dieser allgemeine Initialisierung übernehmen kann. Technisch gesehen am effizientesten ist das direkte Aufrufen der Konstruktorfunktion im Kontext der Instanz. Die funktionale Umsetzung ist für Neulinge aber erst einmal schwer zu verstehen: Man verwendet die Methoden <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Call"><code>call</code></a> oder <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Apply"><code>apply</code></a>, welche allen Funktionsobjekten eigen sind.</p>
+
+<pre>
+function Elektroauto () {
+   // Allgemeine Initialisierung (Auto)
+   Auto.call(this);
+   // Spezifische Initialisierung (Elektroauto)
+   // ...
+}
+</pre>
+
+<p><code>call</code> ruft den Konstruktor als normale Funktion auf. Es wird jedoch die Instanz als Kontext-Objekt übergeben (der erste Parameter von <code>call</code>). Das Schlüsselwort <code>this</code> zeigt im <code>Auto</code>-Konstruktor damit auf die <code>Elektroauto</code>-Instanz. Mithilfe von <code>call</code> lassen sich auch Parameter weitergeben, sie werden als weitere <code>call</code>-Parameter notiert.</p>
+
+<p>Das folgende Beispiel ruft den Super-Konstruktor auf und gibt den Parameter <code>name</code> weiter:</p>
+
+<pre>
+// Konstruktoren
+function Auto (name) {
+   this.name = name;
+}
+
+function Elektroauto (name) {
+   Auto.call(this, name);
+}
+
+// Pseudoklassen-Vererbung
+Elektroauto.prototype = Object_create(Auto.prototype);
+Elektroauto.prototype.constructor = Elektroauto;
+
+// Erzeuge Beispiel-Instanzen
+var auto = new Auto("2CV");
+var elektroauto = new Elektroauto("La Jamais Contente");
+</pre>
+
+<h2>Allgemeine Helferfunktion</h2>
+
+<p>Die obigen Schritte zeigen die konkrete Anwendung. Um das Verfahren zu verallgemeinern, lassen sie sich in eine allgemeine Helferfunktion auslagern. Sie geht davon aus, dass <code>Object_create</code> bereits definiert wurde:</p>
+
+<pre>
+function inheritPseudoClass (Super, Sub) {
+   Sub.prototype = Object_create(Super.prototype);
+   Sub.prototype.constructor = Sub;
+}
+</pre>
+
+<p>Der vierte Schritt, der Aufruf des Super-Konstruktors, lässt sich leider nicht einfach verallgemeinern und verkürzen. Der direkte Aufruf von <code>Auto.call(this, …)</code> im Sub-Konstruktor ist im Grunde die beste Lösung. Man könnte am Sub-Konstruktor einen Verweis auf den Super-Konstruktor anlegen, z.B. <code>superConstructor</code>. Damit muss man ihn im Sub-Konstruktor nicht beim Namen nennen, stattdessen müsste man beispielsweise <code>Auto.superConstructor.call(this, …)</code> notieren. Darin sehe ich keinen Vorteil. Einen <code>superConstructor</code>-Verweis an der Instanz anzulegen, wäre ebenfalls möglich, wenn auch <a href="http://webreflection.blogspot.com/2010/01/javascript-super-bullshit.html">kritikwürdig</a>. Damit wären wir bereits bei der Komplexität anspruchsvoller Lösungen. Daher enthält obige Helferfunktion keine allgemeine Lösung.</p>
+
+<p>Die Funktion erwartet zwei Pseudoklassen (Konstruktoren) als Parameter; als ersten die Oberklasse, als zweiten die abgeleitete, erbende Klasse. Damit lässt sich das <code>Auto</code>/<code>Elektroauto</code>-Beispiel wie folgt umsetzen:</p>
+
+<pre>
+// Konstruktoren
+function Auto (name) {
+   this.name = name;
+   alert('Auto wird gebaut');
+}
+
+// Lege Methoden an
+Auto.prototype.fahr = function () {
+   alert(this.name + ' macht brumm, brumm');
+};
+
+function Elektroauto (name) {
+   Auto.call(this, name);
+   alert('Batterie und Elektromotor werden eingebaut');
+}
+
+// Pseudoklassen-Vererbung
+inheritPseudoClass(Auto, Elektroauto);
+
+// Lege Methoden an
+Elektroauto.prototype.lade = function () {
+   alert(this.name + ' wird geladen');
+};
+</pre>
+
+<p>Um die Vererbung zu testen, werden zwei Instanzen erzeugt und anschließend sowohl vererbte als auch eigene Methoden aufgerufen:</p>
+
+<pre>
+// Erzeuge Beispiel-Instanzen
+var auto = new Auto('2CV'); // Auto 2CV wird gebaut
+var elektroauto = new Elektroauto('La Jamais Content');
+                  // Auto La Jamais Content wird gebaut,
+                  // La Jamais Content: Batterie und Elektromotor werden eingebaut
+
+auto.fahr(); // 2CV macht brumm, brumm
+elektroauto.fahr(); // La Jamais Content macht brumm, brumm
+elektroauto.lade(); // La Jamais Content wird geladen
+</pre>
+
+<h2>Einschränkungen und Ausblick</h2>
+
+<p>Im Gegensatz zu komplexeren Pseudoklassen erlauben die obigen keine abgeleitete Methoden. Der Zugang zu einer gleichnamigen Methode in der Super-Klasse ist nicht so einfach möglich. Würde ein <code>Elektroauto</code> die Methode <code>fahre</code> überschreiben, so müsste diese die Super-Methode umständlich über <code>Auto.prototype.fahr.call(this)</code> aufrufen. Man könnte höchstens einen Shortcut namens <code>superPrototype</code> anlegen, sodass man <code>this.superPrototype.fahr.call(this)</code> schreiben könnte.</p>
+
+<p>Komplexere Pseudoklassen wie die in Prototype und Mootools ermöglichen ein vereinfachtes Aufrufen der überschriebenen Super-Methoden, inklusive Super-Konstruktoren. Dies ist allerdings mit größerem Aufwand verbunden. In der Regel werden überschreibende Methoden in eine weiteren Funktion eingepackt, siehe etwa John Resigs <a href="http://ejohn.org/blog/simple-javascript-inheritance/">Simple JavaScript Inheritance</a>. In dieser Wrapper-Funktion wird eine temporäre Eigenschaft <code>_super</code> bzw. <code>parent</code> (Mootools) angelegt, welche auf die überschriebene Funktion zeigt. In Prototype gibt die Wrapper-Funktion die überschriebene Methode als ersten Parameter <code>$super</code> an die überschreibende Methode. Dazu muss sie das Funktionsobjekt umständlich in einen String umwandeln und die Parameterliste parsen.</p>
+
+<p>Die Meta-Sprache <a href="http://coffeescript.org/">CoffeeScript</a> löst diese Aufgabe, indem es Super-Aufrufe automatisch so umschreibt, dass sie auf die gleichnamige Methode im Super-Prototyp verweisen (beispielsweise <code>Elektroauto.__super__.method.apply(this, arguments)</code>, wobei
+<code>Elektroauto.__super__</code> auf <code>Auto.prototype</code> zeigt). Dieser Ansatz gefällt mir am besten, denn die Wrapping-Komplexität, mit der sich Prototype und Mootools diesen »Syntaktischen Zucker« erkaufen, steht meines Erachtens in keinem Verhältnis zum Nutzen. Der von CoffeeScript erzeugte JavaScript-Code ist zwar ausufernd und gänzlich ohne »Zucker«, dafür ist er äußerst präzise und performant.</p>
+
+<p>In klassenbasierter OOP gibt es meist so etwas wie <em>private</em> Eigenschaften und Methoden. Dies lässt sich in JavaScript nur funktional mit Closures lösen, siehe <a href="/js/organisation-instanzen.html#private-objekte">Private Objekte anstatt private Eigenschaften</a>. Wenn im Konstruktor lokale Variablen oder Funktionen notiert werden, so sind diese nur denjenigen »öffentliche« Methoden zugänglich, welche im selben Konstruktor erzeugt werden. Ein Teilen privater Objekte zwischen Konstruktoren ist daher nicht möglich.</p>
+
+<h2>Fazit</h2>
+
+<div class="image-right">
+	<p><img src="../img/eauto2.jpg" alt="" title=""></p>
+	<p><a href="http://en.wikipedia.org/wiki/Argo_Electric">Argo Brougham</a>, 1912</p>
+	<p>Quelle: <a href="http://commons.wikimedia.org/wiki/File:Argo1912.jpg">Wikipedia Commons</a>, gemeinfrei</p>
+</div>
+
+<p>Die vorgestellte Methode ist nicht neu, sondern wird so oder ähnlich breit eingesetzt. Beispielsweise arbeiten <a href="/yui3-oop/#y-extend-intern"><code>Y.extend()</code> aus Yahoo UI</a> sowie die <a href="http://coffeescript.org/#classes">Pseudoklassen von CoffeeScript</a> auf diese Weise.</p>
+
+<p>Zusammengefasst können wir uns merken: Pseudoklassen in JavaScript sind Funktionen, die mit <code>new</code> als Konstruktoren verwendet werden. Vererbung zwischen Pseudoklassen bedeutet, dass der Prototyp der Sub-Klasse (im Beispiel <code>Elektroauto.prototype</code>) den Prototyp der Super-Klasse (im Beispiel <code>Auto.prototype</code>) als Prototyp besitzt. Vererbung bedeutet immer, dass einfache Objekte per <a href="/javascript-core/#a-prototype-chain">Prototyp-Kette</a> an andere einfache Objekte delegieren. Die Methode <code>Object.create()</code>, mit der sich eine solche prototypische Delegation einfach aufsetzen lässt, ist daher das Herzstück von JavaScript – auch pseudoklassische Vererbung kommt nicht ohne diese Technik aus.</p>
+
+<p>Das folgende Diagramm veranschaulicht die Prototyp-Kette des <code>elektroauto</code>-Objekts. Darin kommen beide Pseudoklassen-Prototypen vor, die einander als Prototyp referenzieren. Am Ende steht wie immer der oberste Prototyp, <code>Object.prototype</code>.</p>
+
+<div class="js-objects clearfix">
+
+<div class="object">
+	<h3 class="special">elektroauto</h3>
+	<table>
+	<tr class="internal"><th>[[Prototype]]</th><td>Elektroauto.prototype</td></tr>
+	<tr class="own"><th>name</th><td>'La Jamais Content'</td></tr>
+	</table>
+</div>
+
+<div class="object">
+	<h3 class="special">Elektroauto.prototype</h3>
+	<table>
+	<tr class="internal"><th>[[Prototype]]</th><td>Auto.prototype</td></tr>
+	<tr class="own"><th>constructor</th><td>Elektroauto</td></tr>
+	<tr class="own"><th>lade</th><td>function () { … }</td></tr>
+	</table>
+</div>
+
+<div class="object">
+	<h3 class="special">Auto.prototype</h3>
+	<table>
+		<tr class="internal"><th>[[Prototype]]</th><td>Object.prototype</td></tr>
+		<tr class="dontenum"><th>constructor</th><td>Auto</td></tr>
+	 <tr class="own"><th>fahr</th><td>function () { … }</td></tr>
+ </table>
+</div>
+
+<div class="object">
+	<h3 class="special">Object.prototype</h3>
+	<table>
+	<tr class="internal"><th>[[Prototype]]</th><td>null</td></tr>
+	<tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+	<tr class="dontenum"><th>toString</th><td>[native Funktion]</td></tr>
+	<tr class="dontenum"><th>toLocaleString</th><td>[native Funktion]</td></tr>
+	<tr class="dontenum"><th>valueOf</th><td>[native Funktion]</td></tr>
+	<tr class="dontenum"><th>hasOwnProperty</th><td>[native Funktion]</td></tr>
+	<tr class="dontenum"><th>isPrototypeOf</th><td>[native Funktion]</td></tr>
+	<tr class="dontenum"><th>propertyIsEnumerable</th><td>[native Funktion]</td></tr>
+	</table>
+</div>
+
+</div><!-- /.js-objects -->
+
+<p>Dank der prototypischen Delegation stehen bei der <code>elektroauto</code>-Instanz sämtliche Eigenschaften der im Diagramm gezeigten Objekte zur Verfügung.</p>

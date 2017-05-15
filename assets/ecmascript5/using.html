@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Beispiel: Allgemeiner Chaining-Helfer mit Harmony-Proxy</title>
+</head>
+<body>
+
+<h1>Beispiel: Allgemeiner Chaining-Helfer mit Harmony-Proxy</h1>
+
+<script>
+
+(function () {
+
+function using (original) {
+  if (!window.Proxy) {
+    throw new Error('using(): ECMAScript Harmony Proxies not available');
+  }
+  var toString = Object.prototype.toString;
+  var proxy = Proxy.create({
+    get: function (receiver, propName) {
+      var propVal = original[propName];
+      // Handelt es sich um eine Funktion?
+      if (typeof propVal == 'function' || toString.call(propVal) == '[object Function]') {
+        propVal = null;
+        // Gib eine Chaining-fähige Wrapper-Funktion zurück
+        return function chainableMethodWrapper () {
+          original[propName].apply(original, arguments);
+          return proxy;
+        };
+      } else {
+        propVal = null;
+        // Gebe eine Chaining-fähige, überladene Getter-/Setter-Methode zurück
+        return function chainablePropertyWrapper (val) {
+          if (arguments.length) {
+            original[propName] = val;
+            return proxy;
+          } else {
+            return original[propName];
+          }
+        };
+      }
+    }
+  });
+  return proxy;
+}
+
+function Baby () {}
+
+Baby.prototype = {
+  cry: function () {
+    alert(this.name + ' cries');
+  },
+  crawl: function () {
+    alert(this.name + ' crawls');
+  }
+};
+
+var ada = new Baby();
+
+using(ada)
+  .born(new Date())
+  .name('Ada')
+  .height(0.55)
+  .weight(3.5)
+  .gender('f')
+  .hair('none')
+  .eyes({
+    left: 'brown',
+    right: 'blue'
+  })
+  .cry()
+  .crawl();
+
+alert('ada.name: ' + ada.name);
+alert('ada.height: ' + ada.height);
+
+alert('using(ada).name(): ' + using(ada).name());
+alert('using(ada).height(): ' + using(ada).height());
+
+})();
+
+</script>
+
+</body>
+</html>

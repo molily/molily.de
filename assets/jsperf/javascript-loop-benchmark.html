@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr-ch" lang="fr-ch">
+    <head>
+    <title>Javascript loops performance tests</title>
+    <meta content="">
+    <style>
+        * {margin:0;padding:0;}
+        body{padding:1em;font-family:sans-serif}
+        pre{ background:#ddd;padding:0.5em;}
+        h1{font-size:1.5em;clear:both;}
+        h2{font-size:1.1em; margin-top:1em;}
+        #leftCol{width:49%;float:left;}
+        #rightCol{width:49%;float:left;margin-left:2%;}
+        p{text-align:center}
+        #results div{ background-color:#294; color:#fff; padding:1px;margin:1px }
+    </style>
+<script name="text/javascript">
+
+var a = new Array(30000);
+var total = 0;
+for(var i=0; i<30000; ++i)
+{
+    a[i]=i;
+}
+
+function timeToRun(func)
+{
+    return Math.min(runTest(func),runTest(func),runTest(func));
+}
+
+function runTest(func)
+{
+    n1 = new Date();
+        func();
+    n2 = new Date();
+    diff = n2.getTime() - n1.getTime();
+    return diff;
+}
+
+function displayTest(id,func)
+{
+    var time = timeToRun(func);
+    document.getElementById(id).style['width'] = (time/10.0)+"em";
+    document.getElementById(id).innerHTML = time + "ms";
+}
+
+window.onload = function()
+{
+
+    displayTest('firstResult',
+        function()
+        {
+            total = 0;
+            for(var i=0; i<a.length; i++)
+            {
+                total+=a[i];
+            }
+        }
+    );
+
+    displayTest('secondResult',
+        function()
+        {
+            total = 0;
+            for(var i=0; i<a.length; ++i)
+            {
+                total+=a[i];
+            }
+        }
+    );
+
+    displayTest('thirdResult',
+        function()
+        {
+            total = 0;
+            l = a.length;
+            for(var i=0; i<l; ++i)
+            {
+                total+=a[i];
+            }
+        }
+    );
+
+    displayTest('fourthResult',
+        function()
+        {
+            total = 0;
+            for(var i=a.length-1; i>=0; i--)
+            {
+                total+=a[i];
+            }
+        }
+    );
+
+    displayTest('fithResult',
+        function()
+        {
+            total = 0;
+            for(i in a)
+            {
+                total+=i;
+            }
+        }
+    );
+
+
+}
+</script>
+</head>
+<body>
+
+<div id="leftCol">
+
+<h1>Javascript loops performance tests</h1>
+<h2>1 : Dumb standard loop</h2>
+<pre>total = 0;
+for(var i=0; i&lt;a.length; i++)
+{
+    total+=a[i];
+}</pre>
+
+<h2>2 : Prefixed incrementation</h2>
+
+<pre>total = 0;
+for(var i=0; i&lt;a.length; ++i)
+{
+    total+=a[i];
+}</pre>
+
+
+<h2>3 : Prefixed incrementation with buffered test variable</h2>
+
+<pre>total = 0;
+l = a.length;
+for(var i=0; i&lt;l; ++i)
+{
+    total+=a[i];
+}</pre>
+
+</div>
+<div id="rightCol">
+
+<h2>4 : Prefixed decrementation with buffered test variable</h2>
+
+<pre>total = 0;
+for(var i=a.length-1; i&gt;=0; --i)
+{
+    total+=a[i];
+}</pre>
+
+
+
+<h2>5 : For in syntax</h2>
+
+<pre>total = 0;
+for(i in a)
+{
+    total+=i;
+}</pre>
+
+<div id="results">
+<h2>Results of tests (in order)</h2>
+    <div id="firstResult">
+    Wait for result
+    </div>
+    <div id="thirdResult">
+    Wait for result
+    </div>
+    <div id="secondResult">
+    Wait for result
+    </div>
+    <div id="fourthResult">
+    Wait for result
+    </div>
+    <div id="fithResult">
+    Wait for result
+    </div>
+</div>
+
+</div>
+
+<div style="clear:both;padding-top:2em;">
+<h2>Functions used to benchmark the loops</h2>
+<pre>var a = new Array(30000);
+var total = 0;
+for(var i=0; i&lt;30000; ++i)
+{
+    a[i]=i;
+}
+
+function timeToRun(func)
+{
+    return Math.max(runTest(func),runTest(func),runTest(func));
+}
+
+function runTest(func)
+{
+    n1 = new Date();
+        func();
+    n2 = new Date();
+    diff = n2.getTime() - n1.getTime();
+    return diff;
+}</pre>
+</div>
+
+
+
+</body>
+</html>

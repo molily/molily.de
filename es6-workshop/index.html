@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <title>Die Geschichte von JavaScript bis ECMAScript 6</title>
+    <meta name="description" content="Workshop auf der PottJS vom 2. April 2016">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ?
+      'css/print/pdf.css' :
+      'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <base target="_blank">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<section>
+
+<svg width="150" height="150" viewBox="0 0 630 630">
+  <rect x="0" y="0" width="100%" height="100%" fill="#f7df1e" />
+  <path d="m 165.65,526.47375 48.2125,-29.1775 C 223.16375,513.7875 231.625,527.74 251.92,527.74 c 19.45375,0 31.71875,-7.60975 31.71875,-37.21 l 0,-201.3 59.20375,0 0,202.1375 c 0,61.32 -35.94375,89.23125 -88.385,89.23125 -47.36125,0 -74.8525,-24.52875 -88.8075,-54.13" />
+  <path d="m 375,520.13 48.20625,-27.91125 c 12.69,20.72375 29.1825,35.9475 58.36125,35.9475 24.53125,0 40.17375,-12.26475 40.17375,-29.18125 0,-20.29875 -16.06875,-27.48875 -43.135,-39.32625 l -14.7975,-6.3475 c -42.715,-18.18125 -71.05,-41.0175 -71.05,-89.2275 0,-44.40375 33.83125,-78.2375 86.695,-78.2375 37.6375,0 64.7025,13.11125 84.15375,47.36625 l -46.09625,29.60125 c -10.15,-18.1825 -21.1425,-25.37125 -38.0575,-25.37125 -17.33875,0 -28.335,10.995 -28.335,25.37125 0,17.7625 10.99625,24.9525 36.3675,35.94875 l 14.8,6.3425 c 50.325,21.56875 78.66,43.5575 78.66,93.03375 0,53.2875 -41.86625,82.465 -98.11,82.465 -54.97625,0 -90.5,-26.2175 -107.83625,-60.47375" />
+</svg>
+
+<h1>Die Geschichte von JavaScript bis ECMAScript 6</h1>
+
+<p>
+Mathias Schäfer, 9elements<br>
+<a href="http://pottjs.de">PottJS Workshop Day</a><br>
+2016-04-02
+</p>
+
+</section>
+
+<section>
+  <h1>Mathias Schäfer</h1>
+  <ul>
+    <li>Software-Entwickler bei 9elements</li>
+    <li>Germanistik und Philosophie, RUB</li>
+    <li>HTML, CSS und JavaScript</li>
+    <li>Fachartikel und Dokumentationen</li>
+    <li>JavaScript seit Netscape 3 und IE 4</li>
+    <li>Initiator von <a href="http://chaplinjs.org">Chaplin.js</a></li>
+    <li><a href="http://molily.de">molily.de</a>, <a href="https://twitter.com/molily">@molily</a></li>
+  </ul>
+</section>
+
+<section>
+  <p>
+    <a href="https://9elements.com">
+      <img src="images/9elements-logo.png" style="border: 0; width: 15%">
+    </a>
+  </p>
+  <h1><a href="https://9elements.com">9elements</a></h1>
+  <ul>
+    <li>Agentur für Software &amp; Design</li>
+    <li>Webanwendungen und mobile Apps</li>
+    <li>Kundenarbeiten &amp; eigene Produkte</li>
+    <li>Sitz im Bochumer Bermuda-Dreieck</li>
+  </ul>
+</section>
+
+<section>
+  <p>
+    <a href="https://9elements.com/jobs/junior-web-developer">
+      <img src="images/job-ad.jpg" alt="Junior-Webentwickler∗in gesucht">
+    </a>
+  </p>
+  <p><code>&lt;/eigenwerbung&gt;</code></p>
+</section>
+
+<!-- ******************************************************************** -->
+
+<section>
+  <h1>Programm</h1>
+  <ul>
+    <li>Keine vollständige Vorstellung von JavaScript und ECMAScript 6</li>
+    <li>Geschichte von JavaScript</li>
+    <li>JavaScript-Standards verstehen</li>
+    <li>ECMAScript lernen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Was ist JavaScript?</h1>
+  <ul>
+    <li>Eine interpretierte, dynamische, multiparadigmatische, universell einsetzbare Programmiersprache</li>
+    <li>Imperativ, objektbasiert, funktional…</li>
+    <li>Schwach und dynamisch typisiert</li>
+    <li>Durch C, Java, Scheme und Lisp beeinflusst</li>
+  </ul>
+</section>
+
+<section>
+  <h1>JavaScript-Übersicht</h1>
+  <ul>
+    <li>Objektbasierung: <code>object.eigenschaft</code></li>
+    <li>Grundtypen: <code>undefined</code>, <code>null</code>, <code>boolean</code>, <code>string</code>, <code>number</code>, <code>object</code>…</li>
+    <li>Objekttypen: <code>Function</code>, <code>RegExp</code>, <code>Array</code>, <code>Date</code>…</li>
+    <li>Kontrollstrukturen: <code>if</code>, <code>switch</code>, <code>for</code>, <code>while</code>, <code>for-in</code>…</li>
+    <li>Ausdrücke: <code>1 + 2</code>, <code>objekt.methode()</code></li>
+    <li>Das globales Objekt (im Browser <code>window</code>,<br>in Node.js <code>global</code>)</li>
+  </ul>
+</section>
+
+<section>
+  <h1><a href="http://molily.de/js/organisation-ueberblick.html#grundpfeiler">Grundpfeiler der JS-Programmierung</a></h1>
+  <ul>
+    <li>Objekte sind überall<ul>
+      <li>enthalten Daten und strukturieren Code</li>
+      <li><code>var obj = { name: 'Linda' };</code></li>
+    </ul>
+    </li>
+    <li>Funktionen sind vollwertige Objekte<ul>
+      <li><code>var f = function(…) {…};</code></li>
+      <li>funktionale Programmierung</li>
+    </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1><a href="http://molily.de/js/organisation-ueberblick.html#grundpfeiler">Grundpfeiler der JS-Programmierung</a></h1>
+  <ul>
+    <li>Scope: Gültigkeitsbereich von Variablen<ul>
+      <li>Datenverfügbarkeit und Kapselung</li>
+    </ul>
+    </li>
+    <li>Prototypenbasierte Vererbung (Delegation)<ul>
+      <li>Auflösung von <code>objekt.eigenschaft</code></li>
+      <li>Code-Wiederverwendung</li>
+    </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Prototypen</h1>
+  <ul>
+    <li>Jedes Objekt hat einen Prototypen-Verweis</li>
+    <li>Der Prototyp ist ein normales Objekt</li>
+    <li>Wenn eine Eigenschaft nicht gefunden wird, wird sie beim Prototypen gesucht (Delegation)</li>
+  </ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+var emma = {
+  doMathHomework: function () {…}
+};
+
+var alex = Object.create(emma);
+alex.doHistoryHomework = function () {…};
+
+// delegates to Emma ;)
+alex.doMathHomework();
+// Alex actually does the homework
+alex.doHistoryHomework();
+</code></pre>
+</section>
+
+<section>
+<a href="https://twitter.com/brianloveswords/status/594111232132677632">
+  <img src="images/js-history.jpg" alt="Tweet by @brianloveswords: “20 years ago today a programmer working for AOL named Bramdan Ich created the language Java in just 12 hours.”" style="width: 50%">
+</a>
+</section>
+
+<section>
+  <h1>20 Jahre JavaScript-Geschichte</h1>
+  <ul>
+    <li>Netscape Navigator 2.0, 1995</li>
+    <li>Scripting von HTML und Java-Applets</li>
+    <li>Anfang des kommerziellen, allgemein zugänglichen Webs</li>
+  </ul>
+</section>
+
+<section>
+  <img src="images/netscape.gif" alt="Netscape-Logo">
+</section>
+
+<section>
+  <h1>Standardisierung</h1>
+  <ul>
+    <li>Browserkrieg</li>
+    <li>Netscape JavaScript vs. Microsoft JScript</li>
+    <li><a href="http://www.ecma-international.org/">Ecma International</a></li>
+    <li><a href="http://www.ecma-international.org/memento/TC39.htm">Technical Committee 39 (TC39)</a></li>
+    <li><a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMAScript (ECMA-262)</a></li>
+  </ul>
+</section>
+
+<section>
+  <a href="http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%201st%20edition,%20June%201997.pdf">
+    <img src="images/es1.jpg" alt="ECMAScript Edition 1 Cover" style="width: 45%">
+  </a>
+</section>
+
+<section>
+  <h1>ECMAScript</h1>
+  <ul>
+    <li>1st Edition: Juni 1997</li>
+    <li>2nd Edition: August 1998</li>
+    <li>3rd Edition: Dezember 1999</li>
+    <li><del>4th Edition: verworfen</del></li>
+    <li>5th Edition: Dezember 2009</li>
+    <li>6th Edition / 2015: Juni 2015</li>
+    <li>7th Edition / 2016: vorauss. Juni 2016</li>
+  </ul>
+</section>
+
+<section>
+  <h1><em>Sprachkern</em> vs. Hostumgebung</h1>
+  <ul>
+    <li>ECMAScript standardisiert den Sprachkern</li>
+    <li>Syntax, Semantik &amp; Ausführung der Sprache</li>
+    <li>Objekttypen &amp; Kernobjekte</li>
+  </ul>
+</section>
+
+<section>
+  <h1><em>Sprachkern</em> vs. Hostumgebung</h1>
+  <ul>
+    <li>Wie funktioniert die for-Schleife</li>
+    <li>Wie werden Variablen zu Werten aufgelöst</li>
+    <li>Wie wird ein Funktionaufruf abgearbeitet</li>
+    <li>Welche Methoden hat ein Array-Objekt</li>
+    <li>Was passiert beim Erzeugen einer Objekteigenschaft</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Sprachkern vs. <em>Hostumgebung</em></h1>
+  <ul>
+    <li>Verschiedene Hostumgebungen</li>
+    <li>z.B. Web-Browser, Node.js</li>
+    <li>Browser, HTML, DOM<ul>
+      <li>Fenster (<code>window</code>, <code>navigator</code>, <code>history</code>)</li>
+      <li>HTML-Dokument (<code>document</code>)</li>
+      <li>User-Ereignisse (z.B. <code>click</code>)</li>
+    </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Sprachkern vs. <em>Hostumgebung</em></h1>
+  <ul>
+    <li>Wie kann ich ein HTML-Element ansprechen</li>
+    <li>Wie kann ich Inhalte ins Dokument schreiben</li>
+    <li>Wie kann ich auf Eingaben reagieren</li>
+    <li>Wie kann ich Daten vom Server laden / zum Server schicken</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Sprachkern vs. <em>Hostumgebung</em></h1>
+  <ul>
+    <li>Standardisierung: <a href="https://www.w3.org/">W3C</a> und <a href="https://whatwg.org/">WHATWG</a></li>
+    <li><a href="https://dom.spec.whatwg.org">Document Object Model (DOM)</a>, <a href="https://html.spec.whatwg.org/multipage/">HTML5</a></li>
+    <li><a href="https://platform.html5.org/">Weitere Programmierschnittstellen (APIs)</a><br>(<a href="http://molily.de/html5-specs/">Auswahl</a>)</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Ausgangslage um 2005</h1>
+  <ul>
+    <li>Nützlichkeit von JavaScript wurde erkannt</li>
+    <li>JavaScript-Nutzung explodierte</li>
+    <li>Größere Webanwendungen mit JavaScript</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Ausgangslage um 2005</h1>
+  <ul>
+    <li>ECMAScript 3 (1999) war gut unterstützt</li>
+    <li>Katastrophale DOM-Unterstützung</li>
+    <li>JavaScript- und Ajax-Bibliotheken:<br>Prototype.js, Mootools, jQuery</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Probleme von JavaScript</h1>
+  <ul>
+    <li><a href="http://www.crockford.com/javascript/javascript.html">»The World's Most Misunderstood Programming Language«</a></li>
+    <li>Verwirrend und unzugänglich</li>
+    <li>Klare Strukturen fehlen</li>
+    <li>Fehleranfällig</li>
+    <li>Nicht den Anforderungen gewachsen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>JavaScript reparieren</h1>
+  <ul>
+    <li>Designfehler und Fallstricke identifizieren</li>
+    <li><a href="http://shop.oreilly.com/product/9780596517748.do">Douglas Crockford: »JavaScript: The Good Parts«</a><br>(2008)</li>
+    <li>Arbeit an ECMAScript 5 beginnt</li>
+  </ul>
+</section>
+
+<section>
+  <a href="http://es5.github.io/">
+    <img src="images/es5.jpg" alt="ECMAScript Edition 5 Cover" style="width: 45%">
+  </a>
+</section>
+
+<section>
+  <h1>ECMAScript 5</h1>
+  <ul>
+    <li>Korrektur von konzeptionellen Fehlern</li>
+    <li>Abwärtskompatibel soweit möglich</li>
+    <li>Vorsichtige Erweiterung der Kernobjekte</li>
+    <li>Kommerzielle Entwicklung sicherer und robuster machen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>ECMAScript 5</h1>
+  <ul>
+    <li>Der <a href="http://www.peterkroener.de/ecmascript-5-die-nachste-version-von-javascript-teil-2-der-strict-mode/">Strict Mode</a>: <code>'use strict';</code></li>
+    <li>Problematisches Verhalten deaktivieren</li>
+    <li>Programmierfehler sind schneller zu erkennen</li>
+    <li>Zugriffsrechte für Objekt und Eigenschaften</li>
+    <li>Objekte versiegeln und einfrieren</li>
+  </ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+var f = function() {
+  'use strict';
+  console.log(this); // undefined
+  // 💥 ReferenceError:
+  // zahl is not defined
+  zahl = 1;
+};
+f();
+</code></pre>
+</section>
+
+<section>
+  <h1>Wegweisende Entwicklungen nach ES5</h1>
+  <ul>
+    <li>2008: Neue Engines entstehen (Chrome mit V8)</li>
+    <li>2009: Node.js<ul>
+      <li>Modulsysteme: CommonJS, AMD</li>
+    </ul>
+    </li>
+    <li>2009: CoffeeScript</li>
+    <li>2011: Promises</li>
+  </ul>
+</section>
+
+<section>
+  <h1><a href="https://nodejs.org/">Node.js</a></h1>
+  <ul>
+    <li>Node.js bringt JS auf Server und Desktop</li>
+    <li>Derselbe Sprachkern, andere Hostumgebung</li>
+    <li>CommonJS-Modulsystem</li>
+    <li>Node Package Manager (npm)</li>
+  </ul>
+</section>
+
+<section>
+  <h1><a href="http://coffeescript.org/">CoffeeScript</a></h1>
+  <ul>
+    <li>Metasprache, die nach JS kompiliert</li>
+    <li>Vereinfacht die JavaScript-Syntax</li>
+    <li>Kurzschreibweisen für Objekte, Funktionen uvm.</li>
+    <li>Deklarative Klassen</li>
+    <li>Binding von Funktionen (<code>this</code>)</li>
+    <li>Hält sich an die »Good Parts«</li>
+  </ul>
+</section>
+
+<section>
+  <h1><a href="https://promisesaplus.com/">Promises/A+</a></h1>
+  <ul>
+    <li>Pattern für asynchrone Programmierung</li>
+    <li>Objekt, das ein zukünftiges Ergebnis kapselt</li>
+    <li>Asynchroner Kontrollfluss<br>(Erfolg- &amp; Fehlerbehandlung)</li>
+    <li>Lässt sich in gewöhnlichem JS umsetzen</li>
+  </ul>
+</section>
+
+<section>
+  <a href="http://www.ecma-international.org/ecma-262/6.0/">
+    <img src="images/es6.jpg" alt="ECMAScript 6 Cover" style="width: 45%">
+  </a>
+</section>
+
+<section>
+  <h1>ECMAScript 6 (2015)</h1>
+  <ul>
+    <li>Pflastert die Trampelpfade</li>
+    <li>Signifikante Erweiterung</li>
+    <li>Neue &amp; erweiterte Kernobjekte</li>
+    <li>Neue, nicht abwärtskompatible Syntax</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Wichtige neue ES6-Features</h1>
+  <ol>
+    <li>Arrow-Funktionen</li>
+    <li>Block-Scope (<code>let</code> und <code>const</code>)</li>
+    <li>Deklarative Klassen</li>
+    <li>Modulsystem</li>
+  </ol>
+</section>
+
+<section>
+  <h1>Arrow-Funktionen</h1>
+  <ul>
+    <li>Kurzschreibweise für Funktionen</li>
+    <li>ES5: <code>var sum = function (a, b) { return a + b; };</code></li>
+    <li>ES6: <code>var sum = (a, b) =&gt; { return a + b; };</code></li>
+    <li>ES6: <code>var sum = (a, b) =&gt; a + b;</code></li>
+    <li>ES6: <code>var plus2 = a =&gt; a + 2;</code></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Arrow-Funktionen</h1>
+  <ul>
+    <li>Lexikalisches <code>this</code></li>
+    <li><code>this</code> lässt sich aus der Umgebung erschließen</li>
+    <li>Kein <code>this</code>-Binding nötig und möglich</li>
+  </ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+console.log(this); // Gewisser Wert
+var normalFunction = function() {
+  console.log(this); // ggf. anderer Wert
+};
+var arrowFunction = () => {
+  console.log(this); // gleicher Wert
+};
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+var verzögerteAusgabe = {
+  start: function() {
+    console.log('start', this);
+    setTimeout(() => {
+      // this ist dasselbe wie
+      // in der äußeren Funktion
+      this.ende();
+    }, 1000);
+  },
+  ende: function() {
+    console.log('ende', this);
+  }
+};
+verzögerteAusgabe.start();
+</code></pre>
+</section>
+
+<section>
+  <h1><code>var</code>, <code>let</code> und <code>const</code></h1>
+  <ul>
+    <li><code>var</code> erzeugt eine Variable im Gültigkeitsbereich der aktuellen Funktion (Function&nbsp;Scope)</li>
+    <li><code>let</code> erzeugt eine Variable im aktuellen <code>{…}</code>-Block (Block&nbsp;Scope)</li>
+    <li><code>const</code> erzeugt eine Konstante im aktuellen Block</li>
+  </ul>
+</section>
+
+<section>
+  <h1><code>var</code></h1>
+
+<pre><code class="javascript" data-trim>
+var ausgabe = () => {
+  var zahl = 1;
+  console.log(zahl);
+};
+ausgabe();
+console.log(typeof zahl); // undefined
+</code></pre>
+
+<p>Grundregel: Lokale statt globale Variablen</p>
+</section>
+
+<section>
+  <h1><code>let</code></h1>
+
+<pre><code class="javascript" data-trim>
+var kleinerGauß = (n) => {
+  let ergebnis = 0;
+  for (let i = 1; i <= n; i++) { // Block
+    // Hier sind ergebnis und i verfügbar
+    ergebnis += i;
+  }
+  console.log(typeof i); // undefined
+  return ergebnis;
+};
+console.log(kleinerGauß(5)); // 15
+// undefined, undefined
+console.log(typeof ergebnis, typeof i);
+</code></pre>
+</section>
+
+<section>
+  <h1><code>const</code></h1>
+
+<pre><code class="javascript" data-trim>
+const sum = (a, b) => a + b;
+// 💥 TypeError: Assignment to constant variable.
+sum = (a, b) => a * b;
+</code></pre>
+</section>
+
+<section>
+  <h1>Konstante Namen vs. konstante Werte</h1>
+  <ul>
+    <li>Bei <code>const</code> ist nur die Verbindung zwischen Name und Wert konstant</li>
+    <li>Objekte sind i.d.R. veränderbar (mutable)</li>
+  </ul>
+
+<pre><code class="javascript" data-trim>
+const user = { name: 'Miffy' };
+user.name = 'Nijntje'; // Funktioniert
+</code></pre>
+</section>
+
+<section>
+  <h1>Unveränderbare Objekte (ES5)</h1>
+
+<pre><code class="javascript" data-trim>
+'use strict';
+const user = { name: 'Miffy' };
+Object.freeze(user);
+// 💥 TypeError: Cannot assign to
+// read only property 'name'
+user.name = 'Nijntje';
+</code></pre>
+</section>
+
+<section>
+  <h1>Verwendung von <code>var</code>, <code>let</code>, <code>const</code></h1>
+  <ul>
+    <li>Nach Möglichkeit <code>const</code> verwenden<ul>
+      <li>Neuer Wert → neue Konstante</li>
+      <li>Einfacher, lesbarer Code</li>
+    </ul>
+    </li>
+    <li>In Sonderfällen <code>let</code></li>
+    <li>Nie mehr <code>var</code> verwenden</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Pseudoklassen in ES5</h1>
+
+<pre><code class="javascript" data-trim>
+// Konstruktorfunktion
+var Cat = function(name) {
+  this.name = name;
+};
+// Prototyp
+Cat.prototype.meow = function() {
+  console.log(this.name + ' meows.');
+};
+// Instanz
+var kitty = new Cat('Kitty');
+kitty.meow();
+</code></pre>
+</section>
+
+<section>
+<img src="images/lions.gif" alt="Was zum Henker?!">
+</section>
+
+<section>
+  <h1>Klassen in ECMAScript 6</h1>
+
+<pre><code class="javascript" data-trim style="font-size: 70%">
+class Cat {
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  meow() {
+    console.log(this.name + ' meows.');
+  }
+
+}
+
+var kitty = new Cat('Kitty');
+kitty.meow();
+</code></pre>
+</section>
+
+<section>
+  <h1>Vererbung in ES5</h1>
+
+<pre><code class="javascript" data-trim style="font-size: 70%">
+var Animal = function(name) {
+  this.name = name;
+};
+Animal.prototype.sayHello = function() {
+  console.log(this.name + ' says hello!');
+};
+var Cat = function(name) {
+  Animal.call(this, name);
+}
+// Prototypen-Verweis aufsetzen
+Cat.prototype = Object.create(Animal.prototype);
+Cat.prototype.constructor = Cat;
+Cat.prototype.meow = function() {
+  console.log(this.name + ' meows.');
+};
+var kitty = new Cat('Kitty');
+kitty.sayHello();
+kitty.meow();
+</code></pre>
+</section>
+
+<section>
+<img src="images/w00t.jpg" alt="W000000t??">
+</section>
+
+<section>
+  <h1>Vererbung in ES6</h1>
+
+<pre><code class="javascript" data-trim style="font-size: 70%">
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  sayHello() {
+    console.log(this.name + ' says hello!');
+  }
+}
+class Cat extends Animal {
+  meow() {
+    console.log(this.name + ' meows.');
+  }
+}
+var kitty = new Cat('Kitty');
+kitty.sayHello();
+kitty.meow();
+</code></pre>
+</section>
+
+<section>
+  <h1>Prototypen-Kette</h1>
+
+  <p>kitty<br>
+  ⬇<br>
+  Cat.prototype<br>
+  ⬇<br>
+  Animal.prototype<br>
+  ⬇<br>
+  Object.prototype</p>
+</section>
+
+<section>
+  <h1>Klassen in ECMAScript 6</h1>
+  <ul>
+    <li>»Syntaxzucker« für Konstruktoren &amp; Prototypen</li>
+    <li>Nichts konzeptionell neues</li>
+    <li>Delegation an Prototypen</li>
+    <li><a href="http://molily.de/js/organisation-instanzen.html">Konstruktoren, Prototypen und Instanzen</a></li>
+    <li><a href="http://molily.de/javascript-oop/">OOP in JavaScript</a></li>
+    <li><a href="http://molily.de/javascript-pseudoklassen/">Pseudoklassische Vererbung in JavaScript</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Pro &amp; Contra Klassen</h1>
+  <ul>
+    <li>Kurzschreibweise für verbreitetes Pattern</li>
+    <li>Macht einfache Vererbung einfach</li>
+    <li>Erlaubt keine komplexe OOP<br>(Mehrfachvererbung, Mixins, Traits)</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Pro &amp; Contra Klassen</h1>
+  <ul>
+    <li>Objekte &amp; Prototypen sind einfach &amp; flexibel</li>
+    <li>Klassen sind unflexibel</li>
+    <li>»Syntaxzucker« versteckt Interna</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Natives Modulsystem</h1>
+  <ul>
+    <li>Aufteilung in Module</li>
+    <li>Modul: eine Datei oder Paket</li>
+    <li>Exportieren von Werten (z.B. Funktionen)</li>
+    <li>Importieren von Werten (Abhängigkeiten)</li>
+  </ul>
+</section>
+
+<section>
+<p>sum.js</p>
+
+<pre><code class="javascript" data-trim>
+export default (a, b) => a + b;
+</code></pre>
+
+<p>program.js</p>
+
+<pre><code class="javascript" data-trim>
+import sum from './sum.js';
+console.log(sum(2, 3));
+</code></pre>
+</section>
+
+<section>
+<p>math.js</p>
+
+<pre><code class="javascript" data-trim>
+export const sum = (a, b) => a + b;
+export const difference = (a, b) => a - b;
+export const product = (a, b) => a * b;
+export const quotient = (a, b) => a / b;
+</code></pre>
+
+<p>program.js</p>
+
+<pre><code class="javascript" data-trim>
+import { sum, product } from './math.js';
+console.log(product(sum(2, 5), 3)); // 21
+</code></pre>
+</section>
+
+</section>
+
+<section>
+  <h1>Paketmanager</h1>
+  <ul>
+    <li>Node Package Manager (npm)</li>
+    <li>Bibliotheken und Frameworks nutzen</li>
+    <li>Abhängigkeiten verwalten<ul>
+      <li><code>package.json</code>, <code>dependencies</code></li>
+    </ul>
+    </li>
+    <li><code>import $ from 'jquery';</code></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Module-Bundler</h1>
+  <ul>
+    <li>Code in kleinen Dateien verteilt →<br>Module-Bundler erzeugen Builds</li>
+    <li>Abhängigkeitsbaum linearisieren</li>
+    <li>Große JS-Datei für Production</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Module-Bundler</h1>
+  <ul>
+    <li><a href="http://rollupjs.org/">Rollup</a></li>
+    <li><a href="http://browserify.org/">Browserify</a></li>
+    <li><a href="https://webpack.github.io/">Webpack</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>ES6 in der Praxis</h1>
+  <ul>
+    <li><a href="https://kangax.github.io/compat-table/es6/">Browserunterstützung</a></li>
+    <li>Die großen Browser werden im Jahr 2016 ES6 unterstützen</li>
+    <li>Für ältere Browser wird ES6 nach ES5 übersetzt</li>
+  </ul>
+</section>
+
+<section>
+  <h1><a href="https://babeljs.io/">Der Babel-Transpiler</a></h1>
+  <ul>
+    <li>Framework zur Transformierung von JS-Code</li>
+    <li>Parsing → Transformationen → Ausgabe</li>
+    <li>Einzelne Transformationen: <strong>Plugins</strong></li>
+    <li>Gruppen von Transformationen: <strong>Presets</strong></li>
+    <li>ES6 → ES5 ist ein Preset: <code>es2015</code></li>
+  </ul>
+</section>
+
+<section>
+<h1>Babel</h1>
+
+<pre><code data-trim>
+npm install --save-dev babel-cli
+</code></pre>
+
+<p><code>.babelrc</code></p>
+
+<pre><code class="javascript" data-trim>
+{ "presets": [ "es2015" ] }
+</code></pre>
+</section>
+
+<section>
+<h1>Babel</h1>
+
+<pre><code data-trim>
+  ./node_modules/.bin/babel script.js
+  --out-file output.js
+</code></pre>
+
+<p>In Build-Scripte einbinden (Grunt/Gulp,<br>Rollup, Webpack, Browserify…)</p>
+</section>
+
+<section>
+  <h1>Was kann Babel übersetzen?</h1>
+  <ul>
+    <li>Syntaxzucker (z.B. Klassen)</li>
+    <li>Gewisse neue Syntax (z.B. <code>let</code> und <code>const</code>)</li>
+    <li>Neue und erweiterte Kernobjekte benötigen Polyfill<br>(z.B. Promise, Map, Set)</li>
+    <li><a href="https://babeljs.io/docs/usage/polyfill/">Babel-Polyfill</a> basiert auf <a href="https://github.com/zloirock/core-js">CoreJS</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Babel kann mehr</h1>
+  <ul>
+    <li>ES6 → ES5</li>
+    <li>Plugins, die neue Syntax umsetzen</li>
+    <li>Zukünftige &amp; experimentelle Features</li>
+    <li>Jedes Plugin erschafft eine neue Sprache –<br>mit allen Vor- und Nachteilen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Weiterentwicklung von ECMAScript</h1>
+  <ul>
+    <li>Jährliche VÖ (2015, 2016…)</li>
+    <li>Öffentlich auf Github</li>
+    <li><a href="https://github.com/tc39/ecma262#ecmascript">Proposals und Stages</a></li>
+    <li><a href="https://tc39.github.io/process-document/">Prozess</a></li>
+    <li><a href="https://tc39.github.io/ecma262/">Aktueller Entwurf</a></li>
+    <li><a href="https://esdiscuss.org/">es-discuss</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Stages</h1>
+  <ul>
+    <li>0 Strawman</li>
+    <li>1 Proposal</li>
+    <li>2 Draft</li>
+    <li>3 Candidate</li>
+    <li>4 Finished → VÖ</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Stages</h1>
+  <ul>
+    <li><a href="https://babeljs.io/docs/plugins/">Babel-Plugins sind in Stages gruppiert</a></li>
+    <li>Babel Stage === TC39 Stage</li>
+    <li>Je höher die Stage, desto wahrscheinlicher<br>die Standardisierung</li>
+    <li>Nutzt <code>es2015</code>, wählt weitere Plugins weise</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Quellen</h1>
+  <ul>
+    <li><a href="http://webkrauts.de/artikel/2015/eine-kurze-geschichte-von-javascript">Eine kurze Geschichte von JavaScript</a></li>
+    <li><a href="https://ponyfoo.com/articles/tagged/es6-in-depth">ES6 in depth</a> (Artikelreihe)</li>
+    <li><a href="https://babeljs.io/docs/learn-es2015/">Lern ES2015</a> (Übersicht)</li>
+    <li><a href="https://leanpub.com/setting-up-es6/read">Setting up ES6</a> (E-Book)</li>
+    <li><a href="http://exploringjs.com/es6/">Exploring ES6</a> (E-Book)</li>
+    <li><a href="https://leanpub.com/understandinges6/read/">Understanding ES6</a> (E-Book)</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Fragen? Feedback?</h1>
+  <ul>
+    <li><a href="http://molily.de">Mathias Schäfer</a></li>
+    <li><a href="mailto:mathias.schaefer@9elements.com">mathias.schaefer@9elements.com</a></li>
+    <li><a href="https://twitter.com/molily">@molily</a></li>
+    <li><a href="https://9elements.com">9elements.com</a></li>
+  </ul>
+</section>
+
+<!-- ******************************************************************** -->
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  rollingLinks: false,
+  slideNumber: true,
+
+  theme: 'simple-molily',
+  transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+---
+permalink: /css-position-fixed-loesung5/
+---
+<!DOCTYPE html>
+<html lang="de">
+<head profile="http://dublincore.org/documents/dcq-html/">
+<meta charset="utf-8">
+<title>position:fixed und Anker - Beispieldokument zur fünften CSS-Lösung</title>
+<meta name="robots" content="noindex,follow" />
+<link rel="schema.DC" type="application/rdf+xml" href="http://purl.org/dc/elements/1.1/" />
+<link rel="schema.DCTERMS" type="application/rdf+xml" href="http://purl.org/dc/terms/" />
+<meta name="author" content="molily" />
+<meta name="DC.creator" content="molily" />
+<meta name="DC.language" scheme="DCTERMS.RFC3066" content="de" />
+<meta name="DCTERMS.modified" scheme="DCTERMS.W3CDTF" content="2004-02-01" />
+<link rel="author" href="mailto:zapperlott@gmail.com" title="E-Mail an den Autor senden" />
+<style type="text/css">
+body {margin:0; padding:60px 15px 15px 15px; font-family:sans-serif; color:black; background-color:white;}
+#header a:link, #header a:visited {color:#a00; background-color:#eee; text-decoration:none; padding:1px 2px; font-weight:bold;}
+#header a:hover {background-color:#fff;}
+#header {position:absolute; top:0; left:0; right:0; width:100%; height:60px; margin:0; padding:0; color:white; background-color:gray;}
+#header[id] {position:fixed;}
+#header h1 {font-weight:bold;}
+#header h1, #header p {margin:0; padding:5px; font-size:14px;}
+h2 {font-weight:normal; color:#800; /* background-color:transparent; */}
+
+/*
+opera 6.06 negativ
+opera 7.02 positiv
+mozilla:
+m16 negativ (nur extern)
+0.9.2 negativ
+0.9.5 negativ
+0.9.8 negativ
+0.9.9 negativ
+1.0 RC 1 positiv
+1.0 final positiv
+1.6 positiv
+*/
+
+h2 a[name] {padding-top:70px; background-color:#aaa; width:0; font-size:0; visibility:hidden;}
+h2:hover {background-color:red;}
+</style>
+</head>
+<body>
+
+<div id="header">
+<h1>position:fixed und Anker - Beispieldokument zur fünften CSS-Lösung</h1>
+<p><a href="#a">Anker A</a> &#8212; <a href="#b">Anker B</a> &#8212; <a href="#c">Anker C</a> &#8212; <a href="#d">Anker D</a> &#8212; <a href="#e">Anker E</a></p>
+</div>
+
+<p>Bitte wählen Sie einen Link zu einem der untenstehenden Anker an. Falls Ihr Browser <code>position:fixed</code> unterstützt und die Lösungsmethode funktioniert, sollten sich die jeweiligen Überschrift an den unteren Rand des fest positionierten Kopfbereichs anschließen. ...XXX...</p>
+
+<p><a href="/css-position-fixed/#css5">Zurück zum Artikel Probleme mit Ankern und position:fixed &#8211; Fünfte CSS-Lösung</a></p>
+
+<div id="testbereich">
+
+<h2 id="a"><a name="a">&nbsp;</a>Anker A</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="b"><a name="b">&nbsp;</a>Anker B</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="c"><a name="c">&nbsp;</a>Anker C</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="d"><a name="d">&nbsp;</a>Anker D</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="e"><a name="e">&nbsp;</a>Anker E</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+</div>
+
+<address>Autor: molily &#8212; E-Mail: <a href="mailto:zapperlott@gmail.com" rel="author">zapperlott@gmail.com</a> &#8212; Letzte Änderung: 01.02.2004</address>
+
+</body>
+</html>

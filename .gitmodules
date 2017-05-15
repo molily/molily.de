@@ -1,0 +1,6 @@
+[submodule "js"]
+	path = js
+	url = git://github.com/molily/javascript-einfuehrung.git
+[submodule "javascript-core"]
+	path = javascript-core
+	url = git://github.com/molily/jscore-de.git

@@ -1,0 +1,31 @@
+---
+layout: default
+---
+
+{% include top.html %}
+
+{% for post in site.posts limit: 5 %}
+  {% include post-short.html %}
+{% endfor %}
+
+{% include divider.html %}
+
+<div class="col-primary bottom-primary">
+
+  <h2 class="article-archive-heading">Ältere Artikel</h2>
+  <ul class="article-archive">
+  {% for post in site.posts offset: 5 %}
+    <li>
+      <time class="post-date" datetime="{{ post.date | date: "%F" }}">{{ post.date | date: "%F" }}</time>
+      <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+
+  {% include footer.html %}
+</div>
+
+{{ # <div class="bottom-secondary bottom-secondary"> }}
+{{ # </div> }}
+
+{% include bottom.html %}

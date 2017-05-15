@@ -1,0 +1,215 @@
+---
+layout: post
+title: Strenge HTML-4-Validierung
+---
+
+<p>In Anschluss an meinen <a href="/markup-qualitaetsstandards/">letzten Artikel zu XHTML</a> möchte ich die Verfahren erläutern, die ich zur HTML-4-Qualitätssicherung genutzt habe.</p>
+
+<p>Vorab sei noch einmal betont: SGML-Validierung halte ich zur Überprüfung von Markup-Qualitätsstandards für ungeeignet. Deshalb empfehle ich nicht den Einsatz von HTML 4, sondern rate zu einem Wechsel zu HTML 5 oder XHTML 1, welche sich beide mit strengeren Parsern prüfen lassen. Hier geht es also um die Qualitätssicherung bei »Altlasten«, also den zahlreiche bestehenden HTML-4-Dokumenten, die sich womöglich nicht so einfach migrieren lassen.</p>
+
+<p>Wie schon angedeutet nehmen wir Änderungen in der SGML-Deklaration für HTML sowie der Dokumenttyp-Deklaration (DTD) für HTML 4.01 Strict vor und nutzen dann einen SGML-Parser zur Validierung.</p>
+
+<p>Zuerst einmal schalten wir zwei SGML-Features in der <a href="http://www.w3.org/TR/html401/sgml/sgmldecl.html">SGML-Deklaration</a> aus, die aus meiner Sicht der Markup-Qualität entgegenstehen.</p>
+
+<h2>OMITTAG: Zwingend erforderliche Start- und End-Tags</h2>
+
+<p>In der SGML-Deklaration setzen wir das Kurzschreibung-Feature <code>OMITTAG YES</code> auf <code>OMITTAG NO</code>. OMITTAG (zu deutsch Tag weglassen) bedeutet, dass die Tags von nicht-leeren Elemente in der DTD als optional angegeben werden können. In HTML 4 sind bei einigen wichtigen Elementen Start- <em>und</em> End-Tag optional. Beispiele aus der DTD:</p>
+
+<pre>
+&lt;!ELEMENT HTML <strong>O O</strong> (%html.content;)    -- document root element --&gt;
+&lt;!ELEMENT BODY <strong>O O</strong> (%block;|SCRIPT)+ +(INS|DEL) -- document body --&gt;
+&lt;!ELEMENT HEAD <strong>O O</strong> (%head.content;) +(%head.misc;) -- document head --&gt;
+&lt;!ELEMENT TBODY    <strong>O O</strong> (TR)+           -- table body --&gt;
+</pre>
+
+<p>»O O« heißt hier: Start-Tag optional und End-Tag optional. Das ist besonders tückisch: Die Tags sind zwar weglassbar, die Elemente sind aber trotzdem da und werden vom Parser automatisch hinzugefügt. Das hat stets zu Verwirrungen geführt. Dass eine Tabelle immer ein <code>tbody</code>-Element hat, auch wenn man keines notiert, merkt man spätestens dann, wenn man mit JavaScript versucht, direkt <code>tr</code>-Elemente an das <code>table</code>-Element zu hängen. Das geht nämlich nicht, weil ein <code>tbody</code>-Element (oder <code>thead</code>/<code>tfoot</code>) zwingend notwendig ist - in der HTML-Serialisierung des Dokuments darf es jedoch »unsichtbar« sein, indem seine Tags optional sind.</p>
+
+<p>Es gibt viel mehr Elemente in HTML, deren Start-Tags notwendig, deren End-Tags hingegen optional sind. Einige Beispiele:</p>
+
+<pre>
+&lt;!ELEMENT P <strong>- O</strong> (%inline;)*            -- paragraph --&gt;
+&lt;!ELEMENT (TH|TD)  <strong>- O</strong> (%flow;)*       -- table header cell, table data cell--&gt;
+&lt;!ELEMENT LI <strong>- O</strong> (%flow;)*             -- list item --&gt;
+</pre>
+
+<p>Es sind also folgende Schreibweisen erlaubt:</p>
+
+<pre>
+&lt;p&gt;Absatz
+&lt;p&gt;Absatz
+&lt;ul&gt;
+	&lt;li&gt;Eins
+	&lt;li&gt;Zwei
+&lt;/ul&gt;
+</pre>
+
+<p>Der Konsistenz halber verbieten wir diese Kurzschreibweise und machen alle Start- und End-Tags von nicht-leeren Elementen zwingend erforderlich - wie in XHTML.</p>
+
+<p>Dazu ändern wir die angesprochenen »O O« sowie »- O« bei Elementen, die nicht das Inhaltsmodell <code>EMPTY</code> haben, zu »- -«:</p>
+
+<pre>
+Alt:  &lt;!ELEMENT HTML <strong>O O</strong> (%html.content;)    -- document root element --&gt;
+Neu:  &lt;!ELEMENT HTML <strong>- -</strong> (%html.content;)    -- document root element --&gt;
+
+Alt:  &lt;!ELEMENT P <strong>- O</strong> (%inline;)*            -- paragraph --&gt;
+Neu:  &lt;!ELEMENT P <strong>- -</strong> (%inline;)*            -- paragraph --&gt;
+</pre>
+
+<h2>SHORTTAG: Praxisuntaugliche Kurzschreibung verbieten</h2>
+
+<p>Für HTML ist ein verhängnisvolles SGML-Feature namens <a href="http://www.cs.tut.fi/~jkorpela/html/empty.html">SHORTTAG</a> eingeschaltet. SHORTTAG erlaubt theoretisch kryptische Kurzschreib-Möglichkeiten von Elementen. Die werden in der Praxis aber überhaupt nicht unterstützt (weil die Browser keine echten SGML-Parser, sondern Tag-Soup-Parser besitzen). Das Problem ist, dass man manchmal unabsichtlich dieses Feature benutzt. Das führt in der Praxis zu einem Fehler, ohne dass ein normaler HTML-Validator das ankreiden würde.</p>
+
+<p>SHORTTAG ist auch der Grund, warum HTML 4.01 aus der theoretischen SGML-Sicht nicht mit XHTML 1.0 kompatibel ist. Und einer der Gründe, warum man X(HT)ML auf keinen Fall mit einem SGML-Parser verarbeiten sollte. Das ist aber Stoff für einen eigenen Artikel und wird im verlinkten Text von Jukka Korpela gut erklärt.</p>
+
+<p>SHORTTAG erlaubt folgendes:</p>
+
+<table border="1" cellspacing="0" cellpadding="5">
+<thead>
+<tr>
+<th>Minimization-Typ</th>
+<th>Kurzschreibweise</th>
+<th>Langschreibweise</th>
+</thead>
+<tbody>
+<tr>
+<th>Leere Tags ohne Elementname</th>
+<td><code>
+&lt;&gt; ... &lt;/&gt;
+</code></td>
+<td><code>
+&lt;?&gt; ... &lt;?&gt;
+</code>
+(welcher Elementname genommen wird, hängt vom Kontext ab)</td>
+</tr>
+<tr>
+<th>Tags ohne schließendes ></th>
+<td><code>
+&lt;p&lt;strong&gt;wichtig&lt;/strong&gt;&lt;/p&gt;
+</code></td>
+<td><code>
+&lt;p>&lt;strong&gt;wichtig&lt;/strong&gt;&lt;/p&gt;
+</code></td>
+</tr>
+<tr>
+<th rowspan="2">Null End-Tags (NET) und NET-enabling Start-Tags</th>
+<td><code>
+&lt;input/
+</code></td>
+<td><code>
+&lt;input&gt;
+</code></td>
+</tr>
+<tr>
+<td><code>
+&lt;p/Dies ist ein Textabsatz/
+</code></td>
+<td><code>
+&lt;p&gt;Dies ist ein Textabsatz&lt;/p&gt;
+</code></td>
+</tr>
+<tr>
+<th rowspan="2">Attributnamen und -begrenzer weglassbar</th>
+<td><code>
+&lt;input submit&gt;
+</code></td>
+<td><code>
+&lt;input type="submit"&gt;
+</code></td>
+</tr>
+<tr>
+<td><code>
+&lt;form action=beispiel.php POST&gt;
+</code></td>
+<td><code>
+&lt;form action="beispiel.php" method="POST"&gt;
+</code></td>
+</tr>
+</table>
+
+<p>Hintergrundwissen: <a href="http://web.archive.org/web/20040807024629/http://www.is-thought.co.uk/book/sgml-9.htm">SGML and HTML Explained. Chapter 9: Tag Minimization</a> von Martin Bryan</p>
+
+<p>Christoph Schneegans hat all diese Features in einem <a href="http://schneegans.de/web/xhtml/">Beispieldokument</a> veranschaulicht, um die Probleme von HTML 4 aufzuzeigen.</p>
+
+<p>Jetzt, wo wir wissen, dass SHORTTAG gefährlich ist, schalten wir es in der SGML-Deklaration ab. Wir ändern die Zeile</p>
+
+<pre>SHORTTAG YES</pre>
+
+<p>zu</p>
+
+<pre>SHORTTAG
+  STARTTAG
+    EMPTY    NO
+    UNCLOSED NO
+    NETENABL NO
+  ENDTAG
+    EMPTY    NO
+    UNCLOSED NO
+  ATTRIB
+    DEFAULT  YES
+    OMITNAME NO
+    VALUE    NO</pre>
+
+<p>Es werden alle SHORTTAG-Unterfeatures abgeschaltet (NO) bis auf eines: <code>ATTRIB VALUE</code>, das ist die Möglichkeit, in der DTD einen Default-Wert für ein Attribut anzugeben. Davon macht die HTML-4-DTD Gebrauch und wir wollen dieses Feature nutzen. Sonst könnten wir nicht <code>&lt;td&gt;</code> schreiben, sondern müssten immer das explizit <code>&lt;td rowspan="1"&gt;</code> notieren (wenn ich das richtig überblicke).</p>
+
+<h2>Vorschläge für weitere individuelle Striktheiten</h2>
+
+<p>Es macht Sinn, sich selbst noch weitere Coding-Konventionen aufzuerlegen und Teile des Vokabulars aus der DTD zu streichen:</p>
+
+<ul>
+<li>Die Elemente <code>tt</code>, <code>i</code>, <code>b</code>, <code>big</code> und <code>small</code> gehören zu HTML 4.01 Strict, obwohl sie direkt die Präsentation beeinflussen. Dasselbe gilt für Attribute wie <code>border</code> bei <code>table</code> und <code>align/valign</code> bei <code>th/td</code>.</li>
+<li>Wenn man Unobtrusive JavaScript schreiben will, gilt es Inline-Event-Handler wie <code>onmouseover</code> und das Element <code>noscript</code> zu vermeiden.</li>
+<li>Um <code>div</code>-Suppe vorzubeugen, kann man das Inhaltsmodell von <code>div</code> so verändern, dass es nur Blockelemente enthalten darf, sodass <code>div</code> nur als Container genutzt werden kann.</li>
+</ul>
+
+<p>Das nur als Ideen für mögliche Zusatzregeln.</p>
+
+<h2>OpenSP zur Validierung nutzen</h2>
+
+<p>Nachdem wir SGML-Deklaration und HTML-4.01-DTD entsprechend angepasst haben, müssen wir uns einen validierenden SGML-Parser aufsetzen, der Dokumente anhand der definierten Grammatik prüft. Der hier beschriebene Weg nutzt ein Kommandozeilenprogramm, das für viele Betriebssysteme verfügbar ist: Der SGML-Parser <a href="http://openjade.sourceforge.net/doc/nsgmls.htm">onsgmls</a>, Teil von <a href="http://openjade.sourceforge.net/doc/index.htm">OpenSP</a>.</p>
+
+<p>Ich werde im Folgenden die Windows-Variante näher beschreiben, habe das Schema aber auch unter Linux erfolgreich angewandt.</p>
+
+<ol>
+<li><a href="http://sourceforge.net/project/showfiles.php?group_id=2115&amp;package_id=2869">Download der OpenSP-Binaries für Windows</a></li>
+<li>Das ZIP mit den Binaries entpacken. Unter bin/ finden wir die Binary (ausführbare EXE-Datei) <var>onsgmls.exe</var> und die zugehörige DLL-Bibliothek <var>osp152.dll</var>. Diese kopieren wir in einen neu angelegten Ordner.</li>
+</ol>
+
+<p>Nun brauchen wir eine Reihe von aufeinander verweisende Dateien, damit ein gewöhnliches HTML-4.01-Strict-Dokument gegen unsere angepasste DTD samt angepasster SGML-Deklaration validiert werden kann.</p>
+
+<table border="1" cellspacing="0" cellpadding="5">
+<tbody>
+<tr><th>stricter-html4.soc</th><td>Katalog mit Verweis auf SGML-Deklaration und Mapping der Public-Idenfitier auf DTD-Dateien</td></tr>
+<tr><th>stricter-html4-sgml.dcl</th><td>Angepasste SGML-Deklaration</td></tr>
+<tr><th>stricter-html401-strict.dtd</th><td>Angepasste HTML-4.01-Strict-DTD</td></tr>
+<tr><th>HTMLlat1.ent</th><td>Zeichen-Entities für die DTD</td></tr>
+<tr><th>HTMLsymbol.ent</th><td>Zeichen-Entities für die DTD</td></tr>
+<tr><th>HTMLspecial.ent</th><td>Zeichen-Entities für die DTD</td></tr>
+</tbody>
+</table>
+
+<ol start="3">
+<li>All diese Dateien habe ich zum <a href="/assets/html4validierung.zip">Download in einer ZIP-Datei</a> zusammengefasst.</li>
+<li>Das ZIP-Datei entpacken wir der Einfachheit halber in den Ordner, den wir oben für <var>ngsmls.exe</var> und Co. angelegt haben
+<li>Wir starten eine Shell (Eingabeaufforderung, Powershell oder Bash) und wechseln mit <code>cd</code> in das Verzeichnis, in dem das zu validierende Dokument liegt.</li>
+<li>
+<p>Angenommen, onsgmls.exe liegt unter c:\Users\molily\projekte\validierung\ und das zu prüfende Dokument lautet <var>dokument.html</var>, so starten wir den Parser mit:</p>
+<p><code><var>c:\Users\molily\projekte\validierung\</var>onsgmls.exe -c<var>c:\Users\molily\projekte\validierung\</var>stricter-html4.soc -wvalid -E0 -s <var>dokument.html</var></code></p>
+</li>
+</ol>
+
+<p>Die ausgegebenen Fehlermeldungen sind leider äußerst kryptisch. Wenn wir <code>&lt;td align=center></code> (ohne Anführungszeichen als Attributbegrenzer) notieren, was die geänderte DTD als Fehler ansieht, so wirft der SGML-Parser folgenden Fehler aus:</p>
+
+<pre>c:\Users\molily\projekte\validierung\onsgmls.exe:dokument.html:6:21:E: an attribute value
+   specification must be an attribute value literal unless SHORTTAG YES is specified</pre>
+
+<p><samp>dokument.html:6:21</samp> heißt hier Zeile 6 in Spalte 21 in der Datei <var>dokument.html</var>.</p>
+
+<p>Das manuelle Aufrufen über die Kommandozeile ist alles andere als komfortabel. Um den Aufruf zu vereinfachen, könnte man sich eine Batch-Datei (oder ein Script in Perl, PHP, Ruby, Python) schreiben, das sich einfacher aufrufen lässt, sodass man bspw. nur noch <code>html4valid dokument.html</code> eintippen muss. Ich hatte mir eine PHP-Datei geschrieben, die rekursiv ein Verzeichnis nach HTML-Dateien durchsucht und alle darin validiert. <a href="http://web.archive.org/web/20060924192831/http://www.codestyle.org/html/tools/nsgmls-Validate.shtml">Validate your markup with NSGMLS</a> beschreibt, wie nsgmls in verschiedene Editoren als externes Tool eingebunden werden kann.</p>
+
+<h2>Fazit</h2>
+
+<p>Das soll nur grob den Weg skizzieren, den ich zur Qualitätssicherung gewählt hatte. Über Korrekturen und Ergänzungen freue ich mich, am besten <a href="mailto:zapperlott@gmail.com">per Mail</a>.</p>
+
+<p>Wie gesagt wäre noch viel zu tun, um von einem solchen Proof-of-Concept zu einem praktisch vielseitig einsetzbaren Tool zu kommen. Es liegt jedoch nicht (mehr) in meinem Interesse, einen Web-Service um eine solche SGML-Validierung herum zu bauen (z.B. mit dem <a href="http://validator.w3.org/source/">W3C-Validator</a>), da ich keine Zukunftshoffnungen HTML 4 in setze. Mir bedeutet die Qualitätssicherung von »Altlasten« zunehmend weniger und ich halte ich eine Migration zu (X)HTML 5 für angebrachter.</p>
+
+<p>Ein ähnlicher Ansatz: <a href="http://web.archive.org/web/20041213220034/http://www.spartanicus.utvinternet.ie/custom_dtd.htm">Validating against a custom DTD</a> von Spartanicus.</p>

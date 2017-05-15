@@ -1,0 +1,533 @@
+---
+layout: post
+title: Frontend security and Cross-Site Scripting (XSS) for Ruby on Rails developers
+description: Cross-Site Scripting is a security hole that allows attackers to inject and execute JavaScript on your website. The article highlights some important security aspects that affect Ruby on Rails development. Transcript of a presentation I gave at my employer 9elements.
+---
+
+<style>
+.xss-article pre,
+.xss-article code {
+  font-size: inherit;
+  color: #00B;
+}
+.xss-article var {
+  font-style: normal;
+  color: green;
+}
+.xss-article .incorrect,
+.xss-article .exploitable {
+  padding: 10px;
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: not-allowed;
+}
+.xss-article .incorrect:before,
+.xss-article .exploitable:before {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-family: Calibri, sans-serif;
+  color: #800;
+}
+.xss-article .incorrect {
+  background-color: rgb(255, 250, 250);
+}
+.xss-article .incorrect:before {
+  content: 'Syntactically incorrect';
+}
+.xss-article .exploitable {
+  background-color: rgb(255, 240, 240);
+}
+.xss-article .exploitable:before {
+  content: 'XSS warning: Exploitable!';
+}
+.xss-article .html-escaping-table th {
+  font-weight: bold;
+  background-color: transparent;
+}
+.xss-article .html-escaping-table th,
+.xss-article .html-escaping-table td {
+  border: 0;
+  padding: 0 2em 0 0;
+  line-height: 1.7;
+}
+.xss-article img {
+  display: block;
+  max-width: 100%;
+}
+</style>
+
+<div class="xss-article" lang="en">
+
+<p>At the company I work for, I gave an internal presentation about frontend security. <a href="https://9elements.com">9elements</a> is a software development agency that builds server-side Ruby on Rails applications and client-side JavaScript applications, as well as native mobile applications for iOS and Android.</p>
+
+<p>The presentation isn’t a complete introduction to Cross-Site Scripting, but highlights some important aspects that affect Ruby on Rails development. The following text is a transcript of the presentation.</p>
+
+<h2 id="xss-security-concepts">Frontend security concepts to learn</h2>
+
+<p>Before I start with the main topic, I’d like to give an overview about security concepts every Rails and JavaScript developer should learn sooner or later. I won’t go into detail here, but mention them so you can read and learn on your own.
+
+<ul class="compact-list">
+<li>XSS – Cross-Site Scripting (the main topic of this presentation)</li>
+<li><a href="http://en.wikipedia.org/wiki/Same-origin_policy">SOP – Same Origin Policy</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS – Cross-Origin Resource Sharing</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery">CSRF – Cross-Site Request Forgery</a></li>
+<li><a href="http://www.html5rocks.com/en/tutorials/security/content-security-policy/">CSP – Content Security Policy</a></li>
+<li><a href="https://www.owasp.org/index.php/Main_Page">OWASP – Open Web Application Security Project</a></li>
+</ul>
+
+<h2 id="xss-not-an-introduction">Not a thorough introduction</h2>
+
+<p>In this presentation, I won’t explain all things XSS. I will <a href="#xss-resources">link to articles which do</a>. I will explain the background and then focus on how XSS affects Ruby on Rails frontend development. Later I will show two real-world examples to illustrate how nasty and tricky XSS is.
+
+<h2 id="xss-what-is-xss">What is Cross-Site Scripting (XSS)?</h2>
+
+<p>A security hole that allows attackers to inject and execute JavaScript on your website.
+
+<h2 id="xss-context-changes">The cause of the problems: Data changes context</h2>
+
+<p>XSS is a very specific problem, but it’s caused by a general issue that affects all computer systems and programming languages:
+
+<ol>
+<li>Applications process data using different programming languages and formats (for example Ruby, JavaScript, SQL; plain text, HTML, JSON, CSV).</li>
+<li>Data moves from one context into another because languages and formats are nested or chained.</li>
+<li>Data that has a <em>specific meaning</em> in one context gets <em>different meaning</em> when put into another context.</li>
+<li>In context one, data is just plain text. In context two, it may be interpreted as code.</li>
+</ol>
+
+<p>This is a broad and abstract description, we’ll get into detail soon.
+
+<h2 id="xss-untrusted-content">Untrusted content</h2>
+
+<p>Web applications deal with untrusted content all the time. This is data that isn’t created by the service provider, developers or trusted parties. It may contain errors, it may be incomplete, it may not comply with syntactical rules. In addition, it may contain malicious code.</p>
+
+<p>Sources of untrusted content include:</p>
+
+<ul>
+<li>
+  <p>Everything in the HTTP request:</p>
+  <ul>
+  <li>URL: path, query string parameters etc.</li>
+  <li>Headers: cookies, user agent etc.</li>
+  <li>Request body: form data with user input, uploaded files etc.</li>
+  </ul>
+</li>
+<li>Data from third-party web services and APIs</li>
+</ul>
+
+<p>An important rule of web application development is: <strong>Always mistrust user input!</strong></p>
+
+<h2 id="xss-code-injection">Code injection</h2>
+
+<p>Untrusted content can cause processing errors in the backend and frontend, but why is it a security concern?</p>
+
+<p>Untrusted content gets into the database and eventually into the HTML, CSS or JavaScript code. If not treated correctly, this is a possible code injection.</p>
+
+<p>Code injection is a serious security threat, especially the injection of JavaScript code. The injected code typically runs with the same privileges as the developer’s code. Such code can <a href="http://en.wikipedia.org/wiki/Session_hijacking">hijack user sessions</a>, forge HTTP requests, read and expose private data, change content, spread misinformation, steal money etc.</li>
+</ul>
+
+<h2 id="xss-exploits-of-a-mom">“Exploits of a Mom”</h2>
+
+<p>Code injection is explained in a comic strip of the famous web comic XKCD:</p>
+
+<p><a href="http://xkcd.com/327/"><img src="http://imgs.xkcd.com/comics/exploits_of_a_mom.png" alt="Exploits of a Mom"></a></p>
+
+<p>In this story, a mom receives a phone call from her son’s school. The school has lost student records because she had added SQL code to her son’s name, probably when filling out a web form. The web application embeds the name directly into an SQL statement without considering that it can contain SQL code itself.</p>
+
+<p>The comic is about SQL injection and not XSS, but the fundamental problem is the same.</p>
+
+<h2 id="xss-escaping">Language syntax and escaping</h2>
+
+<p>To understand the background of XSS, we need to understand the nesting of data. Every programming language and data format has this problem in its own syntax.</p>
+
+<p>For example: When does a string literal start and end? Typically, there is a delimiter character that marks the beginning and end of a string. In Ruby and JavaScript, this is a single or double quotation mark. Example:</p>
+
+<p><code>"A string uses specific delimiters."</code></p>
+
+<p>The parser reads this code, recognizes the delimiters and treats characters in between as part of the string, not as code.</p>
+
+<p>But what happens if the string contains the delimiters? This won’t work:</p>
+
+<p class="incorrect"><code>"A string that contains "delimiters"."</code></p>
+
+<p>This code has a syntax error because the second quotation mark already terminates the string. The parser would try to process “<code>delimiters</code>” as code again.</p>
+
+<p>The solution is:</p>
+
+<p><code>"The \"delimiters\" need to be escaped with a slash. The escape character \\ needs to be escaped as well."</code></p>
+
+<p>The resulting string is “<code>The "delimiters" need to be escaped with a slash. The escape character \ needs to be escaped as well.</code>”
+
+<p>These character sequences starting with a slash are called <strong>escape sequences</strong>. They tell the parser to treat the following character verbatim and not as code. They neutralize the special meaning of the character.</p>
+
+<h2 id="xss-language-nesting">Language nesting</h2>
+
+<p>A typical Ruby on Rails software stack nests and chains languages – one language generates another or is translated into another language. For example, HAML is compiled to HTML and can contain Ruby, CSS and JavaScript. Sass is compiled to CSS; CoffeeScript to JavaScript. JavaScript itself can contain HTML and CSS. Most of these languages may contain common formats like URL, JSON and SVG.</p>
+
+<p>Language nesting is a potential security problem because data changes its context and needs to be treated correctly to prevent errors and code injection.</p>
+
+<p>A typical Ruby on Rails application uses the templating languages ERB and HAML. Since they concatenate strings to generate HTML, they just make a vague guess about the target context. They treat HTML as one context, which it isn’t, as we will see later.</p>
+
+<p>HAML understands the HTML syntax a bit better than ERB. It can distinguish between elements, attributes and text content. For safe embedding of JavaScript and CSS, it has filters like <a href="http://haml.info/docs/yardoc/file.REFERENCE.html#javascript-filter">:javascript</a> and <a href="http://haml.info/docs/yardoc/file.REFERENCE.html#css-filter">:css</a>.</p>
+
+<p>A templating language designed with security in mind should know the different contexts of the target language so it can escape appropriately. For example, an XML-/XSLT-based templating language is parsed into to a tree. The processor is able to understand the nesting of languages correctly, for example JavaScript embedded into HTML.</p>
+
+<h2 id="xss-general-html-escaping">General HTML escaping</h2>
+
+<p>In HTML element content and attribute values, some characters have a special meaning. They need to be escaped so the browser processes them as plain text, not markup. Replace these characters with character references, either entity references or numerical references:</p>
+
+<table class="html-escaping-table">
+<thead><tr><th>Character</th><th>Escaped character</th></tr></thead>
+<tbody>
+<tr>
+<td>&lt;</td>
+<td><code>&amp;lt;</code> or <code>&amp;#60;</code></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td><code>&amp;gt;</code> or <code>&amp;#62;</code></td>
+</tr>
+<tr>
+<td>"</td>
+<td><code>&amp;quot;</code> or <code>&amp;#34;</code></td>
+</tr>
+<tr>
+<td>'</td>
+<td><code>&amp;apos;</code> or <code>&amp;#39;</code></td>
+</tr>
+<tr>
+<td>&amp;</td>
+<td><code>&amp;amp;</code> or <code>&amp;#38;</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>ERB and HAML perform this HTML escaping per default.</p>
+
+<p>Let’s assume there is malicious input with HTML and JavaScript code:</p>
+
+<pre>
+input = "&lt;script>alert('XSS')&lt;/script>"
+</pre>
+
+<p>In the ERB template, the input is written to the document:</p>
+
+<pre>
+&lt;p><%= input %>&lt;/p>
+</pre>
+
+<p>Generated output:</p>
+
+<pre>
+&lt;p>&amp;lt;script&amp;gt;alert(&amp;#39;XSS&amp;#39;)&amp;lt;/script&amp;gt;&lt;/p>
+</pre>
+
+<p>Thanks to ERB’s automatic HTML escaping, the script injection was prevented. But usually it’s more complicated!</p>
+
+<h2 id="xss-context-matters">Context matters</h2>
+
+<p>The HTML syntax is complex and input may be embedded into different contexts, for example:
+
+<ul>
+<li>HTML element content: <code>&lt;p><var>input</var>&lt;/p></code></li>
+<li>HTML attribute values: <code>&lt;p title="<var>input</var>"></code></li>
+<li>Inside the start tag, in the attribute list: <code>&lt;p <var>input</var>></code></li>
+<li>
+  <p>Some HTML elements have special parsing rules:</p>
+  <ul>
+  <li><code>&lt;title><var>input</var>&lt;/title></code></li>
+  <li><code>&lt;script><var>input</var>&lt;/script></code></li>
+  </ul>
+</li>
+<li>
+  <p>Embedded CSS and JavaScript: They have their own complex syntax with different contexts.</p>
+  <ul>
+  <li><code>&lt;style> h1 { color: <var>input</var>; }&lt;/style></code></li>
+  <li><code>&lt;script> var data = '<var>input</var>'; &lt;/script></code></li>
+  <li><code>&lt;p onclick="someFunction('<var>input</var>')"></code></li>
+  </ul>
+</li>
+</ul>
+
+<p>The described <a href="#xss-general-html-escaping">general HTML escaping</a> is <em>not</em> applicable to all contexts. Just using ERB’s <code>&lt;%= input %></code> in these places is <em>not safe</em>. <strong>Context-specific escaping</strong> is necessary!</p>
+
+<h2 id="xss-html-parsing">HTML parsing</h2>
+
+<p>To understand the processing of HTML in the browser, we need to take a brief look at the history of HTML.
+
+<p>In 1998, HTML 4 was defined as an application of <a href="http://en.wikipedia.org/wiki/SGML">SGML</a>, a meta-language that allows to define syntax and semantics of markup languages. But no browsers followed the rigid SGML specification – because only few web pages were SGML-compliant. Instead, every browser invented its own ultra-liberal “tag soup” parser to deal with erroneous markup.</p>
+
+<p>After the attempts to use SGML- and XML-based languages for web pages failed, HTML 5 finally standardized a custom syntax and liberal parsing. The <a href="http://www.w3.org/TR/html5/syntax.html#parsing">HTML 5 parser</a> is a complex state machine with defined output and error handling. This algorithm is now implemented in all big browsers, but older browsers have quirky parsers with different XSS attack vectors.</p>
+
+<p>In recent Internet Explorers, attackers can enable the “<a href="http://msdn.microsoft.com/en-us/library/cc288325(v=vs.85).aspx">compatibility mode</a>” using a meta tag. For example, IE 11 has an IE 5 mode:</p>
+
+<pre>&lt;meta http-equiv="X-UA-Compatible" content="IE=5"></pre>
+
+<p>In this mode, IE 11 emulates several errors and the HTML parsing quirks of IE 5. This way even the most recent Internet Explorer is vulnerable to old browser-specific XSS attacks.</p>
+
+<h2 id="xss-types">Types of XSS</h2>
+
+<p>This presentation won’t mention all XSS principles, but we need to distinguish between two types of XSS:</p>
+
+<h3 id="xss-reflected">Reflected XSS</h3>
+
+<p>Code is injected using the HTTP request and only present in the associated HTTP response. The attack vector is mostly the URL. All users are affected which open a crafted link that contains the injected code.</p>
+
+<p>Reflected XSS is typically considered as the less severe type, but don’t underestimate it. Social media and e-mail spam make it easy to spread prepared URLs.</p>
+
+<p>Let’s have a look at a simple example of Reflected XSS. Assume there is a URL that contains malicious code (HTML with JavaScript) in the query string:</p>
+
+<pre>http://example.com/?id=&lt;script>alert(1)&lt;/script></pre>
+
+<p>Assume there is a PHP script on the server that outputs the input <em>without context-specific escaping</em>:</p>
+
+<pre class="exploitable">&lt;p>ID: &lt;?php echo $_GET['id'] ?>&lt;/p></pre>
+
+<p>This creates a Reflected XSS hole because the server “reflects” the input in the output without filtering malicious code.</p>
+
+<p>This is just a simple example – most of the time it’s more complex and the security vulnerability is not that obvious.</p>
+
+<p>Modern browsers try to mitigate Reflected XSS by refusing to execute JavaScript code that originates from the URL or from form data. Browsers get suspicious when both input and output contain the same JavaScript code.</p>
+
+<h2 id="xss-persistent">Persistent XSS (aka Stored XSS)</h2>
+
+<p>Persistent XSS means that malicious code is stored on the server, for example in the database, and is sent to other users with every response to a specific URL. Therefore, Persistent XSS potentially affects all users visiting a site. In contrast to Reflected XSS, the malicious code doesn’t need to be part of each request once it has been placed on the server.</p>
+
+<p>There are multiple attack vectors for Persistent XSS. Data from all parts of the HTTP request (the URL, headers like “Cookie”, form data…) can be harmful when it is stored on the server and output again without treatment.</p>
+
+<p>Also content that is loaded from third parties, especially HTML and JavaScript, may inject code persistently. This includes JavaScript libraries loaded from Content Delivery Networks (CDN), as well as advertisement and web analytics scripts.
+
+<h2 id="xss-larger-attackes">XSS is the beginning of larger attacks</h2>
+
+<p>XSS allows an attacker to overtake user accounts in order to steal money, manipulate information or access private data. This is severe enough, but it may not be the ultimate goal of the attacker. A lot of bigger security breaches start with a rather small XSS hole, then the attacker drills deeper into the IT infrastructure.</p>
+
+<p>For example, an attacker compromises a user profile on a social network using XSS. The malicious code replicates itself and spreads to other profiles (see the <a href="http://en.wikipedia.org/wiki/Samy_(computer_worm)">MySpace worm “Samy”</a> and the <a href="http://nakedsecurity.sophos.com/2014/06/11/twitter-jumps-to-block-xss-worm-in-tweetdeck/">recent Tweetdeck worm</a>). First an attacker targets normal users, then they gain access to admin accounts. Using <a href="http://en.wikipedia.org/wiki/Social_engineering">social engineering</a>, an attacker manages to access servers and private databases that are not directly connected to the web application.</p>
+
+<h2 id="xss-rails">Rails does not save us from XSS holes</h2>
+
+<p>Rails 4, ERB and HAML have good defaults that prevent simple XSS attacks. They create <a href="http://api.rubyonrails.org/classes/ActiveSupport/SafeBuffer.html">SafeBuffers</a> and HTML-escape input per default. But the devil lies in the detail. Most likely all non-trivial Ruby on Rails application are affected by XSS, we just don’t know yet because such holes aren’t easy to find.</p>
+
+<p>Places where XSS holes hide in a Rails application:</p>
+
+<ul>
+<li>Rails view helpers that create HTML code dynamically, but do not correctly escape the input data.</li>
+<li>User-generated HTML isn’t filtered correctly, for example from a web-based rich text editor.</li>
+<li>HTML is crawled from a third-party API and embedded into the page without filtering. To attack a well-secured site by XSS, an attacker just needs to compromise the weakest third-party script provider. They can <a href="https://palant.de/2014/06/27/third-party-javascript-more-critical-than-ever">pick one from up to 40 services</a>.</li>
+</ul>
+
+<p>In the rest of this presentation, I will describe two less obvious examples of XSS.</p>
+
+<h2 id="xss-jquery-dom-insertion">Example 1: XSS through jQuery DOM insertion</h2>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes">HTML5 data attributes</a> are a common way to embed data into HTML that isn’t directly visible, but can be used by JavaScript later. A data attribute can contain HTML tags as long as they are escaped correctly. JavaScript can read the attribute value and inserts it into the document when necessary.</p>
+
+<p>There are several ways to embed hidden content into a document to read it later with JavaScript. These are not XSS holes necessarily, but they may become if they aren’t implemented with care.</p>
+
+<p>The vulnerability demonstrated here: If content is inserted into the document using common jQuery functions, jQuery executes all scripts in the input string.</p>
+
+<p>Assume there is a Rails <code>User</code> model that has a “profile” attribute. This is a text field that can be edited by the user, so it contains arbitrary, untrusted data. Let’s assume an attacker enters HTML with JavaScript so we have this <code>User</code> model:</p>
+
+<pre>
+user = User.new(profile: '&lt;script>alert(1)&lt;/script>')
+</pre>
+
+<p>The profile text isn’t visible directly, but it is shown using JavaScript when a button is clicked. The ERB template:</p>
+
+<pre>
+&lt;button class="show-profile"
+  data-profile="&lt;%= user.profile %>">
+  Show user profile
+&lt;/button>
+</pre>
+
+<p>The profile text is embedded as a data attribute. The HTML output:</p>
+
+<pre>
+&lt;button class="show-profile"
+  data-profile="&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;">
+  Show user profile
+&lt;/button>
+</pre>
+
+<p>The attribute value was escaped correctly, so this is not a security vulnerability yet. It becomes an XSS hole through this jQuery code:</p>
+
+<pre class="exploitable">
+$('.show-profile').click(function(event) {
+  var profileText = $(event.target).data('profile');
+  $('.content').html( profileText );
+});
+</pre>
+
+<p>When the button is clicked, the data attribute is read into a string. This contains unescaped HTML and JavaScript code again: <code>'&lt;script>alert(1)&lt;/script>'</code>. Then the string is added to the document using <a href="http://api.jquery.com/html">jQuery’s <code>html()</code> method</a>.</p>
+
+<p>The DOM insertion methods of jQuery have a questionable feature: They automatically find <code>script</code> elements in the input string and execute their content as JavaScript. Therefore, the jQuery code above contains an XSS vulnerability. jQuery evaluates the injected script <code>alert(1)</code>.</p>
+
+<p>All jQuery functions that accept HTML strings are affected: <code>$('HTML code')</code>, <code>html</code>, <code>append(To)</code>, <code>prepend(To)</code>, <code>before/insertBefore</code>, <code>after/insertAfter</code> etc.</p>
+
+<p>jQuery offers <a href="http://api.jquery.com/jQuery.parseHTML">parseHTML</a> to parse an HTML string into a DOM tree <em>without</em> executing scripts. This would prevent the attack in the example above, but it <em>does not protect</em> from all XSS attacks. There are other ways to inject JavaScript into HTML, for example:</p>
+
+<pre>
+&lt;img src="bogus" onerror="alert(1)">
+</pre>
+
+<p>When this image is added to the DOM, the browser tries to fetch the source URL “bogus”. Since the source does not exist, the <code>error</code> event is fired. Thus the code in the <code>onerror</code> attribute is automatically executed without user interaction.
+
+<p>A possible workaround is to use <a href="http://api.jquery.com/text">jQuery’s text() function</a> whenever possible. This function ignores HTML and embedded scripts and treats them as plain text.</p>
+
+<p>The reliable solution is to always <em>sanitize</em> input. A <a href="#xss-sanitizers">proper HTML sanitizer</a> either removes HTML completely or filters known XSS attack vectors.</p>
+
+<h2 id="xss-embedding-json">Example 2: Embedding JSON into HTML</h2>
+
+<p>Another tricky example of possible XSS is the embedding of <a href="http://en.wikipedia.org/wiki/JSON">JSON</a> into HTML.</p>
+
+<p>In JavaScript web applications, it is a common practice to embed necessary data for the application start right into the HTML using JSON. This can be a complete database record with untrusted data. Let’s assume we have a <code>User</code> model with a forged name:</p>
+
+<pre>
+user = User.new(name: "&lt;/script> &lt;script>alert(1)&lt;/script>")
+</pre>
+
+<p>The <code>User</code> model needs to be passed to the JavaScript application. This is achieved by embedding a JSON serialization into the HTML. A naive approach would be (ERB template):</p>
+
+<pre class="exploitable">
+&lt;script>
+var user = &lt;%= @user.to_json %>;
+&lt;/script>
+</pre>
+
+<p>The resulting output:</p>
+
+<pre class="incorrect">
+&lt;script>
+var user = {&amp;quot;name&amp;quot;:
+  &amp;quot;&amp;lt;/script&amp;gt; &amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;&amp;quot;};
+&lt;/script>
+</pre>
+
+<p>This does not work and produces a JavaScript syntax error. The JSON code is escaped using HTML character references (<code>&amp;lt;</code>, <code>&amp;gt;</code> etc.), but character references inside of <code>script</code> elements are <em>not parsed</em>. For the content of <code>script</code> elements, special parsing rules apply. The <a href="#xss-general-html-escaping">general HTML escaping</a> by ERB/HAML is not applicable to the particular <code>script</code> context.</p>
+
+<p>We could continue with the naive approach and use <a href="http://guides.rubyonrails.org/active_support_core_extensions.html#output-safety">string.html_safe</a> or <a href="http://api.rubyonrails.org/classes/ActionView/Helpers/OutputSafetyHelper.html#method-i-raw">raw(string)</a> to mark the JSON string as “safe” so it is not HTML-escaped:</p>
+
+<pre class="exploitable">
+&lt;script>
+var user = &lt;%= @user.to_json.html_safe %>;
+&lt;/script>
+</pre>
+
+<p>Don’t do this! It creates an XSS hole in Rails 3. Output:</p>
+
+<pre>
+&lt;script>
+var user = {"name": "&lt;/script> &lt;script>alert(1)&lt;/script>"};
+&lt;/script>
+</pre>
+
+<p>The <code>&lt;/script></code> in the user name closes the <code>script</code> element, leaving the JavaScript context. The rest of the string is then parsed as normal HTML. It contains a new script with JavaScript code by the attacker.</p>
+
+<p>So how do we solve this problem without creating XSS vulnerabilities? We need to tell Rails to escape all dangerous characters at the JSON string level.
+
+<p>In <strong>Rails 3</strong>, there are at least two ways to achieve this. There is an application-wide configuration option that changes the behavior of all <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/object/json.rb">to_json methods</a>. In config/application.rb, we can add:</p>
+
+<pre>
+ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true
+</pre>
+
+<p>Since this changes the output of all <code>to_json</code> calls, it may be more suitable to apply the fix on a lower level. Pass the output of <code>to_json</code> to <a href="http://api.rubyonrails.org/classes/ERB/Util.html#method-c-json_escape">json_escape</a>:</p>
+
+<pre>
+&lt;script>
+var user = &lt;%= json_escape(@user.to_json) %>;
+&lt;/script>
+</pre>
+
+</pre>
+
+<p>In both cases, the HTML output is:
+
+<pre>
+&lt;script>
+var user = {"name":
+  "\u003C/script\u003E \u003Cscript\u003Ealert(1)\u003C/script\u003E"};
+&lt;/script>
+</pre>
+
+<p>As you can see, dangerous characters are escaped on the JavaScript string level using <a href="http://mathiasbynens.be/notes/javascript-escapes">Unicode escape sequences</a>. This is valid JavaScript and prevents XSS. You still need to make sure that the JavaScript application treats the user name carefully – for example, <a href="#xss-jquery-dom-insertion">do not pass it to jQuery’s <code>html()</code></a>.
+
+<p>In case you are using <strong>Rails 4</strong>, you’re lucky and do not have to apply the fixes above. Since Rails 4, <code>to_json</code> always escapes special HTML characters (&lt;, &gt;…) in strings using the <code>\uXXXX</code> notation. The configuration option <code>escape_html_entities_in_json</code> is <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/json/encoding.rb">enabled per default</a>. This is a good move that makes Rails applications more secure.</p>
+
+<p>The cause of this XSS vulnerability is the special parsing of <code>script</code> elements.
+To avoid it, don’t put JSON in a <code>script</code> element, but in hidden <code>div</code> or <code>span</code> element instead. For these elements, general HTML escaping is sufficient:</p>
+
+<pre>&lt;div id="user-json" style="display: none">&lt;%= @user.to_json %>&lt;/div></pre>
+
+<p>Then read the content with JavaScript and <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse">parse the JSON manually</a>:</p>
+
+<pre>
+var userJSON = document.getElementById('user-json').textContent;
+var user = JSON.parse(userJSON);
+</pre>
+
+<p>A more effective solution is to sanitize untrusted data before it appears in the frontend. Remove or filter HTML using <a href="#xss-sanitizers">well-proven sanitizers</a>.
+
+<h2 id="xss-input-validation">Conclusion: Comprehensive input validation</h2>
+
+<p>A web application needs to mistrust input in every respect. Input needs to be validated before it is stored and processed further. This includes several checks and processing steps:</p>
+
+<ul>
+<li>Text encoding (enforce UTF-8)</li>
+<li>Length and range (minimum/maximum)</li>
+<li>Syntax (names, identifiers, numbers, fixed sets of these)</li>
+<li>Allowed characters, words, texts (uniqueness, disallow swear words, filter spam, prevent duplicate content etc.)</li>
+<li>Remove or filter possible code injection (HTML, CSS, JavaScript etc.)</li>
+<li>Whenever data changes the context, apply specific escaping or use tools that do automatically</li>
+</ul>
+
+<p>These checks are necessary to ensure the reliability, robustness and security of your web application. My advice is: Try to break your own web app. Try to break into your own web app. Every day.</p>
+
+<h2 id="xss-resources">Resources</h2>
+
+<ul class="compact-list">
+
+<li><a href="https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">OWASP XSS Prevention sheet</a></li>
+
+<li><a href="http://excess-xss.com">Comprehensive tutorial on cross-site scripting</a></li>
+
+<li>
+  <p>Rails ERB and HAML background:</p>
+  <ul class="compact-list">
+  <li><a href="http://yehudakatz.com/2010/02/01/safebuffers-and-rails-3-0/">SafeBuffers and Rails 3.0</a></li>
+  <li><a href="http://makandracards.com/makandra/2579-everything-you-know-about-html_safe-is-wrong">Everything you know about html_safe is wrong</a></li>
+  </ul>
+</li>
+
+<li id="xss-sanitizers"><a href="http://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html">SanitizeHelper: Ruby on Rails ActionView HTML sanitizer</a></li>
+
+<li><a href="https://github.com/rgrove/sanitize">sanitize: Whitelist-based Ruby HTML and CSS sanitizer</a></li>
+
+<li><a href="https://github.com/cure53/DOMPurify">DOMPurify: JavaScript sanitizer for HTML, MathML and SVG</a></li>
+
+<li>Read the papers and presentations by Mario Heiderich (<a href="https://cure53.de/">cure53</a>), <a href="https://twitter.com/0x6D6172696F">Twitter</a>, <a href="http://html5sec.org/">html5sec.org</a></li>
+
+<li>Follow <a href="https://twitter.com/garethheyes">Gareth Heyes</a> (<a href="http://www.thespanner.co.uk">The Spanner</a>)</li>
+
+</ul>
+
+<h2 id="xss-more">More than XSS</h2>
+
+<p>As said in the beginning, XSS is not the only frontend security threat. These links cover related security issues:</p>
+
+<ul class="compact-list">
+<li><a href="http://fhemberger.github.io/talks/web-security/en.html">Mitigate Clickjacking and XSS attacks with HTTP headers</a></li>
+<li><a href="http://www.html5rocks.com/en/tutorials/security/content-security-policy/">An Introduction to Content Security Policy</a></li>
+<li><a href="https://github.com/twitter/secureheaders">Ruby gem: SecureHeaders</a> sets a bunch of security-related HTTP headers:<br>
+Content Security Policy, HTTP Strict Transport Security, X-Frame-Options, X-XSS-Protection, X-Content-Type-Options</li>
+<li>Scriptless attacks by Mario Heiderich et al.: <a href="http://iospress.metapress.com/content/03mr52274011361u/fulltext.pdf">Scientific paper</a>, <a href="http://de.slideshare.net/x00mario/stealing-the-pie">presentation</a></li>
+</ul>
+
+<h2 id="xss-acknoledgement">Acknowledgement</h2>
+
+<p>Thanks to the <a href="https://9elements.com">9elements team</a> for feedback on the presentation.</p>
+
+<p><em>I’d love to hear your feedback! Send an email to <a href="mailto:zapperlott@gmail.com">zapperlott@gmail.com</a> or <a href="https://twitter.com/molily">message me on Twitter: @molily</a>.</em></p>
+
+</div>

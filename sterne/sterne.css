@@ -1,0 +1,574 @@
+/* ####################################################################### */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Verdana, '-apple-system', BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: black;
+  background-color: #f0f0f0;
+}
+
+/* Überschriften */
+
+h1, #inhalt h2, h3, h4 {
+  clear: both;
+  border-bottom: 1px solid #a0a0c0;
+  padding: 0 0 5px 1px;
+  font-family: 'Franklin Gothic Medium', 'Franklin Gothic Book', 'Helvetica Neue', sans-serif;
+  font-weight: normal;
+  line-height: 1.3;
+  color: #000040;
+}
+
+h1 {
+  margin: 0 0 1em 0;
+  font-size: 1.5em;
+}
+
+h2, h3 {
+  margin: 1.5em 0 1em 0;
+}
+
+h2 {
+  font-size: 1.4em;
+}
+
+h3 {
+  font-size: 1.3em;
+}
+
+h4 {
+  margin: 1em 0;
+  font-size: 1.2em;
+}
+
+/* Absätze und Listen */
+
+p, dl, ul, ol {
+  margin: 1em 0;
+  line-height: 1.7;
+}
+
+p {
+  margin: 1em 0;
+}
+
+@media (min-width: 50em) {
+  p {
+    margin: 1em 0 1em 1em;
+  }
+}
+
+ul, ol {
+  margin-left: 3em;
+}
+
+li {
+}
+
+dl {
+  margin-bottom: 0;
+  padding-bottom: 1em; /* hasLayout für IE: Guillotine Bug: */
+  zoom: 1;
+}
+
+dt {
+  font-weight: bold;
+  margin: 0 0 0.3em 1em;
+  clear: right;
+}
+
+dd {
+  margin: 0 0 1em 2.5em;
+}
+
+/* Inline-Elemente */
+
+q {
+  font-style: normal;
+  quotes: "»" "«" "›" "‹";
+  color: #005;
+}
+
+q:before {
+  content: "»";
+  content: open-quote;
+}
+
+q:after {
+  content: "«";
+  content: close-quote;
+}
+
+abbr, acronym {
+  border-bottom: thin dotted #777;
+  cursor: help;
+}
+
+img {
+  border: 0;
+  vertical-align: bottom;
+  max-width: 100%;
+}
+
+iframe {
+  max-width: 100%;
+}
+
+hr {
+  color: gray;
+  background-color: gray;
+  height: 2px;
+  border-style: none;
+}
+
+/* Links */
+
+a:link {
+  color: #000080;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #00003a;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #0000a0;
+  background-color: #eee;
+}
+
+a:focus {
+  color: #0000c0;
+  background-color: #eee;
+  outline: 1px dotted #400;
+}
+
+/* Formulare */
+
+form {
+  vertical-align: bottom;
+}
+
+form ul {
+  list-style-type: none;
+  line-height: 2.5;
+  margin-left: 1em;
+}
+
+form p {
+  margin: 0;
+}
+
+label {
+  font-weight: bold;
+}
+
+input, textarea, input[type="submit"] {
+  border: 1px solid #aaa;
+  padding: 4px;
+  background-color: #eee;
+  font-family: verdana, sans-serif;
+  vertical-align: middle;
+}
+
+input[type="submit"] {
+  font-weight: bold;
+  padding: 4px 10px;
+}
+
+input:focus, textarea:focus {
+  border: 1px solid #808080;
+  background-color: #f2f2ee;
+}
+
+/* Tabellen */
+
+table {
+  border-style: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  margin: 0 auto 2em auto;
+}
+
+caption, th, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+caption {
+  font-size: 1.3em;
+  font-weight: normal;
+  margin: 0;
+  padding: 0 0 0.5em 0;
+  color: #000040;
+}
+
+th, td {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #778 #ccc;
+  padding: 0.7em 0.5em;
+  font-size: 0.8em;
+  vertical-align: top;
+  background-color: #ececec;
+  color: black;
+}
+
+th {
+  background-color: #e4e4e4;
+  font-weight: bold;
+}
+
+tr:hover td {
+  background-color: #f0f1f4;
+}
+
+/* ####################################################################### */
+
+/* Logo */
+
+#logo {
+  position: relative;
+  margin: 0;
+  padding: 12px;
+  color: #000080;
+  background-color: #fafafa;
+  border-bottom: 1px solid #eaeaea;
+}
+
+/* ####################################################################### */
+
+/* Hauptnavigation */
+
+#navibox {
+}
+
+@media (min-width: 50em) {
+  #navibox {
+    float: left;
+    padding: 2em 0 2em 0.5em;
+    width: 11em;
+  }
+}
+
+#navibox ul,
+#navibox ol {
+  margin: 1em 0 1em 1em;
+}
+
+@media (min-width: 50em) {
+  #navibox ul {
+    line-height: 2;
+  }
+}
+
+#navibox ul li {
+  list-style-type: none;
+}
+
+#navibox ul strong,
+#navibox ul a {
+  display: block;
+  text-decoration: none;
+  margin-left: 3px;
+  border-left: 1px solid #008;
+  padding-left: 15px;
+}
+
+#navibox ul a:link {
+  color: #0000c0;
+}
+
+#navibox ul a:visited {
+  color: #000050;
+}
+
+#navibox ul a:hover,
+#navibox ul a:focus,
+#navibox ul strong {
+  margin-left: 0;
+  border-left: 7px solid #00a;
+  padding-left: 12px;
+}
+
+#navibox ul a:hover,
+#navibox ul a:focus {
+  background-color: #f5f5f5;
+  color: #0000c0;
+  border-color: #0000c0;
+}
+
+#navibox ul strong {
+  border-color: #005;
+}
+
+/* ####################################################################### */
+
+/* Inhaltsverzeichnis */
+
+#inhaltsverzeichnis {
+  margin: 1.5em 0 0 1em;
+  font-size: 1em;
+}
+
+#navibox ol {
+  list-style-type: none;
+}
+
+#navibox ol a {
+  display: block;
+  text-decoration: none;
+  line-height: 1.5;
+  padding-left: 1em;
+  text-indent: -1em;
+}
+
+#navibox ol a:link {
+  color: #000080;
+}
+
+#navibox ol a:visited {
+  color: #000080;
+}
+
+#navibox ol a:hover,
+#navibox ol a:focus {
+  color: #000080;
+}
+
+#navibox ol a:before {
+  content: '•';
+  padding-right: 0.5em;
+  color: #aab4ff;
+}
+
+#navibox ol a:hover:before {
+  color: #0000c0;
+}
+
+/* ####################################################################### */
+
+/* Skip-Link */
+
+#skip {
+  margin: 0;
+}
+
+#navigation, #skip a {
+  position: absolute;
+  left: -999px;
+  width: 0;
+  overflow: hidden;
+}
+
+#skip a:link, #skip a:visited {
+  color: #0000c0;
+}
+
+#skip a:focus {
+  width: auto;
+  left: auto;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  color: black;
+  font-size: 15px;
+  line-height: normal;
+  background-color: #faf033;
+}
+
+/* ####################################################################### */
+
+/* Inhaltsbereich */
+
+#inhalt {
+  padding: 1em;
+  background-color: #e8e8e8;
+}
+
+@media (min-width: 50em) {
+
+  #inhalt {
+    max-width: 50em;
+    margin-left: 13em;
+    border-left: 1px solid #f0f0f0;
+    padding: 1.5em;
+    background-color: #e8e8e8;
+  }
+
+  /* Block formatting context */
+  #inhalt-wrapper {
+    float: left;
+    width: 100%;
+  }
+
+  /* Einschließen aller Floats in #inhalt (Clearfix) */
+  #inhalt:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+}
+
+/* ####################################################################### */
+
+/* Footer */
+
+#footer {
+  clear: both;
+  font-size: 0.9em;
+  padding: 1.5em;
+  background-color: #fafafa;
+}
+
+/* ####################################################################### */
+
+/* Allgemeine Muster */
+
+/* Bilder neben Text positionieren */
+
+.bildlinks {
+  float: left;
+  margin: 0 1em 0.5em 1em;
+}
+
+.bildrechts {
+  float: right;
+  margin: 0 0 0.5em 1em;
+}
+
+.bildlinks div, .bildrechts div {
+  font-size: 0.8em;
+  color: #969696;
+}
+
+.bildlinks img, .bildrechts img {
+  border: 1px solid #a0a0a0;
+  vertical-align: top;
+}
+
+.unwichtig {
+  font-size: 0.9em;
+}
+
+/* Zweispaltige Liste */
+
+.liste-spalten {
+  margin-left: 1em;
+}
+
+.liste-spalten ul {
+  list-style-position: inside;
+}
+
+.liste-links {
+  margin: 0 0.5em 0 0;
+  float: left;
+}
+
+.liste-links li {
+  margin-left: 0.5em;
+  padding-right: 1em;
+}
+
+.liste-rechts {
+  margin: 0;
+}
+
+.liste-rechts li {
+}
+
+/* Einschließen der Floats: */
+.liste-spalten:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/* ####################################################################### */
+
+/* Einzelseiten */
+
+/* Aktuelles */
+
+#einleitung {
+  border: 1px solid #d2d0d0;
+  border-radius: 1px;
+  padding: 1em;
+  background-color: #f2eeef;
+}
+
+#einleitung h1 {
+  margin: 0 0 0.5em;
+  padding: 0;
+  border-style: none;
+  font-size: 1.4em;
+}
+
+#einleitung p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+#neuigkeiten {
+  position: absolute;
+  left: -999px;
+  width: 0;
+  overflow: hidden;
+}
+
+.datum {
+  font-size: 0.8em;
+  color: #444;
+  background-color: #f2f2f2;
+  padding: 0.3em 0.6em;
+}
+
+/* Tourtermine */
+
+tr.upcoming td {
+  background-color: #f4eaea;
+}
+
+tr.upcoming:hover td {
+  background-color: #fae8e8;
+}
+
+.vevent .additional {
+  display: none;
+}
+
+/* Biografie */
+
+#konterfeis img, .cdcover {
+  border: 1px solid #a0a0a0;
+}
+
+#konterfeis {
+  text-align: center;
+  line-height: normal;
+}
+
+.frage {
+  color: #202080;
+}
+
+.antwort {
+  color: #903030;
+}
+
+/* Links */
+
+#linkliste img {
+  border: 1px solid #969696;
+}
+
+/* ####################################################################### */

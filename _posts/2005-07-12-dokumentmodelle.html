@@ -1,0 +1,593 @@
+---
+layout: post
+title: HTML-Dokumentmodelle
+description: Dokumentmodelle vereinfachen das Verständnis der Semantik von Auszeichnungssprachen wie HTML
+keywords: Markup, Auszeichnungssprachen, HTML, Objektmodelle, DOM, Semantik, Verschachtelung, Elementenbaum, Elementhierarchie, Baumstruktur, Knoten
+---
+
+<style>
+.kernzitat {
+  border-left: 0.1em solid #888;
+  margin-left: -0.6em;
+  padding-left: 0.5em;
+}
+#toc ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+#abstraktionsreihe ol {
+  margin-left: 0;
+  padding-left: 0;
+  list-style-position: inside;
+}
+#abstraktionsreihe li {
+  clear: left;
+  margin-left: 0;
+  padding-left: 0;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: thin solid gray;
+  overflow: auto;
+}
+#abstraktionsreihe img {
+  float: left;
+  margin-right: 2em;
+}
+#element th, #element strong {
+  color: rgb(192,0,0);
+}
+#elementname th, #elementname strong {
+  color: rgb(128,0,0);
+}
+#starttag th, #starttag strong {
+  color: rgb(0,0,192);
+}
+#elementinhalt th, #elementinhalt strong {
+  color: rgb(0,150,192);
+}
+#endtag th, #endtag strong {
+  color: rgb(0,192,192);
+}
+#attribut th, #attribut strong {
+  color: rgb(250,150,0);
+}
+#attributname th, #attributname strong {
+  color: rgb(220,180,0);
+}
+#attributwert th, #attributwert strong {
+  color: rgb(180,180,0);
+}
+#verschachtelung {
+  margin: 0;
+  padding: 0;
+  max-width: 35em;
+  font-size: 0.9em;
+}
+#verschachtelung, #verschachtelung ul {
+  list-style-type: none;
+}
+#verschachtelung ul {
+  margin: 0;
+  padding: 0 1em;
+}
+#verschachtelung li {
+  margin: 0.5em 0;
+  padding: 0.2em 0.5em;
+  border: 1px solid #555;
+  font-weight: bold;
+  color: #000;
+  background-color: #f0f0f2;
+}
+#verschachtelung .ebene1 li {
+  background-color: #e2e2e4;
+}
+#verschachtelung .ebene2 li {
+  background-color: #d4d4d6;
+}
+#verschachtelung .ebene3 li {
+  background-color: #c6c6c8;
+}
+#verschachtelung .ebene4 li {
+  background-color: #b8b8ba;
+}
+#verschachtelung .ebene5 li {
+  background-color: #aaa;
+}
+#einrueckung-beispiel em, #verschachtelung .text, #baumstruktur-beispiel em {
+  color: #006;
+  font-style: normal;
+}
+#baumstruktur-beispiel {
+  font-size: 0.9em;
+  line-height: normal;
+  font-weight: bold;
+}
+#baumstruktur-beispiel img {
+  vertical-align: middle;
+}
+#dombaum {
+  overflow: auto;
+  border: 1px solid black;
+}
+</style>
+
+<ol class="compact-list" id="toc">
+<li><a href="#einstimmung">Zur Einstimmung</a></li>
+<li><a href="#abstraktionsreihe">Eine mögliche Abstraktion vom Code zum Modell</a></li>
+<li><a href="#grundlagen">Grundlagen: HTML-Code als Linearisierung einer Baumstruktur im Speicher</a></li>
+<li><a href="#vokabular">Vokabular der HTML-Syntax</a></li>
+<li><a href="#warum-modelle">Orientierung durch Markup-Abstraktionsmodelle</a></li>
+<li><a href="#modelle">Mögliche Veranschaulichungen</a>
+	<ol>
+	<li><a href="#einrueckung">Einrückungen im gekürzten Markup</a></li>
+	<li><a href="#schachtelmodell">Schachtelmodell</a></li>
+	<li><a href="#baumstruktur">Baumstrukturen</a></li>
+	</ol>
+</li>
+<li><a href="#interpretation">Schlussfolgerungen aus den Veranschaulichungen</a></li>
+<li><a href="#nutzen">Nutzen: Von Objektmodellen zu korrektem Code und sinnvollen Objektstrukturen</a></li>
+</ol>
+
+<h2 id="einstimmung">Zur Einstimmung</h2>
+
+<p>Ein HTML-Dokument ist in der statisch gespeicherten Form zunächst einmal eine Datei &ndash; eine Ansammlung von <em>Nullen und Einsen</em>, die für bestimmte Zeichen stehen, zum Beispiel Buchstaben und Zahlen. Diese Aneinandereihung von Zeichen ein <em>Hypertext-Dokument</em> zu nennen, mag selbstverständlich und trivial scheinen, ist jedoch ein riesiger gedanklicher Schritt und eine komplexe Abstraktionsleistung.</p>
+
+<p>Tatsächlich geben diese Nullen und Einsen ein <em>Geflecht von Informationen</em> wieder und schließlich werden daraus im Browser <em>abstrakte Objekte miteinander vernetzter Informationsknoten</em>. Wie läuft eine solche Verarbeitung ab? Welche Modelle gibt es für diesen Weg der Abstraktion? Wie lassen sich die Objektverbindungen veranschaulichen? Und können uns diese Modelle beim Verständnis von HTML und dessen effizienter Anwendung helfen?</p>
+
+<div id="abstraktionsreihe">
+
+<h2>Eine mögliche Abstraktion vom Code zum Modell</h2>
+
+<ol>
+
+<li><img src="/img/dokumentmodelle-bits.png" alt="" />
+Eine HTML-Datei, gespeichert auf einer Festplatte oder im Arbeitsspeicher, ist zunächst eine bloße Ansammlung von Nullen und Einsen (oder im physikalischen Sinne: Strom &ndash; kein Strom usw.).</li>
+
+<li><img src="/img/dokumentmodelle-welsch.png" alt="" />
+Jeweils acht Bit repräsentieren bei dieser Kodierung ein bestimmtes Zeichen. Zwar ist nach der Übertragung sofort ein Muster erkennbar, nämlich die charakteristische HTML-Syntax. Deren Sinn erschließt sich aber erst, wenn die Bedeutung (Semantik) der Bestandteile bekannt ist. Um diesen Zwischenschritt zu veranschaulichen, wurden in der Grafik alle Buchstaben verfremdet.</li>
+
+<li><img src="/img/dokumentmodelle-code.png" alt="" />
+Die Zeichen fügen sich zu bekannten Wörtern einer natürlichen Sprache zusammen, deren direkten Sinn wir zumindest erahnen können und deren regelmäßiger Zusammenhang sich beschreiben lässt. Die Trennung zwischen natürlicher geschriebener Sprache und Metasprache (Sprache über Sprache) wird erkennbar. Beide folgen unterschiedlichen Mustern.</li>
+
+<li><img src="/img/dokumentmodelle-objekte.png" alt="" />
+Wenn die Spracheinheiten in ihrem Sinn entschlüsselt sind, werden die Beziehungen der Teile in <em>Sequenzen</em> (geordnete Abfolgen) und <em>Hierarchien</em> (Verschachtelungen) überführt wurden. Im Gesamtzusammenhang kann letztlich die Bedeutung rekonstruiert werden.</li>
+
+</ol>
+
+</div>
+
+<h2 id="grundlagen">Grundlagen: HTML-Code als Linearisierung einer Baumstruktur im Speicher</h2>
+
+<p>Zwar will der englischsprachige Artikel <a href="http://css.nu/markup/markup-tagsoup.html#Markup" hreflang="en" lang="en">Markup vs. Tag soup</a> darauf hinaus, den Unterschied zwischen beschreibender und sogenannter prozeduraler Textauszeichnung zu erläutern (»<q>HTML is largely about nouns, not verbs</q>«). Dennoch finden sich darin Erläuterungen zum Wesen von Textauszeichnung. Dabei interessiert vor allem der letzte Satz (Hervorhebung und Absatztrennung durch mich):</p>
+
+<blockquote cite="http://css.nu/markup/markup-tagsoup.html#Markup" lang="en">
+
+<div class="unwichtig">
+
+<p>»A tag is just a marker, like a parenthesis: its role is syntactic only, to group with its matching parenthesis the contents in between, where the block as a whole is given a name for semantic purposes.</p>
+
+<p>Such a name, called the generic identifier, is included in the start-tag because it's syntactically convenient to do so, but this name is not a property of the tag. It's a property of the element for which the tag serves as a delimiter. In other words, all semantics apply to elements: the tags merely locate where these elements are.</p>
+
+<p>Similarly, the scope of the element determines the scope of the semantics to be applied, so proper semantic processing depends critically on such scopes being identifiable.</p>
+
+<p>The syntax to scope an element has three parts: a start, content, and an end. The content in turn consists of other elements (also with generic identifiers as "hooks" to semantics) and possibly text.</p>
+
+</div>
+
+<p class="kernzitat">The elements form a containment hierarchy that is actually a tree, as a data structure, with all text data at the leaf nodes. In fact, a document with SGML markup is no more than a linearized representation of such a tree, where all text is embedded in markup.«</p>
+
+</blockquote>
+
+<p>Freie, interpretierende Übersetzung:</p>
+
+<blockquote cite="http://css.nu/markup/markup-tagsoup.html#Markup">
+
+<div class="unwichtig">
+
+<p>Ein <span lang="en">Tag</span> ist nur eine Markierung, wie eine Klammer: Er spielt lediglich eine syntaktische Rolle. Er umgrenzt nämlich zusammen mit der entsprechenden anderen Klammer (dem Gegenstück) den Inhalt dazwischen. Dabei wird dem Block als Ganzes zum Zwecke der Bedeutung (Semantik) ein Name gegeben.</p>
+
+<p>Ein solcher Name, auch <dfn lang="en">generic identifier</dfn> genannt (etwa: allgemeiner Bezeichner, oder anders aufgefasst: die Bezeichnung, die die Art und Klasse angibt) genannt, wird im Start-<span lang="en">Tag</span> untergebracht, weil es sich in syntaktischer Hinsicht anbietet. Dieser Name ist jedoch keine Eigenschaft des Tags, sondern eine Eigenschaft des Elements, dem der <span lang="en">Tag</span> als Begrenzer dient. Anders gesagt bezieht sich alle Bedeutung auf die Elemente und alle Bedeutung haftet den Elementen an. Die <span lang="en">Tags</span> hingegen legen lediglich fest, wo sich diese Elemente befinden.</p>
+
+<p>Gleichermaßen legt die Ausdehnung des Elements fest, auf welchen Bereich die Bedeutung zutrifft bzw. für welchen Bereich diese gilt. Deshalb hängt die korrekte Verarbeitung gemäß der Bedeutung (Semantik) entscheidend davon ab, ob diese Geltungsbereiche erkennbar und exakt bestimmbar sind.</p>
+
+<p>Es gibt drei syntaktische Teile, die den Umfang eines Elements bestimmen: der Anfang, der Inhalt und das Ende. Der Inhalt selbst wiederum besteht aus anderen Elementen (ebenfalls in Form von Tags als »Angriffspunkte« für das Zuweisen von Bedeutung) und etwa Text.</p>
+
+</div>
+
+<p class="kernzitat">Die Elemente bilden eine Enthaltenseins<em>hierarchie</em> (<em>Verschachtelung</em>shierarchie), welche wie ein <em>Baum als Datenstruktur</em> organisiert ist &ndash; der Baum ist eine in der Informatik bekannte Datenstruktur. An dessen Verzweigungen bzw. Fassungen sind die <em>Textdaten</em> angehängt (wie Blätter oder Früchte). Ein aus <abbr>SGML</abbr>- oder <abbr>XML</abbr>-<em lang="en">Markup</em> bestehendes Dokument ist letztlich nichts anderes als eine <em>linearisierte Darstellungsweise</em> (Abbild, Repräsentation) eines solchen Baumes, bei der der Text in Markup (<em>Auszeichnungen</em>, <em>Markierungen</em>) gefasst wird.</p>
+
+</blockquote>
+
+<p>Dieser Satz beschreibt die Prinzipien der Textauszeichnung: Eigentlich haben wir es mit einer hierarchische Baumstruktur mit Verzweigungen und Knoten zu tun. Der HTML-Code, den wir schreiben und ständig vor uns sehen, ist davon nur die linearisierte Repräsentation, also eine textuelle Abbildung, die sich einfacher schreiben, lesen, langfristig speichern und übertragen lässt.</p>
+
+<h2 id="dokumentmodelle">Von spitzen Klammern über Tags hin zu Dokumentmodellen</h2>
+
+<p>Um das Wesen von Textauszeichnung zu verstehen, wollen wir dessen Funktionsweise noch einmal rekonstruieren, indem wir uns scheinbar unwissend stellen.</p>
+
+<p>In einem (mit Markup) »ausgezeichneten« Text lassen sich bei naiver Betrachtung lediglich in Größer- und Kleiner-Zeichen gefasste, wenig verständliche Fragmente als Teile der künstlichen Auszeichnungssprache nachweisen. Diese heben sich von der natürlichen Sprache ab und schneiden den den natürlichsprachigen Text ein und unterbrechen ihn immer wieder.</p>
+
+<p>Bei näherer Untersuchung der Metasprache wird deren grundlegende Syntax erkennbar: Diese »spitzen Klammern« trennen natürliche Sprache und Metasprache. Die Bestandteile treten in einem gleichfömigen Schema auf, sie sind nicht willkürlich in den Text eingestreut. Ohne Vorwissen lässt sich feststellen, dass die paarweise auftretenden »Zeichen« Anfang und Ende eines Textbereiches zu markieren scheinen.</p>
+
+<p class="unwichtig">(Natürlich besteht Markup aus weiteren syntaktischen Einheiten als elementbildende <span lang="en">Tags</span>. Zeichenreferenzen, Kommentare und <abbr title="character data" lang="en">CDATA</abbr>-Abschnitte interessieren uns in ihrer syntaktischen Dimension erst einmal nicht, da sie nicht die Daten- und Informationsanordnung betreffen. Meta-Markup wie Dokumenttyp-Deklarationen bildet nur den Rahmen eines Modells und ist für das Verständnis von Textauszeichnung vergleichsweise unwichtig.)</p>
+
+<p>Die Vermutung liegt nahe, dass diese Zeichenpaare der Metasprache etwas über Text zwischen den Begrenzungsmarken aussagen, diesen also in seiner Bedeutung im Gesamttext bestimmen. Diese Markierungen (<dfn lang="en">Tags</dfn>) finden sich in variantenreicher Ausführung mit Zusätzen, die einem strengen Muster folgen und ihrerseits natürliche Sprache enthalten können. (Gemeint ist hier das, was wir später als <dfn lang="en">Attribute</dfn> bezeichnen werden.) Damit ist die sprachliche Struktur bereits größtenteils entschlüsselt: Die kleinste Einheit der Auszeichnungssprache ist ein Paar von in Beziehung stehenden Tags.</p>
+
+<p>Zwar wird schnell einsichtig, dass diese Einheiten größtenteils nicht autonom bestehen, sondern ihre Bedeutung mehr oder minder aus ihrer Rolle als Glied eines größeren Zusammenhangs schöpfen, dennoch geht dieses einfache Verständnis zunächst von Einheiten aus, die ohne starken logischen Bezug nebeneinander auftreten.</p>
+
+<p>Für weitere Untersuchungen bietet sich nun die erste Terminologie (d.h. Begriffslehre) an: Die Dreiheit aus einem Anfangs-<span lang="en">Tag</span>, dem ausgezeichneten umschlossenen Text sowie dem End-<span lang="en">Tag</span> wird als <dfn>Element</dfn> bezeichnet. Damit ist der Sprung vom einfachen Tag zu einem einzelnen Textbestandteil geschafft, der durch die Auszeichnungssprache semantisch (d.h. in seiner Bedeutung) erweitert wird. Diese Einzelstruktur steht mit der Gesamtstruktur aller Elemente, dem <dfn>Dokument</dfn>, in einer Wechselwirkung und definiert sich wiederum darüber.</p>
+
+<h2 id="vokabular">Vokabular der HTML-Syntax</h2>
+
+<p>Anhand des vorerst wenig ausdifferenzierten Modells bieten sich eindeutige Bezeichnungen für die Codebestandteile an, um den Aufbau eines Hypertextdokuments auf der konkreten Markup-Ebene zu beschreiben. Betrachten wir folgendes einfaches Codebeispiel:</p>
+
+<p class="code"><code>&lt;a href="http://www.example.com/"&gt;Beispiellink&lt;/a&gt;</code></p>
+
+<p>Das Beispiel lässt sich in seine Bestandteile zerlegen, die gemäß der »offiziellen« Terminologie von SGML sowie den <abbr title="World Wide Web Consortium">W3C</abbr>-HTML-Spezifikationen so genannt werden:</p>
+
+<table border="1" cellspacing="0" cellpadding="3" summary="Bezeichnungen der Syntaxelemente anhand eines Beispiels">
+<caption>Syntaxbestandteile und deren Bezeichnungen</caption>
+<thead>
+<tr>
+<th scope="col">Bezeichnung</th>
+<th scope="col">Codebestandteil</th>
+</tr>
+</thead>
+<tbody>
+<tr id="element">
+<th scope="row">Element</th>
+<td><code><strong>&lt;a href="http://www.example.com/"&gt;Beispiellink&lt;/a&gt;</strong></code></td>
+</tr>
+<tr id="elementname">
+<th scope="row">Elementname</th>
+<td><code>&lt;<strong>a</strong> href="http://www.example.com/"&gt;Beispiellink&lt;/<strong>a</strong>&gt;</code></td>
+</tr>
+<tr id="starttag">
+<th scope="row">Start-Tag</th>
+<td><code><strong>&lt;a href="http://www.example.com/"&gt;</strong>Beispiellink&lt;/a&gt;</code></td>
+</tr>
+<tr id="elementinhalt">
+<th scope="row">Elementinhalt</th>
+<td><code>&lt;a href="http://www.example.com/"&gt;<strong>Beispiellink</strong>&lt;/a&gt;</code></td>
+</tr>
+<tr id="endtag">
+<th scope="row">End-Tag</th>
+<td><code>&lt;a href="http://www.example.com/"&gt;Beispiellink<strong>&lt;/a&gt;</strong></code></td>
+</tr>
+<tr id="attribut">
+<th scope="row">Attribut</th>
+<td><code>&lt;a <strong>href="http://www.example.com/"</strong>&gt;Beispiellink&lt;/a&gt;</code></td>
+</tr>
+<tr id="attributname">
+<th scope="row">Attributname</th>
+<td><code>&lt;a <strong>href</strong>="http://www.example.com/"&gt;Beispiellink&lt;/a&gt;</code></td>
+</tr>
+<tr id="attributwert">
+<th scope="row">Attributwert</th>
+<td><code>&lt;a href="<strong>http://www.example.com/</strong>"&gt;Beispiellink&lt;/a&gt;</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>Demzufolge lässt sich der Beispielcode folgendermaßen umschreiben: Ein <code>a</code>-Element (ein Hyperlink) enthält den Text »Beispiellink« (der Bezeichner des Verweises). Das Element besitzt ein <code>href</code>-Attribut mit dem Attributwert »http://www.example.com/« (ein gültiger <abbr title="Uniform Resource Identifier">URI</abbr>, die auf eine eine Site im <span lang="en">World Wide Web</span> zeigt).</p>
+
+<p class="unwichtig">Dass wir bereits auf syntaktischer Ebene von »Elementen« reden, ist tatsächlich ein verwirrender Bruch in der Terminologie. Der Begriff »Element« ist eigentlich auf einer abstrakteren Ebene angesiedelt. Auf der Ebene der linearen Darstellungsweise, das heißt auf der Code-Ebene, sehen wir nämlich nur Tags, die Text umschließen. Der Begriff »Element« spielt bereits auf ein Dokumentmodell an, für das der Code nur ein Abbild ist. Siehe dazu die längere Abhandlung <a href="https://forum.selfhtml.org/self/2004/mar/9/begriffsunterschied-element-tag/577092#m577092">Begriffsunterschied Element &ndash; Tag?</a>.</p>
+
+<p>Unglücklicherweise wird der Begriff »Tag« nicht nur für die tatsächlichen Start-Tags und End-Tags verwendet, sondern auch für »Element« missbraucht. Die meisten Web-Quellen über HTML müssen erst mit der erwähnten W3C-Terminologie in Übereinstimmung gebracht werden, sodass die wichtigen Unterschiede nicht über den Haufen geworfen werden. In diesem Fall ist eine begriffliche Klarheit und sprachliche Genauigkeit notwendig, da sonst schwere Missverständnisse auftreten.</p>
+
+
+<h2 id="warum-modelle">Orientierung durch Markup-Abstraktionsmodelle</h2>
+
+<p>Wozu brauchen wir Modelle, die vom HTML-Code abstrahieren? Welchen praktischen Nutzen haben sie und welche Schlüsse lassen sich aus ihnen ziehen?</p>
+
+<h3>CSS und JavaScript nicht ohne Dokumentmodelle denkbar</h3>
+
+<p>Spätestens beim Einsatz der Zusatztechniken CSS und JavaScript bleibt man stecken, wenn man HTML nur auf der konkreten Code-Ebene als lose Anhäufung von Tags betrachtet. Sowohl CSS und JavaScript/DOM gehen von einem Dokumentmodell aus und arbeiten vollständig auf dieser Ebene. Sie operieren mit der Datenstruktur des Elementbaumes, wie sie sich im Speicher befindet &ndash; mit der linearen Abbildung dieser Struktur mittels Textauszeichnung, Tags usw. haben sie nichts zu tun. Für Webautoren ist es daher unerlässlich, HTML-Dokumente nicht von der Code-Ebene her, sondern von der Ebene eines Dokumentmodells her zu denken. Der HTML-Code ist dementsprechend als sogenannte Linearisierung oder auch Serialisierung dieser Datenstruktur zu verstehen.</p>
+
+<p>Die Grundlagen von CSS, die Selektoren und die Vererbung sowie das Boxmodell und der Elementfluss, sind nur vom zugrunde liegenden Dokumentmodell her zu verstehen. Noch direkter operiert JavaScript mit der Baumstruktur und deren »Knoten«. Dabei werden nicht nur Elemente zum Zwecke der Formatierung angesprochen. JavaScript ist imstande, den gesamten Knotenbaum zu verändern. Dies zeigt einmal mehr, dass das Dokument als die Datenstruktur zu verstehen ist, mit und an der im Speicher des Browser operiert wird.</p>
+
+<h3>Semantische Auszeichnung und effiziente Technikverwendung</h3>
+
+<p>Dokumentmodelle können dabei helfen, wohlstrukturierte Dokumente zu schreiben, dessen Inhalte bedeutungsreich organisiert sind. Wenn unsinnige Sequenzen und Hierarchien vermieden werden, bleibt der Code schlank und aufgeräumt bleibt. Dies zahlt sich aus, wenn die besagten Zusatztechniken im Hinblick auf Effizienz und Flexibilität eingesetzt werden sollen.</p>
+
+<p>Damit z.B. ein Styleheet einfach warten und ausbauen zu können, ist eine sinnvolle Dokumentstruktur vonnöten. Eine stimmige Verschachtelung ist vor allem wichtig, wenn Elementen abhängig von ihrem Kontext CSS-Formatierungen zugewiesen werden sollen. Das Ziel ist, sie ohne Umstand so allgemeingültig wie möglich adressieren zu können, ohne dass das Markup nachträglich nur zum Zweck des <span lang="en">Stylings</span> angepasst werden muss. Nur wenn mehrere Dokumente eine konsistente, voraussehbare Struktur haben, können ausgelagerte, rationalisierte Stylesheets ihre Wirkung entfalten.</p>
+
+<h2>Elementbaum und Dokumenthierarchie veranschaulichen</h2>
+
+<p>Während wir uns im HTML-Code recht schnell zurechtfinden, haben wir Schwierigkeiten damit, uns stets die entsprechende abstrakte Datenstruktur vor Augen zu führen. Dabei helfen können grafische Darstellungen, die die die Eigenschaften der Datenstruktur veranschaulichen. Wichtig sind zunächst einmal die Beziehungen zwischen den Elementen.</p>
+
+<h2 id="modelle">Mögliche Veranschaulichungen</h2>
+
+<p>Im Folgenden abstrahieren wir schrittweise vom Code und betrachten verschiedene Möglichkeiten, den Elementbaum zu veranschaulichen. Dieses kurzes XHTML-Dokument wird als Beispiel dienen:</p>
+
+<p class="code"><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><br />
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><br />
+&lt;head><br />
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><br />
+&lt;title>XHTML-Beispieldokument&lt;/title><br />
+&lt;/head><br />
+&lt;body><br />
+<br />
+&lt;h1>&lt;abbr title="Erweiterbare Hypertext-Auszeichnungssprache">XHTML&lt;/abbr>-Beispieldokument&lt;/h1><br />
+<br />
+&lt;h2>Inhaltsverzeichnis&lt;/h2><br />
+&lt;ul id="inhaltsverzeichnis"><br />
+&lt;li&gt;&lt;a href="#foo" rel="chapter">foo&lt;/a>&lt;/li><br />
+&lt;li&gt;&lt;a href="#bar" rel="chapter">bar&lt;/a>&lt;/li><br />
+&lt;li&gt;&lt;a href="#baz" rel="chapter">baz&lt;/a>&lt;/li><br />
+&lt;/ul><br />
+<br />
+&lt;h2 id="foo">foo&lt;/h2><br />
+&lt;p>foo&lt;/p><br />
+<br />
+&lt;h2 id="bar">bar&lt;/h2><br />
+&lt;p>bar&lt;/p><br />
+<br />
+&lt;h2 id="baz">baz&lt;/h2><br />
+&lt;p>baz&lt;/p><br />
+<br />
+&lt;/body><br />
+&lt;/html></code></p>
+
+<h3 id="einrueckung">Einrückungen im gekürzten Markup</h3>
+
+<p>Die Verschachtelung von Elementen wird oft visuell durch Einrückungen im Code veranschaulicht. Dabei erzeugt jedes Element eine Einrückungs- und Schachtelungsebene. Das <a href="http://validator.w3.org/detailed.html" hreflang="en">Markup-Prüfprogramm des <abbr>W3C</abbr> (gemeinhin als »<span lang="en">Validator</span>« bekannt)</a> erzeugt bei dem Parameter »<var lang="en">Show Parse Tree</var>« mit dem Zusatz »<var lang="en">...exclude attributes</var>« eine Ausgabe mit solchen Einrückungen. Bei dieser Darstellung werden alle Attribute entfernt, es werden lediglich <span lang="en">Tags</span> zur Begrenzung der Elemente sowie deren eingerückte Inhalte &ndash; andere Elemente oder Textknoten &ndash; abgebildet. Die Textknoten werden als letztliche Inhalte hervorgehoben.</p>
+
+<pre class="code" id="einrueckung-beispiel"><samp>&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta&gt;
+    &lt;/meta&gt;
+    &lt;title&gt;
+       <em>XHTML-Beispieldokument</em>
+    &lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;
+      &lt;abbr&gt;
+	 <em>XHTML</em>
+      &lt;/abbr&gt;
+       <em>-Beispieldokument</em>
+    &lt;/h1&gt;
+    &lt;h2&gt;
+       <em>Inhaltsverzeichnis</em>
+    &lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;a&gt;
+	   <em>foo</em>
+        &lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;a&gt;
+	   <em>bar</em>
+        &lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;a&gt;
+	   <em>baz</em>
+        &lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;h2&gt;
+       <em>foo</em>
+    &lt;/h2&gt;
+    &lt;p&gt;
+       <em>foo</em>
+    &lt;/p&gt;
+    &lt;h2&gt;
+       <em>bar</em>
+    &lt;/h2&gt;
+    &lt;p&gt;
+       <em>bar</em>
+    &lt;/p&gt;
+    &lt;h2&gt;
+       <em>baz</em>
+    &lt;/h2&gt;
+    &lt;p&gt;
+       <em>baz</em>
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</samp></pre>
+
+<h3 id="schachtelmodell">Schachtelmodell</h3>
+
+<p>Der bereits wie selbstverständlich benutzte Begriff der Verschachtelung eröffnet eine wichtige Sichtweise auf die Dokumentstruktur und erlaubt auch Fragen nach deren Sinnhaftigkeit. Der ursprüngliche, nicht-metaphorische Sinn des Wortes &ndash; die Vorstellung von ineinander (wieder-)verpackten Behältnissen als Ordnungsprinzip &ndash; lässt sich treffend auf die Unter- und Nebenordnung der Elemente bzw. Knoten übertragen.</p>
+
+<p>Noch anschaulicher ist deshalb eine grafische Darstellung, welche speziell das Konzept der Verschachtelung betont:</p>
+
+<ul id="verschachtelung">
+<li>html
+ <ul class="ebene1">
+ <li>head
+   <ul class="ebene2">
+   <li>meta</li>
+   <li>title
+    <ul class="ebene3">
+    <li class="text">XHTML-Beispieldokument</li>
+    </ul>
+   </li>
+   </ul>
+ </li>
+ <li>body
+  <ul class="ebene2">
+  <li>h1
+   <ul class="ebene3">
+   <li>abbr
+    <ul class="ebene4">
+    <li class="text">XHTML</li>
+    </ul>
+   </li>
+   <li class="text">-Beispieldokument</li>
+   </ul>
+  </li>
+  <li>h2
+   <ul class="ebene3">
+   <li class="text">Inhaltsverzeichnis</li>
+   </ul>
+  </li>
+  <li>ul
+   <ul class="ebene3">
+   <li>li
+    <ul class="ebene4">
+    <li>a
+     <ul class="ebene5">
+     <li class="text">foo</li>
+     </ul>
+    </li>
+    </ul>
+   </li>
+   <li>li
+    <ul class="ebene4">
+    <li>a
+     <ul class="ebene5">
+     <li class="text">bar</li>
+     </ul>
+    </li>
+    </ul>
+   </li>
+   <li>li
+    <ul class="ebene4">
+    <li>a
+     <ul class="ebene5">
+     <li class="text">baz</li>
+     </ul>
+    </li>
+    </ul>
+   </li>
+   </ul>
+  </li>
+  <li>h2
+   <ul class="ebene3">
+   <li class="text">foo</li>
+   </ul>
+  </li>
+  <li>p
+   <ul class="ebene3">
+   <li class="text">foo</li>
+   </ul>
+  </li>
+  <li>h2
+   <ul class="ebene3">
+   <li class="text">bar</li>
+   </ul>
+  </li>
+  <li>p
+   <ul class="ebene3">
+   <li class="text">bar</li>
+   </ul>
+  </li>
+  <li>h2
+   <ul class="ebene3">
+   <li class="text">baz</li>
+   </ul>
+  </li>
+  <li>p
+   <ul class="ebene3">
+   <li class="text">baz</li>
+   </ul>
+  </li>
+  </ul>
+ </li>
+ </ul>
+</li>
+</ul>
+
+<h3 id="baumstruktur">Baumstrukturen</h3>
+
+<p>Um die Beziehungen der Elemente in der Hierarchie zu bezeichnen, bedient man sich Begriffen der Abstammungslehre und vergleicht die Elementstruktur mit einem Familienstammbaum. Man spricht beispielsweise von Elternelementen, Nachkommens- beziehungsweise Nachfahrenselementen, Kindelementen und Geschwisterelementen.</p>
+
+<p>Diese Benennungen werden auch bei CSS-Selektoren zur Adressierung von Elementen verwendet. Hierbei wird analog von Selektoren für Nachfahren, Kind-Selektoren und Selektoren für benachbarte Elemente gesprochen. (Eigentlich heißt es in etwa »Selektor für benachbarte Geschwisterelemente«. In CSS 3 wird zusätzlich zwischen direkt und indirekt angrenzenden Geschwisterelemente unterschieden.)</p>
+
+<p>Für das <span lang="en">Document Object Model</span> (DOM) schließlich ist die Baum-Metapher zentral. Die Einleitung der DOM-Spezifikation enthält eine beispielhafte <a href="http://www.w3.org/TR/DOM-Level-2-Core/introduction.html#ID-E7C30821-h2">grafische Darstellung</a> des Objektmodells einer einfachen HTML-Tabelle. Dabei wird die Neben- beziehungsweise Unterordnung der einzelnen Knoten durch eine astartige Struktur abgebildet. Für das genannte Beispieldokument wäre folgende Darstellung möglich:</p>
+
+<div id="baumstruktur-beispiel">
+<div>html</div>
+<div><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> head</div>
+<div><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> meta</div>
+<div><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> title</div>
+<div><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>XHTML-Beispieldokument</em></div>
+<div><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> body</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> h1</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> abbr</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>XHTML</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>-Beispieldokument</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> h2</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>Inhaltsverzeichnis</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> ul</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> li</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> a</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>foo</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> li</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> a</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>bar</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> li</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> a</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>baz</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> h2</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>foo</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> p</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>foo</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> h2</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>bar</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> p</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>bar</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-t.png" alt="&nbsp;&nbsp;&nbsp;"/> h2</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-i.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>baz</em></div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> p</div>
+<div><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-x.png" alt="&nbsp;&nbsp;&nbsp;"/><img src="/img/dokumentmodelle-l.png" alt="&nbsp;&nbsp;&nbsp;"/> <em>baz</em></div>
+</div>
+
+<p>Folgendes Diagramm arbeitet den hierarchischen Aspekt der Baumstruktur stärker heraus:</p>
+
+<p id="dombaum"><img src="/img/dokumentmodelle-dom.png" alt="" width="1166" height="282" /></p>
+
+<h2 id="interpretation">Schlussfolgerungen aus den Veranschaulichungen</h2>
+
+<p>Die aufgeführten Visualisierungen haben verschiedene Schwerpunkte und ergänzen sich. Ihnen ist gemein, dass nur Elementknoten berücksichtigt werden. Beispielsweise Attribute gehen in diesen grafischen Darstellungen verloren. Sie müssten im Gefüge als Knoten auftauchen, die den Elementknoten anhaftende anhaften. Diese Beiordnung kann in den Schaubildern, die Sequenz und Hierarchie zweidimensional darstellen, schwer dargestellt werden.</p>
+
+<p>Wird der Code eines Dokuments wie gezeigt veranschaulicht, fallen Sequenzen und Hierarchien stark ins Auge. Das ermöglicht dem Autor, über den Sinn der Verschachtelung und Gruppierungen nachzudenken: Gehört eine bestimmte Information dort eingeordnet und untergebracht? Sind die Aussagen korrekt, die die Elemente über ihre Inhalte machen? Hat der Inhalt diese Bedeutung? Sind logische Abfolgen und Zugehörigkeiten als solche ausgezeichnet? Beruhen die Beziehungen zwischen den Knoten auf nachvollziehbaren Zusammenhängen?</p>
+
+<h2 id="nutzen">Nutzen: Von Objektmodellen zu korrektem Code und sinnvollen Objektstrukturen</h2>
+
+<p>Bei aller Rede davon, dass wir uns HTML-Dokumente auf abstrakter Ebene vorstellen sollten, entwerfen wir nur selten bewusst Dokumente mithilfe von Abstraktionsmodellen, sondern schreiben letztlich vor allem konkreten Code. Dennoch sollte man HTML als eine Sprache, ein Kommunikationsmittel begreifen, mit dem man eine Information entweder zuverlässig oder missverständlich dem Browser und schließlich dem Webseiten-Leser übermitteln kann.</p>
+
+<p>Die Frage ist nun: Wodurch kann diese Kommunikation fehlschlagen? Mit einem Dreischritt können wir uns den (idealen) Einsatz von HTML zwischen Seitenautor und Seitenbesucher veranschaulichen. Dieser entspricht gängigen Kommunikationsmodellen:</p>
+
+<h3>1. Informationen in eine Objektstruktur ordnen</h3>
+
+<p>Der Seitenautor möchte Informationen mitteilen. Diese ordnet er zunächst in einer einem Knotengeflecht, einer Objektstruktur an, gekennzeichnet durch Verschachtelung und Nebenordnung sowie näher bestimmenden Objekteigenschaften. So entsteht ein zusammenhängendes Dokument.</p>
+
+<h3>2. Linearisierung / HTML-Kodierung</h3>
+
+<p>Der Seitenautor linearisiert die ihm vorschwebende Dokumentstruktur, indem er sie in HTML mit den bekannten Tags und der bekannten HTML-Syntax kodiert. Die Sprache HTML dient als Austauschmedium. In diesem Klartextformat lässt sich die Objektstruktur als kodierte Information elektronisch übermitteln und im Web anbieten.</p>
+
+<h3>3. Dekodierung zurück in die Objektstruktur und Umsetzung</h3>
+
+<p>Der Seitenbesucher benutzt einen Webbrowser, um das HTML-Dokument abzurufen und darzustellen. Der Browser muss als erstes die Kodierung wieder rückgängig machen, das heißt den Code wieder in die ursprüngliche Objektstruktur überführen, dessen Linearisierung er ist. Diese Objektstruktur wird dann schließlich interpretiert und dem Leser präsentiert.</p>
+
+<p>An diesen drei Stellen können nun Schwierigkeiten auftreten, die wir vermeiden können:</p>
+
+<h3>1. Wie steht es mit der vom Autor entwurfenen Struktur?</h3>
+
+<p>Die HTML-Spezifikation unterwirft diese mögliche Objektstruktur strengen Regeln. Im Idealfall folgen die inneren Zusammenhänge des Dokuments einer bestimmten Logik. Willkürliche Beziehungen (z.B. eine Tabellenzelle mitten in einem Absatz) sind weder möglich noch sinnhaft.</p>
+
+<p>Diese Regeln werden oft als rein syntaktische, grammatische Regeln angesehen &ndash; vielmehr betreffen sie den logischen Aufbau eines Dokumentes. Bereits auf dieser Ebene muss entsprechende Vorsorge getragen werden.</p>
+
+<h3>2. Verlief die Umsetzung in HTML-Code fehlerfrei?</h3>
+
+<p>HTML definiert ferner, wie die Objektstruktur korrekt in Code umgewandelt werden muss. Zwar erlaubt der Standard hier einige Spielräume, die aber von etablierten informellen Regeln, wie die HTML-Umsetzung auszusehen hat, eher eingeschränkt als erweitert werden.</p>
+
+<h3>3. Kann der Browser zurückschließen auf die Objektstruktur und diese sinnvoll umsetzen?</h3>
+
+<p>Der erste Schritt des Browsers ist die syntaktische Analyse des HTML-Codes, das sogenannte Parsen. Tagpaare werden &ndash; Wieder in Rückgriff auf die Vorschriften für HTML-Code &ndash; in Elementobjekte mit gewissen Eigenschaften und gewissen Beziehungen überführt.</p>
+
+<p>Wenn der Code die gewünschte, in sich logische Objektstruktur korrekt abbildet, sollte es beim Parsen keine Schwierigkeiten geben. Auch bei einigen wenigen überschaubaren Fehlern verhalten sich die Browser tolerant. Syntaktisch eindeutiger Code emöglicht reibungsloses Parsen. Damit wird dem Browser Arbeit erspart, Stolperfallen und Fehlinterpretationen werden vermieden.</p>
+
+<p>Der zweite Schritt ist die Prüfung, ob die logischen Zusammenhänge überhaupt einen Sinn ergeben und in dieser Form verarbeitbar und letztendlich umsetzbar sind. (Technisch gesehen läuft dieser Schritt im Falle von HTML schon parallel zum Parsens ab.)</p>
+
+<p>Im Dokument auftretende semantische Fehler zeigen an diesem Punkt schließlich ihre Wirkung und legen dem Browser besondere Steine in den Weg. Das zeigt sich etwa bei der Anwendung von allgemeinen Formatierungsregeln aus Stylesheets: Für jedes einzelne Element muss anhand seiner zahlreichen Eigenschaften eine Darstellung erstellt werden, die in Wechselwirkung mit den anderen Elementen und deren Eigenschaften tritt. Auch nachdem das Dokument einmal fertig umgesetzt wurde, muss die Objektstruktur während der Ausgabe andauernd von Neuem verarbeitet werden, schließlich ist sie über Schnittstellen wie JavaScript/DOM jederzeit veränderbar.</p>
+
+<p>Diese Prozesse funktionieren nur dann zuverlässig, wenn Markup und <span lang="en">Stylesheet</span> konform mit den Regeln gehen, die ein Browser an den Code und die darin ausgedrückte Objektstruktur anlegt. Die gemeinsame Basis kann hier nur der HTML-Standard sein. Der <a href="http://validator.w3.org/">Validator</a> ist ein bewährtes Mittel, um die Kompatibilität eines Dokuments grundlegend zu testen.</p>
+
+<p>…</p>
+
+<p>Letzte Änderung: 18.03.2007</p>

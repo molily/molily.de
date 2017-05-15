@@ -1,0 +1,220 @@
+---
+layout: post
+title: "Wie sieht die Zukunft von JavaScript aus?"
+---
+
+<p>Im Jahr 2008 hatte ich gefragt <a href="http://blog.selfhtml.org/2008/09/04/thesen-javascript-gebrauch/">Wo stehen wir in Sachen JavaScript und welche Entwicklung wäre wünschenswert?</a> Nun möchte ich einen Ausblick auf die mögliche Zukunft wagen, ausgehend von aktuellen Trends und Entwicklungen. Es sind diesmal zehn thesenhafte Vorhersagen.</p>
+
+<ol class="compact-list unwichtig">
+<li><a href="#js-zukunft-1">ECMAScript 5 professionalisiert die JavaScript-Entwicklung ↓</a></li>
+<li><a href="#js-zukunft-2">Mit HTML5 werden die JavaScript-Grundlagen robuster ↓</a></li>
+<li><a href="#js-zukunft-3">Der Client wird immer fetter ↓</a></li>
+<li><a href="#js-zukunft-4">JavaScript wird grafisch und übernimmt Flash-typische Aufgaben ↓</a></li>
+<li><a href="#js-zukunft-5">Wo bleiben neue Architekturen für JavaScript-Frameworks? ↓</a></li>
+<li><a href="#js-zukunft-6">Web Services und Mashups werden mit Cross-Domain Ajax endlich cool ↓</a></li>
+<li><a href="#js-zukunft-7">Echtzeit-Datenübertragung: Welche Technik setzt sich durch? ↓</a></li>
+<li><a href="#js-zukunft-8">Performance-Werkzeuge für »Programming in the Large« werden besser ↓</a></li>
+<li><a href="#js-zukunft-9">Publishing und Content-Management-Systeme ↓</a></li>
+<li><a href="#js-zukunft-10">Ausdifferenzierung und Spezialisierung ↓</a></li>
+</ol>
+
+
+<h2 id="js-zukunft-1">ECMAScript 5 professionalisiert die JavaScript-Entwicklung</h2>
+
+<h3>ECMAScript 5 ersetzt ECMAScript 3</h3>
+
+<p>Im Dezember letzten Jahres wurde der neue ECMA-262-Standard verabschiedet, besser bekannt als ECMAScript Edition 5. Dies ist der Nachfolger der Edition 3, welche im Dezember 1999 veröffentlicht wurde. – Es gab zwar einen Entwurf für ECMAScript 4, dieser sah allerdings einige nicht abwärtskompatible Erweiterungen vor. Dessen Ideen sollen stattdessen in einen kommenden Standard mit dem Codenamen <em>ECMAScript Harmony</em> einfließen. Um Missverständnisse zu vermeiden, trägt der neue Standard daher die Version 5.</p>
+
+<p>ECMAScript ist der Basis-Standard, der JavaScript zugrunde liegt. Er definiert die Syntax, Kernobjekte, Datentypen und die genaue Verarbeitung. Typische clientseitige JavaScript-Objekte wie <code>window</code> und <code>document</code> sind nicht Teil von ECMAScript, sondern gehören aus Sicht von ECMAScript zur sogenannten Host-Umgebung. ECMAScript ist eben nicht auf eine mögliche Host-Umgebung begrenzt, was ECMAScript vielseitig einsetzbar macht.</p>
+
+<p>ECMAScript 5 ist eine Konsolidierung und schrittweise Erweiterung des erfolgreichen ECMAScript-3-Standards. Edition 5 bleibt dabei kompatibel zum Vorgänger und kodifiziert bereits verbreitete Objekte und Methoden auf, die z.B. Mozilla mit seinen JavaScript-Varianten 1.6 bis 1.9 eingeführt hat. Auch das Parsen und Serialisieren des JSON-Formates ist ein nützlicher De-facto-Standard und wurde nun in ECMAScript aufgenommen.</p>
+
+<h3>Programming in the Large</h3>
+
+<p>Während JavaScript anfangs nur für kleine Scripte verwendet wurde, wird ECMAScript heute für riesige clientseitige Webanwendungen verwendet, für serverseitige Programme sowie für Widgets und vieles mehr. JavaScript-Programme werden größer, komplexer und müssen anderen Anforderungen genügen. Sie werden mit denselben Methoden entwickelt und müssen denselben Qualitätskriterien entsprechen wie Software-Projekte in anderen Sprachen. JavaScript-Anwendungen mit zehntausenden Zeilen Quellcode und vollständigem Unit-Testing sind mittlerweile normal.</p>
+
+<p>Für diese Software-Entwicklung im großen Maßstab (»programming in the large«) ist ECMAScript 3 nur bedingt geeignet. Denn ECMAScript hat Fehler und Fallstricke, die der Programmierer kennen muss, um ein robustes Script zu schreiben. Der JavaScript-Experte Douglas Crockford hat <a href="http://www.amazon.de/dp/3897218763/">ein ganzes Büchlein</a> über die guten und schlechten Seiten von JavaScript geschrieben.</p>
+
+<h3>Fokus auf Qualität und Sicherheit</h3>
+
+<p>ECMAScript 5 setzt an, diese Situation zu verbessern, indem es die Sicherheit und Robustheit vor allem beim Einsatz verschiedener JavaScript aus verschiedenen Quellen verbessert. Mit der Anweisung <code>"use strict";</code> lässt sich JavaScript-Interpreter in einen »Strict Mode« versetzen, in dem ein Script abgekapselt wird und nicht empfohlene Anweisungen einen Programmabbruch auslösen. Mittels Metaprogramming können die Zugriffsrechte von eigenen Objekten und Eigenschaften detailliert gesteuert werden, z.B. kann ein Objekt »eingefroren« und damit vor dem Zugriff durch andere Scripte geschützt werden.</p>
+
+<p>Der brandneue Standard ist bisher nur teilweise in den verbreiteten JavaScript-Engines implementiert, vor allem natürlich die Features wie natives JSON, die lediglich in ECMAScript übernommen wurden. Kürzlich wurde eine erste Unterstützung der neuen statischen Object-Methoden <a href="http://ajaxian.com/archives/ecmascript-edition-5-webkit-javascriptcore-progress">angekündigt</a>, nämlich in Webkit JavaScriptCore, die JavaScript-Engine in Safari, auch bekannt als Squirrelfish.</p>
+
+<p>Meine Vorhersage: Internet Explorer 9 wird eine ECMAScript-5-konforme Engine enthalten. Das ist nicht unplausibel, denn Mitte 2009 hat Microsoft <a href="http://blogs.msdn.com/jscript/archive/2009/06/30/steps-toward-creating-compatible-ecmascript-5-implementations.aspx">umfassende Konformitätstests veröffentlicht</a>.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<p>Mark S. Miller, Waldemar Horwat, Mike Samuel: ECMAScript 5</p>
+
+<p>
+  <iframe width="100%" height="315" src="https://www.youtube.com/embed/Kq4FpMe6cRs" frameborder="0" allowfullscreen></iframe>
+</p>
+
+<ul class="compact-list unwichtig">
+<li><a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-262.pdf">ECMAScript 5 als PDF (2,4 MB)</a></li>
+<li>John Resig: <a href="http://ejohn.org/blog/ecmascript-5-objects-and-properties/">ECMAScript 5 Objects and Properties</a> und <a href="http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/">ECMAScript 5 Strict Mode, JSON, and More</a></li>
+<li><a href="http://www.robertnyman.com/javascript/">Robert Nyman: JavaScript tests & Compatibility tables</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-2">Mit HTML5 werden die JavaScript-Grundlagen robuster</h2>
+
+<p>Die Ursprünge von JavaScript liegen in den Browserkriegen, in denen Microsoft und Netscape eigenen Süppchen gekocht haben. Einen ersten Standardisierungsschub brachte das Document Object Model (DOM) des W3C. Doch DOM Core und DOM HTML blendeten (genauso wie ECMAScript, siehe oben) die typische JavaScript-Umgebung aus und ließen viele De-facto-Standards aus. Das oberste <code>window</code>-Objekt war lange nicht standardisiert, sondern nur in Netscape JavaScript 1.3 aus dem Jahr 1999 beschrieben. Es gab somit ein Jahrzehnt lang eine »Grauzone«, in der es keine verbindlichen Standards gab, die das genaue Verhalten von essentiellen Eigenschaften und Methoden festlegten.</p>
+
+<p>Abhilft schafft nun HTML5: Es beschreibt nicht nur das HTML-DOM, sondern auch das Browser Object Model (BOM), wie die restlichen Objekte der JavaScript-Umgebung genannt werden. Zudem werden einst proprietäre JavaScript-Techniken standardisiert, sofern sie als nützlich erwiesen haben (z.B. <code>innerHTML</code>). Was bedeutet das für die JavaScript-Entwicklung? HTML5 schreibt den Browserentwicklern detailliert vor, wie die JavaScript-Schnittstellen zu funktionieren haben.</p>
+
+<p>Das wird langfristig zu einer einfacheren und robusteren Cross-Browser-Programmierung führen. JavaScript-Frameworks, die derzeit auf umständliche Feature-Erkennung und Browserfehler-Workarounds angewiesen sind, können in Zukunft entschlackt werden, wenn ältere, nicht HTML5-konforme Browser vom Markt verschwinden. Das braucht zwar zwar noch seine Zeit, allerdings wird der Browsermarkt ohnehin in Bewegung kommen, denn das Tempo der technischen Innovationen setzt die Hersteller unter Druck.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<ul class="compact-list unwichtig">
+<li><a href="/html5-specs/">Übersicht über HTML5-Spezifikationen und</a></li>
+<li><a href="/js/standards.html">JavaScript: Entstehung und Standardisierung</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-3">Der Client wird immer fetter</h2>
+
+<p><a href="http://de.wikipedia.org/wiki/Fat_Client">Fat Client</a> ist ein Modell, das in einer Client-Server-Architektur den Client mit großer Eigenständigkeit ausstattet. Dementsprechend muss dieser viel Rechenpower und Software-Kapazitäten mitbringen. Der Performance-Wettlauf, den sich die JavaScript-Engines derzeit liefern, zeigt, wo die Entwicklung hingehen wird: Der Browser wird zur Plattform für leistungsfähige, aber entsprechend Ressourcen-hungrige Anwendungen. Schon jetzt gibt es JavaScript-Anwendungen, die Prozessorlüfter auf Hochtouren bringen.</p>
+
+<p>Die kommende Generation von Webanwendungen wird ohne <a href="http://www.whatwg.org/specs/web-workers/current-work/">Web Workers</a> (mehrere parallele JavaScript-Threads) nicht auskommen, um die anfallenden Aufgaben zu managen. Mit persistente clientseitigen Speicherlösungen wie <code>localStorage</code> und <code>openDatabase</code> werden große Datenmengen direkt im Browser gehalten. Dies ermöglicht Webanwendungen einen Offline-Modus, in dem der Benutzer auch ohne Internetverbindung auf seine Daten zugreifen kann und Änderungen vornehmen kann. Das mobile Betriebssystem ChromeOS, das den Browser als Plattform für sämtliche Anwendungen nutzt, zeigt schon jetzt, die zukünftige extensive JavaScript-Nutzung aussehen kann.</p>
+
+<p>Meine Vorhersage: Gemäß dem <a href="http://de.wikipedia.org/wiki/Hype-cycle">Hype-Zyklus</a> folgt auf den ersten übertriebenen Gipfel bald der reinigende Zusammenbruch. Das ist in diesem Fall nur wünschenswert: Das Verhältnis von Server und Client sollte neu austariert werden, anstatt dass mehr und mehr Aufgaben und Anwendungen in den Browser verlagert werden. ChromeOS, in dem selbst Office-Programme in Form von riesigen proprietären JavaScript-Anwendungen laufen, speichert die Benutzerdaten selbst in der Cloud. Dies sorgt bereits jetzt für <a href="/google-privacy/">Spannungen und Kritik</a>. Am Ende dieser Diskussion wird sich meiner Prophezeiung nach ergeben, dass der klassische Desktop als Plattform doch nicht ausgedient hat und nicht <em>jede</em> Anwendung als JavaScript im Browser laufen muss.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<ul class="compact-list unwichtig">
+<li><a href="https://developer.mozilla.org/En/Using_web_workers">Mozilla Developer Center: Using web workers</a></li>
+<li><a href="http://derwebsider.de/2009/12/background-javascript-worker/">David Lorenz: JavaScript im Hintergrund ausführen - Web Worker</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-4">JavaScript wird grafisch und übernimmt Flash-typische Aufgaben</h2>
+
+<h3>2D - wurde auch Zeit!</h3>
+
+<p>Auch wenn die technologisch führenden Rendering-Engines Presto (Opera), Gecko (Firefox) sowie Webkit (Safari und Chrome) schon seit längerer Zeit SVG unterstützen, den W3C-Standard für Vektorgrafiken, so ist JavaScript erst in letzter Zeit als Mittel zur Visualisierung und für Animationen populär geworden. Der Grund dafür ist das <code>canvas</code>-Element aus HTML5 und dessen JavaScript-Schnittstelle (API), die das direkte Zeichnen von geometrischen Formen und Pfaden (Bezier-Kurven), Verläufen, Texten sowie die Bild- und Video-Einbettung ermöglicht. Zusammen mit der Audio-Schnittstelle aus HTML5 lassen sich damit Interfaces umsetzen, die vorher nur mit proprietären Plugins wie Flash möglich waren.</p>
+
+<p>Canvas ist noch nicht so robust wie Flash und SVG, etwa fehlt der gegenwärtigen API die Möglichkeit, das Gezeichnete für nicht-visuelle Ausgabe zugänglich und für verschiedene Eingabetechniken bedienbar zu machen. Auch wenn die sinnvolle und unbedenkliche Nutzung noch ausgefochten werden muss, hat Canvas das Potenzial, das Frontend-Design mit interaktiven, animierte Grafiken zu bereichern. JavaScript wird mittels Canvas und mit in HTML5 eingebettetem SVG in neue Bereiche vorstoßen und manche Flash-Filme ersetzen können. Dazu tragen browserübergreifende JavaScript-Bibliotheken bei, die einen einheitlichen Layer über SVG, Canvas und das Internet-Explorer-spezifische VML legen.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<ul class="compact-list unwichtig">
+<li><a href="http://www.canvasdemos.com/">Canvasdemos.com, Showcase mit Canvas-Anwendungen</a></li>
+<li><a href="http://www.chromeexperiments.com/">Chrome Experiments mit vielen Canvas-Demonstrationen</a></li>
+<li><a href="http://9elements.com/io/?p=153">HTML5 Canvas Experiment mit Audio- und Twitter-API-Nutzung</a></li>
+<li><a href="http://www.peterkroener.de/eine-kleine-canvas-einfuehrung/">Peter Kröner: Eine kleine Canvas-Einführung</a></li>
+<li><a href="http://webkrauts.de/artikel/2009/malen-nach-zahlen">Olaf Gleba: Canvas-Tutorial</a></li>
+<li><a href="https://dojotoolkit.org/reference-guide/1.9/dojox/">dojox.gfx, Abstraktionslayer zum Zeichnen mit SVG, VML und Canvas</a></li>
+<li><a href="http://dmitrybaranovskiy.github.io/raphael/">Raphaël, Abstraktionslayer zum Zeichnen mit SVG und VML</a></li>
+</ul>
+
+<h3>3D - auch das noch!</h3>
+
+<p>Neben der zweidimensionalen Zeichenschnittstelle gibt es verschiedene Ansätze, um mit JavaScript 3D-Modelle hardwarebeschleunigt zu rendern. Schon 2007 hatte Opera einen experimentellen 3D-Context für Canvas demonstriert. Es folgte <a href="https://en.wikipedia.org/wiki/O3D">O3D</a>, ein Browser-Plugin von Google. Am vielversprechendsten ist sicher WebGL, ein abgespecktes JavaScript-Binding für die verbreitete OpenGL-Schnittstelle. In der Arbeitsgruppe, die den WebGL-Standard entwickelt, sind alle großen Browserhersteller außer Microsoft vertreten, sodass wir bald brauchbare Umsetzungen in Opera, Firefox, Safari und Chrome erwarten können. Erste Implementierungen können schon in verschiedenen Nightly Builds, also Vorab-Browserversionen, getestet werden.</p>
+
+<p>Im Gegensatz zum 2D-Canvas ist die 3D-Schnittstelle allerdings noch unausgegoren, noch nicht etabliert und weitaus komplexer zu programmieren. Ob wir wirklich 3D im Web brauchen und wozu, das erscheint mir noch fragwürdiger. Brauchen wir ein <em>Second Life</em> im Browser? Für leistungsfähige 3D-Umgebungen wie <em>World of Warcraft</em> wird WebGL sicher nicht ausreichen. Selbst mit Hilfsmitteln wie Papervision3D in Flash haben 3D-Anwendungen im Browser bisher noch keine Verbreitung gefunden – von <a href="http://maps.google.de/help/maps/streetview/">Google Street View</a> (Flash), <a href="https://www.google.com/earth/">Google Earth</a> (eigenes Plugin) und <a href="http://www.cooliris.com/">Cooliris</a> (eigenes Plugin bzw. Addon) einmal abgesehen. Die jüngst erfolgreichen Websites und Webdienste kommen gänzlich ohne grafische Opulenz aus, könnten aber von 2D-Canvas durchaus profitieren.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<ul class="compact-list unwichtig">
+<li><a href="http://wiki.delphigl.com/index.php/WebGL">WebGL-Tutorial im DelphiGL-Wiki</a></li>
+<li><a href="http://learningwebgl.com/blog/">Learning WebGL</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-5">Wo bleiben neue Architekturen für JavaScript-Frameworks?</h2>
+
+<p>Ein Bereich, in dem sich in der Vergangenheit nicht viel getan hat, ist die Architektur von JavaScript-Frameworks. Es gibt im Groben vier Modelle:</p>
+
+<ol>
+<li>Prototype und Mootools: Die Bibliothek definiert viele eigene globale Objekte und erweitert die JavaScript-Kernobjekte. Beim Zugriff auf ein HTML-Element wird das Elementobjekt mit eigenen Methoden erweitert.</li>
+<li>YUI 2 und Dojo: Alle Methoden der Bibliothek liegen in einem globalen Namensraum, darunter gibt es weitere gruppierende Objekte.</li>
+<li>jQuery und DOMAssistant: Es gibt nur ein globales Objekt, die bestehende Objekte werden nicht erweitert. Eigener Code ist möglichst gekapselt, z.B. <code>jQuery(function ($) {...})</code>. Auf die Methoden der Bibliothek greift man über das Namensraum-Objekt zu, z.B. <code>jQuery.trim()</code> sowie über Wrapper-Objekte für Elementlisten, z.B. <code> jQuery('#element').css(...)</code>.</li>
+<li>YUI 3 als Abwandlung und Erweiterung des dritten Modells: Laden von Modulen und asynchrone Ausführung. Ein privates, gekapseltes Namensraum-Objekt. Beispiel: <code>YUI({...}).use("modul1", "modul2", ... function (Y) {...});</code></li>
+</ol>
+
+<p>(Man korrigiere mich, wenn ich falsch liege bei der Einsortierung der Frameworks.)</p>
+
+<p><a href="http://yuilibrary.com/">YUI 3</a> verfolgt hier den meines Erachtens innovatisten und radikalsten Ansatz, um eine Modularisierung und Kapselung zu erreichen. Doch was wird der nächste Schritt sein, was wird die Zukunft bringen?</p>
+
+<p>Diese Architekturen werden weiterhin friedlich nebeneinander existieren, vermute ich. Neue Bibliotheken verfolgen zunehmend Ansätze wie jQuery und YUI 3. Prototype, welches Ruby bzw. Ruby on Rails zum Vorbild hatte, wird nicht plötzlich auf einen gekapselten Ansatz umsteigen. Und auch klassische Bibliotheken als Funktionssammlungen (<code>bibliothek.modul.untermodul.helfermethode()</code>) werden weiterhin geschrieben. Trotzdem wäre es spannend, eine Weiterentwicklung der obigen Konzepte zu sehen.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<p>Satyen Desai: YUI 3 Design Goals and Architecture</p>
+
+<p>
+  <iframe width="100%" height="315" src="https://www.youtube.com/embed/agQyimNilE0" frameborder="0" allowfullscreen></iframe>
+</p>
+
+<ul class="compact-list unwichtig">
+<li><a href="http://articles.sitepoint.com/article/yui-3-whats-new">Ara Pehlivanian: YUI 3: Lighter, Faster, Easier to Use</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-6">Web Services und Mashups werden mit Cross-Domain Ajax endlich cool</h2>
+
+<p>XMLHttpRequest, die Kerntechnik hinter dem Schlagwort Ajax, unterlag bisher wie alle JavaScript-Techniken dem grundlegenden Sicherheitsmodell der <a href="/js/sicherheit.html#sicherheitskonzepte">Same-Origin-Policy</a>. Diese Beschränkung ist zwar nach wie vor sinnvoll, allerdings sind dadurch nützliche JavaScript-Mashups, die Daten von externen Web Services beziehen, schwierig umzusetzen. Bisher mussten Workarounds wie JSONP und YQL verwendet werden. Bei <a href="http://www.ibm.com/developerworks/library/wa-aj-jsonp1/">JSONP</a> wird ein JavaScript von einem fremden Server eingebunden unter der Angabe einer Callback-Funktion. Das vom fremden Server generierte Script ruft die Callback-Funktion auf und übergibt die Daten im JSON-Format. <a href="http://developer.yahoo.com/yql/">YQL (Yahoo Query Language)</a> ist eine Proxy-Lösung auf JSONP-Basis, die den Zugriff auf verschiedene Web Services vereinfacht.</p>
+
+<p>Mit dem neuen Standard <a href="http://dev.w3.org/2006/waf/access-control/">Cross-Origin Resource Sharing (CORS)</a> wird die Möglichkeit geschaffen, einzelne HTTP-Ressourcen für den Cross-Domain-Zugriff freizugeben. Dies funktioniert über bestimmte HTTP-Header wie <code>Access-Control-Allow-Origin: *</code>, mit der der fremde Server antworten muss. Der Browser sieht dadurch, dass die fremde Sites Cross-Domain-Zugriffe erlaubt und stellt die Serverantwort dem Script zur Verfügung (das ist die einfache Methode ohne »Preflight«).</p>
+
+<p>Die <a href="http://dev.w3.org/2006/webapi/XMLHttpRequest-2/">Standardisierung des XMLHttpRequest-Objektes</a> sieht Cross-Domain-Requests bereits vor. Damit wird eine neue Ära für Web Services eingeläutet. Offene Daten-Schnittstellen, die schon jetzt das Web 2.0 auszeichnen, werden viel mehr in den Fokus der clientseitigen Webentwicklung rücken.</p>
+
+
+<h2 id="js-zukunft-7">Echtzeit-Datenübertragung: Welche Technik setzt sich durch?</h2>
+
+<p><a href="http://dev.w3.org/html5/websockets/">Web Sockets</a> ist eine neue Technik aus der HTML5-Familie, die TCP-Socket-Verbindungen via JavaScript ermöglicht. Auf der Gegenseite steht ein spezieller Socket-Server, mit dem sich der Client über ein <a href="http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol">eigens definiertes Protokoll</a> austauscht.</p>
+
+<p>Chrome-Vorabversionen bieten derzeit schon die erste browserseitige Implementierung, andere Browser werden bald folgen. Die Serverseite ist allerdings noch nicht sehr weit. Für mich stellt sich vielmehr die Frage, ob Web Sockets starke Verbreitung finden werden. Wann sind wirklich Echtzeitnachrichten nötig außer Chats wie <em>Meebo</em> und Live-Ticker bei Apple-Keynotes? Okay, bei <em>Google Wave</em> anderen beim (Ver-)Tippen zuschauen können. Aber warten wir nicht alle darauf, dieses nur anfangs beeindruckende Feature abschalten zu können?</p>
+
+<p>Sicher werden sich Anwendungsmöglichkeiten für Web Sockets finden, allerdings bilden sich gleichzeitig andere, möglicherweise geeignetere Techniken heraus:</p>
+
+<ul>
+<li>Dank skalierbaren Webservern wie nginx kostet ein herkömmlicher HTTP-Request nicht mehr viel Ressourcen, lediglich einen Overhead. HTTP-Server können bereits Unmengen an offenen Verbindungen verwalten und werden mehr und mehr zu Socket-Servern mit persistenten Verbindungen.</li>
+<li>Aus dem HTML5-Umfeld stammt ebenfalls die Technik <a href="http://dev.w3.org/html5/eventsource/">Server-Sent Events</a>. Dies ist eine Server-Push-Lösung mit offen gehaltenen HTTP-Verbindungen. Sie ist meines Erachtens einfacher zu implementieren und deckt die meisten Anwendungsbereiche ab.</li>
+<li>Schließlich ermöglicht der <a href="http://dev.w3.org/2006/webapi/XMLHttpRequest-2/">kommende XMLHttpRequest-Standard</a> einen schrittweisen Zugriff auf die Serverantwort (»Progressive XMLHttpRequest«). Damit kann der Server die Verbindung offen halten und bei Bedarf neue Daten »pushen«.</li>
+</ul>
+
+<p>Welche Technik wird sich durchsetzen? Ich vermute, die einfacheren Lösungen über das HTTP-Protokoll werden für die meisten Websites genügend »Echtzeit« und Skalierbarkeit ermöglichen – auch wenn HTTP für solche Aufgaben eigentlich denkbar ungeeignet ist. Lediglich für wirklich große oder spezielle Sites lohnt sich die Nutzung von eigenen Web-Socket-Servern.</p>
+
+
+<h2 id="js-zukunft-8">Performance-Werkzeuge für »Programming in the Large« werden besser</h2>
+
+<p>Die jüngsten Umbrüche in der Frontend-Entwicklung standen unter dem Stern der Performance-Optimierung. Große Spieler haben Performance-Initiativen gestartet, siehe
+<a href="http://developer.yahoo.com/performance/">Yahoo</a> und <a href="https://developers.google.com/speed/">Google</a>, und helfen den Webentwicklern mit Tutorials und Tools wie <a href="http://yslow.org/">YSlow</a> und <a href="https://developers.google.com/speed/pagespeed/">Page Speed</a> dabei, Websites schneller zu machen.</p>
+
+<p>Dieser Fokus auf Performance lässt auch die JavaScript-Entwicklung nicht aus. Fast alle Browser werden mit leistungsfähigen Developer-Tools ausgeliefert. Diese unterstützen klassisches Debugging über Haltepunkte, Einzelschritt-Verarbeitung, Stacktraces sowie das Untersuchen von Objekten und Variablen. Hinzu kommt mehr und mehr ausgefeilte Performance-Messung wie das <a href="/javascript-profiling/">Funktions-Profiling</a> und das Messen der Speicherverwendung. Neuere Werkzeuge messen sogar den Zeitverbrauch von DOM-Änderungen und dem CSS-Rendering.</p>
+
+<p>Wegweisend ist hier die Google-Chrome-Erweiterung <em>Speed Tracer</em>, aber auch die bewährte Firefox-Erweiterung <a href="http://getfirebug.com/">Firebug</a> in der neuen Version 1.5 sowie der <em>Web Inspector</em> aus Chrome- und Safari-Betaversionen. Aber auch für den Internet Explorer sind leistungsfähige Helferprogramme erschienen, so etwa <a href="http://ajax.dynatrace.com/pages/">dynaTrace Ajax Edition</a>, welches John Resig näher in <a href="http://ejohn.org/blog/deep-tracing-of-internet-explorer/">Deep Tracing of Internet Explorer</a> beschreibt.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<ul class="compact-list unwichtig">
+<li><a href="http://javascriptrocks.com/performance/">eBook von Amy Hoy & Thomas Fuchs: JavaScript Performance Rocks</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-9">Publishing und Content-Management-Systeme</h2>
+
+<p>Auch wenn HTML5 eine großen Schwerpunkt auf die Standardisierung von Rich-Text-Editing im Browser legt, erwarte ich keine substanziell besseren WYSIWYG-Editoren. Besser hieße kleiner, einfacher, übersichtlicher, mit wenig Aufwand einzubauen. Eine Textverarbeitung in JavaScript, die halbwegs gutes HTML-Code produziert, bringt eine gewisse Komplexität mit sich. Anstatt dass sich dieser Markt verändert, rechne ich mit eingebundenen Widgets à la Google Docs, welche den eingegebenen Text als HTML-Code bereitstellen.</p>
+
+<p>Auch sonst erwarte ich in diesem Bereich keine großen technischen Änderungen: Mit der Upload-Funktion von XMLHttpRequest bzw. der <a href="http://www.w3.org/TR/FileAPI/">File API</a> wird der multiple Datei-Upload einfacher, sodass Upload-Helfer in Flash (<a href="http://swfupload.org/">SWFUpload</a>) oder Java bald der Vergangenheit angehören werden.</p>
+
+<h3>Weiterführende Infos:</h3>
+
+<ul class="compact-list unwichtig">
+<li><a href="http://hacks.mozilla.org/2009/12/w3c-fileapi-in-firefox-3-6/"> Arun Ranganathan: W3C FileAPI in Firefox 3.6</a></li>
+<li><a href="http://hacks.mozilla.org/2009/12/uploading-files-with-xmlhttprequest/">interactive file uploads with Drag and Drop, FileAPI and XMLHttpRequest</a></li>
+<li><a href="https://hacks.mozilla.org/2009/12/multiple-file-input-in-firefox-3-6/">Multiple File Input & Firefox 3.6</a></li>
+</ul>
+
+
+<h2 id="js-zukunft-10">Ausdifferenzierung und Spezialisierung</h2>
+
+<p>Alleine dieser Ausblick zeigt, welche neuen Baustellen sich im Bereich JavaScript auftun. Die technischen Spezifikationen werden zwar genauer, aber gleichzeitig komplexer. Während JavaScript bereits eine Sprache mit Tücken und zwiespältigen Besonderheiten ist, werden dadurch noch weniger Leute JavaScript verstehen. JavaScript wird an viele Stellen im Web und auch jenseits davon eingesetzt werden. Das letzte Jahr hat gezeigt, dass <a href="http://www.sitepen.com/blog/series/ssjs/">serverseitiges JavaScript</a> aus der Nische herauskommt und gemeinsame Standards etabliert werden.</p>
+
+<p>Dadurch wird sich die JavaScript-Programmierung enorm ausdifferenzieren und spezialisieren. Rich Internet Applications (RIA) basierend auf dem Google Web Toolkit, ExtJS oder Qooxdoo werden verstärkt entstehen. Allerdings halte ich Anwendungen mit traditionellen Website-Strukturen bei starkem JavaScript-Gebrauch für erfolgsversprechender. Ein gutes Beispiel dafür ist Facebook.</p>
+
+<p>Das klassische DOM Scripting mit Event-Handling, DOM-Manipulation, einfachen Effekten und ein wenig Ajax wird weiterhin den Großteil der JavaScript-Anwendung ausmachen. Einfache Allround-Frameworks wie jQuery werden daher weiterhin den Ton angeben, hinzu kommen vermehrt speziellere Bibliotheken, um von den neuen HTML5-APIs Gebrauch zu machen.</p>

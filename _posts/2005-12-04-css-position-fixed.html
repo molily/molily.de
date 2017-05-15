@@ -1,0 +1,919 @@
+---
+layout: post
+title: "Probleme mit Ankern und position:fixed (feste CSS-Positionierung)"
+description: Wie verhindere ich, dass fest positionierte Bereiche Linkanker überdecken?
+keywords: css, position, fixed, fest, positionierung, div, anker, sprungmarke, anchor, fragment, identifier, hyperlink
+---
+
+<style>
+.post-full img {
+  box-sizing: content-box;
+  border: 1px solid #ccc;
+}
+</style>
+
+<p>Anmerkung: Einige Teile dieses Artikel sind momentan noch unfertig, die Lücken sind jeweils gekennzeichnet.</p>
+
+<ol class="compact-list" id="toc">
+<li><a href="#einleitung">Hinweise zum Arbeiten mit diesem Dokument</a></li>
+<li><a href="#problemstellung">Problemstellung</a></li>
+<li><a href="#css1">Erste <abbr title="Cascading Stylesheets" lang="en">CSS</abbr>-Lösung: Anker als Blockelement</a></li>
+<li><a href="#css2">Zweite CSS-Lösung: Generierter Inhalt als Blockelement</a></li>
+<li><a href="#css3">Dritte CSS-Lösung: Relativ positionierter Anker</a></li>
+<li><a href="#css4">Vierte CSS-Lösung: Negativer Außenabstand und kompensierender Innenabstand</a></li>
+<li><a href="#css5">Fünfte CSS-Lösung: Anker mit oberem Innenabstand</a></li>
+<li><a href="#javascript-extern">JavaScript-Teillösung: Wenn das Dokument mit einem Anker aufgerufen wird</a></li>
+<li><a href="#javascript-intern">JavaScript-Teillösung: Wenn ein dokumentinterner Anker angesprungen wird</a></li>
+<li><a href="#javascript-kombination">JavaScript-Kombinationslösung: Automatisches Vergeben der <span lang="en">Event-Handler</span></a></li>
+<li><a href="#javascript-alternative">Alternative JavaScript-Kombinationslösung</a></li>
+<li><a href="#javascript-nachteile">Nachteile der JavaScript-Lösung</a></li>
+<li><a href="#postskriptum">Postskriptum</a></li>
+</ol>
+
+<!-- ######################################################################## -->
+
+<h2 id="einleitung">Hinweise zum Arbeiten mit diesem Dokument</h2>
+
+<p>Dieses Dokument setzt grundlegende Kenntnisse und aktives Verständnis der Bereiche <abbr title="Hypertext Markup Language" lang="en">HTML</abbr>, CSS und JavaScript voraus. Die meisten verwendeten Codekonstrukte werden nur hinsichtlich ihrer Funktion im Zusammenhang, nicht hinsichtlich der Bedeutung der Bestandteile erläutert. Es wird auch nicht mit Anspruch auf Vollständigkeit auf die Grundlagen und Hintergründe vermittelnde Quellen verwiesen. Insbesondere werden die syntaktischen Feinheiten sprachlich durch Fachbegriffe unterschieden. Um sich mit der verwendeten, größtenteils wortwörtlich an die <abbr title="World Wide Web Consortium" lang="en">W3C</abbr>-Spezifikationen angelehnten Terminologie vertraut zu machen, lohnt die Lektüre von <a href="http://jendryschik.de/wsdev/einfuehrung/xhtml/syntax">Vokabular und Syntax von <abbr title="Extensible Hypertext Markup Language" lang="en">(X)HTML</abbr></a> und <a href="http://jendryschik.de/wsdev/einfuehrung/css/syntax">Vokabular und Syntax von CSS</a>.</p>
+
+<!-- ######################################################################## -->
+
+<h2 id="problemstellung">Problemstellung</h2>
+
+<p>Beim Anspringen eines in einem HTML-Dokument vorhanden Linkankers (Sprungmarke, <dfn lang="en">fragment idenfitier</dfn>) wird zum entsprechenden Element geblättert, sodass dieses direkt oben im Anzeigebereich dargestellt wird, durch welchen das Dokument betrachtet wird. Wenn ein Dokument einen mit <code>position:fixed</code> oben auf der Seite fest positionierten und den Dokumentinhalt überlappenden Bereich &#8211; das heißt, ein Element eventuell mit weiteren Elementen &#8211; enthält und dieser eine ausreichende Höhe hat, überlappt und verdeckt er den Linkanker und den zugehörigen Absatz. <a href="/css-position-fixed-beispiel/">Beispieldokument zur Verdeutlichung des Problems</a>.</p>
+
+<!-- ######################################################################## -->
+
+<h2 id="css1">Erste CSS-Lösung: Anker als Blockelement</h2>
+
+<p>Der folgende Lösungsansatz sowie die darauffolgenden gehen davon aus, dass Anker vor allem bei Überschriften und damit bei inhaltlich-thematischen Einschnitten eingesetzt werden, welche mit den Elementen <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code>, <code>h5</code> und <code>h6</code> ausgezeichnet sind. Prinzipiell lassen sich die Konstrukte auch auf andere Elemente übertragen, die Beispiele sind jedoch so angelegt, dass sie insbesondere bei adressierbaren Überschriften effektiv einsetzen lassen.</p>
+
+<ol>
+
+<li>Das Überschriftelement selbst erhält ein <code>id</code>-Attribut mit dem Ankernamen als Attributwert.</li>
+
+<li>
+
+<p>Ein <code>a</code>-Element mit einem <code>name</code>-Attribut, welches den Anker darstellt, wird an den Anfang einer Kapitelüberschrift gestellt. Das heißt, es folgt direkt der Startmarke des <code>h<var>X</var></code>-Elements und ist erster Kindknoten.</p>
+
+<p>Für die Funktionsfähigkeit des Ankers ist prinzipiell lediglich das <code>a</code>-Element nötig. Es könnte auch im Falle von <abbr title="Extensible Hypertext Markup Language" lang="en">XHTML</abbr> 1.0 das <a href="http://www.edition-w3c.de/TR/2002/REC-xhtml1-20020801/#heading-4.10">zusätzlich nötige <code>id</code>-Attribut</a> erhalten. Das <code>id</code>-Attribut wird stattdessen im Überschriftelement untergebracht, um die Überschrift mit einen Attributselektor adressieren zu können, wie sich später zeigen werden.</p>
+
+</li>
+
+<li>
+
+<p>Der Inhalt des <code>a</code>-Elements bleibt bis auf ein geschütztes, später nicht sichtbares Leerzeichen (<code>&amp;nbsp;</code> oder <code>&amp;#160;</code>) leer, das heißt, es umfasst <em>nicht</em> den Inhalt der Kapitelüberschrift.</p>
+
+<p>Wenn wie beschrieben vorgegangen wird, sieht der entstehende HTML-Code eines <code>h2</code>-Elements folgendermaßen aus:</p>
+
+<pre>&lt;h2 id="sprungstelle"&gt;&lt;a name="sprungstelle"&gt;&amp;nbsp;&lt;/a&gt;Beispielüberschrift&lt;/h2&gt;</pre>
+
+</li>
+
+<li>
+
+<p id="selektorgruppe">Über eine Gruppe von Attributselektoren wie <code>h2 a[name], h3 a[name], h4 a[name]</code> wird allen <code>a</code>-Elementen, welche innerhalb von <code>h2</code>-, <code>h3</code>- oder <code>h4</code>-Elementen liegen und ein <code>name</code>-Attribut besitzen, folgende CSS-Eigenschaften zugewiesen:</p>
+
+<dl>
+
+<dt><code>display:block;</code></dt>
+<dd>Über die CSS-Eigenschaft <code>display</code> wird das <code>a</code>-Element, welches naturgemäß ein <span lang="en">Inline</span>-Element ist, wie ein Blockelement dargestellt.</dd>
+
+<dt><code>height:<var>60px</var>;</code></dt>
+<dd>Dem Blockelement kann nun über die CSS-Eigenschaft <code>height</code> eine feste Höhe zugewiesen werden. Diese Größe muss mindestens der Höhe entsprechen, welche der am obersten Rand des Anzeigebereichs fest positionierte Bereich im ungünstigsten Fall einnimmt (im Beispiel: <var>60px</var>). Als Einheit kann bei pixelbasiertem Layout <code>px</code> angegeben werden, genauso können aber auch relative Einheiten wie <code>em</code> oder <code>%</code> (Prozent) verwendet werden, falls die Höhe des fest positionierten Bereiches relativ zur zur dokumentweiten Schriftgröße angegeben ist.</dd>
+
+</dl>
+
+<p>Das Schema ließe sich natürlich auch auf Anker in <code>h5</code>- und <code>h6</code>-Elementen sowie beliebigen anderen ausweiten.</p>
+
+<pre><em class="comment">/* Betrifft <code>a</code>-Elemente innerhalb von <code>h<var>X</var></code>-Elementen mit <code>name</code>-Attribut: */</em>
+h2 a[name], h3 a[name], h4 a[name] {
+ display:block;
+ height:<var>60px</var>; <em class="comment">/* Dieser Wert kann variieren. */</em>
+}</pre>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, dem Ankerelement ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
+<p><img src="/img/css-posfixed-css1-1.png" width="300" height="165" alt="" /></p>
+</div>
+
+<p id="attributselektoren">Die Verwendung von zusätzlichen Attributselektoren (<code>h2 a[name]</code>) anstatt einfachen Nachkommenselektoren (<code>h2 a</code>) ist nötig, weil der <span lang="en">Microsoft Internet Explorer (Windows)</span> und andere veraltete Browser diesen Regelsatz ignorieren müssen, da sie <code>position:fixed</code> nicht interpretieren. Da bei diesen Browsern das <a href="#problemstellung">beschriebene Problem</a> nicht auftaucht, ist keine das Problem umgehende Lösung nötig. Durch den meist ebenfalls unbekannten Attributselektor wird die komplette CSS-Regel übergangen. Prinzipiell besteht jedoch keine vorhersehbare Verbindung zwischen der Unterstützung von <code>position:fixed</code> einerseits und Attributselektoren andererseits, weshalb dieses und ähnliche Konstrukte letztlich unzuverlässig sind. Es wird davon ausgegangen, dass <code>position:fixed</code> selbst ebenfalls über Attributselektoren versteckt wird (siehe <a href="http://jendryschik.de/wsdev/einfuehrung/css/browserkompatibilitaet">Fehlerhafte Browser-Implementierung: Workaround</a>).</p>
+
+</li>
+
+<li id="ankerverstecken">
+
+<p>Das erzwungene Leerzeichen im <code>a</code>-Element wird in Browsern, welche die Attributselektoren nicht verstehen, unnötigerweise am Anfang des Überschriftstext angezeigt wird. Daher wird es über eine Regel mit einer Gruppe von Nachkommenselektoren <code>h2 a, h3 a, h4 a</code> und der Deklaration <code>display:none</code> versteckt. Diese Regel wird vor der <a href="#attributselektoren">Regel mit den Attributselektoren</a> notiert, sodass der Wert der <code>display</code>-Eigenschaft durch sie überschrieben wird, sofern der Browser sie versteht.</p>
+
+<pre>h2 a, h3 a, h4 a {
+ display:none;
+}</pre>
+
+</li>
+
+<li id="abstaendeunterbinden">
+
+<p>Das <code>a</code>-Blockelement bewirkt einen Abstand mit der über die <code>height</code>-Eigenschaft angegebenen Höhe zwischen dem Text der Überschrift und dem vor der Überschrift liegenden Absatz. Daher ist es ratsam, den zusätzlichen Außenabstand zwischen dem <code>h<var>X</var></code>-Element, welches das <code>a</code>-Blockelement umfasst, und dem sich darüber befindenden Inhalt auf 0 (Null) zu setzen. Dies wird durch die Deklaration <code>margin-top:0</code> erreicht, welche allen relevanten Kapitelüberschriften zugewiesen wird. Des weiteren sollte das <code>h<var>X</var></code>-Überschriftelement keinen oberen Innenabstand (<code>padding-top</code>) besitzen. Dies entspricht zwar in der Regel der Vorgabe, dennoch empfiehlt sich das ausdrückliche Setzen auf Null.</p>
+
+<p>Die »Filter«, welche nicht-<code>position:fixed</code>-fähige Browser aussortieren sollen, sollten möglich einheitlich sein. Daher wird erneut auf Attributselektoren zurückgegriffen, um die besagten Außenabstände nur in bestimmten Browsern zu deaktivieren. Hier erklärt sich, warum anfangs das <code>id</code>-Attribut im Überschriftelement nötig war.</p>
+
+<pre><em class="comment">/* Betrifft Überschriften mit einem <code>id</code>-Attribut: */</em>
+h2[id], h3[id], h4[id] {
+ margin-top:0;
+ padding-top:0;
+}</pre>
+
+</li>
+
+<li id="absatzabstaende">
+
+<p>Auch dem Element, welches vor der Kapitelüberschrift liegt (beispielsweise ein <code>p</code>-Absatzelement), sollte ausdrücklich ein unterer Außenabstand <code>margin-bottom</code> mit dem Wert 0 zugewiesen werden. Um dies einfach ohne Eingriffe in den Code lösen zu können, kann der Außenabstand aller <code>p</code>-Elemente sowie anderer vorkommender Blockelemente (zum Beispiel <code>ol</code>, <code>ul</code>, <code>dl</code>, <code>table</code>) nach oben verlagert werden (<code>margin-top</code>).</p>
+
+<pre>p {
+ margin:<var>1em</var> 0 0 0;
+}</pre>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, dem Ankerelement ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
+<p><img src="/img/css-posfixed-css1-2.png" width="300" height="157" alt="" /></p>
+<p>Endergebnis ohne verdeutlichende Rahmen und Hintergründe:</p>
+<p><img src="/img/css-posfixed-css1-3.png" width="300" height="149" alt="" /></p>
+</div>
+
+</li>
+
+</ol>
+
+<p>Der beschriebene Code hat zur Folge, dass in allen Browsern, welche die Attributselektoren interpretieren, die CSS-Box des <code>h<var>X</var></code>-Überschriftelements durch das <code>a</code>-Blockelement um dessen Höhe nach oben vergrößert wird. Beim Anspringen des Ankers wird die Oberkante des <code>h<var>X</var></code>-Elements an den oberen Rand des Anzeigebereichs gerückt. Dadurch liegt der fest positionierte Bereich über dem leeren Abstand (dem <code>a</code>-Element), ohne dass der eigentliche Inhalt der Überschrift verdeckt wird.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<caption>Browser-Unterstützung der ersten CSS-Lösung</caption>
+<tr><th>Mozilla Milestone 16 (Gecko/20000613) Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Opera 5.12 Windows</th><td>Negativ getestet. Das Blockelement wird zwar erzeugt und wie gewünscht angezeigt, aber der Text danach angesprungen.</td></tr>
+<tr><th>Opera 6.00 Windows</th><td>Negativ getestet, der Überschriftstext wird angesprungen.</td></tr>
+<tr><th>Opera 6.01 Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Safari 1.2 MacOS X</th><td>positiv getestet</td></tr>
+<tr><th>Konqueror 3.2.2 Linux</th><td>positiv getestet Konqueror zeigt einen angesprungenen Anker jedoch nicht direkt am oberen Rand des Anzeigebereichs an, sondern lässt einen schmalen Spalt dazwischen. Er springt also nicht so weit nach unten wie die anderen Browser, wodurch ein Teil des leeren Abstands zwischen der Unterkante des fest positionierten Bereichs und dem Überschriftstext zu sehen ist.</td></tr>
+</table>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css1-beispiel">Beispiel zur ersten CSS-Lösung</h3>
+
+<p><a href="/css-position-fixed-loesung1/">Beispieldokument zur ersten CSS-Lösung</a></p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css1-nachteile">Nachteile der ersten CSS-Lösung</h3>
+
+<ul>
+
+<li>Durch das zum Blockelement umformatierte <code>a</code>-Element entsteht ein ständiger Abstand vor jenen Überschriften, die Anker enthalten. Dieser Abstand muss mindestens die Höhe des fest positionierten Bereiches einnehmen, sodass er mitunter selbst bei abgeschalteten Außenrändern der beteiligten Elemente unverhältnismäßig groß und unansehnlich wird &#8211; dies lässt sich nicht verhindern. Gleichwohl liegt dem optischen Einschnitt bestenfalls eine Trennung zwischen zwei thematischen Bereichen zugrunde, wenn die Anker in Kapitel- beziehungsweise Abschnittsüberschriften liegen. Es ist folglich ratsam, den fest positionierten Bereich möglichst schmal zu gestalten, sodass der Abstand vor jeder Überschrift nicht überdimensioniert wirkt.</li>
+
+<li>Infolge der Vergrößerung der Box der Überschriftelemente durch das <code>a</code>-Blockelement lassen sich einige CSS-Formatierungen (beispielsweise Hintergrundfarben, Innenabstände, Rahmen) nicht wie gewohnt anwenden, beziehungsweise sie hätten einen anderen Effekt. In diesen Fällen ist eine genaue Abstimmung mit dem Lösungsansatz notwendig. Die Brauchbarkeit der Lösung hängt somit von der Beschaffenheit des Layouts und möglichen Eingeständnissen ab.</li>
+
+<li>Um die Lücke vor Überschriften möglichst klein zu halten, sollten alle Elemente, die direkt vor den Überschriften liegen, keinen unteren Außenabstand haben (<code>margin-bottom:0</code>). Normalerweise hat ein <code>p</code>-Element obere und untere (Mindest-)Abstände, die mit den Abständen des vorherigen und folgenden Elements zusammenfallen. Dieses Konzept wird durchbrochen, indem nur noch der obere Außenabstand zählt. Diese Änderung der Raumorganisation muss im gesamten Layout berücksichtigt werden.</li>
+
+<li>Um Attributselektoren als »Filter« verwenden zu können, wird der Anker genau genommen zweimal definiert. Zum einen über das <code>id</code>-Attribut beim <code>h<var>X</var></code>-Element, zum anderen durch das <code>a</code>-Element mit <code>name</code>-Attribut in diesem Überschriftenelement. Das Attribut <code>name</code> bei <code>a</code>-Elementen sowie das <code>id</code>-Attribut teilen sich ein und denselben <em>Namensraum</em>. Das Definieren von <code>&lt;a name="<var>Name</var>"&gt;&lt;/a&gt;</code> und die Angabe von <code>id="<var>Name</var>"</code> bei einem anderen Element kommt also einer doppelten Deklaration gleich. Dies ist nicht konform zum HTML-4.01-Standard: <a href="http://www.w3.org/TR/html401/struct/links.html#idx-anchor-8" hreflang="en" lang="en">Anchors with the id attribute</a>. Da die Eigentümlichkeit des gleichen Namensraumes nicht in der <abbr title="Dokumenttyp-Definition">DTD</abbr> von HTML oder XHTML ausgedrückt werden kann, ist der obige Code gültig im Sinne der <abbr>DTD</abbr>. Zwar weist der Standard ausdrücklich darauf hin, dass diese Vorgehensweise zu vermeiden ist, aber da sie keinerlei bekannte Nachteile in der Praxis nach sich zieht, kann diese Abweichung vom Standard im Vergleich zu den anderen Nachteilen noch am ehesten hingenommen werden.</li>
+
+</ul>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="links">
+<h3>Weiterführende Links</h3>
+<ul class="compact-list">
+<li><a href="http://de.selfhtml.org/css/eigenschaften/positionierung.htm#display">SELFHTML CSS-Eigenschaften: <code>display</code></a></li>
+<li><a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap05.html"><abbr title="World Wide Web Consortium" lang="en">W3C</abbr> CSS: Selektoren</a></li>
+</ul>
+</div>
+
+<!-- ######################################################################## -->
+
+<h2 id="css2">Zweite CSS-Lösung: Generierter Inhalt als Blockelement</h2>
+
+<p>Die folgende Lösung käme prinzipiell ohne <code>a</code>-Elemente aus und bräuchte lediglich <code>id</code>-Attribute. Im Kontext von HTML und XHTML im öffentlichen <abbr>WWW</abbr> hat der Verzicht jedoch einen Nachteil. Denn obwohl das <code>id</code>-Attribut bereits seit <a href="http://www.w3.org/TR/REC-html40-971218/struct/links.html#anchors-with-id" title="Anker mit dem Attribut »id«">HTML 4.0</a> zum Setzen einer Sprungmarke erlaubt ist, unterstützen dies einige alte Browser nicht. Da das Funktionieren der Hyperlinks wesentlich ist, sollten Anker weiterhin über ein <code>a</code>-Element mit einem <code>name</code>-Attribut und im Falle von XHTML 1.0 einem zusätzlichen <code>id</code>-Attribut gelöst werden. Für in sich abgeschlossene, homogene Umgebungen gilt dies natürlich nicht.</p>
+
+<p>Im Folgenden wird mit einem zusätzlichen <code>a</code>-Element mit <code>name</code>-Attribut gearbeitet, welches leer am Anfang (oder Ende) eines Überschriftelements steht. Es wäre zwar logischer, wenn es den Überschrifttext umspannen würde. Allerdings brächte das Probleme mit der Pseudo-Klasse <code>:hover</code>, welche in der Regel für <code>a:hover</code> gebraucht wird. <code>a:hover</code> gilt in neueren Browsern für alle <code>a</code>-Elemente, ob mit Anker- oder Hyperlink-Funktion. Dies ließe sich mit <code>a:link:hover</code> bzw. <code>a:visited:hover</code> umgehen oder über <code>a[name]:hover</code> kompensieren. Da nicht alle Browser diese Techniken unterstützen, wird hier nur oberflächlich auf sie hingewiesen wird.</p>
+
+<ol>
+
+<li>
+
+<p>CSS 2 bietet die Möglichkeit, über die sogenannten Pseudo-Elemente <code>:before</code> und <code>:after</code> in Zusammenspiel mit der Eigenschaft <code>content</code> Inhalte einzufügen, unter anderem Text. Die Idee ist nun, das in der <a href="#css1">ersten CSS-Lösung</a> zum Blockelement umformatierten <code>a</code>-Element durch <em>erzeugten Textinhalt</em> am Anfang des Überschriftelements zu ersetzen, welcher ebenfalls als Blockelement formatiert wird. Der Code der Überschrift würde etwa lauten:</p>
+
+<pre>&lt;h2 id="sprungstelle"&gt;&lt;a name="sprungstelle"&gt;&lt;/a&gt;Beispielüberschrift&lt;/h2&gt;</pre>
+
+<p>Das Element <code>&lt;a name="sprungstelle"&gt;&lt;/a&gt;</code> ist wie gesagt für die Lösung nicht relevant.</p>
+
+</li>
+
+<li>
+
+<p>Um den Text bei Überschriftelementen einzufügen, wird die Selektorgruppe <code>h2[id]:before, h3[id]:before, h4[id]:before</code> verwendet. Natürlich ist auch hier eine Ausweitung auf andere Elemente nach demselben Schema möglich. Durch die Typselektoren <code>h2</code>, <code>h3</code> beziehungsweise <code>h4</code> jeweils kombiniert mit dem Attributselektor <code>[id]</code> werden nur diejenigen Überschriftelemente ausgewählt, welche ein <code>id</code>-Attribut besitzen und somit als Linkanker dienen. Das Pseudo-Element <code>:before</code> im jeweiligen Teilselektor bedeutet, dass der erzeugte Inhalt <em>vor</em> dem bestehenden Inhalt (im konkreten Fall Textinhalt) des betreffenden Elements eingefügt wird.</p>
+
+<p>Attributselektoren dienen hier wieder als (zweifelhaftes) Filterkriterium, mit welchem die Regel vor nicht-<code>position:fixed</code>-fähige Browser versteckt werden soll. Das Pseudoelement <code>:before</code> könnte ebenfalls als »Filter« wirken. Wenn alle Überschriftelemente <code>id</code>-Attribute enthielten, erübrigte sich der genannte Attributselektor. Er sollte aber auch dann verwendet werden, um die Hürden einheitlich zu halten, siehe unten.</p>
+
+</li>
+
+<li>
+
+<p>In der entstehenden CSS-Regel wird die Eigenschaft <code>content</code> verwendet, um den einzufügenden Textinhalt zu definieren. Der Eigenschaftswert muss dazu aus einer mit einfachen oder doppelten Anführungszeichen begrenzten Zeichenkette bestehen. Die Deklaration <code>content:'Beispiel '</code> in einer Regel mit dem genannten Selektor würde im Beispielfalle <code>&lt;h2 id="a"&gt;Überschrift&lt;/h2&gt;</code> dazu führen, dass die Überschrift nach Anwendung der Regel den Text <samp>»Beispiel Überschrift«</samp> enthält. Im Hinblick auf die Aufgabenstellung reicht es aus, ein Leerzeichen anzugeben, also <code>content:' '</code>. (Offenbar genügt auch eine leere Zeichenkette, das heißt <code>content:''</code>.)</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, der eingefügten Text (<code>content:'Beispiel '</code>) ist blau und hat einen hellgrauer Hintergrund.</p>
+<p><img src="/img/css-posfixed-css3-1.png" width="300" height="115" alt="" /></p>
+</div>
+
+</li>
+
+<li>Das eingefügte Pseudo-Element beziehungsweise dessen Textinhalt bildet eine sogenannte <span lang="en">Inline</span>-Box innerhalb der Box des Überschriftelements. Dies entspricht dem zunächst unformatierten <code>a</code>-Element in der <a href="#css1">ersten CSS-Lösung</a>. Über die Deklaration <code>display:block</code> wird das Pseudo-Element auf die bekannte Art zum Blockelement umformatiert (beziehungsweise die erzeugte Box wird zu einer Block-Box). Es liegt damit oberhalb der Zeilenbox des Überschriftstextes.</li>
+
+<li>
+
+<p>Nun kann dem Pseudo-Element über die Eigenschaft <code>height</code> eine feste Höhe zugeordnet werden, damit es als Platzhalter zwischen der oberen Kante des Überschriftelements und dessen Text fungiert. Die Höhe muss mindestens der des fest positionierten Bereiches entsprechen, damit dieser beim Anspringen des Ankers nur das Pseudo-Element überdeckt.</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, der eingefügten Block-Box (<code>content:' '</code>) ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
+<p><img src="/img/css-posfixed-css3-2.png" width="300" height="169" alt="" /></p>
+</div>
+
+<p>Die entstehende CSS-Regel wäre etwa folgendermaßen aufgebaut:</p>
+
+<pre>h2[id]:before, h3[id]:before, h4[id]:before {
+ content:' ';
+ display:block;
+ height:<var>60px</var>; <em class="comment">/* Dieser Wert kann variieren. */</em>
+}</pre>
+
+</li>
+
+<li>
+
+<p>Da das eingefügte Pseudo-Element eine breite Lücke vor dem Überschrifttext erzeugt, empfiehlt es sich, wie bei der ersten CSS-Lösung die oberen Außen- und Innenabstände der Überschrift über die Eigenschaften <code>margin-top</code> und <code>padding-top</code> ausdrücklich auf 0 (Null) zu setzen. Damit die Abstände nur in denjenigen Browsern abgeschaltet werden, welche auch die Block-Box einfügen, wird auf den Attributselektor <code>[id]</code> als Auswahlkriterium zurückgegriffen, der auch in der Regel Verwendung fand, die den Text einfügt:</p>
+
+<pre><em class="comment">/* Betrifft Überschriften mit einem <code>id</code>-Attribut: */</em>
+h2[id], h3[id], h4[id] {
+ margin-top:0;
+ padding-top:0;
+}</pre>
+
+<p>Es bleibt wie gesagt fraglich, ob sich Attributselektoren zum zuverlässigen Ausschluss derjenigen Browser eignen, welche weder feste Positionierung über <code>position:fixed</code> noch CSS-generierte Inhalte über <code>:before</code> und <code>content:'Text'</code> unterstützen.</p>
+
+</li>
+
+<li>
+
+<p>Mithilfe der <a href="#absatzabstaende">beschriebenen Methode</a> werden die unteren Ränder (<code>margin-bottom</code>) aller Blockelemente zugunsten der oberen Ränder (<code>margin-top</code>) deaktiviert, um die entstehende Lücke vor Überschriften zu verkleinern.</p>
+
+<pre>p {
+ margin:<var>1em</var> 0 0 0;
+}</pre>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, der eingefügten Block-Box ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
+<p><img src="/img/css-posfixed-css3-3.png" width="300" height="151" alt="" /></p>
+<p>Endergebnis ohne Hervorhebungen.</p>
+<p><img src="/img/css-posfixed-css3-4.png" width="300" height="143" alt="" /></p>
+</div>
+
+</li>
+
+</ol>
+
+<p>Sofern der Browser die genannten Regeln wie gewünscht umsetzt, entstehen vor allen relevanten Überschriften durch die eingefügten Blockinhalte Abstände beziehungsweise Freiräume, die die Boxen der Überschriften nach oben vergrößern. Beim Anspringen einer mit einem Anker versehenen Überschrift wird der Dokumentausschnitt so verschoben, dass sich die obere Kante der Überschriftbox mit der des Anzeigebereichs deckt. Der fest positionierte Bereich überlappt somit den Freiraum. Der Überschrifttext liegt vertikal unterhalb des fest positionierte Bereich und bleibt sichtbar.</p>
+
+
+<table border="1" cellspacing="0" cellpadding="3">
+<caption>Browser-Unterstützung der zweiten CSS-Lösung</caption>
+<tr><th>Mozilla Milestone 16 (Gecko/20000613) Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Opera 5.12 bis 6.06 Windows</th><td>Negativ getestet. Der Überschriftstext wird gesprungen, nicht die Oberkante der eingefügten Block-Box.</td></tr>
+<tr><th>Opera 7.02 Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Safari 1.2 MacOS X und Konqueror 3.2.2 Linux</th><td>Negativ getestet. Die Block-Box wird zwar mit der gewünschten Höhe eingefügt, der Überschriftstext erscheint aber nicht unter derselbigen, sondern <em>darin</em>. Dadurch schließt der Überschriftstext direkt an das Element davor mit <code>class="lp"</code> an und zum ersten Absatz des eingeleiteten Abschnitts entsteht eine große Lücke. Beim Anspringen des Ankers liegt der Überschriftstext also unter dem fest positionierten Bereich und ist nicht lesbar.</td></tr>
+</table>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css2-beispiel">Beispiel für die zweite CSS-Lösung</h3>
+
+<p><a href="/css-position-fixed-loesung2/">Beispieldokument zur zweiten CSS-Lösung</a></p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css2-nachteile">Nachteile der zweite CSS-Lösung</h3>
+
+<p>Dieser Lösungansatz hat dieselben <a href="#css1-nachteile">Nachteile wie die erste CSS-Lösung</a>.</p>
+
+<ins><p>[Gibt es weitere/zusätzliche Nachteile?]</p></ins>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="links">
+<h3>Weiterführende Links</h3>
+<ul class="compact-list">
+<li><a href="http://de.selfhtml.org/css/eigenschaften/pseudoformate.htm#before_after">SELFHTML CSS-Eigenschaften: <code>:before</code>, <code>:after</code> (Pseudoelemente für automatisch generierten Inhalt)</a></li>
+<li><a href="http://www.edition-w3c.de/TR/1998/REC-CSS2-19980512/kap12.html#heading-12.1"><abbr title="World Wide Web Consortium" lang="en">W3C</abbr> CSS 2.0: Die Pseudo-Elemente <code>:before</code> und <code>:after</code></a></li>
+<li><a href="http://www.edition-w3c.de/TR/1998/REC-CSS2-19980512/kap12.html#heading-12.2"><abbr title="World Wide Web Consortium" lang="en">W3C</abbr> CSS 2.0: Die '<code>content</code>'-Eigenschaft</a></li>
+</ul>
+</div>
+
+<!-- ######################################################################## -->
+
+<h2 id="css3">Dritte CSS-Lösung: Relativ positionierter Anker</h2>
+
+<ol>
+
+<li>Wie in der <a href="#css1">ersten Lösung</a> wird zunächst ein <code>a</code>-Element mit Ankerfunktion an den Anfang des <code>h<var>X</var></code>-Elements gesetzt, welches lediglich ein geschütztes Leerzeichen enthält. Es ist ebenfalls der erste Kindknoten. Ein <code>id</code>-Attribut für das <code>h2</code>-Element ist jedoch nicht unbedingt notwendig, es kann im Falle von <abbr title="Extensible Hypertext Markup Language" lang="en">XHTML</abbr> 1.0 wie gewohnt dem <code>a</code>-Element vergeben werden.
+
+<pre>&lt;h2&gt;&lt;a name="sprungstelle"&gt;&amp;nbsp;&lt;/a&gt;Beispielüberschrift&lt;/h2&gt;</pre>
+
+</li>
+
+<li>Die <a href="#selektorgruppe">beschriebene Selektorgruppe</a> <code>h2 a[name], h3 a[name], h4 a[name]</code> wird übernommen, um die Anker mit CSS zu formatieren, die in Überschriften liegen. Die Attributselektoren werden erneut zur (zweifelhaften) Identifizierung von <code>position:fixed</code>-fähigen Browsern verwendet.</li>
+
+<li>Über <code>display:block</code> wird das Ankerelement als Blockelement formatiert, sodass es im <code>h<var>X</var></code>-Element über der Zeilenbox des Überschriftstext liegt. Dies ist vor allem notwendig, um später die Größe des Elements anzupassen.</li>
+
+<li>Der als Blockelement dargestellte Anker wird mittels <code>position:relative</code> und der Eigenschaft <code>top</code> (oder <code>bottom</code>) relativ zur ursprünglichen Position im Elementfluss vertikal nach oben verschoben, in diesem Fall mindestens um den Wert der Höhe des fest positionierten Bereiches. Entweder kann der Wert negativiert zusammen mit <code>top</code> oder als positive Größe zusammen mit <code>bottom</code> verwendet werden, also beispielsweise <code>top:<var>-60px</var></code> oder <code>bottom:<var>60px</var></code>.</li>
+
+<li>
+
+<p>Durch die relative Positionierung liegt die Box des <code>a</code>-Elements um die angegebene Höhe oberhalb der Box des <code>h<var>X</var></code>-Elements und überlappt die dortigen Boxen, beispielsweise den Textabsatz vor der Überschrift. Da das Element lediglich ein Leerzeichen enthält, ist es zwar nicht sichtbar, wird aber beispielsweise beim Markieren des Textes erkennbar. Die Ausmaße der verschobenen Box können zur Veranschaulichung durch eine Hintergrundfarbe, beispielsweise mittels <code>background-color:black</code>, sichtbar gemacht werden.</p>
+
+<p>Bei einer Verschiebung mittels <code>position:relative</code> wird die Elementbox zwar verrückt, der ursprünglich eingenommene Raum an der sogenannten <q cite="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap09.html#heading-9.3.1">Position im normalen Fluss</q> bleibt reserviert, das heißt, er bleibt leer und transparent. Die Position des <code>a</code>-Elements im normalen Fluss liegt wie gesagt durch die Deklaration <code>display:block</code> innerhalb des <code>h<var>X</var></code>-Elements oberhalb des darin enthaltenen Textes.</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, dem verschobenen Ankerelement ein blauer Rahmen.</p>
+<p><img src="/img/css-posfixed-css2-1.png" width="300" height="180" alt="" /></p>
+</div>
+
+<p>Um diesen Phänomenen zu begegnen, wird dem <code>a</code>-Element mittels <code>height:0</code> die Höhe 0 (Null) zugewiesen. Die Breite wird mittels <code>width:0</code> ebenfalls auf 0 gesetzt, dies ist jedoch vernachlässigbar. Die Elementbox nimmt dadurch letztlich keinen Raum ein, weder an der Position, an die sie verschoben wurde, noch an Position im normalen Fluss. In Zweifelsfällen, in denen <code>width:0</code> nicht wirksam ist, kann zusätzlich <code>font-size:0; line-height:0;</code> bzw. <code>font-size:2px; line-height:0;</code> eingesetzt werden, damit die durch das erzwungene Leerzeichen erzeugte Zeilenbox in jedem Fall die minimalste Höhe hat.</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben. Das verschobene Ankerelement nimmt keinen Raum ein und ist ohne Rahmen nicht sichtbar.</p>
+<p><img src="/img/css-posfixed-css2-2.png" width="300" height="151" alt="" /></p>
+</div>
+
+</li>
+
+<li>
+
+<p>Trotz einer Höhe und Breite von 0 taucht das <code>a</code>-Element beim Markieren des Textes in einigen Browsern auf und wirkt störend. Um es vollends zu verbergen, wird <code>visibility:hidden</code> angegeben.</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Beim Markieren des Texts wird das Ankerelement sichtbar.</p>
+<p><img src="/img/css-posfixed-css2-3.png" width="300" height="157" alt="" /></p>
+<p>Durch <code>visibility:hidden</code> wird es vollends versteckt.</p>
+<p><img src="/img/css-posfixed-css2-4.png" width="300" height="157" alt="" /></p>
+</div>
+
+</li>
+
+<li>Wie bei der <a href="#css1">ersten CSS-Lösung</a> beschrieben, wird eine zweite CSS-Regel mit gewöhnlichen Nachkommenselektoren vor der Regel mit Attributselektoren notiert, um in nicht <code>position:fixed</code>-fähigen Browsern den <a href="#ankerverstecken">Anker samt erzwungenem Leerzeichen zu verstecken</a>.</li>
+
+</ol>
+
+<p>Die entstehenden CSS-Regeln sähen so oder ähnlich aus:</p>
+
+<pre>h2 a, h3 a, h4 a {
+ display:none;
+}
+h2 a[name], h3 a[name], h4 a[name] {
+ display:block;
+ width:0;
+ height:0;
+ position:relative;
+ top:-<var>60px</var>; <em class="comment">/* Dieser Wert kann variieren. */</em>
+ visibility:hidden;
+}
+</pre>
+
+<p>Trotz des Umstands, dass das verschobene Ankerelement keinen Raum einnimmt und unsichtbar ist, wirkt es weiterhin als Anker und kann an seiner neuen Position angesprungen werden. Wird also ein Link zum Anker annavigiert oder das Dokument mit einer Ankerangabe geladen, zeigt der Browser das unsichtbare Ankerelement direkt oben im Anzeigebereich an, sofern die Formatierungen richtig umgesetzt werden. Die Überschrift selbst erscheint im Erfolgsfalle an der gewünschten Stelle direkt unterhalb des fest positionierten Bereiches, ohne dass sie verdeckt wird.</p>
+
+<p>Der Vorteil dieser Lösung ist, dass am äußeren Erscheinungsbild des Dokuments selbst nichts geändert wird. Von den vor den Überschriften positionierten Ankerelemente merkt der Benutzer nichts, wenn der Browser die CSS-Formatierungen richtig verarbeitet und anwendet. Der große <a href="#css1-nachteile">Nachteil des ersten Lösungsansatzes</a> &#8211; der durch das <code>a</code>-Blockelement erzwungene Abstand vor jeder Überschrift &#8211; ist bei dieser Lösungsmöglichkeit nicht vorhanden.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<caption>Browser-Unterstützung der dritten CSS-Lösung</caption>
+<tr><th>Mozilla 0.9.9 Windows</th><td>negativ getestet.</td></tr>
+<tr><th>Mozilla 1.0 <span lang="en">Release Candidate</span> 1 Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Opera 6.00 Windows</th><td>negativ getestet.</td></tr>
+<tr><th>Opera 6.01 Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Safari 1.2 MacOS X</th><td>negativ getestet.</td></tr>
+<tr><th>Konqueror 3.2.2</th><td>positiv getestet, allerdings tritt das aus den vorigen Lösungen bekannte Phänomen auf: Das Überschriftselement schließt beim Anspringen nicht direkt an die Oberkante des Anzeigebereichs an, somit liegt der Überschriftstext um ungefähr 20 Pixel weiter unten als in den anderen Browsern.</td></tr>
+</table>
+
+<p>In Mozilla M16 funktioniert die Lösung (mit <code>font-size:2px; line-height:0;</code>, siehe unten), wenn der Anker aus einem externen Dokument angesprungen wird oder in die Adresszeile eingegeben wird, während ein fremdes Dokument angezeigt wird. Im Mozilla M18 bis einschließlich 0.9.9 funktioniert die Lösung nicht wie gewünscht. Im Mozilla 1.0 RC1 und darüber funktioniert die Lösung nur, wenn der fragliche Anker über einen dokumentinternen Link angesprungen wird.</p>
+
+<p>Im Opera 7.02, 7.11, 7.21, 7.23 und 7.5 wirkt die Formatierung <code>height:0</code> nur im <a href="http://www.hut.fi/~hsivonen/doctype.html">standardkonformen Rendermodus</a>, der abhängig von der Dokumenttyp-Angabe ist. Im Quirks-Modus hat der relativ positionierte Anker eine bestimmte Höhe, wodurch vor der Oberkante der Überschrift und dem Überschriftstext freier Platz bleibt. Auch Mozilla zeigt dieses Verhalten bis auschließlich Version 1.3, und zwar unabhängig vom Rendermodus. Dies lässt sich durch <code>font-size:2px; line-height:0</code> kompensieren. Im Opera (getestet mit 6.01 bis 7.5) führt dies jedoch zu einer Verschiebung nach oben beim Anspringen des Ankers. Dies hängt damit zusammen, welche Mindestschriftgröße eingestellt ist.</p>
+
+<table>
+<caption>Verschiebung beim Anspringen eines Ankers im Opera 7.x im Quirks-Modus bei <code>font-size:2px; line-height:0</code></caption>
+<thead>
+<tr>
+<th scope="col">Keine Mindestschriftgröße</th>
+<th scope="col">13 Pixel Mindestschriftgröße</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/img/css-posfixed-css2-5.png" width="250" height="150" alt="" /></td>
+<td><img src="/img/css-posfixed-css2-6.png" width="250" height="150" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<p>Der Wert <var>2px</var> für <code>font-size</code> bietet sich an, weil Mozilla bei <var>0</var> das Element als nicht existent ansieht und die Lösung insgesamt nicht mehr wirkt. In Mozilla-Versionen unter 1.3, in denen wie gesagt <code>height:0</code> nicht wirkt, setzt eine gegebenenfalls eingestellte Mindestschriftgröße die Angaben <code>font-size:2px; line-height:0</code> außer Kraft.</p>
+
+<table>
+<caption>Größe des verschobenen Ankerelements je nach Mindestschriftgröße im Mozilla &lt; 1.3 bei <code>font-size:2px; line-height:0</code> (zur Veranschaulichung ohne <code>visibility:hidden</code>)</caption>
+<thead>
+<tr>
+<th scope="col">Keine Mindestschriftgröße</th>
+<th scope="col">13 Pixel Mindestschriftgröße</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="/img/css-posfixed-css2-7.png" width="150" height="250" alt="" /></td>
+<td><img src="/img/css-posfixed-css2-8.png" width="150" height="250" alt="" /></td>
+</tr>
+</tbody>
+</table>
+
+<p>Unglücklicherweise lassen sich nicht beide Fehler gleichzeitig beheben. Denn wenn Opera 7.x im standardkonformen Modus bedient wird, damit <code>height:0</code> wirkt, und für Mozilla &lt; 1.3 <code>font-size:2px; line-height:0</code> eingesetzt wird, hat die Mindestschriftgröße im Opera die besagte Auswirkung auf die Höhe des relativ positionierten Ankerelements. Immerhin ist die durch die Mindestschriftgröße erzeugte Lücke höchstwahrscheinlich schmaler als diejenige, die entsteht, wenn keine wirksame Höhenbegrenzung angegeben ist.</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css3-beispiel">Beispiel zur dritten CSS-Lösung</h3>
+
+<p><a href="/css-position-fixed-loesung3/">Beispieldokument zur dritten CSS-Lösung</a></p>
+
+<div class="links">
+<h3>Weiterführende Links</h3>
+<ul class="compact-list">
+<li><a href="http://de.selfhtml.org/css/eigenschaften/positionierung.htm">SELFHTML CSS-Eigenschaften: Positionierung und Anzeige von Elementen</a></li>
+<li><a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap09.html#heading-9.4.3"><abbr title="World Wide Web Consortium" lang="en">W3C</abbr> CSS 2.0: Relative Positionierung</a></li>
+<li><a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap09.html#heading-9.3.2"><abbr title="World Wide Web Consortium" lang="en">W3C</abbr> CSS 2.0: Die Eigenschaften <code>top</code> und <code>bottom</code></a></li>
+<li><a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap11.html#heading-11.2"><abbr title="World Wide Web Consortium" lang="en">W3C</abbr> CSS 2.0: Die Eigenschaft <code>visibility</code></a></li>
+</ul>
+</div>
+
+<!-- ######################################################################## -->
+
+<h2 id="css4">Vierte CSS-Lösung: Negativer Außenabstand und kompensierender Innenabstand</h2>
+
+<ol>
+
+<li>Wie auch die dritte Lösung käme auch die folgende ohne <code>a</code>-Elemente mit <code>name</code>-Attributen aus. Aus den <a href="#css3">beschriebenen Gründen</a> wird dennoch zur Abwärtskompatibilität bei jedem Anker zusätzlich ein leeres <code>a</code>-Ankerelement eingefügt, welches später gegebenenfalls entfernt werden kann. Das Codeschema einer Überschrift wird übernommen:
+
+<pre>&lt;h2 id="sprungstelle"&gt;&lt;a name="sprungstelle"&gt;&lt;/a&gt;Beispielüberschrift&lt;/h2&gt;</pre>
+</li>
+
+<li>
+
+<p>Die CSS-Eigenschaft <code>margin</code> kann negative Werte annehmen. Angewandt auf ein normal fließendes Element führt ein negativer oberer Außenabstand (<code>margin-top</code>) dazu, dass die Elementbox vertikal nach oben verschoben wird und die dort befindlichen Boxen überlappt. Alle folgenden Boxen im normalen Fluss rücken entsprechend auf, sie schließen weiterhin (unter Berücksichtigung der Außenabstände) an die Unterkante der verschobenen Box an.</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Eine Überschrift erhält einen negativen oberen Außenabstand. Sie hat zur Verdeutlichung einen roten Rahmen. Die Boxen der beiden Absätze vor der Überschrift werden überlappt, die Boxen der beiden Absätze nach der Überschrift rücken entsprechend nach oben.</p>
+<p><img src="/img/css-posfixed-css4-1.png" width="300" height="137" alt="" /></p>
+</div>
+
+<p>Der <span lang="fr" xml:lang="fr">Clou</span> ist nun, die Überschriften mit den Ankern zunächst mit einem negativen <code>margin-top</code> zu versehen und gleichzeitig einen oberen Innenabstand <code>padding-top</code> mit demselben Wert zu vergeben. Dieser Wert muss mindestens so groß sein wie der fest positionierte Bereich. Dadurch erscheint der Inhalt der Überschrift, beispielsweise der Text, letztlich an der Ausgangsposition, als wäre kein negativer <code>margin-top</code> vergeben worden.</p>
+
+<div class="illustration">
+<p><strong>Illustration:</strong> Die Überschrift erhält einen negativen <code>margin-top</code> und einen positiven gleich großen <code>padding-top</code>. Sie hat zur Verdeutlichung einen roten Rahmen. Gäbe es diesen Rahmen nicht, ließe sich das Beispiel nicht von einer Version ohne diese Formatierungen unterscheiden.</p>
+<p><img src="/img/css-posfixed-css4-2.png" width="300" height="187" alt="" /></p>
+</div>
+
+</li>
+
+<li>Die besagten Deklarationen werden in einer Regel mit dem Selektor <code>h2[id], h3[id], h4[id]</code> untergebracht. Betroffen sind dann <code>h2</code>-, <code>h3</code>- und <code>h4</code>-Elemente mit einem <code>id</code>-Attribut. Die Attributselektoren wirken gleichzeitig als (letztlich unzuverlässiger) Filter, um nicht-<code>position:fixed</code>-fähige Browser davon abzuhalten, die Regel anzuwenden.</li>
+
+</ol>
+
+<p>Die entstehende CSS-Regel sähe etwa wie folgt aus:</p>
+
+<pre>h2[id], h3[id], h4[id] {
+ margin-top:-<var>60</var>px; <em class="comment">/* Dieser Wert kann variieren. */</em>
+ padding-top:<var>60</var>px; <em class="comment">/* Dieser Wert kann variieren. */</em>
+}</pre>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<caption>Browser-Unterstützung der vierten CSS-Lösung</caption>
+<tr><th>Opera 5.12 bis 6.06 Windows</th><td>negativ getestet</td></tr>
+<tr><th>Opera 7.02 Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Mozilla M16 Windows</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Beim Anspringen des Ankers über einen externen Link oder beim Eingeben der Adresse in die Adresszeile liegt die Überschrift unter dem fest positionierten Bereich.</td></tr>
+<tr><th>Mozilla M18 Windows</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Mozilla M18 springt aus einem fremden Dokument referenzierten Anker anscheinend gar nicht an, dasselbe gilt für das Eingeben der Adresse in die Adresszeile, während ein anderes Dokument gezeigt wird.</td></tr>
+<tr><th>spätestens ab Mozilla 0.9 Windows</th><td>positiv getestet (ohne Einschränkungen)</td></tr>
+<tr><th>Safari 1.2 MacOS X</th><td>positiv getestet</td></tr>
+<tr><th>Konqueror 3.2.2 Linux</th><td>positiv getestet, allerdings tritt das aus den vorigen Lösungen bekannte Phänomen auf: Das Überschriftselement schließt beim Anspringen nicht direkt an die Oberkante des Anzeigebereichs an, somit liegt der Überschriftstext um ungefähr 20 Pixel weiter unten als in den anderen Browsern.</td></tr>
+</table>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css4-beispiel">Beispiel für die vierte CSS-Lösung</h3>
+
+<p><a href="/css-position-fixed-loesung4/">Beispieldokument zur vierten CSS-Lösung</a></p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css4-nachteile">Nachteile der vierten CSS-Lösung</h3>
+
+<p>Insgesamt hat diese Lösungsmöglichkeit durch die Überlappung der Boxen ein großes Problempotenzial. Zum einen können die CSS-Eigenschaften <code>margin</code>, <code>padding</code>, <code>border</code> und <code>background</code> nicht wie gewohnt auf die betroffenen Überschriftelemente angewendet werden. Dazu könnten beispielsweise <code>div</code>-Elemente eingefügt werden, welche die Elemente zwischen zwei anspringbaren Überschriften gruppieren und statt den Überschriften nach oben verschoben werden und <code>padding-top</code> erhalten, um zur Ursprungsposition zurückzukehren. Zum anderen werden alle möglichen Mausereignisse durcheinandergebracht. Das betrifft sowohl die CSS-Pseudoklasse <code>:hover</code> als auch die entsprechenden JavaScript/DOM-<span lang="en">Events</span> <code>click</code>, <code>mouseover</code>, <code>mouseout</code>.</p>
+
+<!-- ######################################################################## -->
+
+<h2 id="css5">Fünfte CSS-Lösung: Anker mit oberem Innenabstand</h2>
+
+<pre>&lt;h2 id="sprungstelle"&gt;&lt;a name="sprungstelle"&gt;&amp;nbsp;&lt;/a&gt;Beispielüberschrift&lt;/h2&gt;</pre>
+
+<pre>h2 a[name] {
+ padding-top:<var>60px</var>; <em class="comment">/* Dieser Wert kann variieren. */</em>
+ width:0;
+ font-size:0;
+}</pre>
+
+<ins><p>[Erklärung fehlt]</p></ins>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<caption>Browser-Unterstützung der fünften CSS-Lösung</caption>
+<tr><th>Opera 5.12 bis 6.06 Windows</th><td>negativ getestet</td></tr>
+<tr><th>Opera 7.02 Windows und darüber</th><td>positiv getestet</td></tr>
+<tr><th>Mozilla M16 Windows</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen externen Link und beim ersten Eingeben der Adresse zum Anker in die Adresszeile, das heißt während ein fremdes Dokument angezeigt wird</td></tr>
+<tr><th>Mozilla M18 bis einschließlich 0.9.9 Windows</th><td>negativ getestet</td></tr>
+<tr><th>Mozilla 1.0 Release Candidate 1 Windows und darüber</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Beim Anspringen des Ankers über einen externen Link oder beim Eingeben der Adresse zum Anker in die Adresszeile liegt die Überschrift unter dem fest positionierten Bereich.</td></tr>
+<tr><th>Safari 1.2 MacOS X und Konqueror 3.2.2 Linux</th><td>negativ getestet</td></tr>
+</table>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="css5-beispiel">Beispiel für die fünfte CSS-Lösung</h3>
+
+<p><a href="/css-position-fixed-loesung5/">Beispieldokument zur fünften CSS-Lösung</a></p>
+
+<!-- ######################################################################## -->
+
+<h2 id="javascript-extern">JavaScript-Teillösung: Wenn das Dokument mit einem Anker aufgerufen wird</h2>
+
+<p>Die JavaScript-Objektmethode <code>window.scrollBy()</code> bietet die Möglichkeit, den Fokus des Fensters um eine angegebene Anzahl von Pixeln zu verschieben. Es liegt nahe, diese Methode zu verwenden, um einen unter dem fest positionierten Bereich liegenden Anker wieder ins Blickfeld zu holen, indem der sichtbare Dokumentausschnitt nachträglich um die Höhe des fest positionierten Bereiches nach oben verschoben wird.</p>
+
+<p>Über die Objekteigenschaft <code>location.hash</code> wird abgefragt, ob das aktuelle Dokument mit einem Anker aufgerufen wurde. Falls dies zutrifft, wird der Browser über <code>scrollBy()</code> angewiesen, den Dokumentausschnitt vertikal um die Höhe des fest positionierten Bereiche nach oben (deshalb der negative Wert) zu blättern:</p>
+
+<pre>if (location.hash)
+    window.scrollBy(0, -<var>60</var>);</pre>
+
+<p>Dieser Code sollte nach dem vollständigen Laden des Dokuments ausgeführt werden. Dazu wird der <span lang="en">Event</span> <code>load</code> bzw. <span lang="en">Event-Handler</span> <code>onload</code> genutzt. Der Code wird in einer Funktion untergebracht, die den <code>load</code>-<span lang="en">Event</span> verarbeitet:</p>
+
+<pre>function scrollup () {
+    if (location.hash)
+        window.scrollBy(0, -<var>60</var>);
+}
+window.onload = scrollup;</pre>
+
+<p>Diese Umsetzung ist eine von verschiedenen Möglichkeit. Wenn noch weitere Aktionen beim Eintreten des <code>load</code>-Ereignisses gestartet werden sollen, wird eine Helferfunktion benötigt, die mehrere <span lang="en">Handler</span>-Funktionen zulässt, ohne vorher registrierte zu überschreiben. Eine solche Helferfunktion kommt bei der <a href="#javascript-kombination">Kombinationslösung</a> zum Einsatz (<a href="http://www.quirksmode.org/blog/archives/2005/10/_and_the_winner_1.html#link3" hreflang="en">siehe auch addEvent() auf quirksmode.org</a>).</p>
+
+<div class="links">
+<h3>Weiterführende Links</h3>
+<ul class="compact-list">
+<li><a href="http://de.selfhtml.org/javascript/objekte/window.htm#scroll_by">SELFHTML JavaScript-Objektreferenz: Methode <code>window.scrollBy()</code></a></li>
+<li><a href="http://de.selfhtml.org/javascript/objekte/window.htm#set_timeout">SELFHTML JavaScript-Objektreferenz: Methode <code>window.setTimeout()</code></a></li>
+<li><a href="http://de.selfhtml.org/javascript/objekte/location.htm#hash">SELFHTML JavaScript-Objektreferenz: Eigenschaft <code>location.hash</code></a></li>
+<li><a href="http://de.selfhtml.org/dhtml/modelle/dom.htm#event_handling">SELFHTML: Event-Handling beim <span lang="en">Document Object Model</span></a></li>
+</ul>
+</div>
+
+<!-- ######################################################################## -->
+
+<h2 id="javascript-intern">JavaScript-Teillösung: Wenn ein dokumentinterner Anker angesprungen wird</h2>
+
+<p>Wenn ein Hyperlink auf einen <em>dokumentinternen Anker</em> verweist, kann man ebenfalls die Methode <code>scrollBy()</code> verwenden. Damit lässt sich der sichtbare Seitenausschnitt nach oben verschieben, um den Anker und den zugehörigen Absatz oder die Kapitelüberschrift unter dem fest positionierten Bereich hervorzuholen. <code>scrollBy()</code> muss in diesem Fall nach dem Anspringen des Linkziels (des Ankers) ausgeführt werden.</p>
+
+<p>Da ein Hyperlink meistens durch einen Mausklick aktiviert wird, verwendet man den <span lang="en">Event-Handler</span> <code>onclick</code>, um JavaScript-Code anzugeben, der beim Anklicken des Links ausgeführt werden soll. Glücklicherweise tritt das <code>click</code>-Ereignis in viele Browsern auch dann ein, wenn der Link durch die Tastatur aktiviert wird. Somit kann die Korrektur des Seitenausschnitts auch dann vorgenommen werden, wenn das Dokument nicht mit einer Maus bedient wird.</p>
+
+<p>Alle dokumentinternen Hyperlinks benötigen also einen <span lang="en">Handler</span> für das <code>click</code> Ereignis, der den Seitenausschnitt um eine bestimmte Anzahl von Pixeln nach oben blättert. Das Anspringen des Ankers und das Eintreten des <code>click</code>-Ereignisses passieren allerdings nahezu gleichzeitig. Deshalb ist unbekannt, ob <code>scrollBy()</code> <em>vor</em> oder <em>nach</em> dem Anspringen des Ankers ausgeführt wird. Die streng chronologische Abfolge dieser beiden Ereignisse ist nicht gesichert, jedoch zwingend notwendig für die Korrektur des sichtbaren Seitenausschnittes.</p>
+
+<p>Untersuchungen zeigen, dass ein einfacher <code>scrollBy()</code>-Aufruf in <code>&lt;a href="#sprungstelle" onclick="window.scrollBy(0, -<var>60</var>);"&gt;Beispiellink zum Anker&lt;/a&gt;</code> meist bereits <em>vor</em> dem Anspringen des Zielankers ausgeführt wird. Dies lässt sich umgehen, indem man <code>scrollBy()</code> mittels <code>setTimeout()</code> verzögert aufruft, damit <code>scrollBy()</code> möglichst <em>nach</em> dem Anspringen des Ankers ausgeführt wird, um die Sicht auf den Anker wieder freizugeben.</p>
+
+<p>Unglücklicherweise ist die benötigte Verzögerungszeit nicht bekannt. Die Dauer des Anspringens hängt von unzähligen Faktoren ab, sie unterscheidet sich von Rechner zu Rechner, von Browser zu Browser und von Dokument zu Dokument. Falls ein zu kleiner Verzögerungswert gewählt wird, besteht die Gefahr, dass das Blättern schon vor dem Anspringen stattfinden. Falls eine zu lange Verzögerung angegeben wird, könnte der Bezug zur Eingabe (Klick auf den Link) verloren gehen und der Benutzer könnte die plötzliche Seitenbewegung als störend empfinden. Eine Verzögerungszeit zwischen 100 und 500 Millisekunden scheint ein annehmbarer Mittelweg zu sein.</p>
+
+<p>Angenommen, es wird eine Verzögerungsdauer von <var>100 Millisekunden</var> gewählt, so sähe der <code>setTimeout()</code>-Aufruf wie folgt aus:</p>
+
+<pre>window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);</pre>
+
+<p>Eine einfache Möglichkeit, diesen Code beim Anklicken von dokumentinternen Link auszuführen, ist das Auslagern in eine zentrale Funktion im Dokumentkopf (<code>head</code>-Element) sowie das Attribut <code>onclick="scrollup()"</code> bei jedem Link, der in Betracht kommt:</p>
+
+<pre>function link_scrollup () {
+    window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
+}</pre>
+
+<pre>&lt;a href="#sprungstelle" onclick="scrollup()">Beispiellink zum Anker&lt;/a></pre>
+
+<p>Dieses Beispiel wurde erfolgreich getestet mit den <code>position:fixed</code>-fähigen Browsern Opera ab Version 5.12, Mozilla ab M16 und Safari ab 1.2. Mit vorigen Versionen wurde nicht getestet. Der Code wirkt ebenfalls auf nicht-<code>position:fixed</code>-fähige Browser, da die verwendeten Methoden <code>setTimeout()</code> und <code>scrollBy()</code> bereits ab Netscape 4 und Internet Explorer 4 verfügbar sind.</p>
+
+<!-- ######################################################################## -->
+
+<h2 id="javascript-kombination">JavaScript-Kombinationslösung: Automatisches Vergeben der <span lang="en">Event-Handler</span></h2>
+
+<p>Es ist freilich umständlich, allen dokumentinternen Links von Hand ein <code>onclick</code>-Attribut zu geben. Es besteht stattdessen die Möglichkeit, diesen Hyperlinks die <span lang="en">Event-Handler</span> automatisch beim Laden des Dokuments durch eine zentrale JavaScript-Routine zuzuweisen. Dazu wird der Code, der beim Öffnen eines Dokuments mit einem Anker die <code>scrollBy()</code>-Korrektur vornimmt, zusammen mit den Anweisungen, die die Korrektur beim Anspringen dokumentinterner Anker vornehmen, in einer gemeinsamen Funktion untergebracht.</p>
+
+<p>In einem <code>script</code>-Element im Dokumentkopf oder in einer externen JavaScript-Datei werden die nötigen Funktionen <code>addEvent()</code>, <code>link_scrollup()</code> und <code>init_position_fixed()</code> deklariert. Die Werte <var>-60</var> und <var>100</var> sind variabel. <var>60</var> stellt hier beispielhaft die Höhe des fest positionierten Bereichs dar, <var>100</var> ist die Verzögerungsdauer in Millisekunden bis zur Fokuskorrektur.</p>
+
+<pre>
+<em id="addevent">/* Allgemeine Funktion zum Hinzufügen von Handlerfunktionen
+für ein bestimmtes Ereignis an einem bestimmten Objekt */</em>
+<strong>function addEvent</strong> (obj, event, func) {
+    if (typeof(obj["on" + event]) == "function") {
+        var old_func = obj["on" + event];
+        obj["on" + event] = function (e) {
+            if (!e)
+                e = window.event;
+            var return1, return2;
+            return1 = old_func(e);
+            return2 = func(e);
+            if (return1 === false || return2 === false)
+                return false;
+        };
+    } else {
+        obj["on" + event] = func;
+    }
+}
+
+<em>/* link_scrollup() korrigiert den Fokus beim Klicken
+eines Links zu einem dokumentinternen Anker */</em>
+<strong>function link_scrollup ()</strong> {
+    window.setTimeout('window.scrollBy(0, <var>-60</var>)', <var>100</var>);
+}
+
+<em>/* init_position_fixed() wird beim Laden des Dokuments ausgeführt */</em>
+<strong>function init_position_fixed</strong> () {
+    var i,  hyperlinks, linkcount,  link_uri, document_uri,  hash_position,  pattern;
+
+    <em>/* Hier wäre Platz für einen Algorithmus, welcher bestimmt, ob</em>
+    <em>der Browser <code>position:fixed</code> versteht, und welcher die Funktion</em>
+    <em>vorzeitig abbricht, falls dies nicht der Fall ist. */</em>
+
+    <em>/* Mindestens muss JavaScript 1.2 unterstützt werden. <code>setTimeout()</code></em>
+    <em>gehört zu JavaScript 1.0 und muss nicht abgefragt werden.</em>
+    <em>Beende die Funktion, wenn <code>scrollBy()</code> nicht zur Verfügung steht. */</em>
+    if (!window.scrollBy)
+        return true;
+
+    <em>/* Korrigiere Fokus beim Laden des Dokuments */</em>
+    if (location.hash)
+        window.scrollBy(0, <var>-60</var>);
+
+    <em>/* Weise allen Links zu dokumentinternen Ankern den Event-Handler zu */</em>
+
+    hyperlinks = document.links;
+    linkcount = hyperlinks.length;
+
+    <em>/* Konstruiere die Adresse des aktuellen Dokuments ohne Anker */</em>
+    document_uri = location.href;
+    hash_position = document_uri.indexOf("#");
+    if (hash_position > -1) {
+        <em>/* Falls die aktuelle Adresse einen Anker enthält, schneide ihn ab */</em>
+        document_uri = document_uri.substring(0, hash_position);
+    }
+    <em>/* Falls es sich um ein lokales Dokument handelt (<code>file</code>-Protokoll),</em>
+    <em>vereinheitliche die Schreibweise */</em>
+    pattern = new RegExp("file:///");
+    document_uri = document_uri.replace(pattern, "file://localhost/");
+
+    <em>/* Durchlaufe alle Hyperlinks des Dokuments */</em>
+    for (i = 0; i &lt; linkcount; i++) {
+
+       <em>/* Gehe zum nächsten Link über, falls die <code>hash</code>-Eigenschaft</em>
+       <em>leer ist oder nur <code>#</code> enthält */</em>
+        if (!hyperlinks[i].hash || hyperlinks[i].hash == "#")
+            continue;
+
+        <em>/* Konstruiere die Zieladresse des Links ohne Anker */</em>
+        link_uri = hyperlinks[i].href;
+        hash_position = link_uri.indexOf("#");
+        <em>/* Falls die Zieladresse einen Anker enthält, schneide ihn ab */</em>
+        if (hash_position &gt; -1) {
+            link_uri = link_uri.substring(0, hash_position);
+        }
+        <em>/* Vereinheitlichung, falls es sich um einen Link auf</em>
+        <em>ein lokales Dokument handelt */</em>
+        if (link_uri.indexOf("file://") == 0) {
+            link_uri = link_uri.replace(pattern, "file://localhost/");
+        }
+
+        <em>/* Vergleiche das Linkziel mit der aktuellen Adresse */</em>
+        if (link_uri == document_uri) {
+            <em>/* Der Link führt zum aktuellen Dokument und hat einen Anker,</em>
+            <em>damit sind alle Bedingungen erfüllt, vergebe den <span lang="en">Event-Handler</span> */</em>
+            addEvent(hyperlinks[i], "click", link_scrollup);
+        }
+}
+
+<em>/* Starte die Funktion <code>init_position_fixed()</code> beim Laden des Dokuments */</em>
+addEvent(window, "load", init_position_fixed);
+</pre>
+
+<p><strong><a href="/scripts/css-position-fixed-javascript.js">Quelltext ohne Kommentare herunterladen</a></strong></p>
+
+<p>Falls andere <span lang="en">Handler</span>-Funktionen beim Laden des Dokuments ausgeführt werden sollen, sollten diese gleichermaßen über <code>addEvent()</code> hinzugefügt werden.</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3>Funktionsweise des Scripts</h3>
+
+<p>Ein Link zu einem dokumentinterner Anker ist daran erkennbar, dass der <code>href</code>-Attributwert mit einem <code>#</code> beginnt und dahinter ein Ankername folgt. Um alle Eventualitäten zu berücksichtigen, wird zudem angenommen, dass ein dokumentinterner Anker auch zusätzlich die Adresse des aktuellen Dokuments enthalten kann. Der erste Fall ließe sich einfach überprüfen, wenn es in JavaScript möglich wäre, den direkten <code>href</code>-Attributwert in Erfahrung zu bringen. Dieser lässt sich jedoch nicht in allen relevanten Browsern mit <code>getAttribute("href")</code> unverfälscht auslesen. In anderen Browsern hängt immer der <abbr title="Uniform Resource Identifier" lang="en">URI</abbr> des aktuellen Dokuments vorne dran, obwohl im Attribut selbst nur <code>#ankername</code> steht.</p>
+
+<p>Angenommen, das Dokument wird mit einem Anker aufgerufen und <code>testlink</code> steht für einen Hyperlink im Dokument mit <code>id="testlink"</code>, welcher über den Array <code>document.links</code> oder über <code>document.getElementById("testlink")</code> angesprochen wird, so lassen sich folgende Werte beobachten:</p>
+
+<table border="1" cellspacing="0" cellpadding="3" id="eigenschaftsvergleich">
+<caption>Vergleich der Werte der unterschiedlichen Objekteigenschaften bei verschiedenen Browsern</caption>
+<thead>
+<tr>
+<th scope="col">Browser</th>
+<th scope="col"><code>location</code></th>
+<th scope="col"><code>location.href</code></th>
+<th scope="col"><code>location.hash</code></th>
+<th scope="col"><code>testlink</code></th>
+<th scope="col"><code>testlink.href</code></th>
+<th scope="col"><code>testlink.hash</code></th>
+<th scope="col"><code>testlink.getAttribute('href')</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">Netscape 4.51, 4.8</th>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>n/a</td>
+</tr>
+<tr>
+<th scope="row">Opera 5.12, 6.0, 6.01, 6.06</th>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]</td>
+<td>[voller URI]</td>
+<td>#testlink</td>
+<td>[voller URI]</td>
+</tr>
+<tr>
+<th scope="row">Opera 7.02, 7.11, 7.23</th>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]#testlink</td>
+</tr>
+<tr>
+<th scope="row">Internet Explorer 5.0, 5.5, 6.0, Opera 7.50, 8.0</th>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]#testlink</td>
+</tr>
+<tr>
+<th scope="row">Gecko, Konqueror, Safari</th>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>[voller URI]#testlink</td>
+<td>#testlink</td>
+<td>#testlink</td>
+</tr>
+</tbody>
+</table>
+
+<p>Die Überprüfung wäre einfach, wenn <strong>A. der Zielankername des Links</strong>, <strong>B. die Zieladresse des Links ohne Anker</strong> und <strong>C. die Adresse des aktuellen Dokuments ohne Anker</strong>, sowie  einzeln zur Verfügung stünden. Unglücklicherweise zeigt die obige Tabelle, dass nur A. direkt in Erfahrung gebracht werden kann, nämlich über die Eigenschaft <code>hash</code>.</p>
+
+<p>Die Theorie lautet: Ein Link führt genau dann zu einem dokumentinternen Anker, wenn
+der Anker des Links (A) gefüllt ist sowie die Zieladresse des Links ohne Anker (B) und Adresse des aktuellen Dokuments ohne Anker (C) übereinstimmen. Die Funktion <code>init_position_fixed()</code> prüft beim Laden des Dokuments jeden Link auf diese beiden Kriterien und registriert im Erfolgsfalle die Funktion <code>link_scrollup</code> als <span lang="en">Handler</span> des <code>click</code>-Ereignisses.</p>
+
+<p>Anfangs wird die Adresse des aktuellen Dokuments ohne Anker (C) in Erfahrung gebracht. Die Eigenschaften <code>location</code> und <code>location.href</code> enthalten leider den Anker am Ende, wenn das Dokument mit einem Anker aufgerufen wurde. Daher muss dieser gegebenfalls abgeschnitten werden. Am Anfang der <code>for</code>-Schleife wird geprüft, ob der aktuelle Link einen Anker enthält (A). Anhand dessen wird entschieden, ob der Link weiter untersucht wird. Daraufhin muss die volle Zieladresse des Links ohne Anker (B) herausgefunden werden. Dazu wird die Eigenschaft <code>href</code> genutzt. Falls sie den Anker am Ende enthält, wird dieser abgeschnitten, ansonsten wird sie direkt übernommen.</p>
+
+<p>Nachdem diese Schritte ausgeführt sind, stehen die nötigen Parameter zur Verfügung. Im Code entspricht B. der Variable <code>link_uri</code> und C. der Variable <code>document_uri</code>. Am Ende wird überprüft, ob diese identisch sind. Falls dies zutrifft, wird die <span lang="en">Handler</span>-Funktion registriert.</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="javascript-kombination-beispiel">Beispiel zur JavaScript-Kombinationslösung</h3>
+
+<p><a href="/css-position-fixed-loesung6/">Beispieldokument zur JavaScript-Kombinationslösung</a></p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="links">
+<h3>Weiterführende Links</h3>
+<ul class="compact-list">
+<li><a href="http://de.selfhtml.org/javascript/objekte/links.htm">SELFHTML JavaScript-Objektreferenz: <code>document.links</code></a></li>
+<li><a href="http://de.selfhtml.org/javascript/objekte/location.htm#href">SELFHTML JavaScript-Objektreferenz: Eigenschaft <code>location.href</code></a></li>
+<li><a href="http://de.selfhtml.org/javascript/objekte/string.htm#index_of">SELFHTML JavaScript-Objektreferenz: Methode <code>indexOf()</code></a></li>
+<li><a href="http://de.selfhtml.org/javascript/objekte/string.htm#substring">SELFHTML JavaScript-Objektreferenz: Methode <code>substring()</code></a></li>
+<li><a href="http://de.selfhtml.org/javascript/objekte/regexp.htm">SELFHTML JavaScript-Objektreferenz: <code>RegExp</code> (Reguläre Ausdrücke)</a></li>
+</ul>
+</div>
+
+<!-- ######################################################################## -->
+
+<h2 id="javascript-alternative">Alternative JavaScript-Kombinationslösung</h2>
+
+<p>Das automatische Registrieren von <span lang="en">Event-Handlern</span> bei allen dokumentinternen Ankern ist vom <span lang="en"><abbr title="Document Object Model">DOM</abbr>-Events</span>-Standpunkt vergleichsweise umständlich. Denn das Aktivieren eines Links löst ein <code>click</code>-Ereignis aus, dass vom obersten Dokument-Objekt <code>document</code> über das Wurzelelement <code>html</code> herunter in der Elementhierarchie zum Zielelement wandert (<dfn lang="en">capturing phase</dfn>). Das Ereignis erreicht das <code>a</code>-Zielelement, bei dem das Ereignis ursprünglich passierte (<dfn lang="en">target phase</dfn>). Danach wandert es wieder herauf zum Dokument-Objekt (<dfn lang="en">bubbling phase</dfn>). Auf diesem Weg herunter und herauf werden alle <span lang="en">Handler</span>-Funktionen, die für das <code>click</code>-Ereignis registriert sind, aufgerufen. Das Aktivieren des Links löst somit ein identisches <code>click</code>-Ereignis beim <code>document</code>-Objekt aus.</p>
+
+<p>Es reicht somit aus, nur eine <span lang="en">Handler</span>-Funktion beim <code>document</code>-Objekt zu registrieren, die zunächst einmal alle <code>click</code>-Ereignisse verarbeitet, die irgendwo im Dokument passieren. Sie kann die <code>scrollBy()</code>-Korrektur vornehmen, wenn es sich beim Ziel bzw. Ursprung des Ereignisses um einen dokumentinternen Anker handelt. Dazu greift sie über die Eigenschaft <code>target</code> des Ereignisobjektes auf das Zielelement zu und überprüft, ob es sich um ein <code>a</code>-Element mit einem <code>href</code>-Attribut handelt. Wenn dies der Fall ist, wird auf die bereits beschriebene Weise in Erfahrung gebracht, ob der Link zu einem Anker im aktuellen Dokument führt. Schließlich wird im positiven Falle die <code>scrollBy()</code>-Korrektur vorgenommen.</p>
+
+<pre>
+<strong>function handle_internal_link</strong> (e) {
+    var hashposition, link_uri;
+    var target = e.target;
+
+    if (typeof(target.nodeType) == "undefined" ||
+        typeof(target.nodeName) == "undefined") {
+        return true;
+    }
+    if (target.nodeType == 3) {
+        target = target.parentNode;
+    }
+    if (target.nodeName.toLowerCase() != "a" || target.href.length == 0 ||
+        typeof(target.hash) == "undefined" || target.hash.length == 0 ||
+        target.hash == "#") {
+        return true;
+    }
+
+    link_uri = target.href;
+    hashposition = link_uri.indexOf("#");
+    if (hashposition &gt; -1) {
+        link_uri = link_uri.substring(0, hashposition);
+    }
+    if (link_uri == document_uri) {
+        window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
+    }
+}
+<strong>function init_position_fixed</strong> () {
+    if (location.hash)
+        window.scrollBy(0, -<var>60</var>);
+    document_uri = location.href;
+    var hashposition = document_uri.indexOf("#");
+    if (hashposition &gt; -1) {
+        document_uri = document_uri.substring(0, hashposition);
+    }
+    document.addEventListener("click", handle_internal_link, false);
+}
+if (window.addEventListener &amp;&amp; document.addEventListener)
+    window.addEventListener("load", init_position_fixed, false);
+</pre>
+
+<p><strong><a href="/scripts/css-position-fixed-javascript2.js">Quelltext herunterladen</a></strong></p>
+
+<p>Der Beispielcode nutzt konsequent <span lang="en"><abbr title="Document Object Model">DOM</abbr> Events</span>. Mit <code>addEventListener()</code> werden die <span lang="en">Handler</span>-Funktionen für das <code>load</code>- und das <code>click</code>-Ereignis in der <span lang="en">Bubbling</span>-Phase registriert. Damit wird der Internet Explorer als nicht-<code>position:fixed</code>-fähiger Browser ausgeschlossen, aber auch ältere Opera-Versionen mit <code>position:fixed</code>-Unterstützung.</p>
+
+<p>Gemäß <span lang="en"><abbr title="Document Object Model">DOM</abbr> 3 Events</span> passiert das <code>load</code>-Ereignis am <code>document</code>-Objekt. <code>document.addEventListener("load", ...)</code> versteht aber nur Opera ab Version 7, Konqueror ab 3.1 und Safari mindestens ab 1.2. Gecko kennt zwar seit langem <code>document.addEventListener()</code>, es passiert aber kein <code>load</code>-Ereignis am <code>document</code>-Objekt. Verbreiteter ist das nicht ganz standardkonforme <code>window.addEventListener("load", ...)</code>, eine wilde Mischung von <span lang="en"><abbr title="Document Object Model">DOM</abbr> Events</span> und dem Netscape-JavaScript-Vermächtnis <code>window.onload</code>. Dies verstehen Opera ab Version 8, Gecko, Safari mindestens ab 1.2 und Konqueror mindestens ab 3.4. Siehe <a href="http://forum.de.selfhtml.org/archiv/2005/7/t111103/#m698750">meinen Beitrag im SELFHTML-Forum</a> zur Thematik. Keine dieser Methoden erreicht alle bekannten <code>position:fixed</code>-fähigen Browser zuverlässig, beispielsweise Opera vor Version 7 bleibt komplett außen vor.</p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<h3 id="javascript-alternative-beispiel">Beispiel zur alternativen JavaScript-Kombinationslösung</h3>
+
+<p><a href="/css-position-fixed-loesung7/">Beispieldokument zur alternativen JavaScript-Kombinationslösung</a></p>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<div class="links">
+<h3>Weiterführende Links</h3>
+<ul class="compact-list">
+<li><a href="https://www.w3.org/TR/DOM-Level-3-Events/" hreflang="en" lang="en"><abbr title="World Wide Web Consortium">W3C</abbr>: Document Object Model Events</a> (englischsprachig)</li>
+<li><a href="http://www.quirksmode.org/dom/w3c_events.html" hreflang="en" lang="en">Quirksmode.org: <abbr title="World Wide Web Consortium">W3C</abbr> <abbr title="Document Object Model">DOM</abbr> Events</a> (englischsprachig)</li>
+<li><a href="http://www.quirksmode.org/js/events_advanced.html" hreflang="en" lang="en">Quirksmode.org: Javascript &#8211; Advanced event registration models</a> (englischsprachig)</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeName" hreflang="en">JavaScript-Objektreferenz: Eigenschaft <code>nodeName</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType" hreflang="en">JavaScript-Objektreferenz: Eigenschaft <code>nodeType</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/parentNode" hreflang="en">JavaScript-Objektreferenz: Eigenschaft <code>parentNode</code></a></li>
+</ul>
+</div>
+
+<!-- ######################################################################## -->
+
+<h2 id="javascript-nachteile">Nachteile der JavaScript-Lösungen</h2>
+
+<p>Zum einen funktionieren die genannten Lösungen nur mit verfügbaren und aktiviertem JavaScript-Interpreter. Zum anderen ist wie bereits angesprochen der Grundstein des Lösungsansatzes selbst unzuverlässig: Das Hochblättern mittels <code>scrollBy()</code>. Denn die Zeit, die ein Browser benötigt, um einen Anker anzuspringen, ist nicht bekannt und nicht feststellbar. Die eventuell nötige Zeitverzögerung mit <code>setTimeout()</code> kann folglich nicht für alle Fälle passend angegeben werden. Es ist möglich, dass das Script den sichtbaren Dokumentausschnitt vor dem Anspringen des Ankers verschiebt oder erst viel später. Der Leser könnte es als unangenehm empfinden, wenn geblättert wird, ohne dass eine Verbindung zu einer zeitnahen Eingabe erkennbar ist. Ebenso ist bei der Verwendung von relativen Größenangaben unbekannt, welche Höhe das fest positionierte Element einnimmt. Dadurch ist auch der zweite Parameter, welcher die Anzahl der Pixel angibt, um welche vertikal gescrollt werden soll, nicht eindeutig festlegbar beziehungsweise könnte höchstens aus der <code>offsetHeight</code> des fest positionierten Bereiches geschlossen werden.</p>
+
+<p>Weiterhin berücksichtigen die JavaScript-Lösungen zwar, dass noch andere <span lang="en">Handler</span>-Funktionen für das <code>click</code>-Ereignis bei den dokumentinternen Links registriert sein können. Diese diese Funktionen müssen damit rechnen, dass unmittelbar vorher bzw. nachher die <code>scrollBy()</code>-Korrektur durchgeführt wird. Dies schränkt die Möglichkeiten der Ereignis-Verarbeitung potenziell ein. Es ist allerdings möglich, dass die Funktionen die <code>scrollBy()</code>-Korrektur im Einzelfall verhindern können:</p>
+
+<p>Bei der <a href="#javascript-kombination">ersten Kombinationslösung</a> hängt es von der Reihenfolge der Registrierung ab, ob <code>link_scrollup()</code> <em>vor</em> oder <em>nach</em> den restlichen <span lang="en">Handler</span>-Funktionen ausgeführt wird. <code>addEvent(window, "load", init_position_fixed);</code> sollte erst aufgerufen werden, wenn mittels <code>addEvent()</code> alle anderen potenziellen <code>click</code>-<span lang="en">Handler</span> für dokumentinterne Links registriert wurden. <code>link_scrollup()</code> wird auf diese Weise immer als letzte <span lang="en">Handler</span>-Funktion aufgerufen wird. Dadurch können die anderen Funktionen im Zweifelsfall das Aufsteigen des Ereignisses im <abbr title="Document Object Model" lang="en">DOM</abbr>-Knotenbaum mit <code>Ereignisobjekt.stopPropagation()</code> (bzw. <code>Ereignisobjekt.cancelBubble = true</code> für den Internet Explorer) abbrechen. Mit <code>return false</code> oder <code>Ereignisobjekt.preventDefault()</code> (bzw. <code>Ereignisobjekt.returnValue = false</code> für den <abbr title="Internet Explorer">IE</abbr>) kann zudem die Standardaktion unterbunden werden, das heißt das Annavigieren des Linkziels.</p>
+
+<p>Bei der <a href="#javascript-alternative">alternativen Kombinationslösung</a> wird der <code>click</code>-<span lang="en">Handler</span> am <code>document</code>-Objekt für die <span lang="en">Bubbling</span>-Phase registriert. Die restlichen registrierten <code>click</code>-<span lang="en">Handler</span> werden somit <em>vor</em> <code>handle_internal_link()</code> ausgeführt. Unter diesen Voraussetzungen lässt sich mit <code>Ereignisobjekt.stopPropagation()</code> das Aufsteigen des <code>click</code>-Ereignisses zum <code>document</code>-Element verhindern und mit <code>Ereignisobjekt.preventDefault()</code> das Anspringen des Ankers.</p>
+
+<p>Ein weitaus größeres Problem stellt der Umstand dar, dass JavaScript-Lösungen grundsätzlich in allen Browsern wirken, die die verwendeten JavaScript-Eigenschaften und -Methoden unterstützen. Das korrigierende Verschieben des sichtbaren Dokumentausschnittes beim Aufrufen des Dokuments mit einem Anker sowie beim Aktivieren eines dokumentinternen Ankers sollte freilich nur vorgenommen werden, wenn der Browser feste <abbr title="Cascading Style Sheets" lang="en">CSS</abbr>-Positierung über <code>position:fixed</code> unterstützt und somit erst das ursprüngliche Problem auftritt. Aus diesem Grund ist eine Fallunterscheidung notwendig, durch welche nur in denjenigen Browser <code>scrollBy()</code>-Korrektur vorgenommen wird, die bekanntermaßen <code>position:fixed</code> hinreichend verstehen. Es ist jedoch keine Möglichkeit bekannt, dies direkt und zuverlässig mittels JavaScript zu überprüfen. Somit sind nur ungenaue Browserweichen möglich, die von bestimmten Unterscheidungsmerkmalen darauf schließen, ob der Browser feste Positionierung mittels <code>position:fixed</code> unterstützt.</p>
+
+<p>Die erste Kombinationslösung hat in der vorgestellten Fassung keine solche Weiche, die alternative Kombinationslösung setzt <span lang="en"><abbr title="Document Object Model">DOM</abbr> Events</span> voraus &#8211; mit <code>position:fixed</code>-Unterstützung hat dies aber nichts zu tun. Es gibt vielfältige Möglichkeiten der <a href="http://web.archive.org/web/20111028140223/http://www.lipfert-malik.de/webdesign/tutorial/bsp/browser_js_test.html">Browsererkennung durch JavaScript</a>. Mit der Abfrage der Objekteigenschaft <code>document.defaultCharset</code>, die nur der Internet Explorer kennt, ließe sich die <code>scrollBy()</code>-Korrektur zumindest vor dem wichtigsten nicht-<code>position:fixed</code>-fähigen Browser verstecken. Ein grundlegender Nachteil solcher Browserweichen ist die Unzuverlässigkeit und die mangelnde Zukunftssicherheit. Denn jederzeit könnte ein Browser auftauchen, der zwar gemäß einem solchen Kriterium als ein Browser ohne <code>position:fixed</code>-Unterstützung identifiziert wird, er es aber durchaus unterstützt.</p>
+
+<!-- ######################################################################## -->
+
+<h2 id="postskriptum">Postskriptum</h2>
+
+<p>An der Entwicklung der Lösungsmöglichkeiten wirkten <a href="http://skop.net/">Roland Skop</a>, Roland Blüthgen und <a href="http://www.kristof-lipfert.de/">Kristof Lipfert</a> maßgeblich mit. Vielen Dank an die drei.</p>
+
+<p>Letzte Änderung: 04.12.2005 &#8212; Version 2.9</p>

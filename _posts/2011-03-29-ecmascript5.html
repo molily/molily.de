@@ -1,0 +1,653 @@
+---
+layout: post
+title: Methodenketten und Fluent Interfaces mit ECMAScript 5 und Harmony
+---
+
+<ol class="compact-list">
+  <li><a href="#einleitung">Einleitung ↓</a></li>
+  <li><a href="#methodenverkettung">Methodenverkettung (Method Chaining) ↓</a></li>
+  <li><a href="#fluent-interfaces-dsl">Fluent Interfaces und Domain-Specific Languages ↓</a></li>
+  <li><a href="#ecmascript5">Die Möglichkeiten von ECMAScript 5 ↓</a></li>
+  <li><a href="#eigenschaften-zuweisen">Massenhaft Eigenschaften zuweisen ↓</a></li>
+  <li><a href="#property-descriptors-1">ECMAScript 5 Property Descriptors 1 – Werte und Zugriffsrechte ↓</a></li>
+  <li><a href="#property-descriptors-2">ECMAScript 5 Property Descriptors 2 – Getter und Setter ↓</a></li>
+  <li><a href="#chaining-proxy">Chaining durch ein Proxy-Objekt ermöglichen ↓</a></li>
+  <li><a href="#harmony-proxies">Proxy-Objekte in ECMAScript Harmony ↓</a></li>
+  <li><a href="#chaining-helfer">Allgemeiner Chaining-Helfer für Eigenschaften und Methoden ↓</a></li>
+  <li><a href="#praxisanwendung">Praxisanwendung ↓</a></li>
+  <li><a href="#links">Links und Quellen ↓</a></li>
+  <li><a href="#danksagung">Danksagung ↓</a></li>
+</ol>
+
+<h2 id="einleitung">Einleitung</h2>
+
+<p>Der folgende Beitrag bietet zunächst einen Überblick über ein verbreitetes Muster von JavaScript-Programmierschnittstellen (APIs). Im Anschluss daran werden API-Ideen vorgestellt, die auf standardisierten ECMAScript-5- und zukünftigen ECMAScript-Harmony-Techniken basieren. Die neuen ECMAScript-Möglichkeiten eignen sich nämlich hervorragend, um APIs zu entwerfen, mit denen sich Programmlogiken komfortabel und lesbar in Code ausdrücken lassen. Der Beitrag soll daher auch Einblick in einige wichtige ECMAScript-Neuerungen bieten.</p>
+
+
+<h2 id="methodenverkettung">Methodenverkettung (Method Chaining)</h2>
+
+<p>Zunächst, was ist Methodenverkettung? Es kommt häufig vor, dass mehrere Methoden eines Objekts hintereinander aufgerufen werden. Das sieht etwa so aus:</p>
+
+<pre>
+var objekt = new BeispielObjekt();
+objekt.methode1();
+objekt.methode2();
+var weiteresObjekt = objekt.methode3();
+weiteresObjekt.methode1();
+weiteresObjekt.methode2();
+</pre>
+
+<p>Der Nachteil ist hier, dass jeder Methodenaufruf ein einzelnes Statement sein muss. In jeder Zeile wird der Objektname wiederholt, obwohl nur der Methodenaufruf wichtig ist. Die Kerninformation, der Methodenaufruf, droht unterzugehen. Die »Signal-Rausch-Verhältnis« eines solchen Codes ist daher schlecht, er ist aufgebläht und redundant.</p>
+
+<p>Methodenverkettung ändert nun die <a href="http://de.wikipedia.org/wiki/Signatur_(Programmierung)">Signatur von Methoden</a> – in erster Linie derjenigen Methoden, die keinen Rückgabewert (also <code>undefined</code>) besitzen. Diese Methoden werden so geändert, dass sie das Objekt zurückgeben, auf dem sie aufgerufen werden.</p>
+
+<p>Die <a href="http://api.jquery.com/">API von jQuery</a> verwendet Methodenverkettung ziemlich konsequent und ist daher ein gutes Beispiel. jQuery-Objekte sind Listen von DOM-Elementknoten. Auf diesem DOM-Wrapper lassen sich gewisse Methoden aufrufen. Alle Methoden, die keinen natürlichen Rückgabewert haben, geben wieder das Wrapper-Objekt zurück. Dadurch kann man folgende Methodenketten schreiben:</p>
+
+<pre>
+$('#ausgabe').find('h2').html('Wichtige Nachricht!').end().fadeIn('fast').delay(5000).slideUp();
+</pre>
+
+<p>Das Beispiel spricht ein Element mit der ID <code>ausgabe</code> an, sucht darin ein <code>h2</code>-Element und ändert dessen Inhalt. Anschließend blendet es das gesamte Element ein und nach fünf Sekunden wieder aus.</p>
+
+<p>Innerhalb einer Zeile wird eine komplexe Logik sehr konzise ausgedrückt. jQuerys Motto lautet entsprechend »write less, do more«. Wenn diese dichte Kompaktschreibweise stört, können die einzelnen Methodenaufruf der Übersicht halber auf mehrere Zeilen verteilt und eingerückt werden:</p>
+
+<pre>
+$('#ausgabe')
+  .find('h2')
+    .html('Wichtige Nachricht!')
+  .end()
+  .fadeIn('fast')
+  .delay(5000)
+  .slideUp();
+</pre>
+
+<p>Nun sind jQuery-Scripte nicht eine endlose Kette von Methodenaufrufen. Die Ketten brechen üblicherweise nach ein paar Methodenaufrufen ab, denn nicht alle Methoden erlauben eine Verkettung. Viele Methoden sind Getter, geben bereits einen bestimmten Primitive-Wert (<code>String</code>, <code>Number</code>, <code>Boolean</code>) oder ein ganz anderes Objekt zurück. In diesen Fällen ist Chaining nicht verwendbar:</p>
+
+<pre>
+var input = $('input[name=email]');
+var email = input.val();
+if (jQuery.trim(email) == '') {
+  input.addClass('error');
+}
+</pre>
+
+<p>Andere Methoden arbeiten asynchron mit Callbacks, sodass erst im Callback weitergearbeitet werden kann:</p>
+
+<pre>
+$('#ausgabe').load('/nachricht', function () {
+  $(this).fadeIn();
+});
+</pre>
+
+<p>Für Animationen besitzt jQuery eine interne Warteschlange (Queue), sodass sich die Effekte verketten lassen, aber erst nacheinander ausgeführt werden. Das erste Beispiel hat dies gezeigt:</p>
+
+<pre>
+.fadeIn('fast').delay(5000).slideUp()
+</pre>
+
+<p>jQuery bietet seit Version 1.5 auch eine Möglichkeit an, um asynchrone Operationen wie Ajax zu verknüpfen. Die Technik dazu lautet <a href="http://api.jquery.com/category/deferred-object/">Deferreds</a> bzw. Promises.</p>
+
+<pre>
+$.when($.get('/eins'), $.get('/zwei'))
+  .success(function(args1, args2) {
+    alert('Eins: ' + args1[0] + '\nZwei: ' + args2[0]);
+  });
+</pre>
+
+<p>jQuery geht zwar schon ziemlich weit, aber besonders bei asynchronen Operationen ließe sich das Method Chaining noch weiter treiben. Eine fiktive API, welche noch stärker auf Promises setzt, könnte das obige <code>load</code>-Beispiel so umsetzen:</p>
+
+<pre>
+// Fiktiver Code, kein lauffähiges jQuery 1.5
+$('#ausgabe').load('/nachricht').then().fadeIn();
+</pre>
+
+<p>Durch den Aufruf von <code>then</code> würden die darauffolgenden Methodenaufrufe verzögert.</p>
+
+
+<h2 id="fluent-interfaces-dsl">Fluent Interfaces und Domain-Specific Languages</h2>
+
+<p>Der Begriff <a href="http://en.wikipedia.org/wiki/Fluent_interface"><dfn>Fluent Interface</dfn></a> bezeichnet APIs, deren Code sich »flüssig« wie Sätze einer natürlichen Sprache lesen lässt. Methodenverkettung ist eine Komponente, um solche Sätze zu bilden. Eine Fortentwicklung dieser Idee sind APIs, welche auf Basis einer Programmiersprache eine andere, oft deklarative Sprache erfinden, die einen ganz bestimmten Zweck erfüllt. Solche Sprachen werden <a href="http://de.wikipedia.org/wiki/Dom%C3%A4nenspezifische_Sprache"><dfn>Domain-specific Languages</dfn></a> (DSL) genannt, Sprachen für bestimmte Aufgabenbiete.</p>
+
+<p>Rund um die Programmiersprache Ruby sowie Ruby on Rails, ein bekanntes Framework für Webanwendungen, haben sich verschiedene DSLs entwickelt. Es fängt in Rails mit einfachen Ausdrücken an:</p>
+
+<pre>
+> 5.days.ago
+=> Tue, 08 Mar 2011 23:20:04 UTC +00:00
+</pre>
+
+<p><a href="https://github.com/brynary/arel">Arel</a>, eine in Rails integrierte DSL für Datenbankabfragen, ist ein weiteres Beispiel:</p>
+
+<pre>
+users.where( users[:name].eq('bob').or( users[:age].lt(25) ))
+</pre>
+
+<p>Schließlich <a href="https://github.com/dchelimsky/rspec">RSpec</a>, ein Testing-Framework in Ruby:</p>
+
+<pre>
+describe Account do
+  context "transfering money" do
+    it "reduces its balance by the transfer amount" do
+      source = Account.new(50, :USD)
+      target = stub('target account')
+      source.transfer(5, :USD).to(target)
+      source.balance.should == Money.new(45, :USD)
+    end
+  end
+end
+</pre>
+
+<p>Dieser Test lässt sich für einigermaßen Programmiererfahrene lesen und verstehen, ohne Ruby oder den zu testenden Code zu kennen. Auch wenn es so aussieht, als wäre dies eine eigene Sprache, so sind es lediglich Methoden der Rails- und RSpec-Bibliothek, die aufgerufen werden und denen Codeblöcke übergeben werden. Die flexible Ruby-Syntax und seine Metaprogramming-Fähigkeiten machen es möglich, solche DSLs mit sprechendem Code zu entwerfen.</p>
+
+
+<h2 id="ecmascript5">Die Möglichkeiten von ECMAScript 5</h2>
+
+<p>Doch nun wieder zurück zu JavaScript. Im Folgenden möchte ich verschiedene Ideen wiedergeben und ausarbeiten, die Tim Tepaße in einem <a href="http://forum.de.selfhtml.org/archiv/2011/3/t203744/#m1378561">Posting im SELFHTML-Forum</a> geäußert hat. Er macht sich darin Gedanken, wie sich Interfaces wie die obigen in JavaScript umsetzen lassen. Dabei gibt er verschiedene Beispiele, die bereits ECMAScript-5-Features nutzen.</p>
+
+
+<h2 id="eigenschaften-zuweisen">Massenhaft Eigenschaften zuweisen</h2>
+
+<p>Es fängt mit der Aufgabe an, einem Objekt nach seiner Erzeugung nacheinander mehrere Eigenschaften zuzuweisen. Ausgangspunkt ist folgende Struktur:</p>
+
+<pre>
+objekt.eigenschaft1 = 'wert1';
+objekt.eigenschaft2 = 'wert2';
+objekt.eigenschaft3 = 'wert3';
+objekt.eigenschaft4 = 'wert4';
+</pre>
+
+<p>Diese Schreibweise ist sehr redundant. JavaScript besitzt das <code>with</code>-Statement, mit dem sich solcher Code kürzer schreiben lässt:</p>
+
+<pre>
+with (objekt) {
+  eigenschaft1 = 'wert1';
+  eigenschaft2 = 'wert2';
+  eigenschaft3 = 'wert3';
+  eigenschaft4 = 'wert4';
+}
+</pre>
+
+<p>Der obige konkrete Anwendungsfall von <code>with</code> ist unproblematisch, denn es werden nur feste Strings zugewiesen. In vielen anderen Anwendungsfällen, in denen weitere Bezeichner und Zuweisungen ins Spiel kommen, kann <code>with</code> jedoch kann zu langsamem, mehrdeutigem und unzuverlässigem Code führen. Daher wird von dessen Gebrauch generell abgeraten. Im Strict-Mode von ECMAScript 5, in dem zahlreiche problematische Features deaktiviert sind, ist <code>with</code> daher gar nicht mehr verwendbar.</p>
+
+<p>Wenn möglich, werden die Eigenschaften bereits bei der Erzeugung des Objekts gesetzt, anstatt die Eigenschaften einzeln zu setzen. Dazu dient ein Object-Literal:</p>
+
+<pre>
+var objekt = {
+  eigenschaft1: 'wert1',
+  eigenschaft2: 'wert2',
+  eigenschaft3: 'wert3',
+  eigenschaft4: 'wert4'
+};
+</pre>
+
+<p>Hier soll es allerdings um die Fälle gehen, die dadurch nicht abgedeckt sind. Tims Forumsbeitrag gibt ein Beispiel, in dem einer Konstruktorfunktion ein <code>Object</code>-Literal mit Optionen übergeben wird. Der Konstruktor kann das Objekt durchlaufen und dessen Eigenschaften an der neuen Instanz speichern. Solche Optionen-Hashes sind auch bei Ruby on Rails gängig.</p>
+
+<pre>
+function Baby (options) {
+  for (var propName in options) {
+    if (options.hasOwnProperty(propName)) {
+      this[propName] = options[propName];
+    }
+  }
+}
+
+var ada = new Baby({
+  born: new Date(),
+  name: 'Ada',
+  height: 0.55,
+  weight: 3.5,
+  gender: 'f',
+  hair: null,
+  eyes: {
+    left: 'blue',
+    right: 'brown'
+  }
+});
+</pre>
+
+<p><a href="/assets/ecmascript5/baby-options.html">Beispiel ansehen</a></p>
+
+
+<h2 id="property-descriptors-1">ECMAScript 5 Property Descriptors 1 – Werte und Zugriffsrechte</h2>
+
+<p>Im obigen Beispiel übernimmt der <code>Baby</code>-Konstruktor die Aufgabe, die Eigenschaften des übergebenen Objects an die Instanz zu kopieren. Wenn man mehrere derartige Konstruktoren hat, liegt es nahe, diese Aufgabe einmal zentral zu lösen. Tim Tepaße hat dazu die Idee einer Helfermethode <code>setProperties</code>. Diese Methode wird mit folgendem ECMAScript-5-Code beim Prototyp der <code>Baby</code>-Instanzen (<code>Baby.prototype</code>) erzeugt:</p>
+
+<pre>
+Object.defineProperty(Baby.prototype, 'setProperties', {
+  value: function (props) {
+    var self = this;
+    Object
+      .keys(props)
+      .filter(props.hasOwnProperty, props)
+      .forEach(function (name) {
+        self[name] = props[name];
+      });
+  },
+  writable: true,
+  enumerable: false,
+  configurable: true
+});
+</pre>
+
+<p>Bei der Anwendung der Methode wird ihr das bekannte Object-Literal mit Eigenschaften übergeben, die ans Objekt kopiert werden:</p>
+
+<pre>
+var ada = new Baby();
+ada.setProperties({
+  born: new Date(),
+  name: 'Ada',
+  height: 0.55,
+  weight: 3.5,
+  gender: 'f',
+  hair: null,
+  eyes: {
+    left: 'blue',
+    right: 'brown'
+  }
+});
+</pre>
+
+<p><a href="/assets/ecmascript5/baby-setproperties.html">Beispiel ansehen</a></p>
+
+<!--
+<p>Firefox 4, Safari 5.0.4, Chrome 10.0. Nicht Opera 11.01. IE9?</p>
+-->
+
+<p>Doch nun zur Erklärung des Codes, der die Methode definiert. Sie besteht zunächst aus einem Aufruf der ECMAScript-5-Methode <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a>. Damit lässt sich eine Eigenschaft bzw. Methode bei einem angegebenen Objekt erzeugen. Das Aufrufschema lautet:</p>
+
+<pre>
+Object.defineProperty(objekt, 'eigenschaftsname', descriptorObjekt);
+</pre>
+
+<p>Der Unterschied zur einfachen und bekannten Schreibweise <code>objekt.eigenschaft = wert</code> ist, das sich ein <strong>Property Descriptor</strong> (»Eigenschafts-Beschreiber«) angeben lässt. Ein <dfn>Property Descriptor</dfn> ist wiederum ein einfaches Objekt, welches im Beispiel mit einem Object-Literal notiert wird. Darin werden neben dem Eigenschaftswert gewisse Zugriffsrechte deklariert.</p>
+
+<p>Der Wert der zu erzeugenden Eigenschaft wird in der <code>value</code>-Eigenschaft des Descriptors angegeben. Im Beispiel handelt es sich um eine Funktion. Zusätzlich werden drei weitere Boolean-Eigenschaften mit den Zugriffsrechten gesetzt:</p>
+
+<dl>
+
+<dt><code>writable</code></dt>
+<dd>Kann der Wert der Eigenschaft durch eine Zuweisung nachträglich geändert werden?<br>Im Beispiel: ja</dd>
+
+<dt><code>configurable</code></dt>
+<dd>Können die Zugriffsrechte der Eigenschaft (der Descriptor) nachträglich geändert werden und kann die Eigenschaft per <code>delete</code> gelöscht werden?<br>Im Beispiel: ja</dd>
+
+<dt><code>enumerable</code></dt>
+<dd>Taucht die Eigenschaft beim Durchlaufen aller Eigenschaften mit einer <code>for-in</code>-Schleife auf?<br>Im Beispiel: nein</dd>
+
+</dl>
+
+<p>Die ersten beiden Zugriffsrechte bleiben also gewahrt. <code>setProperties</code> kann später wieder überschrieben oder gelöscht werden. Sie taucht allerdings nicht in <code>for-in</code>-Schleifen auf.</p>
+
+<p>Nach dem <code>defineProperty</code>-Aufruf steht eine Methode <code>setProperties</code> durch prototypische Vererbung bei jeder <code>Baby</code>-Instanz zur Verfügung. Was passiert nun in dieser Methode? Es werden weitere ECMAScript-5-Methoden verwendet, um die Eigenschaften des übergebenen Objektes an das gegenwärtige Objekt zu kopieren. ECMAScript 5 vereinfacht das Arbeiten mit Listen durch verschiedene neue Methoden, die an Ruby und Python erinnern:</p>
+
+<pre>
+Object
+  // Hole eine Liste aller Eigenschaften des Objects:
+  .<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/keys">keys</a>(props)
+  // Filtere diese Liste mithilfe von hasOwnProperty,
+  // sodass vererbte Eigenschaften ignoriert werden:
+  .<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter</a>(props.<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/hasOwnProperty">hasOwnProperty</a>, props)
+  // Führe für jede Eigenschaft eine Funktion aus
+  .<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/foreach">forEach</a>(function (name) {
+    // Kopiere die Eigenschaft vom übergebenen Objekt zum aktuellen Objekt
+    self[name] = props[name];
+  });
+</pre>
+
+<p>Diese Aufgaben lassen sich natürlich auch in ECMAScript-3-Syntax imperativ umsetzen, doch diese Schreibweise macht uns mit neuen funktionalen ECMAScript-5-Methoden vertraut.</p>
+
+
+<h2 id="property-descriptors-2">ECMAScript 5 Property Descriptors 2 – Getter und Setter</h2>
+
+<p>ECMAScript 5 standardisiert eine verbreitete Technik der Objektorientierung: Getter- und Setter-Methoden. Kurz gesagt sind das Eigenschaften, bei deren Auslesen und Setzen eine angegebene Funktion ausgeführt wird. Während wir uns bisher mit <code>objekt.getEigenschaft()</code> und <code>objekt.setEigenschaft(5)</code> behelfen mussten, können wir mit ECMAScript 5 nun einfach <code>objekt.eigenschaft</code> und <code>objekt.eigenschaft = 5</code> schreiben. Hinter den Kulissen werden automatisch die gewünschten Getter- und Setter-Methoden aufgerufen.</p>
+
+<p>Schon vor ECMAScript 5 gab es Getter und Setter in JavaScript mithilfe der Methoden <a href="https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Working_with_Objects#Defining_Getters_and_Setters"><code>__defineGetter__</code> und <code>__defineSetter__</code></a>. Diese sind recht breit unterstützt, sind aber nicht standardisiert. ECMAScript 5 integriert Getter und Setter kurzerhand in sein Konzept der Property Descriptors. Anstelle der <code>value</code>-Eigenschaft kann der Descriptor die Eigenschaften <code>get</code> und/oder <code>set</code> besitzen:</p>
+
+<dl>
+
+<dt><code>get</code></dt>
+<dd>Gibt eine Funktion an, welche beim Auslesen des Eigenschaftswertes ausgeführt wird. Sie sollte mit <code>return</code> einen Wert zurückgeben.</dd>
+
+<dt><code>set</code></dt>
+<dd>Gibt eine Funktion an, welche beim Setzen des Eigenschaftswertes ausgeführt wird. Sie erhält den neuen Wert als ersten Parameter.</dd>
+
+</dl>
+
+<p>Mit diesem Wissen lässt sich das obige <code>setProperties</code>-Beispiel mit einem nativen Setter namens <code>properties</code> umsetzen:</p>
+
+<pre>
+Object.defineProperty(Baby.prototype, 'properties', {
+  set: function (props) {
+    var self = this;
+    Object
+      .keys(props)
+      .filter(props.hasOwnProperty, props)
+      .forEach(function (name) {
+        self[name] = props[name];
+      });
+  },
+  enumerable: false,
+  configurable: true
+});
+</pre>
+
+<p>Anstelle einer <code>setProperties</code>-Methode wird nun ein <code>properties</code>-Setter definiert. Wird dieser Eigenschaft ein Wert zugewiesen, wird die angegebene Funktion ausgeführt. Das Baby-Beispiel kann damit wie folgt umgeschrieben werden:</p>
+
+<pre>
+var ada = new Baby();
+ada.<strong>properties</strong> = {
+  born: new Date(),
+  name: 'Ada',
+  height: 0.55,
+  weight: 3.5,
+  gender: 'f',
+  hair: null,
+  eyes: {
+    left: 'blue',
+    right: 'brown'
+  }
+};
+</pre>
+
+<p><a href="/assets/ecmascript5/baby-properties.html">Beispiel ansehen</a></p>
+
+
+<h2 id="chaining-proxy">Chaining durch ein Proxy-Objekt ermöglichen</h2>
+
+<p>Nachdem wir das massenhafte Zuweisen von Eigenschaften betrachtet haben, wenden wir uns wieder der Verkettung von Methoden zu. Auch diese lässt sich mit ECMAScript 5 vereinfachen. Damit Methodenverkettung möglich ist, muss wie gesagt jede beteiligte Methode entsprechend vorbereitet sein und wieder das Objekt zurückgeben. Nicht alle APIs sind entsprechend ausgelegt und nicht alle Methoden können das Objekt zurückgeben.</p>
+
+<p>Das bedeutet nicht, dass man auf Chaining verzichten muss. Es ist möglich, eine API nachträglich Chaining-fähig zu machen, ohne den Ursprungscode zu ändern. Tim Tepaße schlägt dafür ein Proxy-Objekt vor, welches die Methodenaufrufe kapselt. Anstelle der Original-Funktion wird eine Wrapper-Funktion des Proxy-Objektes aufgerufen. Diese ruft die Original-Funktion auf und gibt in jedem Fall wieder das Objekt zurück, sodass Chaining möglich ist.</p>
+
+<pre>
+Object.defineProperty(Baby.prototype, 'chaining', {
+  get: function () {
+    var original = this,
+      toString = Object.prototype.toString,
+      proxy;
+
+    // Falls bereits ein Proxy-Objekt existiert, gib es zurück
+    if (original.hasOwnProperty('_proxy')) {
+      return original._proxy;
+    }
+
+    // Erzeuge das Proxy-Objekt
+    proxy = {};
+    // Durchlaufe alle Eigenschaften des Originals (auch vererbte)
+    for (var propName in original) {
+      var propVal = original[propName];
+      // Behandle nur Methoden, überspringe andere Eigenschaften
+      if (typeof propVal != 'function' &&
+        toString.call(propVal) != '[object Function]') {
+        continue;
+      }
+      // Sofort ausgeführter Funktionsausdruck als Closure
+      (function closure (propName) {
+        // Lege für jede gefundene Methode eine gleichnamige Methode
+        // beim Proxy-Objekt an
+        proxy[propName] = function chainableMethodWrapper () {
+          // Darin wird die Original-Methode aufgerufen
+          original[propName].apply(original, arguments);
+          // Und das Proxy-Objekt zurückgegeben
+          return proxy;
+        };
+      })(propName);
+    }
+    propVal = null;
+
+    // Speichere das Proxy-Objekt in der Eigenschaft _proxy beim Originalobjekt
+    Object.defineProperty(original, '_proxy', {
+      value: proxy,
+      // Die _proxy-Eigenschaft ist löschbar/konfigurierbar,
+      // aber nicht überschreibbar und zählbar
+      writable: false,
+      enumerable: false,
+      configurable: true
+    });
+
+    return proxy;
+  },
+  // Der chaining-Getter ist löschbar/konfigurierbar, aber nicht zählbar
+  enumerable: false,
+  configurable: true
+});
+</pre>
+
+<p>Der obige Code definiert eine Getter-Eigenschaft namens <code>chaining</code> beim <code>Baby</code>-Prototyp. Dieses Schema ist bereits aus dem vorherigen Beispiel bekannt. Innerhalb der Getter-Funktion wird ein Proxy-Objekt erzeugt. Bei diesem wird für jede Methode des Original-Objekts eine Chaining-fähige Wrapper-Methode angelegt. Das Proxy-Objekt wird schließlich in einer Eigenschaft <code>_proxy</code> zwischengespeichert, damit es pro Objekt nur einmal angelegt werden muss.</p>
+
+<p>Mithilfe des nun verfügbaren <code>chaining</code>-Getters können wir Methodenverkettung bei jedem denkbaren Objekt anwenden. Der Clou dabei ist, dass das Original-Objekt (bis auf die interne <code>_proxy</code>-Eigenschaft) nicht angetastet wird. Dafür müssen wir das Chaining mit einem Aufruf des <code>chaining</code>-Getters einleiten, welcher das Proxy-Objekt zurückgibt.</p>
+
+<p>Als Anwendungsbeispiel dient wieder <a href="http://de.wikipedia.org/wiki/Ada_Lovelace">Ada Lovelace</a>. Gehen wir davon aus, dass ein Haufen von <a href="http://de.wikipedia.org/wiki/%C3%9Cberladen">überladenen Methoden</a> existiert (<code>born</code>, <code>name</code>, <code>height</code> usw.), die im Stile von jQuery das Setzen und Auslesen von Eigenschaften erlauben. Diese werden an den Prototyp geheftet:</p>
+
+<pre>
+function Baby () {
+  this.properties = {};
+}
+
+Baby.prototype = {
+  born: function (v) {
+    if (arguments.length) {
+      this.properties.born = v;
+    } else {
+      return this.properties.born;
+    }
+  },
+  // … viele weitere nach demselben Schema …
+};
+</pre>
+
+<p>Selbst wenn diese Methoden von sich aus kein Chaining erlauben, so ist mit unserem Helfer nun folgendes möglich:</p>
+
+<pre>
+var ada = new Baby();
+
+ada.chaining
+  .born(new Date())
+  .name('Ada')
+  .height(0.55)
+  .weight(3.5)
+  .gender('f')
+  .hair('none')
+  .eyes({
+    left: 'brown',
+    right: 'blue'
+  });
+</pre>
+
+<p><a href="/assets/ecmascript5/baby-chaining.html">Beispiel ansehen</a></p>
+
+<p>Auch hier gilt: Das Konzept eines Proxy-Objektes erfordert nicht zwingend ECMAScript-5-Getter und könnte auch mit einer herkömmlichen Methode in ECMAScript 3 umgesetzt werden. ECMAScript 5 macht die Anwendung lediglich komfortabler.</p>
+
+
+<h2 id="harmony-proxies">Proxy-Objekte in ECMAScript Harmony</h2>
+
+<p>Das Proxy-Pattern stellt eine Möglichkeit dar, JavaScript-Interfaces expressiver zu gestalten. Um mit JavaScript bisher unmögliche oder untypische Interfaces sowie relativ freie DSLs zu ermöglichen, wird die kommende ECMAScript-Version mit dem Codenamen Harmony native Proxies unterstützen.</p>
+
+<p>Ein solches Proxy-Objekt fängt sämtliche Operationen ab und führt entsprechende Proxy-Funktionen aus. Diese können dann entscheiden, was sie an das Original-Objekt durchgeben. Damit lässt das Verhalten der Objekt-Operationen komplett umdefinieren. Man spricht daher auch von <dfn>Meta-Programming</dfn> (Metaprogrammierung), da der letztlich ausgeführte Code zur Laufzeit generiert wird. So lässt sich etwa <code>method_missing</code> aus Ruby implementieren – eine Methode, die automatisch Anfragen an nicht definierte Eigenschaften abfängt und gegebenenfalls on-the-fly eine passende Methode erzeugt oder an eine andere delegiert.</p>
+
+<p>Das oben gezeigte Chaining mithilfe eines einmal angelegten und anschließend gecachten Proxy-Objekts trägt nicht der Dynamik von JavaScript Rechnung, wie Tim Tepaße auch in seinem Forumsbeitrag anmerkt. Kommen neue Methoden hinzu, so bietet das Proxy-Objekt nicht automatisch passende Wrapper.</p>
+
+<p>Mit ECMAScript Harmony wird sich dieses Problem lösen lassen. Auch wenn sich ECMAScript Harmony im Gegensatz zum Ende 2009 verabschiedeten ECMAScript 5 noch in der Entwicklung befindet, so bietet Firefox 4 bereits eine experimentelle Umsetzung von Harmony-Proxies.</p>
+
+<p>Das Kernstück des <code>chaining</code>-Beispiels lässt sich durch ein <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Proxy">natives <code>Proxy</code>-Objekt</a> austauschen, welches sämtliche Eigenschaftsanfragen an das Original delegiert.</p>
+
+<pre>
+Object.defineProperty(Baby.prototype, 'chaining', {
+  get: function () {
+    var original = this,
+      toString = Object.prototype.toString,
+      proxy;
+
+    if (original.hasOwnProperty('_proxy')) {
+      return original._proxy;
+    }
+
+    // Erzeuge ein natives Proxy-Objekt (ECMAScript Harmony)
+    proxy = Proxy.create({
+      get: function (receiver, propName) {
+        var propVal = original[propName];
+        // Handelt es sich um eine Funktion?
+        if (typeof propVal == 'function' ||
+          toString.call(propVal) == '[object Function]') {
+          propVal = null;
+          // Gib eine Chaining-fähige Wrapper-Funktion zurück
+          return function chainableMethodWrapper () {
+            original[propName].apply(original, arguments);
+            return proxy;
+          };
+        }
+        // Andernfalls gib den Eigenschaftswert zurück
+        return propVal;
+      }
+    });
+
+    Object.defineProperty(this, '_proxy', {
+      value: proxy,
+      writable: false,
+      enumerable: false,
+      configurable: true
+    });
+
+    return proxy;
+  },
+  enumerable: false,
+  configurable: true
+});
+</pre>
+
+<p><a href="/assets/ecmascript5/baby-chaining-harmony.html">Beispiel ansehen</a></p>
+
+<p>Wenn das Proxy-Objekt eine Anfrage an eine Methode registriert, dann gibt es automatisch eine Chaining-fähige Wrapper-Funktion zurück. Andernfalls gibt es die Original-Eigenschaft zurück. Diese kann selbstverständlich undefiniert (<code>undefined</code>) sein.</p>
+
+<p>Das Proxy-Objekt im Beispiel hat bewusst eine sehr beschränkte Funktionalität, denn es implementiert nur das Abfragen von Eigenschaften – mehr ist für Methodenverkettung nicht nötig. Sämtliche anderen Objekt-Operationen, die mit dem Beispiel-Proxy vorgenommen werden, führen zu einer Exception (einem Laufzeitfehler), da für diese Fälle (<dfn>Traps</dfn> genannt) keine Handler-Funktionen definiert sind.</p>
+
+
+<h2 id="chaining-helfer">Allgemeiner Chaining-Helfer für Eigenschaften und Methoden</h2>
+
+<p>Die bisherigen Beispiele vereinfachen entweder das Setzen von Eigenschaften oder das Chaining von Methoden. Bei jQuery funktioniert das Auslesen und auch das Setzen über dieselbe, überladene Methode. Beispielsweise liest <code>.css('font-size')</code> den gegenwärtigen font-size-Wert aus, während <code>.css('font-size', '15px')</code> ihn setzt.</p>
+
+<p>Das <code>Baby.prototype.chaining</code>-Beispiel ging davon aus, dass solche überladenen Methoden bereits existieren. Tim Tepaße schlägt vor, beim Proxy-Objekt das Aufrufen von Methoden sowie das Auslesen und Setzen von Eigenschaften zu ermöglichen. Beim Original-Objekt müssen also nicht notwendig überladene Methoden existieren, sie werden automatisch vom Proxy erzeugt.</p>
+
+<p>Um das Proxy-Objekt zu erzeugen, könnte man eine universell einsetzbare Helferfunktion verwenden, beispielsweise <code>using()</code>. Sie nimmt das Original-Objekt entgegen und gibt ein Chaining-fähiges Proxy-Objekt zurück. Das vereinfachte Erzeugen des <code>Baby</code>-Objekts sieht damit so aus:</p>
+
+<pre>
+var ada = new Baby();
+using(ada)
+  // Eigenschaften setzen
+  .born(new Date())
+  .name('Ada')
+  .height(0.55)
+  .weight(3.5)
+  .gender('f')
+  .hair('none')
+  .eyes({
+    left: 'brown',
+    right: 'blue'
+  })
+  // Vorhandene Methoden aufrufen
+  .cry()
+  .crawl();
+
+// Eigenschaft über den Proxy auslesen
+alert( using(ada).name() ); // ergibt Ada
+
+// Zur Kontrolle: Eigenschaft des Original-Objekts auslesen
+alert( ada.name ); // ergibt Ada
+</pre>
+
+<p>Der Quellcode der <code>using</code>-Funktion könnte so aussehen:</p>
+
+<pre>
+function using (original) {
+  if (!window.Proxy) {
+    throw new Error('using(): ECMAScript Harmony Proxies not available');
+  }
+  var toString = Object.prototype.toString;
+  var proxy = Proxy.create({
+    get: function (receiver, propName) {
+      var propVal = original[propName];
+      // Handelt es sich um eine Funktion?
+      if (typeof propVal == 'function' ||
+        toString.call(propVal) == '[object Function]') {
+        propVal = null;
+        // Gebe eine Chaining-fähige Wrapper-Funktion zurück
+        return function chainableMethodWrapper () {
+          original[propName].apply(original, arguments);
+          return proxy;
+        };
+      } else {
+        propVal = null;
+        // Gebe eine Chaining-fähige, überladene Getter-/Setter-Methode zurück
+        return function chainablePropertyWrapper (val) {
+          if (arguments.length) {
+            original[propName] = val;
+            return proxy;
+          } else {
+            return original[propName];
+          }
+        };
+      }
+    }
+  });
+  return proxy;
+}
+</pre>
+
+<p><a href="/assets/ecmascript5/using.html">Beispiel ansehen</a></p>
+
+<p><code>using</code> erzeugt ebenfalls einen ECMAScript-Harmony-Proxy. In dem Handler für die Eigenschaftsabfrage wird zunächst geprüft, ob eine Methode existiert, die den gewünschten Namen besitzt. Wenn dies zutrifft, wird der bekannte Methoden-Wrapper zurückgegeben. Im anderen Fall wird eine überladene Methode erzeugt, mit dem sich die Eigenschaft mit dem gewünschten Namen lesen oder setzen lässt.</p>
+
+<p>In diesem Beispiel wird auf das Caching des Proxy-Objektes und auf das Caching der erzeugten Funktionen verzichtet. Dies kann natürlich außerhalb von <code>using</code> erfolgen, indem dessen Rückgabewert, das Proxy-Objekt, in einer Variable gespeichert wird.</p>
+
+
+<h2 id="praxisanwendung">Praxisanwendung</h2>
+
+<p>Die obigen Beispiele sind etwas gestellt, da sie lediglich die Möglichkeiten von Interfaces mit ECMAScript 5 und ECMAScript Harmony demonstrieren sollen. Es gibt aber bereits sehr gute Beispiele für Fluent Interfaces, die mit den neuen Techniken gebaut wurden.</p>
+
+<p>Ein Beispiel ist <a href="https://github.com/visionmedia/should.js">should.js</a>. Dies ist ein Testing-Framework für die aufstrebende serverseitige JavaScript-Plattform node.js. Seine Syntax soll ähnlich sprechend wie die von RSpec sein (siehe oben).</p>
+
+<p>should.js erweitert den obersten Prototyp <code>Object.prototype</code> um den Getter <code>should</code>. Dieser gibt ein Objekt zurück, welches viele weitere Gettern besitzt. Dadurch kann man auf die runden Klammern für Methodenaufrufe (den sogenannten Call Operator) verzichten. Die Kernelemente von Tests, sogenannte Assertions, lassen sich damit sehr kurz und lesbar notieren. Ein paar Beispiele:</p>
+
+<pre>
+var user = { name: 'Ada', age: 46 };
+
+user.name.should.be.a('string')
+user.name.should.equal('Ada')
+user.should.not.have.property('age', 35)
+</pre>
+
+<p>Verglichen mit anderen Testing-Frameworks ist diese Syntax sehr »fluent«:</p>
+
+<pre>
+// Verbreitete Assertion-Syntax
+assertEquals(user.name, 'Ada')
+
+ // Node.js Assert-Modul und darauf aufbauende Frameworks
+assert.equal(user.name, 'Ada')
+
+ // Jasmine
+expect(user.name).toEqual('Ada')
+
+ // Nodeunit
+test.equal(user.name, 'Ada')
+</pre>
+
+<p>Einen ähnlichen Schritt geht <a href="http://de.slideshare.net/kilaulena/jspec-a-javascript-unit-testing-framework">JSpec</a>, welches für Testcases eine DSL definiert, die stark an Ruby und RSpec erinnert. Allerdings ist diese DSL selbst nicht JavaScript, sondern wird geparst und in JavaScript übersetzt.</p>
+
+
+<h2 id="links">Links und Quellen</h2>
+
+<ul class="compact-list">
+  <li><a href="http://brendaneich.com/">Weblog von Brendan Eich, dem Erfinder von JavaScript und Mitentwickler an ECMAScript</a></li>
+  <li><a href="http://www.aminutewithbrendan.com/">A Minute With Brendan, regelmäßiger Podcast mit Brendan Eich</a></li>
+  <li><a href="http://dmitrysoshnikov.com/ecmascript/es5-chapter-1-properties-and-property-descriptors/">ECMA-262-5 in detail. Chapter 1. Properties and Property Descriptors. von Dmitry A. Soshnikov</a></li>
+  <li><a href="http://kangax.github.io/compat-table/es5/">ECMAScript 5 Compatibility Table von kangax</a></li>
+  <li><a href="http://www.slideshare.net/kangax/say-hello-to-ecmascript-5">Say Hello to ECMAScript 5. Präsentationsfolien von kangax</a></li>
+  <li><a href="https://www.youtube.com/watch?v=hs6tF-RDX4U">ECMAScript.Next. Vortrag von David Herman</a></li>
+  <li><a href="https://www.youtube.com/watch?v=sClk6aB_CPk">Proxies are awesome. Vortrag von Brendan Eich auf der JSConf.eu</a></li>
+  <li><a href="http://soft.vub.ac.be/~tvcutsem/proxies/index.html">Tutorial zu Harmony Proxies von Tom Van Cutsem</a></li>
+  <li><a href="http://wiki.ecmascript.org/doku.php?id=harmony:proxies">Harmony-Proxies im Wiki der ECMAScript-Arbeitsgruppe</a></li>
+</ul>
+
+
+<h2 id="danksagung">Danksagung</h2>
+
+<p>Dank geht an <a href="http://tepasse.org/">Tim Tepaße</a> (<a href="https://twitter.com/ttepasse">@ttepasse</a>) für die Erlaubnis, seine Beispiele in einem längeren Artikel auszuarbeiten. Danke auch an Sebastian Deutsch (<a href="https://twitter.com/sippndipp">@sippndipp</a>) für den Hinweis auf should.js.</p>

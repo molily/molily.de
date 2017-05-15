@@ -1,0 +1,200 @@
+---
+layout: post
+title: "CSS kompakt: Einschließen (Clearing) von Floats"
+---
+
+<h2>Mehrspaltenlayout mit <code>float</code></h2>
+
+<p>Die Eigenschaft <code>float</code> gehört zu den wichtigsten CSS-Eigenschaften zur Umsetzung von flexiblem Mehrspaltenlayout. Da sie aber nie zu diesem Zweck erfunden wurde, sondern eher dafür zweckentfremdet wird, sind einige Tricks und Kniffe notwendig, um zu einem klassischen Mehrspaltenlayout zu kommen.</p>
+
+<p>Bereits 2006 habe ich einen ausführlichen Artikel zu <a href="http://blog.selfhtml.org/2006/01/31/css-spaltenlayout/">CSS-Spaltenlayout</a> verfasst. Da immer noch Unklarheiten zum Thema herrschen, will ich es noch einmal kompakt »von oben nach unten«, von der Theorie zur Praxis hin zusammenfassen.</p>
+
+<p>Beispielsweise sorgt <code>float: left</code> erst einmal nur dafür, dass darauffolgende Elementboxen rechts um die Box des Elements »herumfließen«. Der folgende Inhalt lässt sich in ein Element fassen, das z.B. mit <code>margin-left</code> (linker Außenrand) eingerückt wird. So entsteht erst der Eindruck von zwei Spalten. (Grob verkürzt, es gibt noch andere Methoden und weiteres zu beachten.)</p>
+
+<div class="float-container-demo-container">
+<p class="left">Spalte 1<br>Links floatendes Element</p>
+<p class="right">Spalte 2<br>Folge-Element im normalen Fluss</p>
+</div>
+
+<h2 id="loesungsansaetze">Problemstellung und 2+1 Lösungsansätze</h2>
+
+<p>Nun besteht oftmals der Wunsch, dass ein Container-Element beide Spalten umfasst. Die Höhe soll sich nach dem Inhalt beider Spalten richten. Das Element mit <code>float: left</code> - floatendes Element oder schlicht »Float« genannt - beeinflusst die Höhe des Container-Elements allerdings nicht. Wenn sie die andere Spalte in der Höhe überragt, dann lappt sie aus dem Container-Box heraus:</p>
+
+<div class="float-container-demo-container">
+<p class="left">Spalte 1<br>Links floatendes Element mit viel mehr Inhalt. Ragt heraus!</p>
+<p class="right">Spalte 2<br>Folge-Element im normalen Fluss</p>
+</div>
+
+<p style="clear: both">Damit das Container-Element seine Höhe entsprechend anpasst, ist ein <strong>Einschließen des Floats</strong> nötig.</p>
+
+<p>Es gibt im Grunde zwei standardkonforme Ansätze, floatende Element mit beliebiger, flexibler Höhe einzuschließen:</p>
+
+<ol>
+<li>Das Erzeugen eines <strong>Block Formatting Contexts</strong> (Abkürzung: BFC)</li>
+<li>Das Einfügen eines Elements mit <code>clear</code> am Ende des Container-Elements, üblicherweise <strong>Clearfix</strong> genannt</li>
+</ol>
+
+<p>Es gibt jeweils verschiedene Methoden, um einen BFC zu erzeugen und einen Clearfix umzusetzen. Alle Spielarten gehen jedoch auf diese Grundansätze zurück.</p>
+
+<p>Für den Internet Explorer 5-7 kommt ein dritter, proprietärer Ansatz hinzu: <strong>hasLayout</strong>. Der IE vor Version 8 unterstützt nur diesen Ansatz, ab IE 8 können die oben genannten verwendet werden. Es gibt wiederum verschiedene Möglichkeiten, um hasLayout zu triggern.</p>
+
+<h2 id="bfc">Block Formatting Context (BFC)</h2>
+
+<p>Ein BFC ist ein CSS-internes Konzept, das Browser zum Layouten der Elementboxen heranziehen. Eine Elementbox kann einen neuen BFC erzeugen und damit bekommt die Box besondere Eigenschaften. Drei der wichtigsten sind:</p>
+
+<ol>
+<li>Ein BFC erzeugt einen neuen Float-Kontext. Ein Element mit <code>clear: left/right/both</code> wird nicht unter allen Floats im Dokument dargestellt, sondern »cleart« nur diejenigen, die sich im selben BFC befinden.</li>
+<li>Ein BFC überlappt sich nicht mit Floats. Normalerweise liegen Elemente »hinter« den Floats und lediglich der Elementinhalt (z.B. Text) wird neben das Float verschoben. Bei einem BFC gibt es keine solche Überlappung, bei der das Float über dem nicht-floatenden Folgeelement liegt. Beide Boxen werden wirklich nebeneinander gelayoutet.</li>
+<li>Last but not least: Ein BFC schließt alle floatenden Kindelemente ein, seine Höhe passt sich entsprechend an.</li>
+</ol>
+
+<p>Das Wissen um BFCs ist essentiell bei fortgeschrittenem CSS-Layout. All diese Eigenschaften kann man sich in verschiedenen Fällen zu Nutze machen.</p>
+
+<h3 id="bfc-ausloeser">BFC-Auslöser</h3>
+
+<p>Es lässt sich nicht direkt einstellen, dass eine Elementbox die BFC-Eigenschaften erhält. Es gibt jedoch verschiedene CSS-Eigenschaften, die implizit einen BFC auslösen. Als da wären:</p>
+
+<ol>
+<li><code>float</code> mit einem anderen Wert als <code>none</code>, sprich <code>left</code> oder <code>right</code></li>
+<li><code>overflow</code> mit einem anderen Wert als <code>visible</code>, sprich <code>hidden</code>, <code>scroll</code> oder <code>auto</code></li>
+</ol>
+
+<p>Es gibt noch weitere Eigenschaften, die ich hier der Einfachheit verschweige, da sie nicht so universell für Container-Elemente zum Einschließen von Floats eignen. Siehe dazu <a href="http://www.yuiblog.com/blog/2010/05/19/css-101-block-formatting-contexts/">CSS 101: Block Formatting Contexts</a> und <a href="http://www.w3.org/TR/CSS21/visuren.html#block-formatting">Block Formatting Contexts</a> im CSS-2.1-Standard.</p>
+
+<h3 id="bfc-floats-einschliessen">Floats einschließen mit BFC</h3>
+
+<p>Das Einschließen von Floats mittels <code>float</code> als BFC-Auslöser erfordert ein zusätzliches <code>width: 100%</code>, damit die Box nicht auf die Inhaltsbreite zusammenschrumpft (»shrink-fit«), sondern weiterhin die ganze Breite umspannt. Damit ist gewährleistet, dass neben diesem Float kein Inhalt vorbeifließt. Schließlich wollen wir keinen echten Float, sondern nur BFC auslösen, um die Floats im Container einzuschließen.</p>
+
+<p>Verbreiteter ist der BFC-Auslöser <code>overflow: hidden</code>. Dies ist eine etablierte Technik zum Einschließen von Floats. Beispielsweise verwendet das <a href="http://www.yaml.de">CSS-Framework YAML</a> <code>overflow: hidden</code> zum Einschließen von Floats innerhalb der verschachtelter Mehrspaltigkeit. <span style="font-size:0.9em">(Der Vollständigkeit halber: YAML verwendet an anderen Stellen auch das oben beschriebene <code>float</code> sowie den unten beschriebenen Clearfix.)</span></p>
+
+<div class="float-container-demo-container" style="overflow: hidden;">
+<p class="left">Spalte 1<br />Links floatendes Element mit viel mehr Inhalt</p>
+<p class="right">Spalte 2<br />Folge-Element im normalen Fluss</p>
+</div>
+
+<h3 id="probleme-overflow-hidden">Probleme von <code>overflow: hidden</code></h3>
+
+<p>Es darf jedoch nicht die Hauptwirkung von <code>overflow: hidden</code> übersehen werden: Inhalte werden abgeschnitten. Beim CSS-Spaltenlayout wirkt sich diese u.a. negativ aus, immer wenn bestimmte Inhalte den Rändern zu nahe kommen oder bewusst über sie hinausragen:</p>
+
+<ol>
+<li>Bei der Fokussierung z.B. von Links wird der Rahmen (<code>outline</code>) abgeschnitten, mit dem das Browser das Element hervorhebt.</li>
+<li>Dasselbe gilt für Box- und Text-Schatten (<code>box-shadow</code>, <code>text-shadow</code>) von Elementen an den Container-Rändern.</li>
+<li>Beim Sub-Pixel-Rendering von Schrift sind standardmäßig auch Pixel außerhalb des Containers betroffen. <code>overflow: hidden</code> verhindert zumindest in einigen Browsern das korrekte Schrift-Rendering.</li>
+<li>Der Einsatz von <code>position: absolute</code> sowie <code>position: relative</code> bei Elementen im Container wird eingeschränkt, denn an den Containergrenzen wird rigoros abgeschnitten.</li>
+</ol>
+
+<p><code>overflow: hidden</code> ist damit zwar eine sehr einfache und elegante, aber nicht unproblematische Lösung zum Einschließen von Floats. Nachdem ich <code>overflow: hidden</code> als BFC-Auslöser lange auf breiter Basis eingesetzt habe, haben mir u.a. die obigen Nachteile im Praxiseinsatz zu schaffen gemacht, sodass ich mittlerweile wieder eher zum Clearfix tendiere.</p>
+
+<h2 id="clearfix">Clearfix</h2>
+
+<p>Der Clearfix ist ein unsichtbares, leeres Element, das eine 0 Pixel hohe Box erzeugt, welche <code>clear: both</code> besitzt. Dieses Element wird am Ende des Container-Elements eingefügt, ist also sein letztes Kindelement. Durch das Clearing wird das Container-Element in der Höhe so vergrößert, dass es alle Floats im jeweiligen Float-Kontext einschließt.</p>
+
+<div class="float-container-demo-container">
+<p class="left">Spalte 1<br>Links floatendes Element mit viel mehr Inhalt</p>
+<p class="right">Spalte 2<br>Folge-Element im normalen Fluss</p>
+<p style="margin:0; background:white; clear:both">Clear-Element, hier sichtbar zur Demonstration</p>
+</div>
+
+<p>Früher hat man zu diesem Zweck unzählige <code>&lt;div style="clear:both">&lt;/div></code> in den HTML-Code eingefügt. Heute ist Konsens, dass diese Darstellungsinformation im HTML nichts zu suchen hat (»<a href="http://en.wikipedia.org/wiki/Separation_of_concerns">Separation of Concerns</a>«) und es dort die Wartbarkeit verschlechtern würde. Um die Trennung von Inhalt und Präsentation zu wahren, wird die Clear-Box stattdessen mit CSS eingefügt.</p>
+
+<p>Das geht mittels CSS-erzeugtem Inhalt. Damit lassen sich CSS-Boxen samt Textinhalt einfügen und direkt via CSS formatieren. Diese Boxen tauchen nicht im DOM auf, werden jedoch gerendert und beeinflussen das CSS-Layouting. Inhalte werden mit einer Kombination aus dem Pseudoelement <code>:after</code> (CSS-3-konforme Syntax: <code>::after</code>) und der Eigenschaft <code>content</code> eingefügt:</p>
+
+<pre>#container:after {
+   display: block;
+   clear: both;
+   content: "Per CSS eingefügte Clear-Box";
+}</pre>
+
+<p>Demonstration:</p>
+
+<div class="float-container-demo-container" id="container-mit-generated-content">
+<p class="left">Spalte 1<br>Links floatendes Element mit viel mehr Inhalt</p>
+<p class="right">Spalte 2<br>Folge-Element im normalen Fluss</p>
+</div>
+
+<p>Damit diese eingefügte Box nicht sichtbar ist, sondern nur das Clearing anwendet, bekommt sie üblicherweise noch weitere Eigenschaften wie <code>height: 0</code>, <code>visibility: hidden</code> und falls nötig <code>font-size: 0</code>. Vollständig sieht der Clearfix-Code dann so aus:</p>
+
+<pre>#container:after {
+   display: block;
+   clear: both;
+   content: ".";
+   height: 0;
+   visibility: hidden;
+}</pre>
+
+<h3 id="clearfix-nachteile">Nachteile der gängigen Praxis <code>class="clearfix"</code></h3>
+
+<p>Im Gegensatz zum Einschließen mittels <code>overflow: hidden</code> (BFC) kann der »Clearfix« nicht so einfach im Stylesheet wiederholt werden – der CSS-Code würde sehr schnell redundant werden. Es ist daher gängig, allen Elementen, die ihre floatenden Kindelemente einschließen sollen, eine Klasse <code>clearfix</code> zu geben, sodass der CSS-Code für den Clearfix nur einmal im Stylesheet stehen muss. Der gravierende Nachteil ist, dass damit die Trennung von Inhalt und Präsentation aufgeweicht wird. Mit <code>class="clearfix"</code> werden wieder massenhaft präsentationsbezogene Informationen im HTML untergebracht. Ob ein Element Floats einschließt, ist damit nicht aus der CSS-Formatierung im Stylesheet ersichtlich, sondern die Formatierungsregeln sind in HTML und CSS verstreut.</p>
+
+<h2 id="haslayout">hasLayout (IE < 8)</h2>
+
+<p>hasLayout ist ein <a href="http://onhavinglayout.fwpf-webdesign.de/">Thema für sich</a>. hasLayout ist internes Konzept bei der CSS-Umsetzung im Internet Explorer 5-7 und der Schlüssel zum IE-kompatiblen CSS-Layout. hasLayout bezeichnet eine Eigenschaft von Boxen, eine Box »hat Layout«. hasLayout entspricht in verschiedener Hinsicht dem BFC in standardkonformen Browsern: Elemente mit hasLayout schließen Floats automatisch ein, überlappen sich nicht mit Floats und erzeugen einen neuen Float-Kontext. Dies sind aber nur einige Auswirkungen unter vielen – für uns ist hier nur interessant, dass hasLayout das Mittel der Wahl zum Einschließen von Floats in älteren IEs ist.</p>
+
+<h3 id="haslayout-ausloeser">hasLayout-Auslöser</h3>
+
+<p>Es gibt verschiedene CSS-Eigenschaftswerte, die hasLayout beim formatierten Element auslösen. Die wichtigsten sind:</p>
+
+<ul>
+<li>Feste Angaben für Breite oder Höhe (<code>width</code>, <code>height</code>). Beim häufig verwendeten <code>height: 1%</code> ignoriert der IE die Höhenangabe, gibt dem Element jedoch »Layout«</li>
+<li><code>float</code> ist ebenfalls ein hasLayout-Auslöser (mit einem anderen Wert als <code>none</code>, versteht sich)</li>
+<li>Empfohlener hasLayout-Auslöser ist <code>zoom: 1</code>. <code>zoom</code> ist eine Microsoft-proprietäre CSS-Eigenschaft, die im Falle des Wertes 1 (= 100% Zoom) keine andere Auswirkung hat, als dass das Element »Layout« bekommt.</li>
+</ul>
+
+<p><code>zoom: 1</code> kann in Extra-Stylesheets untergebracht werden, die per Conditional Comments nur für den IE < 8 eingebunden werden. Es ist aber auch harmlos, <code>zoom: 1</code> direkt ins Hauptstylesheet zu schreiben. Standardkonforme Browser ignorieren die Angabe einfach. Das macht das Stylesheet allerdings invalide. Manche Webautoren ziehen die Integration des kleinen IE-Fixes in das Originalstylesheet der Validität vor.</p>
+
+<p>Floats einschließen browserübergreifend mit BFC und hasLayout geht demnach so:</p>
+
+<pre>#container { overflow: hidden; zoom: 1; }</pre>
+
+<p>Neben dem Einschließen von Floats hat <code>zoom: 1</code> wie gesagt schwerwiegende Auswirkungen - um diese zu verstehen, ist ein Studium der genannten Literatur zu hasLayout nötig.</p>
+
+<h2 id="unterschiede-floats-einschliessen">Unterschiede zwischen BFC, Clearfix und hasLayout</h2>
+
+<p>Keine der Methoden ist bedenkenlos einsetzbar und ohne Nebenwirkungen. Die Ansätze sind sehr unterschiedlich:</p>
+
+<ul>
+<li>Ein BFC hat besondere Eigenschaften, er erzeugt einen neuen Float-Kontext und verhindert das Überlappen mit Floats. Das kann gewünscht sein oder auch nicht. <code>overflow: hidden</code> hat ferner schwerwiegende Risiken – und wird dennoch breit und erfolgreich eingesetzt.</li>
+<li>
+<p>Der Clearfix ist ein ganz anderer Ansatz, der voraussetzt, dass an der jeweiligen Stelle bedenkenlos <code>clear</code> verwendet werden kann. Ansonsten ist er relativ sicher und robust, kann aber nicht so flexibel angewendet werden wie ein simples <code>overflow: hidden</code>.</p>
+<p>Im Gegenzug eignet sich der Clearfix für weitere Effekte wie den der gleich langen Spalten, siehe <a href="http://blog.selfhtml.org/2006/01/31/css-spaltenlayout/#kombinationsloesung">Kombinationslösung</a> in meinem ausführlichen Artikel sowie <a href="http://www.yaml.de/de/dokumentation/grundlagen/das-clearing-von-col3.html">Das Clearing der Spalte #col3</a> in der YAML-Dokumentation.</p>
+</li>
+<li>Für den IE < 8 bleibt nur hasLayout. Und hasLayout ist ein Minenfeld. Es geht leider nicht ohne – und mit nur unter Schmerzen. Nach einiger Zeit bekommt man jedoch Übung im gezielten hasLayout-Einsatz.</li>
+</ul>
+
+<h2 id="quellen">Historische Quellen zum Einschließen von Floats</h2>
+
+<dl>
+<dt>2004-05-14</dt>
+<dd><a href="http://www.positioniseverything.net/easyclearing.html">How To Clear Floats Without Structural Markup</a> von Tony Aslett, John Gallant (<em>Position Is Everything</em>)</dd>
+
+<dt>2005-02-26</dt>
+<dd><a href="http://www.sitepoint.com/blogs/2005/02/26/simple-clearing-of-floats/">Simple Clearing of Floats</a> von Paul O’Brien, Alex Walker</dd>
+
+<dt>2005-06-30</dt>
+<dd><a href="http://www.satzansatz.de/cssd/onhavinglayout.html">On having layout — the concept of hasLayout in IE/Win</a> von Ingo Chao u.a.</dd>
+
+<dt>2007-05-09</dt>
+<dd><a href="http://onhavinglayout.fwpf-webdesign.de/">Über hasLayout — das Konzept des hasLayout im IE/Win</a>. Deutsche Übersetzung von Corina Rudel</li>
+
+<dt>2009-12-06</dt>
+<dd><a href="http://perishablepress.com/press/2009/12/06/new-clearfix-hack/">»The New Clearfix Method«</a>. Aktualisierung der Aslett/PIE-Methode durch Jeff Starr (IE/Mac fällt heraus und weitere kleine Anpassungen)</dd>
+
+</dl>
+
+<h2 id="float-layout-alternativen">Alternativen zu Float-Layouts</h2>
+
+<p>Bei soviel Ärger um Floats sei wie auch schon 2006 auf alternative Layouttechniken hingewiesen:</p>
+
+<ul>
+<li><a href="http://little-boxes.de/lb1/15-mehrspaltige-layouts-position-absolute.html">position: absolute/relative</a></li>
+<li><a href="http://www.digital-web.com/articles/everything_you_know_about_CSS_Is_wrong/">CSS-Tabellen (display: table/table-row/table-cell)</a></li>
+<li><a href="http://bittersmann.de/articles/inline-block/">display: inline-block</a></li>
+</ul>
+
+<p>Eine Diskussion möglicher Zukunftstechniken leistet Stephen Hay in seinem Vortrag <a href="http://www.slideshare.net/stephenhay/the-future-state-of-layout">The Future State of Layout</a>. Vorgestellt werden:</p>
+
+<ul>
+<li><a href="http://www.w3.org/TR/css3-layout/">Template Layout Module</a></li>
+<li><a href="http://dev.w3.org/csswg/css3-flexbox/">Flexible Box Layout Module</a></li>
+<li><a href="http://www.w3.org/TR/css3-grid/">Grid Positioning</a></li>
+</ul>

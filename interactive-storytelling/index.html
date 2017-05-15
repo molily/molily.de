@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <title>Interactive Storytelling</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ?
+      'css/print/pdf.css' :
+      'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <base target="_blank">
+    <style>
+    .reveal .nametag {
+      margin: 0 auto 1em;
+      width: 10em;
+      background: red;
+      border-radius: 10px;
+      padding-bottom: 0.4em;
+    }
+
+    .reveal .nametag .hello, .reveal .nametag .my-name-is {
+      margin: 0;
+      color: white;
+      line-height: 0.9;
+    }
+
+    .reveal .nametag .hello {
+      padding-top: 0.2em;
+      padding-left: 0.35em;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+    }
+
+    .reveal .nametag .my-name-is {
+      padding-bottom: 0.2em;
+    }
+
+    .reveal .nametag .name {
+      line-height: 1.5;
+      margin: 0 1px;
+      background: white;
+    }
+
+    .gif {
+      display: block;
+      margin: auto;
+      width: 60%;
+    }
+    </style>
+  </head>
+  <body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<!-- ******************************************************************** -->
+
+<section>
+  <p>
+    <video class="gif" autoplay="" loop="">
+      <source src="images/panda.mp4" type="video/mp4">
+    </video>
+  </p>
+  <h1>Interactive Storytelling</h1>
+  <p>Interaktives Geschichtenerzählen mit Webtechniken</p>
+  <p>Mediale Hamburg, 20.09.2013</p>
+</section>
+
+<section>
+  <div class="nametag">
+    <p class="hello">Hello</p>
+    <p class="my-name-is">my name is</p>
+    <h1 class="name">molily</h1>
+  </div>
+  <ul>
+  <li>Mathias Schäfer</li>
+  <li>Studium der Germanistik und Philosophie</li>
+  <li>Software-Entwickler bei <a href="https://9elements.com">9elements</a></li>
+  <li>Spezialisiert auf JavaScript-Webanwendungen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Worum geht es?</h1>
+  <ul>
+    <li>Multimediale Webpräsentationen</li>
+    <li>Text, Grafik, Video, Audio</li>
+    <li>v.a. Feature-Artikel im Online-Journalismus,<br>
+    Produktpräsentationen</li>
+    <li>Informieren, Unterhalten, Verkaufen</li>
+    <li>Neugier, Spiel, Ästhetik</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Beispiele</h1>
+  <ul>
+    <li><a href="http://www.nytimes.com/projects/2012/snow-fall/">New York Times: Snow Fall</a>, Ende 2012</li>
+    <li><a href="http://www.theguardian.com/world/interactive/2013/may/26/firestorm-bushfire-dunalley-holmes-family">The Guardian: Firestorm</a>, Mai 2013</li>
+    <li><a href="http://intothearctic.gp/en/">Greenpeace: Into the Artic</a>, März 2013</li>
+    <li><a href="http://ngm.com/serengeti-lion">National Geographic: The Serengeti Lion</a>, August 2013</li>
+    <li><a href="http://www.dangersoffracking.com/">The Dangers of Fracking</a>, 2012</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Was ist das Neue?</h1>
+  <ul>
+    <li>Gekonnte und stimmige Kombination bekannter Elemente</li>
+    <li>Nahtlose Integration der Medien</li>
+    <li>Teamarbeit vereint Journalismus, Design &amp; Programmierung</li>
+    <li>Verschiedene Ebenen: Geschichte, Fakten, Emotionalität</li>
+    <li>(Not) The Future of Journalism</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Typische Elemente</h1>
+  <ul>
+    <li>Raumgreifendes, minimalistisches Design</li>
+    <li>Die Inhalte sprechen für sich</li>
+    <li>Fortschreiten durch Scrolling und Kapitel</li>
+    <li>Typographie als wichtiges Gestaltungselement</li>
+    <li>Beeindruckende Fotos, Infografiken,<br>
+    Datenvisualisierung, Karten</li>
+    <li>Videos: Animationen, Interviews, Stimmung</li>
+    <li>Audio: Interviews, Stimmung</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Interaktivität</h1>
+  <ul>
+    <li>Wieviel Entscheidungsfreiheit hat die Leserin?</li>
+    <li>Fortlaufender Text ist das lineare Gerüst</li>
+    <li>Marginalien mit Anmerkungen und Zusatzinfos</li>
+    <li>»Pseudo-Interaktivität«, »Slideshow 2.0« (<a href="http://datenjournalist.de/von-der-interaktivitaet-teil-1-snowfall-webdokus/">Lorenz Matzat</a>)</li>
+    <li>Auch exploratives, nichtlineares Lesen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Hypertext</h1>
+  <p>»Jede Leserin hinterläßt bei der Lektüre ihre eigene Spur im Text. Oder besser: jede Leserin schafft den Gegenstand ihrer Lektüre durch aktive Auswahl der vorgegebenen Links. Der individuelle Blickwinkel bestimmt die Abfolge der Inhalte. Lesen ist nicht länger ein passiver Vorgang der Aufnahme, sondern wird zu einer kreativen Wechselwirkung zwischen Leserin, Autorin und Text.«</p>
+  <p><a href="http://www.heise.de/tp/artikel/2/2006/3.html">Mike Sandbothe, 1996</a> (sinngemäß zitiert)</p>
+</section>
+
+<section>
+  <h1>Storytelling – klein anfangen</h1>
+  <ul>
+    <li>Thema und Grundidee</li>
+    <li>Orte, Personen, Ereignisse, Daten…</li>
+    <li>Hauptstrang, Nebenstränge, Ebenen</li>
+    <li>Kapitelstruktur vs. nichtlineare Navigation</li>
+    <li>Erzählperspektive(n)</li>
+    <li>Absicht und Appell?</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Storytelling – klein anfangen</h1>
+  <ul>
+    <li>Sammeln von Texten, Bildern, Videos, Tönen, Gegenständen…</li>
+    <li>Animated GIFs, Vine, Instagram, Google StreetView…</li>
+    <li>Storyboard und Skizzen anfertigen</li>
+    <li>Technische Umsetzung</li>
+    <li>Feinheiten: Stimmung, Spiel, Lebendigkeit</li>
+    <li>LeserInnen einbinden durch Weitererzählen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Technik: HTML</h1>
+  <ul>
+    <li><a href="http://web.archive.org/web/20130504092826/http://rocketscience.brookellingwood.com/2012/12/31/snow-fall-breakdown-how-the-new-york-times-built-a-multimedia-story">Snow Fall Breakdown</a></li>
+    <li><a href="https://source.opennews.org/en-US/articles/how-we-made-snow-fall/">How we made Snow Fall</a></li>
+    <li>HTML5: Textstrukturierung, <code>&lt;video&gt;</code>, <code>&lt;audio&gt;</code></li>
+    <li><a href="http://praegnanz.de/html5video/">HTML5 Video/Audio Player</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Technik: CSS</h1>
+  <ul>
+    <li>CSS: Anpassungsfähiges Layout und Typographie</li>
+    <li><a href="http://css3.bradshawenterprises.com/transitions/">CSS3 Transitions</a> und <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_CSS_animations">Keyframe-Animations</a> für flüssige Übergänge und Bewegung</li>
+    <li><a href="http://html.adobe.com/edge/animate/">Adobe Edge Animator</a>, <a href="http://www.sencha.com/products/animator">Sencha Animator</a></li>
+    <li><code><a href="http://dabblet.com/gist/2494566">background-attachment</a>: scroll | fixed | local</code></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Technik: JavaScript</h1>
+  <ul>
+    <li>JavaScript als Kleber, der alles zusammenfügt</li>
+    <li>Navigation, Animationen anstoßen,<br>
+    Medien laden und steuern</li>
+    <li>Starten mit <a href="http://jquery.com">jQuery</a> und Plugins</li>
+    <li>Storyboard-Struktur in JavaScript umsetzen</li>
+    <li>Events: <code>scroll</code>, <a href="https://github.com/brandonaaron/jquery-mousewheel"><code>mousewheel/DOMMouseScroll</code></a></li>
+    <li>Scrolling-Animationen mit <a href="https://github.com/Prinzhorn/skrollr">skrollr</a></li>
+    <li>Befindet sich ein Element im Viewport? <a href="https://github.com/protonet/jquery.inview">jquery.inview</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Empfehlungen</h1>
+  <ul>
+    <li>Zurückhaltung: Dezent statt aufdringlich</li>
+    <li>Klare Grundstruktur, aber viel zu entdecken</li>
+    <li>Neugier wecken, Entscheidungen ermöglichen</li>
+    <li>Effekte und Bewegung <em>als Erzählmittel</em> einsetzen</li>
+    <li>Der Scrolling-Trend hat sich längst überlebt</li>
+    <li>Im Team arbeiten, MentorInnen suchen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Diskussion</h1>
+  <ul>
+    <li><a href="http://molily.de/interactive-storytelling/">molily.de/interactive-storytelling/</a></li>
+    <li><a href="https://www.diigo.com/user/molily/interactive-storytelling">Bookmarks zu Interactive Storytelling</a></li>
+    <li><a href="http://datenjournalist.de/von-der-interaktivitaet-teil-1-snowfall-webdokus/">Von der Interaktivität – Snowfall &amp; Webdokus</a></li>
+    <li><a href="https://twitter.com/molily">@molily</a> - <a href="mailto:mathias.schaefer@9elements.com">mathias.schaefer@9elements.com</a></li>
+  </ul>
+  <p>Vielen Dank!</p>
+</section>
+
+<!-- ******************************************************************** -->
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  rollingLinks: false,
+  slideNumber: true,
+
+  theme: 'simple-molily',
+  transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+---
+layout: post
+title: "JavaScripte für die Textauswahl: SelectionMenu und CopyLink"
+---
+
+<p>Mit dem Arbeiten mit Textauswahl habe ich mich schon in zwei vorigen Artikeln beschäftigt: <a href="https://wiki.selfhtml.org/wiki/JavaScript/Anwendung_und_Praxis/Text_automatisch_markieren">Text automatisch markieren</a> sowie <a href="https://wiki.selfhtml.org/wiki/JavaScript/Anwendung_und_Praxis/Formulare:_Text_an_Cursorposition_einf%C3%BCgen">Text an Cursorposition einfügen</a>, an dem ich als Herausgeber mitgewirkt habe.</p>
+
+<h2>Textauswahl-APIs</h2>
+
+<p>Mit JavaScript ist es möglich, auf den vom Anwender selektierten Text zuzugreifen. Zudem lässt sich Text programmatisch markieren und die Markierung verändern. Das funktioniert über drei Schnittstellen:</p>
+
+<ul>
+
+<li><code>window.getSelection()</code> ist eine einst von Netscape/Mozilla erfundene Methode. Über das zurückgegebene Objekt können wir auf den ausgewählten Text sowie die dahinterliegenden DOM-Knoten zugreifen. Das Mozilla Developer Center hat zum <a href="https://developer.mozilla.org/en/DOM/selection">Selection-Objekttyp</a> eine gute Referenz. Mittlerweile wird die <a href="https://html.spec.whatwg.org/multipage/interaction.html#editing">Selection-API in HTML5</a> standardisiert. Die Browser-Engines Gecko, Webkit und Presto unterstützen sie bereits.</li>
+
+<li>Die Manipulation der Auswahl erfolgt über den W3C-Standard <a href="http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html">DOM 2 Range</a> aus dem Jahr 2000. Dieser lässt zwar viele Wünsche offen, ist an einigen Stellen umständlich und bedarf einer Überarbeitung, doch er wird ebenfalls von den besagten Browser-Engines unterstützt. Das <a href="https://developer.mozilla.org/en/DOM/range">zentrale Range-Interface</a> ist ebenfalls übersichtlich bei MozDev dokumentiert. Über das besagte Selection-Objekt kommt man an das zugehörige Range-Objekt.</li>
+
+<li>Der Internet Explorer 8 (Trident-Engine) unterstützt weder <code>window.getSelection()</code> noch DOM 2 Range. Er hat jedoch äquivalente Objekte. Das sind <a href="http://msdn.microsoft.com/en-us/library/ms535869(VS.85).aspx">document.selection</a> sowie <a href="http://msdn.microsoft.com/en-us/library/ms535872(VS.85).aspx">TextRange</a>. Diese stellen ähnliche Funktionalität wie die oben genannten APIs zur Verfügung, arbeiten jedoch etwas anders. Manche Aufgaben lassen sich damit einfacher umsetzen als mit DOM 2 Range, manche schwieriger.</li>
+
+</ul>
+
+<p>Um ein browserübergreifendes Script zu schreiben, müssen wir also eine Fähigkeitenabfrage machen, die zwischen <code>window.getSelection</code> und <code>document.selection</code> unterscheidet. Dann wird jeweils noch geprüft, ob die benötigten DOM-Range- bzw. TextRange-Fähigkeiten unterstützt werden. Die Funktionalität muss dann leider für beide Modelle separat implementiert werden.</p>
+
+<p>Ich habe zwei kleine Scripte geschrieben, die das Arbeiten mit der Textauswahl demonstrieren.</p>
+
+<div id="selectionmenu-demo">
+
+<h2 id="h-selectionmenu">SelectionMenu – Kontextmenü zur Markierung einblenden</h2>
+
+<p><a href="http://www.nytimes.com/">newyorktimes.com</a> hat ein praktisches Feature: Wenn man ein Wort markiert, erscheint darüber eine Sprechblase mit einem Fragezeichen. Bei einem Klick darauf öffnet sich ein Fenster und das markierte Wort wird im Wörterbuch nachgeschlagen:</p>
+
+<p><img src="/assets/domranges/nyt.png" alt="" style="border: 1px solid #888; -webkit-box-shadow: 2px 2px 3px #aaa; -moz-box-shadow: 2px 2px 3px #aaa; box-shadow: 2px 2px 3px #aaa;"></p>
+
+<p>Diese Funktion lässt sich recht einfach mit Ranges/TextRanges umsetzen. Man fragt die Range der aktuellen Auswahl ab und erstellt eine zweite, die am Ende der ersten beginnt. In diese leere Range wird nun ein Element eingefügt. Dieses Element beinhaltet das Kontextmenü, welches mit CSS über dem Wort positioniert wird. Bei einem Klick auf einen Menüeintrag wird der ausgewählte Text z.B. in eine Adresse eingefügt, welche aufgerufen wird.</p>
+
+<p>Die <strong>Anwendung</strong> des Scriptes sieht so aus: Der Konstruktor <code>SelectionMenu</code> wird mit <code>new</code> aufgerufen. Der Funktion wird ein Object mit der Konfiguration übergeben. Die Eigenschaften dieses Objects sind:
+
+<table>
+<tr>
+<th><code>container</code> (Elementobjekt)</th>
+<td>Das DOM-Element, bei dessen Inhalt das Menü angezeigt wird</td>
+</tr>
+<tr>
+<th><code>menuHTML</code> (String)</th>
+<td>Der HTML-Inhalt des Menüs</td>
+</tr>
+<tr>
+<th><code>handler</code> (Funktion)</th>
+<td>Handlerfunktion, die beim Klick auf das Menü ausgeführt wird (gleich welcher Eintrag)</td>
+</tr>
+<tr>
+<th><code>minimalSelection</code> (Number, optional)</th>
+<td>Minimalanzahl der ausgewählten Zeichen, damit das Menü angezeigt wird. Der Standardwert ist 5.</td>
+</table>
+
+<p>Das folgende Anwendungsbeispiel erzeugt ein Kontextmenü mit Such-Links zu Google und Bing. Bei einem Klick auf die Menüeinträge wird der markierte Text bei der jeweiligen Suchmaschine gesucht.</p>
+
+<pre>
+new SelectionMenu({
+   // Überwache das Element mit der ID selectionmenu-demo
+   container : document.getElementById('selectionmenu-demo'),
+   // Menü-HTML
+   menuHTML : '<a id="selection-menu-google">Google-Suche</a>' +
+              '<a id="selection-menu-bing">Bing-Suche</a>',
+   // Handler-Funktion
+   handler : function (e) {
+      var target = e.target || e.srcElement,
+         id = target.id,
+         selectedText = this.selectedText,
+         query = encodeURI(selectedText.replace(/\s/g, '+')),
+         searchURI;
+
+      if (id == 'selection-menu-google') {
+         searchURI = 'http://www.google.de/search?ie=utf-8&q=';
+      } else if (id == 'selection-menu-bing') {
+         searchURI = 'http://www.bing.com/search?q=';
+      }
+
+      location.href = searchURI + query;
+   }
+});
+</pre>
+
+<p>In der Handlerfunktion wird auf das angeklickte Element zugegriffen (Event-Target) und dessen ID ausgelesen. Der markierte Text wird aus <code>this.selectedText</code> ausgelesen. <code>this</code> verweist auf die zugehörige <code>SelectionMenu</code>-Instanz.</p>
+
+<p>Über die ID des angeklickten Elements findet die Auswahl zwischen Google und Bing statt. Der markierte Text wird in die Google- bzw. Bing-Adresse eingebunden, welche schließlich über eine Zuweisung an <code>location.href</code> angesprungen wird.</p>
+
+<p>Ich habe die Lösung mit IDs und einer einzigen Handlerfunktion gewählt, da das Event-Handling sonst sehr kompliziert werden würde. Mit TextRanges im Internet Explorer wird mit HTML-Code, nicht auf DOM-Ebene gearbeitet. Das heißt, beim Einfügen des Menüs müssten die immer Event-Handler immer von neuem registriert werden. Daher habe ich mich erst einmal für eine einfache Lösung mit einem Handler entschieden, in welchem dann nach dem angeklickten Link unterschieden wird.</p>
+
+<p>Probieren Sie das Script aus! Markieren Sie Text in diesem Abschnitt, um das Kontextmenü zu öffnen.</p>
+
+<p>Das sieht dann in etwa so aus:</p>
+
+<p><img src="/assets/domranges/selectionmenu.png" alt="" style="border: 1px solid #888; -webkit-box-shadow: 2px 2px 3px #aaa; -moz-box-shadow: 2px 2px 3px #aaa; box-shadow: 2px 2px 3px #aaa;"></p>
+
+<p><a href="/assets/domranges/selectionmenu-1.0.zip" style="padding: 0.2em 1em; border: 1px solid #bbb; display: inline-block; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; 2px 2px 3px #aaa; -webkit-box-shadow:0 1px 2px #ccc; -moz-box-shadow: 0 1px 2px #ccc; box-shadow: 0 1px 2px #ccc; background-color: #f5f5f5; font-weight: bold;">⇩ selectionmenu-1.0.zip herunterladen (6 KB)</a></p>
+
+<p>Das ZIP enthält das kommentierte Script <var>selectionmenu.js</var>, eine komprimierte Version <var>selectionmenu.min.js</var>, zur Formatierung das Stylesheet <var>selectionmenu.css</var> sowie eine Beispielseite.</p>
+
+<p>Das komprimierte Script ist nur <strong>2KB</strong> groß. Es ist eigenständig und benötigt keine Bibliothek und kein Framework.</p>
+
+<p>Getestete Browser: Firefox 3.5.8 und 3.6.3, Internet Explorer 6, 7 und 8, Safari 4.0.5, Chrome 4.1, Opera 10.00 und 10.51</p>
+
+</div><!-- /#selectionmenu-demo -->
+
+<div id="copylink-demo">
+
+<h2 id="h-copylink">CopyLink – Beim Kopieren von Text automatisch Quelladresse einfügen</h2>
+
+<p>Ein weiteres praktisches Feature wird unter anderem von <a href="http://www.tynt.com/">Tynt Insight</a> angeboten: Beim Kopieren von Text auf der Seite wird automatisch die Seitenadresse in den markierten Text eingefügt. – Tynt nutzt dies zur Überwachung jedes Kopiervorgangs und zum Einfügen individueller Adressen für eine komplexe Statistik. Dies Nachzubauen liegt nicht in meiner Absicht. Es ist allerdings mit obigem Grundwissen über Ranges möglich, besagtes Feature in vereinfachter Weise umzusetzen.</p>
+
+<p>Wenn Sie beispielsweise den Text »<samp>Franz jagt im komplett verwahrlosten Taxi quer durch Bayern</samp>« markieren und ihn in die Zwischenablage kopieren, etwa über die Tastenkombination <kbd>Strg + C</kbd>, dann landet folgender Text in der Zwischenablage:</p>
+
+<pre>
+Franz jagt im komplett verwahrlosten Taxi quer durch Bayern
+Quelle: http://molily.de/
+</pre>
+
+<p>Cool, nicht? Wenn Sie jetzt denken, dass an direkt an der Zwischenablage herumgepfuscht wurde, so irren Sie sich. Dies ist nämlich nicht browserübergreifend möglich. Die Funktionsweise gleicht dem SelectionMenu weitesgehend.</p>
+
+<p>Der Clou ist die Nutzung des <code>copy</code>-Events. Bei einem solchen Ereignis wird auf die (Text)Range des markierten Text zugegriffen. Es wird, genauso wie bei SelectionMenu, eine (Text)Range am Ende der ausgewählten eingefügt. Beim SelectionMenu enthält sie das Menü, im Falle des CopyLinks enthält sie den HTML-Code <code>&lt;span id="copylink">&lt;br>Quelle: http://molily.de/&lt;/span></code>. Die Markierung wird auf den eingefügten Text ausgedehnt. Nach Abarbeitung des <code>copy</code>-Event-Handlers kopiert der Browser den markierten Text samt Quellenlink in die Zwischenablage.</p>
+
+<p>Im Gegensatz zum Kontextmenü muss der eingefügte Text nicht sichtbar sein, deshalb verstecken wir ihn mit der Off-Left-Methode. Diese schiebt das <code>span</code>-Element mit absoluter Positionierung aus dem Dokument heraus. Nach dem <code>copy</code>-Event wird das <code>span</code>-Element automatisch aus dem Dokument entfernt und die ursprüngliche Markierung wiederhergestellt. Der Quellenlink wird also nur ganz kurz im Moment des Kopierens in die Markierung eingefügt.</p>
+
+<p>Die <strong>Anwendung</strong> des Scriptes ähnelt dem SelectionMenu, ist aber noch einfacher. Es gibt einen Konstruktor <code>CopyLink</code>, der mit <code>new</code> aufgerufen wird. Er nimmt ein Konfigurations-Object mit folgenden Parametern entgegen:</p>
+
+<table>
+<tr>
+<th><code>container</code> (Elementobjekt)</th>
+<td>Das DOM-Element, bei dessen Inhalt das Menü angezeigt wird</td>
+</tr>
+<tr>
+<th><code>handler</code> (Funktion, optional)</th>
+<td>Handlerfunktion, die beim Kopieren ausgeführt wird. Sie muss einen String zurückgeben, welcher an die Textauswahl angehängt wird. Standard ist eine Funktion, die <code>'<br>Source: ' + location.href</code> zurückgibt.</td>
+</tr>
+<tr>
+<th><code>minimalSelection</code> (Number, optional)</th>
+<td>Minimalanzahl der ausgewählten Zeichen, damit der Quellverweis eingefügt wird. Der Standardwert ist 20.</td>
+</table>
+
+<p>Ein einfaches Code-Beispiel:</p>
+
+<pre>
+new CopyLink({
+	container : document.getElementById('copylink-demo'),
+	handler : function () {
+		return '<br>Quelle: ' + location.href;
+	}
+});
+</pre>
+
+<p>Probieren Sie das Script aus, indem Sie Text in diesem Abschnitt markieren und in die Zwischenablage kopieren!</p>
+
+<p><a href="/assets/domranges/copylink-1.0.zip" style="padding: 0.2em 1em; border: 1px solid #bbb; display: inline-block; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; 2px 2px 3px #aaa; -webkit-box-shadow:0 1px 2px #ccc; -moz-box-shadow: 0 1px 2px #ccc; box-shadow: 0 1px 2px #ccc; background-color: #f5f5f5; font-weight: bold;">⇩ copylink-1.0.zip herunterladen (6 KB)</a></p>
+
+<p>Das ZIP enthält das kommentierte Script <var>copylink.js</var>, eine komprimierte Version <var>copylink.min.js</var> sowie eine Beispielseite.</p>
+
+<p>Das komprimierte Script ist nur <strong>2KB</strong> groß. Es ist eigenständig und benötigt keine Bibliothek und kein Framework.</p>
+
+<p>Getestete Browser: Firefox 3.5.8 und 3.6.3, Internet Explorer 6, 7 und 8, Safari 4.0.5, Chrome 4.1. Das Script läuft nicht in der aktuellen Opera-Version 10.51. Opera unterstützt das <code>copy</code>-Ereignis noch nicht, womit eine Grundvoraussetzung des Scriptes nicht erfüllt ist. Das Script ist insofern mit Opera kompatibel, dass keine Fehlermeldungen erzeugt werden.</p>
+
+</div><!-- /#copylink-demo -->
+
+<h2>Starten der Scripte bei DOM ready</h2>
+
+<p>Beide vorgestellten Scripte erwarten die Übergabe eines DOM-Elements im <code>container</code>-Parameter. Es empfiehlt sich, die Scripte z.B. nur auf die Inhaltsspalte oder den Artikeltext anzuwenden. Der Zugriff auf die zugehörigen Container-Elemente muss beim Aufruf von <code>new SelectionMenu</code> bzw. <code>new CopyLink</code> möglich sein. Daher sollten die Scripte beim <em>DOM ready</em> oder spätestens beim Eintreten des <code>load</code>-Ereignisses ausgeführt werden (siehe <a href="/js/event-handling-onload.html">Onload-Techniken</a>). Ein DOM-ready-Script ist nicht enthalten. Es ist jedoch Bestandteil aller großen Frameworks wie jQuery, Mootools, Prototype, YUI. Beispielsweise unter jQuery können sie schreiben:
+
+<pre>
+jQuery(document).ready(function () {
+	new SelectionMenu({ ... });
+	new CopyLink({ ... });
+});
+</pre>
+
+<p>Alternativ zu den genannten Bibliotheken können Sie eine separate Helferfunktion nutzen, z.B. <a href="http://javascript.nwbox.com/ContentLoaded/contentloaded.js">ContentLoaded von Diego Perini</a>. Das Initialisieren der Scripte beim <em>DOM ready</em> ist empfohlen, damit die Funktionalität schnellstmöglich zur Verfügung steht.</p>
+
+<p>Die Scripte enthalten jeweils eine einfache <code>addEvent</code>-Funktion, mit welcher Sie Handler für das dokumentweite <code>load</code>-Ereignis registrieren können, falls Sie nicht mit <em>DOM ready</em> arbeiten können.</p>
+
+<pre>
+SelectionMenu.addEvent(window, 'load', function () {
+	new SelectionMenu({ ... });
+});
+// bzw.
+CopyLink.addEvent(window, 'load', function () {
+	new CopyLink({ ... });
+});
+</pre>
+
+<h2>Scripte bei Github</h2>
+
+<p>Sie können an der Weiterentwicklung der Scripte über Github teilnehmen: <a href="http://github.com/molily/selectionmenu">github.com/molily/selectionmenu</a></p>
+
+<link rel="stylesheet" href="../assets/domranges/selectionmenu.css">
+<script type="text/javascript" src="/assets/domranges/selectionmenu.js"></script>
+<script type="text/javascript" src="/assets/domranges/copylink.js"></script>
+<script type="text/javascript" src="/assets/domranges/setup-demo.js"></script>

@@ -1,0 +1,180 @@
+---
+layout: post
+title: »Popups« mit JavaScript
+description: Die Anleitung diskutiert verschiedene Lösungsmöglichkeiten für Popup-Fenster mit JavaScript.
+keywords: fenster, javascript, öffnen, popup, popups, pop-ups
+---
+
+<script>
+function oeffnefenster (url) {
+   fenster = window.open(url, "fenster1", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
+   fenster.focus();
+}
+</script>
+
+<ol class="compact-list" id="toc">
+<li><a href="#einleitung">Einleitung ↓</a></li>
+<li><a href="#problemstellung">Problemstellung ↓</a></li>
+<li><a href="#loesung">Lösungsansatz ↓</a></li>
+<li><a href="#nachteile">Nachteile ↓</a></li>
+<li><a href="#alternativen">Alternativen ↓</a></li>
+</ol>
+
+<!-- ###################################################################### -->
+
+<h2 id="einleitung">Einleitung</h2>
+
+<p>Diese Anleitung befasst sich mit der technischen Umsetzung sogenannter Popup-Fenster und erörtert darüber hinaus Alternativen. Es soll gezeigt werden, wie JavaScript-Popups umgesetzt werden, die dem Benutzer die möglichst wenig Probleme bereiten. Dies kann letztlich bedeuten, der Benutzbarkeit halber auf Popups zu verzichten. Zum aktiven Verständnis dieses Artikels wird Grundlagenwissen über HTML und JavaScript empfohlen.</p>
+
+<!-- ###################################################################### -->
+
+<h2 id="problemstellung">Problemstellung</h2>
+
+<p>Man möchte auf einer Website einen Link zu einem Dokument oder einer anderen Quelle setzen. Dieses Dokument soll möglichst in einem neuen Browserfenster geöffnet werden. Dies allein ist mit dem <a href="http://de.selfhtml.org/html/verweise/definieren.htm#zielfenster">Attribut <code>target="_blank"</code></a> möglich:
+
+<pre>&lt;a href="foo.html" target="_blank"&gt;Linktext&lt;/a&gt;</pre>
+
+<p>Eine weitere Anforderung ist, dass man das Aussehen des Fensters verändern möchte. Das heißt, man möchte die Höhe, Breite und die Anzeige der Menü- und Symbolleisten vorgeben beziehungsweise festlegen können. In diesem Fall kommt das Attribut <code>target="_blank"</code> nicht in Frage, da es eine neue Browserinstanz gemäß den Standardeinstellungen öffnet.</p>
+
+<!-- ###################################################################### -->
+
+<h2 id="loesung">Lösungsansatz</h2>
+
+<h3>Helferfunktion <code>oeffnefenster</code></h3>
+
+<p>Zum Öffnen eines neuen Fensters lässt sich die JavaScript-Methode <code>window.open</code> nutzen. Der Methodenaufruf wird in einer Helferfunktion mit dem Namen <code>oeffnefenster</code> untergebracht. Diese Funktion wird in einem <code>script</code>-Element im <code>head</code>-Element (Dokumentkopf) des HTML-Dokuments definiert:</p>
+
+<pre>&lt;script type="text/javascript"&gt;
+function oeffnefenster (url) {
+   fenster = window.open(url, "fenster1", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
+   fenster.focus();
+}
+&lt;/script&gt;</pre>
+
+<h3>Erläuterung</h3>
+
+<p>Die Helferfunktion nimmt einen Parameter namens <code>url</code> entgegen. Dies ist die Adresse (URL) der Webseite, die im Popup geöffnet werden soll. Soll <code>www.example.org</code> geöffnet werden, so würde der Aufruf lauten: <code>oeffnefenster('http://www.example.org/')</code>.</p>
+
+<p><code>window.open</code> selbst nimmt drei Parameter entgegen. Zum ersten die Adresse, die in Form des <code>url</code>-Parameters weitergegeben wird. Zum zweiten ein Fenstername, hier <code>"fenster1"</code>.</p>
+
+<p>Mithilfe des dritten Parameters kann das Aussehen des Fensters beeinflusst werden, beispielsweise die Größe und die Anzeige von Navigations- und Symbolleisten. Die möglichen Fenstereigenschaften finden sich in der <a href="http://de.selfhtml.org/javascript/objekte/window.htm#open">Referenz zur window.open</a>. Die einzelnen Angaben werden durch Kommas getrennt.</p>
+
+<p>Im obigen Beispielaufruf von <code>window.open</code> sind folgende Fenstereigenschaften angegeben: <code>width=600,height=400,status=yes,scrollbars=yes,resizable=yes</code>. Das bedeutet, es soll ein Fenster mit der Größe 600 × 400 Pixel geöffnet werden. Es soll eine Statusleiste, eine Scrollbars (Bildlaufleisten) angezeigt werden. Außerdem ist das Fenster in seiner Größe vom Benutzer veränderbar (resizable).</p>
+
+<p><code>window.open</code> gibt das Fensterobjekt des Popups zurück (<a href="http://de.selfhtml.org/javascript/objekte/window.htm">Objekttyp window</a>). Dieses wird in der globalen Variable <code>fenster</code> gespeichert. Darüber kann man auf Objekte, Funktionen und Variablen des geöffneten Dokuments zugreifen. Die Artikel <a href="http://dcljs.de/faq/fragen.php#FensterKommunikation">Kommunikation zwischen Fenster und <span lang="en">Frames</span></a> und <a href="https://wiki.selfhtml.org/wiki/JavaScript/Anwendung_und_Praxis/Fenster-_und_Frameszugriff">Zugriff auf verschachtelte Fensterobjekte</a> erläutern dies näher.</p>
+
+<p>In der Regel wird ein Popup-Fenster beim ersten Öffnen automatisch in den Vordergrund geholt. Wenn bereits ein Zweitfenster geöffnet ist und der Benutzer im Ursprungsfenster einen weiteren Popup-Link aktiviert, bleibt dieses in manchen Fällen im Hintergrund. Zur Abhilfe wird das Popup-Fenster mithilfe der <a href="http://de.selfhtml.org/javascript/objekte/window.htm#focus">focus-Methode</a> in den Vordergrund geholt.</p>
+
+<h3>Anwendung</h3>
+
+<p>Die so definierte Helferfunktion <code>oeffnefenster</code> wird nun beim Klick auf einen Link ausgeführt, der sich in einem neuen Fenster öffnen soll. Anfangs sieht der Link folgendermaßen aus:</p>
+
+<pre>&lt;a href="foo.html"&gt;Linktext&lt;a&gt;</pre>
+
+<p>Es wird nun der  <a href="http://de.selfhtml.org/javascript/sprache/eventhandler.htm#onclick" lang="en">Event-Handler <code>onclick</code></a> hinzugefügt. In diesem Attribut wird die Funktion <code>oeffnefenster</code> aufgerufen:</p>
+
+<pre>&lt;a href="foo.html" onclick="oeffnefenster(this.href); return false"&gt;Linktext&lt;a&gt;</pre>
+
+<p>Der negative Rückgabewert <code>return false</code> <a href="/js/event-handling-objekt.html#standardaktion">unterdrückt die Standard-Ereignisbehandlung</a> für den Klick auf den Hyperlink. Damit wird verhindert, dass nach dem Öffnen des Popup-Fensters zusätzlich das Linkziel im Ausgangsfenster aufgerufen wird.</p>
+
+<p>Die Funktion <code>oeffnefenster</code> erwartet wie gesagt als Parameter eine Webadresse (URL). Anstatt diese zweimal im Quelltext zu notieren, nämlich im <code>href</code>-Attribut und als Parameter des <code>oeffnefenster</code>-Aufrufs, wird kurzerhand <code>this.href</code> übergeben. <code>this</code> zeigt hier auf das <code>a</code>-Elementobjekt und <code>href</code> liefert den Wert des gleichnamigen Attributs. Somit muss beim späteren Anpassen der Zieladresse lediglich das <code>href</code>-Attribut geändert werden. Dies legt gleichzeitig Seite fest, die im Popup geöffnet wird.</p>
+
+<p>Die hier vorgestellte Lösung funktioniert auch, wenn der Browser JavaScript nicht unterstützt oder JavaScript deaktiviert ist. In diesem Fall wird kein neues Fenster geöffnet, sondern der Link einfach im vorhandenen geöffnet. Die Inhalte bleiben dadurch in jedem Fall zugänglich.</p>
+
+<!-- ********************************************************************** -->
+
+<div class="beispiel">
+
+<h3>Beispiel</h3>
+
+<p><a href="/" onclick="oeffnefenster(this.href); return false">Fenster öffnen.</a> Aktivieren Sie den Link, um das Fenster zu öffnen.</p>
+
+</div>
+
+<!-- ###################################################################### -->
+
+<h2 id="nachteile">Nachteile</h2>
+
+<h3>Popups passen nicht zum Tabbed Browsing</h3>
+
+<p>Popup-Fenster stammen aus den 90er-Jahren und passten zu den damaligen Benutzeroberflächen der Browser. Zudem waren die Möglichkeiten von HTML, CSS und JavaScript sowie serverseitigen Techniken sehr beschränkt, sodass Popup-Fenster eine verbreitete Möglichkeit waren, um Inhalte zu organisieren und zu präsentieren.</p>
+
+<p>Seitdem haben sich die Benutzeroberflächen der Browser grundlegend geändert: Moderne Browser haben nur noch <em>ein</em> Fenster und darin Tabs (<a href="http://de.wikipedia.org/wiki/Registerkarte">Registerkarten</a>) zur Darstellung mehrere Webseiten. Dadurch wird der Bedienkomfort entscheidend verbessert. Der Benutzer gewinnt die Kontrolle über die Fensterverwaltung. Er öffnet Links eigenständig in neuen Tabs, wenn er es möchte. Separate Browserfenster mit fester Größe, die ihrer Bedienelemente beraubt sind, passen nicht in dieses Konzept.</p>
+
+<p>Das Öffnen von mehreren unabhängigen Fenstern bietet dem Benutzer weder Orientierung noch Übersicht, sondern stiftet Verwirrung durch eine unklare Benutzerführung. Der Seitenbesucher wird an einer Navigation gehindert, bei der paralleles Lesen selbstgewählt ist und somit individuell verständlich bleibt.</p>
+
+<h3>Popup-Fenster sind nicht anpassungsfähig</h3>
+
+<p>Die erzeugten Popup-Fenster haben meist eine feste, unveränderbare Größe und können nicht flexibel auf Umgebungsbedingungen und Benutzervorlieben reagieren. Auch ein dynamisches Anpassen der Popup-Größe kann dieses Unvermögen nicht wettmachen &ndash; es würde nur zu weiteren Unstimmigkeiten führen. Somit sind Popups und deren Inhalte zwangsläufig nicht anpassungsfähig. Dies kann die grundlegende Lesbarkeit der Seite gefährden.</p>
+
+<h3>Die Zurück-Navigation wird unmöglich</h3>
+
+<p>Eine gravierender Nachteil ist, dass die Zurück-Navigation des Browsers funktionsunfähig wird. Bei der Bedienung des Webs sind zwei Aktionen grundlegend: Das Aktivieren eines Hyperlinks durch »<span lang="en">Point and Click</span>« und die Zurück-Funktion. Der Umgang mit mehreren eigenständigen Fenstern hingegen durchkreuzt dieses bewährte, leicht zu erlernende Bedienkonzept.</p>
+
+<h3>Beschnittene Browserfunktionen</h3>
+
+<p>Bei Popup-Fenstern werden häufig wesentliche Bedienelemente (Menü-, Symbol-, Adress- und Statusleiste) deaktiviert. Der Benutzer kann dies in der Regel nicht unterbinden. Durch diese Gängelung ist die Bedienung des Browsers derart eingeschränkt, dass es weder möglich ist, die aktuelle Adresse des Dokuments in Erfahrung zu bringen, noch die angezeigte Seite zu den Lesezeichen hinzuzufügen, sie zu drucken oder abzuspeichern. Dies zeigt deutlich, dass Popup-Fenster zur gelungenen Interaktion mit dem Benutzer ungeeignet sind. Sie erschweren den Umgang mit der Seite und das Aufnehmen der Inhalte.</p>
+
+<h3>Keine einheitliche Darstellung und verschenkte Kompatibilität</h3>
+
+<p>Manche glauben, ein in der Breite und Höhe festes Popup-Fenster könne eine einheitliche, pixelgenaue Darstellung bei allen Benutzern erreichen. Dies beruht auf einer einseitigen Sicht auf das Web. Vielmehr zerstört die Fixierung durch ein unflexibles Popup-Fenster die Kompatibilität einer Website. Dadurch leidet der Bedien- und Lesekomfort, Besucher werden gestört und unter Umständen ausgeschlossen. Anpassungsfähigkeit bedeutet jedoch nicht, dass auf eine hochwertige und durchdachte Präsentation verzichtet werden muss.</p>
+
+<h3>Ausschließliche Berücksichtigung von Desktop-Computern</h3>
+
+<p>Websites sollten mit jedem denkbaren Ausgabegerät und jedem Browser so gut aufnehmbar sein, wie es die Inhalte der Seite und die Fähigkeiten der Zugangstechnik erlauben &ndash; sei es ein Desktop-Rechner, ein Laptop oder Netbook, ein Smartphone, ein Sprachbrowser oder eine Braillezeile. Alternative Zugangstechniken, vor allem mobile, finden immer breitere Anwendung. Die Interoperabilität einer Website ist damit verstärkt ein Qualitätsmerkmal.</p>
+
+<h3>Fenstermanipulationen werden zunehmend unterbunden</h3>
+
+<p>Manche Zugangstechniken kennen weder das klassische Konzept mehrerer eigenständiger Fenster, noch können sie JavaScript ausführen. Einige Browser erlauben das generelle Deaktivieren von <code>window.open</code>-Fenstern, sodass die Zieladressen einfach im selben Fenster geöffnet werden. Viele Browser unterbinden Manipulationen der Fenstereigenschaften, sodass z.B. das Deaktivieren der Adressleiste und der Statusleiste ignoriert werden. Aus Benutzerfreundlichkeit ignorieren Firefox und Opera die Angabe <code>resizable=no</code> im dritten <code>window.open</code>-Parameter, wodurch jederzeit eine Größenänderung des Fensters möglich ist.</p>
+
+<p>Zusammenfassend ist festzustellen, dass das Konzept der Popup-Fenster überholt und unter heutigen Bedingungen widersprüchlich ist.</p>
+
+<!-- ###################################################################### -->
+
+<h2 id="alternativen">Alternativen</h2>
+
+<h3>Paralleldarstellung über <code>target="_blank"</code></h3>
+
+<p>Für eine Parallelanzeige existiert das eingangs erwähnte <code>target="_blank"</code>. Dies verzichtet darauf, die Eigenschaften des neuen Fensters festzulegen. Moderne Browser öffnen bei Links mit <code>target="_blank"</code> einen neuen Tab.</p>
+
+<p>Zwar ist es für einige Benutzer möglich, <code>target="_blank"</code> unwirksam zu machen, falls die jeweiligen Links eindeutig gekennzeichnet sind. Nichtsdestoweniger treffen viele der angesprochenen Probleme auch auf <code>target="_blank"</code> zu. Beispielsweise wird der Navigationspfad durchbrochen, die Zurück-Navigation wird unwirksam und man greift in die eigenständige Tab-Verwaltung des Benutzers ein.</p>
+
+<p>Die Web-Zugänglichkeitsrichtlinien <a href="http://www.w3.org/WAI/GL/2010/WD-WCAG20-TECHS-20100708/G200">raten von der Erzeugung neuer Fenster ab</a>, solange der Benutzer keine Möglichkeit hat, dies auf einfache Weise zu unterdrücken beziehungsweise zu steuern. Außerdem sollte der Benutzer bei jedem Link <a href="http://www.w3.org/WAI/GL/2010/WD-WCAG20-TECHS-20100708/H83.html">darauf aufmerksam gemacht werden</a>, dass dieser sich in einem neuen Fenster oder Tab öffnen wird.</p>
+
+<h3>Paralleldarstellung über <span lang="en">Frames</span></h3>
+
+<p>Wenn es darum geht, mehrere Informationen gleichzeitig nebeneinander anzuzeigen und wenn eine Integration in ein Dokument unmöglich scheint, so wäre ein <a href="http://de.selfhtml.org/html/frames/">Framesets</a> eine mögliche Lösung.</p>
+
+<p>Die Verwendung von Frames hat jedoch in der Regel schwerwiegende, nicht kompensierbare Benutzbarkeitsprobleme zur Folge. Daher erweisen sich Frames in den meisten Fällen nicht als akzeptable Lösung. Nicht ohne Grund sind Framesets aus dem Web weitgehend verschwunden.</p>
+
+<h3>Selbstbestimmte statt erzwungene Paralleldarstellung</h3>
+
+<p>Wenn beispielsweise auf Zusatzinformationen wie externe Quellen, Randbemerkungen, Fußnoten verwiesen wird, ist es nicht zwangsläufig vorteilhaft, auf einer parallelen Darstellung zu bestehen und über den Kopf des Benutzers hinweg neue Fenster zu öffnen.</p>
+
+<p>Dem Benutzer sollte die Kompetenz und Freiheit zugestanden werden, selbst zu entscheiden, ob er eine Seite in einem neuen Fenster parallel betrachten möchte. Ihm sollte darin vertraut werden, dass er die wesentlichen Navigationsfunktionen seines Browsers bedienen kann, sodass er zwischen mehreren Tabs eigenständig wechseln kann. Der Autor sollte dem Benutzer daher Vorschläge machen und Hilfestellung geben, anstatt ihn vor vollendete Tatsachen zu stellen.</p>
+
+<h3>Lightboxen &ndash; Dokumentinterne JavaScript-Layer</h3>
+
+<p>Die Verwendung von Popup-Fenstern ist stark zurückgegangen, seit es sogenannte <a href="http://planetozh.com/projects/lightbox-clones/" hreflang="en" lang="en">Lightbox-Scripte</a> gibt. Diese ermöglichen, beliebige Inhalte in einer Ebene (<em lang="en">layer</em>) darzustellen, die über dem normalen Inhalt liegt. Der Rest des Dokuments wird beim Anzeigen des Layers ausgegraut. Der Layer verschwindet wieder, wenn zum Hauptinhalt zurückgekehrt wird. Auf ein neues Browserfenster wird gänzlich verzichtet.</p>
+
+<p>Lightboxen sind sehr leistungsstark und vielseitig. Der Vorteil solcher Scripte ist, dass sie meist »<a href="http://blog.selfhtml.org/2005/12/17/javascript-einsatz/">unobtrusive</a>« umgesetzt sind. Das heißt, es ist keine Vermischung von HTML und JavaScript nötig und bestenfalls bleiben alle Inhalte zugänglich, auch wenn JavaScript nicht unterstützt wird.</p>
+
+<p>Doch die Idee hat einige Schwächen und die Umsetzungen sind teilweise äußerst problematisch. Zum Beispiel ist es nicht immer möglich, den in der Lightbox gezeigten Inhalt mit einer URL zu adressieren und zu verlinken. Zudem wird ein eigenes <span lang="en">Interface</span> eingeführt, das keinen Gebrauch von der herkömmlichen Browser-Navigation macht. Dies ist für Benutzer noch ungewohnter als das Öffnen gewöhnlicher Fenster.</p>
+
+<p>Lightboxen sind oft grafisch opulent, setzen Aufklapp- und Einblend-Effekte ein und reagieren dadurch langsam. Diese Effekte werden schnell als störend empfunden. Die JavaScripte, die für eine Lightbox nötig sind, umfassen gerne 100 Kilobyte. Dies verschlechtert auch die Ladeperformance der Seite. Die Artikel <a href="http://webkrauts.de/artikel/2006/lightboxen-das-neue-popup">Lightboxen – das neue Popup?</a> und <a href="http://www.bitvtest.de/infothek/artikel/lesen/lightbox.html">Barrierefreie Lightboxen?</a> diskutieren diese und weitere Nachteile.</p>
+
+<h3>Webanwendungen, Ajax und Dialogfenster</h3>
+
+<p>Heutzutage erfüllen stark interaktive Webanwendungen die Aufgaben klassischer <span lang="en">Desktop</span>-Anwendungen. Deren mit JavaScript umgesetzte Benutzeroberfläche orientiert sich an gewöhnlichen Anwendungsprogrammen und bewegt sich jenseits der Konventionen herkömmlicher Websites.</p>
+
+<p>Das Konzept mehrerer Fenster nutzen Anwendungsprogramme schon lange äußerst erfolgreich. Zahlreiche Webanwendungen adaptieren dieses Konzept. Diese »Fenster« müssen allerdings nicht mit mehreren Browserfenstern realisiert werden, eine Umsetzung in <em>einem</em> Browserfenster wäre ebenso möglich. Mit Konzepten wie <a href="http://de.wikipedia.org/wiki/XMLHttpRequest">AJAX</a> und dokumentinternen Dialogfenstern lässt sich ein <span lang="en">Interface</span> entwickeln, bei dem das klassische Navigieren wegfällt, ohne dass dessen Vorteile verworfen werden.</p>
+
+<h3>Integrative Lösungen und flexible Benutzeroberflächen</h3>
+
+<p>Die Verwendung von Popups weist oftmals auf eine mangelhafte Informationstrukturierung hin: Wenn der Navigationsfluss unklar ist, scheinen Popup-Fenster die Rettung zu sein. Doch Popups erschweren den Zugang zu den Informationen. Webseiten-Betreiber sollten neben der Qualität der Inhalte auf eine intuitive Organisation und Präsentation Wert legen, die möglichst jedem Interessierten gerecht wird.</p>
+
+<p>Die genannten Alternativen bieten zwar einige Vorzüge gegenüber JavaScript-Popups, jedoch treiben sie mitunter den Teufel mit dem Beelzebub aus. Am wenigsten Probleme bringt ein Projektaufbau und eine Präsentation mit sich, die Aufgaben, die bisher durch Popups gelöst wurden, integrativ lösen. Auf diese Weise lässt sich eine Site-Struktur entwickeln, die den komplexen Informationen gerecht wird, ohne dass das <span lang="en">Interface</span> unintuitiv wird. Somit werden Popup-Fenster, Frames und <code>target="_blank"</code> unnötig, wodurch sich Benutzerfreundlichkeit und Zugänglichkeit verbessern.</p>
+
+<!-- ###################################################################### -->
+
+<p>Letzte Änderung: 13.02.2011 — Version 5</p>

@@ -1,0 +1,40 @@
+---
+layout: post
+title: Markup-Qualitätsstandards forcieren
+---
+
+<p>Zur <a href="/xhtml-ist-out/">XHTML-Diskussion</a> möchte ich eine Präzisierung nachreichen, weil ich ein weiteres grundlegendes Missverständnis gegenüber XHTML wittere.</p>
+
+<h2>Das Validierungsargument</h2>
+
+<p>Als Argument für den XHTML-Einsatz habe ich mehrfach die Möglichkeit genannt, strenge syntaktische Standards mithilfe von XML-Prozessoren und insbesondere <a href="http://schneegans.de/sv/">XHTML-Schema-Validatoren</a> prüfen zu können. Dagegen wird eingewendet, dass man auch HTML 4 sehr streng und quasi-wohlgeformt schreiben kann, auch wenn die HTML-Syntax diese Erfordernisse nicht zwangsläufig mitbringt. Schließlich lässt sich HTML-4-Code mithilfe von HTML-Lints wie <a href="http://tidy.sourceforge.net/">HTMLTidy</a> entsprechend verbessern und vereinheitlichen.</p>
+
+<p>Dass das Validierungsarguments vom Tisch gewischt wird, lässt mich vermuten, dass nicht allen klar ist, worin das Argument besteht: Es geht <em>nicht</em> bloß darum, Qualitätsstandards aufzustellen und anzuwenden. Das kann man tatsächlich auch bei HTML 4. Sondern darum, alle Erfordernisse dieser Qualitätsstandards auch <em>automatisiert und effektiv überprüfen</em> zu können. Wenn das nicht möglich ist, kann man nicht zuverlässig darauf aufbauen und ihr Nutzen ist stark eingeschränkt.</p>
+
+<h2>Qualitätsstandards bei HTML 4 durchsetzen</h2>
+
+<p>Die Überprüfung strenger Standards ist bei HTML 4 meiner Erfahrung nach unverhältnismäßig schwieriger als bei XHTML. Als Frontend-Entwickler, der über die Qualität von Unmengen an HTML-Code wacht, der von mir und anderen geschrieben wird oder automatisiert zusammengesetzt wird, erscheint mir das essentiell.</p>
+
+<p>Um HTML-4-Qualitätsstandards zu überprüfen, habe ich schon große Anstrengungen unternommen. Grundlage waren tausende HTML-4-Dokumente, die von verschiedenen Programmen und Tools ausgewertet werden. Abweichungen, die ein üblicher <a href="http://validator.w3.org/">SGML-DTD-Validator</a> nicht gefunden hat, haben diese Verarbeitung verunmöglicht. Ein erster Schritt war daher, die SGML-Deklaration und die HTML-DTD umzuschreiben, sodass die Syntax fast wie XHTML aussehen musste (vgl. <a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1.dcl">SGML Declaration for XML</a>). Das Ergebnis ist recht brauchbar. Es erfordert jedoch viel Know-How und ist für Normalsterbliche nahezu unmöglich. Aus meiner Sicht viel mehr Aufwand, als einfach einen XHTML-Schema-Validator über die Dokumente laufen zu lassen.</p>
+
+<p style="margin-left: 3em"><em>Nachtrag:</em> Die geänderte SGML-Deklaration, die DTD sowie die OpenSP-Ansteuerung habe ich in einem Folgeartikel dokumentiert: <a href="/html4-validierung/">Strenge HTML-4-Validierung </a></p>
+
+<p>Bei der beschriebenen Überprüfung habe ich den <a href="http://openjade.sourceforge.net/">SGML-Parser OpenSP</a> als Kommandozeilen-Programm eingesetzt. Um dieses Werkzeug in der Praxis breit einzusetzen, müsste ich einen Service wie den Validator drumherum entwickeln, den ich Kollegen und anderen Webautoren zur Verfügung stellen kann. Ich kenne bisher keinen Online-Dienst, der einem solche strikte Tests ermöglicht. Damit fällt die Möglichkeit für die meisten Webautoren flach. Der Ansatz bleibt, so sehr es mir in bestimmten Fällen genützt hat, unkomfortables Gebastel.</p>
+
+<h2>Fehlende oder unzureichende Tools und Services für HTML-4-Überprüfung</h2>
+
+<p>Ich weiß nicht, wie man Werkzeuge wie HTMLTidy konfigurieren muss, um ungefähr das herauszubekommen, was XML-Parsing und im Speziellen XHTML-Schema-Validierung von Haus aus bietet. Wenn das möglich ist, so würde ich mich freuen, wenn entsprechende automatisierbare Tools und Web-Services entstehen und bekannt werden – ich suche seit Jahren danach.</p>
+
+<p>An HTMLTidy stört mich, dass das Programm anders als ein Validator arbeitet, dem ich per URI, Upload oder Textfeld Code übergebe und er ihn nur prüft. Es gibt zwar einige Online-Dienste, die HTMLTidy verwenden, aber diese sind nicht vielfältig konfigurierbar. Ich muss auch Webanwendungen validieren und kann nicht HTMLTidy darüber laufen lassen, weil ich mit der korrigierten Ausgabe nichts anfangen kann - das Dokument wird eben dynamisch zusammengebaut.</p>
+
+<p>Der Maßstab sollte die Vereinfachung dessen sein, was Webautoren und Webentwickler tagtäglich tun. Die strenge Überprüfung von HTML 4 gestaltet meiner Erfahrung nach sich sehr schwierig und ist für viele ein Buch mit sieben Siegeln. Dies steht in keinem Vergleich zur Benutzung eines normalen XHTML-DTD-Validators oder eines XHTML-Schema-Validators.</p>
+
+<h2>Ausblick: Qualitätsstandards bei HTML 5 – Strict versus Transitional</h2>
+
+<p>Viel grundlegender als die Unterscheidung zwischen HTML 4 und XHTML 1 ist die Wahl zwischen den Varianten Strict und Transitional, die sowohl bei HTML 4 als auch XHTML 1 getroffen werden muss. In beiden Fällen sollte die Wahl auf ohne Wenn und Aber auf Strict fallen. Selbst wenn einzelne Seiten aus Gründen der Browserkompatibilität veraltete Elemente oder Attribute aus Transitional verwenden, sollte das Grundgerüst und die meisten Inhalte gegen Strict validieren. Die Erfordernisse von Strict stellen die Grundlage für gut strukturiertes, semantisches und zugängliches Markup dar.</p>
+
+<p>HTML 5 kennt keine Unterscheidung zwischen Strict und Transitional mehr. HTML 5 hat viele in HTML 4 als »deprecated« markierte Elemente und Attribute herausgeworfen, vor allem die zur Beeinflussung der Präsentation (z.B. font-Element, align-Attribut). Andererseits wurde manches Transitional-Markup wiederbelebt, etwa das menu- und das iframe-Element sowie das target-Attribut. Frameset, die dritte Variante von HTML 4,  lässt HTML 5 bewusst außen vor, auch wenn es den Umgang mit Framesets spezifiziert.</p>
+
+<p>Diese Entscheidungen sind im Großen und Ganzen zu begrüßen und sorgen nicht dafür, dass nun schlechteres Markup erlaubt ist. Vielmehr sind weit verbreitete und ständig eingesetzte Techniken wie iframe in ein recht striktes Standard-HTML geflossen. Es besteht keine Notwendigkeit mehr, für diese harmlosen Techniken invalides Strict-Markup zu schreiben bzw. eine lasche Transitional-Variante zu verwenden, die viele andere Hässlichkeiten erlaubt.</p>
+
+<p>Wie bereits angesprochen setzen die entstehenden HTML-5-Validatoren die Erfordernisse der Spezifikation detailgetreu um. Die Kluft zwischen maschinell überprüfbarer Validität und tatsächlicher Standardkonformität wird zunehmend schmaler. Hinsichtlich der Durchsetzung von HTML-Qualitätsstandards ist das, kombiniert mit dem neuen Satz an Elementen und Attributen, ein nennenswerter Gewinn für Webentwickler.</p>

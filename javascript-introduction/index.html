@@ -1,0 +1,2899 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <title>Einführung in JavaScript</title>
+    <meta name="description" content="Einführung in JavaScript">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ?
+      'css/print/pdf.css' :
+      'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <base target="_blank">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<section>
+
+<svg width="150" height="150" viewBox="0 0 630 630">
+<rect x="0" y="0" width="100%" height="100%" fill="#f7df1e" />
+<path d="m 165.65,526.47375 48.2125,-29.1775 C 223.16375,513.7875 231.625,527.74 251.92,527.74 c 19.45375,0 31.71875,-7.60975 31.71875,-37.21 l 0,-201.3 59.20375,0 0,202.1375 c 0,61.32 -35.94375,89.23125 -88.385,89.23125 -47.36125,0 -74.8525,-24.52875 -88.8075,-54.13" />
+<path d="m 375,520.13 48.20625,-27.91125 c 12.69,20.72375 29.1825,35.9475 58.36125,35.9475 24.53125,0 40.17375,-12.26475 40.17375,-29.18125 0,-20.29875 -16.06875,-27.48875 -43.135,-39.32625 l -14.7975,-6.3475 c -42.715,-18.18125 -71.05,-41.0175 -71.05,-89.2275 0,-44.40375 33.83125,-78.2375 86.695,-78.2375 37.6375,0 64.7025,13.11125 84.15375,47.36625 l -46.09625,29.60125 c -10.15,-18.1825 -21.1425,-25.37125 -38.0575,-25.37125 -17.33875,0 -28.335,10.995 -28.335,25.37125 0,17.7625 10.99625,24.9525 36.3675,35.94875 l 14.8,6.3425 c 50.325,21.56875 78.66,43.5575 78.66,93.03375 0,53.2875 -41.86625,82.465 -98.11,82.465 -54.97625,0 -90.5,-26.2175 -107.83625,-60.47375" />
+</svg>
+
+<h1>Einführung in JavaScript (ECMAScript 6)</h1>
+
+<p>
+Mathias Schäfer, 9elements<br>
+2016-11-11
+</p>
+
+</section>
+
+<!-- ******************************************************************** -->
+
+<section>
+<h2>Was ist JavaScript?</h2>
+<ul>
+<li>Eine interpretierte, dynamische, universell einsetzbare Programmiersprache</li>
+<li>Multiparadigmatisch: Imperativ, objektbasiert, funktional…</li>
+<li>Dynamisch und schwach typisiert</li>
+<li>Durch C, Java, Scheme und Lisp beeinflusst</li>
+</ul>
+</section>
+
+<section>
+<h2>Vergleich mit Ruby</h2>
+<ul>
+<li>Eine interpretierte, dynamische, universell einsetzbare Programmiersprache</li>
+<li>Multiparadigmatisch: Imperativ, objektbasiert</li>
+<li>Weniger funktional, konsequenter objektorientiert</li>
+<li>Dynamisch und <em>stark</em> typisiert</li>
+<li>Durch Perl, Python und Smalltalk beeinflusst</li>
+</ul>
+</section>
+
+<section>
+<a href="https://twitter.com/brianloveswords/status/594111232132677632">
+  <img src="images/js-history.jpg" alt="Tweet by @brianloveswords: “20 years ago today a programmer working for AOL named Bramdan Ich created the language Java in just 12 hours.”" style="width: 50%">
+</a>
+</section>
+
+<section>
+<h2>20 Jahre JavaScript-Geschichte</h2>
+<ul>
+<li>Netscape Navigator 2.0, 1995</li>
+<li>Scripting von HTML und Java-Applets</li>
+<li>Anfang des kommerziellen, allgemein zugänglichen Webs</li>
+</ul>
+</section>
+
+<section>
+<img src="images/netscape.gif" alt="Netscape-Logo">
+</section>
+
+<section>
+<h2>Standardisierung</h2>
+<ul>
+<li>Browserkrieg</li>
+<li>Netscape JavaScript vs. Microsoft JScript</li>
+<li>Standardisierung des Sprachkerns</li>
+<li><a href="http://www.ecma-international.org/">Ecma International</a></li>
+<li><a href="http://www.ecma-international.org/memento/TC39.htm">Technical Committee 39 (TC39)</a></li>
+<li><a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm">ECMAScript (ECMA-262)</a></li>
+<li>Standardisierung der Browser-APIs</li>
+</ul>
+</section>
+
+<section>
+<a href="http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%201st%20edition,%20June%201997.pdf">
+<img src="images/es1.jpg" alt="ECMAScript Edition 1 Cover" style="width: 45%">
+</a>
+</section>
+
+<section>
+<h2>ECMAScript-Versionen</h2>
+<ul>
+<li><a href="http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm">Edition 1: 1997</a></li>
+<li><a href="http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm">Edition 2: 1998</a></li>
+<li><a href="http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm">Edition 3: 1999</a></li>
+<li>Edition 4: verworfen</li>
+<li><a href="http://www.ecma-international.org/ecma-262/5.1/">Edition 5.1: 2011</a></li>
+<li><a href="http://www.ecma-international.org/ecma-262/6.0/">Edition 6: 2015</a></li>
+<li><a href="http://www.ecma-international.org/ecma-262/7.0/">Edition 7: 2016</a></li>
+<li><a href="https://github.com/tc39/ecma262">Jährliche Releases</a></li>
+</ul>
+</section>
+
+<section>
+<h2>Heutiger Stand</h2>
+<ul>
+<li>JavaScript ist überall und gewinnt an Einfluss</li>
+<li>Browser, Node.js, Embedded-Geräte</li>
+<li>Ausgereifte Interpreter von Apple, Microsoft, Google, Mozilla</li>
+<li>Davon mehrere Open Source (V8, SpiderMonkey, JavaScriptCore)</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>JavaScript-Grundlagen</h2>
+
+<pre><code class="javascript" data-trim>
+console.log('Hello World!');
+</code></pre>
+
+<ul>
+<li>Vordefiniertes Objekt <code>console</code></li>
+<li>Eigenschaft <code>log</code></li>
+<li>Eigenschaftswert: Funktion</li>
+<li>Funktionsaufruf <code>()</code></li>
+<li>String-Literal <code>'Hello World!'</code> als Funktionsparameter</li>
+<li>Semikolon am Zeilenende</li>
+</ul>
+</section>
+
+<section>
+<h2>Syntax</h2>
+
+<p>Programmcode besteht aus…</p>
+
+<ul>
+<li>Statements (u.a. Kontrollstrukturen)</li>
+<li>Expressions (Ausdrücke)</li>
+<li>Bezeichner, Literale und Operatoren</li>
+</ul>
+
+<p>vgl. Text – Abschnitt – Satz – Satzglied – Wort</p>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Ausdrücke</h2>
+
+<ul>
+<li>Ein Ausdruck ist vergleichbar mit einem mathematischen Term</li>
+<li>Wird nach gewissen Regeln zu einem Wert aufgelöst</li>
+<li>Besteht aus Operatoren und Operanden</li>
+<li><code>2 + 5 * 3</code></li>
+<li><code>(2 + 5) * 3</code></li>
+<li><code>a > 2</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Bezeichner (Identifier)</h2>
+
+<ul>
+<li>Namen von vordefinierten Objekten (z.B. <code>window</code>)</li>
+<li>Namen von eigenen Variablen (dazu später mehr)</li>
+<li><a href="http://www.unicode.org/reports/tr31/">Unicode-Identifier</a> sind erlaubt</li>
+<li><code>a > 2</code></li>
+<li><code>ä > 2</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Literale</h2>
+
+<ul>
+<li>Direktes und einfaches Erzeugen von Werten</li>
+<li>Number: <code>2</code> – String: <code>"Hello World!"</code> – Boolean: <code>true</code></li>
+<li>Objekt: <code>{ … }</code> – Array: <code>[ … ]</code> – RegExp: <code>/…/</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Datentypen</h2>
+
+<ul>
+<li>Grundtypen: <code>Boolean&#x2000;String&#x2000;Number&#x2000;Object&#x2000;undefined&#x2000;null</code></li>
+<li>Objekttypen: <code>Object&#x2000;Array&#x2000;Function&#x2000;RegExp&#x2000;Date&#x2000;Map&#x2000;Set&#x2000;Symbol</code> usw.</li>
+</ul>
+</section>
+
+<section>
+<h2>Einfache Werte</h2>
+
+<ul>
+<li>Boolean: <code>true&#x2000;false</code></li>
+<li>Number: <code>0&#x2000;1&#x2000;2&#x2000;3.75&#x2000;-56.1&#x2000;1e6&#x2000;0x10&#x2000;0b1100101&#x2000;0o10</code></li>
+ <li>String: <code>"Hühnerstall"&#x2000;'Motorrad'&#x2000;`Name: ${name}`</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Operatoren (Auswahl)</h2>
+
+<ul>
+<li>Vergleich: <code>==&#x2000;===&#x2000;!=&#x2000;!==&#x2000;&lt;&#x2000;&gt;</code></li>
+<li>Logik: <code>&amp;&amp;&#x2000;||&#x2000;!</code></li>
+<li>Arithmetik: <code>+&#x2000;-&#x2000;/&#x2000;*</code></li>
+<li>String-Verkettung: <code>+</code></li>
+<li>Zuweisung: <code>=</code></li>
+<li>Zugriff auf Objekteigenschaften: <code>.&#x2000;[…]</code></li>
+<li>Funktionsaufruf: <code>(…)</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Operatoren</h2>
+
+<ul>
+<li>Operatoren sind fest in ECMAScript definiert</li>
+<li>Können nicht überladen werden</li>
+<li>Operanden sollten gewisse Typen haben</li>
+<li>Gefährliche automatische Typumwandlung</li>
+<li>Vgl. Ruby: Operatoren als Methoden</li>
+</ul>
+</section>
+
+<section>
+<h2>Operatoren</h2>
+
+<ul>
+<li>Unär – ein Operand, z.B. <code>!&#x2000;typeof&#x2000;delete</code></li>
+<li>Binär – zwei Operanden, z.B. <code>a + b</code>, <code>a === b</code></li>
+<li>Trinär – drei Operanden,<br>z.B. <code>a ? b : c</code> (Konditionaloperator)</li>
+</ul>
+</section>
+
+<section>
+<h2>Vergleichsoperator</h2>
+
+<ul>
+<li><code>==</code> vergleicht Werte, implizite Typumwandlung</li>
+<li><code>===</code> vergleicht Werte und Typen</li>
+<li>Implizite Typumwandlung ist eine Fehlerquelle</li>
+<li><code>1 == '1'</code> ergibt <code>true</code>, <code>1 === '1'</code> ergibt <code>false</code></li>
+<li>Empfehlung: Immer <code>===</code> nutzen</li>
+<li>Vgl. Ruby: == ist eine Methode</li>
+</ul>
+</section>
+
+<section>
+<h2>Operatoren + Operanden</h2>
+
+<pre><code class="javascript" data-trim>
+2 + 5 * 3
+(2 + 5) * 3
+a > 2
+objekt.eigenschaft + '!'
+quadratVon6 = quadrat(6)
+console.log('Hello World!')
+</code></pre>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Statements</h2>
+
+<ul>
+<li>Expression Statements (Ausdrücke):<br>
+<code>console.log('Hello World!');</code></li>
+<li>Funktionsdeklaration: <code>function bla() {}</code></li>
+<li>Variablendeklarationen: <code>var</code>, <code>let</code>, <code>const</code></li>
+<li>Bedingte Anweisungen: <code>if…else</code>, <code>switch</code></li>
+<li>Schleifen: <code>while</code>, <code>do…while</code>, <code>for</code>, <code>for…in</code>, <code>for…of</code>; <code>continue</code>, <code>break</code></li>
+<li>Ausnahmebehandlung: <code>try…catch…finally</code>, <code>throw</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Bedingte Anweisung</h2>
+
+<pre><code class="javascript" data-trim>
+if (a > 2) {
+  console.log('a is larger than 2');
+} else {
+  console.log('a is not larger than 2');
+}
+if (a > 2)
+  console.log('a is larger than 2');
+</code></pre>
+</section>
+
+<section>
+<h2>Schleife und Bedingungen</h2>
+
+<pre><code class="javascript" data-trim>
+let ausgabe;
+for (let i = 1; i &lt;= 10; i++) {
+  if (i % 2 === 0) {
+    ausgabe = "gerade";
+  } else {
+    ausgabe = "ungerade";
+  }
+  console.log(i + " ist " + ausgabe);
+}
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+let name = "";
+while (name === "") {
+  name = window.prompt("Wie ist ihr Name?");
+}
+</code></pre>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Variablen</h2>
+
+<ul>
+<li><code>var</code> erzeugt eine Variable im Gültigkeitsbereich der aktuellen Funktion (Function&nbsp;Scope)</li>
+<li><code>let</code> erzeugt eine Variable im aktuellen <code>{…}</code>-Block (Block&nbsp;Scope)</li>
+<li><code>const</code> erzeugt eine Konstante im aktuellen <code>{…}</code>-Block (Block&nbsp;Scope)</li>
+</ul>
+</section>
+
+<section>
+<h2><code>var</code></h2>
+
+<pre><code class="javascript" data-trim>
+var kleinerGauß = (n) => {
+  var ergebnis = 0;
+  for (var i = 1; i &lt;= n; i++) {
+    // Hier sind ergebnis und i verfügbar
+    ergebnis += i;
+  }
+  console.log(typeof i); // number
+  return ergebnis;
+};
+console.log(kleinerGauß(5)); // 15
+// undefined, undefined
+console.log(typeof ergebnis, typeof i);
+</code></pre>
+</section>
+
+<section>
+<h2><code>let</code></h2>
+
+<pre><code class="javascript" data-trim>
+let kleinerGauß = (n) => {
+  let ergebnis = 0;
+  for (let i = 1; i &lt;= n; i++) { // Block
+    // Hier sind ergebnis und i verfügbar
+    ergebnis += i;
+  }
+  console.log(typeof i); // undefined
+  return ergebnis;
+};
+console.log(kleinerGauß(5)); // 15
+// undefined, undefined
+console.log(typeof ergebnis, typeof i);
+</code></pre>
+</section>
+
+<section>
+<h2><code>const</code></h2>
+
+<pre><code class="javascript" data-trim>
+const age = 5;
+// 💥 TypeError: Assignment to constant variable.
+age = 10;
+</code></pre>
+</section>
+
+<section>
+<h2>Konstante Namen vs. konstante Werte</h2>
+
+<ul>
+<li>Bei <code>const</code> ist nur die Verbindung zwischen Name und Wert konstant</li>
+<li>Objekte sind i.d.R. veränderbar (mutable)</li>
+<li>Dazu später mehr</li>
+</ul>
+
+<pre><code class="javascript" data-trim>
+const user = { name: 'Miffy' };
+// Funktioniert
+user.name = 'Nijntje';
+// 💥 TypeError: Assignment to constant variable.
+user = { name: 'Snuffy' };
+</code></pre>
+</section>
+
+<section>
+<h2>Variablen: Best Practices</h2>
+
+<ul>
+<li>Kleinstmöglicher Gültigkeitsbereich</li>
+<li>Block-Scope > Function-Scope > globaler Scope</li>
+<li>Wenn möglich <code>const</code> verwenden</li>
+<li>Andernfalls <code>let</code></li>
+<li>Niemals <code>var</code></li>
+<li>Besser eine weitere Konstante erzeugen,<br>als eine Variable zu ändern</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Objekte</h2>
+
+<ul>
+<li>Eine Sammlung von Eigenschaften (Properties)</li>
+<li>Zuordnung Name &rarr; Wert</li>
+<li>Eigenschaftsname: String oder Symbol</li>
+<li>Eigenschaftswert: beliebig</li>
+</ul>
+</section>
+
+<section>
+<h2>Objekt-Literale</h2>
+
+<pre><code class="javascript" data-trim>
+const person = {
+  name: 'Marianne',
+  age: 42
+};
+</code></pre>
+
+<p>Objekt vom generischen Typ <code>Object</code></p>
+</section>
+
+<section>
+<h2>Umgang mit Objekten</h2>
+
+<pre><code class="javascript" data-trim>
+const person = {
+  name: 'Marianne',
+  age: 42
+};
+
+console.log(person.name); // Marianne
+console.log(person['name']); // Marianne
+
+person.name = 'Anne';
+person.profession = 'Engineer';
+
+delete person.profession;
+console.log(person.profession); // undefined
+</code></pre>
+</section>
+
+<section>
+<h2>Objekte sind überall</h2>
+
+<ul>
+<li>Die meisten Objekte verhalten sich gleich</li>
+<li>Die meisten Objekte sind veränderbar</li>
+<li>Neue Eigenschaften anlegen, überschreiben oder löschen</li>
+<li>Einschränkungen möglich (dazu später mehr)</li>
+</ul>
+</section>
+
+<section>
+<h2>Komplexe Objekte</h2>
+
+<pre><code class="javascript" data-trim>
+const person = {
+  name: 'Mathias',
+  employer: '9elements',
+  languages: [ 'JavaScript', 'Ruby' ],
+  greet() {
+    console.log(`Hello says ${this.name}`);
+  }
+};
+person.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Komplexe Objekte</h2>
+
+<ul>
+<li>Objekte können unendlich verschachtelt werden</li>
+<li>Wenn ein Objekt eine Funktion als Eigenschaft hat, wird sie <em>Methode</em> genannt</li>
+<li>Methoden sind also Eigenschaften vom Typ <code>Function</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Anwendungsbereich von <code>Object</code>-Objekten</h2>
+
+<ul>
+<li>Objektorientierte Programmierung</li>
+<li>Strukturierung des Programmes (vgl. Module in Ruby)</li>
+<li>Häufig als Hash, manchmal als Set benutzt</li>
+<li>Mittlerweile existieren eigene <code>Map</code>- und <code>Set</code>-Typen<br>(vgl. Ruby)</li>
+</ul>
+</section>
+
+<section>
+<h2>Primitives vs. Objects</h2>
+
+<ul>
+<li>JavaScript unterscheidet zwischen einfachen Werten (Primitives) und Objekten (Objects)</li>
+<li>Primitives: <code>Boolean&#x2000;String&#x2000;Number&#x2000;undefined&#x2000;null</code></li>
+<li>Alle Werte verhalten sich wie Objekte hinsichtlich Eigenschaften und Methoden</li>
+</ul>
+</section>
+
+<section>
+<h2>Primitives vs. Objects</h2>
+
+<pre><code class="javascript" data-trim>
+console.log((2.5172).toFixed(2)); // 2.52
+console.log("Hello World".length)); // 11
+// "World"
+console.log("Hello World".substring(6, 11));
+// "Hello there"
+console.log("Hello World".replace("World", "there"));
+</code></pre>
+</section>
+
+<section>
+<h2>Primitives vs. Objects</h2>
+
+<ul>
+<li>Einfache Werte können nicht geändert werden, Objekte schon</li>
+<li>Einfache Werte können keine neuen Eigenschaften bekommen, Objekte schon</li>
+<li>Einfache Werte werden als Kopie übergeben,<br>Objekte als Referenzen</li>
+</ul>
+</section>
+
+<section>
+<h2>Primitives vs. Objects</h2>
+
+<ul>
+<li>Einfache Werte können identisch mit anderen sein<br>
+<code>1 === 1</code></li>
+<li>Objekte sind nur mit sich selbst identisch</li>
+<li><code>==</code> und <code>===</code> bei Objekten prüfen deren Identität</li>
+<li><code>object1 == object2</code> und <code>object1 === object2</code> ergeben immer <code>false</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Arrays</h2>
+
+<p>Listen von Werten beliebigen Typs</p>
+
+<pre><code class="javascript" data-trim>
+const array = [ 1, 2, 3 ];
+console.log(array.length); // 3
+console.log(array.join(',')); // 1,2,3
+console.log(array[0]); // 1
+console.log(array.indexOf(3)); // 2
+</code></pre>
+</section>
+
+<section>
+<h2>Arrays verarbeiten</h2>
+
+<pre><code class="javascript" data-trim>
+const array = [ 1, 2, 3 ];
+
+// Iteration mit for-Schleife
+for (let i = 0, l = array.length; i &lt; l; i++) {
+  console.log(i + ": " + array[i]);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Arrays verarbeiten</h2>
+
+<pre><code class="javascript" data-trim>
+const array = [ 1, 2, 3 ];
+
+// Iteration mit Funktion
+array.forEach((el, i, array) => {
+  console.log(i + ": " + el);
+});
+
+// Listenoperationen (map, filter, reduce…)
+const newArray = array.filter((el) => el > 1);
+console.log(newArray); // 2,3
+</code></pre>
+</section>
+
+<section>
+<p><code>undefined</code>: Kein Wert gesetzt, nicht vorhanden</p>
+
+<pre><code class="javascript" data-trim>
+let foo;
+console.log(foo); // undefined
+console.log(window.LOL); // undefined
+</code></pre>
+
+<p><code>null</code>: Wert gesetzt, aber absichtlich leer</p>
+
+<pre><code class="javascript" data-trim>
+let foo = null;
+console.log(foo); // null
+</code></pre>
+
+<p>Vgl. Ruby <code>nil</code></p>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Funktionen in JavaScript</h2>
+
+<ul>
+<li>Größte Stärke von JavaScript</li>
+<li>Kleinste wiederverwendbare Einheit von Code</li>
+<li>Empfehlung: Viele kleine Funktionen</li>
+<li>Do one thing and do it right</li>
+</ul>
+</section>
+
+<section>
+<h2>Funktionale Programmierung</h2>
+
+<ul>
+<li>Werte stehen im Mittelpunkt</li>
+<li>Pure functions, no side-effects</li>
+<li>Funktionen sind vollwertige Objekte</li>
+<li>Higher-order functions</li>
+<li>Composition, Partial Application, Currying</li>
+<li>Vgl. Ruby</li>
+</ul>
+</section>
+
+<section>
+<h2>Funktionen erzeugen</h2>
+
+<ul>
+<li>6 Arten, Funktionen zu erzeugen</li>
+<li>Function Declaration</li>
+<li>Function Expression</li>
+<li>Named Function Expression</li>
+<li>Methoden in Objektliteralen und Klassen</li>
+<li>Arrow Functions</li>
+</ul>
+</section>
+
+<section>
+<h2>Function Declaration</h2>
+
+<pre><code class="javascript" data-trim>
+function calculateHypotenuse (a, b) {
+  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+}
+const c = calculateHypotenuse(1, 2);
+</code></pre>
+</section>
+
+<section>
+<h2>Function Expression</h2>
+
+<pre><code class="javascript" data-trim>
+const calculateHypotenuse = function (a, b) {
+  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+};
+const c = calculateHypotenuse(1, 2);
+</code></pre>
+</section>
+
+<section>
+<h2>Arrow Functions</h2>
+
+<pre><code class="javascript" data-trim>
+const calculateHypotenuse = (a, b) => {
+  return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+};
+const c = calculateHypotenuse(1, 2);
+</code></pre>
+</section>
+
+<section>
+<h2>Arrow Functions</h2>
+
+<pre><code class="javascript" data-trim>
+const calculateHypotenuse = (a, b) =>
+  Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+
+const c = calculateHypotenuse(1, 2);
+</code></pre>
+</section>
+
+<section>
+<h2>Funktionen: Hoisting</h2>
+
+<ul>
+<li>Function Declarations können im gleichen Function-Scope verwendet werden, bevor sie definiert wurden.</li>
+<li>Function Expressions und Arrow Functions können benutzt werden, nachdem sie definiert wurden. Üblicherweise werden sie einer Variable zugewiesenn.</li>
+</ul>
+</section>
+
+<section>
+<h2>Funktionen: Benennung</h2>
+
+<ul>
+<li>Function Declarations haben einen Namen, über den sich die Funktion selbst aufrufen kann.</li>
+<li>Function Expressions <em>können</em> einen Namen haben.</li>
+<li>Arrow Functions sind namenlos. Sie müssen in Variablen gespeichert werden, um sie aufzurufen.</li>
+</ul>
+</section>
+
+<section>
+<h2>Funktionen: <code>this</code></h2>
+
+<ul>
+<li>Function Declarations und Expressions haben ein eigenes <code>this</code>-Binding.</li>
+<li>Innerhalb einer Arrow Function bedeutet <code>this</code> dasselbe wie außerhalb (lexikalisches <code>this</code>).</li>
+<li>Dazu gleich mehr</li>
+</ul>
+</section>
+
+<section data-background="images/w00t.jpg">
+</section>
+
+<section>
+<h2>Empfehlung: Arrow Functions verwenden</h2>
+
+<ul>
+<li>Funktionen wie alle anderen Werte behandeln</li>
+<li>Unlogische Sonderbehandlung und Ausnahmen vermeiden</li>
+<li>Wenn möglich <code>const</code> + Arrow Functions verwenden</li>
+<li>In Objekten und Klassen die Methodenschreibweise</li>
+<li>Ansonsten Function Expressions</li>
+</ul>
+</section>
+
+<section>
+<h2>Schlüsselwort <code>this</code></h2>
+
+<ul>
+<li>Gibt verschiedene Werte zurück</li>
+<li>Gewünscht: Das Objekt, an dem die Funktion als Methode hängt</li>
+<li>Außerhalb von Funktionen im globalen Scope: <code>window</code></li>
+<li>Innerhalb von Funktionen: Hängt vom Funktionstyp und der Aufrufweise der Funktion ab</li>
+</ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+'use strict';
+
+const arrowFunction = () => {
+  console.log(this);
+};
+const functionExpression = function() {
+  console.log(this);
+};
+
+console.log(this);    // window
+arrowFunction();      // window
+functionExpression(); // undefined
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+'use strict';
+
+const object = {
+  arrowFunction,
+  functionExpression
+};
+
+object.arrowFunction();      // window
+object.functionExpression(); // object
+</code></pre>
+</section>
+
+<section>
+<h2>Schlüsselwort <code>this</code></h2>
+
+<pre><code class="javascript" data-trim>
+console.log(this); // Gewisser Wert
+
+const arrowFunction = () => {
+  console.log(this); // gleicher Wert
+};
+
+const functionExpression = function() {
+  console.log(this); // ggf. anderer Wert
+};
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const verzögerteAusgabe = {
+  start() {
+    console.log('start', this); // verzögerteAusgabe
+    setTimeout(this.ende, 500);
+  },
+  ende() {
+    console.log('ende', this); // window :(
+  }
+};
+verzögerteAusgabe.start();
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const verzögerteAusgabe = {
+  start() {
+    console.log('1', this); // verzögerteAusgabe
+    setTimeout(() => {
+      // Arrow function: 'this' ist dasselbe
+      // wie in der äußeren Funktion (start)
+      this.ende();
+    }, 500);
+  },
+  ende() {
+    console.log('2', this); // verzögerteAusgabe
+  }
+};
+verzögerteAusgabe.start();
+</code></pre>
+</section>
+
+<section>
+<h2>Function Binding</h2>
+
+<pre><code class="javascript" data-trim>
+const verzögerteAusgabe = {
+  start() {
+    console.log('1', this); // verzögerteAusgabe
+    setTimeout(this.ende.bind(this), 500);
+  },
+  ende() {
+    console.log('2', this); // verzögerteAusgabe
+  }
+};
+verzögerteAusgabe.start();
+</code></pre>
+</section>
+
+<section>
+<h2><code>this</code> selbst bestimmen</h2>
+
+<pre><code class="javascript" data-trim>
+const showFirstName = function(label) {
+  console.log(label, this.firstName);
+};
+
+const objekt = { firstName: 'Mathias' };
+
+// Vorname: Mathias
+showFirstName.call(objekt, 'Vorname:');
+showFirstName.apply(objekt, [ 'Vorname:' ]);
+</code></pre>
+<p>Vermeiden zugunsten von Parametern</p>
+</section>
+
+<section>
+<h2>Methoden von Funktionen</h2>
+
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind">Function.prototype.bind</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call">Function.prototype.call</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">Function.prototype.apply</a></li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Objektorientierung</h2>
+
+<ul>
+<li><a href="https://de.wikipedia.org/wiki/Objektorientierte_Programmierung#Definition">Definition von Alan Kay</a></li>
+<li>Daten (State) + Logik in einem Objekt</li>
+<li>Kapselung gewisser Vorgänge und Daten</li>
+<li>Objekte senden einander Nachrichten</li>
+<li>Definierte öffentliche Schnittstelle (API)</li>
+</ul>
+</section>
+
+<section>
+<h2>Objektorientierung</h2>
+
+<ul>
+<li>Andere Sprachen: feste und abstrakte Typen, Klassen, Instanzen, Vererbung, Interfaces usw.</li>
+<li>JavaScript hat verschiedene Möglichkeiten, OOP umzusetzen</li>
+<li>JavaScript ist flexibler</li>
+</ul>
+</section>
+
+<section>
+<h2>Objektorientierung</h2>
+
+<ul>
+<li>Objekte mit dem Objekt-Literal erzeugen</li>
+<li>Daten als Eigenschaften, Logik als Methoden</li>
+<li>Objekte sind immer konkret,<br>benötigen keine abstrakten Typen</li>
+</ul>
+</section>
+
+<section>
+<h2>Objektorientierung</h2>
+
+<pre><code class="javascript" data-trim>
+const person = {
+  name: 'Mathias',
+  employer: '9elements',
+  languages: [ 'JavaScript', 'Ruby' ],
+  greet() {
+    console.log(`Hello says ${this.name}`);
+  }
+};
+person.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Factory-Funktionen</h2>
+
+<p>Erzeugen von Objekten mit einer Funktion</p>
+
+<pre><code class="javascript" data-trim>
+const makePerson = (firstName, lastName) => {
+  return {
+    firstName,
+    lastName,
+    greet() {
+      console.log(
+        `${this.firstName} ${this.lastName} says Hi!`
+      );
+    }
+  }
+};
+const emma = makePerson('Emma', 'Goldman');
+emma.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Factory-Funktionen</h2>
+
+<p>Erzeugen von Objekten mit einer Funktion</p>
+
+<pre><code class="javascript" data-trim>
+const makePerson = (firstName, lastName) => ({
+  firstName,
+  lastName,
+  greet() {
+    console.log(
+      `${this.firstName} ${this.lastName} says Hi!`
+    );
+  }
+});
+const emma = makePerson('Emma', 'Goldman');
+emma.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Objekt-Komposition</h2>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">“Favor ‘object composition’ over ‘class inheritance’”</a></li>
+<li>Wiederverwendbare Komponenten</li>
+<li><a href="https://en.wikipedia.org/wiki/Separation_of_concerns">Separation of Concerns</a></li>
+<li>Concern: Sprechen können</li>
+<li>Concern: Vor-, Nachname und vollen Namen haben</li>
+<li>Concern: Grüßen mit vollem Namen</li>
+</ul>
+</section>
+
+<section>
+<h2>Komposition durch Kopieren von Eigenschaften</h2>
+
+<ul>
+<li>Eigenschaften &amp; Methoden von einem auf ein anderes Objekt kopieren</li>
+<li>Ein Objekt aus beliebigen anderen zusammensetzen</li>
+<li>Vgl. <code>module</code> und <code>include</code> in Ruby</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign">Object.assign</a></li>
+</ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const speech = {
+  say(text) {
+    console.log(text);
+  }
+};
+
+const nameable = {
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+};
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const person = Object.assign(
+  {
+    greet() {
+      this.say(`${this.getFullName()} says Hi!`);
+    }
+  },
+  speech,
+  nameable
+);
+
+const emma = Object.assign(
+  { firstName: 'Emma', lastName: 'Goldman' },
+  person
+);
+emma.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Komposition mit Factory-Funktionen</h2>
+
+<ul>
+<li>Ein Objekt mit mehreren Unterobjekten</li>
+<li>
+  person – <code>makePerson()</code>
+  <ul>
+    <li>speech – <code>makeSpeech()</code></li>
+    <li>nameable – <code>makeNameable()</code></li>
+  </ul>
+</li>
+</ul>
+
+</section>
+
+<section>
+<h2>Komposition mit Factory-Funktionen</h2>
+
+<pre><code class="javascript" data-trim>
+const makeSpeech = () => ({
+  say(text) {
+    console.log(text);
+  }
+});
+
+const makeNameable = (firstName, lastName) => ({
+  firstName, lastName,
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+});
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const makePerson = (firstName, lastName) => ({
+  nameable: makeNameable(firstName, lastName),
+  speech: makeSpeech(),
+  greet() {
+    this.speech.say(
+      `${this.nameable.getFullName()} says Hi!`
+    );
+  }
+});
+
+const emma = makePerson('Emma', 'Goldman');
+emma.greet();
+</code></pre>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Prototypen</h2>
+
+<ul>
+<li>Jedes Objekt hat einen Prototyp</li>
+<li>Der Prototyp ist ein ganz normales Objekt</li>
+<li>Wenn eine Eigenschaft beim Objekt nicht gefunden wird,<br>wird sie beim Prototypen gesucht</li>
+<li>Prototypische Delegation genannt (»Stellvertreter«)</li>
+</ul>
+</section>
+
+<section>
+<h2>Prototypen</h2>
+<ul>
+<li>JavaScript löst Wiederverwendung von Logik über Prototypen</li>
+<li>Die meisten Objekte erhalten ihre Methoden von Prototypen</li>
+<li><code>Object.prototype</code>, <code>Function.prototype</code>, <code>Array.prototype</code>, <code>String.prototype</code> usw.</li>
+<li>Die Prototypen der Kernobjekte sind erweiterbar</li>
+</ul>
+</section>
+
+<section>
+<h2>Prototypen</h2>
+
+<p>Wie komme ich an Prototyp eines Objekts?</p>
+
+<ul>
+<li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf">Object.getPrototypeOf</a>(object)</code> (ES5)</li>
+<li><code>object.<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">__proto__</a></code> (ES6)</li>
+  <li style="font-size: 80%; color: gray"><code>object.<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor">constructor</a>.prototype</code> (ES3)</li>
+</ul>
+</section>
+
+<section>
+<h2>Prototypische Delegation</h2>
+
+<p>Wie erzeuge ich ein Objekt, das an ein anderes delegiert?</p>
+
+<ul>
+<li><code>const object = <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create</a>(prototype);</code> (ES5)</li>
+<li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf">Object.setPrototypeOf</a>(object, prototype);</code> (ES6)</li>
+<li><code>object.<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto">__proto__</a> = prototype;</code> (ES6)</li>
+<li style="font-size: 80%; color: gray">Funktion, <code>prototype</code>-Eigenschaft und <code>new</code>-Operator (ES3)</li>
+</ul>
+</section>
+
+<section>
+<h2>Delegation unter SchülerInnen</h2>
+
+<pre><code class="javascript" data-trim>
+const emma = {
+  doMathHomework() { /* … */ }
+};
+
+const alex = Object.create(emma);
+alex.doHistoryHomework = () => { /* … */ };
+
+// Delegates to Emma ;)
+alex.doMathHomework();
+// Alex actually does the homework
+alex.doHistoryHomework();
+</code></pre>
+</section>
+
+<section>
+<h2>Prototypen: Anwendung in der OOP</h2>
+
+<pre><code class="javascript" data-trim>
+const nameable = {
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+};
+
+const person = Object.create(nameable);
+Object.assign(person, {
+  greet() {
+    console.log(`${this.getFullName()} says Hi!`);
+  }
+});
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const emma = Object.create(person);
+Object.assign(emma, {
+  firstName: 'Emma', lastName: 'Goldman'
+});
+emma.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Prototypen-Kette</h2>
+
+<div>
+  <code>emma</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>person</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>nameable</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>Object.prototype</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>null</code>
+</div>
+</section>
+
+<section>
+<h2>Zusammenfassung: Prototypen</h2>
+
+<ul>
+<li>Logik &amp; Daten eines Objekts einfach wiederverwenden</li>
+<li>Speichereffizienter als Kopieren</li>
+<li>JavaScript basiert intern auf Prototypen</li>
+<li>Nur ein Prototyp möglich</li>
+<li>Eine Art Vererbung, keine Komposition</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Klassen in JavaScript</h2>
+
+<ul>
+<li>Bauplan, mit dem sich viele gleichförmige Objekte (Instanzen) erzeugen lassen</li>
+<li>Die Klassendeklaration definiert den Konstruktor und Instanzmethoden</li>
+</ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+class Person {
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+  greet() {
+   console.log(`${this.getFullName()} says Hi!`);
+  }
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const emma = new Person('Emma', 'Goldman');
+emma.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Vererbung</h2>
+
+<pre><code class="javascript" data-trim>
+class Nameable {
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+  getFullName() {
+   return `${this.firstName} ${this.lastName}`;
+  }
+}
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+class Person extends Nameable {
+  constructor(firstName, lastName) {
+    super(firstName, lastName);
+  }
+  greet() {
+   console.log(`${this.getFullName()} says Hi!`);
+  }
+}
+
+const emma = new Person('Emma', 'Goldman');
+emma.greet();
+</code></pre>
+</section>
+
+<section>
+<h2>Prototypen-Kette</h2>
+
+<div>
+  <code>emma</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>Person.prototype</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>Nameable.prototype</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>Object.prototype</code>
+</div>
+<div class="fragment">
+  ⬇<br>
+  <code>null</code>
+</div>
+</section>
+
+<section>
+<h2>Klassendeklarationen</h2>
+<ul>
+<li>Basieren auf prototypischer Delegation</li>
+<li>»Syntaxzucker« für eine ältere Schreibweise</li>
+<li><a href="http://molily.de/js/organisation-instanzen.html">Konstruktoren, Prototypen und Instanzen</a></li>
+<li><a href="http://molily.de/javascript-pseudoklassen/">Pseudoklassische Vererbung in JavaScript</a></li>
+</ul>
+</section>
+
+<section>
+<h2>Pro &amp; Contra Klassen</h2>
+<ul>
+<li>Kurzschreibweise für verbreitetes Pattern</li>
+<li>Macht einfache Vererbung einfach</li>
+<li>Effiziente Wiederverwendung von Methoden</li>
+<li>Keine komplexe OOP<br>(Mixins, Mehrfachvererbung, Traits…)</li>
+</ul>
+</section>
+
+<section>
+<h2>Pro &amp; Contra Klassen</h2>
+<ul>
+<li>Objekte &amp; Prototypen sind einfach &amp; flexibel</li>
+<li>Klassen sind konventionell &amp; unflexibel</li>
+<li>Klassen verstecken die Interna</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Kapselung und Zugriffsschutz</h2>
+
+<ul>
+<li>Öffentliche API von Implementierung und interner Datenhaltung trennen</li>
+<li>Andere Sprachen haben private/geschützte Eigenschaften &amp; Methoden</li>
+<li>Kapselung ist in meist Konvention, nicht effektiv (vgl. Ruby)</li>
+</ul>
+</section>
+
+<section>
+<h2>Kapselung und Zugriffsschutz</h2>
+
+<ul>
+<li>JavaScript hat keine privaten Eigenschaften oder Methoden</li>
+<li>Eigenschaften sind nach außen hin immer sichtbar</li>
+<li>Effektive Kapselung ist oft unnötig</li>
+</ul>
+</section>
+
+<section>
+<h2>Namenskonventionen</h2>
+
+<ul>
+  <li>Eigenschaften werden mit dem Prefix <code>_</code> versehen</li>
+  <li>z.B. <code>_firstName</code> statt <code>firstName</code></li>
+  <li>Diese Eigenschaften sind privat</li>
+  <li>Nach außen hin müssen Getter &amp; Setter verwenden werden</li>
+</ul>
+</section>
+
+<section>
+<h2>Namenskonventionen</h2>
+
+<pre><code class="javascript" data-trim>
+class Person {
+  constructor(firstName, lastName) {
+    this._firstName = firstName;
+    this._lastName = lastName;
+  },
+  greet() {
+   console.log(
+    `${this._firstName} ${this._lastName}` says Hi!`
+    );
+  },
+  getFirstName() { return this._firstName; },
+  getLastName() { return this._lastName; }
+}
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const emma = new Person('Emma', 'Goldman');
+emma.greet();
+console.log(emma.getFirstName()); // Emma
+// Möglich, aber zu vermeiden
+console.log(emma._firstName); // Emma
+</code></pre>
+
+<p>Keine effektive Kapselung</p>
+</section>
+
+<section>
+<h2>Kapselung mit Closures</h2>
+
+<ul>
+<li>Eine Funktion mit lokalen Variablen und<br>verschachtelten Funktionen</li>
+<li>Die Funktion gibt gewisse dieser Funktionen nach draußen (öffentliche API)</li>
+<li>Verschachtelte Funktionen haben weiterhin Zugriff<br>auf die Variablen der äußeren Funktion</li>
+<li>Einzige effektive Kapselung</li>
+</ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const makePerson = (firstName, lastName) => {
+  const getFullName = () => `${firstName} ${lastName}`;
+  const greet = () => {
+    console.log(`${getFullName()} say Hi!`);
+  };
+  return { greet }; // Public API
+};
+const emma = makePerson('Emma', 'Goldman');
+emma.greet();
+console.log(emma.firstName); // undefined
+</code></pre>
+</section>
+
+<section>
+<h2>Kapselung mit Closures</h2>
+
+<p>Möglich bei …</p>
+
+<ul>
+<li>Factory-Funktionen</li>
+<li><a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/">Immediately-invoked Function Expressions (IIFE)</a></li>
+<li><a href="http://molily.de/js/organisation-module.html#revealing-module">Revealing Module Pattern</a></li>
+<li><del>Klassen</del></li>
+</ul>
+</section>
+
+<section>
+<h2>Symbols (in Closures)</h2>
+
+<ul>
+<li>Eigenschaftsnamen sind entweder Strings oder Symbols</li>
+<li>Symbols sind Objekte</li>
+<li>Symbol erzeugen: <code>Symbol('optionaler Name')</code></li>
+<li><code>object[symbol] = value</code></li>
+<li>Das Symbol wird zum Lesen der Eigenschaft benötigt</li>
+<li>Wird ein Symbol in einer Funktion oder einem Block eingeschlossen, ist es geheim</li>
+<li>Globales Symbol: <code>Symbol.for('name')</code> (vgl. Ruby)</li>
+</ul>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const makePerson = (firstName, lastName) => {
+  const firstNameSymbol = Symbol();
+  const lastNameSymbol = Symbol();
+  return {
+    [firstNameSymbol]: firstName,
+    [lastNameSymbol]: lastName,
+    greet() {
+      console.log(`${this.getFullName()} say Hi!`);
+    },
+    getFullName() {
+      return `${this[firstNameSymbol]} ${this[lastNameSymbol]}`;
+    }
+  };
+};
+</code></pre>
+</section>
+
+<section>
+<pre><code class="javascript" data-trim>
+const emma = makePerson('Emma', 'Goldman');
+emma.greet();
+console.log(emma.firstName); // undefined
+const symbols = Object.getOwnPropertySymbols(emma);
+console.log(emma[symbols[0]]); // Emma
+</code></pre>
+
+<p>Keine effektive Kapselung</p>
+</section>
+
+<section>
+<h2>Property Descriptors</h2>
+
+<ul>
+<li>Eine Eigenschaft besteht aus Name, Metadaten,<br>
+einem Wert oder Getter-/Setter-Logik</li>
+<li>Wert (<code>value</code>): Statischer Wert</li>
+<li>Getter (<code>get</code>): Funktion, die beim Lesen ausgeführt wird</li>
+<li>Setter (<code>set</code>): Funktion, die beim Schreiben ausgeführt wird</li>
+</ul>
+</section>
+
+<section>
+<h2>Property Descriptors</h2>
+
+<p>Jede Eigenschaft hat folgende Flags:</p>
+
+<ul>
+<li><em>enumerable</em>: Taucht die Eigenschaft bei einer Iteration auf?</li>
+<li><em>writable</em>: Kann der Wert geändert werden?</li>
+<li><em>configurable</em>: Können die Flags geändert werden?<br>Kann die Eigenschaft gelöscht werden?</li>
+</ul>
+</section>
+
+<section>
+<h2>Property Descriptors lesen/schreiben</h2>
+
+<ul>
+<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/create"><code>Object.create(prototype, descriptors)</code></a></li>
+<li><a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty"><code>Object.defineProperty(object, name, descriptor)</code></a></li>
+<li><a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties"><code>Object.defineProperties(object, descriptors)</code></a></li>
+<li><a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor"><code>Object.getOwnPropertyDescriptors(object)</code></a></li>
+</ul>
+</section>
+
+<section>
+<h2>Schreibschutz</h2>
+
+<pre><code class="javascript" data-trim>
+'use strict';
+const object = {};
+Object.defineProperty(object, 'foo', {
+  value: 1,
+  enumerable: true, writable: false, configurable: false
+});
+console.log(object.foo); // 1
+// 💥 TypeError: Cannot assign to read only property 'foo'
+object.foo = 2;
+</code></pre>
+</section>
+
+<section>
+<h2>Getter und Setter</h2>
+
+<pre><code class="javascript" data-trim>
+const object = {};
+Object.defineProperty(object, 'foo', {
+  get() { return this._foo; },
+  set(value) {
+    if (typeof value !== 'string') {
+      throw new Error('Only strings allowed');
+    }
+    this._foo = value;
+  },
+  enumerable: true, configurable: false
+});
+object.foo = 'Hi!';
+// 💥 Error: Only strings allowed
+object.foo = 2;
+</code></pre>
+</section>
+
+<section>
+<h2>Objekte versiegeln und einfrieren</h2>
+
+<ul>
+<li>Jedes Objekt hat einen internen Flag <code>[[Extensible]]</code></li>
+<li><a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions"><code>Object.preventExtensions(object)</code></a></li>
+<li><a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Object/seal"><code>Object.seal(object)</code></a> = <code>preventExtensions</code> +<br><code>configurable: false</code> für alle Eigenschaften</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze"><code>Object.freeze(object)</code></a> = <code>preventExtensions</code> +<br><code>configurable: false, writable: false</code> für alle Eigenschaften</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Codeaufteilung und<br>Dependency Management</h2>
+<ul>
+<li>Früher definierte JavaScript-Code globale Variable</li>
+<li>Dateien wurden aneinander gehängt,<br>um ein Bundle zu erzeugen</li>
+<li>Bibliotheken wurden als Dateien eingebunden</li>
+<li>Abhängigkeiten waren nicht ersichtlich</li>
+<li>Reihenfolge? Namenskonflikte?</li>
+</ul>
+</section>
+
+<section>
+<h2>Natives Modulsystem</h2>
+<ul>
+<li>ECMAScript 6 erlaubt Aufteilung in Module</li>
+<li>Modul: eine Datei oder Paket (Bibliothek)</li>
+<li>Export von Werten, z.B. Funktionen</li>
+<li>Import von Werten, explizite Abhängigkeiten</li>
+</ul>
+</section>
+
+<section>
+<p>sum.js</p>
+
+<pre><code class="javascript" data-trim>
+export default (a, b) => a + b;
+</code></pre>
+
+<p>program.js</p>
+
+<pre><code class="javascript" data-trim>
+import sum from './sum';
+
+console.log(sum(2, 3));
+</code></pre>
+</section>
+
+<section>
+<p>math.js</p>
+
+<pre><code class="javascript" data-trim>
+export const sum = (a, b) => a + b;
+export const difference = (a, b) => a - b;
+export const product = (a, b) => a * b;
+export const quotient = (a, b) => a / b;
+</code></pre>
+
+<p>program.js</p>
+
+<pre><code class="javascript" data-trim>
+import { sum, product } from './math';
+
+console.log(product(sum(2, 5), 3)); // 21
+</code></pre>
+</section>
+
+<section>
+<h2>Paketmanager</h2>
+<ul>
+<li>Node Package Manager (npm)</li>
+<li>Bibliotheken und Frameworks nutzen</li>
+<li>Abhängigkeiten verwalten
+  <ul>
+  <li><code>package.json</code></li>
+  </ul>
+</li>
+<li><code>import $ from 'jquery';</code></li>
+<li>vgl. Rubygems und Bundler</li>
+</ul>
+</section>
+
+<section>
+<h2>Module-Bundler</h2>
+<ul>
+<li>Code in kleinen Dateien verteilt →<br>Module-Bundler erzeugen Builds</li>
+<li>Abhängigkeitsbaum linearisieren</li>
+<li>Große JS-Datei für Production</li>
+</ul>
+</section>
+
+<section>
+<h2>Module-Bundler</h2>
+<ul>
+<li><a href="http://rollupjs.org/">Rollup</a></li>
+<li><a href="http://browserify.org/">Browserify</a></li>
+<li><a href="https://webpack.github.io/">Webpack</a></li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>ECMAScript 6+ in der Praxis</h2>
+<ul>
+<li><a href="https://kangax.github.io/compat-table/es6/">Browserunterstützung</a></li>
+<li>Alle großen Browser werden im Jahr 2016 ES6 unterstützen</li>
+<li>Für ältere Browser wird ES6+ nach ES5 übersetzt</li>
+</ul>
+</section>
+
+<section>
+<h2><a href="https://babeljs.io/">Der Babel-Transpiler</a></h2>
+<ul>
+<li>Framework zur Transformierung von JS-Code</li>
+<li>Parsing → Transformationen → Ausgabe</li>
+<li>Einzelne Transformationen: <strong>Plugins</strong></li>
+<li>Gruppen von Transformationen: <strong>Presets</strong></li>
+<li>ES6 → ES5 ist ein Preset: <code>es2015</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Babel</h2>
+
+<pre><code data-trim>
+npm install --save-dev babel-cli
+</code></pre>
+
+<p><code>.babelrc</code></p>
+
+<pre><code class="javascript" data-trim>
+{ "presets": [ "es2015" ] }
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+{ "presets": [ "latest" ] }
+</code></pre>
+</section>
+
+<section>
+<h2>Babel</h2>
+
+<pre><code data-trim>
+  ./node_modules/.bin/babel script.js
+  --out-file output.js
+</code></pre>
+
+<p>In Build-Scripte einbinden (Grunt/Gulp,<br>Rollup, Webpack, Browserify…)</p>
+</section>
+
+<section>
+<h2>Was kann Babel übersetzen?</h2>
+<ul>
+<li>Syntaxzucker (z.B. Klassen)</li>
+<li>Gewisse neue Syntax (z.B. <code>let</code> und <code>const</code>)</li>
+<li>Neue und erweiterte Kernobjekte benötigen Polyfill<br>(z.B. Promise, Map, Set)</li>
+<li><a href="https://babeljs.io/docs/usage/polyfill/">Babel-Polyfill</a> basiert auf <a href="https://github.com/zloirock/core-js">CoreJS</a></li>
+</ul>
+</section>
+
+<section>
+<h2>Babel kann mehr</h2>
+<ul>
+<li>Plugins, die neue Syntax umsetzen</li>
+<li>Zukünftige &amp; experimentelle Features</li>
+<li>Jedes Plugin erschafft eine neue Sprache –<br>mit allen Vor- und Nachteilen</li>
+</ul>
+</section>
+
+<section>
+<h2>Weiterentwicklung von ECMAScript</h2>
+<ul>
+<li>Jährliche VÖ (2015, 2016, 2017…)</li>
+<li>Öffentlich auf Github</li>
+<li><a href="https://github.com/tc39/ecma262">Proposals und Stages</a></li>
+<li><a href="https://tc39.github.io/process-document/">Prozess</a></li>
+<li><a href="https://tc39.github.io/ecma262/">Aktueller Entwurf</a></li>
+<li><a href="https://esdiscuss.org/">es-discuss</a></li>
+</ul>
+</section>
+
+<section>
+<h2>Proposal Stages</h2>
+<ol start="0">
+<li>Strawman</li>
+<li>Proposal</li>
+<li>Draft</li>
+<li>Candidate</li>
+<li>Finished → VÖ</li>
+</ol>
+</section>
+
+<section>
+<h2>Stages</h2>
+<ul>
+<li><a href="https://babeljs.io/docs/plugins/">Babel-Plugins sind in Stages gruppiert</a></li>
+<li>Babel Stage === TC39 Stage</li>
+<li>Je höher die Stage, desto wahrscheinlicher<br>die Standardisierung</li>
+<li>Nutzt <code>latest</code>, wählt weitere Plugins weise</li>
+</ul>
+</section>
+
+<section>
+<h2>Quellen: ECMAscript</h2>
+<ul>
+<li><a href="http://webkrauts.de/artikel/2015/eine-kurze-geschichte-von-javascript">Eine kurze Geschichte von JavaScript</a></li>
+<li><a href="https://ponyfoo.com/articles/tagged/es6-in-depth">ES6 in depth</a> (Artikelreihe)</li>
+<li><a href="https://babeljs.io/docs/learn-es2015/">Lern ES2015</a> (Übersicht)</li>
+<li><a href="https://leanpub.com/setting-up-es6/read">Setting up ES6</a> (E-Book)</li>
+<li><a href="http://exploringjs.com/es6/">Exploring ES6</a> (E-Book)</li>
+<li><a href="https://leanpub.com/understandinges6/read/">Understanding ES6</a> (E-Book)</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>JavaScript in HTML</h2>
+
+<pre><code class="html" data-trim>
+&lt;script>
+console.log("Hello World!");
+&lt;/script>
+</code></pre>
+
+<pre><code class="html" data-trim>
+&lt;script src="script.js">&lt;/script>
+</code></pre>
+</section>
+
+<section>
+<h2><em>Sprachkern</em> vs. Hostumgebung</h2>
+
+<ul>
+<li>ECMAScript standardisiert den Sprachkern</li>
+<li>Syntax, Semantik &amp; Ausführung der Sprache</li>
+<li>Objekttypen &amp; Kernobjekte</li>
+</ul>
+</section>
+
+<section>
+<h2><em>Sprachkern</em> vs. Hostumgebung</h2>
+
+<ul>
+<li>Wie funktioniert die for-Schleife</li>
+<li>Wie werden Variablen zu Werten aufgelöst</li>
+<li>Wie wird ein Funktionaufruf abgearbeitet</li>
+<li>Welche Methoden hat ein Array-Objekt</li>
+<li>Was passiert beim Erzeugen einer Objekteigenschaft</li>
+</ul>
+</section>
+
+<section>
+<h2>Sprachkern vs. <em>Hostumgebung</em></h2>
+
+<ul>
+<li>Verschiedene Hostumgebungen</li>
+<li>z.B. Web-Browser, Node.js</li>
+<li>
+  Browser, HTML, DOM
+  <ul>
+    <li>Fenster (<code>window</code>, <code>navigator</code>, <code>history</code>)</li>
+    <li>HTML-Dokument (<code>document</code>)</li>
+    <li>User-Ereignisse (z.B. <code>click</code>)</li>
+  </ul>
+</li>
+</ul>
+</section>
+
+<section>
+<h2>Sprachkern vs. <em>Hostumgebung</em></h2>
+
+<ul>
+<li>Wie kann ich ein HTML-Element ansprechen</li>
+<li>Wie kann ich Inhalte ins Dokument schreiben</li>
+<li>Wie kann ich auf Eingaben reagieren</li>
+<li>Wie kann ich Daten vom Server laden</li>
+</ul>
+</section>
+
+<section>
+<h2>Sprachkern vs. <em>Hostumgebung</em></h2>
+
+<ul>
+<li>Standardisierung: <a href="https://www.w3.org/">W3C</a> und <a href="https://whatwg.org/">WHATWG</a></li>
+<li><a href="https://dom.spec.whatwg.org/">WHATWG DOM</a>, <a href="https://html.spec.whatwg.org/multipage/">WHATWG HTML</a></li>
+<li><a href="https://www.w3.org/TR/dom/">W3C DOM</a>, <a href="https://www.w3.org/TR/html/">W3C HTML</a></li>
+<li><a href="https://platform.html5.org/">Weitere Programmierschnittstellen (APIs)</a><br>(<a href="http://molily.de/html5-specs/">Auswahl</a>)</li>
+</ul>
+</section>
+
+<section>
+<h2>Document Object Model (DOM)</h2>
+
+<ul>
+<li>JavaScript-Schnittstelle zum HTML-Dokument, in dem das Script läuft</li>
+<li>Ein Baum von Knoten (Elemente, Text, Kommentare usw.)</li>
+<li>DOM-Manipulation: Inhalte auswechseln, neue einfügen</li>
+</ul>
+</section>
+
+<section>
+<h2>HTML</h2>
+
+<pre><code class="html" data-trim>
+&lt;!DOCTYPE html>
+&lt;html>
+  &lt;head>
+    &lt;title>DOM Example&lt;/title>
+  &lt;/head>
+  &lt;body>
+    &lt;h1>DOM Example&lt;/h1>
+    &lt;p id="content">Hello World&lt;/p>
+  &lt;/body>
+&lt;/html>
+</code></pre>
+</section>
+
+<section>
+<h2>DOM (vereinfacht)</h2>
+
+<pre><code class="html" data-trim>
+Document
+├ DocumentType
+└ HTML (Element)
+  ├ HEAD (Element)
+  │ └ TITLE (Element)
+  │   └ "DOM Example" (Text)
+  └ BODY (Element)
+    ├ H1 (Element)
+    │ └ "DOM Example" (Text)
+    └ P (Element)
+      └ "Hello World" (Text)
+</code></pre>
+</section>
+
+<section>
+<h2>DOM (real)</h2>
+
+<pre><code class="html" data-trim>
+Document
+├ DocumentType
+└ HTML (Element)
+  ├ HEAD (Element)
+  ├ "\n    " (Text)
+  │ └ TITLE (Element)
+  │   └ "DOM Example" (Text)
+  ├ "\n  " (Text)
+  └ BODY (Element)
+    ├ "\n  " (Text)
+    ├ H1 (Element)
+    │ └ "DOM Example" (Text)
+    ├ "\n    " (Text)
+    └ P (Element)
+      └ "Hello World" (Text)
+</code></pre>
+</section>
+
+<section>
+<h2>Knotentypen</h2>
+
+<ul>
+<li>Dokument</li>
+<li>Dokumenttyp</li>
+<li>Element</li>
+<li>Text</li>
+<li>Kommentar</li>
+</ul>
+</section>
+
+<section>
+<h2>Document</h2>
+
+<pre><code class="javascript" data-trim>
+console.log(document);
+console.log(window.document);
+console.log(document.nodeName); // #document
+console.log(document.nodeType); // 9
+console.log(document.documentElement); // HTML
+console.log(document.head); // HEAD
+console.log(document.body); // BODY
+</code></pre>
+</section>
+
+<section>
+<h2>Elemente im DOM</h2>
+
+<pre><code class="javascript" data-trim>
+console.log(document.body.nodeName); // "BODY"
+console.log(document.body.tagName); // "BODY"
+console.log(document.body.innerHTML); // " &lt;h1>…"
+console.log(document.body.textContent); // "DOM …"
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Traversal (Bewegen im DOM-Baum)</h2>
+
+<pre><code class="javascript" data-trim>
+// HTML
+console.log(document.body.parentNode);
+// [ Text, H1, Text, P, Text ]
+console.log(document.body.childNodes);
+// [ H1, P ]
+console.log(document.body.children);
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Traversal</h2>
+
+<pre><code class="javascript" data-trim>
+console.log(document.body.firstChild); // Text
+console.log(document.body.lastChild); // Text
+console.log(document.body.firstElementChild); // H1
+console.log(document.body.lastElementChild); // P
+</code></pre>
+</section>
+
+<section>
+<h2>Elemente heraussuchen</h2>
+
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById"><code>document.getElementById('id')</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector"><code>document.querySelector('selector')</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll"><code>document.querySelectorAll('selector')</code></a></li>
+</ul>
+</section>
+
+<section>
+<h2>Knotenlisten</h2>
+
+<ul>
+<li><code>childNodes</code>, <code>children</code>, <code>querySelectorAll()</code> usw. geben Knotenlisten zurück</li>
+<li><a href="https://developer.mozilla.org/en/docs/Web/API/NodeList"><code>NodeList</code></a>, <a href="https://developer.mozilla.org/en/docs/Web/API/HTMLCollection"><code>HTMLCollection</code></a></li>
+<li>Verhalten sich wie Arrays, sind aber keine</li>
+<li>Nützliche Methoden fehlen</li>
+</ul>
+</section>
+
+<section>
+<h2>Knotenlisten durchlaufen</h2>
+
+<p>Old-School mit for-Schleife</p>
+
+<pre><code class="javascript" data-trim>
+const elements = document.querySelectorAll('.someClass');
+for (let i = 0, l = elements.length; i &lt; l; i++) {
+  console.log(elements[i]);
+}
+</code></pre>
+</section>
+
+<section>
+<h2>Knotenlisten durchlaufen</h2>
+
+<p>Umwandeln in Arrays mit <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from"><code>Array.from()</code></a>, dann <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach"><code>forEach</code></a></p>
+
+<pre><code class="javascript" data-trim>
+const elements = Array.from(
+  document.querySelectorAll('.someClass')
+);
+elements.forEach((element) => {
+  console.log(element);
+});
+</code></pre>
+
+<p><code>NodeList</code> bekommt <code>forEach</code>-Methode</p>
+</section>
+
+<section>
+<h2>DOM-Manipulation</h2>
+
+<pre><code class="javascript" data-trim>
+document.body.innerHTML = '&lt;h1>Hallo Welt!&lt;/h1>';
+document.body.textContent = 'Hallo Welt!';
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Manipulation</h2>
+
+<p>Elemente programmatich erzeugen und einhängen</p>
+
+<pre><code class="javascript" data-trim>
+const pElement = document.createElement('p');
+const textNode = document.createTextNode('Neuer Inhalt');
+pElement.appendChild(textNode);
+document.body.appendChild(pElement);
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Manipulation</h2>
+
+<pre><code class="javascript" data-trim>
+element.appendChild(newNode)
+element.replaceChild(newNode, childNode)
+element.removeChild(childNode)
+element.insertBefore(newNode, childNode)
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Manipulation (Zukunft)</h2>
+
+<pre><code class="javascript" data-trim>
+element.append(Node or String …)
+element.before(Node or String …)
+element.after(Node or String …)
+element.remove()
+element.replaceWith(newNode)
+</code></pre>
+
+<p><a href="http://caniuse.com/#feat=dom-manip-convenience">Browserunterstützung</a></p>
+</section>
+
+<section>
+<h2>Attribute lesen &amp; setzen</h2>
+
+<pre><code class="javascript" data-trim>
+element.getAttribute('title')
+element.setAttribute('title', 'Hello World!')
+element.removeAttribute('title')
+element.hasAttribute('title')
+</code></pre>
+</section>
+
+<section>
+<h2>Klassen lesen &amp; setzen</h2>
+
+<pre><code class="javascript" data-trim>
+element.classList.add('active')
+element.classList.remove('active')
+element.classList.toggle('active')
+element.classList.contains('active')
+</code></pre>
+
+<p>Beste Möglichkeit, um das Styling zu ändern:<br>(De-)aktivieren von CSS-Regeln.</p>
+</section>
+
+<section>
+<h2>Attribute vs. Eigenschaften</h2>
+
+<dl>
+<dt>Attribute:</dt>
+<dd>Attribut, wie es im HTML notiert ist und geparst wurde. Immer ein String.</dd>
+<dt>Eigenschaft:</dt>
+<dd>JavaScript-Eigenschaft des Elementobjekts. Spiegelt den aktuellen Wert wieder. String, Number, Boolean usw.</dd>
+</dl>
+</section>
+
+<section>
+<h2>Attribute vs. Eigenschaften</h2>
+
+<pre><code class="javascript" data-trim>
+&lt;input type="checkbox" name="accept_tos" checked>
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+const checkbox = document.querySelector(
+  'input[type=checkbox]'
+);
+checkbox.getAttribute('type') // "checkbox"
+checkbox.type // "checkbox"
+checkbox.getAttribute('name') // "accept_tos"
+checkbox.name // "accept_tos"
+</code></pre>
+</section>
+
+<section>
+<h2>Attribute vs. Eigenschaften</h2>
+
+<pre><code class="javascript" data-trim>
+&lt;input type="checkbox" name="accept_tos" checked>
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+const checkbox = document.querySelector(
+  'input[type=checkbox]'
+);
+checkbox.getAttribute('checked') // "checked", unbrauchbar
+checkbox.checked // true
+checkbox.setAttribute('checked', false) // Geht nicht
+checkbox.removeAttribute('checked') // Ginge
+checkbox.checked = true // Besser
+</code></pre>
+</section>
+
+<section>
+<h2>CSS-Eigenschaften lesen &amp; setzen</h2>
+
+<ul>
+<li>Inline-Styles sollten wenn möglich nicht gesetzt werden</li>
+<li>Besser Klassen setzen</li>
+<li>Manchmal nötig bei Animationen oder berechneten CSS-Eigenschaftswerten</li>
+</ul>
+</section>
+
+<section>
+<h2>CSS-Eigenschaften lesen &amp; setzen</h2>
+
+<pre><code class="javascript" data-trim>
+// Inline-Style lesen
+// Üblicherweise leer, daher ''
+console.log(document.body.style.color);
+// Inline-Style setzen
+document.body.style.color = 'red';
+// “Computed Style” lesen
+// "rgba(255, 0, 0)"
+console.log(
+  getComputedStyle(document.body).color
+);
+</code></pre>
+</section>
+
+<section>
+<h2>Animation</h2>
+
+<pre><code class="javascript" data-trim>
+document.body.animate(
+  [
+    { opacity: 0 },
+    { opacity: 1 }
+  ],
+  500
+);
+</code></pre>
+
+<p><a href="http://caniuse.com/#feat=web-animation">Browserunterstützung</a>. Wenn möglich CSS-Transitions und -Animationen verwenden.</p>
+</section>
+
+<section>
+<h2>Event-Handling</h2>
+
+<ul>
+<li>User-Eingaben erzeugen Ereignisse (Events) an gewissen Element-Knoten</li>
+<li>Ereignis-Typ, z.B. <code>change</code>, <code>input</code>, <code>keypress</code>, <code>click</code>, <code>mouseenter</code></li>
+<li>Event-Handler oder -Listener sind Funktionen, die ausgeführt werden, wenn ein Ereignis an einem Element eintritt</li>
+</ul>
+</section>
+
+<section>
+<h2>Event-Handler registrieren</h2>
+
+<pre><code class="javascript" data-trim>
+const clickHandler = (event) => {
+  console.log(event);
+};
+document.body.addEventListener('click', clickHandler);
+</code></pre>
+</section>
+
+<section>
+<h2>Event-Handler entfernen</h2>
+
+<pre><code class="javascript" data-trim>
+const clickHandler = (event) => {
+  console.log(event);
+};
+document.body.addEventListener('click', clickHandler);
+document.body.removeEventListener('click', clickHandler);
+</code></pre>
+</section>
+
+<section>
+<h2>Event-Objekt</h2>
+
+<ul>
+<li>Parameter des Event-Handlers</li>
+<li>Speichert Informationen über das Ereignis</li>
+<li>z.B. Mausposition bei Maus-Events, gedrückte Taste(n) bei Keyboard-Events</li>
+</ul>
+
+<p><a href="http://molily.de/js/event-handling-objekt.html">Arbeiten mit dem Event-Objekt</a></p>
+</section>
+
+<section>
+<h2>Standardaktion unterbinden</h2>
+
+<p>z.B. <code>click</code> bei <code>&lt;a href="…"></code> &rarr; Link folgen</p>
+
+<pre><code class="html" data-trim>
+&lt;a href="http://9elements.com">9elements&lt;/a>
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+const clickHandler = (event) => {
+  event.preventDefault();
+  window.alert('HAHAHA!');
+};
+document.querySelector('a')
+  .addEventListener('click', clickHandler);
+</code></pre>
+</section>
+
+<section>
+<h2>Phasen des Ereignis-Flusses</h2>
+
+<ol>
+<li>Capturing Phase</li>
+<li>Target Phase</li>
+<li>Bubbling Phase</li>
+</ol>
+
+<p><a href="http://molily.de/js/event-handling-objekt.html#bubbling">Event-Fluss: Bubbling</a></p>
+</section>
+
+<section>
+<h2>Bubbling und Capturing</h2>
+
+<dl>
+<dt>Bubbling:</dt>
+<dd>Events bei Elternelementen verarbeiten, nachdem sie das Zielelement erreicht haben</dd>
+<dt>Capturing:</dt>
+<dd>Events bei Elternelementen verarbeiten, bevor sie das Zielelement erreichen</dd>
+<dt>Event-Delegation:</dt>
+<dd>Ein Handler überwacht Ereignisse für viele Kindelemente mit Bubbling oder Capturing</dd>
+</dl>
+
+<p><a href="http://molily.de/js/event-handling-effizient.html">Effiziente Event-Verarbeitung</a></p>
+</section>
+
+<section>
+<h2>Bubbling und Capturing</h2>
+
+<pre><code class="javascript" data-trim>
+// Bubbling-Phase
+document.body.addEventListener('click', clickHandler);
+// Bubbling-Phase
+document.body.addEventListener('click', clickHandler, false);
+// Capturing-Phase
+document.body.addEventListener('click', clickHandler, true);
+</code></pre>
+</section>
+
+<section>
+<h2>Verarbeitendes Element und Zielelement</h2>
+
+<pre><code class="javascript" data-trim>
+const clickHandler = (event) => {
+  console.log(event.currentTarget); // Immer BODY
+  console.log(event.target); // Variiert
+};
+document.body.addEventListener('click', clickHandler);
+</code></pre>
+
+<p><a href="http://molily.de/js/event-handling-objekt.html#currenttarget-target-beispiel">Interaktives Beispiel</a></p>
+</section>
+
+<section>
+<h2>Event-Fluss abbrechen</h2>
+
+<pre><code class="javascript" data-trim>
+event.stopPropagation();
+event.stopImmediatePropagation();
+</code></pre>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2><a href="http://jquery.com">jQuery</a></h2>
+<ul>
+<li>Ausgereiftes Standardtool für DOM- und Ajax-Operationen</li>
+<li>Das DOM ist umständlich und Low-Level</li>
+<li>jQuery bietet eine kompakte Syntax und ist browserübergreifend</li>
+</ul>
+</section>
+
+<section>
+<h2>Vorteile von jQuery</h2>
+<ul>
+<li>Schneller Einstieg</li>
+<li>Knapper, verständlicher Code</li>
+<li>Häufige Aufgaben einfach lösen</li>
+<li>Etablierte gute Konventionen und vereinheitlicht Code</li>
+<li>Zahlreiche Erweiterungen (Plugins)</li>
+</ul>
+</section>
+
+<section>
+<h2>Grenzen von jQuery</h2>
+
+<ul>
+<li>Umfangreich, aber nicht kohärent</li>
+<li>Deckt nur einen kleinen Bereich ab</li>
+<li>jQuery-Code skaliert nicht, wird schlecht wartbar</li>
+<li>Bietet fast nichts zur Strukturierung</li>
+</ul>
+</section>
+
+<section>
+<h2>jQuery-Features</h2>
+
+<ul>
+<li>Elemente mittels CSS-Selektoren finden</li>
+<li>DOM-Traversal</li>
+<li>DOM-Manipulation</li>
+<li>CSS-Eigenschaften ändern, Animationen</li>
+<li>Event-Handling, Event-Delegation</li>
+<li>Ajax</li>
+</ul>
+</section>
+
+<section>
+<h2>jQuery-Grundlagen</h2>
+
+<pre><code class="javascript" data-trim>
+$("#content")
+</code></pre>
+
+<ul>
+<li>Findet das Element mit der ID <code>content</code></li>
+<li>Gibt ein <code>jQuery</code>-Objekt zurück</li>
+<li>Das ist eine Liste mit Elementobjekten (DOM-Knoten)</li>
+<li><code>$()</code> ist kurz für <code>jQuery()</code></li>
+</ul>
+</section>
+
+<section>
+<h2>jQuery: Elementlisten</h2>
+
+<ul>
+<li>jQuery wrappt Elementobjekte (DOM-Knoten) in eine Listenobjekt mit vielen nützlichen Methoden</li>
+<li>Ähnlich einem Array, aber kein echter Array</li>
+<li>Viele Methoden geben eine neue Liste zurück</li>
+<li>Filter-, Map- oder Reduce-Operationen</li>
+</ul>
+</section>
+
+<section>
+<h2>jQuery-Beispiel</h2>
+
+<pre><code class="html" data-trim>
+&lt;p id="content"&gt;Hello World&lt;/p&gt;
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+console.log($('#content'));
+console.log($('#content').length); // 1
+// [object HTMLParagraphElement]
+console.log($('#content')[0]);
+</code></pre>
+</section>
+
+<section>
+<h2>jQuery-Beispiel</h2>
+
+<pre><code class="html" data-trim>
+&lt;p id="content"&gt;Hello World&lt;/p&gt;
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+// Hello World
+console.log($('#content').html());
+</code></pre>
+
+<pre><code class="javascript" data-trim>$('#content').click((event) => {
+  $(event.currentTarget).html('Hallo Welt!');
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Elemente mittels CSS-Selektoren finden</h2>
+
+<p>Die <a href="https://sizzlejs.com/">Sizzle-Selector-Engine</a> unterstützt <a href="https://api.jquery.com/category/selectors/">CSS-3-Selektoren und mehr</a>.</p>
+
+<pre><code class="javascript" data-trim>
+$('.class'), $('#id'), $('h1')
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+$(':hidden'), $(':visible')
+$(':header'), $(':input'), $(':checked')
+$(':even'), $(':odd')
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Traversal</h2>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+elements.parent()
+elements.parents()
+elements.children()
+elements.siblings()
+elements.next()
+elements.previous()
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Traversal</h2>
+
+<p>Iteration, Map &amp; Filter</p>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+elements.each((element) => { … })
+elements.map((element) => { … })
+elements.filter((element) => { … })
+</code></pre>
+
+<p>Kindelemente finden</p>
+
+<pre><code class="javascript" data-trim>
+const content = $('#content');
+const h1s = content.find('h1');
+const ps = content.find('p');
+</code></pre>
+</section>
+
+<section>
+<h2>DOM-Manipulation</h2>
+
+<p>Inhalte wechseln, Elemente einfügen</p>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+elements.html('&lt;p>Hi!&lt;/p>');
+elements.text('Hi!');
+elements.append('&lt;p>Hi!&lt;/p>')
+elements.before('&lt;p>Hi!&lt;/p>')
+elements.after('&lt;p>Hi!&lt;/p>')
+elements.remove()
+</code></pre>
+</section>
+
+<section>
+<h2>Attribute setzen</h2>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+elements.attr('title', 'Hi!')
+elements.attr('title') // Hi!
+elements.attr({ title: 'Hi!' })
+elements.removeAttr('title')
+</code></pre>
+</section>
+
+<section>
+<h2>Attribute vs. Eigenschaften</h2>
+
+<pre><code class="javascript" data-trim>
+&lt;input type="checkbox" name="accept_tos" checked>
+</code></pre>
+
+<pre><code class="javascript" data-trim>
+const checkbox = $(':checkbox');
+checkbox.attr('checked') // "checked", unbrauchbar
+checkbox.prop('checked') // true
+checkbox.attr('checked', false) // Geht nicht
+checkbox.removeAttr('checked') // Ginge
+checkbox.prop('checked', true) // Besser
+</code></pre>
+</section>
+
+<section>
+<h2>Klassen</h2>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+elements.addClass('active')
+elements.removeClass('active')
+elements.hasClass('active')
+</code></pre>
+
+<p>Beste Möglichkeit, um das Styling zu ändern:<br>(De-)aktivieren von CSS-Regeln.</p>
+</section>
+
+<section>
+<h2>CSS-Eigenschaften lesen &amp; setzen</h2>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+// “Computed Style” lesen
+elements.css('color') // "rgb(0, 0, 0)"
+elements.css('color', 'red')
+elements.css({ color: 'red' })
+elements.show(), elements.hide() uvm.
+elements.width(), elements.height() uvm.
+</code></pre>
+
+<p>Wenn möglich vermeiden</p>
+</section>
+
+<section>
+<h2>Animationen</h2>
+
+<pre><code class="javascript" data-trim>
+const elements = $('p');
+elements.animate({ opacity: 0 }, 500)
+elements.fadeIn(), elements.fadeOut(),
+  elements.fadeToggle()
+elements.slideDown(), elements.slideUp(),
+  elements.slideToggle()
+</code></pre>
+
+<p>Wenn möglich CSS-Transitions und<br>-Animationen verwenden</p>
+</section>
+
+<section>
+<h2>Event-Handling</h2>
+
+<pre><code class="javascript" data-trim>
+const button = $('button');
+button.on('click', (event) => { … });
+button.click((event) => { … });
+
+const input = $('input');
+input.on('input', (event) => { … });
+input.on('change', (event) => { … });
+input.change((event) => { … });
+</code></pre>
+</section>
+
+<section>
+<h2>Event-Handler entfernen</h2>
+
+<pre><code class="javascript" data-trim>
+const button = $('button');
+const clickHandler = (event) => { … };
+button.on('click', clickHandler);
+button.off('click', clickHandler);
+</code></pre>
+</section>
+
+<section>
+<h2>Event-Delegation (Bubbling)</h2>
+
+<pre><code class="javascript" data-trim>
+const clickHandler = (event) => {
+  event.preventDefault();
+  console.log(event.target);
+  console.log(event.currentTarget);
+  console.log(event.delegateTarget);
+};
+$(doument.body).on('click', 'a', clickHandler);
+</code></pre>
+</section>
+
+<section>
+<h2>Event-Delegation (Bubbling)</h2>
+
+<pre><code class="html" data-trim>
+&lt;body>
+  &lt;p>
+    &lt;a href="http://9elements.com">
+      9elements ist
+      &lt;strong>SUPER&lt;/strong>
+    &lt;/a>
+  &lt;/p>
+&lt;/body>
+</code></pre>
+</section>
+
+<section>
+<h2>Event-Delegation (Bubbling)</h2>
+
+<p>Klick auf den Text »SUPER« im <code>strong</code>-Element:</p>
+
+<ul>
+<li><code>event.target</code> &rarr; STRONG</li>
+<li><code>event.currentTarget</code> &rarr; A</li>
+<li><code>event.delegateTarget</code> &rarr; BODY</li>
+</ul>
+
+<p>Inkonsistent mit dem Standard-Event-Handling aus historischen Gründen</p>
+</section>
+
+<section>
+<h2>Ereignis »Dokument geladen«</h2>
+
+<pre><code class="javascruot" data-trim>
+$(document).ready(() => {
+  // DOM steht vollständig zur Verfügung
+});
+</code></pre>
+
+<pre><code class="javascruot" data-trim>
+$(window).load(() => {
+  // Dokument und alle Assets sind geladen
+});
+</code></pre>
+</section>
+
+<section>
+<h2>Vorteile von jQuerys Event-Handling</h2>
+
+<ul>
+<li>Unterstützung alter Event-Modelle (&lt; IE 9)</li>
+<li>Einheitliches Event-Objekt</li>
+<li>Einheitliche Delegation bei Events, die nicht bubblen (z.B. <code>focus</code>, <code>mouseenter</code>)</li>
+<li>Synthetische und eigene Events</li>
+</ul>
+</section>
+
+<section>
+<h2>HTTP-Anfragen an Server senden (Ajax)</h2>
+
+<ul>
+<li>HTML laden, ins Dokument einsetzen</li>
+<li>JSON laden, als Object verarbeiten</li>
+<li>Formulardaten zum Server senden,<br>HTML-Antwort in Dokument einsetzen</li>
+<li>Anfragen an externe APIs senden</li>
+</ul>
+</section>
+
+<section>
+<h2>HTTP-Anfragen an Server senden (Ajax)</h2>
+
+<pre><code class="javascript" data-trim>
+$.ajax({
+  method: 'GET',
+  url: '/data.json',
+  dataType: 'json'
+})
+.then(
+  (data, textStatus, jqXHR) => {
+    console.log(jqXHR.status, data);
+  },
+  (jqXHR, textStatus, errorThrown) => {
+    console.log(jqXHR.status, errorThrown);
+  }
+)
+</code></pre>
+
+<p>Verschiedene Kurzschreibweisen möglich</p>
+</section>
+
+<section>
+<h2>Method Chaining</h2>
+
+<p>Viele jQuery-Methoden geben wieder jQuery-Objekte zurück</p>
+
+<pre><code class="javascript" data-trim>
+$('&lt;img>')
+  .attr('src', 'cat.gif')
+  .addClass('image')
+  .click(imageClickHandler)
+  .appendTo(document.body);
+</code></pre>
+</section>
+
+<section>
+<h2>Aufgabe: Flickr-Suche</h2>
+
+<ul>
+<li>Bildersuche bei Flickr</li>
+<li>Thumbnail-Liste</li>
+<li>Vollansicht bei Klick</li>
+<li><a href="flickr-jquery.html">Beispiellösung</a></li>
+</ul>
+</section>
+
+<section>
+<h2>Flickr-Suche: Lösungsansatz</h2>
+
+<ol>
+<li>Das statische HTML-Gerüst schreiben</li>
+<li>Suchformular heraussuchen und <code>submit</code>-Handler registrieren (DOM-Querying, Event-Handling)</li>
+<li>Der <code>submit</code>-Handler liest den Wert des Eingabefeldes aus und macht einen Ajax-Request zu Flickr (DOM-Querying, Formularzugriff, Ajax)</li>
+</ol>
+
+</section>
+
+<section>
+<h2>Flickr-Suche: Lösungsansatz</h2>
+
+<ol start="4">
+<li>Der Ajax-Success-Handler erzeugt andhand des Ergebnis-Arrays die Ergebnisliste (Datenverarbeitung, DOM-Manipulation)</li>
+<li>Bei jedem Foto in der Ergebnisliste einen <code>click</code>-Handler registrieren (Event-Handling)</li>
+<li>Der <code>click</code>-Handler befüllt anhand des Foto-Objekts die Vollansicht (DOM-Manipulation)</li>
+</ol>
+</section>
+
+<section>
+<h2>Flickr-Suche: jQuery-Methoden</h2>
+
+<ul>
+<li>Elemente heraussuchen: <code>$('selector')</code></li>
+<li>Wert eines Formularfeldes auslesen: <code>.val()</code></li>
+<li>Event-Handler registrieren: <code>.on()</code>, <code>.click()</code>, <code>.submit()</code></li>
+<li>Ajax-Request absenden: <code>$.ajax()</code></li>
+<li>Elemente erzeugen und ins Dokument einhängen: <code>$('&lt;element>')</code>, <code>addClass()</code>, <code>html()</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Flickrs JSONP-Suchschnittstelle</h2>
+
+<pre><code class="javascript" data-trim>
+$.ajax({
+  url: 'http://api.flickr.com/services/feeds/' +
+    'photos_public.gne?jsoncallback=?',
+  dataType: 'json',
+  data: {
+    tags: searchTerm,
+    tagmode: 'all',
+    format: 'json'
+  }
+}).then(showResults);
+</code></pre>
+
+<p>Zu definieren: <code>searchTerm</code>: String, <code>showResults</code>: Function</p>
+</section>
+
+<section>
+<h2>jQuery: Helferlein</h2>
+
+<ul>
+<li><a href="http://api.jquery.com">Offizielle API-Referenz: api.jquery.com</a></li>
+<li><a href="http://oscarotero.com/jquery/">jQuery Quick API Reference: oscarotero.com/jquery/</a></li>
+<li><a href="https://learn.jquery.com/">jQuery Learning Center</a></li>
+<li>Allgemeine JS-Referenz: <a href="http://developer.mozilla.org">developer.mozilla.org</a></li>
+<li>Debugging mit den Developer Tools und <code>console.log('…');</code></li>
+</ul>
+</section>
+
+<section>
+<h2>Flickr-Suche: Code-Review</h2>
+
+<ul>
+<li>Eine handvoll Funktionen, v.a. Event-Handler</li>
+<li>Kein Separation of Concern<br>(Daten, Formular/Eingabe, Darstellung)</li>
+<li>Keine Trennung in UI-Komponenten</li>
+<li>Das Erzeugen von HTML ist unübersichtlich und potenziell gefährlich</li>
+<li>Halb statisches, halb dynamisches HTML</li>
+</ul>
+</section>
+
+<section>
+<h2>jQuery-Code strukturieren</h2>
+
+<ul>
+<li>Templating-Engine verwenden<br>(z.B. Mustache/Hogan, Lodash)</li>
+<li>Strukturierung mit Modulen, Klassen usw.</li>
+<li>Patterns wie Model-View-Controller verwenden</li>
+<li>Automatisches Data-Binding anstatt manuelle DOM-Änderungen</li>
+</ul>
+</section>
+
+<section>
+<h2>Trennung von Model- und View-Logik</h2>
+
+<ul>
+<li>Beispiel: <a href="flickr-backbone.html">Backbone verwenden</a></li>
+<li>Datenlogik: Model <code>Photo</code>, Collection <code>Photos</code></li>
+<li>UI-Logik: <code>SearchView</code>, <code>PhotosView</code>, <code>PhotoItemView</code>, <code>FullPhotoView</code></li>
+<li>Alternativ: <a href="http://reactfordesigners.com/labs/reactjs-introduction-for-people-who-know-just-enough-jquery-to-get-by/">React verwenden</a></li>
+</ul>
+</section>
+
+<section>
+<h2>Zusammenfassung: jQuery</h2>
+
+<ul>
+<li>Unvermindert populär seit 2006</li>
+<li>Äußerst verbreitet und einflussreich</li>
+<li>
+  Entstammt dem »Unobtrusive JavaScript«
+  <ul>
+  <li>Elemente heraussuchen</li>
+  <li>Event-Handler hinzufügen</li>
+  <li>Änderungen vornehmen</li>
+  </ul>
+</ul>
+</section>
+
+<section>
+<h2>Zusammenfassung: jQuery</h2>
+
+<ul>
+<li>Nicht immer nötig, DOM-API ist besser geworden</li>
+<li>Immer noch eine gute API mit sinnvollen Abstraktionen</li>
+<li>Bringt keine Struktur mit sich</li>
+<li>Nicht für komplexe, dynamische UIs geeignet</li>
+</ul>
+</section>
+
+<!-- ##################################################################### -->
+
+<section>
+<h2>Fragen? Feedback?</h2>
+<ul>
+<li><a href="http://molily.de">Mathias Schäfer</a></li>
+<li><a href="mailto:mathias.schaefer@9elements.com">mathias.schaefer@9elements.com</a></li>
+<li><a href="https://twitter.com/molily">@molily</a></li>
+<li><a href="https://9elements.com">9elements.com</a></li>
+</ul>
+</section>
+
+<!-- ******************************************************************** -->
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  rollingLinks: false,
+  slideNumber: true,
+
+  theme: 'simple-molily',
+  transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+</script>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+</body>
+</html>

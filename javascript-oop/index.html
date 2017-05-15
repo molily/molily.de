@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <title>Object-oriented JavaScript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ?
+      'css/print/pdf.css' :
+      'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <base target="_blank">
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<!-- ******************************************************************** -->
+
+<section>
+  <h1>Object-oriented JavaScript</h1>
+  <p><em>A brief introduction</em></p>
+  <p>PottJS, June 27th 2013</p>
+</section>
+
+<section>
+  <h1><a href="http://molily.de">molily</a></h1>
+  <ul>
+    <li>Mathias Schäfer</li>
+    <li>Software developer at <a href="https://9elements.com">9elements</a></li>
+    <li>JavaScript since 1999</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Sneak Preview</h1>
+  <ul>
+    <li>Very brief introduction</li>
+    <li>Teach some JavaScript basics</li>
+    <li>Getting the basics right is tough</li>
+    <li>Allows to solve higher-level problems</li>
+    <li>Skip a lot of quirks and details</li>
+    <li>Won’t talk about academic definitions of “object-oriented” and the history of OOP</li>
+  </ul>
+</section>
+
+<section>
+  <h1>What is an object?</h1>
+  <ul>
+    <li>A data set / structure</li>
+    <li>A way to store data in computer memory in an organized way</li>
+    <li>In other languages: hash / hash map / associative array</li>
+  </ul>
+</section>
+
+<section>
+  <h1>What is an object?</h1>
+<pre><code>Person
+  name: Marianne
+  age: 42
+</code></pre>
+
+  <ul>
+    <li>A collection of properties</li>
+    <li><var>Name</var> → <var>value</var></li>
+    <li>Property name: Always a string</li>
+    <li>Property value: Any type<br>(Number, Boolean, String, null, undefined, Object…)</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Object literals</h1>
+<pre><code class="javascript" data-trim>
+var person = {
+  name: "Marianne",
+  age: 42
+};
+</code></pre>
+
+  <ul>
+    <li>Creates an object and saves it into a variable</li>
+    <li>One of the most powerful features of JavaScript</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Dealing with objects</h1>
+<pre><code class="javascript" data-trim>
+var person = {
+  name: 'Marianne',
+  age: 42
+};
+
+alert(person.name);
+alert(person['name']);
+
+person.name = 'Anne';
+person.profession = 'Engineer';
+
+delete person.profession;
+</code></pre>
+</section>
+
+<section>
+  <h1>Objects are everywhere</h1>
+  <ul>
+    <li>Everything either is an object or behaves like an object</li>
+    <li>Most objects behave the same</li>
+    <li>Most objects are <em>mutable</em><ul>
+      <li>Create new properties, overwrite or delete existing properties</li>
+    </ul>
+    </li>
+    <li>Objects are work data but also used to structure your program</li>
+  </ul>
+</section>
+
+<section>
+  <h1>More complex objects</h1>
+  <pre><code class="javascript" data-trim>
+var person = {
+  name: 'Mathias',
+  employer: '9elements',
+  languages: ['JavaScript', 'Ruby'],
+  greet: function () {
+    alert('Hallo says ' + this.name);
+  }
+};
+person.greet();
+</code></pre>
+  <ul>
+    <li>Objects can be nested endlessly</li>
+    <li>If an object has a function property, it’s called “method”</li>
+    <li>Originally called “sending messages to objects”</li>
+  </ul>
+</section>
+
+<section>
+  <h1>The world is made of objects</h1>
+  <pre><code class="javascript">window.alert("Hello World!");</code></pre>
+
+  <ul>
+    <li>Object <code>window</code></li>
+    <li>Property <code>alert</code>: a function</li>
+    <li>Function call <code>()</code></li>
+    <li>String literal <code>"Hello World!"</code> as parameter</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Objects vs. primitives</h1>
+  <ul>
+    <li>Primitive values<ul>
+      <li>Boolean, Number, String</li>
+      <li><code>undefined</code>, <code>null</code></li>
+    </ul>
+    </li>
+    <li>Object<ul>
+      <li>Array, Function, RegExp, Date,<br>Document, Element, YourOwnType…
+      </li>
+    </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Objects vs. primitives</h1>
+  <p>Primitive values are converted into objects on-the-fly<br>when you call their methods:</p>
+<pre><code class="javascript" data-trim>
+(2.5172).toFixed(2) // 2.52
+"Hello World".charAt(6) // "W"
+"Hello World".substring(6, 11) // "World"
+</code></pre>
+
+</section>
+
+<section>
+  <h1>Objects vs. primitives</h1>
+<pre><code class="javascript" data-trim>
+var string = "Hello World";
+string.newProperty = "Does this work?";
+alert(string.newProperty); // undefined
+</code></pre>
+
+</section>
+
+<section>
+  <h1>Objects vs. Primitives</h1>
+<pre><code class="javascript" data-trim>
+var string = "Hello World";
+string.newProperty = "Does this work?";
+alert(string.newProperty); // undefined
+</code></pre>
+  <p>Inside the JavaScript engine:</p>
+<pre><code class="javascript" data-trim>
+var string = "Hello World";
+var temporaryObject1 = Object(string);
+temporaryObject1.newProperty = "Does this work?";
+// temporaryObject1 is thrown away, we can’t get hold of it
+var temporaryObject2 = Object(string);
+alert(temporaryObject2.newProperty); // undefined
+</code></pre>
+
+</section>
+
+<!-- ******************************************************************** -->
+
+<section>
+  <h1>Objects are work data but also used to structure your program</h1>
+</section>
+
+<section>
+  <h1>JavaScript vs. classic OOP</h1>
+  <ul>
+    <li><a href="http://bclary.com/2004/11/07/">ECMAScript 3</a> doesn’t have (native) classes, interfaces, modules, traits, mixins, visibility</li>
+    <li>ECMAScript 3 does have objects, prototypes and functions as first-class objects, constructors, closures</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Newer JavaScript standards</h1>
+  <ul>
+    <li><a href="http://www.ecma-international.org/ecma-262/5.1/">ECMAScript 5</a> (2009) has getters &amp; setters, simple access rights (property descriptors)</li>
+    <li>ECMAScript 6 (future) will have modules, classes as syntactic sugar, private properties, proxies for metaprogramming etc.</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Structure your JavaScripts</h1>
+  <ul>
+    <li>Using ECMAScript 3 features</li>
+    <li>Modules, information hiding (private data), inheritance (delegation), pseudo-classes, object composition</li>
+    <li>Conventions and code, not native language features</li>
+    <li>Imperative, not declarative</li>
+    <li>A lot of possibilities</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Revealing Module Pattern</h1>
+  <p>Private and public data</p>
+<pre><code class="javascript" data-trim>
+var module = (function () {
+  var privateVariable = 1;
+  var privateFunction = function () {…};
+  return {
+    publicProperty: 1,
+    publicMethod: function () {
+      alert(privateVariable);
+      privateFunction();
+    }
+  };
+})();
+module.publicProperty();
+module.publicMethod();
+</code></pre>
+
+</section>
+
+<section>
+  <h1>Revealing Module Pattern</h1>
+  <ul>
+    <li>Variable scope for private data and functions</li>
+    <li>The code is wrapped in a function that is immediately invoked (IIFE)</li>
+    <li>Nested functions are <em>closures</em>, may access the private data</li>
+    <li>Returns an object literal with public properties and methods</li>
+  </ul>
+  <p><a href="module-pattern.html" target="_blank">Demo</a>
+  </p>
+</section>
+
+<section>
+  <h1>Prototypes</h1>
+  <p><img src="http://www.reactiongifs.com/r/cheering_minions.gif" alt=""></p>
+</section>
+
+<section>
+  <h1>Prototypes</h1>
+  <ul>
+    <li>Share data between objects</li>
+    <li>Reuse object capabilities (i.e. code)</li>
+    <li>Make objects behave similar</li>
+    <li>Efficient memory usage (Copy on Write)</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Prototype</h1>
+  <ul>
+    <li>The prototype is just another simple object</li>
+    <li>Every object has a reference to its prototype<br>obj1 → obj2</li>
+    <li>If a property cannot be found on the object,<br>
+      look it up on the prototype (delegation)<br>
+      obj1.prop? Nope. Get obj2.prop.</li>
+    <li>This way objects gain the abilities of other objects</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Prototypes are like friends &lt;3</h1>
+  <p>Once upon the time, there were three students:</p>
+  <ul>
+    <li>Emma is good at mathematics and languages</li>
+    <li>Alex is good at history and arts</li>
+    <li>Tom is good at literature and sports</li>
+  </ul>
+<pre><code lang="javascript" data-trim>
+alex.doMathHomework()
+tom.doHistoryHomework()
+emma.doLiteratureHomework()
+</code></pre>
+
+  <p>Guess who actually did the homework ;)</p>
+</section>
+
+<section>
+  <h1>Prototypes</h1>
+  <ul>
+    <li>JavaScript is based on prototypes internally</li>
+    <li>Most objects are empty themselves and inherit their methods from their prototypes</li>
+    <li>The prototype of core objects are readable and mutable</li>
+    <li><small><code>Object.prototype, Function.prototype, Array.prototype, String.prototype, HTMLDocument.prototype, HTMLElement.prototype</code> etc.</small></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Set up prototypal delegation</h1>
+  <p>How do I create an object that delegates to another object?</p>
+  <ul>
+    <li><code>Object.create()</code> (ES5)</li>
+    <li>Create a function, set the <code>prototype</code> property and create an instance using the <code>new</code> operator (ES3)</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Object.create()</h1>
+<pre><code class="javascript" data-trim>
+var emma = {
+  doMathHomework: function () {…}
+};
+
+var alex = Object.create(emma);
+alex.doHistoryHomework = function () {…};
+
+alex.doMathHomework(); // delegates to Emma ;)
+alex.doHistoryHomework(); // Alex actually does the homework
+</code></pre>
+
+</section>
+
+<section>
+  <h1>Inspect the prototype</h1>
+  <p>How do I retrieve the prototype of an object?</p>
+  <ul>
+    <li><code>Object.getPrototypeOf(obj)</code> (ES5)</li>
+    <li><code>obj.__proto__</code> (ES6)</li>
+    <li><code>obj.constructor.prototype</code> (ES3, most of the time)</li>
+  </ul>
+  <p>Use the special property <code>__proto__</code> for learning and debugging, it’s already supported by several browsers.</p>
+</section>
+
+<section>
+  <h1>Prototype chain</h1>
+  <p>Object <code>o1</code> has a prototype <code>o2</code>. <code>o2</code> has a prototype <code>o3</code>, and so on. The topmost prototype is <code>Object.prototype</code>.</p>
+<pre><code class="javascript" data-trim>
+var o2 = { name: 'o2' };
+var o1 = Object.create(o2);
+o1.__proto__ === o2
+o2.__proto__ === Object.prototype
+</code></pre>
+  <p>o1 → o2 → Object.prototype</p>
+<pre><code class="javascript" data-trim>
+var str = "Hello!";
+str.__proto__ === String.prototype
+String.prototype.__proto__ === Object.prototype
+</code></pre>
+  <p>str → String.prototype → Object.prototype</p>
+</section>
+
+<section>
+  <h1>Understanding prototypes</h1>
+  <p><a href="http://www.debreuil.com/docs/ch01_Prototype.htm">Glass pane metaphor (AS3)</a></p>
+  <img src="images/prototypen.svg" width="540" height="460">
+  <p><a href="http://molily.de/js/organisation-instanzen.html">JavaScript documentation</a></p>
+</section>
+
+<section>
+  <h1>JavaScript vs. classes</h1>
+  <ul>
+    <li>There’s no divide between fixed abstract types vs. instances</li>
+    <li>JavaScript has simple mutable objects which may delegate</li>
+    <li>Prototypal delegation is more flexible in the end</li>
+    <li>Application development usually introduces pseudo-classes</li>
+    <li>Useful features: Single inheritance, constructors, super calls</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Pseudo-classes</h1>
+  <ul>
+    <li>It’s possible to implement pseudo-classes in JavaScript:<br>
+      Constructor function + <code>prototype</code> = instances</li>
+    <li>Warning: This is messy. Learn how it works but don’t expect it to be logical.</li>
+  </ul>
+  <p><img src="images/lions.gif" alt=""></p>
+</section>
+
+<section>
+  <h1>Pseudo-classes</h1>
+<pre><code class="javascript" data-trim>
+// Constructor function
+var Person = function (name) {
+  this.name = name;
+};
+
+// Add properties to the prototype
+Person.prototype.greet = function () {
+  alert("Hello, my name is " + this.name + "!");
+};
+
+// Create an instance
+var alice = new Person("Alice");
+alice.greet();
+</code></pre>
+
+  <p>alice → Person.prototype → Object.prototype</p>
+</section>
+
+<section>
+  <h1>Constructors</h1>
+<pre><code class="javascript" data-trim>
+var Person = function (name) {
+  this.name = name;
+};
+</code></pre>
+  <ul>
+    <li>Constructors are simple functions</li>
+    <li>Constructors are object factories, they produce similar objects</li>
+    <li>Per convention, the name starts with an uppercase letter</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Constructor.prototype</h1>
+<pre><code class="javascript" data-trim>
+Person.prototype.greet = function () {
+  alert("Hello, my name is " + this.name + "!");
+};</code></pre>
+  <ul>
+    <li>Every function has a <code>prototype</code> property (confusing)</li>
+    <li>This is a simple, mutable object</li>
+    <li>It’s the <em>future prototype</em> of instances created by the constructor</li>
+    <li>Add instance properties and methods</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Create instances</h1>
+<pre><code class="javascript" data-trim>
+var alice = new Person("Alice");
+alice.greet();
+</code></pre>
+  <ul>
+    <li>Call the constructor using the <code>new</code> operator</li>
+    <li>Creates a new object that delegates to <code>Person.prototype</code></li>
+    <li>alice → Person.prototype</li>
+    <li><code>alice.greet</code> comes from the prototype</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Prototype chain</h1>
+  <p><img src="images/prototypenkette.png" alt=""></p>
+  <p><a href="pseudo-classes.html" target="_blank">Use the Web Inspector</a></p>
+</section>
+
+<section>
+  <h1>The keyword this</h1>
+  <ul>
+    <li><code>this</code> has several meanings</li>
+    <li>In the global scope outside of functions: <code>window</code></li>
+    <li>Inside of functions, the meaning depends on the way the function is called</li>
+  </ul>
+<pre><code class="javascript" data-trim>
+var f = function () { alert(this); };
+var o = { f: f };
+f();   // window / undefined in strict mode
+o.f(); // o
+</code></pre>
+</section>
+
+<section>
+  <h1>Pseudo-classes</h1>
+  <ul>
+    <li>Constructors, <code>prototype</code>, <code>new</code>… Why are pseudo-classes so cumbersome?</li>
+    <li><q>The pseudoclassical form can provide comfort to programmers who are unfamiliar with JavaScript, but it also hides the true nature of the language.</q><br>– <cite>Douglas Crockford: JavaScript. The Good Parts</cite></li>
+    <li>Alternatives: Don’t use <code>new</code>, just <a href="http://www.uxebu.com/index.html%3Fp=1405.html">Object.create()</a> and object factories</li>
+    <li>ECMAScript 6 introduces classes as syntactic sugar, still prototypal. Works the same, but less confusing</li>
+  </ul>
+</section>
+
+<section>
+  <h1>OOP tools</h1>
+  <ul>
+    <li>Class hierarchies, multiple inheritance, object composition, mixins, traits</li>
+    <li><a href="http://molily.de/weblog/javascript-pseudoklassen">Helper for simple inheritance (DE)</a></li>
+    <li><a href="http://backbonejs.org/#Model-extend">Backbone’s extend()</a></li>
+    <li><a href="http://dojotoolkit.org/documentation/tutorials/1.7/declare/">Dojo</a> / <a href="https://github.com/kriszyp/compose">compose</a></li>
+    <li><a href="http://www.prototypejs.org/learn/class-inheritance">PrototypeJS</a> / <a href="http://www.peterkroener.de/mootools-fuer-die-massen-teil-4-klassen-erstellen-und-erweitern/">Mootools</a></li>
+    <li><a href="http://molily.de/weblog/yui3-oop">Yahoo YUI (DE)</a></li>
+    <li><a href="http://soft.vub.ac.be/~tvcutsem/traitsjs/">Traits</a> / <a href="http://allong.es/">Method combinators/decorators</a></li>
+    <li><a href="http://jsclass.jcoglan.com/">JSClass</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Further reading</h1>
+  <ul>
+    <li><a href="https://www.diigo.com/user/molily/javascript%20oop">My bookmarks: is.gd/javascriptoop</a></li>
+    <li><a href="http://www.2ality.com/">2ality.com by Axel Rauschmayer</a></li>
+    <li><a href="http://dmitrysoshnikov.com/ecmascript/javascript-the-core/">JavaScript – The Core</a> (<a href="http://molily.de/javascript-core/">DE</a>)</li>
+    <li><p>Organisation von JavaScripten (DE)</p>
+      <ul>
+        <li><a href="http://molily.de/js/organisation-instanzen.html">Konstruktoren, Prototypen und Instanzen</a></li>
+        <li><a href="http://molily.de/js/organisation-verfuegbarkeit.html">Objektverfügbarkeit und this-Kontext</a></li>
+      </ul>
+    </li>
+    <li><a href="https://github.com/molily/schulung">Whole training course on JavaScript (DE)</a></li>
+  </ul>
+</section>
+
+<!-- ******************************************************************** -->
+
+
+<!-- ******************************************************************** -->
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  rollingLinks: false,
+  slideNumber: true,
+
+  theme: 'simple-molily',
+  transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+</script>
+
+</body>
+</html>

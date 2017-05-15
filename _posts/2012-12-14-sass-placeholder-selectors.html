@@ -1,0 +1,21 @@
+---
+layout: post
+title: Komplexe Stylesheets strukturieren mit Sass Placeholder Selectors
+---
+
+<p>Schon seit 2005 erscheint der <a href="http://webkrauts.de/serien/adventskalender/2012">Webkrauts-Adventskalender</a> mit jährlich 24 hochkarätigen Fachartikeln zur Webentwicklung. Bereits im letzten Jahr habe ich einen zweiteiligen Artikel beigetragen, der den CSS-Präprozessor <a href="http://sass-lang.com/">Sass</a> und die zugehörige Bibliothek <a href="http://compass-style.org/">Compass</a> vorstellt:</p>
+
+<ul>
+<li><a href="http://webkrauts.de/artikel/2011/effiziente-css-entwicklung-mit-sass-und-compass-teil-1">Effiziente CSS-Entwicklung mit Sass und Compass (Teil 1)</a> – Einführung in die SCSS-Syntax, CSS3 einfach einsetzen mit Compass, Verschachtelung, Variablen</li>
+<li><a href="http://webkrauts.de/artikel/2011/effiziente-css-entwicklung-mit-sass-und-compass-teil-2">Effiziente CSS-Entwicklung mit Sass und Compass (Teil 2)</a> – Mixins mit <code>@include</code>, Vererbung und Objektorientierung mit <code>@extend</code>, Zusammenfassen von mehreren Stylesheets, .sass-Alternativsyntax</li>
+</ul>
+
+<p>Seit letztem Jahr wurde der Sass-Compiler signifikant weiterentwickelt und verbessert. Besonders ein Feature hat in meinen Projekten einen Paradigmenwechsel eingeläutet. Mit der <a href="http://chriseppstein.github.io/blog/2012/08/23/sass-3-2-is-released/">Sass-Version 3.2</a> wurde die Möglichkeit, von bestehenden Regeln mittels <code>@extend</code> abzuleiten, durch ein enorm nützliches Feature ergänzt: Die sogenannten <strong>Placeholder Selectors (Platzhalter-Selektoren)</strong>. Damit lässt sich Modularisierung und Code-Wiederverwendung elegant im SCSS-Code umsetzen.</p>
+
+<p>Ich stand dem populären Konzept zur CSS-Modularisierung, <a href="http://webkrauts.de/artikel/2009/objektorientiertes-css-eine-einfuehrung">OOCSS</a>, immer kritisch gegenüber. Die Erfinderin, <a href="http://www.stubbornella.org/">Nicole Sullivan</a>, hat die Probleme von umfangreicher CSS-Entwicklung gut erkannt und erstrebenswerte Ziele zur Modularisierung formuliert. Lediglich die Umsetzung in praktische Regeln hat mich (und viele andere) gestört.</p>
+
+<p>Verschiedene Stimmen raten nun dazu, die Ideen von OOCSS mit <code>@extend</code> und Placeholder Selectors umzusetzen. Anstatt unzählige rein präsentationsbezogene Klassen im HTML zu setzen, wie es sowohl Grid-Frameworks als auch Baukastensysteme wie Twitter Bootstrap nahelegen, werden interne Grundmodule nun mit Placeholder Selectors definiert und in konkreten Regeln per <code>@extend</code> angewendet.</p>
+
+<p>Im diesjährigen Webkrauts-Adventskalender stelle ich das neue Feature der Placeholder-Selectors genauer vor. Viel Spaß beim Lesen!</p>
+
+<p><strong>→ <a href="http://webkrauts.de/artikel/2012/css-modularisierung-mit-sass">CSS-Modularisierung mit Sass: Komplexe Stylesheets strukturieren</a></strong></p>

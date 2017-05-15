@@ -1,0 +1,287 @@
+---
+layout: post
+title: Ein Podcast über die Geschichte von HTML
+description: Eine parteiische Erzählung der HTML-Geschichte von SGML über HTML, XML und XHTML bis HTML5.
+---
+
+<p>Die Audio-Datei ist nicht mehr verfügbar, aber das Transkript unten.</p>
+
+<h2>Inhaltsverzeichnis</h2>
+
+<ol id="podcast-navi" class="compact-list">
+<li><a href="#podcast-sgml">SGML-Ära und Anfänge von HTML</a></li>
+<li>
+	<p><a href="#podcast-xml">XML-Ära</a></p>
+	<ol>
+	<li><a href="#podcast-xhtml1">Entstehen von XHTML 1</a></li>
+	<li><a href="#podcast-vorteile-xhtml">Vorteile von XHTML</a></li>
+	<li><a href="#podcast-erfolge-xhtml">Erfolge von XHTML</a></li>
+	</ol>
+<li><a href="#podcast-xhtml2">XHTML 2</a></li>
+<li>
+	<p><a href="#podcast-html5">HTML5 und WHATWG</a></p>
+	<ol>
+	<li><a href="#podcast-ziele-whatwg">Ursprüngliche Ziele der WHATWG</a></li>
+	<li><a href="#podcast-reform-html5">Umfassende Reform unter dem Begriff HTML5</a></li>
+	<li><a href="#podcast-ideen-html5">Grundideen von HTML5</a></li>
+	<li><a href="#podcast-html5-version">HTML5 hat keine Version</a></li>
+	<li><a href="#podcast-html5-browserhersteller">HTML5 als Projekt der Browserhersteller</a></li>
+	<li><a href="#podcast-anwendungsplattform">Das Web als Anwendungsplattform</a></li>
+	<li><a href="#podcast-html5-markup">Neues HTML5-Markup</a></li>
+	</ol>
+</li>
+<li>
+	<p><a href="#podcast-fazit">Gesamtfazit und Ausblick</a></p>
+	<ol>
+	<li><a href="#podcast-shipping-code">Shipping code wins?</a></li>
+	<li><a href="#podcast-html5-arbeitsgruppen">Konkurrenz der beiden HTML5-Arbeitsgruppen</a></li>
+	<li><a href="#podcast-html5-erfolg">Wird HTML5 ein Erfolg werden?</a></li>
+	<li><a href="#podcast-html5-ende-geschichte">HTML5 ist nicht das Ende der Geschichte</a></li>
+	</ol>
+</li>
+</ol>
+
+<h2>Einleitung</h2>
+
+<p>Hallo, mein Name ist molily und ich möchte über die Geschichte von HTML erzählen.</p>
+
+<p>Warum überhaupt über HTML erzählen? Zuerst einmal bekommt das Thema derzeit wenig Aufmerksamkeit trotz des anstehenden HTML5-Umbruchs. Wenn ich über HTML rede, dann will ich über die technischen Grundlagen reden. Die interessieren relativ wenige, zumindest mit den theoretischen Hintergründen beschäftigen sich nicht viele. Warum will ich die Geschichte von HTML erzählen? Ich möchte die Geschichtsschreibung infrage stellen, denn im Zuge des HTML5-Umbruchs wird die HTML-Geschichte neu geschrieben – von denen neu geschrieben, die historisch gewonnen haben. Nachträglich kämpfen verschiedene Parteien um die Bewertung der geschichtlichen Entwicklungen und deswegen möchte ich meine Sicht einbringen.</p>
+
+<p>Ich beziehe mich vor allem auf einen Artikel von Mark Pilgrim. Der schreibt gerade ein Buch über HTML5 namens <a href="http://diveintohtml5.org/"><cite>Dive into HTML5</cite></a>. Das Buch fängt mit dem Text <a href="http://diveintohtml5.org/past.html"><cite>A quite biased history of HTML5</cite></a> an. Dieser basiert auf einem seiner Blogartikel, wo er hauptsächlich <a href="http://web.archive.org/web/20091106072208/http://diveintomark.org/archives/2009/11/02/why-do-we-have-an-img-element?">die Geschichte des img-Elements in HTML</a> erzählt. Wie kam es überhaupt zu der Standardisierung? Wie der Titel schon sagt, ist dieser Text <q><em>quite biased</em></q>, das ist er tatsächlich. Es ist zwar der beste Text, den es zur HTML-Geschichte bis HTML5 gibt. Aber man muss sich die Frage stellen, was für Schlüsse er zieht. Ist seine Lesart der Geschichte die einzig mögliche und sind seine Lehren daraus die einzig möglichen?</p>
+
+<p>Ich habe meinen Vortrag in fünf historische Abschnitte geteilt:</p>
+
+<ol class="compact-list">
+<li><a href="#podcast-sgml">Die SGML-Ära</a></li>
+<li><a href="#podcast-xml">Die XML-Ära</a></li>
+<li><a href="#podcast-xhtml2">Zwischenabschnitt über XHTML2</a></li>
+<li><a href="#podcast-html5">HTML5 - wo die Entwicklung hingeführt hat</a></li>
+<li><a href="#podcast-fazit">Gesamtfazit</a></li>
+</ol>
+
+<h2 id="podcast-sgml">1. SGML-Ära</h2>
+
+<p><dfn>SGML</dfn> ist eine Metasprache zur Definition von Textauszeichnungssprachen. Das mag erst einmal verwirrend klingen: Eine Sprache zur Definition von Sprachen. Der Hauptstandard für SGML wurde 1986 festgelegt. Das ist eine richtiger Industriestandard, von der ISO spezifiziert. SGML steht für <em>Standard Generalized Markup Language</em>, standardisierte allgemeine Auszeichnungssprache. Das ist ein riesiger Standard, den man auch gar nicht frei im Web einsehen kann. Es gibt ihn meines Wissens nur gedruckt oder als PDF mit hunderten Seiten. Er stammt aus einer Zeit vor dem Web, vor dem kommerziell interessanten Internet. Er knüpft an vorige Ideen von Auszeichnungssprachen an. Im Grunde geht es darum, dass man Texte auszeichnen kann und sie mit Bedeutung füllen kann. Man kann Dokumenttypen erstellen, mit denen man Daten speichern kann.</p>
+
+<p>Als Tim Berners-Lee das Hypertextsystem World Wide Web erfand, bezog er sich einfach auf SGML, weil das der herrschende Standard war, mit dem man eine Textauszeichnungssprache erfinden kann. Er erfand damit HTML. HTML 2, die erste große, feste Version von HTML, war eine SGML-Anwendung. Das heißt, er benutzte SGML, um Vokabular und Syntax dieser Sprache zu definieren. Dazu nutzte er die seit Jahren existierenden technischen Möglichkeiten.</p>
+
+<p>SGML brachte eine entsprechende Komplexität mit sich. Mit SGML kann man sehr verschiedene Syntaxen definieren. HTML nutzte eine SGML-Deklaration, das ist die Hauptdefinition, welche SGML-Features in der Sprache erlaubt sind. Beim Vokabular von HTML ging es darum, wissenschaftliche Dokumente auszuzeichnen, denn anfangs war das Web so gedacht, dass Wissenschaftler über die ganze Welt hinweg ihre wissenschaftlichen Texte austauschen. Tim Berners-Lee war am Kernforschungszentrum in Genf angestellt und forschte dazu, ein weltweites Hypertextsystem aufzubauen, in dem vor allem Naturwissenschaftler ihre Dokumente publizieren können. Schon früher in den 70ern und 80ern hatte man die Einsicht gehabt, dass Textauszeichnung rein logisch und strukturell sein soll. Das heißt, Information zur Darstellung gehören auf keinen Fall in die Textauszeichnung hinein. Die Idee der Trennung zwischen Inhalt und Präsentation bzw. Form ist schon sehr alt und lag auch HTML 2 von Anfang an zugrunde.</p>
+
+<p>Hinzu kam Hypertextmöglichkeiten. Von Anfang an enthielt HTML Ideen von früheren Hypertextsystemen, nicht nur einfach Links, sondern auch verschiedene logische Beziehungen. Später kamen Bilder, beliebige Objekte und Plugins hinzu.</p>
+
+<p>Wie gesagt, HTML ist eine SGML-Sprache. Das bedeutet, dass HTML einerseits über eine SGML-Deklaration definiert wird, in der die Features angeschaltet werden und die Syntax genau festgelegt wird. Adererseits wird das Sprachvokabular in der sogenannten Dokumenttyp-Definition (DTD) festgelegt. Die Crux bei HTML war, dass es als sehr komplexe SGML-Anwendung definiert wurde. Syntaktisch gibt es sehr verschiedene Möglichkeiten, es lassen sich sehr obskure Features von SGML anwenden und das ist immer noch korrektes HTML. In der Praxis würde man diese ganzen Verkürzungsmöglichkeiten nur teilweise anwenden. Es stellte sich heraus, dass in der Praxisanwendung diese HTML-Features nicht nötig sind. HTML schleppte über Jahre diese Features mit sich und sie brachten eigentlich nur Nachteile.</p>
+
+<p>Als kleines Zwischenfazit: HTML auf SGML aufzubauen war eine großartige akademische Idee. Das ist, wie ich finde, immer noch eine der genialsten Ideen, die das Web erfolgreich gemacht haben. Man nimmt eine sehr konventionelle Textauszeichnung und kombiniert sie mit Hypertext. Das ganze baut auf einer etablierten und ausgereiften Plattform auf. Das war damals der höchste Forschungsstand.</p>
+
+<p>Nun komme ich zu dem Umschlag: HTML ist eine SGML-Anwendung, aber wurde nie wirklich als SGML verarbeitet. Es kamen die ersten Browser auf, die wirklich HTML-Seiten angezeigt haben, und diese haben HTML nicht als SGML angesehen. Sie besaßen überhaupt keine SGML-Parser. Um HTML zu verarbeiten, beachteten sie die SGML-Regeln nicht. Stattdessen redet man von sogenannten <dfn>Tag-Soup-Parsern</dfn> (Tag-Suppen-Parsern). Diese sehen den HTML-Quelltext nicht als korrektes SGML-Dokument und parsen die Eingabe nicht nach SGML-Regeln, sondern notwendigerweise – weil es viele fehlerhafte Seiten im Netz gibt – sehr fehlertolerant und nach eigenen Regeln. Das war die Grundlage dafür, dass sich HTML als SGML nie wirklich etabliert hat.</p>
+
+<p>Trotzdem gab es Programme, die HTML als SGML-Anwendung verarbeitet haben. Das waren aber nur ganz wenige, nämlich die Validatoren und HTML-Lints. Diese sprachen mehr oder weniger SGML, hatten also echte SGML-Parser. Vor allen Dingen der W3C-Validator. Sie waren die einzigen Clients, die einzigen User-Agents, die HTML so verarbeitet haben, wie es ursprünglich gedacht war. Sie maßen HTML an den Standards , gemäß denen HTML korrekt definiert worden war. Sie nahmen die Dokumenttyp-Definition (DTD) und konnten so die Validatität eines HTML-Dokuments prüfen.</p>
+
+<p>Der Punkt ist, dass die Browser diese Regeln nie angewendet haben. Deswegen ist Validitätsprüfung bei HTML 4 ein bisschen abseitig: Der Validator kreidet eine Syntax als falsch an, die praktisch völlig problemlos möglich ist. Umgekehrt lässt er Syntax durchgehen, weil manche SGML-Features in HTML angeschaltet sind, die die Autoren nur verwirren. Wenn man im HTML gewisse Fehler macht, sieht sie der Validator nicht als Fehler an, weil er denkt, es sei ein spezielles SGML-Feature. Das hat sehr lange zu Problemen geführt. Die tatsächliche HTML-Verarbeitung biss sich immer mit der theoretischen Definition von HTML. Deswegen hatte der HTML-Standard als Theorie wenig mit der Realität zu tun.</p>
+
+<p>Jetzt wechsle ich die Perspektive. Nachdem HTML standardisiert worden war, entstanden nach und nach die kommerziellen Webbrowser. Zuerst Mosaic, später Netscape und der Internet Explorer. Diese führten auf Basis von HTML 2, was noch sehr minimal war, ihre eigenen Elemente ein. Sie führten vor allem Elemente ein, die der bisherigen Philosophie von HTML völlig widersprachen wie beispielsweise <code>font</code>. Schon 1970 wusste man, dass man in Textauszeichnungssprachen nicht so etwas wie <code>font</code> machen sollte, aber es wurde trotzdem im Web eingeführt.</p>
+
+<p>In dem Zuge wurde das W3C, das World Wide Web Konsortium als übergreifende Standardisierungsorganisation gegründet. Die kommenden HTML-Standards, HTML 3 und 4, holten die Eigenentwicklung, die auf dem Browsermarkt passierte, nur ein. Größtenteils kodifizierten diese Standards die erfundenen Elemente einfach, nahmen sie also in den Standard auf. HTML 4 war jedoch im Gegensatz zu HTML 3 wieder der Versuch, HTML zurück auf den ursprünglichen Weg zu bringen, nämlich den Weg des <a href="http://www.linkwerk.com/pub/xmlidp/2000/strukturorientiert.html">Generic Coding</a>. Die strikte Variante von HTML 4 forciert gutes HTML, sie besitzt keine Elemente wie <code>font</code>. Man beschränkt sich auf eine sinnvolle Struktur des Dokuments lagert Informationen, die direkt die Darstellung betreffen, aus. Ein Beispiel ist Frames, ein HTML-Zusatz, der mit dem Auszeichnen von Dokumenten wenig zu tun hat.</p>
+
+<p>Das Fazit ist: HTML auf Basis von SGML war im Web eher ein Fehlschlag. Was man sich dabei dachte, kam nie richtig zum tragen. HTML wurde nie als SGML verarbeitet und faktisch regierte die sogenannte Tag Soup. Die wenigsten Websites waren valide und die wenigsten konnten überhaupt als SGML verarbeitet werden. Die Browser waren schlicht dazu gezwungen, Tag-Soup-Parser einzubauen, die sehr fehlertolerant sind, im Grunde alles schlucken und versuchen, aus jeder Eingabe ein sinnvolles Dokument zu machen.</p>
+
+<p>Dieser Widerspruch während der SGML-Ära wurde natürlich gesehen. Deswegen dreht sich der nächste Zeitabschnitt darum, mit diesen Fehlern aufzuräumen.</p>
+
+<h2 id="podcast-xml">2. XML-Ära</h2>
+
+<p>Dieser historische Abschnitt wirkt bis heute fort. Zunächst, was ist XML? XML wurde vom W3C erfunden als abgespecktes SGML. XML ist genauso ein Baukasten für beliebige Auszeichnungssprachen. Es ist in erster Linie ein beschränktes SGML: Es gibt eine ganz bestimmte Syntax und wenig Freiräume. Es ist ein kleineres, kompatibleres, einfacher zu implementierendes Set von SGML.</p>
+
+<p>Bei aller Kritik an XML ist XML sehr weit verbreitet. Auf fast allen Plattformen kann man mit XML arbeiten und es gibt viele Programmiersprachen und Bibliotheken, die XML verarbeiten können. XML ist nicht nur dieser Baukasten für Auszeichnungssprachen, es ist ein ganzes Ökosystem. Es gibt viele Techniken und Sprachen, die man miteinander kombinieren kann. Das wurde zum Credo und zur großen Idee vom W3C: Eine Architektur aus verschiedenen Techniken rund um XML zu schaffen, mit der man alle Anwendungen im Web abdecken kann.</p>
+
+<p>Zu XML selbst kam XSL(T) hinzu, also XSL-Transformation. Mit dieser weiteren XML-Sprache lassen sich XML-Sprachen in andere XML-Sprachen überführen. XSLT ist eine Art deklarative Programmiersprache. Hinzu kommt XPath, welches man mit CSS-Selektoren vergleichen kann, es ist nur komplexer. Damit lassen sich Elemente, Attribute und jegliche Knoten in einem XML-Dokument ansprechen und auswählen. Schließlich kamen weitere Sprachen wie XLink, SVG und so weiter hinzu.</p>
+
+<p>Die gute Idee an diesem XML-Ökosystem ist, dass alle Sprachen strengen Grundlagen folgen. Beispielsweise ist Zugänglichkeit sehr wichtig (Barrierefreiheit/Accessibility), ferner Interoperabilität. Das heißt, es läuft auf allen möglichen Systemen, darunter Mobilsystemen. Diese Sprachen sind sehr stark modularisiert. Das heißt, es gibt nicht eine monolithische Sprache, sondern viele kleine Sprachen, die sich miteinander kombinieren lassen. Letztlich sollte das ganze bis in die Zukunft hinein ausbaubar sein.</p>
+
+<p>Langfristig ergab sich ein Abschied von der DTD, dieser standardisierten Möglichkeit von SGML und XML, die Grammatik einer Auszeichnungssprache festzulegen. Es entstanden  bessere Möglichkeiten, Grammatiken maschinenlesbar festzulegen, nämlich zum Beispiel XML Schema. In der Perspektive verabschiedete man sich von der alten DTD zur normative Festlegung einer Sprache. Das war ein großer Fortschritt gegenüber dem SGML-Universum.</p>
+
+<p>Bei XML ist ganz klar festgelegt, wie ein Dokument verarbeitet wird. Die große Voraussetzung ist die sogenannte Wohlgeformtheit. Das heißt, es gibt bestimmte Regeln der Korrektheit, denen ein Dokument genügen muss. Wenn ein XML-Dokument nicht wohlgeformt ist, dann kann es auch nicht verarbeitet werden. Der XML-Parser bricht bei einem Syntaxfehler einfach ab. Das ist die sogenannte drakonische Fehlerbehandlung, auf die ich später noch einmal zurückkommen werde.</p>
+
+<h3 id="podcast-xhtml1">Entstehen von XHTML 1</h3>
+
+<p>Warum erzähle ich von der XML-Ära, wo es doch um die HTML-Geschichte geht? Das W3C entschied sich, HTML auf Basis der XML-Plattform weiterzuentwickeln. In den Jahren 1999 und 2000 entstand XHTML 1.0. Das ist erst einmal nicht anderes als das Sprachvokabular von HTML 4.01, welches in XML-Syntax geschrieben wird. Es war vorgesehen, diese XHTML-Dokumente auch als XML an den Browser zu senden. Die Idee war, dass die Browser ihren XML-Parser verwenden und nach und nach alle anderen Techniken der XML-Plattform implementieren, sodass man irgendwann das schöne XML-Ökosystem im Browser nutzen kann.</p>
+
+<p>Diese Idee ging nicht auf. Die Idee fand sowohl bei den Browserherstellern als auch den HTML-Autoren keine Unterstützung. XHTML ist jetzt mehr als 10 Jahre in der Welt und immer noch gibt es keine browserübergreifende Unterstützung. Und wie es sich abzeichnet wird es auch nie so sein, dass man echtes XHTML mit allen Zusätzen, die die XML-Welt bietet, im Browser nutzen kann.</p>
+
+<h3 id="podcast-vorteile-xhtml">Vorteile von XHTML</h3>
+
+<p>XHTML hat sehr viele großartige Ideen und hat auch viele Vorteile. Ein Vorteil gegenüber HTML 4 ist die einheitliche Syntax. Es gibt ein paar Regeln, nach denen XHTML funktioniert und wenn man diese verstanden hat, dann muss man sie nur noch konsequent anwenden. Die Syntax ist also sehr pädagogisch, weswegen viele Handbücher XHTML benutzen, um klare und eindeutige Regeln zu vermitteln.</p>
+
+<p>Wie gesagt, XHTML will sich von den Problemen abkehren, die SGML als Grundlage für HTML ausgelöst hat. Es gibt nicht mehr wie bei HTML 4 eine Mehrdeutigkeit und obskure Features. Weil sich XML reduktionistisch auf eine eindeutige Syntax beschränkt, kann man nichts falsch machen. Das ist für Webautoren eine Vereinfachung. Wenn man XHTML und XML-Tools sowie XML-Validatoren mit vernünftigen XML-Schemas  verwendet, dann ist eine strenge Qualitätssicherung des Quellcodes möglich.</p>
+
+<p>Das ist mit HTML 4 nur sehr schwer erreichbar. Viele Leute haben sich zur Zeit von HTML 4 den Kopf über eine maschinelle Überprüfung zerbrochen. Darüber habe ich auch ich <a href="/html4-validierung/" title="Strenge HTML-4-Validierung">einen Blogpost geschrieben</a>. Es ist sehr, sehr schwierig. Man muss die Dokumenttyp-Definition und die SGML-Deklaration von HTML 4 abändern, um sie quasi in XML-Syntax zu überführen, damit man überhaupt klare Regeln aufstellen und maschinell überprüfen kann. XHTML hingegen lässt sich mit vernünftigen Schemas überprüfen, was viel besser ist als die DTD-Validierung, die die einzig mögliche ist bei HTML 4.</p>
+
+<p>XHTML hat seine Vorteile, aber letztlich hat es sich nicht durchgesetzt. Tim Berners-Lee, der Erfinder des Webs, ist bald <a href="http://dig.csail.mit.edu/breadcrumbs/node/166">zu der Einsicht gekommen</a>: <q cite="http://dig.csail.mit.edu/breadcrumbs/node/166">Some large communities did shift [to XML] and are enjoying the fruits of well-formed systems, but not all.</q> Das heißt: Viele haben eingesehen, dass ihnen die XML-Plattform etwas bietet. Mit den wohlgeformten Systeme lässt sich robuster arbeiten als mit SGML-Sprachen wie HTML. Aber trotzdem hat sich die Idee, dass XHTML HTML ablöst, nicht durchgesetzt.</p>
+
+<p>XHTML war zum großen Teil ein Fehlschlag, zumindest in der Hinsicht, das XHTML im Browser als XML verarbeitet werden sollte. Nichtsdestoweniger ist XHTML sehr weit verbreitet! Aber es wird eben nicht als XML verarbeitet, sondern weiterhin als HTML-4-Tag-Soup. Das ist ein Feature von XHTML 1: Wegen der Fehlertoleranz der Browser kann man XHTML auch einfach als HTML-Tag-Soup verarbeiten. Zumindest praktisch, theoretisch gibt es diese Kompatibilität nicht. Deswegen gibt es viele Seiten, die mit einem XHTML-Dokumenttyp arbeiten, aber letztlich im Browser genauso verarbeitet werden wie HTML 4. Der Vorteil liegt eben auf der Autorenseite und der Serverseite. Dort kann man das XML-Ökosystem nutzen, also jegliche Tools verwenden zur Qualitätssicherung und zur Generierung.</p>
+
+<h3 id="podcast-erfolge-xhtml">Erfolge von XHTML</h3>
+
+<p>XHTML hat ohne wirklichen Grund eine geschichtliche Entwicklung angestoßen, denn XHTML wurde als streng wahrgenommen. Von der Syntax her stimmt das, aber vom Sprachumfang ist XHTML 1.0 identisch mit HTML 4. Trotzdem war XHTML einer der Startimpulse für die Webstandards-Bewegung. Im Zuge dessen haben sich die Webentwickler erstmals sauberen und semantischen Code auf die Fahnen geschrieben.</p>
+
+<p>XHTML war dazu ein strategisches Kampfmittel, obwohl man guten und schlechten Code genauso in HTML 4 und XHTML 1 schreiben kann. Beide haben Strict- und Transitional-Varianten. Aber mit XHTML hat die Idee Verwendung gefunden, den Inhalt in gut strukturiertem HTML zu schreiben. Die Präsentation wird in CSS ausgelagert, das Verhalten in externen JavaScript-Dateien, anstatt alles zu vermischen. Das ist wieder die alte Idee des <i>Generic Coding</i>.</p>
+
+<p>XHTML ist nicht ganz tot, es gibt Bereiche, in denen XHTML sehr erfolgreich war. <a href="http://www.iks.hs-merseburg.de/~meinike/">Thomas Meinecke</a> hat mich letztens darauf hingewiesen, dass das <a href="http://de.wikipedia.org/wiki/EPUB">ePub-Format</a>, ein sehr verbreitetes Format für eBooks echtes XML ist. XHTML wurde modularisiert, sodass verschiedene kleine Sprachen enstanden, die aus dem HTML-Vokabular gebaut sind. Man kann sich Minimalsets zusammenbauen wie es eben eBooks sind. Als dieses modularisierte HTML ist XHTML erfolgreich. </p>
+
+<p>Soweit zur XML-Ära. Diese ist genauso wie die SGML-Ära letztlich gescheitert, sie war eine Sackgasse der HTML-Geschichte.</p>
+
+<h2 id="podcast-xhtml2">3. XHTML 2</h2>
+
+<p>Nun komme ich zum dritten Kapitel, das ist eher klein ist. Es ist eine Zwischenperiode, nämlich XHTML 2. Das ist noch einmal ein ganz anderer Ansatz als XHTML 1. XHTML 1 war nichts anderes als HTML 4 plus XML-Syntax, während hingegen XHTML  2 der Versuch war, noch einmal alles auf den Kopf zu stellen, eine neue Sprache zu entwickeln, die rein auf XML basiert. Eine Abwärtskompatibilität wurde nicht angestrebt. Sowohl inhaltlich als auch technisch können die Browser XHTML 2 nicht verarbeiten und darstellen.</p>
+
+<p>Das Vokabular ist ähnlich zu XHTML 1 und HTML 4, aber man wollte eben nicht das alte Vokabular erweitern und bereinigen, sondern formulierte es komplett neu. Viele Elemente wurden hinübergerettet, andere wurden in ihrer Bedeutung geändert und umbenannt. Das W3C verrannte sich in diese Strategie der reinen XML-Sprache. Die zugrunde liegende Idee war wieder die Modularisierung, man splittete alle Techniken in HTML in verschiedene XML-Sprachen auf. Man nahm z.B. alle Formulare heraus. Man hatte richtig eingesehen, dass die Formulare in HTML viel mehr können müssen. So erfand das W3C kurzerhand eine neue XML-Sprache. Und die große Idee hinter XML ist, all diese Sprachen in einem XML-Dokument über verschiedene Namensräume zusammenzuführen. Diese Sprache für die Formulare heißt <dfn>XForms</dfn>.</p>
+
+<p>Es wurde mehrere Jahre an XHTML 2 entwickelt, aber die Browserhersteller freundeten sich nie damit an und es gab auch keine Implementierungen. XHTML 2 hatte sehr gute Ideen, die auch fortgewirkt haben. Diese waren keine Sackgasse in der Geschichte, aber zumindest in diesem Kontext kamen sie nie zur Reife. Letztlich wurde XHTML 2 im Jahr 2009 komplett eingestellt. Dazu komme ich noch einmal, wenn ich über HTML5 spreche. Nachdem schon XHTML 1 nicht die Früchte trug, die man sich davon erhoffte, war XHTML 2 schließlich das komplette Scheitern.</p>
+
+<h2 id="podcast-html5">4. HTML5 und WHATWG</h2>
+
+<p>Der vorletzte große Teil. Das ist die Ära, in der wir uns derzeit befinden. Was ist HTML5? Ursprünglich eine Erhebung der Browserhersteller. Während der XML-Ära war das W3C losgekoppelt und hat sein XML-Ökosystem entwickelt, ohne dass es darauf von den Browserherstellern Anworten gab. Wie gesagt, diese Techniken wurden nie implementiert. So folgte eine kleine Revolution. Die Browserhersteller stellten sich hin und sagten: Wir wollen XHTML 2 nicht, wir wollen nicht, dass das die Zukunft für das Web ist.</p>
+
+<p>Kurzerhand gründeten die Browserhersteller ihr eigenes Gremium zur Erarbeitung von technischen Standards. Dieses Gremium heißt <dfn>WHATWG</dfn>, <em>Web Hypertext Application Technology Working Group</em>. Den Titel muss man nicht zu ernst nehmen, aber darin steckt <em>Hypertext Application</em>. Das zeigt auch schon, wo die Entwicklung hingeht und was die Browserhersteller damit bezwecken. Sie haben ein ganz klares Ziel, sie wollen Webanwendungen bauen. Damit meinen sie in erster Linie Rich-Client-Anwendungen.</p>
+
+<h3 id="podcast-ziele-whatwg">Ursprüngliche Ziele der WHATWG</h3>
+
+<p>Ursprünglich ging es der WHATWG um etwas anderes:</p>
+
+<ol>
+<li>Sie fing mit der Frage an, wie man verschiedene Sprachen in HTML einbetten kann. Die Lösung des W3C war: Man verwendet XML-Sprachen und diese kann man einfach ineinander verschachteln. Wenn man XHTML benutzt, kann man einfach SVG (Vektorgrafiken) direkt einbinden. In XHTML stellt sich das Problem nicht, weil die XML-Plattform darunter bereits die Lösung bietet. Aber diese Lösung wollten die Browserhersteller nicht.</li>
+<li>Der zweite ursprüngliche Punkt der WHATWG war die Verbesserung der Formulare in HTML. Und zwar nicht mit der neuen separaten Sprache XForms, sondern evolutionär mit Erweiterungen zum bestehenden HTML-Vokabular. Bevor man überhaupt von HTML5 geredet hat, war die erste Spezifikation, die die WHATWG erarbeitet hat, Web Forms 2.0. Das war ein evolutionärer Verbesserungsvorschlag für Formulare in HTML.</li>
+<li>Ein weiterer wichtiger Punkt war die Standardisierung von JavaScript-Features. Zu der Zeit, als sich die WHATWG gründete, kamen gerade die Ajax-Anwendungen auf. Websites wie z.B. GMail haben JavaScript-Features benutzt, die zwar existent waren, aber noch nicht wirklich standardisiert waren.</li>
+</ol>
+
+<p>Das waren anfänglichen Ziele der WHATWG, also HTML evolutionär weiterzuentwickeln. Für diese geschichtlichen Anfänge verweise ich auf einen <a href="http://blog.selfhtml.org/2006/10/30/bewegung-im-w3c/">Eintrag von Tim Tepaße im SELFHTML Aktuell Weblog</a> aus dem Jahr 2006. Dieser ist immer noch aktuell, weil er die Entwicklung schildert, wie die Browserhersteller dazu kamen, eine eigene Gruppe zu gründen und eigene Spezifikationen zu entwickeln.</p>
+
+<h3 id="podcast-reform-html5">Umfassende Reform unter dem Begriff HTML5</h3>
+
+<p>Wie gesagt blieb es nicht bei diesen drei gerade aufgezählten Hauptrichtungen. Letztlich wurde der Prozess, den die WHATWG anstoß, unter dem Namen HTML5 zusammengefasst. HTML5 umfasst nicht nur evolutionäre Weiterentwicklung von HTML, sondern räumt mit dem technischen Fundament auf. Die großen beiden Ansätze für HTML, die theoretischen Fundamente, werden über den Haufen geworfen. HTML5 definiert HTML komplett neu, nämlich weder auf SGML-Basis noch auf XML-Basis. Es wird von Grund auf neu und hundertprozentig genau definiert. Das bedeutet:</p>
+
+<ol>
+<li>Die Sprache selbst wird nicht mehr als DTD oder als XML-Schema festgelegt, also nicht mehr maschinenlesbar. Es gibt nicht mehr ein maschinenlesbares, normatives Format, was die einzige richtige, normative Grammatik von HTML darstellt. Stattdessen wird die Sprache als abstraktes DOM, als Dokument-Objektmodell definiert.</li>
+<li>
+
+<p>Diese Sprache ist natürlich nicht nur völlig abstrakt im Speicher wie das DOM, sondern es gibt sogenannte Serialisierungen. Das ist das, was wir als HTML-Code bezeichnen. Der springende Punkt ist, dass HTML5 nicht nur eine Serialisierung definiert, wie es HTML 4 bzw. XHTML 1 getan haben, sondern es gibt zwei Serialisierungen, die an diese beiden anknüpfen.</p>
+
+<p>Die eine ähnelt SGML, aber funktioniert nach eigenen Regeln. Die andere ist XML-konform. Das heißt, HTML5 lässt sich wie HTML 4 schreiben oder wie XHTML 1. Der Anspruch ist, dass jegliches HTML im Web gemäß HTML5 verarbeitet werden kann. Was nicht HTML5 ist, ist XML, und zwar nur dann, wenn es mit dem richtigen MIME-Typ ausgeliefert wird. XHTML5, wie man die XML-Serialisierung nennt, ist nicht mehr kompatibel wie XHTML 1 war. Man kann XHTML5 nicht mit dem MIME-Typ <code>text/html</code> ausliefern, denn dadurch wird es definitionsgemäß zu HTML5 und kann als HTML5 verarbeitet werden. Den Unterschied macht eben der MIME-Typ. Das ist ganz anders als bei XHTML 1.</p>
+
+</li>
+<li>Den dritten Punkt, den HTML5 definiert, ist der Parser. Weil HTML5 nicht mehr auf SGML oder XML basiert, muss es genau definieren, wie diese Serialisierungen, dieser HTML-Code geparst wird. Dieser Parser ist nicht allgemein, wie es ein XML-Parser ist, sondern speziell auf HTML zugeschnitten. Für jeden einzelnen Elementyp gibt es eigene Parser-Regeln. Entscheidend ist, dass dieser Parser genau so funktionieren soll wie die Tag-Soup-Parser, die schon in den Browsern eingebaut sind. Das Problem mit den Tag-Soup-Parsern war, dass jeder nach seinen eigenen Regeln funktionierte. HTML5 ist der Versuch, diese zu vereinheitlichen. Sie sollen mit Fehlern im HTML, die es zuhauf im Web gibt, einheitlich umgehen. Es soll determiniert sein, was aus einem Quelltext wird, also welches DOM aus einem bestimmten Eingabestream geparst wird.</li>
+</ol>
+
+<h3 id="podcast-ideen-html5">Grundideen von HTML5</h3>
+
+<p>Wie schon fast alle HTML-Spezifikationen vorher wird HTML5 den Browsern hinterhergeschrieben. Das heißt, man will kompatibel sein mit der aktuellen Verarbeitung. Die Parsing-Definition richtet sich nach den existenten Parsern. Der wichtigste Punkt ist demnach die Abwärtskompatibilität mit den vorhandenen HTML-Inhalten im Web.</p>
+
+<p>Das Prinzip von HTML5 lautet <em>Paving the Cowpaths</em>, das heißt soviel wie Pflastern der Trampelpfade. Die vielen proprietären Techniken, die es in HTML und JavaScript gibt, sollen standardisiert werden – das macht HTML5. Es geht vor allem um JavaScript-Techniken aus dem HTML-DOM, aus dem BOM (Browser Object Model), welches vorher nur in der Dokumentation zum Netscape-Browser beschrieben war. Es wird jetzt erstmals standardisiert. Es ist schon seit 10 Jahren verbreitet und einheitlich, aber HTML5 ist der erste Standard, der es normativ aufschreibt und festlegt. Hinzu kommen Features vom Microsoft Internet Explorer, JavaScript-Features aus JScript, die Verbreitung fanden. Gute Ideen, die andere Browserhersteller einfach nachbauten, erklärt HTML5 jetzt zum Standard und definiert genau, wie sie funktionieren sollen.</p>
+
+<h3 id="podcast-html5-version">HTML5 hat keine Version</h3>
+
+<p>In HTML5 steckt eine Nummer im Namen. Die HTML5-Macher bestehen jedoch darauf, dass diese Nummer keine Versionsnummer ist. Deswegen soll HTML5 auch ohne Leerzeichen zwischen HTML und 5 geschrieben werden. Dahinter steckt, dass HTML5 keine feste, abgeschlossene Version sein soll. Die HTML5-Macher wollen HTML5 immer weiter verbessern und neue Features hinzufügen. Dabei bleiben sie rückwärtskompatibel, aber legen Wert auf ständige Ausbaubarkeit. Man will nicht den Fehler von HTML 4 machen, irgendwann anzuhalten und die Spezifikation nicht mehr weiterzuentwickeln. HTML5 soll immer im Fluss bleiben.</p>
+
+<p>Dahinter steckt die etwas wahnwitzige Idee, dass HTML5 das Ende der Geschichte ist: HTML5 sieht sich nicht als eine Version ist, nach der eine neue Version kommt. HTML5 setzt sich als Modus Operandi, wie die Zukunft weiterlaufen soll. Wenn irgendetwas Neues kommt, dann auf Basis von HTML5. Das muss man meiner Meinung nach hinterfragen, darauf werde ich am Ende noch einmal eingehen.</p>
+
+<h3 id="podcast-html5-browserhersteller">HTML5 als Projekt der Browserhersteller</h3>
+
+<p>HTML5 wird von Leuten entwickelt, die hauptsächlich bei den Browserherstellern angestellt sind hauptsächlich, zumindest auf Seiten der WHATWG. Das sind die Browserhersteller Opera, Apple und Mozilla. Mozilla steht ein bisschen außen vor, implementiert natürlich die Techniken, aber gibt nicht so viele Impulse, soweit ich das weiß. Zunehmend stark nimmt der Browserhersteller Google Einfluss. Der Hersteller des verbreitetsten Browsers, nämlich Microsoft, ist bei der HTML5-Entwicklung außen vor. Niemand kann sich erklären, warum der größte Softwarekonzern die anderen Browserhersteller machen lässt und keine Impulse setzt. Es gibt einen Microsoft-Mitarbeiter, der sich auf den einschlägigen Mailinglisten äußert, aber Microsoft nimmt nicht wie Opera, Apple und Google direkten Einfluss auf die Entwicklung von HTML5.</p>
+
+<p>Auf Seiten der WHATWG sind es gerade einmal 5-10 Angestellte von Browserherstellern, auf die sich die maßgeblichen Impulse zurückführen lassen. Die Community ist natürlich größer, aber die Entscheidungsträger werden von Browserherstellern bezahlt. Über diese Situation habe ich einen Artikel geschrieben: <a href="/html5-prozess/">HTML5: Ein soziales Desaster?</a> Dieser geht darauf ein, dass HTML5 im Grunde von einer Person, nämlich dem Google-Angestellten Ian Hickson gesteuert wird. Er ist der HTML5-Editor (Herausgeber). Faktisch ist er der einzige, der Änderungen an der HTML5-Spezifikation vornimmt. Alles muss über seinen Schreibtisch und er hat einen großen Einfluss. Auch wenn er nur eine vermittelnde Rolle einnimmt, ist er die wichtigste Figur. Hinter Ian Hickson steht Google mit ganz bestimmten Vorstellungen und Interessen.</p>
+
+<h3 id="podcast-anwendungsplattform">Das Web als Anwendungsplattform</h3>
+
+<p>Google möchte das Web  zu einer Plattform für Anwendungen machen. Google hat mit großen Webanwendungen wie Google Docs, Google Maps und GMail Ajax populär gemacht und den Fat Client in das Web eingeführt. Das Ziel von Google ist, dass die Webplattform mit Desktop-Anwendungen konkurrieren kann. Googles Betriebssystem für Netbooks, Google Chrome OS, ist dafür ein gutes Beispiel. Auf diesem Betriebssystem laufen keine klassischen Anwendungen mehr, die in C oder C++ geschrieben sind. Es laufen nur noch Webanwendungen, diese alles können sollen, was auch native Anwendungen können. Die Anwendungen sind in JavaScript geschrieben und benutzen HTML5-Techniken. Das ist die Herangehensweise von den Browserherstellern, die sie HTML5 ins Buch und in die Spezifikation schreiben.</p>
+
+<p> Es ist eine begrüßenswerte Entwicklung, dass HTML jetzt nicht mehr getrennt von anderen Techniken der Webplattform entwickelt wird. HTML5 ist eben nicht mehr nur eine Auszeichnungssprache, HTML5 ist dieser Sammelbegriff, der alle momentanen technischen Neuerungen bezeichnet. Ein Beispiel: HTML5 trennt die Definition von Auszeichnungssprachen-Elementen nicht mehr von der API, über die man auf diese Elemente zugreift. Das DOM ist direkt in der Definition der Sprache eingebaut. Wichtig sind ferner die zusätzlichen JavaScript-APIs, die nicht alle Teil der HTML5-Spezifikation sind, aber in der WHATWG entwickelt werden.</p>
+
+<p>Dies ist ein ganz anderer Ansatz, als ihn das W3C ihn verfolgt hatte. Natürlich wollte das W3C das Web auch zu einer Anwendungsplattform machen, aber mit anderen Techniken und einer anderen Herangehensweise. Das W3C wollte keinen Schwerpunkt auf JavaScript legen, sondern eher deklarative Ansätze verfolgen. Das W3C hat dahingehend eine andere Philosophie. Dementsprechend ist HTML5 eine riesige Spezifikation, in der alles mögliche drin steht, was zum Anzeigen von HTML im Browser bis zum Scripten mit JavaScript dazugehört. Das ist ein Abschied von der ursprünglichen Idee, dass HTML eine plattformübergreifende, abstrakte Textauszeichnungssprache ist. Nicht mehr wissenschaftliche Dokumente sind für HTML5 maßgeblich.</p>
+
+<h3 id="podcast-html5-markup">Neues HTML5-Markup</h3>
+
+<p>Ich möchte kurz darauf eingehen, was stattdessen maßgeblich für die Textauszeichnung ist, die mit HTML5 möglich ist.</p>
+
+<ol>
+<li>
+
+<p>Eine Gruppe von neuen Elemente existiert nur, damit man über einheitliche Scripting-APIs darauf zugreifen kann. HTML 4 hatte die Idee, zum Einbetten externer Dateien wie Audio, Video, Plugins und Bildern einfach das <code>object</code>-Element zu nehmen. Die radikale Idee war, im Grunde alles über ein Element zu einzubetten, egal was. XHTML 2 hat diese Idee noch viel weiter getrieben, hat <code>object</code> abgeschafft zugunsten des <code>src</code>-Attributs. Damit konnte man in jedes beliebige Element jede beliebige externe Datei einbinden.</p>
+
+<p>Das macht HTML5 nicht, sondern definiert neue Elemente wie <code>audio</code>, <code>video</code> und <code>canvas</code> für ganz spezifische Zwecke, die eine ganz spezifische, vordefinierte API bieten. Das gab es vorher nicht. Vorher war Audio- und Videoeinbettung von Plugins dominiert, welche keine einheitliche Schnittstelle boten. Man wusste nicht, welches Plugin letztlich zur Wiedergabe verwendet wurde. Es gab den Flash Player, Quicktime, Windows Media Player, Real Player usw. mit ganz unterschiedlichen APIs. Um das zu vereinheitlichen, führt HTML5 spezifische Elemente ein.</p>
+
+</li>
+<li>Was der ursprünglichen Idee von HTML entspricht, sind die neuen Strukturelemente. HTML folgte wie gesagt einem Ideal von wissenschaftlichen Arbeiten, wie man sie an der Universität erstellt, also Hausarbeiten, Diplomarbeiten, die ganz klassisch aufgebaut sind. Es gibt eine hierarchische Überschriftenstruktur, so etwas wie Einleitungen, Literaturverzeichnisse usw. Bei HTML5 nimmt man als Grundlage die Textformate, die es im Web gibt. Man schaut sich an, wie Webmagazine und Blogs aufgebaut sind. Dafür gibt es jetzt die Elemente <code>nav</code>, <code>article</code>, <code>section</code>, <code>header</code>, <code>footer</code>, <code>aside</code>, <code>menu</code> und auch <code>time</code>. Dieses Vokabular entspricht der tatsächlichen Struktur von Dokumenten im Web. Das ist eine Abkehr von einem allgemeinem Markup, das für allgemeine Texte zuständig ist. Etwa bei einem eBook macht so etwas wie <code>header</code> und <code>footer</code> nur wenig Sinn, so etwas wie <code>menu</code> und <code>nav</code> gibt es nur auf Websites. HTML5 macht ein erfreulichen Schritt dahin, Textauszeichnung für Websites zu bieten.</li>
+<li>Eine weitere neue Klasse von Elementen sind die, die nur für Webanwendungen gedacht sind, genauer für Bedienelemente und Controls. <code>progress</code>, <code>meter</code> und <code>command</code> machen nur im Kontext von dynamischen Webanwendungen Sinn, die die Elemente per JavaScript ansprechen.</li>
+<li>Der Entwurf Web Forms 2.0 für verbesserte Formulare wurde in HTML5 aufgenommen. Es gibt neue Formularfeldtypen und man kann angeben, welche Eingaben im Formular zulässig sind. In diesem Punkt hat man viel von XForms gelernt, aber man hat es einfacher umgesetzt.</li>
+<li>
+<p>Ein Punkt, der auch bei dem Entwurf von XHTML 2 eine wichtige Rolle gespielt hat, sind Metadaten, echte maschinenlesbare Semantik. Es gibt zwei große Ansätze.</p>
+<p>Der eine ist <dfn>RDFa</dfn>. RDF, das ist das Ressource Description Framework vom W3C. Das ist schon ziemlich alt und etabliert. Es ist der wichtigste Standard, um maschinenlesbare Aussagen über etwas zu machen. Man geht von einem Set an sogenannten Prädikaten aus und formuliert damit Aussagen wie zum Beispiel »der Name vom Autor dieses Dokuments ist molily«. Es wird daran gearbeitet, diese Metadaten direkt in HTML5 einzubinden.</p>
+<p>Ein konkurrierender Vorschlag für eingebundene Metadaten nennt sich <dfn>Microdata</dfn>. Dieser RDFa-Konkurrent will einfacher sein und wurde vom HTML5-Editor Ian Hickson erfunden. Manche sagen, Hickson verfolge eine Not-invented-here-Strategie. RDFa passt den HTML5-Machern nicht so recht ins Konzept. Damit haben sie nicht Unrecht, denn RDFa stammt aus dem XML-Kontext, von dem sich HTML5 programmatisch lösen will. Daher gibt es einen kleinen Formatkrieg zwischen RDFa und Microdata. Es ist jedoch ganz erfreulich, dass das W3C entschieden hat, dass beide Entwürfe weiterentwickelt werden sollen und der Markt entscheiden soll, welches Format besser ankommt.</p>
+<p>Meine Prognose ist, dass sich beide durchsetzen werden. Viele große Unternehmen unterstützen RDFa, aber Microdata mausert sich. Es gibt mittlerweile auch viele Anwendungen, wenngleich Metadaten noch nicht so etabliert ist. Ich halte es Microdata für vielversprechend und finde es nicht schlecht, dass es diese beiden Möglichkeiten gibt und man langfristig die Tools, die in der RDF-Welt schon entstanden sind, weiternutzen kann.</p>
+</li>
+</ol>
+
+<p>Das war der Überblick über die neuen Herangehensweise hinsichtlich des Vokabulars. Damit schließe ich den Teil zu HTML5 ab.</p>
+
+<h2 id="podcast-fazit">5. Gesamtfazit und Ausblick </h2>
+
+<p>Falls es noch nicht klar geworden ist, HTML5 hat letztendlich gewonnen. Es gab die These SGML, die Antithese XML und die Synthese HTML5, die beide auf einer höheren Ebene aufhebt. HTML5 bietet eine verbesserte SGML-artige Syntax, aber man kann es gleichzeitig als XML verarbeiten. Es steht einem frei, beides zu tun, denn HTML5 kann gleichzeitig HTML5 und XHTML5 sein. Beide Serialisierungen sind zueinander kompatibel. Insofern ist HTML5 die Synthese der beiden vorherigen Ansätze.</p>
+
+<p>Im Jahr 2006 sah das W3C ein, dass sein radikaler Ansatz, das Web komplett auf eine XML-Basis zu stellen, fehlgeschlagen ist. Es sah ein, dass sich XHTML 2 nicht etablieren konnte und gestand ein: Es ist richtig, HTML evolutionär weiterzuentwickeln, also auszubauen und aufzuräumen. Dafür gründete das W3C im Jahr 2007 eine neue HTML-Arbeitsgruppe, die damals noch parallel zur XHTML-2-Arbeitsgruppe lief. Diese Arbeitsgruppe übernahm den WHATWG-Vorschlag als Grundlage für das neue HTML. Das heißt, HTML5 wird heute – das erklärt einiges, was ich vorher gesagt habe – auf zwei Seiten entwickelt, gleichzeitig bei der WHATWG und in dieser W3C-Arbeitsgruppe. Letztlich stellte das W3C XHTML 2 ist im Jahr 2009 komplett ein. Sie sahen ein, dass XHTML 2 eine Sackgasse ist und entzogen der Arbeitsgruppe die finanzielle Unterstützung. Insofern hat HTML5 gewonnen.</p>
+
+<h3 id="podcast-shipping-code">Shipping code wins?</h3>
+
+<p>Damit komme ich an den Anfang zurück. <a href="http://diveintohtml5.org/past.html">Mark Pilgrims Text</a> erzählt die Geschichte von HTML, wie auch ich sie hier zu erzählen versucht habe. Was ist nun an diesem Text <q>biased</q> (einseitig, parteiisch)? Seine Frage war: Wie funktioniert Standardisierung von HTML?</p>
+
+<p>Mark Pilgrims Fazit ist: Letztlich sind es die Browserhersteller, die die akademischen und ein wenig abgehobenen Diskussionen um die richtige Lösung weitesgehend ignorieren, einfach ein Feature erfinden und in den Browser einbauen, denn dann ist das Feature da. Pilgrim meint: <q cite="http://diveintohtml5.org/past.html">The ones that win are the ones that ship</q>. Das heißt, diejenigen Browserhersteller gewinnen, die ein Feature implementieren und damit einfach Tatsachen schaffen.</p>
+
+<p>Das ist eine ziemlich kritikwürdige Erklärung der Geschichte. Zunächst einmal ist es eine nüchterne Feststellung, die den Tatsachen entspricht: Diese Regel hat sich bisher bewahrheitet. Fast immer, wenn die Browserhersteller eine Technik in die Welt gebracht haben, hat sie sich mehr oder minder durchgesetzt gegenüber den akademischen Entwürfen des W3Cs, selbst wenn diese viel reiner waren und mehr Vorteile hatten. Letztlich sind die einfachen, schnell hingestellten Techniken geblieben.</p>
+
+<p>Ich finde das eher problematisch. Man muss dazu sagen, dass Mark Pilgrim mittlerweile bei Google an HTML5 arbeitet. Sein Interesse ist klar, er rechnet sich dem HTML5-Lager zu. Er war einer derjenigen, die berechtigte Kritik am W3C übten, als es sich komplett auf XHTML 2 eingeschworen hatte und dachte, die Zukunft des Webs liege in einer rosigen XML-Plattform mit vielen XML-Modulen, die man miteinander auf einer Website verknüpft. </p>
+
+<p>Wie gesagt besteht die HTML5-Crew größtenteils aus Angestellten von Browserherstellern und insofern muss man das als die eine radikale und verkürzte Seite sehen: Sie verständigen sich auf umsetzbare Standards, bauen sie ein und schaffen damit Fakten. Es stimmt, bisher ist das immer so passiert, aber es ist nicht ohne Probleme.</p>
+
+<p>Es gab einen schönen Podcast namens <a href="http://www.sitepoint.com/blogs/2010/01/15/podcast-44-html5-is-a-beautiful-mess/">HTML5 is a (beautiful) mess</a>. Der hat gezeigt, welche Kämpfe es momentan um die Zukunft des Webs gibt. Das Web, was im Zuge von HTML5 entsteht, ist ein ganz bestimmtes. Zum Beispiel die Vorstellung des W3C für das Web geht in eine ganz andere Richtung. Und meiner Meinung nach haben beide Richtungen ihre Vor- und Nachteile. Deswegen finde ich es falsch, dabei stehenzubleiben, dass die Browserhersteller durch das Ausliefern von Code immer gewinnen werden. Ich halte das nicht für die einzige Möglichkeit, wie ein Standard entstehen kann. So stellt es zumindest Mark Pilgrim dar und mit dieser Ansicht bringt er sich in HTML5 ein.</p>
+
+<h3 id="podcast-html5-arbeitsgruppen">Konkurrenz der beiden HTML5-Arbeitsgruppen</h3>
+
+<p>Glücklicherweise gibt es noch eine Systemkonkurrenz. Die einstige große Konkurrenz zwischen dem W3C und der WHATWG gibt es zumindest noch teilweise. Einerseits gibt es die WHATWG, die weiterhin autonom arbeitet, aber es gibt auch die W3C-HTML-Arbeitsgruppe, die der WHATWG etwas entgegenstellt. Beide Parteien arbeiten gemeinsam an HTML5. Das ist wie gesagt eine Quelle der Konflikte und Zerwürfnisse. Aber es ist auch gut, dass sich hier noch zwei Gruppen gegenüberstehen, sich gegenseitig herausfordern und im Grunde zwei unterschiedliche Ansätze verfolgen. Zumindest ist das besser, als wenn es nur eine Partei gäbe.</p>
+
+<p>Wie ich auch in meinem Artikel <a href="/html5-prozess/">HTML5: ein soziales Desaster?</a> angemerkt habe, ist HTML5 eine Soap-Opera, weil es diese ständigen Konflikte gibt. Manche sagen: Weil HTML5 im Gegensatz zu anderen früheren Standardisierungsprozessen sehr offen ist, merkt die Öffentlichkeit erstmals, wie schwierig und konfliktreich es ist, einen Standard zu entwickeln. Aber man muss schon festhalten, dass ziemlich etwas faul ist am HTML5-Prozess. Es gibt viele berechtigte Kritik daran.</p>
+
+<p>Die Frage, ob HTML5 ein Erfolg wird, beantworten viele schon jetzt mit Ja: HTML5 sei schon jetzt viel erfolgreicher, als es alle vorherigen HTML-Standards es waren. Das würde ich differenzierter sehen. Aus JavaScript-Sicht ist HTML5 sicher ein Erfolg und Google wird seine Webplattform bekommen. Dafür haben sie einen <a href="http://dev.chromium.org/developers/web-platform-status">Masterplan</a>, wie sie die neuen HTML5-JavaScript-Techniken in ihrem Chrome-Browser umsetzen. Es ist nur noch eine Frage der Zeit, bis HTML5 als Anwendungsplattform im Web richtig etwas kann. Das wird so sein, weil Google Ian Hickson anstellt, der die HTML5-Spezifikation schreibt. </p>
+
+<h3 id="podcast-html5-erfolg">Wird HTML5 ein Erfolg werden?</h3>
+
+<p>Eigentlich geht es in diesem Vortrag um HTML als Auszeichnungssprache. Wird HTML5 als Auszeichnungssprache ein Erfolg sein? Ich finde, das ist noch nicht geklärt. HTML5 versucht eine Synthesis aus den vorhergehenden Ansätzen zu sein. Ich habe aufgezählt, welche Elemente sicher ein Erfolg sein werden. Nämlich die, mit denen HTML5 Textauszeichnung genuin für das Web erfindet. Und nicht mehr Textauszeichnung für irgendwelche wissenschaftlichen Dokumente, die es im Web nur zu einem Bruchteil gibt.</p>
+
+<p>HTML5 als Auszeichnungssprache ist den aktuellen Mustern nachempfunden. Das ist <i>Design by Data</i>: Man schaute sich an, welche Strukturen es im Web gibt. Man erhob einfach Daten und schaute, welche Strukturen häufig vorkommen und goss diese in den Standard. Das ist ein typischer Ansatz von Google. Google verfolgt in verschiedener Hinsicht diesen Ansatz und verfolgte ihn auch bei HTML5, indem es diese Untersuchung sponserte. Google stellte Ian Hickson ein, damit er mit dem riesigen Google-Suchindex das HTML des Web untersuchen kann und existierende Strukturen suchen kann, die man standardisieren könnte.</p>
+
+<p>Die Einschränkung ist momentan noch: Es gibt noch keinen HTML5-Parser, der wirklich ausgereift ist. Ein bekannter Engagierter aus der HTML5-Szene, <a href="http://hsivonen.iki.fi/">Henri Sivonen</a>, hat einen <a href="http://about.validator.nu/htmlparser/">HTML5-Parser in Java geschrieben</a>, der nach und nach heranreift. Dieser Parser wird automatisch von Java in C++ übersetzt und diese C++-Version wird in Gecko eingesetzt, die Browserengine, die Firefox zugrunde liegt. <a href="http://blog.whatwg.org/test-html5-parsing">Der Parser kann getestet werden</a>, indem man sich einen <a href="http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-trunk/">Firefox-Nightly-Build</a> (eine Vorabversion) herunterlädt und eine bestimmte Konfigurationsoption anschaltet. Wenn man dann auf HTML5-Seiten surft, wird der HTML5-Parser genutzt.</p>
+
+<p>Das ist die erste praktische Anwendung von HTML5 als revolutionär neue Sprache, die nicht auf Tag-Soup-Parsern basiert, nicht auf SGML, nicht auf XML, sondern einen eigenen, im Detail definierten Parser verwendet. Wann diese Idee Realität sein wird, steht noch in den Sternen und wird noch Jahre dauern. Es wird noch ziemlich lange dauern, bis wir die Früchte ernten können, die HTML5 gerade sät – zumindest was HTML5 als Auszeichnungssprache angeht.</p>
+
+<p>Authoring Tools und Validatoren sind auch noch in der Entwicklung. Ich glaube, der einzige <a href="http://html5.validator.nu/">HTML5-Validator</a> wird auch von Henri Sivonen entwickelt. Den habe ich schon häufig eingesetzt, er hat einfach noch Usability-Probleme und ist noch nicht für das breite Publikum brauchbar.</p>
+
+<h3 id="podcast-html5-ende-geschichte">HTML5 ist nicht das Ende der Geschichte</h3>
+
+<p>Was man hinterfragen sollte, ist das Selbstverständnis von HTML5 als Ende der Geschichte. Das muss sich noch zeigen. Daran glaube ich nicht. So alt ist das Web noch nicht und es gab jetzt schon zwei bis drei große Umbrüche. Es wird irgendeinen Umbruch geben in Zukunft, der auch HTML5 über den Haufen werfen wird. Ich bin auch nicht der Meinung, dass HTML5 die einzige Möglichkeit ist, wie man Standards baut, nämlich der Browserrealität hinterherzuschreiben und nur das zu implementieren, was gerade im Interesse der Browserhersteller steht. Die Webanwendungsschiene ist noch nicht so alt, irgendetwas wird danach kommen.</p>
+
+<p>Wenn HTML5 als Anwendungsplattform steht, dann muss sich das Web neue Ziele suchen. Daher bin ich der Meinung, dass HTML5 auch nur eine Nummer in einer Reihe ist. HTML5 wird irgendwann gehen und andere Techniken werden kommen. Irgendwann wird das, was mit HTML 2 in die Welt gebracht wurde, irgendwann wird dieses Vokabular, diese Herangehensweise, ein Ende haben. Dann wird es nötig sein, wie das W3C es mit XHTML 1 und XHTML 2 auch geplant hatte, eine Alternative zu schaffen, die alles über den Haufen wirft und modular von Grund auf neu macht.</p>
+
+<p>Das ist meine Prognose und mein Fazit, das ich aus der Geschichte von HTML ziehe. Es steht dem entgegen, wie HTML5 momentan verstanden wird oder zumindest propagiert wird von den Machern von HTML5. Diese sehen ihre Strategie an als die, die sich historisch durchgesetzt hat, und deshalb sehen sie sich ultimativ im Recht. Sie haben auch viele gute Argumente und es stimmt in vieler Hinsicht: Deren Entwicklungsmodell funktioniert momentan, die Innovation in den Browsern galoppiert. Vor allem <a href="/javascript-zukunft-2010/">der JavaScript-Bereich ist momentan sehr dynamisch</a> und wird gehyped. Interessanter fände ich eine Weiterentwicklung der Auszeichnungssprache.</p>
+
+<p>Wenn es möglich sein wird, das mit HTML5 zu machen, was gerade geplant ist, dann können wir noch einmal darüber reden: Das ist die native Einbettung von SVG und MathML, die Verwendung von RDFa und Microdata. Wenn diese Ideen, die im Grunde das W3C mit seinem XML-Ökosystem hatte, in HTML5 möglich sind, dann hat sich die Vision von HTML5 verwirklicht. Und das dauert meiner Vermutung nach noch ein paar Jahre.</p>
+
+<p>Das war meine Erzählung der HTML-Geschichte. Vielen Dank fürs Zuhören.</p>
+
+<h2>Links</h2>
+
+<ul class="compact-list">
+<li><a href="/html4-validierung/">Strenge HTML-4-Validierung</a></li>
+<li><a href="/html5-prozess/">HTML5: Ein soziales Desaster?</a></li>
+<li><a href="http://diveintohtml5.org/past.html">A Quite Biased History of HTML5</a>, in: <a href="http://diveintohtml5.org/">Dive into HTML5</a>, Mark Pilgrim</li>
+<li><a href="http://www.linkwerk.com/pub/xmlidp/2000/strukturorientiert.html">Generic Coding, in: XML in der Praxis</a>, Henning Behme und Stefan Mintert</a></li>
+<li><a href="http://blog.selfhtml.org/2006/10/30/bewegung-im-w3c/">Bewegung im W3C</a>, Tim Tepaße</li>
+<li><a href="http://www.sitepoint.com/blogs/2010/01/15/podcast-44-html5-is-a-beautiful-mess/">SitePoint-Podcast: HTML5 is a (Beautiful) Mess</a></li>
+<li><a href="http://www.atendesigngroup.com/blog/brief-history-of-html">A Brief History of HTML</a>, Scott Reynen</li>
+</ul>

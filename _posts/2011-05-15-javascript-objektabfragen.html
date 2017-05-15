@@ -1,0 +1,21 @@
+---
+layout: post
+title: "Artikel überarbeitet: Objektabfragen und Fallunterscheidungen in JavaScript"
+---
+
+<p>In der browserübergreifenden JavaScript-Entwicklung haben Objektabfragen und Feature-Tests einen zentralen Stellenwert. Es gibt jedoch verschiedene Methoden, um Objekte und Werte zu überprüfen, und es herrscht Unklarheit darüber, wie sie intern funktionieren und in welchen Fällen sie angewendet werden. Diese Fragen klärt der Artikel <strong><a href="https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen">Objektabfragen und Fallunterscheidungen in JavaScript</a></strong>, den ich jüngst überarbeitet habe.</p>
+
+<p>JavaScript als dynamisch und schwach getypte Sprache versucht die Programmierung durch automatische Typumwandlung (Coercion) zu vereinfachen. In den überwiegenden Fällen funktioniert Coercion so wie gewünscht: Man merkt sie nicht, aber sie findet statt und das Programm verhält sich wie erwartet. In den restlichen Fällen muss man hingegen höllisch aufpassen. Auch wenn diese Fälle selten sind, so hat JavaScript dadurch den Ruf bekommen, fragilen und fehleranfälligen Code zu begünstigen.</p>
+
+<p>Eine Möglichkeit damit umzugehen, ist Coercion möglichst zu umgehen, indem man typsichere Operatoren wie <code>===</code> verwendet, strenge Typabfragen mit <code>typeof</code> vornimmt und sämtliche Umwandlungen explizit vornimmt. Der bekannte JavaScript-Theoretiker Douglas Crockford propagiert dies seit Jahren. Heraus kommen mitunter übermäßig ausführliche Konstruktionen wie <code>if (typeof value === 'string')</code>. Diese selbst auferlegten Regeln sollen vermeiden, dass man sich mit den Fallstricken von Typen und Typumwandlung auseinandersetzen muss und sie beim Programmieren ständig im Kopf behalten muss. Sie sollen Programmierern mit unterschiedlichem Erfahrungsstand ermöglichen, gemeinsam fehlerfreien Code zu schreiben.</p>
+
+<p>Der entstehende ausführliche Code ist jedoch nicht unbedingt robuster und besser lesbar. Ich halte es für sinnvoller, das Typsystem von JavaScript sowie das Verhalten von Operatoren und deren Coercion zu verstehen. Mit diesem fortgeschrittenen Wissen lassen sich 90% der Fälle sehr einfach und robust umsetzen, während man bei den restlichen haarigen 10% Mehrdeutigkeiten durch zugeschnittene Abfragen vermeiden kann. Die Regeln von ECMAScript sind zwar umfangreich, aber letztlich eindeutig und klar. Mittlerweile gibt es gute Sekundärliteratur, Überblickartikel und Werkzeuge, die beim Erlernen und Anwenden assistieren.</p>
+
+<p>Die Überarbeitung des Artikels legt daher einen Schwerpunkt darauf, wie man Coercion in Objektabfragen sinnvoll nutzen kann. Besonders in Objektabfragen kann man sich die schwache Typisierung zunutze machen. So ist etwa die Abfrage auf »Truthyness« mit <code>if (value)</code>, welche den Wert in einen Boolean umwandeln und mit <code>true</code> vergleicht, bereits sehr vielseitig.</p>
+
+<ul class="compact-list">
+<li><strong>→ <a href="https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen">Objektabfragen und Fallunterscheidungen in JavaScript</a></strong></li>
+<li><a href="http://jscoercion.qfox.nl/">JavaScript Coercion Tool</a> – <a href="http://qfox.nl/weblog/214">Blog-Post</a></li>
+<li><a href="http://webreflection.blogspot.com/2010/10/javascript-coercion-demystified.html">JavaScript Coercion Demystified</a></li>
+<li><a href="http://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/">Truth, Equality and JavaScript</a></li>
+</ul>

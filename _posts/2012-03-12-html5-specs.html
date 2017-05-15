@@ -1,0 +1,488 @@
+---
+title: Übersicht über HTML5-Spezifikationen und -Literatur
+---
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>HTML5-Spezifikationen und -Standards</title>
+<meta name="viewport" content="width=device-width">
+<style>
+body {
+  font-family: "Segoe UI", Calibri, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  line-height: 1.4;
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+h1 {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 125%;
+}
+
+h2 {
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  font-size: 105%;
+  border-bottom: 1px dotted #aaf;
+}
+
+h3 {
+  margin: 1rem 0 0;
+  font-size: 100%;
+}
+
+a:link {
+  color: #00c;
+}
+
+a:visited {
+  color: #556;
+}
+
+.links {
+  padding-bottom: 1rem;
+  border-bottom: 1px dotted #aaf;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  position: relative;
+  margin: 0;
+  line-height: 2;
+}
+
+.link {
+  display: block;
+  border-style: solid solid none;
+  border-width: 1px;
+  border-color: white;
+  font-size: 81.25%;
+}
+
+.link:hover,
+.link:focus {
+  border-style: solid solid none;
+  border-width: 1px;
+  border-color: #888;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+
+  padding-left: 0.5rem;
+
+  background-color: #f5f5ff;
+}
+
+.link:focus {
+  outline: 0;
+}
+
+.link-description {
+  position: absolute;
+  z-index: 1;
+  left: -9999px;
+
+  padding: 0 0.5rem 0.5rem;
+
+  border-style: none solid solid;
+  border-width: 1px;
+  border-color: #888;
+
+  background-color: #f5f5ff;
+
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.link:hover + .link-description,
+.link:focus + .link-description {
+  left: 0;
+  right: 0;
+}
+
+p {
+  margin: 0 0 1rem;
+  font-size: 81.25%;
+}
+
+li p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+aside {
+  margin: 2rem 0;
+}
+
+#footer {
+  clear: both;
+  margin: 0 1.5% 0;
+  text-align: center;
+}
+
+#footer p {
+  margin: 0;
+}
+
+/* Vierspaltig */
+
+.col {
+  float: left;
+  overflow: hidden;
+  margin: 0 1.5% 0;
+  width: 22%;
+  max-width: 22rem;
+}
+
+/* Zweispaltig */
+
+@media (max-width: 62rem) {
+  .col {
+    width: 46%;
+    margin: 0 2% 0;
+  }
+}
+
+/* Einspaltig */
+
+@media (max-width: 35rem) {
+  .col {
+    float: none;
+    margin: 0;
+    width: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Übersicht über HTML5-Spezifikationen und -Literatur</h1>
+</header>
+
+<section class="col">
+
+<div class="links">
+
+<h2>WHATWG-Spezifikation</h2>
+
+<ul>
+<li>
+<a href="https://html.spec.whatwg.org/multipage/" class="link">WHATWG Multi-Page</a>
+<div class="link-description">
+<p>Die Spezifikation auf mehrere HTML-Dokumente verteilt</p>
+</div>
+</li>
+<li>
+<a href="https://html.spec.whatwg.org/" class="link">WHATWG Single-Page</a>
+<div class="link-description">
+<p>Die gesamte Spezifikation in einer riesigen HTML-Datei</p>
+</div>
+</li>
+<li>
+<a href="https://developers.whatwg.org/" class="link">WHATWG Edition for Web Developers</a>
+<div class="link-description">
+<p>Besser lesbare Spezifikation ohne Zusätze speziell für Webentwickler</p>
+</div>
+</ul>
+
+</div>
+
+<aside>
+
+<p>HTML wird gleichzeitig beim WHATWG-Gremium und bei der W3C-HTML-Arbeitsgruppe entwickelt. Da die HauptautorInnen auf der WHATWG-Seite stehen, ist der erste Anlaufpunkt der täglich aktualisierte Entwurf auf whatwg.org.</p>
+
+<p>Die WHATWG-Spezifikation ist interaktiv: Sie bindet Angaben zur Browserunterstützung ein, ermöglicht Feedback und zeigt offene Fragen (Issues) an. Abgesehen von der Browserunterstützung sind diese Zusätze nur für diejenigen interessant, die die Entwicklung von HTML5 verfolgen oder zu ihr beitragen wollen.</p>
+
+<p>Die Single-Page-Variante bringt manche Browser zum Einfrieren. Es empfiehlt sich daher die Multi-Page-Spezifikation. Mittlerweile gibt es eine Version der WHATWG-Spezifikation speziell für WebautorInnen. Diese ist ansprechender gestaltet und kommt ohne Zusätze daher.</p>
+
+</aside>
+
+</section>
+
+<section class="col">
+
+<div class="links">
+
+<h2>W3C-Spezifikation</h2>
+
+<ul>
+<li>
+<a href="https://www.w3.org/TR/html5/" class="link">W3C Recommendation</a>
+<div class="link-description">
+<p>HTML5-Spezifikation beim W3C, stabiler Standard</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/html/wg/drafts/html/master/" class="link">W3C Editor’s Draft</a>
+<div class="link-description">
+<p>HTML5-Spezifikation beim W3C, aktueller Autorenentwurf</p>
+</div>
+</li>
+</ul>
+
+<h2>Beim W3C ausgelagerte Techniken</h2>
+
+<ul>
+<li>
+<a href="https://www.w3.org/TR/2dcontext/" class="link">HTML Canvas 2D Context</a>
+<div class="link-description">
+<p>JavaScript-API für das zweidimensionale Zeichnen auf dem canvas-Element</p>
+<p>Wichtige Objekte: <code>canvasElement.getContext('2d')</code> uvm.</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/microdata/" class="link">HTML Microdata</a>
+<div class="link-description">
+<p>HTML-Attribute, um maschinenlesbare Metadaten unterzubringen, mit JavaScript-API</p>
+</div>
+</li>
+</ul>
+
+</div>
+
+<aside>
+
+<p>Die HTML5-Spezifikationen bei der WHATWG und der beim W3C unterscheiden sich: W3C-HTML5 beinhaltet einen Großteil von WHATWG-HTML, lässt allerdings einige Teiltechniken aus oder sie sind in separate Spezifikationen ausgelagert. Zudem gibt es einige inhaltliche Unterschiede.</p>
+
+<p>Der Grund dieser Aufsplittung ist die unterschiedliche Arbeitsweise des Gruppen. Während die WHATWG an einem nicht versionierten »Living Standard« arbeitet, legt die W3C-Arbeitsgruppe einen stabilen, versionierten HTML5-Standard festzulegen. Um die Standardisierung zu vereinfachen, klammert sie inhaltlich unabhängige, noch strittige oder unfertige Teile aus.</p>
+
+</aside>
+
+</section>
+
+<section class="col">
+
+<div class="links">
+
+<h2>Zusatzdokumente</h2>
+
+<ul>
+<li>
+<a href="https://html-differences.whatwg.org/" class="link">HTML5 differences from HTML4</a>
+<div class="link-description">
+<p>Unterschiede zwischen HTML 4 und HTML5, Zusatz zur Hauptspezifikation</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/html-polyglot/" class="link">Polyglot Markup: A robust profile of the HTML5 vocabulary</a>
+<div class="link-description">
+<p>Empfehlungen für HTML5-Dokumente, die als HTML5 sowie als XHTML5/XML verarbeitet werden können</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/html-design-principles/" class="link">HTML Design Principles</a>
+<div class="link-description">
+<p>Älterer Hintergrundartikel, der die Grundprinzipien von HTML5 beschreibt</p>
+</div>
+</li>
+</ul>
+
+<h2>Einbettbare Auszeichnungssprachen</h2>
+
+<ul>
+<li>
+<a href="https://www.w3.org/TR/SVG2/" class="link">Scalable Vector Graphics (SVG)</a>
+<div class="link-description">
+<p>Etabliertes Format für Vektorgrafiken</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/MathML3/" class="link">MathML</a>
+<div class="link-description">
+<p>Vokabular zur Auszeichnung von mathematischen Formeln</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/wai-aria/" class="link">Accessible Rich Internet Applications (WAI-ARIA)</a>
+<div class="link-description">
+<p>Auszeichnung von Elementen mit »Rollen«, um die Zugänglichkeit zu verbessern</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/ruby/" class="link">Ruby Annotations</a>
+<div class="link-description">
+<p>Anmerkungen neben dem Fließtext anzeigen, üblich in ostasiatischen Sprachen</p>
+</div>
+</li>
+<li>
+<a href="https://www.w3.org/TR/rdfa-in-html/" class="link">RDFa</a>
+<div class="link-description">
+<p>Einbettung von RDF-Metadaten in HTML5-Attributen. Konkurrenzformat zu Microdata</p>
+</div>
+</li>
+</ul>
+
+</div>
+
+<aside>
+
+<p>Zusätzlich zur Hauptspezifikation gibt es nicht-normative Sekundärliteratur, z.B. Referenzen, Richtlinien und Hintergrundtexte. In diesen Kontext gehören auch weitere Auszeichnungssprachen, die in HTML5 integriert werden können.</p>
+
+</aside>
+
+</section>
+
+<section class="col">
+
+<div class="links">
+
+<h2>Separate JavaScript-APIs (Auswahl)</h2>
+
+<h3>DOM</h3>
+
+<ul>
+
+<li>
+<a href="https://dom.spec.whatwg.org/" class="link">DOM Living Standard</a>
+<div class="link-description">
+<p>Weiterentwicklung und Zusammenführung verschiedener DOM-Spezifikationen. Beinhaltet Core, Events, die Selectors-API (u.a. <code>querySelector</code>) und Element Traversal (u.a. <code>firstElementChild</code>).</p>
+</div>
+</li>
+
+</ul>
+
+<h3>Serverkommunikation</h3>
+
+<ul>
+
+<li>
+<a href="https://xhr.spec.whatwg.org/" class="link">XMLHttpRequest Living Standard</a>
+<div class="link-description">
+<p>Weiterentwicklung von XMLHttpRequest mit cross-domain HTTP-Anfragen, Datei-Uploads und dem Zusammenstellen von Formulardaten.</p>
+<p>Wichtige Objekte: <code>new XMLHttpRequest()</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://www.w3.org/TR/cors/" class="link">Cross-Origin Resource Sharing (CORS)</a>
+<div class="link-description">
+<p>Erweitert HTTP um Zugriffsrechte. Darauf baut u.a. cross-domain XMLHttpRequest auf.</p>
+<p>Kernbestandteil: Der HTTP-Header <code>Access-Control-Allow-Origin</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://html.spec.whatwg.org/multipage/comms.html#server-sent-events" class="link">Server-Sent Events (Teil von WHATWG HTML)</a>
+<div class="link-description">
+<p>Eine Server-Push-Lösung mit offen gehaltenen HTTP-Verbindungen. Ermöglicht dem Client, einen kontinuierlichen Datenstrom zu empfangen</p>
+<p>Wichtige Objekte: <code>new EventSource()</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://html.spec.whatwg.org/multipage/comms.html#network" class="link">Web Sockets (Teil von WHATWG HTML)</a>
+<div class="link-description">
+<p>Socket-Verbindungen zum Server per JavaScript erzeugen. Nutzt das Web-Sockets-Protokoll</p>
+<p>Wichtige Objekte: <code>new WebSocket()</code></p>
+</div>
+</li>
+
+</ul>
+
+
+<h3>Datenspeicherung</h3>
+
+<ul>
+
+<li>
+<a href="https://html.spec.whatwg.org/multipage/webstorage.html" class="link">Web Storage  (Teil von WHATWG HTML)</a>
+<div class="link-description">
+<p>Einfaches clientseitiges Speichern von JavaScript-Daten</p>
+<p>Wichtige Objekte: <code>sessionStorage</code>, <code>localStorage</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://www.w3.org/TR/IndexedDB/" class="link">Indexed Database API</a>
+<div class="link-description">
+<p>Clientseitige Key-Value-Datenbank mit Indizes</p>
+<p>Wichtige Objekte: <code>indexedDB.open()</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://w3c.github.io/FileAPI/" class="link">File API</a>
+<div class="link-description">
+<p>Einlesen von Dateien, die NutzerInnen über Formularfelder auswählen hat oder ins Browserfenster ziehen</p>
+<p>Wichtige Objekte: Die <code>files</code>-Eigenschaft bei <code>&lt;input type="file"&gt;</code>, <code>new FileReader()</code></p>
+</div>
+</li>
+
+</ul>
+
+<h3>Verschiedenes</h3>
+
+<ul>
+
+<li>
+<a href="https://html.spec.whatwg.org/multipage/workers.html" class="link">Web Workers (Teil von WHATWG HTML)</a>
+<div class="link-description">
+<p>Hintergrundprozess, der Rechenaufgaben und Datenverarbeitung übernehmen kann. Kommuniziert mit dem Hauptprozess über Nachrichten</p>
+<p>Wichtige Objekte: <code>new Worker()</code>, <code>new SharedWorker()</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://slightlyoff.github.io/ServiceWorker/spec/service_worker/" class="link">Service Workers</a>
+<div class="link-description">
+<p>Spezieller Hintergrundprozess, der für Aufgaben wie Offline-Caching genutzt wird</p>
+<p>Wichtige Objekte: <code>navigator.serviceWorker.register()</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://www.w3.org/TR/geolocation-API/" class="link">Geolocation API</a>
+<div class="link-description">
+<p>Zugriff auf die geographische Position der NutzerInnen</p>
+<p>Wichtige Objekte: <code>navigator.geolocation.getCurrentPosition()</code></p>
+</div>
+</li>
+
+<li>
+<a href="https://www.w3.org/TR/notifications/" class="link">Web Notifications</a>
+<div class="link-description">
+<p>Anzeigen von Popup-Meldungen aus Webanwendungen heraus.</p>
+<p>Wichtige Objekte: <code>notifications.createNotification()</code>, <code>notifications.createWebNotification()</code></p>
+</div>
+</li>
+
+<li>
+<a href="http://www.khronos.org/webgl/" class="link">WebGL</a>
+<div class="link-description">
+<p>Zeichnen von dreidimensionalen Objekten auf Canvas mit einem abgespeckten OpenGL-Befehlssatz (OpenGL for Embedded Systems)</p>
+</div>
+</li>
+
+</ul>
+
+</div>
+
+<aside>
+
+<p>„HTML5“ im weiteren Sinne umfasst auch JavaScript-Programmierschnittstellen, die von der WHATWG und verschiedenen W3C-Arbeitsgruppen erarbeitet werden.</p>
+
+<p>Die wichtigsten JavaScript-APIs sind bereits Bestandteil der HTML5-Hauptspezifikation, z.B. werden grundlegenden Objekte wie <code>window</code>, <code>document</code>, <code>location</code> und <code>history</code> standardisiert. Dann gibt es APIs, die in der WHATWG-Version integriert und beim W3C ausgelagert sind, so etwa Canvas 2D.</p>
+
+<p>Zusätzliche APIs werden in eigenen Spezifikationen entwickelt. Deren Stabilität und Browserunterstützung variiert stark. Die obige Liste enthält nur die wichtigsten derzeit praxisrelevanten APIs. Die WHATWG zudem eine <a href="http://platform.html5.org/">umfangreiche Liste von aktuellen Browsertechniken</a> zusammengestellt.</p>
+
+</aside>
+
+</section>
+
+<footer id="footer">
+<p>Autor: <a href="/">molily</a> &ndash; E-Mail: <a href="mailto:zapperlott@gmail.com">zapperlott@gmail.com</a> &ndash; Letzte Aktualisierung: <time datetime="2016-02-03">2016-02-03</time> &ndash; <a href="/impressum/">Impressum</a></p>
+</footer>
+
+</body>
+</html>

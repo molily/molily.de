@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <title>Progressive Enhancement: Robuste Websites entwickeln</title>
+    <meta name="description" content="Vortrag auf der PottJS vom 29. Juni 2016">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ?
+      'css/print/pdf.css' :
+      'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <base target="_blank">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<section>
+
+<h1>Progressive Enhancement</h1>
+
+<p>Robuste Websites entwickeln</p>
+
+<p>
+Mathias Schäfer<br>
+Vortrag auf der <a href="http://pottjs.de">PottJS</a>, <time>2016-06-29</time>
+</p>
+
+</section>
+
+<section>
+  <h1>Mathias Schäfer (molily)</h1>
+  <ul>
+    <li>Software-Entwickler bei <a href="http://9elements.com">9elements</a></li>
+    <li><a href="http://molily.de">molily.de</a></li>
+    <li><a href="https://twitter.com/molily">@molily</a></li>
+  </ul>
+</section>
+
+<section>
+  <p><code>&lt;eigenwerbung&gt;</code></p>
+  <p>
+    <a href="https://9elements.com/jobs/junior-web-developer">
+      <img src="images/job-ad.jpg" alt="Junior-Webentwickler∗in gesucht">
+    </a>
+  </p>
+  <p><code>&lt;/eigenwerbung&gt;</code></p>
+</section>
+
+<!-- ******************************************************************** -->
+
+<section>
+  <h1>Wozu clientseitiges JavaScript?</h1>
+  <h1>Wie JavaScript robust einsetzen?</h1>
+</section>
+
+<section>
+  <h1>Das Web</h1>
+  <ul class="large-list">
+    <li><a href="https://www.w3.org/Consortium/mission">Überall &amp; Offen</a></li>
+    <li>Niedrigschwellig</li>
+    <li>Inkonsistent &amp; heterogen</li>
+    <li>Anpassungsfähig</li>
+  </ul>
+</section>
+
+<section>
+  <img src="images/web-everyone2.jpg" alt="Tim Berners-Lee: This is for everyone" style="width: 100%">
+</section>
+
+<section>
+  <h1>Das Web</h1>
+  <ul class="large-list">
+    <li>IP + TCP + HTTP + HTML</li>
+    <li>Hyperlinks + URLs</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Welche Rolle spielt JavaScript?</h1>
+  <p>Ein historischer Überblick</p>
+</section>
+
+<section>
+  <img src="images/ns2.png" alt="Netscape 2" style="width: 100%">
+</section>
+
+<section>
+<h1>Erste Gehversuche</h1>
+<pre><code class="javascript" data-trim>
+var myForm = document.forms.myForm;
+var myField = myForm.elements.myField;
+if (myField.value === '') {
+  window.alert('Please fill out this field!');
+  myField.focus();
+}
+</code></pre>
+</section>
+
+<section>
+  <h1>Welche Rolle spielt JavaScript?</h1>
+  <ul>
+    <li>HTML &amp; CSS sind wenig interaktiv</li>
+    <li>Server-Roundtrips nötig</li>
+    <li>JavaScript verbessert Web-Interaktionen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Das Layer-Modell</h1>
+  <p><img src="images/layer-model.jpg" alt="HTML: Structure. CSS: Presentation. JavaScript: Behavior" style="width: 40%"></p>
+  <p><small><a href="http://www.digital-web.com/articles/the_behavior_layer/">Peter-Paul Koch 2004</a>, <a href="http://web.archive.org/web/20050616092458/http://maxdesign.com.au/presentation/workshop/slide3.cfm">Russ Weakley 2005</a></small></p>
+</section>
+
+<section>
+  <h1>1. JavaScript ist Zuckerguss</h1>
+  <ul class="large-list">
+    <li>2000: Webstandards-Bewegung</li>
+    <li>2002: Unobtrusive JavaScript</li>
+    <li>2004: Behavior Layer</li>
+  </ul>
+</section>
+
+<section>
+  <h1>2. JavaScript explodiert</h1>
+  <ul class="large-list">
+    <li>2005: DOM Scripting, Ajax</li>
+    <li>2006: jQuery</li>
+    <li>2009: ECMAScript 5</li>
+  </ul>
+</section>
+
+<section>
+  <h1>3. Rendern auf dem Client</h1>
+  <ul class="large-list">
+    <li>2009: HTML5 als Standard und Überbegriff</li>
+    <li>2011: Client-side MVC, Backbone.js</li>
+    <li>2012: »Single-Page Apps«</li>
+  </ul>
+</section>
+
+<section>
+  <h1>4. Rückbesinnung</h1>
+  <ul class="large-list">
+    <li>2013: Angular, React, Ember</li>
+    <li>2014: Isomorphic / Universal JS</li>
+    <li>2016: Ember FastBoot, Angular Universal</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Eigenheiten von JavaScript</h1>
+  <ul>
+    <li>Client ist nicht unter unserer Kontrolle</li>
+    <li>Unterschiedliche Umgebungen und Standard-Unterstützung</li>
+    <li>JavaScript ist meist verfügbar, aber <a href="http://kryogenix.org/code/browser/everyonehasjs.html">schlägt aus tausenden Gründen fehl</a></li>
+  </ul>
+</section>
+
+<section>
+  <h1>Fehlertoleranz</h1>
+  <ul>
+    <li>Was HTML- und CSS-Parser nicht kennen…<br>fressen sie einfach.</li>
+    <li>Deklarative Sprachen &amp; <a href="https://www.w3.org/2001/tag/doc/leastPower.html">The Rule of Least Power</a></li>
+    <li>Was der JavaScript-Interpreter nicht kennt…</li>
+  </ul>
+</section>
+
+<section>
+  <blockquote>
+    <p>Uncaught TypeError:<br>undefined is not a function</p>
+    <p>Uncaught TypeError: Cannot read property 'foo' of undefined</p>
+    <p>Uncaught ReferenceError:<br>foo is not defined</p>
+  </blockquote>
+</section>
+
+<section>
+  <h1>Realismus</h1>
+  <ul>
+    <li>Mein JavaScript hat Fehler</li>
+    <li>Der Browser hat Fehler</li>
+    <li>User machen Fehler</li>
+    <li>JavaScripte spielen nicht miteinander</li>
+    <li>Netzwerk ist unzuverlässig</li>
+  </ul>
+</section>
+
+<section>
+  <blockquote>
+    <p>»TCP implementations should follow a <strong>general principle of robustness</strong>:<br>be conservative in what you do, be liberal in what you accept from others.«</p>
+    <p>– <a href="https://tools.ietf.org/html/rfc761">Jon Postel, 1980</a></p>
+  </blockquote>
+</section>
+
+<section>
+  <blockquote>
+  <p>»Hope for the best and<br>prepare for the worst«</p>
+  </blockquote>
+</section>
+
+<section>
+  <h1>Progressive Enhancement</h1>
+  <ul>
+    <li>Ziel: Allen Usern eine funktionsfähige Seite bieten</li>
+    <li><a href="https://www.nngroup.com/articles/usability-metrics/">Usability-Metrik: Task completion, Success rate</a></li>
+  </ul>
+</section>
+
+<section>
+  <ul>
+    <li><a href="http://douserswanttofinishtheirtaskineverybrowser.com">Do users want to finish their task in every browser?</a></li>
+    <li><a href="http://dowebsitesneedtolookexactlythesameineverybrowser.com">Do websites need to look exactly the same in every browser?</a></li>
+    <li><a href="http://dowebsitesneedtobeexperiencedexactlythesameineverybrowser.com">Do websites need to be experienced exactly the same in every browser?</a></li>
+  </ul>
+</section>
+
+</section>
+
+<section>
+  <img src="images/marx.jpg" alt="Karl Marx" style="width: 40%">
+</section>
+
+<section>
+  <blockquote>
+  <p style="font-size: 45%">In einer höheren Phase der kommunistischen Gesellschaft, nachdem die knechtende Unterordnung der Individuen unter die Teilung der Arbeit, damit auch der Gegensatz geistiger und körperlicher Arbeit verschwunden ist; nachdem die Arbeit nicht nur Mittel zum Leben, sondern selbst das erste Lebensbedürfnis geworden; nachdem mit der allseitigen Entwicklung der Individuen auch ihre Produktivkräfte gewachsen und alle Springquellen des genossenschaftlichen Reichtums voller fließen – erst dann kann der enge bürgerliche Rechtshorizont ganz überschritten werden und die Gesellschaft auf ihre Fahne schreiben:</p>
+  <p>Jeder nach seinen Fähigkeiten,<br>jedem nach seinen Bedürfnissen!</p>
+  <p style="font-size: 45%">– <a href="https://de.wikipedia.org/wiki/Kritik_des_Gothaer_Programms">Karl Marx, Kritik des Gothaer Programms, 1875</a></p>
+  </blockquote>
+</section>
+
+<section>
+  <h1>Ungleiches ungleich behandeln</h1>
+  <ul>
+    <li>Nach den Bedürfnissen des Users</li>
+    <li>Nach den Fähigkeiten des Gerätes</li>
+    <li>Fähigkeiten &rarr; Features</li>
+  </ul>
+</section>
+
+<section>
+  <h1>1. Was ist meine Kernfunktion?</h1>
+  <p>Was sollen alle User tun können?</p>
+  <ul style="font-size: 80%">
+    <li>Texte lesen</li>
+    <li>Bilder anschauen</li>
+    <li>Nachrichten schreiben</li>
+    <li>Fotos hochladen</li>
+    <li>Datensätze abfragen &amp; eingeben</li>
+  </ul>
+</section>
+
+<section>
+  <h1>2. Erste Version</h1>
+  <ul>
+    <li>Unbedingt notwendige Fähigkeiten<br>(Baseline)</li>
+    <li>Möglichst einfach und robust</li>
+    <li>Anpassbar &amp; performant</li>
+  </ul>
+</section>
+
+<section>
+  <h1>2. Erste Version</h1>
+  <ul>
+    <li>Breit verfügbare Techniken</li>
+    <li>HTML, grundlegendes CSS</li>
+    <li>Serverseitige Logik</li>
+  </ul>
+</section>
+
+<section>
+  <h1>3. Verbesserungspotenzial<br>identifizieren</h1>
+  <ul>
+    <li>User Experience verbessern</li>
+    <li>Task completion time, User satisfaction</li>
+    <li>Performance</li>
+    <li>Geräte-Features nutzen</li>
+  </ul>
+</section>
+
+<section>
+  <h1>4. Verbesserte Version</h1>
+  <ul>
+    <li>JavaScript-Interaktivität</li>
+    <li>Feature Testing, z.B. <a href="https://modernizr.com/">Modernizr</a></li>
+    <li><a href="https://www.christianheilmann.com/2015/02/18/progressive-enhancement-is-not-about-javascript-availability/">Asking “if” a lot</a></li>
+    <li>Komplexe JavaScript-APIs</li>
+  </ul>
+</section>
+
+<section>
+  <h1>5. <em>Progressive</em> Enhancement</h1>
+  <p>GOTO 3.</p>
+  <p>To Infinity… and Beyond!</p>
+</section>
+
+<section>
+  <h1>Vorteile</h1>
+  <ul>
+    <li>Geringe Einstiegshürde</li>
+    <li>Einfache Version für alte Browser</li>
+    <li>Neueste Browserfeatures sicher nutzen</li>
+    <li>Beliebig hoch bauen</li>
+    <li>Move fast, break nothing!</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Beispiele</h1>
+  <p><a href="https://viz.ged-project.de">GED VIZ</a> – <a href="http://molily.de/interaction-is-key/">Beschreibung</a></p>
+</section>
+
+<section>
+  <h1>Offene Fragen</h1>
+  <ul>
+    <li>
+      Was ist der Wert der einfachsten Version?
+      <ul>
+        <li>Solide Basis, nicht konkurrenzfähig</li>
+        <li>Funktioniert auf jedem Gerät</li>
+        <li>Zugänglichkeit > Features</li>
+      </ul>
+    </li>
+    <li>
+      Explizite vs. implizite Annahmen?
+      <ul>
+        <li><a href="https://remysharp.com/2015/07/02/assumptions">Own your assumptions!</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Offene Fragen</h1>
+  <ul>
+    <li>
+      Aufbauen auf den einfacheren Versionen?
+      <ul>
+        <li>Bis zu einem bestimmten Punkt ja</li>
+        <li>Dann einen Schnitt machen</li>
+      </ul>
+    </li>
+    <li>
+      Wiederholung? X-fache Arbeit?
+      <ul>
+        <li>Im Grunde ja</li>
+        <li>Strategie: Universal JavaScript</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Offene Fragen</h1>
+  <ul>
+    <li>
+      Fragmentierung? Hunderte User-Journeys?
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=L_lVTKHJHNs">Reduzieren</a></li>
+      </ul>
+    </li>
+    <li>
+      Automatischer Fallback auf die einfachere Version?
+      <ul>
+        <li>Leider nein</li>
+        <li><a href="https://www.youtube.com/watch?v=L_lVTKHJHNs">“Atomic enhancements”</a></li>
+        <li><a href="http://molily.de/javascript-failure/">Transaktionen</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h1>Modularisierung</h1>
+  <blockquote>
+  <p>»A fault-tolerant design enables a system to continue its intended operation, possibly at a reduced level, rather than failing completely, when some part of the system fails.«</p>
+  <p>– <a href="https://en.wikipedia.org/wiki/Fault_tolerance">Wikipedia</a></p>
+  </blockquote>
+</section>
+
+<section>
+<h1>Fragen? Anmerkungen?<br>Mehr erfahren?</h1>
+
+<ul>
+<li><a href="http://molily.de/artikel">Artikel</a></li>
+<li><a href="https://www.diigo.com/user/molily/progressive-enhancement">Bookmarks</a></li>
+<li><a href="http://molily.de/">molily.de</a></li>
+<li><a href="https://twitter.com/molily">@molily</a></li>
+</ul>
+</section>
+
+<!-- ******************************************************************** -->
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  rollingLinks: false,
+  slideNumber: true,
+
+  theme: 'simple-molily',
+  transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+</script>
+
+</body>
+</html>

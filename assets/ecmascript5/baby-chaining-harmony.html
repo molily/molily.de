@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Beispiel: ES5-Getter Baby.prototype.chaining mit Harmony-Proxy</title>
+</head>
+<body>
+  
+<h1>Beispiel: ES5-Getter <code>Baby.prototype.chaining</code> mit Harmony-Proxy</h1>
+
+<script>
+
+(function () {
+
+function Baby () {
+  this.properties = {};
+}
+
+Baby.prototype = {
+  born   : function (v) { if (arguments.length) { this.properties.born   = v; } else { return this.properties.born;   } },
+  name   : function (v) { if (arguments.length) { this.properties.name   = v; } else { return this.properties.name;   } },
+  height : function (v) { if (arguments.length) { this.properties.height = v; } else { return this.properties.height; } },
+  weight : function (v) { if (arguments.length) { this.properties.weight = v; } else { return this.properties.weight; } },
+  gender : function (v) { if (arguments.length) { this.properties.gender = v; } else { return this.properties.gender; } },
+  hair   : function (v) { if (arguments.length) { this.properties.hair   = v; } else { return this.properties.hair;   } },
+  eyes   : function (v) { if (arguments.length) { this.properties.eyes   = v; } else { return this.properties.eyes;   } },
+};
+
+Object.defineProperty(Baby.prototype, 'chaining', {
+  get : function () {
+    var original = this,
+      toString = Object.prototype.toString,
+      proxy;
+    
+    if (original.hasOwnProperty('_proxy')) {
+      return original._proxy;
+    }
+    
+    // Erzeuge ein natives Proxy-Objekt (ECMAScript Harmony)
+    proxy = Proxy.create({
+      get : function (receiver, propName) {
+        var propVal = original[propName];
+        // Handelt es sich um eine Funktion?
+        if (typeof propVal == 'function' || toString.call(propVal) == '[object Function]') {
+          propVal = null;
+          // Gib eine Chaining-fähige Wrapper-Funktion zurück
+          return function chainableMethodWrapper () {
+            original[propName].apply(original, arguments);
+            return proxy;
+          };
+        }
+        // Andernfalls gib den Eigenschaftswert zurück (dieser kann freilich undefined sein)
+        return propVal;
+      }
+    });
+    
+    Object.defineProperty(this, '_proxy', {
+      value : proxy,
+      writable : false,
+      enumerable : false,
+      configurable : true
+    });
+    
+    return proxy;
+  },
+  enumerable : false,
+  configurable : true
+});
+
+var ada = new Baby();
+
+ada.chaining
+  .born(new Date())
+  .name('Ada')
+  .height(0.55)
+  .weight(3.5)
+  .gender('f')
+  .hair('none')
+  .eyes({
+    left  : 'brown',
+    right : 'blue'
+  });
+
+alert('ada.name: ' + ada.name());
+alert('ada.height: ' + ada.height());
+
+})();
+
+</script>
+
+</body>
+</html>

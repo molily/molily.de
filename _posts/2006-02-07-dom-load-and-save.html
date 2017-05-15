@@ -1,0 +1,154 @@
+---
+layout: post
+title: DOM 3 Load and Save in Opera 7.6
+description: Eine Einführung in die Benutzung des DOM-Moduls Load and Save mit Opera 7.6
+keywords: JavaScript, DOM, XML, Load and Save, XMLHttpRequest, AJAX
+---
+
+<p>Der Webbrowser Opera bietet seit der Vorab-Version <a href="http://my.opera.com/forums/showthread.php?threadid=65041">7.6 Preview 1</a> und somit seit der endgültigen Version 8.0 die erste JavaScript- bzw. ECMAScript-Umsetzung des <abbr title="World Wide Web Consortium" lang="en">W3C</abbr>-Standards <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html" hreflang="en" lang="en">DOM 3 Load and Save</a>. (Gecko unterstützt einen <a href="http://www.mozilla.org/newlayout/xml/#load">kleinen, mittlerweise verworfenen Teil</a> eines <a href="http://www.w3.org/TR/2003/WD-DOM-Level-3-LS-20030619/">veralteten Arbeitsentwurfs</a>.)</p>
+
+<p> Das Modul ermöglicht es unter anderem, externe <abbr title="Extensible Markup Language" lang="en">XML</abbr>-Dokumente oder Strings mit XML-Dokumenten einzulesen, sodass sie als DOM-<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#i-Document">Document</a>-Objekte zur Verfügung stehen. Über die bekannten <a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html">DOM-Core-Methoden</a> kann das Dokument im Speicher ausgelesen und manipuliert werden. Anschließend kann es wieder als Markup per HTTP PUT zum Server übertragen werden. So können bequem strukturierte Daten in Form von XML, also auch zum Beispiel XHTML, zwischen Clientbrowser und Webserver ausgetauscht werden.</p>
+
+<p>Solche Aufgaben werden momentan zumeist mit dem nicht-standardisierten <code>XMLHttpRequest</code>-Objekt gelöst. Dieses wurde ursprünglich von Microsoft für den Internet Explorer entwickelt und wird mittlerweile auch von <a href="http://www.mozilla.org/xmlextras/#Documentation">Gecko</a>, Safari 1.2, Konqueror 3.3 und der genannten Vorab-Version von Opera unterstützt. Im Gegensatz zu <span lang="en"><abbr title="Document Object Model">DOM</abbr> Load &amp; Save</span> bietet sich <code>XMLHttpRequest</code> für die praktische Anwendung an, zum Beispiel basiert der E-Mail-Service <a href="https://gmail.google.com/">Gmail</a> auf dieser Technik. <code>XMLHttpRequest</code> ermöglicht es zudem, andere Dateiformate als XML einzulesen sowie HEAD- und POST-Anfragen abzusetzen. Aus diesem Grund wird Gecko <span lang="en">Load &amp; Save</span> <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=155749" hreflang="en">voraussichtlich nicht</a> unterstützen. Denn <span lang="en">Load &amp; Save</span> hat <a href="http://forum.de.selfhtml.org/archiv/2005/5/t107948/#m674106">längst nicht die Fähigkeiten</a>, die die Techniken <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest" hreflang="en">XMLHttpRequest</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser" hreflang="en">DOMParser</a> und <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer" hreflang="en">XMLSerializer</a> vermögen, die Gecko momentan unterstützt.</p>
+
+<h2>Unterstützung für Load and Save abfragen</h2>
+
+<p>Der vorgesehene Weg, um in Erfahrung zu bringen, ob der Browser das Modul unterstützt, führt über <code>DOMImplementation</code>:</p>
+
+<pre>if (document.implementation &amp;&amp; document.implementation.hasFeature &amp;&amp;
+    document.<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-102161490">implementation</a>.<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-5CED94D7">hasFeature</a>('LS', '3.0')) {
+	// Browser unterstützt DOM 3 Load and Save
+} else {
+	// Keine Unterstützung (oder nicht DOM-fähig)
+}</pre>
+
+<h2>Parser erzeugen</h2>
+
+<p>Die Hauptmethoden von Load and Save hängen am Objekt <code>document.implementation</code> (<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementation"><code>DOMImplementationLS</code></a> erweitert <code>DOMImplementation</code>).</p>
+
+<p>Um ein XML-Dokument aus einem String oder einer externen Quelle in ein <code>Document</code>-Element einzulesen, wird zunächst ein <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser"><code>LSParser</code></a>-Objekt erzeugt.</p>
+
+<pre>var parser = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSParser">createLSParser</a>(
+	document.implementation.MODE_SYNCHRONOUS,
+	'http://www.w3.org/TR/REC-xml');</pre>
+
+<p>Als Schema-Sprache wird XML DTD angegeben (<code>http://www.w3.org/TR/REC-xml</code>). Möglich ist auch zum Beispiel XML Schema (<code>http://www.w3.org/2001/XMLSchema</code>).</p>
+
+<h2>Ein XML-Dokument per HTTP einlesen</h2>
+
+<p>Über die Methode <code>parseURI</code> des <code>LSParser</code>-Objekts kann ein XML-Dokument von einem <abbr title="Hypertext Transfer Protocol">HTTP</abbr>-Server über eine GET-Anfrage eingelesen werden. <code>parseURI</code> parst das Markup und gibt ein DOM-<code>Document</code>-Objekt zurück.</p>
+
+<p>Da alle Methoden von Load and Save im Fehlerfall sogenannte Exceptions erzeugen (<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-17189187"><code>DOMException</code></a>, <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSException"><code>LSException</code></a>), muss das <code>try</code>-<code>catch</code>-Statement verwendet werden, um den Fehler abzufangen. Der Browser würde die Scriptausführung sonst abbrechen. Falls zum Beispiel ein Fehler beim Parsen des XML-Dokuments auftritt, hat die <code>code</code>-Eigenschaft des <code>LSException</code>-Objekts zum Beispiel den Wert 81 (<code>PARSE_ERR</code>).</p>
+
+<pre>try {
+	var doc = parser.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser-parseURI">parseURI</a>('<var>beispiel.xml</var>');
+} catch (e) {
+	window.alert('parser.parseURI: Fehlercode ' + e.code);
+}</pre>
+
+<p>Auf das erzeugte <code>Document</code>-Objekt kann wie gewohnt über die DOM-Core-Methoden zugegriffen werden. Wenn es sich beispielsweise um ein XHTML-Dokument handelt, kann das <code>title</code>-Element folgendermaßen ausgelesen oder auch manipuliert werden:</p>
+
+<pre>if (doc) {
+	window.alert(doc.getElementsByTagName('title').item(0).firstChild.nodeValue);
+}</pre>
+
+<p>Obwohl im Beispiel ein XHTML-Dokument eingelesen wurde, ist der Zugriff darauf nur über die DOM-Core-Methoden möglich, nicht über die speziellen Methoden des <a href="http://www.w3.org/TR/DOM-Level-2-HTML/html.html">DOM HTML</a>. Der Dokumenttitel lässt sich also nicht über <code>doc.title</code> auslesen.</p>
+
+<p>In das Dokument können beispielsweise Benutzereingaben eingefügt werden oder dessen Daten werden in das aktuelle (X)HTML-Dokument eingefügt.</p>
+
+<h2>Serializer erzeugen</h2>
+
+<p>Um das Dokument oder einzelne Knoten (<code>Node</code>) wieder in Markup zu überführen, wird ein <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer"><code>LSSerializer</code></a> benötigt:</p>
+
+<pre>var serializer = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSSerializer">createLSSerializer</a>();</pre>
+
+<h2>Knoten in einen String überführen</h2>
+
+<p>Die Methode <code>writeToString</code> des <code>LSSerializer</code>-Objekts gibt das Dokument beziehungsweise einen Knoten in Markup-Form als String zurück.</p>
+
+<pre>
+try {
+	var xmlstring = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-writeToString">writeToString</a>(doc);
+} catch (e) {
+	window.alert('serializer.writeToString: Fehlercode ' + e.code);
+}
+if (xmlstring)
+	window.alert(xmlstring);</pre>
+
+<h2>Flexibles Serialisieren</h2>
+
+<p>Neben dem einfachen <code>writeToString</code> gibt es die allgemeine Methode <code>write</code>, welche die Ausgabe in ein <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSOutput"><code>LSOutput</code></a>-Objekt schreibt, das die Methode als zweiten Parameter entgegennimmt. Dem <code>LSOutput</code>-Objekt kann vorher über die <code>encoding</code>-Eigenschaft eine Zeichenkodierung zugewiesen werden. Über die Eigenschaft <code>systemId</code> kann eine URI angegeben werden, unter der die Ausgabe gespeichert werden soll (siehe auch <code>writeToURI</code> weiter unten).</p>
+
+<pre>var output = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSOutput">createLSOutput</a>();
+output.encoding = "UTF-8";
+try {
+	var serialize_result = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-write">write</a>(doc, output);
+} catch (e) {
+	window.alert('serializer.write: Fehlercode ' + e.code);
+}
+if (serialize_result)
+	window.alert(output.characterStream);
+</pre>
+
+<p>Der Aufruf von <code>write</code> erzeugt eine Exception mit dem Wert 9 (<code>DOMException.NOT_SUPPORTED_ERR</code>). Dieses Verfahren unterstützt Opera also noch nicht.</p>
+
+<h2>Serialisiertes Dokument mit HTTP PUT an den Server senden</h2>
+
+<p>Die Methode <code>writeToURI</code> des <code>LSSerializer</code>-Objekts ermöglicht es, das serialisierte Dokument in eine URI zu schreiben (wie der Aufruf von <code>write</code> mit einem <code>LSOutput</code>-Objekt, bei dem <code>systemId</code> gesetzt ist).</p>
+
+<p>Falls es sich um eine HTTP-URI handelt, sollte der Browser das XML-Dokument mit der <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6">PUT-Methode</a> an den Webserver übertragen.</p>
+
+<pre>try {
+	var serialize_result = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-writeToURI">writeToURI</a>(doc, '<var>http://example.org/a.xml</var>');
+} catch (e) {
+	window.alert('serializer.writeToURI: Fehlercode ' + e.code);
+}
+if (serialize_result)
+	window.alert(output);
+</pre>
+
+<p>Der Aufruf von <code>write</code> erzeugt ebenfalls eine <code>DOMException.NOT_SUPPORTED_ERR</code>. Das Zurücksenden zum Server funktioniert also nicht. Hierzu müsste das besagte <code>XMLHttpRequest</code> verwendet werden. Darüber kann Opera 7.6 die XML-Daten zumindest über die POST-Methode übertragen.</p>
+
+<h2>String mit XML-Markup in ein <code>Document</code>-Objekt parsen</h2>
+
+<p>Ein String mit einem XML-Dokument kann in ein <code>Document</code>-Objekt geparst werden. Dazu wird mit <code>createLSInput</code> ein <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSInput"><code>LSInput</code></a>-Objekt erstellt. Dieses Objekt besitzt verschiedene Eigenschaften, darunter <code>stringData</code>. Darüber wird der String angegeben, der das XML-Dokument enthält. Mit der <code>parse</code>-Methode des <code>LSParser</code>-Objekts wird anschließend das <code>LSInput</code>-Objekt geparst. Diese Methode gibt schließlich das DOM-<code>Document</code>-Objekt zurück.</p>
+
+<pre>var input = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSInput">createLSInput</a>();
+input.stringData = '&lt;?xml version="1.0" encoding="utf-8" ?>\n'
+	+ '&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"'
+	+ ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	+ '&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">\n'
+	+ '&lt;head>\n'
+	+ '&lt;title>Testtitel&lt;\/title>\n'
+	+ '&lt;\/head>\n'
+	+ '&lt;body>\n'
+	+ '&lt;p>Testabsatz&lt;\/p>\n'
+	+ '&lt;\/body>\n'
+	+ '&lt;\/html>';
+try {
+	var doc = parser.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser-parse">parse</a>(input);
+} catch (e) {
+	window.alert('parser.parse: Fehlercode ' + e.code);
+}
+if (doc)
+	window.alert(doc.getElementsByTagName('title').item(0).firstChild.nodeValue);
+</pre>
+
+<p>Das Setzen des Attributs <code>encoding</code> scheint ebenso wie die <code>encoding</code>-Angabe in der XML-Deklaration keine Auswirkung zu haben. Der String muss daher dieselbe Kodierung verwenden wie das Dokument, in dem er notiert wird. An versteht sich das von selbst. Folgendes wird in einem ISO-8859-1-kodierten Dokument nicht funktionieren:</p>
+
+<pre>
+input.encoding = 'UTF-8';
+input.stringData = '&lt;?xml version="1.0" encoding="utf-8" ?>\n"
+	+ "&lt;data>Ein UTF-8-kodiertes Euro-Zeichen: â‚¬&lt;\/data>';
+</pre>
+
+<p>Die Oktettfolge 0xE2, 0x82, 0xAC wird nicht als UTF-8-kodiertes »€« erkannt. (Das Steuerzeichen <code>0x82</code> darf sowieso nicht in einem XML-Dokument vorkommen.) Daher sollte man entweder direkt UTF-8 verwenden. Alternativ stehen numerische Zeichenreferenzen (<code>&amp;#8364;</code> für €) oder JavaScript-Escape-Sequenzen (<code>\u20AC</code> für €) zur Verfügung.</p>
+
+<h2>Weiterführende Artikel</h2>
+
+<ul>
+<li><a href="http://www.grauw.nl/blog/?entry=179" hreflang="en" lang="en">DOM3 Load and Save example</a>, Cédric Savarese</li>
+<li><a href="http://web.archive.org/web/20060213125548/http://formassembly.com/blog/client-side-data-management-with-xml-part-3-operas-dom-3-load-save/" hreflang="en" lang="en">Client-side data management with XML (part 3: Opera’s DOM 3 Load &amp; Save)</a>, Laurens Holst</li>
+</ul>
+
+<p>Letzte Änderung: 07.02.2006</p>

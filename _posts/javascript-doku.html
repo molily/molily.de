@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>JavaScript-Dokumentation - SELFHTML-Wiki</title>
+<meta name="robots" content="noindex">
+<style>
+body { font-family: arial,sans-serif; }
+</style>
+</head>
+<body>
+
+<h1>JavaScript-Dokumentation</h1>
+
+<div>
+
+<div id="toctitle"><h2>Inhaltsverzeichnis</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Grundlagen:_JavaScript"><span class="tocnumber">1</span> <span class="toctext">Grundlagen: JavaScript</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Basiswissen:_Theoretische_Grundlagen"><span class="tocnumber">2</span> <span class="toctext">Kurse: Basiswissen: Theoretische Grundlagen</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Basiswissen:_Zusammenarbeit_mit_HTML"><span class="tocnumber">3</span> <span class="toctext">Kurse: Basiswissen: Zusammenarbeit mit HTML</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Basiswissen:_Programmierung_und_Werkzeuge"><span class="tocnumber">4</span> <span class="toctext">Kurse: Basiswissen: Programmierung und Werkzeuge</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Basiswissen:_Browseruebergreifende_Entwicklung"><span class="tocnumber">5</span> <span class="toctext">Kurse: Basiswissen: Browserübergreifende Entwicklung</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Organisation_von_Scripten"><span class="tocnumber">6</span> <span class="toctext">Kurse: Aufbauwissen: Organisation von Scripten</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Sprachkern_.28ECMAScript.29"><span class="tocnumber">7</span> <span class="toctext">Kurse: Aufbauwissen: Sprachkern (ECMAScript)</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Fenster_und_Frames_.28.E2.80.9EBrowser_Object_Model.E2.80.9C.29"><span class="tocnumber">8</span> <span class="toctext">Kurse: Aufbauwissen: Fenster und Frames („Browser Object Model“)</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Zugriff_auf_.28X.29HTML-_und_XML-Dokumente_.28Document_Object_Model.29"><span class="tocnumber">9</span> <span class="toctext">Kurse: Aufbauwissen: Zugriff auf (X)HTML- und XML-Dokumente (Document Object Model)</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Event-Handling"><span class="tocnumber">10</span> <span class="toctext">Kurse: Aufbauwissen: Event-Handling</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Formulare"><span class="tocnumber">11</span> <span class="toctext">Kurse: Aufbauwissen: Formulare</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Bilder.2C_Multimedia-Objekte_und_Plugins"><span class="tocnumber">12</span> <span class="toctext">Kurse: Aufbauwissen: Bilder, Multimedia-Objekte und Plugins</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Browserseitige_Datenspeicherung_.28Cookies.29"><span class="tocnumber">13</span> <span class="toctext">Kurse: Aufbauwissen: Browserseitige Datenspeicherung (Cookies)</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Timeouts_und_Intervalle"><span class="tocnumber">14</span> <span class="toctext">Kurse: Aufbauwissen: Timeouts und Intervalle</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Aufbauwissen:_Darstellung_von_Dokumenten_beeinflussen_.28DOM_Style.29"><span class="tocnumber">15</span> <span class="toctext">Kurse: Aufbauwissen: Darstellung von Dokumenten beeinflussen (DOM Style)</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Expertenwissen:_Objektorientierte_Programmierung"><span class="tocnumber">16</span> <span class="toctext">Kurse: Expertenwissen: Objektorientierte Programmierung</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Expertenwissen:_Serverkommunikation_.28Ajax_und_XMLHttpRequest.29"><span class="tocnumber">17</span> <span class="toctext">Kurse: Expertenwissen: Serverkommunikation (Ajax und XMLHttpRequest)</span></a></li>
+<li class="toclevel-1"><a href="#Kurse:_Expertenwissen:_Bibliotheken_und_Frameworks"><span class="tocnumber">18</span> <span class="toctext">Kurse: Expertenwissen: Bibliotheken und Frameworks</span></a></li>
+<li class="toclevel-1"><a href="#Artikel:_Verarbeitung_von_XML-Dokumenten"><span class="tocnumber">19</span> <span class="toctext">Artikel: Verarbeitung von XML-Dokumenten</span></a></li>
+<li class="toclevel-1"><a href="#Artikel:_Proprietaere_Erweiterungen_und_Sondertechniken"><span class="tocnumber">20</span> <span class="toctext">Artikel: Proprietäre Erweiterungen und Sondertechniken</span></a></li>
+<li class="toclevel-1"><a href="#Anwendungsbeispiele:_Nuetzliche_Beispiele_.2F_Scriptsammlung"><span class="tocnumber">21</span> <span class="toctext">Anwendungsbeispiele: Nützliche Beispiele / Scriptsammlung</span></a></li>
+<li class="toclevel-1"><a href="#.28separat.29_Haeufige_Fragen"><span class="tocnumber">22</span> <span class="toctext">(separat) Häufige Fragen</span></a></li>
+</ul>
+
+<a name="Grundlagen:_JavaScript"></a><h2>Grundlagen: JavaScript </h2>
+<ul><li>Aufgaben und Möglichkeiten
+<ul><li>Einsatzgebiete
+</li><li>Grenzen
+<ul><li>Was JavaScript prinzipiell nicht, unzuverlässig oder ineffizient kann
+</li></ul>
+</li><li>Aktuelle Bedeutung
+</li><li>Begrifflichkeiten
+</li><li>Missverständnisse
+<ul><li> JavaScript vs. Java usw.
+</li></ul>
+</li></ul>
+</li><li>Merkmale und grundlegende Konzepte
+<ul><li>Clientseitige Scriptsprache
+<ul><li> Kontext von HTML, CSS und serverseitiger Programmierung
+</li></ul>
+</li><li>Objektbasierung
+</li><li>Fenster
+<ul><li> Benutzerinteraktion
+</li></ul>
+</li><li>Dokumente und Knoten
+</li><li>Datentypen
+</li><li>Weitere Eigenheiten
+</li></ul>
+</li><li>Praktische Schwierigkeiten und Fallstricke
+<ul><li>Standardisierung - ein Flickenteppich aus Spezifikationen
+</li><li>Browserproblematik
+</li><li>Unbegrenzte Möglichkeiten durch Schnittstellen und Erweiterungen
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Basiswissen:_Theoretische_Grundlagen"></a><h2>Kurse: Basiswissen: Theoretische Grundlagen </h2>
+<ul><li>Zweck dieses Kapitels / Umgang mit diesem Kapitel
+<ul><li>„Sinnstiftung“
+</li><li>Überspringen und Zurückkehren
+</li></ul>
+</li></ul>
+<ul><li>Geschichte und Standardisierung
+<ul><li>Entstehungsgeschichte
+<ul><li>„Lehren“, Gegenwart verstehen
+</li></ul>
+</li><li>Netscape JavaScript und Microsoft Jscript
+<ul><li>&nbsp;»DOM Level 0«
+</li></ul>
+</li><li>ECMAScript
+</li><li>W3C DOM
+</li><li>Proprietäre Erweiterungen
+<ul><li>Microsoft-Erweiterungen
+</li><li>Mozilla-/Gecko-Erweiterungen
+</li></ul>
+</li><li>Zukunft der Standardisierung
+<ul><li>ECMAScript Edition 4 / JavaScript 2.0
+</li></ul>
+</li><li>JavaScript jenseits von Webseiten
+</li></ul>
+</li><li>Quellen und Nachschlagewerke
+<ul><li>Standards und Spezifikationen
+<ul><li>Web-Quellen
+</li></ul>
+</li><li>Bücher
+</li></ul>
+</li></ul>
+<ul><li>Sinnvoller JavaScript-Einsatz
+<ul><li>Nützlicher Einsatz und Missbrauch – Theorien
+</li><li>Das Schichtenmodell und der „Behaviour Layer“
+</li><li>„Progressive Enhancement“ und „Graceful Degradation“
+</li><li>„Dynamisches HTML“ versus „DOM Scripting“
+</li><li>Webanwendungen, Web 2.0 und AJAX
+</li></ul>
+</li></ul>
+<ul><li>Benutzerfreundlichkeit und Zugänglichkeit
+<ul><li>Der schlechte Ruf von JavaScript
+</li><li>„Unobtrusive JavaScript“
+</li><li>JavaScript und Zugänglichkeit/Barrierefreiheit
+<ul><li>Plattformübergreifende und geräteunabhängige Entwicklung
+</li><li>Abwärtskompatibilität
+</li><li>Suchmaschinen-Zugänglichkeit
+</li><li>Screenreader und andere Hilfsmittel
+</li></ul>
+</li><li>Konventionen für die Benutzeroberfläche („UI-Patterns“, Widgets“)
+</li></ul>
+</li></ul>
+<ul><li>Sicherheit
+<ul><li>„Zwischen Panikmache und Blauäugigkeit“
+</li><li>Sicherheitskritische JavaScript-Fähigkeiten
+</li><li>Sicherheitskonzepte von JavaScript
+<ul><li>Sandbox
+</li><li>Same-Origin Policy
+</li><li>Local Machine Zone Lockdown (IE)
+</li><li>Privilegien (Gecko)
+</li><li>Signaturen
+</li></ul>
+</li><li>Browser-Einschränkungen und Schutz vor schädlichen JavaScripten
+<ul><li>Popup-Blocker, Fensterveränderungen
+</li><li>Zonenmodelle und Weiße Listen
+</li></ul>
+</li><li>Cross-Site Scripting (XSS)
+<ul><li>(siehe auch die Dokus zur serverseitigen Programmierung)
+</li></ul>
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Basiswissen:_Zusammenarbeit_mit_HTML"></a><h2>Kurse: Basiswissen: Zusammenarbeit mit HTML </h2>
+<ul><li>script-Elemente
+</li><li>Ausgelagerte Scripte
+</li><li>Ereignisbasierte Programmabläufe
+<ul><li>(siehe Kapitel Event-Handling)
+</li><li>Ereignisse überwachen und auf Ereignisse reagieren
+</li><li>Event-Handler-Attribute
+</li><li>Dynamisch Event-Handler registrieren
+</li><li>onload-Techniken
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Basiswissen:_Programmierung_und_Werkzeuge"></a><h2>Kurse: Basiswissen: Programmierung und Werkzeuge </h2>
+<ul><li>Grundlagen der Programmierung
+<ul><li>(siehe Kurse:Programmiertechnik)
+</li><li>Code-Dokumentation
+</li><li>Code-Kommentierung
+</li><li>Code-Formatierung
+</li></ul>
+</li></ul>
+<ul><li>Fehlersuche und Fehlerbehandlung
+<ul><li>...
+</li><li>Überwachung und Ablaufprotokolle
+</li></ul>
+</li></ul>
+<ul><li>Entwicklungwerkzeuge
+<ul><li>Editoren
+</li><li>Browserseitige Hilfsmittel
+<ul><li>Fehlerkonsolen
+</li><li>DOM-Inspektor
+</li><li>Debugger
+</li><li>FireBug und ähnliche Erweiterungen
+</li><li>GreaseMonkey
+</li></ul>
+</li><li>Sonstige Werkzeuge
+<ul><li>Lints (evtl.)
+</li></ul>
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Basiswissen:_Browseruebergreifende_Entwicklung"></a><h2>Kurse: Basiswissen: Browserübergreifende Entwicklung </h2>
+<ul><li>JavaScript und die Herausforderung der Browser-Wirklichkeit
+</li><li>Abwärtskompatibilität und Zukunftsfähigkeit
+</li><li>Mehrgleisige Scriptabläufe
+</li><li>Browserkunde
+<ul><li>JavaScript-Unterstützung verbreiteter Browser
+</li><li>Gecko/Mozilla/Firefox (SpiderMonkey)
+</li><li>Internet Explorer
+</li><li>Opera
+</li><li>Safari
+</li><li>Konqueror
+</li><li>Sonstige Browser
+</li></ul>
+</li><li>Pro und Contra Browsererkennung
+</li><li>Fähigkeiten-Erkennung
+<ul><li>Fallunterscheidungen
+</li><li>Objektabfragen
+</li><li><code>if</code>, <code>typeof</code> usw.
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Organisation_von_Scripten"></a><h2>Kurse: Aufbauwissen: Organisation von Scripten </h2>
+<ul><li>(siehe Programmier-Einführung und <a href="https://wiki.selfhtml.org/wiki/JavaScript/Organisation_von_JavaScripten">Feature-Artikel</a>)
+</li><li>Auslagerung der Script-Logik
+<ul><li>(siehe sinnvoller JavaScript-Einsatz)
+</li></ul>
+</li><li>Wartbarkeit, Ausbaubarkeit, Wiederverwendbarkeit
+</li><li>Effizienter Gebrauch von Funktionen
+</li><li>Einfache Strukturierung über Objects / Object-Literale
+</li><li>Eigene Objekte (OOP)
+<ul><li>Siehe Objektorientierte Programmierung
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Sprachkern_.28ECMAScript.29"></a><h2>Kurse: Aufbauwissen: Sprachkern (ECMAScript) </h2>
+<ul><li>Allgemeine Syntax
+<ul><li>Anweisungen (Statements)
+</li><li>Ausdrücke
+</li><li>Kommentare
+</li></ul>
+</li><li>Objekte und Variablen
+<ul><li>Objektbasierung
+<ul><li> Unterobjekt, Member, Eigenschaften
+</li><li> Dynamische Typisierung
+</li></ul>
+</li><li>Vordefinierte Objekte, Objekthierarchie und Objekttypen
+</li><li>Eigene Objekte (Variablen)
+</li><li>Gültigkeitsbereich (Scope)
+<ul><li> globale und lokale Variablen
+</li></ul>
+</li></ul>
+</li><li>Datentypen und Kernobjekte
+<ul><li>Kernobjekte, Literale und Instantiierung
+</li><li>Einfache und komplexe Datentypen
+</li><li><code>Object</code> als Grundlage
+</li><li><code>String</code>, <code>Number</code>, <code>Boolean</code>
+</li><li><code>Date</code>
+</li><li><code>RegExp</code>
+</li><li><code>Array</code>
+</li><li><code>Function</code>
+<ul><li> (siehe Kapitel Funktionen)
+</li></ul>
+</li><li>Einmalige Objekte
+<ul><li><code>Math</code>
+</li></ul>
+</li><li>Ausblick auf Objekttypen außerhalb des Kerns
+</li></ul>
+</li><li>Operatoren
+<ul><li>...
+</li></ul>
+</li><li>Kontrollstrukturen
+<ul><li>Bedingte Anweisungen
+<ul><li> <code>if</code>
+</li><li> <code>switch</code>
+</li><li> (siehe auch Conditional Operator)
+</li></ul>
+</li><li>Schleifen
+<ul><li> <code>do</code>/<code>while</code>
+</li><li> <code>for</code>
+</li><li> <code>for in</code>
+</li><li> Schleifen-Kontrolle
+<ul><li><code>continue</code>
+</li><li><code>break</code>
+</li><li>„Labelled Statements“
+</li></ul>
+</li></ul>
+</li><li><code>return</code>, <code>with</code>
+</li><li>Ausnahme-Behandlung
+<ul><li> <code>try</code>
+</li><li> <code>throw</code>
+</li></ul>
+</li></ul>
+</li></ul>
+<ul><li>Funktionen
+<ul><li>Funktionen zur Strukturierung von Programmen
+<ul><li>(siehe Kurse:Programmiertechnik und Organisation von Scripten)
+</li></ul>
+</li><li>Funktionen notieren
+</li><li>Parameter und Rückgabewerte
+</li><li>globale und lokale Variablen
+</li><li>Funktionen als Methoden
+</li><li>Funktionen als Funktionsobjekte
+</li><li>Verschachtelte Funktionen (Closures) (Expertenwissen)
+</li><li>Anonyme Funktionen (Function-Expressions) (Expertenwissen)
+</li></ul>
+</li></ul>
+<ul><li>Zeit- und Datumsberechnungen (Datumsobjekte)
+</li></ul>
+<ul><li>Reguläre Ausdrücke im Detail
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Fenster_und_Frames_.28.E2.80.9EBrowser_Object_Model.E2.80.9C.29"></a><h2>Kurse: Aufbauwissen: Fenster und Frames („Browser Object Model“) </h2>
+<ul><li><code>window</code>-Objekte aus Ausgangsbasis
+</li><li>Das oberste <code>window</code>-Objekt
+</li><li>Navigation und URIs (<code>location</code>, <code>history</code>)
+</li><li>Einfache Interaktion über Meldungsfenster, Eingabedialoge, Statusleiste
+</li><li>Neue Fenster öffnen, bewegen, schließen und deren Eigenschaften ändern
+<ul><li>Diskussion und Alternativen
+</li></ul>
+</li><li>Zugriff auf Fenster und Frames
+<ul><li>Auf Variablen und Funktionen in anderen Fenstern zugreifen
+</li></ul>
+</li><li>Arbeiten mit dem „Viewport“
+<ul><li>Größe messen und darauf reagieren
+</li><li>Scrolling und Bildlaufleisten
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Zugriff_auf_.28X.29HTML-_und_XML-Dokumente_.28Document_Object_Model.29"></a><h2>Kurse: Aufbauwissen: Zugriff auf (X)HTML- und XML-Dokumente (Document Object Model) </h2>
+<p>(siehe Kurse:DOM)
+</p>
+<ul><li>Einführung
+<ul><li>Vorstellung des DOM (Core) als Allround-API für HTML/XML-Dokumente
+</li><li>Textauszeichnung und Dokumentmodelle
+</li><li>Das Modell des Knoten- bzw. Elementbaumes
+</li><li>DOM-Spezifikationen und Umgang mit diesen
+</li><li>Das Klassenmodell (Interfaces)
+</li></ul>
+</li><li>Arbeit mit dem DOM
+<ul><li>Elemente ansprechen und auswählen
+</li><li>Navigation im Knotenbaum
+</li><li>Knotenlisten durchlaufen
+</li><li>Daten extrahieren und ändern
+</li><li>Knoten einfügen und löschen
+</li><li>HTML-spezifisches DOM
+</li><li>Besonderheiten bei XML-Dokumenten
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Event-Handling"></a><h2>Kurse: Aufbauwissen: Event-Handling </h2>
+<ul><li>Allgemeine Einführung
+<ul><li>Zentrale Wichtigkeit und Tragweite
+</li></ul>
+</li><li>Ereignisgesteuerten Programmabläufe, „Behaviour Layer“
+</li><li>Event-Modelle: Event-Flow und dessen Phasen, Bubbling und Capturing
+</li><li>Inline-Event-Handler über HTML-Attribute
+</li><li>Arbeiten mit dem Event-Objekt
+<ul><li>Browser-Quirks bei Event-Eigenschaften
+</li></ul>
+</li><li>Traditionelles Registrieren
+<ul><li>Netscapes JavaScript
+</li><li>Kopieren der Funktionsobjekte in <code>on...</code>-Eigenschaften
+</li><li>Traditionell mehrere Handler-Funktionen registrieren
+</li></ul>
+</li><li>Moderne Methoden des Registrieren
+<ul><li>DOM Events
+</li><li>Microsoft-Modell
+</li><li>Eigene browser-übergreifende Systeme („<code>addEvent</code>“)
+</li></ul>
+</li><li>JavaScript beim Laden des Dokuments ausführen
+<ul><li><code>onload</code>, <code>DOMContentLoaded</code>, browserübergreifende Praxislösungen
+</li></ul>
+</li><li>Verarbeitung von Maus- und Tastenereignissen
+</li><li>Spezielle Events
+<ul><li>Netscape JavaScript
+</li><li>andere proprietäre Events, nützlich für Webanwendungen
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Formulare"></a><h2>Kurse: Aufbauwissen: Formulare </h2>
+<ul><li>Zugriff auf Formulare
+</li><li>Formulare interaktiv und benutzerfreundlicher gestalten
+</li><li>Validierung
+</li><li>...
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Bilder.2C_Multimedia-Objekte_und_Plugins"></a><h2>Kurse: Aufbauwissen: Bilder, Multimedia-Objekte und Plugins </h2>
+<ul><li>...
+</li><li>Scripting von Plugins und Applets (LiveConnect usw.)
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Browserseitige_Datenspeicherung_.28Cookies.29"></a><h2>Kurse: Aufbauwissen: Browserseitige Datenspeicherung (Cookies) </h2>
+<ul><li>Lesen und Setzen von Cookies
+</li><li>Andere Methoden der clientseitigen Datenspeicherung
+<ul><li><code>window.name</code>
+</li><li><code>Storage</code> (Web Applications 1.0)
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Aufbauwissen:_Timeouts_und_Intervalle"></a><h2>Kurse: Aufbauwissen: Timeouts und Intervalle </h2>
+
+<a name="Kurse:_Aufbauwissen:_Darstellung_von_Dokumenten_beeinflussen_.28DOM_Style.29"></a><h2>Kurse: Aufbauwissen: Darstellung von Dokumenten beeinflussen (DOM Style) </h2>
+<ul><li>Brücke zwischen JavaScript und Stylesheets/CSS
+</li><li>Inline-Styles auslesen und manipulieren
+</li><li>Tatsächliche Style-Werte auslesen, die durch externen Stylesheets definiert sind
+<ul><li><code>getComputedStyle</code>, <code>currentStyle</code>
+</li></ul>
+</li><li>Zentrale Stylesheet-Regeln lesen und manipulieren
+<ul><li><code>document.stylesheets</code>
+</li></ul>
+</li><li>Effiziente Zusammenarbeit zwischen CSS und JavaScript
+<ul><li>Verbindung und Trennung von Präsentations- und JavaScript-Logik
+</li><li>Arbeit mit Klassen, um bestimmte Style-Änderungen zur erreichen
+</li></ul>
+</li><li>Stylesheets verwalten
+<ul><li>Style-Switcher, Styles für verschiedene Ausgabesysteme
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Expertenwissen:_Objektorientierte_Programmierung"></a><h2>Kurse: Expertenwissen: Objektorientierte Programmierung </h2>
+<ul><li>Arbeiten mit Objekten, Methoden, Eigenschaften
+</li><li>Einführung in die OOP
+<ul><li>(siehe Kurse:Programmiertechnik)
+</li></ul>
+</li><li>Besonderheiten von OOP in JavaScript
+</li><li>Klassenbasierte OOP im Vergleich zu Konstruktoren und Prototypen
+</li><li>Eigene Objekte
+</li><li>Kapselung
+<ul><li> private/öffentliche Methoden und Eigenschaften
+</li></ul>
+</li><li>Prototypische Erweiterung – die <code>prototype</code>-Eigenschaft
+</li><li>Vererbung und ableitete Objekte
+</li><li>Frameworks und Helferscripte für OOP
+<ul><li><a href="http://prototype.conio.net/">Protoype</a>, <a href="http://dean.edwards.name/weblog/2006/03/base/">Base</a>, <a href="http://mootools.net/">mootools</a> und dergleichen
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Expertenwissen:_Serverkommunikation_.28Ajax_und_XMLHttpRequest.29"></a><h2>Kurse: Expertenwissen: Serverkommunikation (Ajax und <code>XMLHttpRequest</code>) </h2>
+<ul><li>Datenaustausch mit dem Webserver im Hintergrund, Serverunterstützung
+</li><li>Neues Interface-Paradigma: Ajax, Single Page Applications
+</li><li>Möglichkeiten und Gefahren/Grenzen/Nachteile
+</li><li>Web Services
+</li><li>Techniken
+<ul><li>iframes, Bilder, <code>XMLHttpRequest</code>, JSONP, ...
+</li><li>Formate: XML, HTML, JSON, ...
+</li><li>On-Demand JavaScript
+</li></ul>
+</li></ul>
+
+<a name="Kurse:_Expertenwissen:_Bibliotheken_und_Frameworks"></a><h2>Kurse: Expertenwissen: Bibliotheken und Frameworks </h2>
+<ul><li>Zweck und Bedeutung von JavaScript-Bibliotheken
+</li><li>Vor- und Nachteile der Abstraktion
+</li><li>Eigene Bibliotheken mit Standardfunktionen zusammenstellen
+<ul><li>Einfache DOM-Bibliothek
+</li></ul>
+</li><li>Die „großen“ Bibliotheken
+<ul><li> <a href="http://prototype.conio.net/">Prototype</a>, <a href="http://dojotoolkit.org/">Dojo</a>, <a href="http://developer.yahoo.com/yui/">Yahoo! UI</a>, <a href="http://jquery.com/">jQuery</a>, <a href="http://www.mochikit.com/">MochiKit</a>
+</li></ul>
+</li><li>Kleinere Bibliotheken (evtl.)
+<ul><li><a href="http://mootools.net/">mootools</a>, <a href="http://www.beginningjavascript.com/DOMhelp.js">DOMhelp</a>, <a href="http://dean.edwards.name/weblog/2007/03/yet-another/">base2.DOM</a>, <a href="http://www.robertnyman.com/domassistant/">DOM Assistant</a>
+</li></ul>
+</li></ul>
+
+<a name="Artikel:_Verarbeitung_von_XML-Dokumenten"></a><h2>Artikel: Verarbeitung von XML-Dokumenten </h2>
+<ul><li>Arbeiten mit XML-Dokumenten
+<ul><li>Parsen und Serialisieren
+</li><li>XSL-Transformationen
+</li><li>XPath-Abfragen
+</li><li>Unterschiedliche Browserumsetzungen
+<ul><li>Gecko, Opera, KHTML: <code>DOMParser</code>, <code>XMLSerializer</code>, <code>XSLTProcessor</code>, <code>XPathEvaluator</code>
+</li><li>MSIE: <code>ActiveXObject("Microsoft.XMLDOM")</code>
+</li><li>Opera: DOM Load &amp; Save
+</li></ul>
+</li></ul>
+</li><li>ECMAScript für XML (E4X)
+</li></ul>
+
+<a name="Artikel:_Proprietaere_Erweiterungen_und_Sondertechniken"></a><h2>Artikel: Proprietäre Erweiterungen und Sondertechniken </h2>
+<ul><li>JavaScript 1.6 und 1.7
+</li><li>Web Applications 1.0
+</li><li>Canvas
+</li><li>DOM Traversal &amp; Range (TreeWalker, eventuell)
+</li><li>Microsoft-Erweiterungen
+<ul><li>...
+</li></ul>
+</li></ul>
+
+<a name="Anwendungsbeispiele:_Nuetzliche_Beispiele_.2F_Scriptsammlung"></a><h2>Anwendungsbeispiele: Nützliche Beispiele / Scriptsammlung </h2>
+<ul><li>Grundlegende Scripte und Schnipsel
+</li><li>Formularvalidierung und benutzerfreundliche Formulare
+</li><li>Eingabe-Vervollständigung
+</li><li>Bildergalerien
+</li><li>Präsentationen
+</li><li>Inline-Popups und Tooltips
+</li><li>Kalender / Datumsauswahl
+</li><li>Tab-Interface / aufklappende Abschnitte
+</li><li>Tabellen sortieren und durchsuchen
+</li><li>Menüs, Navigationen und Inhaltsverzeichnisse
+</li><li>Zusatzleisten und Effekte
+</li><li>Auszeichnungen sichtbar machen
+</li><li>Flexible und anpassungsfähige Layouts
+</li><li>Schriftgrößen-Anpassung und Styleswitcher
+</li><li>...
+</li></ul>
+
+<a name=".28separat.29_Haeufige_Fragen"></a><h2>(separat) Häufige Fragen </h2>
+
+</div>
+
+</body></html>

@@ -1,0 +1,50 @@
+---
+layout: post
+title: Was kommt nach Popups und Lightboxen?
+---
+
+<p>Einer der ersten Artikel zur Webentwicklung, den ich geschrieben habe, ist <a href="/javascript-popups/">Popups mit JavaScript</a>. Er stammt aus dem Jahr 2002 und wurde seitdem mehrfach überarbeitet. Dennoch blieb er thematisch in diesem Jahr verhaftet.</p>
+
+<h2>Zurück ins Jahr 2002</h2>
+
+<p>Popup-Fenster mit JavaScript waren damals allgegenwärtig. Fast jede Website öffnete Werbebanner in Popups. Die Browser hatten noch keine Popup-Blocker und machten keine Einschränkungen in puncto Fenstereigenschaften. Das Nervpotenzial war dementsprechend enorm. Rückblickend ist <code>window.open()</code> wohl die am häufigsten missbrauchte JavaScript-Technik.</p>
+
+<p>Kein Browser unterstützte das W3C-DOM korrekt, sodass dynamische Änderungen am Dokument (»DHTML«) schwierig bis unmöglich waren. Kurzerhand wurde für jede Zusatzinformation ein neues Fenster geöffnet. Außerdem glauben einige, sich mit Vollbild-Popups fester Größe der Herausforderung der unterschiedlichen Viewport-Größen entziehen zu können.</p>
+
+<p>Hinzu kam, dass JavaScript nicht so breit unterstützt war wie heute – oder es wurde aufgrund des Missbrauchs deaktiviert. Ein falscher Einsatz von JavaScript führte dazu, dass die Inhalte ohne JavaScript unzugänglich waren.</p>
+
+<p>In dieser Situation sollte mein Artikel folgende Appelle transportieren:</p>
+
+<ul>
+<li>Macht es so, dass es auch ohne JavaScript funktioniert. Hier wird gezeigt, wie es geht.</li>
+<li>Schränkt die Benutzbarkeit nicht ein. Erlaubt Zugriff auf die geöffnete Adresse, die Browserfunktionen, die Größenänderung des Popups usw.</li>
+<li>Vermeidet Popups möglichst, nutzt integrative Lösungen.</li>
+</ul>
+
+<h2>Die heutige Situation</h2>
+
+<p>Aus heutiger Sicht sind Popup-Fenster anachronistisch. Die Situation hat sich seit 2002 grundlegend gewandelt, sodass diese Herangehensweise nicht mehr passt:</p>
+
+<ul>
+<li>Die JavaScript-Unterstützung ist weiter verbreitet. Browser schützen besser vor JavaScript-Missbrauch. Popup-Blocker machten automatisch aufspringenden Werbe-Popups schnell den Garaus.</li>
+<li>Die Browser krempelten ihre Oberfläche radikal um. »Tabbed Browsing« macht mehrere Browser-Fenster überflüssig. Es ist heute selbstverständlich, dass wir selbstbestimmt Tabs öffnen, um mehrere Seiten und Informationen parallel darzustellen. Die ursprüngliche Funktion von <code>window.open</code> wird beim Tabbed Browsing nur noch als störend empfunden. Browser kompensieren dies dadurch, dass sie je nach Verwendung Tabs statt vollwertiger Fenster öffnen.</li>
+<li>JavaScript-Bibliotheken kamen auf. Man konnte plötzlich mit DOM und CSS <a href="http://praegnanz.de/weblog/javascript-gone-wild-on-gucci">grafisch opulente Effekte</a> innerhalb des Dokuments umsetzen. Mit Ajax wurden einzelne Inhalte im Hintergrund nachgeladen, anstatt immer das gesamte Dokument durch ein neues vom Server auszutauschen.</li>
+</ul>
+
+<p>Es gibt also eigentlich keinen Grund mehr, Popups zu verwenden. Nichtdestoweniger erfreut sich mein Popup-Artikel soviel Aufmerksamkeit wie alle anderen Artikel auf molily.de zusammen, deswegen habe ich ihn immer wieder ergänzt. Bereits vor vielen Jahren hat sich der Artikel durch ein paar eingehende Links die Pole Position bei Google gesichert. Seitdem dreht sich die Popularitätsspirale: Was einmal oben in den Suchergebnissen steht, wird gelesen und erneut verlinkt, was die Führungsposition sichert.</p>
+
+<h2>Lightboxen wurden die neuen Popups</h2>
+
+<p>Am häufigsten wird im Artikel der Link zur <a href="http://planetozh.com/projects/lightbox-clones/">Lightbox Clones Matrix</a> geklickt. Das ist verständlich, denn Lightboxen sind <a href="http://webkrauts.de/artikel/2006/lightboxen-das-neue-popup">schon seit Jahren die neuen Popups</a>. Leider auch im Negativen. Selbst wenn sich der Trend, alles mögliche in einer langsamen, übertrieben geschmückten Lightbox zu öffnen, gelegt hat, so sind sie immer noch weit verbreitet. Sie teilen einige Probleme von Popups und bringen viele weitere mit sich. Schon die Idee hat einige Schwächen, doch die Umsetzungen sind größtenteils katastrophal.</p>
+
+<h2>Nach Popups und Lightboxen übernimmt Ajax?</h2>
+
+<p>Heute habe ich den <a href="/javascript-popups/">Popup-Artikel grundlegend überarbeitet</a>. Dabei ist ein Großteil des Textes entfallen und der Rest wurde entschlackt. Die Kritik an Popup-Fenstern bleibt, zusätzlich habe ich die Kritik an Lightboxen ausgebaut.</p>
+
+<p>Doch wohin geht die Reise? Ich plädiere weiterhin für klassische Site-Strukturen mit adressierbaren Dokumenten (»Ressourcen«). Das funktioniert robust und kann schlank, schnell und benutzerfreundlich sein. Doch heutige Webanwendungen haben diese Grundprinzipien des Webs längst über Bord geworfen. Reine Ajax-Interfaces verabschieden sich gänzlich von Dokumenten und URIs, um von hinten durch die Brust ins Auge eine Kompatibilität mit der Google-Suchmaschine wiederherzustellen.</p>
+
+<p>Zwei Beispiele sind Twitter und Gawker, die mit ihrem »Hashbang«-Desaster kürzlich heftige Kritik auf sich gezogen haben, siehe <a href="http://isolani.co.uk/blog/javascript/BreakingTheWebWithHashBangs">Breaking the Web with hash-bangs</a> und <a href="http://web.archive.org/web/20130108070408/http://simonwillison.net/tags/hashbanghell/">weitere Artikel</a>. Dabei ist es prinzipiell möglich, beide Welten zu vereinigen, wie <a href="https://github.com/">Github</a> mit der Nutzung von <a href="https://developer.mozilla.org/en/DOM/Manipulating_the_browser_history">history.pushState()</a> aus HTML5 zeigt.</p>
+
+<p>Ajax versprach ursprünglich hochperformante Interfaces. Das Warten zwischen den Seitenaufrufen sollte ein Ende haben, Serverkommunikation asynchron verlaufen: »So the user is never staring at a blank browser window and an hourglass icon, waiting around for the server to do something« hieß es 2005 in dem <a href="http://adaptivepath.org/ideas/ajax-new-approach-web-applications/">programmatischen Essay</a>, der den Begriff Ajax prägte. Dieses Konzept ist nicht aufgegangen, wirklich schneller ist beispielsweise das neue Twitter-Interface nicht geworden. Auch bei Ajax-Webanwendungen starren wir auf Warteanimationen und leere Flächen, bis die gewünschten Inhalte geladen sind.</p>
+
+<p>In diesem Sinne freue ich mich über Kommentare und Ergänzungen zum überarbeiteten Artikel!</p>

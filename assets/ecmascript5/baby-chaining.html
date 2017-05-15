@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Beispiel: ECMAScript-5-Setter Baby.prototype.chaining</title>
+</head>
+<body>
+
+<h1>Beispiel: ECMAScript-5-Setter <code>Baby.prototype.chaining</code></h1>
+
+<script>
+
+(function () {
+
+function Baby () {
+  this.properties = {};
+}
+
+Baby.prototype = {
+  born: function (v) { if (arguments.length) { this.properties.born   = v; } else { return this.properties.born;   } },
+  name: function (v) { if (arguments.length) { this.properties.name   = v; } else { return this.properties.name;   } },
+  height: function (v) { if (arguments.length) { this.properties.height = v; } else { return this.properties.height; } },
+  weight: function (v) { if (arguments.length) { this.properties.weight = v; } else { return this.properties.weight; } },
+  gender: function (v) { if (arguments.length) { this.properties.gender = v; } else { return this.properties.gender; } },
+  hair: function (v) { if (arguments.length) { this.properties.hair   = v; } else { return this.properties.hair;   } },
+  eyes: function (v) { if (arguments.length) { this.properties.eyes   = v; } else { return this.properties.eyes;   } },
+};
+
+Object.defineProperty(Baby.prototype, 'chaining', {
+  get: function () {
+    var original = this,
+      toString = Object.prototype.toString,
+      proxy;
+
+    // Falls bereits ein Proxy-Objekt existiert, gib es zurück
+    if (original.hasOwnProperty('_proxy')) {
+      return original._proxy;
+    }
+
+    // Erzeuge das Proxy-Objekt
+    proxy = {};
+    // Durchlaufe alle Eigenschaften des Originals (auch vererbte)
+    for (var propName in original) {
+      var propVal = original[propName];
+      // Behandle nur Methoden, überspringe andere Eigenschaften
+      if (typeof propVal != 'function' && toString.call(propVal) != '[object Function]') continue;
+      // Sofort ausgeführter Funktionsausdruck als Closure
+      (function closure (propName) {
+        // Lege für jede gefundene Methode eine gleichnamige Methode beim Proxy-Objekt an
+        proxy[propName] = function chainableMethodWrapper () {
+          // Darin wird die Original-Methode aufgerufen
+          original[propName].apply(original, arguments);
+          // Und das Proxy-Objekt zurückgegeben
+          return proxy;
+        };
+      })(propName);
+    }
+    propVal = null;
+
+    // Speichere das Proxy-Objekt in der Eigenschaft _proxy beim Originalobjekt
+    Object.defineProperty(original, '_proxy', {
+      value: proxy,
+      // Die _proxy-Eigenschaft ist löschbar/konfigurierbar, aber nicht überschreibbar und zählbar
+      writable: false,
+      enumerable: false,
+      configurable: true
+    });
+
+    return proxy;
+  },
+  // Der chaining-Getter ist löschbar/konfigurierbar, aber nicht zählbar
+  enumerable: false,
+  configurable: true
+});
+
+var ada = new Baby();
+
+ada.chaining
+  .born(new Date())
+  .name('Ada')
+  .height(0.55)
+  .weight(3.5)
+  .gender('f')
+  .hair('none')
+  .eyes({
+    left: 'brown',
+    right: 'blue'
+  });
+
+alert('ada.name: ' + ada.name());
+alert('ada.height: ' + ada.height());
+
+})();
+
+</script>
+
+</body>
+</html>

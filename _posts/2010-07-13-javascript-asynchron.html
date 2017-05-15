@@ -1,0 +1,157 @@
+---
+layout: post
+title: JavaScript muss asynchron werden
+---
+
+<h2>JavaScript ist (noch immer) ein Problem</h2>
+
+<p>Mittlerweile wird JavaScript als eine vielseitige und mächtige Sprache angesehen, mit der sich nützliche Scripte und Webanwendungen umsetzen lassen. JavaScript kann die User Experience entscheidend verbessern. Diese Wahrnehmung herrschte nicht immer vor, denn die Geschichte von JavaScript ist eine Geschichte des JavaScript-Missbrauchs. Dass JavaScript lange hauptberuflich für die Gängelung des Benutzers verantwortlich war, wird heute gerne vergessen. Popups mit Werbung, Vollbild-Fenster, Animationen, Mausverfolger, Statusleisten-Ticker und Rechtsklicksperren waren Jahre lang auf sämtlichen »Homepages« zu finden.</p>
+
+<p>Diese Formen sind verschwunden, doch auch die gegenwärtige breite JavaScript-Anwendung verbessert die Nützlichkeit nicht. Die meisten JavaScripte binden Werbung von externen Adservern ein oder setzen Zugriffstracking um. Fast keine Website kommt ohne diese Komponenten daher. Große Portalseiten sind voll von Werbeflächen und Tracking-Beacons, auch kleinere enthalten häufig Banner- oder Textwerbung und binden Google Analytics ein. Hinzu kommen »Like«-Buttons von Facebook, Retweet-Buttons von Tweetmeme oder Topsy sowie Widgets von großen Sites. Zumindest letztere können einen direkten Mehrwert für den Besucher bieten. Technisch gesehen funktionieren sie jedoch gleich und bringen dieselben Nachteile mit sich.</p>
+
+<h2>Externe JavaScripte drücken die Lade-Performance</h2>
+
+<p>Über die Angemessenheit von Werbung soll hier nicht diskutiert werden, ebensowenig die Datenschutzprobleme von externen, zentralen Statistiklösungen. Es soll um die technischen Konsequenzen gehen: Diese JavaScripte verlangsamen den Seitenaufbau. Das liegt zum einen an der Weise, wie HTML-Dokumente eingelesen und Scripte darin verarbeitet werden. Zum anderen liegt es an der Funktionsweise der eingebundenen Scripte, die Inhalte ins Dokument einbinden.</p>
+
+<p>Werbescripte werden üblicherweise so eingebunden:</p>
+
+<pre>
+&lt;p>Inhalt&lt;/p>
+&lt;script type="text/javascript"
+   src="http://adserver.example.org/werbung.js?kunde=1234">&lt;/script>
+&lt;p>Inhalt&lt;/p>
+</pre>
+
+<p>Das eingebundene Script sieht z.B. so aus:
+
+<pre>
+document.write('&lt;p>&lt;a href="http://adserver.example.org/werbung-geklickt">' +
+   '&lt;img src="http://adserver.example.org/banner.jpg" ' +
+   'width="200" height="50" alt=""></a></p>');
+</pre>
+
+<p>Der Browser empfängt ein HTML-Dokument und während des Einlesens (Parsing) werden Scripte bereits ausgeführt (<a href="/js/einbindung.html">siehe meine JavaScript-Dokumentation</a>). Trifft der Parser auf ein <code>script</code>-Element, das per <code>src</code>-Attribut auf externes Script verweist, so hält das Parsing an. Im Falle von eingebundener Werbung lädt der Browser das Script vom Adserver herunter und führt es aus. Das Script fügt dem Dokument dann eigene Inhalte hinzu, und zwar an der Stelle, an dem es eingebunden wurde. Erst danach fährt der Parser mit der Verarbeitung des empfangenen HTML-Codes fort.</p>
+
+<p>Das Problem dieser Vorgehensweise ist, dass das Herunterladen den Seitenaufbau merklich ausbremst. Der Browser muss die Adserver-Domain auflösen, eine TCP-Verbindung herstellen und eine HTTP-GET-Anfrage senden. Die Antwort wird auf dem Adserver generiert, was dutzende bis hunderte Millisekunden dauert. Ist die Antwort erzeugt, wird sie zum Browser übertragen, was je nach Größe ein paar hundert Millisekunden veranschlagt. Dieser verarbeitet (parst) den JavaScript-Code und führt ihn aus.</p>
+
+<p>Alles in allem kann dieser Vorgang gerne eine halbe Sekunde dauern. Das Herunterladen von weiteren Dateien wie Bildern (z.B. dem Werbebanner), Stylesheets (z.B. zur Formatierung der Textwerbung) und Folgescripten (z.B. zur Interaktivität der eingebundenen Inhalte) ist noch nicht eingerechnet – <code>img</code>-Grafiken allerdings blocken nicht das HTML-Parsing.</p>
+
+<p>Wenn ein Dokument nur ein externes Werbescript einbindet, mag diese Verzögerung die wahrgenommene Ladeperformance nicht beeinflussen. Wenn allerdings an vier Stellen auf diese Weise Werbung eingebunden wird, kann die Verzögerung insgesamt zwei Sekunden betragen. Umfangreiche Portalseiten wie <a href="http://www.heise.de/">Heise.de</a> oder <a href="http://www.zeit.de/">Zeit.de</a>, welche über ein dutzend Werbeplätze verfügen, laden aufgrund der Werbung und der Statistik-Beacons viel langsamer, als sie eigentlich müssten.</p>
+
+<h2><code>document.write()</code> ist das Problem</h2>
+
+<p>Der Schlüssel zum Einbinden von Inhalten mithilfe externer Scripte ist <a href="http://de.selfhtml.org/javascript/objekte/document.htm#write">document.write()</a>. Damit lässt sich im Moment des Parsing HTML-Code ins Dokument einfügen. Nicht selten werden mit <code>document.write()</code> weitere <code>script</code>-Elemente erzeugt, die auf zusätzliche externe Scripte verweisen.</p>
+
+<p>Was für den JavaScript-Autor einfach nutzbar ist, ist für Browserprogrammierer ein Wahnsinn: Ein HTML-Dokument kann ein Script enthalten, dieses Script kann HTML erzeugen, dieses HTML kann Scripte beinhalten usw. ad infinitum. Einzig und allein wegen <code>document.write()</code> muss der HTML-Parser während der Scriptausführung mit dem Einlesen des Dokuments warten. Wird im Script <code>document.write()</code> aufgerufen, muss der Parser erst den damit ausgegebenen HTML-Code parsen und ins Dokument einfügen, bevor der Rest des Dokuments eingelesen werden kann. Dieses komplexe Verfahren wird mit <a href="https://html.spec.whatwg.org/multipage/syntax.html#parsing">HTML5 erstmals standardisiert</a>.
+
+<p>Technisch gesehen ist <code>document.write()</code> die Wurzel vieler Übel. Es stammt aus einer Zeit, als es das Document Object Model (DOM) als Schnittstelle zum Zugriff auf sämtliche Elemente des Dokuments noch nicht gab. Ohne <code>document.write()</code> kann JavaScript zwar schon beim Laden des Dokument ausgeführt werden und Scripte können <a href="/js/einbindung.html#script-dom-zugriff">auf den entstehenden DOM-Baum zugreifen</a>, dies verzögert allerdings nicht das Einlesen des HTML-Codes.</p>
+
+<h2>Asynchrones JavaScript</h2>
+
+<p>Websites sind zu Mashups geworden, die Inhalte aus verschiedenen Quellen und Diensten aggregieren. Externe JavaScripte und Daten-APIs sind daher im Web 2.0 nicht mehr wegzudenken.</p>
+
+<p>Webexperten sind sich darüber bewusst, dass externe JavaScripte im derzeitigen Web eine fatale Auswirkung auf die Ladeperformance haben. Der Performance-Guru <a href="http://stevesouders.com/">Steve Souders</a> hat daher das Projekt <a href="http://stevesouders.com/p3pc/">P3PC (Performance of 3rd Party Content)</a> ins Leben gerufen. Er stellt fest: »Ads, widgets, and analytics are a major cause for slow web sites.« Das Projekt will Techniken erarbeiten, wie Websites mit externen JavaScripten beschleunigt werden können.</p>
+
+<p>Wie ginge es also besser? Die Antwort ist: <a href="/js/organisation-ueberblick.html#unobtrusivejs">Unobtrusive</a>, asynchron eingebundene JavaScripte. Externe Scripte werden nicht mit direkt im HTML mittels <code>&lt;script src="javascript-asynchron.html">&lt;/script></code> eingebunden. Stattdessen wird ein <code>script</code>-Element per JavaScript erzeugt und in den <code>head</code> gehängt. Das so eingebundene Script wird im Hintergrund geladen, ohne dass der Parser durch das Herunterladen und Ausführen angehalten wird.</p>
+
+<p>Sobald das Script fertig geladen ist, greift es auf das DOM zu und fügt den gewünschten Inhalt ein. Beispielsweise kann ein zuvor leeres <code>div</code>-Element als Container dienen, in den die Inhalte geschrieben werden. Die benötigten Daten sowie Zusätze können ebenfalls asynchron im Hintergrund geladen werden.</p>
+
+<pre>
+&lt;div id="ad_example_1234_1">&lt;/div>
+&lt;script type="text/javascript">
+(function () {
+   var script = document.createElement('script');
+   script.type = 'text/javascript';
+   script.async = true;
+   script.src = 'http://adserver.example.org/werbung.js?kunde=1234&nummer=1';
+   (document.getElementsByTagName('head')[0] || document.body).appendChild(script);
+})();
+&lt;/script>
+</pre>
+
+<p>Dieses Schema verwenden bereits einige der von Steve Souders untersuchten Dienste erfolgreich. Es sorgt dafür, dass das HTML so schnell wie möglich geparst werden kann. Das asynchrone Laden bedeutet allerdings, dass die extern eingebundenen Inhalte erst nach und nach erscheinen. Die »Leerstellen« werden gefüllt, sobald die jeweiligen Inhalte geladen sind. Im Beispiel geht das Script davon aus, dass bereits ein <code>div</code>-Element mit der ID <code>ad_example_1234_1</code> existiert, wenn das Script geladen ist. Der Zugriff darauf ist möglich, vorausgesetzt es liegt im Quellcode vor dem einbindenden Script.</p>
+
+<p>Der Einsatz von asynchronen externen Scripten ist nur die halbe Miete. Steve Souders’ Kriterienkatalog umfasst auch das Caching der geladenen Scripte und misst die Server-Verzögerung und Größe der Inhalte, die durch das Script geladen werden. Dabei handelt es sich wie gesagt um Bilder, Stylesheets, weitere Scripte sowie und etwaige Ajax-Anfragen.</p>
+
+<h2>Asynchrone HTML5-Zukunft</h2>
+
+<p>Die vorgestellte Methode, bei der ein <code>script</code>-Element via JavaScript erzeugt und eingehängt wird, ist ein Hack. Er funktioniert gut, um die derzeitige Standard-Verarbeitung von Scripten durch die Browser zu umgehen. Es wäre jedoch einfacher, den Browser direkt anweisen zu können, ein Script asynchron zu laden. Der kommende HTML5-Standard wird dies erlauben. HTML5 definiert dazu zwei Attribute für das <code>script</code>-Element ein: <strong><code>async</code></strong> und <strong><code>defer</code></strong>. Beide sind »Schalter«-Attribute ohne Wert. Sie bewirken eine bestimmte Verarbeitung des Scripts beim HTML-Parsing.</p>
+
+<h3><code>&lt;script src="" async></code> – Externe Scripte im Hintergrund ausführen</h3>
+
+<p>Mit der Angabe des <code>async</code>-Attribut wird der HTML-Parser angewiesen, das Script im Hintergrund herunterzuladen und auszuführen. Das Script blockt also nicht das Parsing. Es wird ausgeführt, sobald es geladen ist. Dies kann zu einem beliebigen Zeitpunkt passieren: noch während des Ladens des Dokuments oder nach erfolgreichem Laden. Das DOM steht dadurch nur teilweise oder vollständig zur Verfügung.</p>
+
+<p><code>async</code> eignet sich besonders für Zusatzscripte, die etwa Werbung einbinden oder Zugriffe registrieren. Wenn kein DOM-Zugriff nötig ist, können solche Scripte bereits im <code>head</code> eingebunden werden. Andernfalls sollten sie hinter den Elementen stehen, auf die sie zugreifen. Es ist nämlich garantiert, dass der DOM-Baum zumindest bis zu dem <code>script</code>-Element geparst wurde, und dem asynchronen Script zur Verfügung steht. Das obige Beispiel für das asynchrone Einbinden von Werbung kann mit HTML5 einfach so gelöst werden:</p>
+
+<pre>
+&lt;div id="ad_example_1234_1">&lt;/div>
+&lt;script src="http://adserver.example.org/werbung.js?kunde=1234&nummer=1" async>
+&lt;/script>
+</pre>
+
+<p>Der Browser startet den Download eines <code>async</code>-Scriptes sofort. Dies kann den Download von anderen Ressourcen vom selben Server verzögern, denn der Browser nutzt eine begrenzte Anzahl von HTTP-Verbindungen pro Server. Scripte, Stylesheets und Bilder sollten generell von verschiedenen (Sub-)Domains geladen werden, damit der Browser die Dateien parallel mit mehreren gleichzeitigen HTTP-Verbindungen herunterlädt. Da externe Scripte, im Beispiel Werbung, sowieso von fremden Domains eingebunden werden, belegt das asynchrone Script in diesem Fall keine wichtige Download-Verbindung.</p>
+
+<h3>DOM ready: <code>DOMContentLoaded</code> versus Scripte am Dokumentende</h3>
+
+<p>Synchron geladene Scripte haben wie gesagt Zugriff auf das unfertige DOM, welches aus dem HTML-Code erzeugt wurde, der vor dem fraglichen <code>script</code>-Element steht (siehe <a href="/js/einbindung.html#ausfuehrung">Ausführung von Script-Elementen</a>).</p>
+
+<p>Eigene Scripte brauchen jedoch meistens Zugriff auf das vollständige DOM. Mithilfe einer Selektor-Engine werden Elemente im DOM herausgesucht, meist um an diesen Event-Handler zu registrieren. Die verbreiteten JavaScript-Frameworks versuchen diese Arbeitsweise besonders einfach zu gestalten. Gegenwärtig finden zwei Strategien Verwendung, um einem Script Zugriff auf das vollständige DOM zu ermöglichen:</p>
+
+<ol>
+
+<li>Das Script wird synchron im <code>head</code> eingebunden, wartet aber bis zum dokumentweiten <code>DOMContentLoaded</code>-Ereignis, bevor es aufs Dokument zugreift. (Siehe <a href="/js/event-handling-onload.html">Onload-Techniken</a> und <a href="/js/organisation-ueberblick.html#domready">DOM Ready</a>.) Die beliebte JavaScript-Bibliothek jQuery bietet dazu <code>$(document).<a href="http://api.jquery.com/ready/">ready</a>(function () {...});</code>.</li>
+
+<li>Das Script wird synchron am Dokumentende direkt vor <code>&lt;/body></code> eingebunden und hat dadurch ohne Umwege Zugriff auf das vollständige DOM. (Kurz darauf wird nämlich DOMContentLoaded ausgelöst.)</li>
+
+</ol>
+
+<p>Aus Performance-Gründen ist die zweite Vorgehensweise ratsamer. Eine Grundregel der Performance-Optimierung lautet daher: <a href="http://developer.yahoo.net/blog/archives/2007/07/high_performanc_5.html">Put scripts at the bottom</a>. Das sorgt dafür, dass alle der Dokumentinhalt schnellstmöglich sichtbar ist und die wahrgenommene Ladezeit gering bleibt. Erst später schalten sich die JavaScripte hinzu und fügen dem Dokument Interaktivität hinzu.</p>
+
+<h3><code>&lt;script src="" defer></code> – Externe Scripte nach dem HTML-Parsing ausführen</h3>
+
+<p>Mit dem <code>defer</code>-Attribut von HTML5 kommt eine dritte, komfortablere Lösungsmöglichkeit hinzu: <code>defer</code> weist den Browser an, das Script erst herunterzuladen, nachdem alle ausstehenden Ressourcen vom fraglichen Server abgerufen wurden. Ferner bestimmt <code>defer</code>, das Script erst auszuführen, wenn das Dokument fertig geladen ist. <code>defer</code>-Scripte warten also automatisch auf »DOM ready«, ein Handler für DOMContentLoaded wird unnötig.</p>
+
+<p>Das vereinfacht Unobtrusive JavaScript enorm: Die Position von <code>defer</code>-Scripten im Dokument hat keinen Einfluss auf das DOM, welches dem Script zur Verfügung steht, und beeinflusst das Laden der restlichen Daten nicht. Es hat denselben Effekt, ob <code>defer</code>-Scripte im <code>head</code> oder am Dokumentende vor <code>&lt;/body></code> stehen. Wenn sie ausgeführt werden, dann haben sie Zugriff auf das fertige DOM.</p>
+
+<p><code>defer</code> eignet sich zur Einbindung eigener Scripte und Bibliotheken, die komplexere DOM-Operationen vornehmen. Wie gesagt können diese im Dokumentkopf (<code>head</code>-Element) stehen, ohne das Parsing negativ zu beeinflussen. Ein HTML5-Dokument kann beispielsweise so anfangen:</p>
+
+<pre>
+&lt;!DOCTYPE html>
+&lt;head>
+&lt;meta charset="utf-8">
+&lt;title>Defer-Beispiel&lt;/title>
+&lt;link rel="http://css.example.com/stylesheet.css">
+&lt;script src="http://js.example.com/jquery-1.4.2.min.js" defer>&lt;/script>
+&lt;script src="http://js.example.com/eigenes-script.js" defer>&lt;/script>
+&lt;/head>
+…
+</pre>
+
+<h3>Browserunterstützung von <code>async</code> und <code>defer</code></h3>
+
+<p>Das <code>defer</code>-Attribut wird vom Internet Explorer ab Version 4 und Firefox ab Version 3.5 unterstützt. Chrome 5.0, Safari 5.0 und Opera 10.6 ignorieren es und führen das Script sofort aus. Daher können Sie sich derzeit nicht auf <code>defer</code> verlassen und sollten bis in nähere Zukunft <code>DOMContentLoaded</code> verwenden bzw. die Regel »Put scripts at bottom« befolgen.</p>
+
+<p>Das <code>async</code>-Attribut ist eine HTML5-Neuheit und wird bisher nur vom Firefox 3.6 unterstützt. Vorerst sollten Sie auf die bewährte Methode setzen, per JavaScript ein <code>script</code>-Element ins DOM einzufügen, wenn Sie Scripte asynchron laden wollen.</p>
+
+<h2>Das Ende für document.write – und für fragwürdige Werbung und Statistiken</h2>
+
+<p>Das gegenwärtige Web ist nur mit Werbe-Blockern und deaktiviertem JavaScript zumindest für einige überladene Sites zu genießen. Wie ich aufgezeigt habe, ist es ein handfestes technisches Problem, für das es bereits heute Abhilfe gibt und welches in Zukunft einfach zu umgehen ist.</p>
+
+<p>Es ist jedoch nicht nur ein technisches Problem: Dass Benutzer vermehrt Werbung, Statistiken und Widgets blocken, liegt an aufdringlichen Werbeformen und berechtigten Datenschutzbedenken. Site-Betreiber sollten sich über nützliche Werbe-Links, hilfreiche Widgets und anonyme Statistiklösungen Gedanken machen, anstatt sich über mangelnde Wertschätzung und »Kostenlosmentalität« zu echauffieren. Der Aufstieg von Micropayment-Lösungen wie <a href="http://flattr.com/">Flattr</a> zeigt, dass Leute für gute Inhalte freiwillig bezahlen. Jetzt muss nur noch die JavaScript-Einbindung der Flattr-Widgets performant werden.</p>
+
+<h2>Quellen</h2>
+
+<ul class="compact-list">
+<li><a href="http://www.stevesouders.com/blog/2009/04/27/loading-scripts-without-blocking/">Steve Souders: Loading Script without Blocking</a> (aus dem Buch <i>Even Faster Web Sites</i>)</li>
+<li><a href="http://www.stevesouders.com/blog/2010/02/15/browser-performance-wishlist/#script_attributes">Steve Souders: Browser Performance Wishlist: SCRIPT attributes</a></li>
+<li><a href="https://www.w3.org/TR/html5/scripting-1.html#attr-script-async">HTML5-Spezifikation: Die Attribute async und defer</a></li>
+<li><a href="https://developer.mozilla.org/en/HTML/Element/Script">Mozilla Developer Center: Das script-Element und dessen Attribute</a></li>
+</ul>
+
+<h2>Performance-Tools</h2>
+
+<ul class="compact-list">
+<li><a href="http://www.webpagetest.org/">WebPagetest: Ladeperformance einer Site messen</a></li>
+<li><a href="http://code.google.com/intl/de-DE/speed/page-speed/">Google Page Speed (Firefox-Erweiterung)</a></li>
+<li><a href="http://developer.yahoo.com/yslow/">Yahoo! YSlow (Firefox-Erweiterung)</a></li>
+</ul>

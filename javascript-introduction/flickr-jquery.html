@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Flickr-Suche mit jQuery</title>
+<link rel="stylesheet" href="css/flickr.css">
+</head>
+<body>
+
+<h1>Flickr-Suche mit jQuery</h1>
+
+<form id="search-form">
+  <p>
+    <label>Suche: <input type="search" id="search-field" value="flower"></label>
+    <input type="submit" id="search-submit" value="Suchen">
+  </p>
+</form>
+
+<div class="row">
+
+  <section class="col">
+    <h2>Ergebnisse</h2>
+    <div id="results"></div>
+  </section>
+
+  <section class="col">
+    <h2>Vollbild</h2>
+    <div id="fullview" tabindex="0"></div>
+  </section>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="js/flickr-jquery.js"></script>
+</body>
+</html>

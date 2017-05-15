@@ -1,0 +1,50 @@
+---
+layout: post
+title: XHTML wird zu Grabe getragen
+---
+
+<p>In letzter Zeit wechseln viele <a href="http://mezzoblue.com/archives/2009/04/20/switched/">Meinungsführer</a> demonstrativ zurück von XHTML 1.0 auf HTML 4.01. Genauso sang- und klangvoll propagierten sie vor einigen Jahren den Wechsel zu XHTML: XHTML sei <em>neu</em>, <em>besser</em>, <em>strenger</em> und XML sei die Zukunft.</p>
+
+<p>Diese Euphorie wurde nicht von technischen Fakten getragen, sondern von Missverständnissen, falschen Versprechungen und Zukunftsprognosen, wie sich das Web in fünf bis zehn Jahren entwickeln könnte und ob man mit seinem Markup auf diese Entwicklung vorbereitet sei. Die Annahme, XHTML 2 würde die langfristige Nachfolge von HTML 4 antreten, begründete den XHTML-Hype und nicht die konkreten, kurzfristigen Vorteile von XHTML 1. So setzte schnell eine grundlegende Kritik von XML im Web und insbesondere dessen Modell der drakonischen Fehlerbehandlung ein. Diese Kritik führte zur Entstehung von HTML 5 und zur heutigen weitgehenden Ablehnung von XHTML.</p>
+
+<h2>Hypes und Trends statt nüchterne Betrachtungen der Vor- und Nachteile</h2>
+
+<p>Während dieser ganzen Zeit gab es nur wenige, die versucht haben, die Vorteile und die nützliche Anwendungsfälle von XHTML für Webautoren herauszuarbeiten. – Positiv zu nennen ist hier die <a href="http://jendryschik.de/wsdev/einfuehrung/">Einführung in XHTML, CSS und Webdesign</a> von Michael Jendryschik und das <a href="http://schneegans.de/web/xhtml/">XHTML-Einmaleins</a> von Christoph Schneegans. – Nur vereinzelt wurde XHTML 1.0 als das betrachtet, was es ist: Schlicht eine Reformulierung von HTML 4 in XML. Wenige pickten sich die brauchbaren Aspekte des XHTML-Konzepts heraus, um von dieser Technik zu profitieren, ohne sich die unerwünschten Effekte einzuhandeln. Stattdessen war die Diskussion vollends eingenommen über »Neuheit« und Zukunftsfähigkeit.</p>
+
+<p>Heutzutage wird der XHTML-Hype zu Grabe getragen, ohne dass sich diese verstellte Sicht geändert hätte. Auch im Jahr 2009 sucht man nüchterne Betrachtungen vergebens. Man richtet sich nach Trends und migriert bestehende, funktionierende XHTML-Sites offenbar ohne konkreten Anlass auf HTML. Auch heute wird nicht gefragt: Was bringt mir XHTML im Vergleich zu HTML? Wer schon 2002 keine konkreten Gründe für den XHTML-Einsatz angeführt und die XHTML-Vorteile überhaupt nicht genutzt hat, für den ist eine Rückkehr zu HTML 4 heute wieder nur eine Frage von Trends und Prognosen.</p>
+
+<p>Das Bemühen um Zukunftsfähigkeit ist zweifelsohne wichtig, jedoch sollten Spekulationen über die Zukunft des Webs einer Kosten-Nutzen-Analyse weichen. Wer von den XHTML -Features nicht zu profitieren glaubt, wer XHTML-Dokumente an keiner Stelle als XML verarbeitet, wer um die Fallstricke von HTML 4 weiß, kann natürlich problemlos HTML 4 verwenden und ist damit gut beraten. Die neuerliche Verdammung von XHTML ist jedoch – genauso wie seine damalige Propagierung – unreflektiert und betrachtet den Diskussionsgegenstand nicht.</p>
+
+<p>Die Vor- und Nachteile von XHTML sind hinreichend bekannt, ebenso ist der sinnvolle und weitgehend unproblematische Einsatz dokumentiert. HTML-kompatibles XHTML ist bewährt und etabliert. Es ist, richtig eingesetzt, Teil beider Welten: Fehlertoleranz auf der Browserseite (durch Auslieferung als <code>text/html</code>) und eindeutige, strenge und überprüfbare Regeln auf der Autorenseite. XHTML kann als XML verarbeitet werden, aber auch als HTML.</p>
+
+<p>Das große Problem von XHTML war ohnehin weniger XHTML selbst oder die schlechte Browser-Unterstützung, sondern der Hype darum, der sich für die Eigenheiten von XHTML, für seine Stärken und Schwächen nicht wirklich interessierte. Das schlagkräftigste Argumente der XHTML-Skeptiker war daher, dass die Leute XHTML missverstehen und falsch einsetzen könnten. Damit haben sie leider recht behalten – sogar noch im Moment seiner Abschaffung missverstehen die meisten XHTML.</p>
+
+<h2>Kompatibilität zu HTML 5</h2>
+
+<p>Ein vielfach angeführter Grund der Rückkehr von XHTML 1 auf HTML 4 ist die angestrebte Kompatibilität mit der Zukunftstechnik HTML 5. Manche neue Sites setzen direkt einen HTML-5-DOCTYPE (<code>&lt;!DOCTYPE html></code>) ein, verwenden Elemente der entstehenden HTML-5-Spezifikation und nutzen experimentelle HTML-5-Validatoren. Doch was bedeutet Kompatibilität zu HTML 5?</p>
+
+<p>Um das Verhältnis zwischen HTML 4 und HTML 5 zu verstehen, muss man folgendes beachten: Die HTML-5-Spezifikation definiert nicht in erster Linie eine Markup-Sprache, d.h. eine textuelle Wiedergabe eines Dokuments, sondern ein abstraktes Dokumentmodell (DOM), eine Repräsentation im Speicher (»in-memory representation«). Diese Repräsentation wird »DOM5 HTML« genannt.</p>
+
+<p>Erst daran anschließend werden zwei sogenannte Serialisierungen definiert, die dieses Dokument textuell ausdrücken: Eine HTML-Syntax, genannt »HTML5«, und eine XHTML-Syntax, genannt »XHTML5«. Theoretisch wären weitere denkbar.</p>
+
+<p>Die erste Serialisierung ist an die SGML-Anwendung HTML 4 angelehnt, definiert jedoch letztlich eine eigene Syntax mit eindeutigen, fehlertoleranten Parsing-Regeln. Diese Serialisierung zielt auf Kompatibilität mit den bestehenden Tag-Soup-Parsern und mit den tatsächlich bestehenden Websites – gerade nicht auf detailgetreue Übereinstimmung mit HTML 4 als SGML-Sprache.</p>
+
+<p>Die zweite Serialisierung ist eine klassische und reine XML-Anwendung, die nur auf Programme zielt, die XML und XHTML verarbeiten können. Viele der verbreiteten Browser fallen also heraus, was den derzeitigen Einsatz von XHTML 5 im Web unsinnig macht. Einen »Kompatibilitätsmodus« wie bei XHTML 1, der eine Verarbeitung sowohl als Tag-Soup als auch als XML vorsieht, gibt es bei XHTML 5 absichtlich nicht.</p>
+
+<h2>HTML 5 löst den Gegensatz zwischen HTML und XHTML auf</h2>
+
+<p>Mit der Loslösung von SGML und DTD-Grammatiken überwindet HTML 5 viele Probleme und Unstimmigkeiten von HTML 4, von denen sich auch XHTML 1 positiv abgesetzt hat. Dies nimmt die Spannung aus der Frage »HTML 4 oder XHTML 1?«, indem das Beste von beiden vereint wird. Die entstehenden HTML-5-Validatoren legen strengere formale Grammatiken an, die die Erfordernisse der Spezifikation genauer wiedergeben, so wie wir es von der <a href="http://schneegans.de/sv/">XHTML-Validierung mit XML-Schemata</a> kennen. Gleichzeitig sind die Parsing-Regeln für die HTML5-Serialisierung liberal und erlauben auch die bei XHTML 1 typische Schreibweise von leeren Elementen (z.B. <code>&lt;br /></code>).</p>
+
+<p>Daher ist es kein Problem, ein HTML-4.01-Dokument auf HTML 5 umzustellen – aber es ist nicht signifikant mehr Aufwand, ein gewöhnliches HTML-kompatibles XHTML-1.0-Dokument auf HTML 5 umzustellen und es bei Bedarf (vorerst außerhalb von Browsern) als XHTML 5 zu verarbeiten.</p>
+
+<p>Ein Beispiel: Um die in XHTML 1.0 geschriebene <a href="http://www.w3.org/TR/xhtml1/">XHTML-1.0-Spezifikation</a> für HTML 5 fit zu machen, sind nur wenige Schritte nötig: Der DOCTYPE wird auf <code>&lt;!DOCTYPE html></code> gekürzt, die <code>xmlns</code>-Angabe fällt weg. Ferner wird die XML-Deklaration entfernt – in der Praxis hat nahezu kein XHTML-Dokument eine solche, weil sie im IE 6 den meistens unerwünschten Quirks-Rendermodus auslöst, in welchem der Browser verschiedene Webstandards ignoriert. Schließlich sind es noch viele <code>name</code>-Attribute bei <code>a</code>-Elementen, die dieses Beispieldokument von der HTML-5-Konformität trennen. Solche <code>name</code>-Attribute für Linkanker sind seit HTML 4 nicht mehr notwendig, es reichen <code>id</code>-Attribute. Die <code>name</code>-Attribute wurden zur Unterstützung von Browsern wie Netscape 4 eingesetzt, die den HTML-4-Standard noch nicht umsetzten.</p>
+
+<p>Dieses Beispiel zeigt, dass der jüngste Wirbel um HTML 4 versus XHTML 1 die konkrete Kompatibilität mit HTML 5 nur oberflächlich betrachtet. Die vermeintliche bessere Zukunftsfähigkeit von HTML 4, die zunehmend angesichts des Fortschrittes von HTML 5 gepredigt wird, hat wieder einmal wenig mit der tatsächlichen technischen Sachlage zu tun. Es gilt, endlich zu einer nüchternen und fundierten Analyse zu kommen, die die Webautoren informiert, aufklärt und ihnen eine kompetente Wahl ermöglicht, anstatt ihnen das Blaue vom Himmel zu versprechen oder den Teufel an die Wand zu malen.</p>
+
+<h2>Weiterführende Artikel:</h2>
+
+<ul class="compact-list">
+<li><a href="http://blog.selfhtml.org/2006/05/14/xhtml-validierung/">Überlegter Einsatz von XHTML und Werkzeuge zur Validierung</a></li>
+<li><a href="/dokumentmodelle/">HTML-Dokumentmodelle</a></li>
+<li><a href="http://blog.selfhtml.org/2006/10/31/xhtml-html5-fehlertoleranz/">Verarbeitung von HTML: Strenge oder Fehlertoleranz?</a></li>
+</ul>

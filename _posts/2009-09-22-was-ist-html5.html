@@ -1,0 +1,170 @@
+---
+layout: post
+title: Was ist HTML 5? – Weit mehr als eine Auszeichnungssprache
+---
+
+<p>HTML 5 ist ein Buzzword, unter dem dutzende neue und zukünftige Webtechniken subsummiert werden. Das ist zum einen gerechtfertigt, zum anderen irreführend, da es verschiedene Entwicklungen in einen Topf wirft. HTML 5 ist vieles zugleich. Tim Tepaße versuchte einmal, in einem <a href="http://forum.de.selfhtml.org/archiv/2009/1/t182060/#m1207233">Forumsposting</a> zumindest einiges davon zusammenzufassen. Neben den mannigfachen technischen und geschichtlichen Aspekten ist HTML 5 nämlich auch eine Seifenoper, der sich sogar <a href="http://www.cssquirrel.com/">satirisch-kritische Comic-Strips</a> widmen.</p>
+
+<p>Dieser Text soll ein weiterer Beitrag zur Frage darstellen, was hinter HTML 5 steht – und bleibt bewusst einseitig und unvollständig.
+
+<h2>HTML als Textauszeichnungssprache</h2>
+
+<p>Dem Namen nach ist HTML 5 die kommende Version der Sprache, in der Webseiten geschrieben sind. Die letzte Version ist HTML 4, welches vor mehr als zehn Jahren das letzte Mal geändert wurde.</p>
+
+<p>HTML ist eine Auszeichnungssprache für Dokumente im World Wide Web – daher »Hypertext Markup Language«. Ausgangspunkt ist das Anreichern von Texten mit sogenannten Tags (Markierungen):</p>
+
+<pre>&lt;h1>Dies ist eine Überschrift!&lt;/h1></pre>
+
+<p>Drumherum notiert man ein Gerüst, sodass HTML zu einem vollständigen Dokumentformat wird.</p>
+
+<pre>
+ &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+ &lt;html>
+   &lt;head>
+     &lt;title>Beispieldokument&lt;/title>
+   &lt;/head>
+   &lt;body>
+     &lt;h1>Dies ist eine Überschrift!&lt;/h1>
+  &lt;/body>
+ &lt;/html>
+</pre>
+
+<p>HTML-Dokumente werden üblicherweise mit Stylesheets verknüpft, die die Präsentation des Dokuments bestimmen, und mit JavaScripten verbunden, die Interaktivität innerhalb des Dokuments ermöglichen.</p>
+
+<h2>Der erweiterte Blick von HTML 5</h2>
+
+<p>Die HTML-5-Spezifikation ist nun weit mehr als ein Regelwerk, das das Dokumentformat für Webseiten beschreibt. HTML 5 hat einen erweiterten Blick und definiert nicht mehr nur das Markup, sondern auch verwandte Techniken und technische Verfahren, die früher von getrennten Regelwerken abgedeckt wurden. Die Idee dahinter ist, das Web als »Plattform« insgesamt zu verbessern, indem das Fundament rundherum gefestigt wird.</p>
+
+<p>In HTML 5 gehört vieles zusammen und baut aufeinander auf, aber zum Verständnis möchte ich die Kernideen von HTML 5 »aufdröseln«.</p>
+
+<h3>1. Das Dokument-Objektmodell als Ausgangsbasis</h3>
+
+<p>HTML 5 startet bei etwas abstraktem, wenig anschaulichem: dem Dokument-Objektmodell (DOM). Das DOM ist eine Baumstruktur von sogenannten Knoten – das sind grob gesagt Elemente, deren Attribute sowie Textinhalte. Das DOM kann man nicht direkt sehen oder festhalten, es ist nur ein Modell, in dem Daten zueinander in einer Unter- und Nebenordnung stehen. In dem Artikel <a href="/dokumentmodelle/">HTML-Dokumentmodelle</a> habe ich versucht, das DOM anschaulich zu machen.</p>
+
+<p>Das DOM ist die Repräsentation des Dokuments, wenn es im Arbeitsspeicher eines verarbeitenden Programms, z.B. eines Browsers liegt. Das war bei HTML 4 immer nachrangig und in eigene Spezifikationen ausgelagert. Das DOM kam erst ins Spiel, wenn vom Zugriff auf HTML-Dokumente die Rede war. HTML 5 zäumt das Pferd von hinten auf, indem das abstrakte Datenmodell am Anfang steht. Wir kommen später dazu, warum das sinnvoll ist.</p>
+
+<p>Diese Umkehrung mag für die meisten HTML-Autoren verwirrend sein, denn sie sind gewohnt, dass am Anfang der konkrete, sichtbare Code steht. Vom DOM auszugehen entspricht allerdings der Logik von Auszeichnungssprachen, von CSS, JavaScript und anderen Webtechniken. Die beschreiben bzw. behandeln HTML-Dokumente allesamt als Objektmodell.</p>
+
+<h3>2. Grammatik und Semantik</h3>
+
+<p>Mit der »objektorientierten« Sichtweise definiert HTML 5 die Grammatik und die Semantik: welche Elemente und Attribute gibt es, was bedeuten sie, wie dürfen sie verschachtelt werden und wie ist das Gerüst eines Dokuments aufgebaut. HTML 5 ist daher ein Vokabular zur Dokument-Strukturierung bzw. Textauszeichnung.</p>
+
+<h3>3. Das DOM als Programmierschnittstelle (API) zum Zugriff auf Dokumente</h3>
+
+<p>Mit der Definition der Struktur eines Dokuments wird direkt die Schnittstelle zum Zugriff durch Computerprogramme definiert. Ein verarbeitendes Programm sieht das Dokument als Objekte. HTML 5 definiert, wie die DOM-Knoten als Objekte zugänglich sind und welche Eigenschaften und Methoden sie besitzen. Grundlage ist der Standard W3C DOM 2 Core (das Kern-DOM), das eigentlich den Zugriff auf sämtliche XML-Dokumente regelt. Gleichzeitig stellt HTML 5 den Nachfolger von W3C DOM 2 HTML dar, dem spezifischen DOM für HTML 4 bzw. XHTML 1.</p>
+
+<p>Diese Programmierschnittstelle kann in vielen Fällen Anwendung finden. Der wichtigste und häufigste Fall ist unbestreitbar, dass JavaScript im Browser mit dem Dokuments arbeitet.</p>
+
+<h3>4. Zwei Serialisierungen mit zwei Syntaxen</h3>
+
+<p>Üblicherweise schreiben wir HTML-Code, wenn wir ein HTML-Dokument in unseren Texteditor laden. Wir tippen also im Grunde Zeichen ein, die HTML-Tags oder natürlichsprachigen Text bilden. Wir erinnern uns an das Beispiel:</p>
+
+<pre>&lt;h1>Dies ist eine Überschrift!&lt;/h1></pre>
+
+<p>Aus Sicht von HTML 5 ist dieser Code eine sogenannte <strong>Serialisierung</strong>. Das ist ein textbasiertes Format, das die DOM-Struktur speicherbar macht. Erst damit kann sie z.B. von Menschen direkt bearbeitet und über das Netz übertragen werden kann.</p>
+
+<p>Die HTML-5-Spezifikation definiert gleich zwei mögliche Serialisierungen, d.h. zwei mögliche Textdateiformate, in denen HTML-5-Dokumente geschrieben und gespeichert werden können:</p>
+
+<ul>
+<li>Die <strong>HTML-Syntax</strong> ähnelt HTML 4, welches auf SGML basierte. Es handelt sich jedoch nicht mehr um eine SGML-Sprache.</li>
+<li>Die <strong>XHTML-Syntax</strong> basiert auf XML und gleicht somit in großen Teilen XHTML 1.0.</li>
+</ul>
+
+<p>Diese Serialisierungen schließen sich nicht gegenseitig aus: Polyglotte (vielsprachige) Dokumente können sowohl eine gemäß HTML-Syntax als auch gemäß XHTML-Syntax gültig sein. Das führt uns zu der Verarbeitung der Serialisierungen.</p>
+
+<h3>4. Die Verarbeitung der HTML-Syntax: fehlertolerant, aber streng reguliert</h3>
+
+<p>Bekommt der Browser ein HTML-Dokument geliefert, so <em>parst</em> er es. <dfn>Parsen</dfn> bedeutet, den HTML-Code einzulesen und zu einem DOM-Baum im Arbeitsspeicher zu verarbeiten. Anhand dieses DOM-Baums erzeugt der Browser die Darstellung des Dokuments, die wir schließlich im Browser sehen und bedienen.</p>
+
+<pre>
+       Serialisierung
+DOM   --------------->   Code
+      <---------------
+          Parsing
+</pre>
+
+<p>Aus dem Code <code>&lt;h1>Dies ist eine Überschrift!&lt;/h1></code> wird letztlich ein <code>h1</code>-Elementknoten, der einen Textknoten mit dem Inhalt »Dies ist eine Überschrift!« enthält.</p>
+
+<p>Zusammen mit der verbindlichen HTML-Syntax definiert HTML 5 die einzig richtige Verarbeitung von HTML-Dokumenten, also die Regeln für einen jeden HTML-Parser. Diese Verarbeitung ist zwar sehr fehlertolerant, aber es ist genau definiert, was im Fehlerfalle passiert. Ein gewisser Code erzeugt ein bestimmtes DOM, den Browsern wird möglichst wenig Interpretationsspielraum gelassen. Die Darstellung einer Webseite mit fehlerhaftem HTML-Code ist somit genauso determiniert wie die einer fehlerfreien.</p>
+
+<p>Die Verarbeitung der XHTML-Syntax ist ebenfalls genau geregelt. Dies muss die HTML-5-Spezifikation allerdings nicht selbst vornehmen, sondern hier gilt einfach der XML-Standard.</p>
+
+<p>Der besagte HTML-Parser soll künftig die bestehenden Parser in den Browsern ersetzen. Allerdings werden manche Browser den HTML-5-konformen Parser voraussichtlich nur für Dokumente verwenden, die einen HTML-5-DOCTYPE verwenden (<code>&lt;!DOCTYPE html></code>). Es gibt noch keine Browserversionen für den Produktiveinsatz, die einen solchen Parser beinhalten. Lediglich Testversionen von Mozilla Firefox (Nightly Builds) besitzen einen experimentellen HTML-5-Parser. Diesen muss man <a href="http://blog.whatwg.org/test-html5-parsing">absichtlich anschalten</a>, damit alle Webseiten (zumindest die vom Typ <code>text/html</code>) damit verarbeitet werden.</p>
+
+<p>Des weiteren definiert HTML 5 genau, wie Browser mit den Elementen umgehen sollen. Das ist bei Elementen wie <code>h1</code> oder <code>p</code> recht trivial. Der Umgang mit aktiven und dynamischen Inhalten, die mit <code>embed</code>, <code>object</code>, <code>video</code> und <code>audio</code> eingebunden werden, bedarf jedoch einer detaillierten Beschreibung, da nichts mehr dem Zufall überlassen werden soll.</p>
+
+<p>Hier zeigt sich, warum HTML 5 im Gegensatz zu HTML 4 nicht Sprachvokabular, Serialisierung und Verarbeitung/Parsing vermischt und miteinander verschränkt. Die Syntax von HTML 4 ergab sich noch von selbst, denn HTML 4 war eine SGML-Anwendung. HTML 5 räumt sich eine gewisse Flexibilität ein, indem es sich von SGML emanzipiert: Es definiert ein eigenes Textformat (Serialisierung des DOM) und gleichzeitig die korrekte Verarbeitung (Parsen zurück zum DOM). Das Ziel ist, dass der HTML-5-Parser den bestehenden, mitunter fehlerhaften HTML-Dokumenten im Web gewachsen ist. Gleichzeitig bleibt die Option einer XML-Serialisierung offen, um von den Vorteilen der XML-Plattform Gebrauch zu machen.</p>
+
+<p>Ein Schaubild von Karl Dubost zeigt den Zusammenhang von DOM, der Serialisierung hin zu HTML- oder XHTML-Syntax und dem umgekehrten Prozess des Parsens vom Markup zum DOM:</p>
+
+<p><img src="/img/html5-serializations.png" alt=""></p>
+
+<p><a href="http://www.la-grange.net/2009/07/05/html5-xhtml5/">Quelle: HTML 5 and XHTML 5 – one vocabulary, two serializations</a></p>
+
+<h3>5. Weitergehende Scripting-Schnittstellen (APIs)</h3>
+
+<p>HTML 5 startete unter dem Namen »Web Applications 1.0« und trägt jetzt noch den Untertitel »A vocabulary and associated APIs for HTML and XHTML« (ein Vokabular und zugehörige Programmierschnittstellen für HTML und XHTML). HTML 5 befasst sich mit einem bunten Strauß an Techniken für <em>Webanwendungen</em>. Damit sind interaktive Websites gemeint, die zum Teil stark auf JavaScript und setzen, um sich in puncto Bedienkomfort klassischen Desktop-Programmen anzugleichen.</p>
+
+<p>Wenn derzeit von HTML 5 die Rede ist, dann sind oftmals die neuen JavaScript-Fähigkeiten gemeint, die einige Browser bereits unterstützen. Branchengrößen wie Google propagieren »HTML 5« als ein Schlagwort für dynamische, JavaScript-angetriebene Webanwendungen wie Google Wave. Seitdem Google einen eigenen Browser namens Chrome veröffentlicht hat und an einem Web-gestützten Betriebssystem namens Chrome OS arbeitet, nimmt die Idee von »HTML 5« als Plattform für Anwendungen Substanz an. Daher ist es kein Wunder, dass der Hauptautor der HTML-5-Spezifikation, Ian Hickson, bei Google angestellt ist.</p>
+
+<p>Ungefähr ein dutzend neue JavaScript-Schnittstellen, die dem HTML-5-Kontext entstammen, sind derzeit in Arbeit. Viele davon wurden von einzelnen Browserherstellern erfunden und werden nun standardisiert und weiterentwickelt, um eine browserübergreifende Umsetzung zu ermöglichen. Hinzu kommen alte Schnittstellen, die längst breit unterstützt werden, aber im Zuge von HTML 5 erstmals herstellerunabhängig und normativ spezifiziert werden. Das beste Beispiel ist das oberste JavaScript-Objekt <code>window</code>, das seit dem ersten JavaScript-fähigen Webbrowser existiert, das aber nie durch ein unabhängiges Gremium standardisiert wurde. Insofern ist HTML 5 ein größeres Unternehmen, um durch Webstandards Einheitlichkeit und Verlässlichkeit in die Webentwicklung zu bringen.</p>
+
+<p>Einige der APIs sind Teil der Hauptspezifikation, was Kritiker bemängeln. Nach und nach werden Teilmodule in eigenständige Spezifikationen ausgelagert, um die Entwicklungsrhythmen voneinander abzukoppeln.</p>
+
+<p>Zu den wichtigsten neuen JavaScript-APIs gehören:</p>
+
+<ul>
+<li>Audio- und Video-Einbettung und -Ansteuerung</li>
+<li>Mit Canvas kann eine »Leinwand« mit JavaScript bezeichnet werden</li>
+<li>Textverarbeitung im Browser, Rich Text Editing</li>
+<li>Drag und Drop von Elementen innerhalb eines Dokuments und von Dateien vom Desktop auf die Webseite</li>
+<li>Offline-Speicherung von Daten (Session Storage), einfache clientseitige SQL-Datenbank</li>
+<li>JavaScript-Kommunikation zwischen Dokumenten, auch von unterschiedlichen Domains</li>
+<li>Web Workers ermöglichen das parallele Ausführen mehrerer abgekoppelter JavaScripte</li>
+<li>Ansprechen von Elementen über CSS-artige Selektoren, wie es bereits zahlreiche JavaScript-Bibliotheken erlauben</li>
+<li>Echtzeit-Kommunikation mit dem Server über Socket-Verbindungen anstatt nur über aufgeblähte HTTP-Anfragen</li>
+</ul>
+
+<h2>Kann ich HTML 5 bereits einsetzen?</h2>
+
+<p>Während es in diesem Artikel um die Grundprinzipien von HTML 5 ging, haben sich andere Autoren eingehend solchen praktischen Fragen gewidmet. Eine allgemeine Antwort lautet: Es kommt darauf an. HTML 5 besteht aus dutzenden Teiltechniken unterschiedlicher Herkunft, deren Browserunterstützung stark variiert.</p>
+
+<h3>DOCTYPE</h3>
+
+<p>Sie können bereits HTML-5-konforme Dokumente schreiben, indem Sie Ihre Dokumente mit <code>&lt;!DOCTYPE html></code> beginnen. Zur Validierung können sie einen <a href="http://html5.validator.nu">speziellen HTML-5-Validator</a> nutzen. Aber auch der gewöhnliche W3C-Validator kann HTML-5-Dokumente validieren.</p>
+
+<p>Seien Sie sich darüber bewusst, dass in diesem experimentellen HTML-5-Validator bisher der <a href="http://about.validator.nu/htmlparser/">einzige wirkliche HTML-5-Parser</a> steckt. Von der robusten und definierten Verarbeitung als HTML 5 können Sie derzeit noch nicht profitieren – es sei denn, Sie nutzen diese Parser-Bibliothek oder die <a href="http://code.google.com/p/html5lib/">html5lib</a> in Ihren eigenen serverseitigen Programmen.</p>
+
+<h3>Neue Elemente und Attribute</h3>
+
+<p>Die neuen Elemente zur Grobstrukturierung des Dokuments wie <code>section</code>, <code>nav</code>, <code>article</code>, <code>aside</code>, <code>hgroup</code>, <code>header</code> und <code>footer</code> <em>kennt</em> bisher kein Browser. Damit ist gemeint: Die Bedeutung erkennt kein Browser.</p>
+
+<p>Allerdings gehen die meisten Browser mit unbekannten Elementen um wie mit bekannten: Aus den Tags erzeugen sie entsprechende DOM-Knoten und erlauben eine CSS-Formatierung. Der Internet Explorer tut dies nicht. Es zwar gibt einen <a href="http://remysharp.com/2009/01/07/html5-enabling-script/">JavaScript-Trick</a>, mit dem man die neuen Elemente im Internet Explorer »anmelden« kann. Ohne JavaScript-Unterstützung ist dieser allerdings hinfällig und damit nicht robust. Auf Produktiv-Websites lohnt sich der Einsatz der besagten Elemente daher nicht, denn sie sind nicht browserübergreifend per CSS formatierbar. Wenn Sie sie einsetzen, sind daher immer noch zusätzliche <code>div</code>-Container nötig.</p>
+
+<p>Auch wenn es pessimistisch und niederschmetternd klingt, hat Eric Eggert die aktuelle Lage <a href="http://yatil.de/Weblog/wer-heute-schon-html5-einsetzen-sollte">auf die treffende Formel gebracht</a>: »Wer heute schon HTML5 einsetzen sollte: Fast niemand. HTML5 [gemeint sind die neuen Elemente] wird von keinem Browser aktiv unterstützt, es geht im Moment nur nichts kaputt«.</p>
+
+<p>Weitere Hinweise zur Anwendung des neuen Markups finden sich auf beim <a href="http://html5doctor.com/">HTML5 Doctor, helping you implement HTML5 today</a>.</p>
+
+<h3>Welche Serialisierung – HTML 5 oder XHTML 5? Beides!</h3>
+
+<p>In den letzten Monaten haben viele Fachleute eine Lanze für <a href="http://itpastorn.blogspot.com/2009/07/value-of-false-xhtml.html">»polyglotte« (X)HTML-5-Dokumente</a> gebrochen. Das sind Dokumente nach XHTML-Syntax, die dank der neuen Verarbeitungsregeln auch als HTML geparst werden können. Dies ermöglicht es, auf die bewährte strenge und »pädagogische« XHTML-Syntax zu setzen und gleichzeitig maximale Kompatibilität mit bestehenden XML-Werkzeugen und künftigen HTML-5-Parsern zu erreichen. Der besagte HTML-5-Validator <a href="http://intertwingly.net/blog/2009/09/02/Polyglot-Validation">macht Fortschritte</a>, um die Erstellung von polyglotten Dokumenten zu unterstützen.</p>
+
+<p>Die Idee von HTML-Dokumenten, die Teil beider Welten sind, ist nun nichts Neues: Sogenanntes abwärtskompatibles XHTML 1.0 wird seit Jahren als <code>text/html</code> ausgeliefert. Bereits dafür gab es in der Vergangenheit vehemente Fürsprecher und erbitterte Gegner. Der Grabenkampf, ob XML für Websites Sinn ergibt, ist also nicht beigelegt: Die alten Kontrahenten <a href="http://blog.whatwg.org/response-to-notes-on-html-5">streiten unaufhörlich weiter</a>. Was die einen für Zeitverschwendung halten, sehen die anderen als <a href="http://my.opera.com/jax/blog/html5-xml-stealth">stilles Revival von XML</a>. Wie auch immer: Mit HTML 5 hat sich ein pragmatischer Kompromiss durchgesetzt, der den Webautoren die Wahl lässt und sie dabei so gut es geht unterstützt.</p>
+
+<h3>JavaScript-Schnittstellen aus dem HTML-5-Umfeld</h3>
+
+<p>Die Nutzung der neuen JavaScript-Schnittstellen gestaltet sich insofern einfach, dass sich <a href="/js/browser.html#faehigkeitenerkennung">Fähigkeitenerkennung</a> durch gezielte <a href="/js/browser.html#objektabfragen">Objektabfragen</a> vornehmen lassen. Es gibt sogar eine JavaScript-Bibliothek namens <a href="http://www.modernizr.com/">Modernizr</a>, die die Abfrage der Unterstützung von gewissen HTML-5-Features sowie zahlreiche CSS-Erweiterungen vereinfacht. Mark Pilgrim erklärt in <a href="http://diveintohtml5.org/detect.html">Detecting HTML5 Features</a> verschiedene Feature-Abfragen im Detail.</p>
+
+<p>Nur wenige der neuen JavaScript-APIs sind bisher browserübergreifend nutzbar. Das muss nicht heißen, dass Sie sie noch nicht im Sinne des »Progressive Enhancement« einsetzen können. Sie können die APIs als obligatorisch voraussetzen, was i.d.R. nur in homogenen Intranets tragbar ist. Oder sie verwenden die APIs für optionale Zusatzfeatures. Oder sie nutzen Fallback-Lösungen für ältere Browser, sofern solche existieren.</p>
+
+<p>Eine gute Vergleichstabelle zur Browserunterstützung unter anderem der neuen APIs bietet <a href="http://a.deveria.com/caniuse/">When can I use ...?</a>. Folgende Site demonstriert die JavaScript-Fähigkeiten: <a href="http://html5demos.com/">HTML 5 Demos and Examples</a> (Remy Sharp)</p>
+
+<h2>Zum Schluss eine Warnung</h2>
+
+<p> HTML 5 ist <em lang="en">work in progress</em>. HTML 5 hat schon einen langen Weg hinter sich, ist aber erst vor Kurzem richtig durchgestartet. Es ist weder ausgereift noch für den robusten Praxieinsatz geeignet. Vor allem ist die Spezifikation noch längst nicht fertig, auch wenn sie bereits in den Browsern implementiert und massig Sekundärliteratur produziert wird.</p>
+
+<p>Mit der zunehmenden Popularität haben sich mehr Experten mit HTML 5 beschäftigt und haben grundlegende und fundierte Kritiken gewisser HTML-5-Techniken formuliert. Im Zuge der Einarbeitung dieses Feedbacks ändern z.B. gewisse HTML-Elemente ihre Bedeutung oder fallen ganz aus dem Regelwerk heraus. Der kommende Standard wird also ständig revidiert. Das ist eine gute Sache, heißt aber für Webautoren, dass sie lediglich mit einer Momentaufnahme arbeiten, deren Halbwertszeit gering ausfallen kann.</p>
+
+<h2>Ausblick</h2>
+
+<p>In einem Folgebeitrag möchte ich ein <a href="/html5-specs/">Überblick über die verschiedenen Spezifikationen</a> und die zahlreiche Hintergrundliteratur geben.</p>

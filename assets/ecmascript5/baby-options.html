@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Beispiel: Konstruktor mit options-Object</title>
+</head>
+<body>
+
+<h1>Beispiel: Konstruktor mit options-Object</h1>
+
+<script>
+
+(function () {
+
+function Baby (options) {
+  for (var propName in options) {
+    if (options.hasOwnProperty(propName)) {
+      this[propName] = options[propName];
+    }
+  }
+}
+
+var ada = new Baby({
+  born: new Date(),
+  name: 'Ada',
+  height: 0.55,
+  weight: 3.5,
+  gender: 'f',
+  hair: null,
+  eyes: {
+    left: 'blue',
+    right: 'brown'
+  }
+});
+
+alert('ada.name: ' + ada.name);
+alert('ada.height: ' + ada.height);
+
+})();
+
+</script>
+
+</body>
+</html>

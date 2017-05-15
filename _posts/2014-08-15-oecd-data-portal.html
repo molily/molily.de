@@ -1,0 +1,36 @@
+---
+layout: post
+title: "New data visualization project: OECD Data Portal"
+lang: en
+---
+
+<p>In July, the <a href="http://data.oecd.org">OECD Data Portal</a> was launched, a central gateway to <a href="http://www.oecd.org">OECD</a> publications and databases. A key element of the Data Portal is the interactive visualization of key economic and social indicators. For each indicator, the user can access the related studies and download the source data. On each country page, a compact dashboard allows the quick comparison of countries.</p>
+
+<p><a href="https://9elements.com">9elements</a>, the company I work for, developed the frontend of the Data Portal. I was the lead developer for the Data Portal frontend and the interactive charts. The concept and design were developed <a href="http://raureif.net">Raureif</a> and <a href="http://moritz.stefaner.eu/">Moritz Stefaner</a>.</p>
+
+<p>The chart component and query interface is a large JavaScript (CoffeeScript) application that uses the libraries jQuery, <a href="http://d3js.org">D3</a>, <a href="http://misoproject.com/d3-chart/">d3.chart</a> and <a href="http://lodash.com">Lodash</a> to draw SVG data graphics in the browser. The visualization types are bar chart, line chart with different modes, world map and table.</p>
+
+<p>The user can customize the charts by changing the query parameters and by highlighting countries. The indicator visualization and the country dashboard can be saved and shared via Facebook, Twitter or e-mail. They can also be embedded into other sites as well using an IFRAME.</p>
+
+<p><iframe src="http://data.oecd.org/chart/4crQ" width="100%" height="500" style="border: 0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true"><a href="http://data.oecd.org/chart/4crQ" target="_blank">OECD Chart: Unemployment rates, Total, % of labour force, Q2 2006 – Q4 2013</a></iframe></p>
+
+<p>The Data Portal is currently in the beta phase and more features are to come. Feedback is welcome!</p>
+
+<p><strong>→ <a href="http://data.oecd.org">Visit the OECD Data Portal</a></strong></p>
+
+
+<h2>Improved project: Bertelsmann Foundation GED VIZ</h2>
+
+<p>In 2013, 9elements developed <a href="https://viz.ged-project.de">GED VIZ</a> for the Bertelsmann Foundation. It’s an interactive storytelling tool for journalists and researchers to create presentations using data visualizations. GED VIZ visualizes bilateral and unilateral indicators of 47 countries in a smart polygon chart.</p>
+
+<p>Currently the bilateral indicators are merchandise trade, migration and bank claims; there are 27 unilateral indicators. The slideshows created with GED VIZ can be saved and embedded into news and feature articles, for example.</p>
+
+<p><iframe src="http://viz.ged-project.de/1505?lang=en" width="100%" height="500" style="border: 0" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true"><a href="http://viz.ged-project.de/1505?lang=en" target="_blank">GED VIZ Slideshow</a></iframe></p>
+
+<p>Since the initial launch in 2013, we have improved and updated GED VIZ significantly. Recently we implemented that the data is saved alongside with the presentation metadata. This way embedded visualizations remain untouched when the underlying data is updated. A presentation and the article that embeds it can be updated manually by the creator. This allowed us to import more recent data into GED VIZ: Now data from 2000 to 2012 is available, new countries have been added and existing data has been updated.</p>
+
+<p>To allow embedding of presentations into SSL-encrypted websites, the GED VIZ tool now supports SSL encryption as well: <a href="https://viz.ged-project.de">https://viz.ged-project.de</a> The new embed code is protocol-agnostic, so it can be used on encrypted and non-encrypted sites without browser security errors.</p>
+
+<p><strong>→ <a href="https://viz.ged-project.de">GED VIZ – Visualizing Global Economic Relations</a></strong></p>
+
+<p>The Bertelsmann Foundation released GED VIZ as open-source software. The full MIT-licensed source code and the raw data is <a href="https://github.com/bertelsmannstift/GED-VIZ">available on Github</a>.</p>

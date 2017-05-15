@@ -1,0 +1,463 @@
+---
+# By using these dashes, the file will be compiled to a separate .css
+---
+@charset 'utf-8';
+
+/**
+ * Blog styles
+ *
+ */
+
+@import 'reset';
+@import 'fonts';
+@import 'content';
+
+/**
+ * @section Variables
+ *
+ */
+
+$column-padding: 1rem;
+$column-padding-big: 2.5rem;
+$body-background: hsl($hue2, 50%, 95%);
+$wrapper-background: white;
+$top-secondary-background: $highlight-background-color;
+$post-header-background: hsl($hue, 40%, 50%);
+
+/**
+ * @section Mixins
+ *
+ */
+
+@mixin medium {
+  @media (min-width: 30em) {
+    @content;
+  }
+}
+
+@mixin big {
+  @media (min-width: 57em) {
+    @content;
+  }
+}
+
+/**
+ * @section Box model fix
+ *
+ */
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+/**
+ * @section Base layout
+ *
+ */
+
+/* Page background */
+
+html {
+  height: 100%;
+  background-color: $body-background;
+}
+
+/* Wrapper */
+
+.page-wrapper {
+  background-color: $wrapper-background;
+  max-width: 65rem;
+  margin: auto;
+}
+
+.wrapper-top,
+.wrapper-bottom {
+  @extend %clearfix;
+}
+
+.wrapper-top {
+  background-color: $wrapper-background;
+}
+
+.wrapper-bottom {
+}
+
+/* Two columns */
+
+.col-primary,
+.col-secondary {
+  min-height: 1px;
+  padding: $column-padding;
+
+  @include big {
+    padding: $column-padding-big;
+  }
+}
+
+.col-primary {
+  @include big {
+    float: left;
+    width: 70%;
+  }
+}
+
+.col-secondary {
+  // Include floats, equal height columns
+  @extend %clearfix;
+
+  @include big {
+    margin-left: 70%;
+    padding-bottom: 0;
+  }
+}
+
+/* Top columns */
+
+.top-secondary {
+  background-color: $top-secondary-background;
+
+  @include big {
+  }
+}
+
+/* Top navigation (Mobile) */
+
+.top-navigation {
+  @extend %clearfix;
+  margin-top: 0;
+
+  @include big {
+    @include accessible-hide;
+  }
+}
+
+.top-navigation__home {
+  float: left;
+}
+
+.top-navigation__jump-to-bottom {
+  float: right;
+}
+
+/* Document footer */
+
+.document-footer-content {
+  margin: 0;
+}
+
+/**
+ * @section Post
+ *
+ */
+
+.post-header {
+  margin: 0 (-$column-padding) 1rem;
+  padding: $column-padding;
+  background-color: $post-header-background;
+  text-shadow: 1px 1px 1px #111;
+
+  @include big {
+    margin: 0 (-$column-padding-big) 1rem;
+    padding: 1.5rem $column-padding-big;
+  }
+
+  .post-link {
+    display: block;
+    border: 0;
+    color: inherit;
+
+    &:visited {
+      color: #eaeaea;
+    }
+  }
+}
+
+.post-title {
+  margin: 0 0 0.5rem;
+  color: white;
+
+  @include big {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+}
+
+.post-sup {
+  margin-bottom: 0;
+  font-size: 0.89em;
+  color: white;
+}
+
+.post-description {
+  margin: $column-padding-big 1rem;
+  font-size: 1.1rem;
+
+  @include big {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    font-size: 1.2rem;
+  }
+}
+
+.post-description-strong {
+  font-weight: normal;
+}
+
+.post-body {
+  & > p:last-child,
+  & > ol:last-child,
+  & > ul:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.post-short {
+  margin-bottom: 2.5rem;
+
+  .post-excerpt {
+    margin-bottom: 0;
+  }
+}
+
+/**
+ * @section Sidebar
+ *
+ */
+
+#sidebar h1 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+#sidebar h1 a {
+  display: block;
+  height: 100px;
+  border: none;
+  text-indent: 101%;
+  overflow: hidden;
+  background: url(/img/spidermum.png) no-repeat center / contain;
+}
+
+#sidebar ul {
+  list-style-type: none;
+  margin: 0 0 2rem;
+  line-height: 1.5;
+}
+
+#sidebar li {
+  margin: 0 0 0.2rem 0;
+}
+
+@include medium {
+
+  #sidebar h1 {
+    float: left;
+    width: 114px;
+  }
+
+  #sidebar #zitate {
+    margin-left: 150px;
+  }
+
+  #sidebar .linkblock {
+    float: left;
+    margin-right: 3rem;
+  }
+}
+
+@include big {
+  #sidebar h1 {
+    float: none;
+    width: auto;
+  }
+
+  #sidebar #zitate {
+    margin-left: 0;
+  }
+
+  #sidebar .linkblock {
+    margin-right: 0;
+  }
+}
+
+/**
+ * @subsection Zitate
+ *
+ */
+
+#zitate {
+  font-family: $citation-font;
+  font-size: 0.95rem;
+}
+
+#zitate li {
+  margin: 0 0 1rem;
+}
+
+#zitate q {
+  color: black;
+}
+
+#zitate cite {
+  display: block;
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+#zitate a {
+  color: $gray-text-color;
+  border-bottom: 0;
+}
+
+/**
+ * @subsection Impressum
+ *
+ */
+
+#imprint {
+  font-size: 0.8rem;
+}
+
+/**
+ * @section Article archive
+ *
+ */
+
+.article-archive-heading {
+  margin-top: 0.5rem;
+}
+
+.article-archive {
+  margin-left: 0;
+  list-style: none;
+
+  li {
+    display: table;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-date {
+    display: table-cell;
+    width: 5.5rem;
+    padding-right: 1rem;
+    font-size: 0.8rem;
+    line-height: $content-line-height * 1rem;
+    color: $gray-text-color;
+  }
+
+}
+
+/**
+ * @section Content Note
+ *
+ */
+
+.content-note {
+  border: 1px solid #daa;
+  border-radius: 5px;
+  padding: 0.5em 1em;
+}
+
+/**
+ * @section Besondere Seiten
+ *
+ */
+
+/**
+ * @subsection Artikel-Übersicht
+ * /artikel/
+ *
+ */
+
+.artikel-links li {
+  list-style-type: none;
+  margin-bottom: 1rem;
+  text-indent: -1.5rem;
+  line-height: 1.5;
+}
+
+.artikel-links .artikel-titel {
+  font-size: 1.2rem;
+}
+
+/**
+ * @subsection Floats einschliessen
+ * /css-floats-einschliessen/
+ *
+ */
+
+.float-container-demo-container { background: gray; width: 12em; border: 1px solid gray; }
+.float-container-demo-container p { margin: 0; }
+.float-container-demo-container .left { background-color: #F99; float: left; width: 5em; }
+.float-container-demo-container .right { background-color: #99F; margin-left: 5em; width: 5em; }
+#container-mit-generated-content:after {
+  display: block;
+  content: 'Clear-Element, hier sichtbar zur Demonstration';
+  background: white;
+  clear: both;
+}
+
+/**
+ * @subsection JavaScript Objects, Prototype Chain
+ *
+ */
+
+.js-objects {
+  @extend %clearfix;
+}
+
+.js-objects .object {
+  float: left;
+  margin: 0 20px 20px 0;
+  box-shadow: 2px 2px 5px #ccc;
+}
+
+.js-objects table {
+  margin: 0;
+}
+
+.js-objects h3 {
+  margin: 0;
+  padding: 0.3em 0.3em 0.1em;
+  border-style: solid solid none;
+  border-width: 1px;
+  border-color: #ccc;
+  background-color: #f0f0f0;
+  color: black;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: bold;
+  text-align: center;
+}
+
+.js-objects h3:before {
+  content: none;
+}
+
+.js-objects th,
+.js-objects td {
+  border: 1px solid #ccc;
+  font-size: 0.75rem;
+  padding: 0.3em 0.5em 0.2em;
+  line-height: 1.2;
+}
+
+.js-objects .internal th,
+.js-objects .internal td {
+  color: #600;
+  background-color: #fffbfb;
+}
+
+.js-objects .dontenum th,
+.js-objects .dontenum td {
+  color: gray;
+  background: #fafafa;
+}
+
+.js-objects .own th,
+.js-objects .own td {
+  color: #007;
+  background-color: #f0f0ff;
+}

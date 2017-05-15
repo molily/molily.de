@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /impressum/
+Disallow: /resume/
+Disallow: /css-position-fixed-beispiel
+Disallow: /css-position-fixed-loesung1
+Disallow: /css-position-fixed-loesung2
+Disallow: /css-position-fixed-loesung3
+Disallow: /css-position-fixed-loesung4
+Disallow: /css-position-fixed-loesung5
+Disallow: /css-position-fixed-loesung6
+Disallow: /css-position-fixed-loesung7
+User-agent: Googlebot-Image
+Disallow: /
+User-agent: Yahoo-MMCrawler
+Disallow: /
+User-agent: ia_archiver
+Disallow: /

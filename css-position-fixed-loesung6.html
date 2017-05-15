@@ -1,0 +1,91 @@
+---
+permalink: /css-position-fixed-loesung6/
+---
+<!DOCTYPE html>
+<html lang="de">
+<head profile="http://dublincore.org/documents/dcq-html/">
+<meta charset="utf-8">
+<title>position:fixed und Anker - Beispieldokument zur JavaScript-Kombinationslösung</title>
+<meta name="robots" content="noindex,follow" />
+<link rel="schema.DC" type="application/rdf+xml" href="http://purl.org/dc/elements/1.1/" />
+<link rel="schema.DCTERMS" type="application/rdf+xml" href="http://purl.org/dc/terms/" />
+<meta name="author" content="molily" />
+<meta name="DC.creator" content="molily" />
+<meta name="DC.language" scheme="DCTERMS.RFC3066" content="de" />
+<meta name="DCTERMS.modified" scheme="DCTERMS.W3CDTF" content="2005-08-15" />
+<link rel="author" href="mailto:zapperlott@gmail.com" title="E-Mail an den Autor senden" />
+<style type="text/css">
+body {margin:0; padding:60px 15px 15px 15px; font-family:sans-serif; color:black; background-color:white;}
+#header a:link, #header a:visited {color:#a00; background-color:#eee; text-decoration:none; padding:1px 2px; font-weight:bold;}
+#header a:hover {background-color:#fff;}
+#header {position:absolute; top:0; left:0; right:0; width:100%; height:60px; margin:0; padding:0; color:white; background-color:gray;}
+#header[id] {position:fixed;}
+#header h1 {font-weight:bold;}
+#header h1, #header p {margin:0; padding:5px; font-size:14px;}
+h2 {font-weight:normal; color:#800; background-color:transparent;}
+</style>
+<script type="text/javascript" src="/scripts/css-position-fixed-javascript.js"></script>
+</head>
+<body>
+
+<div id="header">
+<h1>position:fixed und Anker - Beispieldokument zur JavaScript-Kombinationslösung</h1>
+<p><a href="#a">Anker A</a> &#8212; <a href="#b">Anker B</a> &#8212; <a href="#c">Anker C</a> &#8212; <a href="#d">Anker D</a> &#8212; <a href="#e">Anker E</a></p>
+</div>
+
+<p>Bitte wählen Sie einen Link zu einem der untenstehenden Anker an. Wenn JavaScript aktiviert ist, durchläuft beim Laden des Dokuments eine Funktion automatisch alle Links des Dokuments und vergibt einen <span lang="en">Event-Handler</span>, wenn es sich um einen dokumentinternen Link handelt. Beim Klick auf einen solchen Link sollte der Browser den Anker zunächst so anspringen, dass er unterhalb des fest positionierten Kopfbereichs liegt. Direkt darauf wird die <span lang="en">Handler</span>-Funktion ausgeführt, die den Fokus nach oben verschiebt, sodass der Anker hervorkommt und sich die jeweiligen Überschrift an den unteren Rand des fest positionierten Kopfbereichs anschließt. Als Verzögerungszeit wurden <var>10</var> Millisekunden angegeben. Wenn das Dokument mit einem Anker aufgerufen wird, sollte der gewählte Anker beim Laden ebenfalls durch automatisches Blättern nach oben sichtbar gemacht werden.</p>
+
+<p><a href="/css-position-fixed/#javascript-kombination">Zurück zum Artikel Probleme mit Ankern und position:fixed &#8211; JavaScript-Kombinationslösung: Automatisches Vergeben der Event-Handler</a></p>
+
+<div id="testbereich">
+
+<h2 id="a">Anker A</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="b">Anker B</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="c">Anker C</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="d">Anker D</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<h2 id="e">Anker E</h2>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+<p>bla</p>
+
+</div>
+
+<address>Autor: molily &#8212; E-Mail: <a href="mailto:zapperlott@gmail.com" rel="author">zapperlott@gmail.com</a> &#8212; Letzte Änderung: 15.08.2005</address>
+
+</body>
+</html>

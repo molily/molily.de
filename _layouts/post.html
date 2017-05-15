@@ -1,0 +1,17 @@
+---
+layout: default
+---
+{% include top.html %}
+
+{% assign post = page %}
+<article class="post post-full"{% if post.lang %} lang="{{ post.lang }}"{% endif %}>
+{% include post-full.html %}
+</article>
+
+{% include divider.html %}
+
+<div class="col-primary bottom-primary">
+  {% include footer.html %}
+</div>
+
+{% include bottom.html %}

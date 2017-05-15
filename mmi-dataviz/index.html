@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Datenvisualisierung im Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Printing and PDF exports -->
+    <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ?
+      'css/print/pdf.css' :
+      'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <base target="_blank">
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<section data-markdown><script type="text/template">
+
+<img src="images/9elements-logo.png" style="border: 0; width: 10%">
+
+# Datenvisualisierung<br>im Web
+
+Mathias Schäfer<br>9elements
+</script></section>
+
+<section id="toc" data-markdown><script type="text/template">
+# Mathias Schäfer
+
+- Studium der Germanistik und Philosophie
+- Software-Entwickler bei 9elements
+- Spezialist für Frontend-Webtechnologien<br>(HTML, CSS, JavaScript)
+</script></section>
+
+<section data-markdown><script type="text/template">
+# <a href="https://9elements.com">9elements</a>
+
+- Agentur für Software &amp; Design
+- Webseiten und mobile Apps
+- Kundenarbeiten &amp; eigene Produkte
+- Sitz in Bochum
+- Viele aktuelle und ehemalige<br>Studierende der TU Dortmund
+</script></section>
+
+<section>
+  <p><img src="images/9elements-team.jpg" alt=""></p>
+</section>
+
+<!-- ******************************************************************** -->
+
+<section data-markdown><script type="text/template">
+# Inhalte
+
+- Praktischer Einblick in<br>die Datenvisualisierung im Web
+- Herausforderungen der Praxis
+- Interactive Storytelling
+- Technische Grundlagen
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Was ist Datenvisualisierung?
+
+- Das Ziel ist die Vermittlung nicht-visueller Daten.
+- Visualisierung erzeugt in erster Linie ein Bild.
+- Das Bild macht die Daten lesbar und verständlich.<br>Es vermittelt etwas über die Daten.
+
+<a href="https://eagereyes.org/criticism/definition-of-visualization">Robert Kosara, 2008</a>
+</script></section>
+
+<section>
+  <p><a href="images/ged-viz.jpg"><img src="images/ged-viz.jpg" alt="" width="50%"></a></p>
+  <p><a href="https://viz.ged-project.de/?lang=de">Bertelsmann Stiftung: GED VIZ</a></p>
+</section>
+
+<section>
+  <p><a href="images/oecd-data-portal.jpg"><img src="images/oecd-data-portal.jpg" alt="" width="50%"></a></p>
+  <p><a href="https://data.oecd.org">OECD: Data Portal</a></p>
+</section>
+
+<section>
+  <p><a href="images/imgly-map.jpg"><img src="images/imgly-map.jpg" alt="" width="50%"></a></p>
+  <p><a href="http://node.9elements.com/">img.ly Weltkarte</a></p>
+</section>
+
+<section>
+  <p><a href="images/giant-swarm-monitor.png"><img src="images/giant-swarm-monitor.png" alt="" width="50%"></a></p>
+  <p><a href="https://www.youtube.com/watch?v=tSZj_Tk1v8I">Giant Swarm: Service Monitor</a></p>
+</section>
+
+<section data-markdown><script type="text/template">
+# Datentypen
+
+- Wirtschaftliche, finanzielle, politische Daten
+- Empirisch-soziologische Daten
+- Naturwissenschaftliche Daten
+- Daten technischer Prozesse
+- Geographische Daten
+- Personenbezogene Daten:<br><em>Quantified Self</em>
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Konzeption einer Datenvisualisierung
+
+- Fragestellung, Datenaufbereitung, Prototyping<br>(<a href="https://bocoup.com/weblog/globalpost-syria-conflict">Irene Ros, 2015</a>)
+- »Design is a Search Problem« (<a href="https://www.youtube.com/watch?v=fThhbt23SGM">Mike Bostock, 2014</a>)
+- Visualisierung muss zu den Daten und zu der Aufgabe passen (<a href="https://eagereyes.org/blog/2015/the-point-of-a-chart">Robert Kosara, 2015</a>)
+- Interpretation, keine Objektivität
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Datenvisualisierung im Web
+
+- Universeller Zugriff
+- Webtechniken, Zugangsgeräte
+- Interaktivität und Personalisierung
+- Hypertext, soziale Medien
+  - Verlinken, Teilen, Einbetten, Speichern
+</script></section>
+
+<section>
+<p><img src="images/devices.jpg" alt="" width="45%"></p>
+<p><a href="https://www.flickr.com/photos/brad_frost/7387824246/">Brad Frost, CC BY 2.0</a></p>
+</section>
+
+<section data-markdown><script type="text/template">
+# Anpassungsfähige Visualisierungen
+
+- Smartphones, Tablets, Laptops, Desktops
+- Verschiedene Eingabe- und Ausgabe
+  - Keyboard, Maus, Touchscreen (Gesten)
+- Konzepte: Responsive Design, Mobile First
+- Mobile-First-Datenvisualisierung: <a href="http://webkrauts.de/artikel/2014/mobile-first-datenvisualisierung-i">Teil 1</a>, <a href="http://webkrauts.de/artikel/2014/mobile-first-datenvisualisierung-ii">Teil 2</a><br>(Mathias Schäfer, 2014)
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Interactive Storytelling
+
+- Journalismus für das Web
+- Technische Möglichkeiten nutzen
+- Multimedia-Reportagen:<br>Text, Audio, Video, Karten, DataViz
+- In jeder Geschichte stecken Daten
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Interactive Storytelling
+
+- <a href="http://www.nytimes.com/interactive/2014/12/29/us/year-in-interactive-storytelling.html">New York Times</a>, <a href="http://www.theguardian.com/world/interactive/2013/may/26/firestorm-bushfire-dunalley-holmes-family">The Guardian</a>
+- Tagesspiegel, Die Zeit, Spiegel Online
+
+<a href="http://webkrauts.de/artikel/2013/interactive-storytelling">Mathias Schäfer, 2013</a>
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Storytelling
+
+- Geordnete Sequenz von Schritten<br>(<a href="http://kosara.net/papers/2013/Kosara_Computer_2013.pdf">Robert Kosara, 2013</a>)
+- Lineare oder nicht-lineare Erzählstrukturen
+- Erzählen vs. Entdecken
+- Computerspiele
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Storytelling und Hypertext
+
+- Das Web ist ein Hypertext-System
+- »Lesen … wird zu einem Prozess der kreativen Interaktion zwischen Leser, Autor und Text.« (<a href="http://www.heise.de/tp/artikel/2/2006/3.html">Mike Sandbothe, 1996</a>)
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Browser-Webtechniken (Frontend)
+
+- <strong><abbr title="Hypertext Markup Language">HTML</abbr></strong>: Textauszeichnung
+- <strong><abbr title="Cascading Stylesheets">CSS</abbr></strong>: Formatierung und Layout
+- <strong>JavaScript</strong>: Datenverarbeitung, Interaktivität
+- <strong><abbr title="Scalable Vector Graphics">SVG</abbr></strong>, Canvas 2D, WebGL: Graphische Darstellung
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Server-Webtechniken (Backend)
+
+- <strong>SQL</strong>-Datenbanken: PostgreSQL, MySQL…
+- Datenformate: <strong>JSON</strong>, XSL, XSL
+- Programmierung: Ruby, Python, PHP, Java…
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Umsetzung mit <a href="http://d3js.org/">D3.js</a>
+
+- Etablierte JavaScript-Bibliothek
+- Läuft im Browser, erzeugt Visualisierungen
+- Daten laden und aufbereiten
+- Mathematische, statistische Funktionen
+- Graph-Layout, Geo-Projektionen
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Data Binding mit D3.js
+
+- Abbildung von Daten auf<br>graphische Elemente (z.B. SVG)
+- Liste von Datenpunkten &rarr;<br>Liste von SVG-Elementen
+- <code>rect</code>, <code>circle</code>, <code>line</code>, <code>path</code> usw.
+- <a href="http://codepen.io/molily/full/pJppjG/">Beispiel mit HTML</a> (<a href="http://codepen.io/molily/pen/pJppjG?editors=001">Code</a>)
+</script></section>
+
+<section data-markdown><script type="text/template">
+# Fragen? Interesse?
+
+- <a href="http://molily.de/mmi-dataviz/">molily.de/mmi-dataviz/</a>
+- <a href="http://molily.de">Mathias Schäfer</a>
+- <a href="mailto:mathias.schaefer@9elements.com">mathias.schaefer@9elements.com</a>
+- <a href="https://twitter.com/molily">Twitter: molily</a>
+- <a href="https://9elements.com">9elements.com</a>
+- <a href="https://twitter.com/9elements">Twitter</a> – <a href="https://www.facebook.com/9elements/">Facebook</a>
+- <a href="mailto:contact@9elements.com">contact@9elements.com</a>
+</script></section>
+
+<!-- ******************************************************************** -->
+
+<section data-markdown><script type="text/template">
+<a href="https://9elements.com"><img src="images/9elements-logo.png" alt="9elements" style="border: 0"></a>
+</script></section>
+
+<!-- ******************************************************************** -->
+
+  </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: false,
+  progress: true,
+  history: true,
+  center: true,
+  rollingLinks: false,
+  slideNumber: true,
+
+  theme: 'simple-molily',
+  transition: 'fade', // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+  ]
+});
+
+</script>
+
+</body>
+</html>

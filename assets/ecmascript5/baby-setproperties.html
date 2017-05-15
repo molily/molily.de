@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Beispiel: Baby.prototype.setProperties per ES5 Property Descriptor</title>
+</head>
+<body>
+
+<h1>Beispiel: <code>Baby.prototype.setProperties</code> per ES5 Property Descriptor</h1>
+
+<script>
+
+(function () {
+
+Object.defineProperty(Baby.prototype, 'setProperties', {
+  value: function (props) {
+    var self = this;
+    Object
+      .keys(props)
+      .filter(props.hasOwnProperty, props)
+      .forEach(function (name) {
+        self[name] = props[name];
+      });
+  },
+  writable: true,
+  enumerable: false,
+  configurable: true
+});
+
+function Baby () {}
+
+var ada = new Baby();
+
+ada.setProperties({
+  born: new Date(),
+  name: 'Ada',
+  height: 0.55,
+  weight: 3.5,
+  gender: 'f',
+  hair: null,
+  eyes: {
+    left: 'blue',
+    right: 'brown'
+  }
+});
+
+alert('ada.name: ' + ada.name);
+alert('ada.height: ' + ada.height);
+
+})();
+
+</script>
+
+</body>
+</html>

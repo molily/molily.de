@@ -1,0 +1,500 @@
+---
+layout: post
+title: Objektorientiertes JavaScript mit YUI 3
+---
+
+<p>Nachdem ich die <a href="/javascript-organisation/">Grundlagen von OOP in JavaScript</a> geschildert habe, möchte ich mich Frameworks und deren OOP-Konzepten zuwenden. Die dort beschriebenen Sachverhalte werden hier weitesgehend als bekannt vorausgesetzt, vor allem das Wissen über <a href="/js/organisation-instanzen.html">Konstruktoren, Prototypen und Instanzen</a>.</p>
+
+<h2>Pseudoklassen in JavaScript</h2>
+
+<p>Viele JavaScript-Frameworks enthalten Hilfsmittel, um komplexe Vererbungshierarchien aufzubauen. Sie nutzen die Prototypen-Ketten, um einem Objekt mehrere Prototypen zuzuweisen. Diese Helferbibliotheken erlauben die Deklaration von Pseudoklassen, um Programmierern, die klassenbasierte OOP kennen, den Einstieg zu vereinfachen. Beispiele sind Prototype (<a href="http://www.prototypejs.org/api/class/create">Class.create</a>), Mootools (<a href="http://mootools.net/docs/core/Class/Class">new Class</a>), JS.Class (<a href="http://jsclass.jcoglan.com/classes.html">new JS.Class</a>) und Joose (<a href="http://code.google.com/p/joose-js/wiki/BuildingAClass">Class</a>).</p>
+
+<p>JavaScript kennt keine nativen Klassen. Ich bin mehr und mehr zu der Ansicht gekommen, dass diese Analogie das profunde Verständnis von JavaScript eher erschwert als vereinfacht. Natürlich kochen die Pseudoklassen aus Prototype, Mootools & Co. auch nur mit (klassenlosem) JavaScript. Zur gegebenen Zeit möchte ich deren interne Funktionsweise erklären, aber zunächst möchte ich mich YUI widmen.</p>
+
+<h2>YUI 3 – Yahoo! User Interface Library</h2>
+
+<p>Das Framework <a href="http://yuilibrary.com/">YUI 3</a> verfolgt einen etwas anderen Ansatz. Es verbirgt die tatsächliche Funktionsweise nicht hinter Abstraktionen wie Pseudoklassen und fühlt sich daher mehr wie JavaScript an. YUI bringt nichtsdestoweniger brauchbare Hilfsmittel für Mehrfachvererbung mit sich. Anstelle von Pseudoklassen-Deklarationen bietet YUI verschiedene Helferfunktionen. Diese suggerieren nicht, das »Klassen« erzeugt werden, sondern versuchen der funktionalen, prototypischen und dynamischen Natur von JavaScript Rechnung zu tragen.</p>
+
+<p>YUI arbeitet stark gekapselt, asynchron und modularisiert. Die hier vorgestellten Techniken sind entweder Teil des Kerns oder des <code>oop</code>-Moduls. Der hier gezeigte Code muss zumindest in folgenden Aufruf gekapselt werden:</p>
+
+<pre>
+&lt;script type="text/javascript"
+  src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js">&lt;/script>
+&lt;script type="text/javascript">
+YUI().use('oop', function (Y) {
+    /* Der Code kommt hierhin. */
+});
+&lt;/script>
+</pre>
+
+<p>Zunächst wird der sogenannte YUI Seed eingebunden, mithilfe dessen weitere YUI-Module geladen werden können. Über <code>YUI().use('oop')</code> geben wir Code an, der auf dem <code>oop</code>-Modul aufbaut. YUI lädt automatisch die benötigten JavaScript-Dateien, erzeugt ein Objekt mit den gewünschten Modulen und übergibt es an die Callback-Funktion. Darin ist das Objekt unter dem Namen <code>Y</code> verfügbar.</p>
+
+<p>Das <code>oop</code>-Modul wird von fast allen gängigen YUI-Modulen, darunter <code>dom</code> verwendet. Wenn Sie YUI für die üblichen Zwecke des DOM-Scripting verwenden, dann wird <code>oop</code> in der Regel als abhängiges Modul bereits eingebunden.</p>
+
+<ol class="compact-list">
+<li><a href="#y-object"><code>Y.Object</code> – Einfache prototypische Vererbung ohne (sichtbare) Konstruktoren</a></li>
+<li>
+  <a href="#y-extend"><code>Y.extend</code> – Konstruktoren und mehrfache prototypische Vererbung</a>
+	<ol class="compact-list">
+	<li><a href="#y-extend-intern">Interne Funktionsweise von Y.extend</a></li>
+	<li><a href="#y-extend-parameter">Weitere Parameter von <code>Y.extend</code>: Kompaktschreibweise und statische Eigenschaften</a></li>
+	</ol>
+</li>
+<li>
+  <a href="#y-augment">Mixins mit <code>Y.augment</code></a>
+	<ol class="compact-list">
+	<li><a href="#y-augment-einzeln">Einzelnen Objekten Funktionalität hinzufügen</a></li>
+	<li><a href="#y-augment-parameter">Weitere Parameter von <code>Y.augment</code>: Überschreiben erzwingen und Whitelist</a></li>
+	</ol>
+</li>
+<li>
+  <a href="#y-mix">Eigenschaften kopieren mit <code>Y.mix</code></a>
+	<ol class="compact-list">
+	<li><a href="#y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Whitelist</a></li>
+	<li><a href="#y-merge">Mehrere Objekte vereinen mit <code>Y.merge</code></a></li>
+	<li><a href="#y-augment-vs-y-mix"><code>Y.augment</code> vs. <code>Y.mix</code></a></li>
+	</ol>
+</li>
+<li><a href="#y-links">Links und Quellen</a></li>
+</ol>
+
+<h2 id="y-object"><code>Y.Object</code> – Einfache prototypische Vererbung ohne (sichtbare) Konstruktoren</h2>
+
+<p>Da JavaScript-OOP nicht auf Klassen, sondern Prototypen basiert, ist die Grundidee, dass gewöhnliche Objekte von gewöhnlichen Objekten abgeleitet werden. Leider kann die Prototypen-Ketten nicht browserübergreifend direkt manipuliert werden, sondern es ist der Umweg über Konstruktoren, deren <code>prototype</code>-Eigenschaft sowie die Instantiierung mit <code>new</code> nötig. Dies ist aus klassenbasierten Sprachen wie Java bekannt – in JavaScript aber oftmals schwerfällig und fehl am Platze.</p>
+
+<p>Die Helferfunktion <code>Y.Object</code> ermöglicht direkte prototypische Vererbung. Sie erzeugt ein neues Objekt, welches ein anderes als Prototyp besitzt. <code>Y.Object</code> nimmt uns den Umweg über eine Konstruktorfunktion ab. Intern wird durchaus mit einem Konstruktor, seiner <code>prototype</code>-Eigenschaft und <code>new</code> gearbeitet, allerdings wird mit der Funktion nur eine Instanz erzeugt und sie wird daraufhin weggeworfen. So sieht der Quellcode von <code>Y.Object</code> aus:</p>
+
+<pre>
+Y.Object = function(o) {
+    var F = function() {};
+    F.prototype = o;
+    return new F();
+};
+</pre>
+
+<p>(An dem Funktionsobjekt <code>Y.Object</code> hängen übrigens noch weitere Funktionen – wenn hier von <code>Y.Object</code> die Rede ist, dann immer von der obigen Funktion, nicht deren Kindmethoden.)</p>
+
+<p>Dieses Pattern hat Douglas Crockford »erfunden«, der nicht zufällig als JavaScript-Architekt bei Yahoo angestellt ist. Diese Funktion ist als <a href="http://javascript.crockford.com/prototypal.html">Object.create</a> bekannt und gehört <a href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Object/create">seit ECMAScript 5 zum Standardrepertoire von JavaScript</a>.</p>
+
+<p>Die Anwendung gestaltet sich sehr einfach. Man erzeugt einfache Objekte mit dem Objekt-Literal und leitet mit <code>Y.Object</code> neue Objekte von diesen ab. Diese wiederum können modifiziert und erweitert werden:</p>
+
+<pre>
+var bird = {
+    flighted: true,
+    noise: "Chirp, chirp!",
+    sing: function () {
+        alert(this.noise);
+    }
+};
+
+var robin = Y.Object(bird);
+robin.sing();
+
+var chicken = Y.Object(bird);
+chicken.flighted = false;
+chicken.noise  = "Cluck, cluck!";
+
+var ginger = Y.Object(chicken);
+ginger.name = "Ginger";
+var rocky = Y.Object(chicken);
+rocky.name = "Rocky";
+</pre>
+
+<p>Das Beispiel erzeugt ein <code>bird</code>-Objekt, einen Vogel. Dieser wird als flugfähig angenommen (<code>flighted</code>) und kann Laute von sich geben (Methode <code>sing</code>).</p>
+
+<p>Davon abgeleitet werden das <code>robin</code>- sowie das <code>chicken</code>-Objekt. Das <code>chicken</code>-Objekt bekommt etwas abweichende Eigenschaften, denn das Huhn kann nicht fliegen und gackert, anstatt zu zwitschern. Schließlich werden zwei weitere Objekte angelegt, die von <code>chicken</code> erben.</p>
+
+<p>Immer wenn ein Objekt mit der Funktionalität von <code>bird</code> benötigt wird, wird mittels <code>Y.Object</code> ein neues Objekt erzeugt, welches <code>bird</code> als Prototypen besitzt. Wird davon ein weiteres Objekt abgeleitet, besitzt es zwei Prototypen (<code>ginger</code> hat die Prototypen <code>chicken</code> und <code>bird</code>).</p>
+
+<p>Für Programmierer, die gedanklich in klassenbasierter OOP verhaftet sind, mag das ein Albtraum sein: Es gibt keine Trennung zwischen abstrakten Typdeklarationen einerseits und Instanzen andererseits, sondern bloß Objekte und Prototypen. Wenn man jedoch einmal prototypische Vererbung verstanden hat, so erscheint mir obiges Pattern einfacher und logischer, als in jedem Fall ausdrücklich mit Konstruktorfunktionen, <code>prototype</code> und <code>new</code> zu arbeiten. <code>Object.create</code> bzw. <code>Y.Object</code> ermöglichen die Abstraktion von dieser internen Umsetzung.</p>
+
+<h2 id="y-extend"><code>Y.extend</code> – Konstruktoren und mehrfache prototypische Vererbung</h2>
+
+<p>Neben dem radikalen prototypischen Ansatz von <code>Y.Object</code>, der Konstruktoren und Instantiierung wegkapselt, erlaubt YUI auch pseudoklassische Vererbung. Die YUI-Helferfunktion <code>Y.extend</code> geht davon aus, dass mit üblichen Konstruktoren gearbeitet wird, mit denen mittels <code>new</code> Objekte (»Instanzen«) erzeugt werden.</p>
+
+<p>Das <a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_extend">Beispiel aus der YUI-Dokumentation</a> erzeugt einen Konstruktor namens <code>Bird</code>, mit dem Vögel erzeugt werden können. Die Eigenschaften des zugehörigen Prototypen kennen wir bereits.</p>
+
+<pre>
+function Bird (name) {
+    this.name = name;
+}
+Bird.prototype = {
+    flighted: true,
+    noise: "Chirp, chirp!",
+    sing: function () {
+        alert(this.noise);
+    }
+};
+
+var robin = new Bird("Robin");
+robin.sing();
+alert("Is " + robin.name + " flighted? " + (robin.flighted ? "yes" : "no"));
+</pre>
+
+<p>Von diesem allgemeinen Objekttyp wird nun ein speziellerer Typ <code>Chicken</code> mit abweichenden Eigenschaften abgeleitet:</p>
+
+<pre>
+function Chicken (name) {
+    Chicken.superclass.constructor.call(this, name);
+    // dasselbe wie Bird.call(this, name);
+}
+Y.extend(Chicken, Bird);
+
+Chicken.prototype.flighted = false;
+Chicken.prototype.noise = "Cluck, cluck!";
+Chicken.prototype.sing = function () {
+    alert("The chicken " + this.name + " says:");
+    Chicken.superclass.sing.call(this);
+    // dasselbe wie Bird.prototype.sing.call(this);
+};
+
+var ginger = new Chicken("Ginger");
+ginger.sing();
+alert("Is " + ginger.name + " flighted? " + (ginger.flighted ? "yes" : "no"));
+</pre>
+
+<p>Der Aufruf von <code>Y.extend</code> stellt die Vererbungshierarchie her. Zwischen <code>Chicken</code> und <code>Bird</code> besteht eine »Ist ein«-Beziehung. Der erste Parameter ist der Konstruktor, dessen Instanzen Fähigkeiten erben, der zweite Parameter der Konstruktor, dessen Prototyp Fähigkeiten bereitstellt.</p>
+
+<p>Der <code>Chicken</code>-Prototyp überschreibt drei Eigenschaften, darunter eine Methode. Im Gegensatz zu Pseudoklassen in Mootools und Prototype stellt <code>Y.extend</code> keinen direkten Super-Verweis bereit. Das heißt, die gleichnamige Methode des allgemeineren Prototypen ist nicht über eine Instanzeigenschaft (wie bei Mootools) oder einen Methodenparameter (wie bei Prototype) zugänglich. Stattdessen erzeugt <code>Y.extend</code> eine Eigenschaft namens <code>superclass</code> beim <code>Chicken</code>-Konstruktor. Diese Eigenschaft verweist auf den Prototypen von <code>Bird</code>. Um diese Funktionen im Kontext der Instanz auszuführen, kann <code>call</code> oder <code>apply</code> verwendet werden.</p>
+
+<p>Dieser <code>superclass</code>-Verweis soll eine Vereinfachung darstellen, alternativ kann man direkt auf <code>Bird</code> bzw. <code>Bird.prototype</code> zugreifen, wie das obige Beispiel zeigt. <code>Y.extend</code> verzichtet hier absichtlich auf Komfort und »Syntactic Sugar«, sondern setzt auf nur unwesentlich vereinfachtes Low-Level-JavaScript. Der Vorteil ist, dass sich YUI damit einige Probleme vom Hals hält. Mootools und Prototype müssen einige Verrenkungen machen, um Super-Aufrufe wie in klassenbasierter OOP zu ermöglichen. Super-Aufrufe kommen nicht allzu häufig vor, daher halte ich YUIs Entscheidung für in Ordnung.</p>
+
+<h3 id="y-extend-intern">Interne Funktionsweise von Y.extend</h3>
+
+<p>Spannend ist nun, was <code>Y.extend</code> intern macht. Es sind im Grunde vier Schritte:</p>
+
+<ol>
+
+<li>
+<p><code>var chickenPrototype = Y.Object(Bird.prototype);</code></p>
+<p>Mittels dem beschriebenen <code>Y.Object</code> wird ein neues, leeres Objekt angelegt, das <code>Bird.prototype</code> als Prototypen hat.</p>
+</li>
+
+<li>
+<p><code>Chicken.prototype = chickenPrototype;</code></p>
+<p>Dieses neue Objekt, das durch prototypische Vererbung über die Fähigkeiten von <code>Bird.prototype</code> verfügt, wird der neue <code>Chicken</code>-Prototyp. Danach kann man <code>Chicken.prototype</code> erweitern und Eigenschaften »überschreiben«, ohne dass <code>Bird.prototype</code> angetastet wird.</p>
+</li>
+
+<li>
+<p><code>Chicken.prototype.constructor = Chicken;</code></p>
+<p>Die <code>constructor</code>-Eigenschaft für <code>Chicken</code>-Instanzen wird auf die richtige Funktion, nämlich <code>Chicken</code> gesetzt.</p>
+</li>
+
+<li>
+<p><code>Chicken.superclass = Bird.prototype;</code></p>
+<p>Die Konstruktorfunktion <code>Chicken</code> bekommt eine Eigenschaft <code>superclass</code>, welche auf <code>Bird</code> verweist.</p>
+</li>
+
+</ol>
+
+<p>Diese Schritte erzeugen eine Vererbungshierarchie über die Prototypen-Kette. Die Kette sieht letztlich so aus:</p>
+
+<div class="js-objects">
+
+<div class="object">
+    <h3>ginger</h3>
+    <table>
+    <tr class="internal"><th>[[Prototype]]</th><td>Chicken.prototype</td></tr>
+    <tr class="own"><th>name</th><td>"Ginger"</td></tr>
+    <tr class="dontenum"><th>constructor</th><td>Chicken</td></tr>
+    </table>
+</div>
+
+<div class="object">
+    <h3>Chicken.prototype</h3>
+    <table>
+    <tr class="internal"><th>[[Prototype]]</th><td>Bird.prototype</td></tr>
+    <tr class="own"><th>flighted</th><td>false</td></tr>
+    <tr class="own"><th>noise</th><td>"Cluck, cluck!"</td></tr>
+    <tr class="own"><th>sing</th><td>function () { … }</td></tr>
+    <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+    </table>
+</div>
+
+<div class="object">
+    <h3>Bird.prototype</h3>
+    <table>
+    <tr class="internal"><th>[[Prototype]]</th><td>Object.prototype</td></tr>
+    <tr class="own"><th>flighted</th><td>true</td></tr>
+    <tr class="own"><th>noise</th><td>"Chirp, chirp!"</td></tr>
+    <tr class="own"><th>sing</th><td>function () { … }</td></tr>
+    <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+    </table>
+</div>
+
+<div class="object">
+    <h3>Object.prototype</h3>
+    <table>
+    <tr class="internal"><th>[[Prototype]]</th><td>null</td></tr>
+    <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+    <tr class="dontenum"><th>toString</th><td>[native Funktion]</td></tr>
+    <tr class="dontenum"><th>toLocaleString</th><td>[native Funktion]</td></tr>
+    <tr class="dontenum"><th>valueOf</th><td>[native Funktion]</td></tr>
+    <tr class="dontenum"><th>hasOwnProperty</th><td>[native Funktion]</td></tr>
+    <tr class="dontenum"><th>isPrototypeOf</th><td>[native Funktion]</td></tr>
+    <tr class="dontenum"><th>propertyIsEnumerable</th><td>[native Funktion]</td></tr>
+    </table>
+</div>
+
+</div><!-- /.js-objects -->
+
+<p>Die <code>Chicken</code>-Instanz <code>ginger</code> hat also drei Prototypen, nämlich 1. <code>Chicken.prototype</code>, 2. <code>Bird.prototype</code> und schließlich der Prototyp aller Objekte, <code>Object.prototype</code>.</p>
+
+<p>Aus diesem Grund funktioniert auch die Anwendung des <code>instanceof</code>-Operators:</p>
+
+<pre>
+alert(ginger instanceof Chicken); // true
+alert(ginger instanceof Bird);    // true
+</pre>
+
+<p><code>instanceof</code> schaut, ob der Prototyp der angegebenen Funktion (also <code>Chicken.prototype</code> bzw. <code>Bird.prototype</code>) in der Prototype-Kette des angegebenen Objektes (<code>ginger</code>) existiert.</p>
+
+<p>Die Vererbungshierarchie, die wir direkt mit <code>Y.Object</code> angelegt haben, sieht übrigens genauso aus. Es fehlt dort lediglich die Trennung zwischen Instanzen, Konstruktoren und Prototypen, stattdessen gibt es nur Objekte, die andere Objekte als Prototyp besitzen.</p>
+
+<h3 id="y-extend-parameter">Weitere Parameter von <code>Y.extend</code>: Kompaktschreibweise und statische Eigenschaften</h3>
+
+<p><code>Y.extend</code> nimmt zwei weitere optionale Parameter entgegen. Beide sind Objekte.</p>
+
+<p>Mit dem dritten Parameter lassen sich Eigenschaften angeben, die an den abgeleiteten Prototyp gehängt werden. Dies erlaubt folgende kompakte Schreibweise:</p>
+
+<pre>
+var Chicken = Y.extend(
+    // Konstruktor
+    function () {
+        Chicken.superclass.constructor.call(this, name);
+    },
+
+    // Super-Konstruktor
+    Bird,
+
+    // Chicken-Prototyp
+    {
+        flighted: false,
+        noise: "Cluck, cluck!",
+        sing: function () {
+            alert("The chicken " + this.name + " says:");
+            Chicken.superclass.sing.call(this, name);
+            // dasselbe wie Bird.prototype.sing.call(this, name);
+        }
+    }
+);
+
+var ginger = new Chicken("Ginger");
+ginger.sing();
+alert("Is " + ginger.name + " flighted? " + (ginger.flighted ? "yes" : "no"));
+</pre>
+
+<p>Das obige Beispiel macht genau dasselbe wie das erste Beispiel. <code>Y.extend</code> gibt immer den ersten Parameter zurück, also die Konstruktorfunktion. Wir können sie als anonyme Funktion übergeben und den Rückgabewert von <code>Y.extend</code> in einer Variable speichern.</p>
+
+<p>Mit dem vierten Parameter von <code>Y.extend</code> lassen sich Eigenschaften angeben, die an die Konstruktorfunktion selbst gehängt werden (<em>statische</em> Eigenschaften, wie sie in der klassenbasierten OOP genannt werden). Das folgende Beispiel nutzen dies, um Eigenschaften direkt an <code>Chicken</code> zu hängen. Wir nutzen dies für einen Zähler, der die Nummer der erzeugten <code>Chicken</code>-Instanzen registriert:</p>
+
+<pre>
+var Chicken = Y.extend(
+    // Konstruktor
+    function () {
+        Chicken.superclass.constructor.call(this, name);
+        Chicken.number++;
+    },
+
+    // Super-Konstruktor
+    Bird,
+
+    // Chicken-Prototyp
+    {
+        flighted: false,
+        noise: "Cluck, cluck!",
+        sing: function () {
+            alert("The chicken " + this.name + " says:");
+            Chicken.superclass.sing.call(this, name);
+            // dasselbe wie Bird.prototype.sing.call(this, name);
+        }
+    },
+
+    // Eigenschaften von Chicken
+    {
+        number: 0
+    }
+);
+
+var ginger = new Chicken("Ginger");
+var rocky = new Chicken("Rocky");
+alert(Chicken.number + " chicken created");
+</pre>
+
+<p><code>Y.extend</code> ist sehr einfach aufgebaut, bietet aber alles, was für eine prototypische Vererbungshierarchie nötig ist. Die Helferfunktion wird nahezu überall im YUI-Framework mitsamt seinen dutzenden Modulen verwendet.</p>
+
+<h2 id="y-augment">Mixins mit <code>Y.augment</code></h2>
+
+<p>Mit <code>Y.augment</code> lassen sich Mixins zwischen Pseudoklassen (Konstruktoren-Prototypen-Paaren) umsetzen. <code>Y.augment</code> kopiert die Eigenschaften, anstatt eine Vererbung mittels Prototypen-Kette aufzusetzen.</p>
+
+<p><code>Y.augment</code> ist sinnvoll, wenn sich die Prototypen zweier Konstruktoren Funktionalität teilen sollen, ohne dass eine strenge Hierarchie zwischen ihnen besteht wird. Die einfachste Aufrufweise lautet:</p>
+
+<pre>
+Y.augment(Zielkonstruktor, Quellkonstruktor);
+</pre>
+
+<p>In diesem Fall werden die Eigenschaften von <code>Quellkonstruktor.prototype</code> nach <code>Zielkonstruktor.prototype</code> kopiert.</p>
+
+<p>Intern wird dazu <a href="#y-mix"><code>Y.mix</code></a> verwendet, welches weiter unten noch genauer erklärt wird. Es gibt allerdings einen Unterschied: Es wird nicht einfach <code>Y.mix(Zielkonstruktor.prototype, Quellkonstruktor.prototype);</code> aufgerufen. Beim Kopieren der Methoden (Funktionsobjekte) werden die Originalfunktionen jeweils durch eine Wrapperfunktion ersetzt. Wenn diese Wrapperfunktion aufgerufen wird, dann wird die Originalfunktion im Kontext der Instanz ausgeführt. Nach dem ersten Aufruf einer geerbten Methode werden alle Wrapperfunktionen durch die Originalfunktionen ersetzt.</p>
+
+<p>Der Sinn davon ist, dass der Quellkonstruktor automatisch aufgerufen wird, sobald eine geerbte Methode aufgerufen wird. Bei der hierarchischen Vererbung mit <code>Y.extend</code> haben wir den Super-Konstruktor mittels <code>Chicken.superclass.constructor.call(this, name);</code> manuell aufgerufen. <code>Y.augment</code> nimmt uns dies ab. Sobald eine geerbte Methode aufgerufen wird, wird der zugehörige Konstruktor einmal aufgerufen. So ist garantiert, dass der Konstruktor das Objekt initialisiert hat, damit die Methoden auch wie gewünscht funktionieren.</p>
+
+<p>Ein angepasstes Beispiel aus der YUI-Dokumentation. Wir haben einen einfachen Konstruktor samt Prototyp:</p>
+
+<pre>
+function Bird () {
+    alert("Bird constructor called");
+}
+Bird.prototype.sing = function () {
+    alert("Chirp, chirp!");
+};
+</pre>
+
+<p>Dem <code>Bird</code>-Typ wollen wir nun eine abstrakte Funktionalität <code>Flighted</code> (flugfähig) hinzufügen. Dazu definieren wir ein Mixin ebenfalls mit Konstruktor und Prototyp:</p>
+
+<pre>
+function Flighted () {
+    alert("Flighted constructor called");
+    // Beispiel für eine Initialisierung:
+    this.flying = false;
+}
+Flighted.prototype = {
+    fly: function () {
+        alert("I'm flying high!");
+        this.flying = true;
+    },
+    land: function () {
+        this.flying = false;
+    }
+};
+</pre>
+
+<p><code>Flighted</code> ist nicht dazu gedacht, direkt instantiiert zu werden, stattdessen stellt dieses Konstruktor-Prototype-Paar wiederverwendbare Funktionalität bereit, die in andere Typen »eingemixt« werden kann. Dazu nutzen wir nun <code>Y.augment</code>:</p>
+
+<pre>
+Y.augment(Bird, Flighted);
+
+var bird = new Bird();
+bird.sing();
+bird.fly();
+</pre>
+
+<p>Beim ersten Aufruf von <code>fly</code> ist dies noch eine Wrapperfunktion, welche den <code>Flighted</code>-Konstruktor sowie die Originalfunktion aufruft. Darin kann etwa eine nötige Initialisierung erfolgen. Vergleichen wir die <code>fly</code>-Methode vor und nach ihrem Aufruf mit der Originalfunktion beim <code>Flighted</code>-Prototypen, so kommen wir der Ersetzung auf die Spur:</p>
+
+<pre>
+Y.augment(Bird, Flighted);
+
+var bird = new Bird();
+bird.sing();
+alert(bird.fly == Flighted.prototype.fly);
+// ... ergibt false, verweist auf eine Wrapperfunktion
+bird.fly(); // Ruft indirekt den Flighted-Konstruktor auf
+alert(bird.fly == Flighted.prototype.fly);
+// ... ergibt true, verweist nun auf die Originalfunktion
+</pre>
+
+<h3 id="y-augment-einzeln">Einzelnen Objekten Funktionalität hinzufügen</h3>
+
+<p><code>Y.augment</code> muss nicht mit zwei Konstruktorfunktionen als Parameter aufgerufen werden. Es ist genauso möglich, die Eigenschaften eines Prototyps in ein einfaches Objekt einzumixen, wenn nicht alle Instanzen, sondern nur um eine bestimmte Funktionalität erweitert werden soll:</p>
+
+<pre>
+var hedwig = new Bird();
+Y.augment(hedwig, Flighted);
+hedwig.fly();
+</pre>
+
+<h3 id="y-augment-parameter">Weitere <code>Y.augment</code>-Parameter: Überschreiben erzwingen und Whitelist</h3>
+
+<p><code>Y.augment</code> nimmt noch drei weitere, optionale Parameter entgegen. Der dritte Parameter vom Typ Boolean gibt an, ob bereits vorhandene Methoden beim Kopieren überschrieben werden sollen. Standard ist <code>false</code>. Mit dem vierten Parameter lässt sich eine weiße Liste (Whitelist) mit Eigenschaftsnamen übergeben, das ist ein Array mit String-Einträgen. Der fünfte Parameter erlaubt die Angabe eines Arrays mit Parametern, die dem vererbenden Konstruktor (im Beispiel <code>Flighted</code>) übergeben werden.</p>
+
+<h2 id="y-mix">Eigenschaften kopieren mit <code>Y.mix</code></h2>
+
+<p><code>Y.mix</code> wurde bereits angesprochen: Es ist eine allgemeinere Funktion zum Kopieren von Eigenschaften zwischen zwei Objekten, die intern von <code>Y.extend</code> und vor allem <code>Y.augment</code> verwendet wird. <code>Y.mix</code> ermöglicht nicht nur das Erweitern von Prototypen bzw. das Erweitern der Prototypen-Kette, sondern besitzt verschiedene Kopiermodi. Die YUI-Dokumentation enthält ein Beispiel zum Kombinieren zweier Module, die mit dem <a href="/js/organisation-module.html#revealing-module">Revealing Module Pattern</a> notiert wurden. Das halte ich für einen verbreiteten Anwendungsfall.</p>
+
+<pre>
+var Modul = (function () {
+    var modulname = "Modul";
+    return {
+        methode1: function () {
+            alert(modulname + '.methode1 wurde aufgerufen');
+        }
+    };
+})();
+
+var Erweiterung = (function () {
+    var modulname = "Erweiterung";
+    return {
+        methode2: function () {
+            console.log(modulname + '.methode2 wurde aufgerufen');
+        }
+    };
+})();
+
+Y.mix(Modul, Erweiterungsmodul);
+
+Modul.methode1();
+Modul.methode2();
+</pre>
+
+<p>Bekannt sein sollte hier, dass die einzelnen gekapselten Module nicht gegenseitig auf ihre privaten Objekte zugreifen können.</p>
+
+<p>Auch bei vereinfachter prototypischer Vererbung mit <code>Y.Object</code> bietet sich <code>Y.mix</code> an, um die Funktionalität eines anderen Objektes einzumixen:</p>
+
+<pre>
+var bird = {
+    noise: "Chirp, chirp!",
+    sing: function () {
+        alert(this.noise);
+    }
+};
+
+var flighted = {
+    flying: false,
+    fly: function () {
+        alert("I'm flying high!");
+        this.flying = true;
+    },
+    land: function () {
+        this.flying = false;
+    }
+};
+
+var robin = Y.Object(bird);
+Y.mix(robin, flighted);
+robin.sing();
+robin.fly();
+</pre>
+
+<p><code>Y.mix</code> erzeugt standardmäßig eine sogenannte flache Kopie (<em lang="en">shallow copy</em>). Das heißt, dass Objekte wie etwa Arrays bloß referenziert werden und keine echte Kopie von ihnen angelegt wird. Für eine tiefe Kopie (<em lang="en">deep copy</em>) ist das hier nicht besprochene <a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_clone">Y.clone</a> zuständig, für das kontrollierte Erweitern von Eigenschaften vom Typ Objekten und Arrays gibt es die Methode <a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_aggregate">Y.aggregate</a>.</p>
+
+<h3 id="y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Whitelist</h3>
+
+<p><code>Y.mix</code> nimmt insgesamt sechs Parameter entgegen, davon sind die letzten vier optional. Interessant sind noch der dritte und vierte Parameter, wir haben sie schon bei <code>Y.augment</code> kennengelernt: Der dritte gibt an, ob gleichnamige Eigenschaften beim Kopieren überschrieben werden. Dies ist standardmäßig nicht der Fall und kann mit <code>true</code> erzwungen werden. Der vierte Parameter ermöglicht die Übergabe einer weißen Liste (Whitelist). Diese wird als Filter verwendet, sodass nur die angegebenen Eigenschaften kopiert werden.</p>
+
+<h3 id="y-merge">Mehrere Objekte vereinen mit <code>Y.merge</code></h3>
+
+<p><code>Y.merge</code> ist ein kleiner, spezieller Wrapper für <code>Y.mix</code>. Der einzige Unterschied ist, dass beliebig viele Objekte übergeben werden können. Der zweite und alle folgenden Parameter geben Objekte an, deren Eigenschaft in das Objekt kopiert werden, das als erster Parameter übergeben wird:</p>
+
+<pre>
+Y.merge(Modul, Erweiterung1, Erweiterung2, Erweiterung3);
+</pre>
+
+<h3 id="y-augment-vs-y-mix"><code>Y.augment</code> vs. <code>Y.mix</code></h3>
+
+<p>Der entscheidende Unterschied zwischen <code>Y.mix</code> und <code>Y.augment</code>, die »Lazy Augmentation« durch den verzögerten Konstruktoraufruf, ist leider nicht ausreichend dokumentiert. Dies mag innerhalb des YUI-Frameworks häufig vorkommen und scheint mir auch ganz klug: Es verzögert die Initialisierung des Mixins bis zu dem Punkt, an dem die vererbten Methoden tatsächlich genutzt werden. Wenn ein solches Setup mittels Konstruktorfunktion nicht nötig ist, gibt es keinen Vorteil von <code>Y.augment</code> gegenüber dem einfachen <code>Y.mix</code>.</p>
+
+<h2 id="y-links">Links und Quellen</h2>
+
+<p>Für die vorgestellten Funktionen gibt es relative gute Beispiele in der YUI-Dokumentation, die ich hier adaptiert habe. Darüber hinaus zwei exzellente Blogartikel von Stoyan Stefanov, die ein größeres Bild zeichnen und die Hintergründe noch detaillierter erklären, als ich es hier versucht habe.</p>
+
+<ul class="compact-list">
+<li><a href="http://yuilibrary.com/yui/docs/yui/yui-extend.html">YUI 3 Examples: Create Class Hierarchies with <code>extend</code></a></li>
+<li><a href="http://yuilibrary.com/yui/docs/yui/yui-augment.html">YUI 3 Examples: Compose Classes of Objects with <code>augment</code></a></li>
+<li><a href="http://yuilibrary.com/yui/docs/yui/yui-mix.html">YUI 3 Examples: Add Behaviors to Objects with <code>mix</code></a>
+<li><a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_augment">API-Dokumentation für <code>Y.augment</code></a></li>
+<li><a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_extend">API-Dokumentation für <code>Y.extend</code></a></li>
+<li><a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_mix">API-Dokumentation für <code>Y.mix</code></a></li>
+<li><a href="http://yuiblog.com/blog/2010/01/06/inheritance-patterns-in-yui-3/">YUI Blog: Inheritance Patterns in YUI 3</a></li>
+<li><a href="http://yuiblog.com/blog/2010/01/07/more-code-reuse-patterns-in-yui3/">YUI Blog: More code reuse patterns in YUI3</a></li>
+<li><a href="https://www.youtube.com/watch?v=MapcM_YQBHI">YUI Theater: YUI 3 Sugar, Todd Kloots</a></li>
+</ul>

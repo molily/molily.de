@@ -1,0 +1,101 @@
+---
+layout: post
+title: "JavaScript: Fokus-Ereignisse zentral behandeln und aktives Element finden"
+description: Wie kann ich herausbekommen, welches Element gerade den Fokus hat (oder zuletzt den Fokus hatte)?
+---
+
+<p>Diese Frage bezieht sich üblicherweise auf Elemente, die standardmäßig fokussierbar sind. Das sind vor allem Links und Formularfelder.</p>
+
+<h2 id="document-activeelement"><code>document.activeElement</code> (Microsoft / HTML5)</h2>
+
+<p>Eine sehr einfache Lösung, die leider noch nicht von allen Browser unterstützt wird, ist die Objekteigenschaft <code>document.activeElement</code>. Diese enthält das Elementobjekt, das gerade den Fokus hat. Wenn kein besonderes Element im Dokument den Fokus hat, dann zeigt <code>activeElement</code> schlicht auf das <code>body</code>-Element.</p>
+
+<p>Diese Eigenschaft hat ursprünglich Microsoft erfunden und dokumentiert sie im Microsoft Developer Network: <a href="http://msdn.microsoft.com/en-us/library/ms533065(VS.85).aspx">activeElement Property</a>. Sie wird aber auch von Opera ab Version 7.2 und Firefox ab Version 3 unterstützt. Im Zuge von HTML5 soll <code>activeElement</code> standardisiert werden: <a href="https://html.spec.whatwg.org/multipage/interaction.html#focus-management-apis">Document-level focus APIs</a> werden.</p>
+
+<p>Nun ist diese Eigenschaft nicht Event-basiert, was der Funktionsweise vieler JavaScripte widerspricht, und sie wird noch nicht von allen Browsern umgesetzt. Das führt uns zu der Frage:</p>
+
+<h2 id="focus-zentral-ueberwachen">Wie kann ich alle Fokus-Ereignisse im Dokument überwachen und behandeln?</h2>
+
+<p>Eine Möglichkeit wäre, bei allen fraglichen fokussierbaren Elementen das <code>focus</code>-Event zu überwachen. Auf diese Weise lässt sich <code>document.activeElement</code> für die Browser nachbauen, die die Eigenschaft nicht unterstützen. Dazu könnte man allen Elementen, die im Dokument existieren, nach dem vollständigen Laden des Dokuments <code>focus</code>-Handler vergeben. JavaScript-Frameworks vereinfachen so ein Vorgehen, z.B. würde man in jQuery einfach <code>$("a, area, input, select, textarea, button").focus(handlerfunktion)</code> notieren und schon hätten die wichtigsten fokussierbaren Elemente einen entsprechenden Event-Handler.</p>
+
+<p>Viel eleganter als das Registrieren von dutzenden <code>focus</code>-Handlern direkt bei den fokussierbaren Elementen wäre eine zentrale Überwachung (<strong>Event Delegation</strong>). Allerdings gehört das <code>focus</code>-Event ebenso wie das <code>blur</code>-Event zu denjenigen Ereignissen, die <em>nicht</em> im DOM-Elementbaum aufsteigen (<strong>Bubbling</strong>). Das macht eine zentrale Überwachung von allen <code>focus</code>- oder <code>blur</code>-Ereignissen, die aus verschiedenen Elementen im Dokument stammen, zumindest mithilfe des Bubblings unmöglich.</p>
+
+<h2 id="focus-capturing">Event Capturing von <code>focus</code>-Events (W3C DOM Events)</h2>
+
+<p>Damit sind wir aber noch noch am Ende angelangt. Im traditionellen Event-Handling gibt es nur Bubbling (Aufsteigen), im fortschrittlicheren Modell des W3C-Standards DOM Events gibt es zusätzlich die Capturing-Phase, für die ebenfalls Event-Handler registriert werden. Kurz gesagt: Ein Event startet ganz oben im Elementbaum und bewegt sich in der Hierarchie abwärts zum Zielelement. Auf diesem Weg werden aller Handler gefeuert, die für die Capturing-Phase registriert sind. Nachdem die Handler beim Zielelement ausgelöst wurden, beginnt das bekannte Aufsteigen (Bubbling).</p>
+
+<p>Mithilfe des Event Capturings können an einem Element weit oben in der Hierarchie alle <code>focus</code>-Ereignisse seiner Kindelemente verarbeitet werden, auch wenn diese nicht aufsteigen (bubblen).</p>
+
+<pre>
+document.addEventListener("focus", function (e) {
+	alert("Es ist ein focus-Event bei diesem Element passiert: " + e.target);
+}, true);
+</pre>
+
+<p>Entscheidend beim Aufruf von <code>addEventListener</code> ist hier der dritte Parameter <code>true</code>, der für die Capturing-Phase steht. Dasselbe Schema ist natürlich auch auf blur-Ereignisse anwendbar.</p>
+
+<h2 id="xbrowser-document-activeelement">Cross-Browser <code>document.activeElement</code></h2>
+
+<p>Für Browser, die <code>activeElement</code> nicht unterstützen, jedoch DOM Events, können wir activeElement mittels Event Capturing nachbauen:</p>
+
+<pre>
+if (typeof document.activeElement == "undefined" && document.addEventListener) {
+	document.addEventListener("focus", function (e) {
+		document.activeElement = e.target;
+	}, true);
+}
+</pre>
+
+<p>Auf diese Weise steht uns die Eigenschaft <code>document.activeElement</code> zur Verfügung, sobald ein <code>focus</code>-Ereignis im Dokument passierte. Damit haben wir die Browserunterstützung von activeElement verbreitet und eine Möglichkeit, alle <code>focus</code>-Ereignisse zentral zu verarbeiten.</p>
+
+<p>Was noch fehlt ist Event Delegation im Internet Explorer. Dazu möchte ich zwei weitere Ansätze vorstellen.</p>
+
+<h2 id="domfocusin"><code>DOMFocusIn</code> (W3C DOM Events)</h2>
+
+<p>Es hat zwar seinen Sinn, dass das focus-Event nicht aufsteigt, aber das W3C hat trotz Event Capturing von <code>focus</code> und <code>blur</code> erkannt, dass Webautoren sich in manchen Fällen wünschen, dass der Fokus eines Elements einen Event auslöst, der aufsteigt. Den gibt es auch, nämlich <strong><code>DOMFocusIn</code></strong>. Dieser Event tritt immer ein, wenn auch ein <code>focus</code>-Event passiert.</p>
+
+<p>Im Prinzip könnten wir also auch schreiben:</p>
+
+<pre>
+document.addEventListener("DOMFocusIn", function (e) {
+	if (e.target != document) {
+		alert("Es ist ein DOMFocusIn-Event bei diesem Element passiert: " + e.target);
+	}
+}, false);
+</pre>
+
+<p>Hier steht der dritte Parameter auf <code>false</code>, das heißt, wir registrieren den Handler für die Bubbling-Phase. Das Pendant zu <code>DOMFocusIn</code> ist <code>DOMFocusOut</code>, das sich analog zum blur-Event verhält, jedoch ebenfalls aufsteigt.</p>
+
+<p>Leider wird dieses Ereignis bisher nur von den Webkit-Browsern (Safari, Chrome) sowie Opera unterstützt. Und in diesen ist es nicht unbedingt nötig, da sie auch Event Capturing für <code>focus</code> hinreichend unterstützen.</p>
+
+<p>Notwendig ist jedoch eine Alternativlösung für den Internet Explorer. Denn der unterstützt in der aktuellen Version 8 den DOM-Events-Standard nicht und kennt daher die Methode <code>document.addEventListener()</code> nicht. Das Microsoft-eigene Event-Handling-Modell definiert <code>document.attachEvent</code>, welches jedoch nur Bubbling beherrscht und damit für diese Zwecke unbrauchbar ist.</p>
+
+<h2 id="activate-focusin">Die Events activate bzw. focusin (Microsoft)</h2>
+
+<p>Der Internet Explorer kennt dafür die Ereignisse <a href="http://msdn.microsoft.com/en-us/library/ms536935(VS.85).aspx">focusin</a> und <a href="http://msdn.microsoft.com/en-us/library/ms536936(VS.85).aspx">focusout</a>. Peter-Paul Koch <a href="http://www.quirksmode.org/dom/events/blurfocus.html#link1">dokumentiert</a> diese und beschreibt sie als äquivalent zu den Ereignissen <code>DOMFocusIn</code> und <code>DOMFocusOut</code> im W3C-DOM. Außerdem entsprechen sie weitesgehend zwei weiteren Microsoft-eigenen Ereignistypen, nämlich <a href="http://msdn.microsoft.com/en-us/library/ms536787(VS.85).aspx">activate</a> und <a href="http://msdn.microsoft.com/en-us/library/ms536922(VS.85).aspx">deactivate</a>.</p>
+
+<p>Im Gegensatz zu <code>focus</code> und <code>blur</code> steigen diese Events allesamt auf (sie »bubblen«). Wir können sie also beim traditionellen Event-Handling für Event Delegation einsetzen. Beispiel für den Internet Explorer:</p>
+
+<pre>
+document.onfocusin = function () {
+	var src = window.event.srcElement;
+	if (src != document.documentElement && src != document.body) {
+		alert("Element wurde fokussiert: " + src.tagName);
+	}
+};
+</pre>
+
+<p>Somit hätten wir alle Browser abgedeckt.</p>
+
+<h2 id="tabindex">Beliebige Elemente fokussierbar machen: <code>tabindex="0"</code> und <code>tabindex="-1"</code></h2>
+
+<p>HTML5 standardisiert eine weitere Microsoft-Erfindung, die bereits in <a href="http://www.barrierekompass.de/weblog/index.php?itemid=541">WAI-ARIA</a> aufgenommen wurde: Das ursprünglich traditionell fokussierbare Elemente (Formularfelder, Links usw.) gedachte HTML-Attribut <a href="https://html.spec.whatwg.org/multipage/interaction.html#sequential-focus-navigation">tabindex</a> ist nun für alle Elemente zugelassen. Indem man <code>tabindex="0"</code> vergibt, ist das Element fokussierbar, per Tastatur anspringbar und aktivierbar wie etwa ein Hyperlink oder Button. Alle großen Browser unterstützen diese Bedeutung von <code>tabindex</code> schon länger.</p>
+
+<p>Dies ist äußerst praktisch, um gewöhnliche, standardmäßig nicht fokussierbare Elemente, die mit JavaScript-Interaktivität versehen oder gar zu einem komplexen »Widget« umgewandelt wurden, für die Tastaturbedienung zugänglich zu machen. Ein tolles Beispiel ist das Script <a href="http://blog.ginader.de/archives/2009/02/07/jQuery-Accessible-Tabs-Wie-man-Tabs-WIRKLICH-zugaenglich-macht.php">jQuery Accessible Tabs - Wie man Tabs WIRKLICH zugänglich macht</a>.</p>
+
+<p>Der Clou aus JavaScript-Sicht ist, dass Elemente mit <code>tabindex="0"</code> genauso die Ereignisse <code>focus</code>/<code>blur</code>, <code>DOMFocusIn</code>/<code>DOMFocusOut</code> bzw. <code>focusin</code>/<code>focusout</code> feuern und die Elementobjekte sogar die Methoden <code>focus()</code> und <code>blur()</code> anbieten, um den Fokus mittels JavaScript auf sie zu setzen.</p>
+
+<p>Hintergrundlektüre:<br>
+<a href="http://molily.de/js/einbindung.html">JavaScript: Einbindung in HTML und Ereignisverarbeitung</a><br>
+<a href="http://www.hessendscher.de/wai-aria/">Einführung in WAI-ARIA</a>
+</p>

@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Conference talk: Testing CSS support with JavaScript"
+lang: en
+---
+
+<p>At the <a href="http://2014.jsunconf.eu/">jsunconf</a> on April 27th, I gave a talk on “Testing CSS support with JavaScript”. After a quick introduction to the CSS object model which is the bridge between JavaScript and CSS, I presented different techniques to test the browser support of a specific CSS property and value.</p>
+
+<p>Most of the time, it’s not recommended to set inline styles with JavaScript. It’s more maintainable to put all presentation information in a stylesheet. This basic rule is called <a href="http://en.wikipedia.org/wiki/Separation_of_concerns">separation of concerns</a>. The easiest way to change the presentation via JavaScript is to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element.classList">toggle a class</a>.</p>
+
+<p>Sometimes though it is necessary to set or retrieve inline or computed styles, for example in custom animations. Websites that use <a href="http://en.wikipedia.org/wiki/Progressive_enhancement">progressive enhancement</a> might need to test the support of CSS properties to load a <a href="http://en.wikipedia.org/wiki/Polyfill">polyfill</a> or fallback for older browsers. Since several properties still require <a href="http://css-tricks.com/how-to-deal-with-vendor-prefixes/">vendor prefixes</a>, we need to detect the required prefix in order to read or write CSS properties using JavaScript.</p>
+
+<p>My talk covers three approaches that will also be used in the upcoming <a href="http://modernizr.com/news/modernizr-v3-stickers-diversity/">version 3</a> of the popular <a href="http://modernizr.com/">Modernizr feature detection library</a>:</p>
+
+<ol>
+<li><code>CSS.supports(property, value)</code>, a native JavaScript API from the <a href="http://dev.w3.org/csswg/css-conditional/#the-css-interface">CSS OM specification</a></li>
+<li>An <code>@supports</code> CSS rule created by JavaScript</li>
+<li>Check presences of object properties, check if values are accepted</li>
+</ol>
+
+<p><strong>→ <a href="https://molily.github.io/css-support/">Read the slides of the talk: Testing CSS support with JavaScript</a></strong></p>
+
+<p>I’d love to hear your feedback! Send an email to <a href="mailto:zapperlott@gmail.com">zapperlott@gmail.com</a> or <a href="https://twitter.com/molily">message me on Twitter: @molily</a>.</p>

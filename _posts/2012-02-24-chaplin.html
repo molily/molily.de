@@ -1,0 +1,35 @@
+---
+layout: post
+title: Chaplin.js, an Application Architecture based on Backbone.js
+lang: en
+---
+
+<p>For almost one year, 9elements assisted in developing a large JavaScript web application: <a href="http://moviepilot.com/">Moviepilot.com</a> is a place to discover upcoming movies, track them from rumor to release and share opinions with other movie buffs. The site let’s you connect easily with Facebook, Google or Twitter to subscribe to news channels or take part in polls and discussions.</p>
+
+<p>While the backend uses a more classic technical stack with Ruby on Rails, MySQL and Neo4j, the frontend is a sizeable JavaScript application written in CoffeeScript, HAML and SASS. The actual user interface is build completely in JavaScript while the raw data is fetched from the server over a JSON API.</p>
+
+<p>We chose the popular <a href="http://backbonejs.org">Backbone.js library</a> as a basis. By design, Backbone is rather a minimal library than a complete application framework. However, huge JavaScript applications are built using Backbone – <a href="http://backbonejs.org/#examples">the examples</a> include top-class apps from Groupon, LinkedIn and Diaspora. Backbone is a good start for smaller applicatons, but as the project grows you will need a sophisticated architecture on top of Backbone.</p>
+
+<p>In the last couple of months, Backbone-based application frameworks were released, most notably <a href="https://github.com/walmartlabs/thorax">Thorax</a> by WalMart and <a href="http://marionettejs.com">Marionette</a> by Derick Bailey. While developing moviepilot.com, we came to similar conclusions – unfortunately the mentioned frameworks were releasing long after we began working on moviepilot.com.</p>
+
+<h2>Introducing Chaplin, an application architecture on top of Backbone.js</h2>
+
+<p>To promote the discussion on Backbone-driven applications, we have released the JavaScript core of moviepilot.com into the public. The project is called <a href="https://github.com/chaplinjs/chaplin"><strong>Chaplin</strong></a>. It’s completely free and open-source. Of course the name pays homage to Charlie Chaplin, the great silent film maker. You can <a href="https://github.com/chaplinjs/chaplin">take a peek into code on Github</a> and read an in-depth essay on the application structure.</p>
+
+<p>In the meantime, Chaplin grew from an example application architecture to a separate library which is ready for use. You might build upon it and adapt it to the needs of your specific application. The key features of Chaplin include:</p>
+
+<ul>
+<li>CoffeeScript classes wrapped in RequireJS (AMD) modules</li>
+<li>Cross-module communication using the Mediator and Publish/Subscribe patterns</li>
+<li>Introducing controllers to separate routing and business logic</li>
+<li>Application-wide view and state management</li>
+<li>Consistent memory management and proper object disposal</li>
+</ul>
+
+<p>Chaplin ships with a <a href="https://github.com/chaplinjs/facebook-example">demo application</a> that allows you to log in via Facebook and browse your Facebook Likes. Of course this isn’t as complex as the stuff on moviepilot.com, but it shows how to build application modules upon the Chaplin structure.</p>
+
+<h2>Join the discussion</h2>
+
+<p>Chaplin aims to documents our experience on developing large JavaScript applications. It’s also a playground and testbed for new ideas. Since we’re constantly improving the architecture, your feedback is highly appreciated. Feel free to <a href="mailto:mathias.schaefer@9elements.com">get in contact</a>. You might also <a href="https://github.com/chaplinjs/chaplin">fork the code or create a new issue on Github</a>.</p>
+
+<p><em>I’d like to thank <a href="http://moviepilot.com/about">the team of Moviepilot.com</a> as well as the people of <a href="https://9elements.com/">9elements</a> for making Chaplin possible.</em></p>

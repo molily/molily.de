@@ -1,0 +1,54 @@
+---
+layout: post
+title: "Artikel überarbeitet: Organisation von JavaScripten"
+---
+
+<p>Bereits im August 2006 habe ich auf SELFHTML aktuell den Artikel <a href="https://wiki.selfhtml.org/wiki/JavaScript/Organisation_von_JavaScripten">Organisation von JavaScripten – Programmiertechniken zur Strukturierung von modernen, wiederverwendbaren JavaScripten</a> veröffentlicht. Es war einer der ersten deutschsprachigen Artikel, die fortgeschrittene JavaScript-Konzepte wie Unobtrusive JavaScript, <code>Object</code>-Literale, das Revealing Module Pattern, Namensräume und Closures kompakt vorstellten und die Einsatzbereiche von JavaScript-Frameworks skizzierten. 2008 habe ich den Artikel um objektorientierte Programmierung mit Konstruktoren sowie Function Binding mit <code>Function.prototype.bind()/bindAsEventListener()</code> erweitert.</p>
+
+<p>Es war Zeit für eine Komplettüberarbeitung und substantielle Ergänzung. Die neue Version habe ich zunächst in meine <strong><a href="/js/">Einführung in JavaScript</a></strong> eingepflegt und der Text wurde auf fünf Unterseiten verteilt:</p>
+
+<ol>
+<li>
+<p><strong><a href="/js/organisation-ueberblick.html">Voraussetzungen und Überblick</a></strong></p>
+<p>Unobtrusive JavaScript und das Schichtenmodell, JavaScript hat keine Klassen, Grundpfeiler für fortgeschrittenes JavaScript</p>
+</li>
+<li>
+<p><strong><a href="/js/organisation-module.html">Module und Kapselung</a></strong></p>
+<p>Kapselung vs. Verfügbarkeit, Module mit dem <code>Object</code>-Literal, Funktions-Scopes, Revealing Module Pattern, Erweiterbare Module</p>
+</li>
+<li>
+<p><strong><a href="/js/organisation-instanzen.html">Konstruktoren, Prototypen und Instanzen</a></strong></p>
+<p>Konstruktor-Funktionen, prototypische Objekte, prototypische Vererbung verstehen, Private Objekte (»private Eigenschaften«)</p>
+</li>
+<li>
+<p><strong><a href="/js/organisation-verfuegbarkeit.html">Objektverfügbarkeit und <code>this</code>-Kontext</a></strong></p>
+<p>Bedeutung von <code>this</code>, Methoden in anderen <code>this</code>-Kontexten, Closures, Function Binding</p>
+</li>
+<li>
+<p><a href="/js/organisation-frameworks.html">Framework-Architekturen</a> (derzeit noch leer)</p>
+</li>
+</ol>
+
+<h2>Was ist neu?</h2>
+
+<p>Die Überarbeitung schenkt den einzelnen Konzepten mehr Beachtung. Die vom Revealing Module Pattern bekannte Kapselung durch eine anonyme Funktion <code>(function () {})()</code> ist zum Standard für viele Scripte geworden. Zur Beschreibung von Konstruktoren sind private Objekte und Prototypen hinzugekommen. Dazu gibt es zwar einige deutschsprachige Literatur, aber die meiste hantiert mit Begriffen aus der klassenbasierten Objektorientierung, ohne die fundamentalen Unterschiede zu vermitteln.</p>
+
+<p>Der überarbeitete Artikel berücksichtigt nun Leser, die klassenbasierte OOP kennen, und erklärt die JavaScript-Besonderheiten wie prototypische Vererbung. Neben den Einzeltechniken gebe ich einen Überblick, auf welchen Säulen die fortgeschrittene JavaScript-Entwicklung meiner Auffassung nach ruht: dynamische Objekte/<code>Object</code>s, Funktionen als Objekte erster Klasse, Scopes und Scope-Chains sowie Prototypen.</p>
+
+<p>Noch sind nicht alle Teile fertig und sämtliche Inhalte überarbeitet. Beispielsweise durchgehende Literaturangaben fehlen noch. Der Text soll weiter wachsen und letztendlich den 2006er-Artikel ersetzen.</p>
+
+<h2>Was ist für die Zukunft geplant?</h2>
+
+<p>Als nächstes möchte ich Framework-Architekturen erläutern, darunter die prototypische Erweiterung (Prototype/Mootools), DOM-Wrapper (jQuery und <a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/">kommende Prototype-Versionen</a>) sowie Modularisierung und Façades (YUI). Eine Übersicht darüber habe ich schon unter <a href="/javascript-zukunft-2010/#js-zukunft-5">Wo bleiben neue Architekturen für JavaScript-Frameworks?</a> gegeben.</p>
+
+<p>Danach möchte fortgeschrittene OOP mit Bibliotheken wie Prototype/Mootools, <a href="http://code.google.com/p/joose-js/">Joose</a> und <a href="http://www.traitsjs.org/">Traits.js</a> vorstellen, welche unter anderem Mehrfachvererbung und (Pseudo-)Klassen in JavaScript ermöglichen. In einem dritten Schritt will ich ein Ausblick auf ECMAScript 5, den neuen JavaScript-Standard werfen.</p>
+
+<h2>Feedback, Mitmachen, Lizenz und Dank</h2>
+
+<p>Über <strong>Feedback</strong> freue ich mich schon jetzt! Zum Beispiel per E-Mail an <a href="mailto:zapperlott@gmail.com">zapperlott@gmail.com</a>.</p>
+
+<p>Wer an der Dokumentation mitarbeiten will, kann dies über <strong>Github</strong> tun: <a href="http://github.com/molily/javascript-einfuehrung">github.com/molily/javascript-einfuehrung</a>. Mit der Versionsverwaltung Git lassen sich die Texte herunterladen, ergänzen und korrigieren sowie Änderungen wieder zurücksenden.</p>
+
+<p>Die Inhalte stehen – wie meine gesamte JavaScript-Einführung – unter einer freien <strong>Creative-Commons-Lizenz</strong> (<a href="http://creativecommons.org/licenses/by-sa/2.0/de/">CC-BY-SA</a>), welche eine Verwendung der Texte z.B. in der Wikipedia und dem <a href="http://wiki.selfhtml.org">SELFHTML-Wiki</a> erlaubt.</p>
+
+<p>Vielen Dank an <a href="http://johannes.emerich.de/">Johannes alias Knuton</a> (<a href="https://twitter.com/knuton">Twitter</a>, <a href="http://github.com/knuton">Github</a>), der bereits tatkräftig bei der Arbeit an den Texten mitgeholfen hat!</p>
