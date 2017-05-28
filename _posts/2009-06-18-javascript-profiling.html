@@ -9,7 +9,7 @@ title: JavaScript-Profiling über benannte Funktionsausdrücke
 
 <p>Nicht nur gibt er eine Einführung in die möglichen Notierweisen von Funktionen - Deklarationen versus Ausdrücke -, sondern diskutiert auch den Nutzen von benannten Funktionsausdrücken und Browserfehler, die die Anwendung erschweren.</p>
 
-<p>Warum sind benannte Funktionsausdrücke so sinnvoll? Bei neueren JavaScript-Pattern wie etwa <a href="http://molily.de/js/organisation-module.html#object-literal">Objektliteralen</a> zur Strukturierung von JavaScript-Programmen verwendet man ständig <a href="http://molily.de/js/organisation-module.html#scope">Funktionsausdrücke</a>. Objektliterale finden auch bei dem populären <a href="http://molily.de/js/organisation-module.html#revealing-module">Module-Pattern</a> Verwendung.</p>
+<p>Warum sind benannte Funktionsausdrücke so sinnvoll? Bei neueren JavaScript-Pattern wie etwa <a href="/js/organisation-module.html#object-literal">Objektliteralen</a> zur Strukturierung von JavaScript-Programmen verwendet man ständig <a href="/js/organisation-module.html#scope">Funktionsausdrücke</a>. Objektliterale finden auch bei dem populären <a href="/js/organisation-module.html#revealing-module">Module-Pattern</a> Verwendung.</p>
 
 <p>Ein paar Beispiele für Funktionsausdrücke in diesem Kontext:</p>
 
@@ -59,7 +59,7 @@ var interval = window.setInterval(function () {
    // Funktionsausdruck
 });</pre>
 
-<p>Je weiter man in JavaScript eintaucht und je mehr man funktionale Bibliotheks-Schnittstellen nutzt, desto stärker nutzt man die Möglichkeit, während der Laufzeit Funktionen zu erzeugen. Oftmals wegen der Fähigkeiten von <a href="http://molily.de/js/organisation-verfuegbarkeit.html#closures">Closures</a>.</p>
+<p>Je weiter man in JavaScript eintaucht und je mehr man funktionale Bibliotheks-Schnittstellen nutzt, desto stärker nutzt man die Möglichkeit, während der Laufzeit Funktionen zu erzeugen. Oftmals wegen der Fähigkeiten von <a href="/js/organisation-verfuegbarkeit.html#closures">Closures</a>.</p>
 
 Das Problem dieser namenlosen (anonymen) Funktionen ist, dass sie das <a href="http://de.wikipedia.org/wiki/Profiler_(Programmierung)">Profiling</a> von großen JavaScript-Anwendungen erschweren. Damit ist eine Statistik aller Funktionsaufrufe gemeint, bei der die Anzahl der Aufrufe sowie deren mittlere Laufzeit gemessen wird. Diese wichtige Methode zur Performance-Optimierung von JavaScripten ist beispielsweise mit der Firefox-Erweiterung <a href="http://getfirebug.com/js.html">Firebug</a> und mit dem <a href="http://webkit.org/blog/197/web-inspector-redesign/">Web Inspector</a> von Safari und Chrome möglich.
 

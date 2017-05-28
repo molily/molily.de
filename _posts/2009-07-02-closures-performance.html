@@ -17,7 +17,7 @@ title: Performance von JavaScript-Closures
 
 <h2>Closures und Performance</h2>
 
-<p>Ich habe mit Artikeln und Forumsbeiträgen stets versucht, das Wissen über funktionale JavaScript-Programmierung und <a href="http://molily.de/js/organisation-verfuegbarkeit.html#closures">sinnvolle Anwendungsfälle von Closures</a> zu verbreiten. In letzter Zeit frage ich mich aber zunehmend, ob der Closures-Einsatz nicht überstrapaziert wird nach dem Sprichwort: Beherrscht man einmal den Hammer, so sieht jedes Problem wie ein Nagel aus.</p>
+<p>Ich habe mit Artikeln und Forumsbeiträgen stets versucht, das Wissen über funktionale JavaScript-Programmierung und <a href="/js/organisation-verfuegbarkeit.html#closures">sinnvolle Anwendungsfälle von Closures</a> zu verbreiten. In letzter Zeit frage ich mich aber zunehmend, ob der Closures-Einsatz nicht überstrapaziert wird nach dem Sprichwort: Beherrscht man einmal den Hammer, so sieht jedes Problem wie ein Nagel aus.</p>
 
 <p>Wenn Funktionen vollwertige individuelle Objekte sind, lokale Variablen konserviert werden und Scope-Ketten durch Verschachtelung lang werden, dann hat das massive Auswirkungen auf die Performance von JavaScripten. Zum einen frisst das Anlegen von zusätzlichen Funktionen Zeit, zum anderen belegt die Persistenz »eingeschlossener« Daten den Arbeitsspeicher. Vielen JavaScript-Programmierern ist nicht bewusst, dass ihre Closures mehr als die von ihnen gewünschten Daten konservieren und sie damit der automatischen Speicherbereinigung des JavaScript-Interpreters, dem Garbage Collector, entziehen.</p>
 
@@ -69,7 +69,7 @@ function vegebeHandler () {
 	}
 }</pre>
 
-<p>Nun will ich mit diesem Beispiel nicht sagen, dass alle Funktionen global sein sollten. Die Handler-Funktion <code>handler</code> könnte beispielsweise an einem Object hängen, das als <a href="http://molily.de/js/organisation-module.html#object-literal">Object-Literal</a> notiert wurde. Das Beispiel soll nur eine Variante demonstrieren, bei der Funktionen nicht verschachtelt werden und damit die Performance-Nachteile wegfallen.</p>
+<p>Nun will ich mit diesem Beispiel nicht sagen, dass alle Funktionen global sein sollten. Die Handler-Funktion <code>handler</code> könnte beispielsweise an einem Object hängen, das als <a href="/js/organisation-module.html#object-literal">Object-Literal</a> notiert wurde. Das Beispiel soll nur eine Variante demonstrieren, bei der Funktionen nicht verschachtelt werden und damit die Performance-Nachteile wegfallen.</p>
 
 <p>Unter <em>Laborbedingungen</em> habe ich das Erzeugen von Referenzen auf dieselbe Funktion mit dem Anhängen immer neuer Funktionen an einen Array verglichen.</p>
 
@@ -251,7 +251,7 @@ function vegebeHandler () {
 
 <p>Currying und Binding sind in Prototype über <a href="http://api.prototypejs.org/language/Function/prototype/curry/">curry</a> bzw. <a href="http://api.prototypejs.org/language/Function/prototype/bind/">bind</a> möglich. In Mootools gibt es dafür <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Deprecated-Functions:create">create</a> und ebenfalls <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Function:bind">bind</a>. Speziell für den Einsatz bei Event-Handlern existiert bei Prototype <a href="http://api.prototypejs.org/language/Function/prototype/bindAsEventListener/">bindAsEventListener</a> und bei Mootools <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Deprecated-Functions:bindWithEvent">bindWithEvent</a>. All diese sind durch prototypische Erweiterung Methoden von beliebigen Funktionsobjekten. Wir erinnern uns: Funktionen sind Objekte erster Klasse, daher geht das in JavaScript.</p>
 
-<p><code>bind</code> und <code>bindAsEventListener</code> habe ich auch unter <a href="http://molily.de/js/organisation-verfuegbarkeit.html#bind-bindaseventlistener">Alternativlösungen zur Kontext-Problematik: bind und bindAsEventListener</a> beschrieben.</p>
+<p><code>bind</code> und <code>bindAsEventListener</code> habe ich auch unter <a href="/js/organisation-verfuegbarkeit.html#bind-bindaseventlistener">Alternativlösungen zur Kontext-Problematik: bind und bindAsEventListener</a> beschrieben.</p>
 
 <p><code>Function.prototype.bind</code> wird ECMAScript 5 (<a href="http://es5.github.io/#x15.3.4.5">Abschnitt 15.3.4.5</a>) standardisiert werden. Allerdings gibt es noch keinen mir bekannten Browser, der <code>bind</code> nativ unterstützt, und man ist derzeit auf die Erweiterung des <code>Function</code>-Prototyps angewiesen. Sobald eine native Implementierung existiert, ist mit einer enorm verbesserten Performance zu rechnen.</p>
 
@@ -470,7 +470,7 @@ function vegebeHandler () {
 
 <p>An anderen Stellen der JavaScript-Programmierung sind Closures unerlässlich. Da JavaScript nicht über das Konzept von Klassen und einer Sichtbarkeit von Membern verfügt, werden <a href="http://www.crockford.com/javascript/private.html">private Member mit Closures</a> emuliert. In diesen Fällen sollte man sich der Auswirkungen auf die Performance zumindest bewusst sein. Benchmarking kann im Einzelfall zeigen, ob eine effektive Kapselung die Performance merklich verschlechtert.</p>
 
-<p>Das <a href="http://molily.de/js/organisation-module.html#revealing-module">Module-Pattern</a> ist eine prominente Anwendung des Konzept von Closures zur Kapselung. Es erzeugt einen Funktions-Scope und notiert darin verschiedene lokale Objekte und Funktionen. Die verschachtelten Funktionen haben Zugriff auf die restlichen Objekte im selben Scope. Schließlich gibt die äußere Wrapper-Funktion ein Objekt zurück, das einige der »privaten« Eigenschaften und Methoden »öffentlich« macht.</p>
+<p>Das <a href="/js/organisation-module.html#revealing-module">Module-Pattern</a> ist eine prominente Anwendung des Konzept von Closures zur Kapselung. Es erzeugt einen Funktions-Scope und notiert darin verschiedene lokale Objekte und Funktionen. Die verschachtelten Funktionen haben Zugriff auf die restlichen Objekte im selben Scope. Schließlich gibt die äußere Wrapper-Funktion ein Objekt zurück, das einige der »privaten« Eigenschaften und Methoden »öffentlich« macht.</p>
 
 <pre>MeinModul = (function () { // anonyme Funktion, die sofort ausgeführt wird
 	var privateEigenschaft = 123;

@@ -63,7 +63,7 @@ While the user is [riding a skateboard](http://blog.crisp.se/2016/01/25/henrikkn
 
 On desktop computers with a fast internet connection, the content changes just milliseconds after the first render. But on mobile, users will see the non-JavaScript version for couple of seconds – and probably interact with it – until the JavaScript visibly switches to the enhanced version.
 
-In the last ten years, [we taught](http://molily.de/javascript-asynchron/) web developers to load scripts in an asynchronous, non-blocking way. A basic web performance rule says “[include stylesheets at the top, scripts at the bottom of the HTML code](https://developer.yahoo.com/performance/rules.html)”.
+In the last ten years, [we taught](/javascript-asynchron/) web developers to load scripts in an asynchronous, non-blocking way. A basic web performance rule says “[include stylesheets at the top, scripts at the bottom of the HTML code](https://developer.yahoo.com/performance/rules.html)”.
 
 When external JavaScripts are placed at the bottom of the page or marked with [async/defer](https://developer.mozilla.org/en/docs/Web/HTML/Element/script), the code may be executed *at any time after the first render*. On mobile, it’s quite common that JavaScript-powered dropdown menus, sticky elements and interactive widgets appear not until 10 seconds after the first render.
 
