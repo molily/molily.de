@@ -1,24 +1,4 @@
-<?php
-header('Content-Type: text/html; charset=utf-8');
-
-ob_start('ob_gzhandler');
-
-$if_modified_since = '';
-if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-	$if_modified_since = preg_replace('/;.*$/', '', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
-}
-
-$mtime = filemtime($_SERVER['SCRIPT_FILENAME']);
-$gmdate_mod = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
-
-if ($if_modified_since == $gmdate_mod) {
-	header('HTTP/1.0 304 Not Modified');
-	exit;
-}
-
-header('Last-Modified: ' . $gmdate_mod);
-
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
