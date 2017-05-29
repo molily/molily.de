@@ -1,21 +1,53 @@
+{% capture canonical_url %}{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}{% endcapture %}
+
+{% capture title %}
+  {% if page.title %}
+    {{ page.title }} &middot; {{ site.title }}
+  {% else %}
+    {{ site.title }}
+  {% endif %}
+{% endcapture %}
+
+{% capture description %}
+  {% if page.description %}
+    {{ page.description }}
+  {% else %}
+    {{ site.description }}
+  {% endif %}
+{% endcapture %}
+
 <head>
 <meta charset="utf-8">
 
-<title>{% if page.title %}{{ page.title }} &middot; {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+<title>{{ title }}</title>
 
 <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: site.baseurl }}">
 <link rel="preload" href="https://fonts.gstatic.com/s/notosans/v6/LeFlHvsZjXu2c3ZRgBq9nJBw1xU1rKptJj_0jans920.woff2" as="font" crossorigin>
-<link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
-<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
+<link rel="canonical" href="{{ canonical_url }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
 <link rel="author" href="mailto:zapperlott@gmail.com" title="E-Mail">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
 <meta name="viewport" content="width=device-width">
-<meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-<meta name="keywords" content="{% if page.keywords %}{{ page.keywords | strip_html | strip_newlines}}{% else %}{{ site.keywords }}{% endif %}">
+<meta name="description" content="{{ description }}">
+<meta name="keywords" content="{% if page.keywords %}{{ page.keywords | strip | strip_newlines }}{% else %}{{ site.keywords }}{% endif %}">
 <meta name="theme-color" content="#6b4db3">
 <meta name="verify-v1" content="fgMwO6+GylpfJErqz1kfGXR5iWtXq3azC6/M/4dZapo=">
+
 <meta property="twitter:account_id" content="1494951763">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@molily">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:image" content="{{ site.url }}/img/spidermum.png">
+
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:image" content="{{ site.url }}/img/spidermum.png">
 {% if page.robots %}<meta name="robots" content="{{ page.robots }}">
 {% endif %}
 
