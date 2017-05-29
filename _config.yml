@@ -6,8 +6,6 @@ keywords: "HTML, CSS, JavaScript, Webdesign, Webentwicklung, Browser, Webstandar
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://molily.de"
 permalink: /:title/
-twitter_username: molily
-github_username:  molily
 
 # Build settings
 host: 0.0.0.0
