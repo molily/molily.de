@@ -94,7 +94,7 @@ h2 a[name], h3 a[name], h4 a[name] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, dem Ankerelement ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
-<p><img src="/img/css-posfixed-css1-1.png" width="300" height="165" alt="" /></p>
+<p><img src="/img/css-posfixed-css1-1.png" width="300" height="165" alt=""></p>
 </div>
 
 <p id="attributselektoren">Die Verwendung von zusätzlichen Attributselektoren (<code>h2 a[name]</code>) anstatt einfachen Nachkommenselektoren (<code>h2 a</code>) ist nötig, weil der <span lang="en">Microsoft Internet Explorer (Windows)</span> und andere veraltete Browser diesen Regelsatz ignorieren müssen, da sie <code>position:fixed</code> nicht interpretieren. Da bei diesen Browsern das <a href="#problemstellung">beschriebene Problem</a> nicht auftaucht, ist keine das Problem umgehende Lösung nötig. Durch den meist ebenfalls unbekannten Attributselektor wird die komplette CSS-Regel übergangen. Prinzipiell besteht jedoch keine vorhersehbare Verbindung zwischen der Unterstützung von <code>position:fixed</code> einerseits und Attributselektoren andererseits, weshalb dieses und ähnliche Konstrukte letztlich unzuverlässig sind. Es wird davon ausgegangen, dass <code>position:fixed</code> selbst ebenfalls über Attributselektoren versteckt wird (siehe <a href="http://jendryschik.de/wsdev/einfuehrung/css/browserkompatibilitaet">Fehlerhafte Browser-Implementierung: Workaround</a>).</p>
@@ -135,9 +135,9 @@ h2[id], h3[id], h4[id] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, dem Ankerelement ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
-<p><img src="/img/css-posfixed-css1-2.png" width="300" height="157" alt="" /></p>
+<p><img src="/img/css-posfixed-css1-2.png" width="300" height="157" alt=""></p>
 <p>Endergebnis ohne verdeutlichende Rahmen und Hintergründe:</p>
-<p><img src="/img/css-posfixed-css1-3.png" width="300" height="149" alt="" /></p>
+<p><img src="/img/css-posfixed-css1-3.png" width="300" height="149" alt=""></p>
 </div>
 
 </li>
@@ -222,7 +222,7 @@ h2[id], h3[id], h4[id] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, der eingefügten Text (<code>content:'Beispiel '</code>) ist blau und hat einen hellgrauer Hintergrund.</p>
-<p><img src="/img/css-posfixed-css3-1.png" width="300" height="115" alt="" /></p>
+<p><img src="/img/css-posfixed-css3-1.png" width="300" height="115" alt=""></p>
 </div>
 
 </li>
@@ -235,7 +235,7 @@ h2[id], h3[id], h4[id] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, der eingefügten Block-Box (<code>content:' '</code>) ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
-<p><img src="/img/css-posfixed-css3-2.png" width="300" height="169" alt="" /></p>
+<p><img src="/img/css-posfixed-css3-2.png" width="300" height="169" alt=""></p>
 </div>
 
 <p>Die entstehende CSS-Regel wäre etwa folgendermaßen aufgebaut:</p>
@@ -272,9 +272,9 @@ h2[id], h3[id], h4[id] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, der eingefügten Block-Box ein blauer Rahmen und ein hellgrauer Hintergrund.</p>
-<p><img src="/img/css-posfixed-css3-3.png" width="300" height="151" alt="" /></p>
+<p><img src="/img/css-posfixed-css3-3.png" width="300" height="151" alt=""></p>
 <p>Endergebnis ohne Hervorhebungen.</p>
-<p><img src="/img/css-posfixed-css3-4.png" width="300" height="143" alt="" /></p>
+<p><img src="/img/css-posfixed-css3-4.png" width="300" height="143" alt=""></p>
 </div>
 
 </li>
@@ -343,14 +343,14 @@ h2[id], h3[id], h4[id] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben, dem verschobenen Ankerelement ein blauer Rahmen.</p>
-<p><img src="/img/css-posfixed-css2-1.png" width="300" height="180" alt="" /></p>
+<p><img src="/img/css-posfixed-css2-1.png" width="300" height="180" alt=""></p>
 </div>
 
 <p>Um diesen Phänomenen zu begegnen, wird dem <code>a</code>-Element mittels <code>height:0</code> die Höhe 0 (Null) zugewiesen. Die Breite wird mittels <code>width:0</code> ebenfalls auf 0 gesetzt, dies ist jedoch vernachlässigbar. Die Elementbox nimmt dadurch letztlich keinen Raum ein, weder an der Position, an die sie verschoben wurde, noch an Position im normalen Fluss. In Zweifelsfällen, in denen <code>width:0</code> nicht wirksam ist, kann zusätzlich <code>font-size:0; line-height:0;</code> bzw. <code>font-size:2px; line-height:0;</code> eingesetzt werden, damit die durch das erzwungene Leerzeichen erzeugte Zeilenbox in jedem Fall die minimalste Höhe hat.</p>
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Dem Überschriftelement wird zur Verdeutlichung ein roter Rahmen gegeben. Das verschobene Ankerelement nimmt keinen Raum ein und ist ohne Rahmen nicht sichtbar.</p>
-<p><img src="/img/css-posfixed-css2-2.png" width="300" height="151" alt="" /></p>
+<p><img src="/img/css-posfixed-css2-2.png" width="300" height="151" alt=""></p>
 </div>
 
 </li>
@@ -361,9 +361,9 @@ h2[id], h3[id], h4[id] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Beim Markieren des Texts wird das Ankerelement sichtbar.</p>
-<p><img src="/img/css-posfixed-css2-3.png" width="300" height="157" alt="" /></p>
+<p><img src="/img/css-posfixed-css2-3.png" width="300" height="157" alt=""></p>
 <p>Durch <code>visibility:hidden</code> wird es vollends versteckt.</p>
-<p><img src="/img/css-posfixed-css2-4.png" width="300" height="157" alt="" /></p>
+<p><img src="/img/css-posfixed-css2-4.png" width="300" height="157" alt=""></p>
 </div>
 
 </li>
@@ -415,8 +415,8 @@ h2 a[name], h3 a[name], h4 a[name] {
 </thead>
 <tbody>
 <tr>
-<td><img src="/img/css-posfixed-css2-5.png" width="250" height="150" alt="" /></td>
-<td><img src="/img/css-posfixed-css2-6.png" width="250" height="150" alt="" /></td>
+<td><img src="/img/css-posfixed-css2-5.png" width="250" height="150" alt=""></td>
+<td><img src="/img/css-posfixed-css2-6.png" width="250" height="150" alt=""></td>
 </tr>
 </tbody>
 </table>
@@ -433,8 +433,8 @@ h2 a[name], h3 a[name], h4 a[name] {
 </thead>
 <tbody>
 <tr>
-<td><img src="/img/css-posfixed-css2-7.png" width="150" height="250" alt="" /></td>
-<td><img src="/img/css-posfixed-css2-8.png" width="150" height="250" alt="" /></td>
+<td><img src="/img/css-posfixed-css2-7.png" width="150" height="250" alt=""></td>
+<td><img src="/img/css-posfixed-css2-8.png" width="150" height="250" alt=""></td>
 </tr>
 </tbody>
 </table>
@@ -474,14 +474,14 @@ h2 a[name], h3 a[name], h4 a[name] {
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Eine Überschrift erhält einen negativen oberen Außenabstand. Sie hat zur Verdeutlichung einen roten Rahmen. Die Boxen der beiden Absätze vor der Überschrift werden überlappt, die Boxen der beiden Absätze nach der Überschrift rücken entsprechend nach oben.</p>
-<p><img src="/img/css-posfixed-css4-1.png" width="300" height="137" alt="" /></p>
+<p><img src="/img/css-posfixed-css4-1.png" width="300" height="137" alt=""></p>
 </div>
 
 <p>Der <span lang="fr" xml:lang="fr">Clou</span> ist nun, die Überschriften mit den Ankern zunächst mit einem negativen <code>margin-top</code> zu versehen und gleichzeitig einen oberen Innenabstand <code>padding-top</code> mit demselben Wert zu vergeben. Dieser Wert muss mindestens so groß sein wie der fest positionierte Bereich. Dadurch erscheint der Inhalt der Überschrift, beispielsweise der Text, letztlich an der Ausgangsposition, als wäre kein negativer <code>margin-top</code> vergeben worden.</p>
 
 <div class="illustration">
 <p><strong>Illustration:</strong> Die Überschrift erhält einen negativen <code>margin-top</code> und einen positiven gleich großen <code>padding-top</code>. Sie hat zur Verdeutlichung einen roten Rahmen. Gäbe es diesen Rahmen nicht, ließe sich das Beispiel nicht von einer Version ohne diese Formatierungen unterscheiden.</p>
-<p><img src="/img/css-posfixed-css4-2.png" width="300" height="187" alt="" /></p>
+<p><img src="/img/css-posfixed-css4-2.png" width="300" height="187" alt=""></p>
 </div>
 
 </li>

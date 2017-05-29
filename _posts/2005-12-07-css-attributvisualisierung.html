@@ -75,7 +75,7 @@ var {font-style:normal;}
 
 <p>Viele Netzseiten verwenden <code>javascript:</code> mit anschließendem JavaScript-Code als Verweisziel. Im Artikel <cite>Popups mit JavaScript</cite> finden sich <a href="/javascript-popups/#javascriptlink">Argumente gegen <code>javascript:</code> als Verweisziel</a>. Um solch eventuell unliebsame Verweise kenntlich zu machen, bevor sie anwählt werden, bieten sich folgende Regeln an:</p>
 
-<p class="code"><code>a[href^="javascript:"]:before {content:"[js] "; color:#f55;}<br />
+<p class="code"><code>a[href^="javascript:"]:before {content:"[js] "; color:#f55;}<br>
 a[href="#"][onclick]:before {content:"[js] "; color:#f55;}</code></p>
 
 <p>Der Attributselektor <code>[href^="javascript:"]</code>, beziehungsweise verallgemeinert <code>[<var>attribut</var>^="<var>wert</var>"]</code>, wählt diejenigen Elemente, deren Wert des angegebenen Attributs (<code>href</code>) mit der angegebenen Zeichenkette (<code>javascript:</code>) beginnt. Dieser Selektortyp ist erst in <a href="http://www.w3.org/TR/css3-selectors/#attribute-substrings" title="Attributselektoren in CSS3">CSS 3</a> verfügbar und momentan noch nicht standardisiert.</p>
@@ -90,7 +90,7 @@ a[href="#"][onclick]:before {content:"[js] "; color:#f55;}</code></p>
 
 <li>Dieser <a href="/" target="_blank">Verweis</a> öffnet ein neues Fenster (<code>target="_blank"</code>). Dem Verweis sollte ein Akzent in eckigen Klammern vorangestellt sein: <span style="color:#f00;">[^]</span>. Denkbar wären natürlich auch Unicode-Pfeilsymbole.</li>
 
-<li>Dieser <a href="http://www.w3.org/" hreflang="en">Verweis</a> führt auf eine englischsprachige Seite (<code>hreflang="en"</code>). Dem Verweis sollte der <em lang="en">union jack</em> vorangestellt sein.<br />
+<li>Dieser <a href="http://www.w3.org/" hreflang="en">Verweis</a> führt auf eine englischsprachige Seite (<code>hreflang="en"</code>). Dem Verweis sollte der <em lang="en">union jack</em> vorangestellt sein.<br>
 Dieser <a href="http://www.assemblee-nationale.fr/" hreflang="fr">Verweis</a> führt auf eine französischsprachige Seite (<code>hreflang="fr"</code>). Dem Verweis sollte eine französische Flagge vorangestellt sein.</li>
 
 <li>Dieser <a href="http://www.w3.org/" target="_blank" hreflang="en">Verweis</a> führt auf eine englische Seite und wird in einem neuen Fenster geöffnet. Dem Verweis sollte <span style="color:#f00;">[^en]</span> vorangestellt sein.</li>

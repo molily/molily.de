@@ -140,16 +140,16 @@ keywords: Markup, Auszeichnungssprachen, HTML, Objektmodelle, DOM, Semantik, Ver
 
 <ol>
 
-<li><img src="/img/dokumentmodelle-bits.png" alt="" />
+<li><img src="/img/dokumentmodelle-bits.png" alt="">
 Eine HTML-Datei, gespeichert auf einer Festplatte oder im Arbeitsspeicher, ist zunächst eine bloße Ansammlung von Nullen und Einsen (oder im physikalischen Sinne: Strom &ndash; kein Strom usw.).</li>
 
-<li><img src="/img/dokumentmodelle-welsch.png" alt="" />
+<li><img src="/img/dokumentmodelle-welsch.png" alt="">
 Jeweils acht Bit repräsentieren bei dieser Kodierung ein bestimmtes Zeichen. Zwar ist nach der Übertragung sofort ein Muster erkennbar, nämlich die charakteristische HTML-Syntax. Deren Sinn erschließt sich aber erst, wenn die Bedeutung (Semantik) der Bestandteile bekannt ist. Um diesen Zwischenschritt zu veranschaulichen, wurden in der Grafik alle Buchstaben verfremdet.</li>
 
-<li><img src="/img/dokumentmodelle-code.png" alt="" />
+<li><img src="/img/dokumentmodelle-code.png" alt="">
 Die Zeichen fügen sich zu bekannten Wörtern einer natürlichen Sprache zusammen, deren direkten Sinn wir zumindest erahnen können und deren regelmäßiger Zusammenhang sich beschreiben lässt. Die Trennung zwischen natürlicher geschriebener Sprache und Metasprache (Sprache über Sprache) wird erkennbar. Beide folgen unterschiedlichen Mustern.</li>
 
-<li><img src="/img/dokumentmodelle-objekte.png" alt="" />
+<li><img src="/img/dokumentmodelle-objekte.png" alt="">
 Wenn die Spracheinheiten in ihrem Sinn entschlüsselt sind, werden die Beziehungen der Teile in <em>Sequenzen</em> (geordnete Abfolgen) und <em>Hierarchien</em> (Verschachtelungen) überführt wurden. Im Gesamtzusammenhang kann letztlich die Bedeutung rekonstruiert werden.</li>
 
 </ol>
@@ -299,33 +299,33 @@ Wenn die Spracheinheiten in ihrem Sinn entschlüsselt sind, werden die Beziehung
 
 <p>Im Folgenden abstrahieren wir schrittweise vom Code und betrachten verschiedene Möglichkeiten, den Elementbaum zu veranschaulichen. Dieses kurzes XHTML-Dokument wird als Beispiel dienen:</p>
 
-<p class="code"><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><br />
-&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><br />
-&lt;head><br />
-&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><br />
-&lt;title>XHTML-Beispieldokument&lt;/title><br />
-&lt;/head><br />
-&lt;body><br />
-<br />
-&lt;h1>&lt;abbr title="Erweiterbare Hypertext-Auszeichnungssprache">XHTML&lt;/abbr>-Beispieldokument&lt;/h1><br />
-<br />
-&lt;h2>Inhaltsverzeichnis&lt;/h2><br />
-&lt;ul id="inhaltsverzeichnis"><br />
-&lt;li&gt;&lt;a href="#foo" rel="chapter">foo&lt;/a>&lt;/li><br />
-&lt;li&gt;&lt;a href="#bar" rel="chapter">bar&lt;/a>&lt;/li><br />
-&lt;li&gt;&lt;a href="#baz" rel="chapter">baz&lt;/a>&lt;/li><br />
-&lt;/ul><br />
-<br />
-&lt;h2 id="foo">foo&lt;/h2><br />
-&lt;p>foo&lt;/p><br />
-<br />
-&lt;h2 id="bar">bar&lt;/h2><br />
-&lt;p>bar&lt;/p><br />
-<br />
-&lt;h2 id="baz">baz&lt;/h2><br />
-&lt;p>baz&lt;/p><br />
-<br />
-&lt;/body><br />
+<p class="code"><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><br>
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><br>
+&lt;head><br>
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"><br>
+&lt;title>XHTML-Beispieldokument&lt;/title><br>
+&lt;/head><br>
+&lt;body><br>
+<br>
+&lt;h1>&lt;abbr title="Erweiterbare Hypertext-Auszeichnungssprache">XHTML&lt;/abbr>-Beispieldokument&lt;/h1><br>
+<br>
+&lt;h2>Inhaltsverzeichnis&lt;/h2><br>
+&lt;ul id="inhaltsverzeichnis"><br>
+&lt;li&gt;&lt;a href="#foo" rel="chapter">foo&lt;/a>&lt;/li><br>
+&lt;li&gt;&lt;a href="#bar" rel="chapter">bar&lt;/a>&lt;/li><br>
+&lt;li&gt;&lt;a href="#baz" rel="chapter">baz&lt;/a>&lt;/li><br>
+&lt;/ul><br>
+<br>
+&lt;h2 id="foo">foo&lt;/h2><br>
+&lt;p>foo&lt;/p><br>
+<br>
+&lt;h2 id="bar">bar&lt;/h2><br>
+&lt;p>bar&lt;/p><br>
+<br>
+&lt;h2 id="baz">baz&lt;/h2><br>
+&lt;p>baz&lt;/p><br>
+<br>
+&lt;/body><br>
 &lt;/html></code></p>
 
 <h3 id="einrueckung">Einrückungen im gekürzten Markup</h3>
@@ -538,7 +538,7 @@ Wenn die Spracheinheiten in ihrem Sinn entschlüsselt sind, werden die Beziehung
 
 <p>Folgendes Diagramm arbeitet den hierarchischen Aspekt der Baumstruktur stärker heraus:</p>
 
-<p id="dombaum"><img src="/img/dokumentmodelle-dom.png" alt="" width="1166" height="282" /></p>
+<p id="dombaum"><img src="/img/dokumentmodelle-dom.png" alt="" width="1166" height="282"></p>
 
 <h2 id="interpretation">Schlussfolgerungen aus den Veranschaulichungen</h2>
 
