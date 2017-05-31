@@ -8,7 +8,7 @@ lang: en
 
 ## Foreword
 
-Some years ago, web developer Nicole Sullivan gave an influential talk [Our (CSS) Best Practices Are Killing Us](http://www.stubbornella.org/content/2011/04/28/our-best-practices-are-killing-us/). Sullivan was one of the first who set up rules for predictable, maintainable, large-scale CSS.
+Some years ago, web developer Nicole Sullivan gave an influential talk named [Our (CSS) Best Practices Are Killing Us](http://www.stubbornella.org/content/2011/04/28/our-best-practices-are-killing-us/). Sullivan was one of the first who set up rules for predictable, maintainable, large-scale CSS.
 
 In her talk from 2011, Sullivan argues that CSS practices considered the best back then are actually holding us back. With [OOCSS](https://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/), she started a movement that eventually led to frameworks like Bootstrap and Foundation as well as methodologies like [SMACSS](https://smacss.com/), [BEM](https://css-tricks.com/bem-101/), [CSS modules](https://github.com/css-modules/css-modules) and inline CSS. Today in front-end development, we try to create reusable and encapsulated components. Sullivan helped to shape the idea of having such “lego bricks”.
 
@@ -38,7 +38,7 @@ When a user sees the first screen of a page or starts to read the page non-visua
 
 Unfortunately, this isn’t the case for most mobile sites. After the first render, content is changed and moved around. New content is added not just at the end but also right in the middle. The most common examples are images, videos, menus, sidebars, interactive widgets and advertisement banners. Also custom fonts affect the overall layout.
 
-These content changes not only confuse the user and interrupt the current interaction, they also cause **[layout reflows](https://developers.google.com/speed/articles/reflow)**. This is a computationally intensive recalculation of element positions. For the user such reflows are experienced as “the page is jumping around”.
+These content changes not only confuse the user and interrupt the current interaction, they also cause **[layout reflows](https://developers.google.com/speed/articles/reflow)**. This is a computationally expensive recalculation of element positions. For the user such reflows are experienced as “the page is jumping around”.
 
 This is especially frustrating if the user has already scrolled down and content is added above the current scroll position. Browsers [try to prevent this “jumping”](https://developers.google.com/web/updates/2016/04/scroll-anchoring?hl=en) by making their scrolling behavior smarter.
 
