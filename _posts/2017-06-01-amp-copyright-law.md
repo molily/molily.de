@@ -14,15 +14,17 @@ After the law passed, Google threatened to remove large news sites from search r
 
 So I’m wondering how Google AMP fits in here. It’s no longer about publishing snippets, citations and links. With the AMP cache, Google is re-hosting the full content of the publisher. AMP embeds the full content into the search results, showing them inline. Nonetheless, AMP seems to become popular among German publishers. Several German news sites started to publish AMP versions of their articles, and these pages appear prominently in Google search results.
 
-In my opinion, it was difficult to argue that Google appropriates content by just showing text snippets. Of course Google builds Search and News on third-party content, and makes a load of money this way. But citing and referencing is so essential to the web and publishing in general that it’s hard to introduce a “Google tax” that would benefit media corporations.
+In my opinion, it was difficult to argue that Google appropriates content by just showing text snippets. Of course Google builds Search and News on third-party content, and makes a lot of money this way. But citing and referencing is so essential to the web and publishing in general that it’s hard to introduce a “Google tax” that would benefit media corporations.
 
 With AMP, Google puts even more pressure on publishers to cede control to Google. One can read the news without ever leaving google.com. It’s indisputable that Google re-publishes third-party content fully and in verbatim without paying for it. While good old meta tags and robots.txt offered a way to opt-out of search indexing and snippet display, AMP is an opt-in solution. Publishing AMP pages is an explicit consent to Google’s controversial embedding and re-hosting policy.
+
+So publishers might see AMP as a new attempt to subdue them. I guess that Google is making an offer that publishers cannot afford to refuse. AMP content is consumed without leaving the Google universe, but AMP pages may contain certain ads. The advertisement revenue goes to the publishers.
 
 Even if some publishers cave in and jump on the AMP bandwagen, the heated discussion of the German “Leistungsschutzrecht” and whether Google should pay royalties for showing content will flare up again.
 
 ## Read more
 
-<ul>
+<ul class="compact-list">
 <li>
   <a href="https://de.wikipedia.org/wiki/Leistungsschutzrecht_f%C3%BCr_Presseverleger" hreflang="de">Wikipedia: Leistungsschutzrecht für Presseverleger (German)</a>
 </li>
