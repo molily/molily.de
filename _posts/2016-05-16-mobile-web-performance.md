@@ -99,7 +99,7 @@ In the age of predominant mobile web access, some of these practices are causing
 
    The first screen should not change significantly during page load. Make sure the [Speed Index diagram](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index) shows an early, sharp rise to 90-95% visual completeness, then a steady rise to 100%.
 
-# Case study: BBC News article page
+## Case study: BBC News article page
 
 I cannot present a complex site that implements these guidelines. But since I’ve compiled them *ex negativo*, I’d like to present an example worth improving.
 
