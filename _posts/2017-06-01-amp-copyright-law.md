@@ -2,7 +2,7 @@
 layout: post
 title: A short note on Google AMP and the German copyright law
 description: AMP will intensify the tensions between German publishers and Google
-keywords: Google, AMP, copyright, mobile
+keywords: Google, AMP, copyright, mobile web
 lang: en
 ---
 
