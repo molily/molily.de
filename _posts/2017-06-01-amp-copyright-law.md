@@ -20,7 +20,7 @@ With AMP, Google puts even more pressure on publishers to cede control to Google
 
 Publishers might see AMP as a new attempt to subdue them. I guess that Google is making an offer that publishers cannot afford to refuse. AMP content is consumed without leaving the Google universe, but AMP pages may contain certain ads. The advertisement revenue goes to the publishers. Is that a fair deal?
 
-Even if some publishers cave in and jump on the AMP bandwagen, the heated discussion of the German “Leistungsschutzrecht” and whether Google should pay royalties for showing content will flare up again.
+Even if some publishers cave in and jump on the AMP bandwagon, the heated discussion of the German “Leistungsschutzrecht” and whether Google should pay royalties for showing content will flare up again.
 
 ## Read more
 
