@@ -25,9 +25,9 @@ title: JavaScript muss asynchron werden
 <p>Das eingebundene Script sieht z.B. so aus:
 
 <pre>
-document.write('&lt;p>&lt;a href="http://adserver.example.org/werbung-geklickt">' +
+document.write('&lt;p&gt;&lt;a href="http://adserver.example.org/werbung-geklickt"&gt;' +
    '&lt;img src="http://adserver.example.org/banner.jpg" ' +
-   'width="200" height="50" alt=""></a></p>');
+   'width="200" height="50" alt=""&gt;&lt;/a&gt;&lt;/p&gt;');
 </pre>
 
 <p>Der Browser empfängt ein HTML-Dokument und während des Einlesens (Parsing) werden Scripte bereits ausgeführt (<a href="/js/einbindung.html">siehe meine JavaScript-Dokumentation</a>). Trifft der Parser auf ein <code>script</code>-Element, das per <code>src</code>-Attribut auf externes Script verweist, so hält das Parsing an. Im Falle von eingebundener Werbung lädt der Browser das Script vom Adserver herunter und führt es aus. Das Script fügt dem Dokument dann eigene Inhalte hinzu, und zwar an der Stelle, an dem es eingebunden wurde. Erst danach fährt der Parser mit der Verarbeitung des empfangenen HTML-Codes fort.</p>
@@ -40,7 +40,7 @@ document.write('&lt;p>&lt;a href="http://adserver.example.org/werbung-geklickt">
 
 <h2><code>document.write()</code> ist das Problem</h2>
 
-<p>Der Schlüssel zum Einbinden von Inhalten mithilfe externer Scripte ist <a href="http://de.selfhtml.org/javascript/objekte/document.htm#write">document.write()</a>. Damit lässt sich im Moment des Parsing HTML-Code ins Dokument einfügen. Nicht selten werden mit <code>document.write()</code> weitere <code>script</code>-Elemente erzeugt, die auf zusätzliche externe Scripte verweisen.</p>
+<p>Der Schlüssel zum Einbinden von Inhalten mithilfe externer Scripte ist <a href="https://wiki.selfhtml.org/wiki/JavaScript/DOM/Document/write">document.write()</a>. Damit lässt sich im Moment des Parsing HTML-Code ins Dokument einfügen. Nicht selten werden mit <code>document.write()</code> weitere <code>script</code>-Elemente erzeugt, die auf zusätzliche externe Scripte verweisen.</p>
 
 <p>Was für den JavaScript-Autor einfach nutzbar ist, ist für Browserprogrammierer ein Wahnsinn: Ein HTML-Dokument kann ein Script enthalten, dieses Script kann HTML erzeugen, dieses HTML kann Scripte beinhalten usw. ad infinitum. Einzig und allein wegen <code>document.write()</code> muss der HTML-Parser während der Scriptausführung mit dem Einlesen des Dokuments warten. Wird im Script <code>document.write()</code> aufgerufen, muss der Parser erst den damit ausgegebenen HTML-Code parsen und ins Dokument einfügen, bevor der Rest des Dokuments eingelesen werden kann. Dieses komplexe Verfahren wird mit <a href="https://html.spec.whatwg.org/multipage/syntax.html#parsing">HTML5 erstmals standardisiert</a>.
 

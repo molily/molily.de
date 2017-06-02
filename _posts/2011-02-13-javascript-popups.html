@@ -1,6 +1,6 @@
 ---
 layout: post
-title: »Popups« mit JavaScript
+title: Popups mit JavaScript
 description: Die Anleitung diskutiert verschiedene Lösungsmöglichkeiten für Popup-Fenster mit JavaScript.
 keywords: fenster, javascript, öffnen, popup, popups, pop-ups
 ---
@@ -30,7 +30,7 @@ function oeffnefenster (url) {
 
 <h2 id="problemstellung">Problemstellung</h2>
 
-<p>Man möchte auf einer Website einen Link zu einem Dokument oder einer anderen Quelle setzen. Dieses Dokument soll möglichst in einem neuen Browserfenster geöffnet werden. Dies allein ist mit dem <a href="http://de.selfhtml.org/html/verweise/definieren.htm#zielfenster">Attribut <code>target="_blank"</code></a> möglich:
+<p>Man möchte auf einer Website einen Link zu einem Dokument oder einer anderen Quelle setzen. Dieses Dokument soll möglichst in einem neuen Browserfenster geöffnet werden. Dies allein ist mit dem <a href="https://wiki.selfhtml.org/wiki/Referenz:HTML/Attribute/target">Attribut <code>target="_blank"</code></a> möglich:
 
 <pre>&lt;a href="foo.html" target="_blank"&gt;Linktext&lt;/a&gt;</pre>
 
@@ -42,7 +42,7 @@ function oeffnefenster (url) {
 
 <h3>Helferfunktion <code>oeffnefenster</code></h3>
 
-<p>Zum Öffnen eines neuen Fensters lässt sich die JavaScript-Methode <code>window.open</code> nutzen. Der Methodenaufruf wird in einer Helferfunktion mit dem Namen <code>oeffnefenster</code> untergebracht. Diese Funktion wird in einem <code>script</code>-Element im <code>head</code>-Element (Dokumentkopf) des HTML-Dokuments definiert:</p>
+<p>Zum Öffnen eines neuen Fensters lässt sich die JavaScript-Methode <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open"><code>window.open</code></a> nutzen. Der Methodenaufruf wird in einer Helferfunktion mit dem Namen <code>oeffnefenster</code> untergebracht. Diese Funktion wird in einem <code>script</code>-Element im <code>head</code>-Element (Dokumentkopf) des HTML-Dokuments definiert:</p>
 
 <pre>&lt;script type="text/javascript"&gt;
 function oeffnefenster (url) {
@@ -57,13 +57,13 @@ function oeffnefenster (url) {
 
 <p><code>window.open</code> selbst nimmt drei Parameter entgegen. Zum ersten die Adresse, die in Form des <code>url</code>-Parameters weitergegeben wird. Zum zweiten ein Fenstername, hier <code>"fenster1"</code>.</p>
 
-<p>Mithilfe des dritten Parameters kann das Aussehen des Fensters beeinflusst werden, beispielsweise die Größe und die Anzeige von Navigations- und Symbolleisten. Die möglichen Fenstereigenschaften finden sich in der <a href="http://de.selfhtml.org/javascript/objekte/window.htm#open">Referenz zur window.open</a>. Die einzelnen Angaben werden durch Kommas getrennt.</p>
+<p>Mithilfe des dritten Parameters kann das Aussehen des Fensters beeinflusst werden, beispielsweise die Größe und die Anzeige von Navigations- und Symbolleisten. Die möglichen Fenstereigenschaften finden sich in der <a href="https://wiki.selfhtml.org/wiki/JavaScript/Window/open">Referenz zur window.open</a>. Die einzelnen Angaben werden durch Kommas getrennt.</p>
 
 <p>Im obigen Beispielaufruf von <code>window.open</code> sind folgende Fenstereigenschaften angegeben: <code>width=600,height=400,status=yes,scrollbars=yes,resizable=yes</code>. Das bedeutet, es soll ein Fenster mit der Größe 600 × 400 Pixel geöffnet werden. Es soll eine Statusleiste, eine Scrollbars (Bildlaufleisten) angezeigt werden. Außerdem ist das Fenster in seiner Größe vom Benutzer veränderbar (resizable).</p>
 
-<p><code>window.open</code> gibt das Fensterobjekt des Popups zurück (<a href="http://de.selfhtml.org/javascript/objekte/window.htm">Objekttyp window</a>). Dieses wird in der globalen Variable <code>fenster</code> gespeichert. Darüber kann man auf Objekte, Funktionen und Variablen des geöffneten Dokuments zugreifen. Die Artikel <a href="http://dcljs.de/faq/fragen.php#FensterKommunikation">Kommunikation zwischen Fenster und <span lang="en">Frames</span></a> und <a href="https://wiki.selfhtml.org/wiki/JavaScript/Anwendung_und_Praxis/Fenster-_und_Frameszugriff">Zugriff auf verschachtelte Fensterobjekte</a> erläutern dies näher.</p>
+<p><code>window.open</code> gibt das Fensterobjekt des Popups zurück (<a href="https://wiki.selfhtml.org/wiki/JavaScript/Window">Objekttyp window</a>). Dieses wird in der globalen Variable <code>fenster</code> gespeichert. Darüber kann man auf Objekte, Funktionen und Variablen des geöffneten Dokuments zugreifen. Die Artikel <a href="http://dcljs.de/faq/fragen.php#FensterKommunikation">Kommunikation zwischen Fenster und <span lang="en">Frames</span></a> und <a href="https://wiki.selfhtml.org/wiki/JavaScript/Anwendung_und_Praxis/Fenster-_und_Frameszugriff">Zugriff auf verschachtelte Fensterobjekte</a> erläutern dies näher.</p>
 
-<p>In der Regel wird ein Popup-Fenster beim ersten Öffnen automatisch in den Vordergrund geholt. Wenn bereits ein Zweitfenster geöffnet ist und der Benutzer im Ursprungsfenster einen weiteren Popup-Link aktiviert, bleibt dieses in manchen Fällen im Hintergrund. Zur Abhilfe wird das Popup-Fenster mithilfe der <a href="http://de.selfhtml.org/javascript/objekte/window.htm#focus">focus-Methode</a> in den Vordergrund geholt.</p>
+<p>In der Regel wird ein Popup-Fenster beim ersten Öffnen automatisch in den Vordergrund geholt. Wenn bereits ein Zweitfenster geöffnet ist und der Benutzer im Ursprungsfenster einen weiteren Popup-Link aktiviert, bleibt dieses in manchen Fällen im Hintergrund. Zur Abhilfe wird das Popup-Fenster mithilfe der <a href="https://wiki.selfhtml.org/wiki/JavaScript/Window/focus">focus-Methode</a> in den Vordergrund geholt.</p>
 
 <h3>Anwendung</h3>
 
@@ -71,7 +71,7 @@ function oeffnefenster (url) {
 
 <pre>&lt;a href="foo.html"&gt;Linktext&lt;a&gt;</pre>
 
-<p>Es wird nun der  <a href="http://de.selfhtml.org/javascript/sprache/eventhandler.htm#onclick" lang="en">Event-Handler <code>onclick</code></a> hinzugefügt. In diesem Attribut wird die Funktion <code>oeffnefenster</code> aufgerufen:</p>
+<p>Es wird nun der <a href="https://wiki.selfhtml.org/wiki/JavaScript/DOM/Event/click" lang="en">Event-Handler <code>onclick</code></a> hinzugefügt. In diesem Attribut wird die Funktion <code>oeffnefenster</code> aufgerufen:</p>
 
 <pre>&lt;a href="foo.html" onclick="oeffnefenster(this.href); return false"&gt;Linktext&lt;a&gt;</pre>
 
@@ -143,13 +143,13 @@ function oeffnefenster (url) {
 
 <h3>Paralleldarstellung über <span lang="en">Frames</span></h3>
 
-<p>Wenn es darum geht, mehrere Informationen gleichzeitig nebeneinander anzuzeigen und wenn eine Integration in ein Dokument unmöglich scheint, so wäre ein <a href="http://de.selfhtml.org/html/frames/">Framesets</a> eine mögliche Lösung.</p>
+<p>Wenn es darum geht, mehrere Informationen gleichzeitig nebeneinander anzuzeigen und wenn eine Integration in ein Dokument unmöglich scheint, so wäre ein <a href="https://wiki.selfhtml.org/wiki/HTML/Frames">Frameset</a> eine mögliche Lösung.</p>
 
 <p>Die Verwendung von Frames hat jedoch in der Regel schwerwiegende, nicht kompensierbare Benutzbarkeitsprobleme zur Folge. Daher erweisen sich Frames in den meisten Fällen nicht als akzeptable Lösung. Nicht ohne Grund sind Framesets aus dem Web weitgehend verschwunden.</p>
 
 <h3>Selbstbestimmte statt erzwungene Paralleldarstellung</h3>
 
-<p>Wenn beispielsweise auf Zusatzinformationen wie externe Quellen, Randbemerkungen, Fußnoten verwiesen wird, ist es nicht zwangsläufig vorteilhaft, auf einer parallelen Darstellung zu bestehen und über den Kopf des Benutzers hinweg neue Fenster zu öffnen.</p>
+<p>Wenn beispielsweise auf Zusatzinformationen wie externe Quellen, Randbemerkungen, Fußnoten verwiesen wird, ist es nicht unbedingt vorteilhaft, auf einer parallelen Darstellung zu bestehen und über den Kopf des Benutzers hinweg neue Fenster zu öffnen.</p>
 
 <p>Dem Benutzer sollte die Kompetenz und Freiheit zugestanden werden, selbst zu entscheiden, ob er eine Seite in einem neuen Fenster parallel betrachten möchte. Ihm sollte darin vertraut werden, dass er die wesentlichen Navigationsfunktionen seines Browsers bedienen kann, sodass er zwischen mehreren Tabs eigenständig wechseln kann. Der Autor sollte dem Benutzer daher Vorschläge machen und Hilfestellung geben, anstatt ihn vor vollendete Tatsachen zu stellen.</p>
 
@@ -157,7 +157,7 @@ function oeffnefenster (url) {
 
 <p>Die Verwendung von Popup-Fenstern ist stark zurückgegangen, seit es sogenannte <a href="http://planetozh.com/projects/lightbox-clones/" hreflang="en" lang="en">Lightbox-Scripte</a> gibt. Diese ermöglichen, beliebige Inhalte in einer Ebene (<em lang="en">layer</em>) darzustellen, die über dem normalen Inhalt liegt. Der Rest des Dokuments wird beim Anzeigen des Layers ausgegraut. Der Layer verschwindet wieder, wenn zum Hauptinhalt zurückgekehrt wird. Auf ein neues Browserfenster wird gänzlich verzichtet.</p>
 
-<p>Lightboxen sind sehr leistungsstark und vielseitig. Der Vorteil solcher Scripte ist, dass sie meist »<a href="http://blog.selfhtml.org/2005/12/17/javascript-einsatz/">unobtrusive</a>« umgesetzt sind. Das heißt, es ist keine Vermischung von HTML und JavaScript nötig und bestenfalls bleiben alle Inhalte zugänglich, auch wenn JavaScript nicht unterstützt wird.</p>
+<p>Lightboxen sind sehr leistungsstark und vielseitig. Der Vorteil solcher Scripte ist, dass sie meist »<a href="https://blog.selfhtml.org/2005/12/17/javascript-einsatz/">unobtrusive</a>« umgesetzt sind. Das heißt, es ist keine Vermischung von HTML und JavaScript nötig und bestenfalls bleiben alle Inhalte zugänglich, auch wenn JavaScript nicht unterstützt wird.</p>
 
 <p>Doch die Idee hat einige Schwächen und die Umsetzungen sind teilweise äußerst problematisch. Zum Beispiel ist es nicht immer möglich, den in der Lightbox gezeigten Inhalt mit einer URL zu adressieren und zu verlinken. Zudem wird ein eigenes <span lang="en">Interface</span> eingeführt, das keinen Gebrauch von der herkömmlichen Browser-Navigation macht. Dies ist für Benutzer noch ungewohnter als das Öffnen gewöhnlicher Fenster.</p>
 
@@ -171,10 +171,10 @@ function oeffnefenster (url) {
 
 <h3>Integrative Lösungen und flexible Benutzeroberflächen</h3>
 
-<p>Die Verwendung von Popups weist oftmals auf eine mangelhafte Informationstrukturierung hin: Wenn der Navigationsfluss unklar ist, scheinen Popup-Fenster die Rettung zu sein. Doch Popups erschweren den Zugang zu den Informationen. Webseiten-Betreiber sollten neben der Qualität der Inhalte auf eine intuitive Organisation und Präsentation Wert legen, die möglichst jedem Interessierten gerecht wird.</p>
+<p>Die Verwendung von Popups weist oftmals auf eine mangelhafte Informationstruktur hin: Wenn der Navigationsfluss unklar ist, scheinen Popup-Fenster die Rettung zu sein. Doch Popups erschweren den Zugang zu den Informationen. Webseiten-Betreiber sollten neben der Qualität der Inhalte auf eine intuitive Organisation und Präsentation Wert legen, die möglichst allen Interessierten gerecht wird.</p>
 
-<p>Die genannten Alternativen bieten zwar einige Vorzüge gegenüber JavaScript-Popups, jedoch treiben sie mitunter den Teufel mit dem Beelzebub aus. Am wenigsten Probleme bringt ein Projektaufbau und eine Präsentation mit sich, die Aufgaben, die bisher durch Popups gelöst wurden, integrativ lösen. Auf diese Weise lässt sich eine Site-Struktur entwickeln, die den komplexen Informationen gerecht wird, ohne dass das <span lang="en">Interface</span> unintuitiv wird. Somit werden Popup-Fenster, Frames und <code>target="_blank"</code> unnötig, wodurch sich Benutzerfreundlichkeit und Zugänglichkeit verbessern.</p>
+<p>Die genannten Alternativen bieten zwar einige Vorzüge gegenüber JavaScript-Popups, jedoch treiben sie mitunter den Teufel mit dem Beelzebub aus. Am wenigsten Probleme bringt eine Site-Struktur mit sich, die Aufgaben, die bisher durch Popups gelöst wurden, integrativ lösen. Eine solche Site-Struktur wird den komplexen Informationen gerecht wird, ohne dass das <span lang="en">Interface</span> unverständlich wird. Somit werden Popup-Fenster, Frames und <code>target="_blank"</code> unnötig, wodurch sich Benutzerfreundlichkeit und Zugänglichkeit verbessern.</p>
 
 <!-- ###################################################################### -->
 
-<p>Letzte Änderung: 13.02.2011 — Version 5</p>
+<p>Letzte Änderung: 02.06.2017</p>

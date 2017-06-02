@@ -142,10 +142,10 @@ Quelle: http://molily.de/
 
 <pre>
 new CopyLink({
-	container : document.getElementById('copylink-demo'),
-	handler : function () {
-		return '<br>Quelle: ' + location.href;
-	}
+  container : document.getElementById('copylink-demo'),
+  handler : function () {
+    return '&lt;br&gt;Quelle: ' + location.href;
+  }
 });
 </pre>
 
@@ -167,8 +167,8 @@ new CopyLink({
 
 <pre>
 jQuery(document).ready(function () {
-	new SelectionMenu({ ... });
-	new CopyLink({ ... });
+  new SelectionMenu({ ... });
+  new CopyLink({ ... });
 });
 </pre>
 
@@ -178,11 +178,11 @@ jQuery(document).ready(function () {
 
 <pre>
 SelectionMenu.addEvent(window, 'load', function () {
-	new SelectionMenu({ ... });
+  new SelectionMenu({ ... });
 });
 // bzw.
 CopyLink.addEvent(window, 'load', function () {
-	new CopyLink({ ... });
+  new CopyLink({ ... });
 });
 </pre>
 

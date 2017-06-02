@@ -7,7 +7,7 @@ title: "CSS kompakt: Einschließen (Clearing) von Floats"
 
 <p>Die Eigenschaft <code>float</code> gehört zu den wichtigsten CSS-Eigenschaften zur Umsetzung von flexiblem Mehrspaltenlayout. Da sie aber nie zu diesem Zweck erfunden wurde, sondern eher dafür zweckentfremdet wird, sind einige Tricks und Kniffe notwendig, um zu einem klassischen Mehrspaltenlayout zu kommen.</p>
 
-<p>Bereits 2006 habe ich einen ausführlichen Artikel zu <a href="http://blog.selfhtml.org/2006/01/31/css-spaltenlayout/">CSS-Spaltenlayout</a> verfasst. Da immer noch Unklarheiten zum Thema herrschen, will ich es noch einmal kompakt »von oben nach unten«, von der Theorie zur Praxis hin zusammenfassen.</p>
+<p>Bereits 2006 habe ich einen ausführlichen Artikel zu <a href="https://blog.selfhtml.org/2006/01/31/css-spaltenlayout/">CSS-Spaltenlayout</a> verfasst. Da immer noch Unklarheiten zum Thema herrschen, will ich es noch einmal kompakt »von oben nach unten«, von der Theorie zur Praxis hin zusammenfassen.</p>
 
 <p>Beispielsweise sorgt <code>float: left</code> erst einmal nur dafür, dass darauffolgende Elementboxen rechts um die Box des Elements »herumfließen«. Der folgende Inhalt lässt sich in ein Element fassen, das z.B. mit <code>margin-left</code> (linker Außenrand) eingerückt wird. So entsteht erst der Eindruck von zwei Spalten. (Grob verkürzt, es gibt noch andere Methoden und weiteres zu beachten.)</p>
 
@@ -156,7 +156,7 @@ title: "CSS kompakt: Einschließen (Clearing) von Floats"
 <li>Ein BFC hat besondere Eigenschaften, er erzeugt einen neuen Float-Kontext und verhindert das Überlappen mit Floats. Das kann gewünscht sein oder auch nicht. <code>overflow: hidden</code> hat ferner schwerwiegende Risiken – und wird dennoch breit und erfolgreich eingesetzt.</li>
 <li>
 <p>Der Clearfix ist ein ganz anderer Ansatz, der voraussetzt, dass an der jeweiligen Stelle bedenkenlos <code>clear</code> verwendet werden kann. Ansonsten ist er relativ sicher und robust, kann aber nicht so flexibel angewendet werden wie ein simples <code>overflow: hidden</code>.</p>
-<p>Im Gegenzug eignet sich der Clearfix für weitere Effekte wie den der gleich langen Spalten, siehe <a href="http://blog.selfhtml.org/2006/01/31/css-spaltenlayout/#kombinationsloesung">Kombinationslösung</a> in meinem ausführlichen Artikel sowie <a href="http://www.yaml.de/de/dokumentation/grundlagen/das-clearing-von-col3.html">Das Clearing der Spalte #col3</a> in der YAML-Dokumentation.</p>
+<p>Im Gegenzug eignet sich der Clearfix für weitere Effekte wie den der gleich langen Spalten, siehe <a href="https://blog.selfhtml.org/2006/01/31/css-spaltenlayout/#kombinationsloesung">Kombinationslösung</a> in meinem ausführlichen Artikel sowie <a href="http://www.yaml.de/de/dokumentation/grundlagen/das-clearing-von-col3.html">Das Clearing der Spalte #col3</a> in der YAML-Dokumentation.</p>
 </li>
 <li>Für den IE < 8 bleibt nur hasLayout. Und hasLayout ist ein Minenfeld. Es geht leider nicht ohne – und mit nur unter Schmerzen. Nach einiger Zeit bekommt man jedoch Übung im gezielten hasLayout-Einsatz.</li>
 </ul>
