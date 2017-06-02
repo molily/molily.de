@@ -1,12 +1,12 @@
 <script>
 Function.prototype.curry = (function () {
-	var slice = Array.prototype.slice;
-	return function () {
-		var func = this, args = slice.apply(arguments);
-		return function () {
-			return func.apply(this, args.concat(slice.apply(arguments)));
-		};
-	};
+  var slice = Array.prototype.slice;
+  return function () {
+    var func = this, args = slice.apply(arguments);
+    return function () {
+      return func.apply(this, args.concat(slice.apply(arguments)));
+    };
+  };
 })();
 
 n = 2000000/*@cc_on / 10 @*/;
@@ -14,7 +14,7 @@ arr = [];
 start = new Date().getTime();
 function f (immer, dieselbe, bloede, funktion) { alle.meine.entchen.schwimmen.auf.dem.see();  koepfchen.inn.das.wasser.schwaenzchen.inn.die.hoeh(); }
 for (var i = 0; i < n; i++) {
-	arr.push(f.curry(i));
+  arr.push(f.curry(i));
 }
 diff = new Date().getTime() - start;
 document.write(diff + "ms, " +  (diff / n * 1000) + " µs/n");

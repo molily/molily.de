@@ -1,13 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 <script>
 startTime = new Date;
 document.addEventListener('DOMContentLoaded', function () {
-	var el = document.getElementById('element');
-	var style = getComputedStyle(el, null);
-	var endTime = new Date;
-	alert('DOMContentLoaded fired after ' + ((endTime - startTime) / 1000) + 's\ncolor: ' + style.color);
+  var el = document.getElementById('element');
+  var style = getComputedStyle(el, null);
+  var endTime = new Date;
+  alert('DOMContentLoaded fired after ' + ((endTime - startTime) / 1000) + 's\ncolor: ' + style.color);
 }, false);
 </script>
 <link rel="stylesheet" href="resource.php?type=css&delay=3">

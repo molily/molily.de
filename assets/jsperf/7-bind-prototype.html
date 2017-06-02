@@ -1,21 +1,21 @@
 <script>
 Function.prototype.bind = function (arg) {
-	var func = this;
-	return function () {
-		return func.call(arg);
-	};
+  var func = this;
+  return function () {
+    return func.call(arg);
+  };
 };
 n = 5000000/*@cc_on / 10 @*/;
 arr = [];
 for (var i = 0, o; i < n; i++) {
-	o = {};
-	arr.push(o);
+  o = {};
+  arr.push(o);
 }
 start = new Date().getTime();
 function f (immer, dieselbe, bloede, funktion) { alle.meine.entchen.schwimmen.auf.dem.see();  koepfchen.inn.das.wasser.schwaenzchen.inn.die.hoeh(); }
 for (var i = 0; i < n; i++) {
-	o = arr[i];
-	o.f = f.bind(o);
+  o = arr[i];
+  o.f = f.bind(o);
 }
 diff = new Date().getTime() - start;
 document.write(diff + "ms, " +  (diff / n * 1000) + " µs/n");

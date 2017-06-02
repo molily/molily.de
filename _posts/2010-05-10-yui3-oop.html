@@ -22,7 +22,7 @@ title: Objektorientiertes JavaScript mit YUI 3
   src="http://yui.yahooapis.com/3.1.1/build/yui/yui-min.js">&lt;/script>
 &lt;script type="text/javascript">
 YUI().use('oop', function (Y) {
-    /* Der Code kommt hierhin. */
+  /* Der Code kommt hierhin. */
 });
 &lt;/script>
 </pre>
@@ -35,25 +35,25 @@ YUI().use('oop', function (Y) {
 <li><a href="#y-object"><code>Y.Object</code> – Einfache prototypische Vererbung ohne (sichtbare) Konstruktoren</a></li>
 <li>
   <a href="#y-extend"><code>Y.extend</code> – Konstruktoren und mehrfache prototypische Vererbung</a>
-	<ol class="compact-list">
-	<li><a href="#y-extend-intern">Interne Funktionsweise von Y.extend</a></li>
-	<li><a href="#y-extend-parameter">Weitere Parameter von <code>Y.extend</code>: Kompaktschreibweise und statische Eigenschaften</a></li>
-	</ol>
+  <ol class="compact-list">
+  <li><a href="#y-extend-intern">Interne Funktionsweise von Y.extend</a></li>
+  <li><a href="#y-extend-parameter">Weitere Parameter von <code>Y.extend</code>: Kompaktschreibweise und statische Eigenschaften</a></li>
+  </ol>
 </li>
 <li>
   <a href="#y-augment">Mixins mit <code>Y.augment</code></a>
-	<ol class="compact-list">
-	<li><a href="#y-augment-einzeln">Einzelnen Objekten Funktionalität hinzufügen</a></li>
-	<li><a href="#y-augment-parameter">Weitere Parameter von <code>Y.augment</code>: Überschreiben erzwingen und Whitelist</a></li>
-	</ol>
+  <ol class="compact-list">
+  <li><a href="#y-augment-einzeln">Einzelnen Objekten Funktionalität hinzufügen</a></li>
+  <li><a href="#y-augment-parameter">Weitere Parameter von <code>Y.augment</code>: Überschreiben erzwingen und Whitelist</a></li>
+  </ol>
 </li>
 <li>
   <a href="#y-mix">Eigenschaften kopieren mit <code>Y.mix</code></a>
-	<ol class="compact-list">
-	<li><a href="#y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Whitelist</a></li>
-	<li><a href="#y-merge">Mehrere Objekte vereinen mit <code>Y.merge</code></a></li>
-	<li><a href="#y-augment-vs-y-mix"><code>Y.augment</code> vs. <code>Y.mix</code></a></li>
-	</ol>
+  <ol class="compact-list">
+  <li><a href="#y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Whitelist</a></li>
+  <li><a href="#y-merge">Mehrere Objekte vereinen mit <code>Y.merge</code></a></li>
+  <li><a href="#y-augment-vs-y-mix"><code>Y.augment</code> vs. <code>Y.mix</code></a></li>
+  </ol>
 </li>
 <li><a href="#y-links">Links und Quellen</a></li>
 </ol>
@@ -66,8 +66,8 @@ YUI().use('oop', function (Y) {
 
 <pre>
 Y.Object = function(o) {
-    var F = function() {};
-    F.prototype = o;
+  var F = function() {};
+  F.prototype = o;
     return new F();
 };
 </pre>
@@ -80,11 +80,11 @@ Y.Object = function(o) {
 
 <pre>
 var bird = {
-    flighted: true,
-    noise: "Chirp, chirp!",
-    sing: function () {
-        alert(this.noise);
-    }
+  flighted: true,
+  noise: "Chirp, chirp!",
+  sing: function () {
+    alert(this.noise);
+  }
 };
 
 var robin = Y.Object(bird);
@@ -116,14 +116,14 @@ rocky.name = "Rocky";
 
 <pre>
 function Bird (name) {
-    this.name = name;
+  this.name = name;
 }
 Bird.prototype = {
-    flighted: true,
-    noise: "Chirp, chirp!",
-    sing: function () {
-        alert(this.noise);
-    }
+  flighted: true,
+  noise: "Chirp, chirp!",
+  sing: function () {
+    alert(this.noise);
+  }
 };
 
 var robin = new Bird("Robin");
@@ -135,17 +135,17 @@ alert("Is " + robin.name + " flighted? " + (robin.flighted ? "yes" : "no"));
 
 <pre>
 function Chicken (name) {
-    Chicken.superclass.constructor.call(this, name);
-    // dasselbe wie Bird.call(this, name);
+  Chicken.superclass.constructor.call(this, name);
+  // dasselbe wie Bird.call(this, name);
 }
 Y.extend(Chicken, Bird);
 
 Chicken.prototype.flighted = false;
 Chicken.prototype.noise = "Cluck, cluck!";
 Chicken.prototype.sing = function () {
-    alert("The chicken " + this.name + " says:");
-    Chicken.superclass.sing.call(this);
-    // dasselbe wie Bird.prototype.sing.call(this);
+  alert("The chicken " + this.name + " says:");
+  Chicken.superclass.sing.call(this);
+  // dasselbe wie Bird.prototype.sing.call(this);
 };
 
 var ginger = new Chicken("Ginger");
@@ -192,48 +192,48 @@ alert("Is " + ginger.name + " flighted? " + (ginger.flighted ? "yes" : "no"));
 <div class="js-objects">
 
 <div class="object">
-    <h3>ginger</h3>
-    <table>
-    <tr class="internal"><th>[[Prototype]]</th><td>Chicken.prototype</td></tr>
-    <tr class="own"><th>name</th><td>"Ginger"</td></tr>
-    <tr class="dontenum"><th>constructor</th><td>Chicken</td></tr>
-    </table>
+  <h3>ginger</h3>
+  <table>
+  <tr class="internal"><th>[[Prototype]]</th><td>Chicken.prototype</td></tr>
+  <tr class="own"><th>name</th><td>"Ginger"</td></tr>
+  <tr class="dontenum"><th>constructor</th><td>Chicken</td></tr>
+  </table>
 </div>
 
 <div class="object">
-    <h3>Chicken.prototype</h3>
-    <table>
-    <tr class="internal"><th>[[Prototype]]</th><td>Bird.prototype</td></tr>
-    <tr class="own"><th>flighted</th><td>false</td></tr>
-    <tr class="own"><th>noise</th><td>"Cluck, cluck!"</td></tr>
-    <tr class="own"><th>sing</th><td>function () { … }</td></tr>
-    <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
-    </table>
+  <h3>Chicken.prototype</h3>
+  <table>
+  <tr class="internal"><th>[[Prototype]]</th><td>Bird.prototype</td></tr>
+  <tr class="own"><th>flighted</th><td>false</td></tr>
+  <tr class="own"><th>noise</th><td>"Cluck, cluck!"</td></tr>
+  <tr class="own"><th>sing</th><td>function () { … }</td></tr>
+  <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+  </table>
 </div>
 
 <div class="object">
-    <h3>Bird.prototype</h3>
-    <table>
-    <tr class="internal"><th>[[Prototype]]</th><td>Object.prototype</td></tr>
-    <tr class="own"><th>flighted</th><td>true</td></tr>
-    <tr class="own"><th>noise</th><td>"Chirp, chirp!"</td></tr>
-    <tr class="own"><th>sing</th><td>function () { … }</td></tr>
-    <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
-    </table>
+  <h3>Bird.prototype</h3>
+  <table>
+  <tr class="internal"><th>[[Prototype]]</th><td>Object.prototype</td></tr>
+  <tr class="own"><th>flighted</th><td>true</td></tr>
+  <tr class="own"><th>noise</th><td>"Chirp, chirp!"</td></tr>
+  <tr class="own"><th>sing</th><td>function () { … }</td></tr>
+  <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+  </table>
 </div>
 
 <div class="object">
-    <h3>Object.prototype</h3>
-    <table>
-    <tr class="internal"><th>[[Prototype]]</th><td>null</td></tr>
-    <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
-    <tr class="dontenum"><th>toString</th><td>[native Funktion]</td></tr>
-    <tr class="dontenum"><th>toLocaleString</th><td>[native Funktion]</td></tr>
-    <tr class="dontenum"><th>valueOf</th><td>[native Funktion]</td></tr>
-    <tr class="dontenum"><th>hasOwnProperty</th><td>[native Funktion]</td></tr>
-    <tr class="dontenum"><th>isPrototypeOf</th><td>[native Funktion]</td></tr>
-    <tr class="dontenum"><th>propertyIsEnumerable</th><td>[native Funktion]</td></tr>
-    </table>
+  <h3>Object.prototype</h3>
+  <table>
+  <tr class="internal"><th>[[Prototype]]</th><td>null</td></tr>
+  <tr class="dontenum"><th>constructor</th><td>Object</td></tr>
+  <tr class="dontenum"><th>toString</th><td>[native Funktion]</td></tr>
+  <tr class="dontenum"><th>toLocaleString</th><td>[native Funktion]</td></tr>
+  <tr class="dontenum"><th>valueOf</th><td>[native Funktion]</td></tr>
+  <tr class="dontenum"><th>hasOwnProperty</th><td>[native Funktion]</td></tr>
+  <tr class="dontenum"><th>isPrototypeOf</th><td>[native Funktion]</td></tr>
+  <tr class="dontenum"><th>propertyIsEnumerable</th><td>[native Funktion]</td></tr>
+  </table>
 </div>
 
 </div><!-- /.js-objects -->
@@ -259,24 +259,24 @@ alert(ginger instanceof Bird);    // true
 
 <pre>
 var Chicken = Y.extend(
-    // Konstruktor
-    function () {
-        Chicken.superclass.constructor.call(this, name);
-    },
+  // Konstruktor
+  function () {
+    Chicken.superclass.constructor.call(this, name);
+  },
 
-    // Super-Konstruktor
-    Bird,
+  // Super-Konstruktor
+  Bird,
 
-    // Chicken-Prototyp
-    {
-        flighted: false,
-        noise: "Cluck, cluck!",
-        sing: function () {
-            alert("The chicken " + this.name + " says:");
-            Chicken.superclass.sing.call(this, name);
-            // dasselbe wie Bird.prototype.sing.call(this, name);
-        }
+  // Chicken-Prototyp
+  {
+    flighted: false,
+    noise: "Cluck, cluck!",
+    sing: function () {
+      alert("The chicken " + this.name + " says:");
+      Chicken.superclass.sing.call(this, name);
+      // dasselbe wie Bird.prototype.sing.call(this, name);
     }
+  }
 );
 
 var ginger = new Chicken("Ginger");
@@ -290,30 +290,30 @@ alert("Is " + ginger.name + " flighted? " + (ginger.flighted ? "yes" : "no"));
 
 <pre>
 var Chicken = Y.extend(
-    // Konstruktor
-    function () {
-        Chicken.superclass.constructor.call(this, name);
-        Chicken.number++;
-    },
+  // Konstruktor
+  function () {
+    Chicken.superclass.constructor.call(this, name);
+    Chicken.number++;
+  },
 
-    // Super-Konstruktor
-    Bird,
+  // Super-Konstruktor
+  Bird,
 
-    // Chicken-Prototyp
-    {
-        flighted: false,
-        noise: "Cluck, cluck!",
-        sing: function () {
-            alert("The chicken " + this.name + " says:");
-            Chicken.superclass.sing.call(this, name);
-            // dasselbe wie Bird.prototype.sing.call(this, name);
-        }
-    },
-
-    // Eigenschaften von Chicken
-    {
-        number: 0
+  // Chicken-Prototyp
+  {
+    flighted: false,
+    noise: "Cluck, cluck!",
+    sing: function () {
+      alert("The chicken " + this.name + " says:");
+      Chicken.superclass.sing.call(this, name);
+      // dasselbe wie Bird.prototype.sing.call(this, name);
     }
+  },
+
+  // Eigenschaften von Chicken
+  {
+    number: 0
+  }
 );
 
 var ginger = new Chicken("Ginger");
@@ -343,10 +343,10 @@ Y.augment(Zielkonstruktor, Quellkonstruktor);
 
 <pre>
 function Bird () {
-    alert("Bird constructor called");
+  alert("Bird constructor called");
 }
 Bird.prototype.sing = function () {
-    alert("Chirp, chirp!");
+  alert("Chirp, chirp!");
 };
 </pre>
 
@@ -354,18 +354,18 @@ Bird.prototype.sing = function () {
 
 <pre>
 function Flighted () {
-    alert("Flighted constructor called");
-    // Beispiel für eine Initialisierung:
-    this.flying = false;
+  alert("Flighted constructor called");
+  // Beispiel für eine Initialisierung:
+  this.flying = false;
 }
 Flighted.prototype = {
-    fly: function () {
-        alert("I'm flying high!");
-        this.flying = true;
-    },
-    land: function () {
-        this.flying = false;
-    }
+  fly: function () {
+    alert("I'm flying high!");
+    this.flying = true;
+  },
+  land: function () {
+    this.flying = false;
+  }
 };
 </pre>
 
@@ -387,10 +387,10 @@ Y.augment(Bird, Flighted);
 var bird = new Bird();
 bird.sing();
 alert(bird.fly == Flighted.prototype.fly);
-// ... ergibt false, verweist auf eine Wrapperfunktion
+// … ergibt false, verweist auf eine Wrapperfunktion
 bird.fly(); // Ruft indirekt den Flighted-Konstruktor auf
 alert(bird.fly == Flighted.prototype.fly);
-// ... ergibt true, verweist nun auf die Originalfunktion
+// … ergibt true, verweist nun auf die Originalfunktion
 </pre>
 
 <h3 id="y-augment-einzeln">Einzelnen Objekten Funktionalität hinzufügen</h3>
@@ -413,21 +413,21 @@ hedwig.fly();
 
 <pre>
 var Modul = (function () {
-    var modulname = "Modul";
-    return {
-        methode1: function () {
-            alert(modulname + '.methode1 wurde aufgerufen');
-        }
-    };
+  var modulname = "Modul";
+  return {
+    methode1: function () {
+      alert(modulname + '.methode1 wurde aufgerufen');
+    }
+  };
 })();
 
 var Erweiterung = (function () {
-    var modulname = "Erweiterung";
-    return {
-        methode2: function () {
-            console.log(modulname + '.methode2 wurde aufgerufen');
-        }
-    };
+  var modulname = "Erweiterung";
+  return {
+    methode2: function () {
+      console.log(modulname + '.methode2 wurde aufgerufen');
+    }
+  };
 })();
 
 Y.mix(Modul, Erweiterungsmodul);
@@ -442,21 +442,21 @@ Modul.methode2();
 
 <pre>
 var bird = {
-    noise: "Chirp, chirp!",
-    sing: function () {
-        alert(this.noise);
-    }
+  noise: "Chirp, chirp!",
+  sing: function () {
+    alert(this.noise);
+  }
 };
 
 var flighted = {
-    flying: false,
-    fly: function () {
-        alert("I'm flying high!");
-        this.flying = true;
-    },
-    land: function () {
-        this.flying = false;
-    }
+  flying: false,
+  fly: function () {
+    alert("I'm flying high!");
+    this.flying = true;
+  },
+  land: function () {
+    this.flying = false;
+  }
 };
 
 var robin = Y.Object(bird);

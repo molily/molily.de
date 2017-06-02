@@ -28,12 +28,12 @@ title: Performance von JavaScript-Closures
 <p>Das Erzeugen von Funktionen zur Laufzeit ist mittlerweile sehr schnell. Totzdem ist ein sparsamer Umgang mit Funktionsobjekten geboten. Besonders beim Event-Handling werden massenhaft Funktionen an DOM-Elemente angehangen. Eine solche häufige Struktur zeigt folgendes Beispiel:</p>
 
 <pre>function vegebeHandler () {
-	var elements = document.getElementByTagName("p");
-	for (var i = 0; l = elements.length; i < l; i++) {
-		elements[i].onclick = function () {
-			alert("Absatz wurde angeklickt.");
-		};
-	}
+  var elements = document.getElementByTagName("p");
+  for (var i = 0; l = elements.length; i < l; i++) {
+    elements[i].onclick = function () {
+      alert("Absatz wurde angeklickt.");
+    };
+  }
 }
 window.onload = vegebeHandler;</pre>
 
@@ -60,13 +60,13 @@ window.onload = vegebeHandler;</pre>
 <p>Schon bei diesem einfachen Beispiel sehen wir, dass das gedankenlose Anlegen von Funktionsobjekten mit Performance-Tücken verbunden ist. JavaScript hat zwar dieses tolle Feature, aber wenn wir stattdessen mehrere Referenzen auf ein und dieselbe Funktion anlegen können, so sollten wir diesen Weg wählen.</p>
 
 <pre>function handler () {
-	alert("Absatz wurde angeklickt.");
+  alert("Absatz wurde angeklickt.");
 }
 function vegebeHandler () {
-	var elements = document.getElementByTagName("p");
-	for (var i = 0, l = elements.length; i < l; i++) {
-		elements[i].onclick = handler;
-	}
+  var elements = document.getElementByTagName("p");
+  for (var i = 0, l = elements.length; i < l; i++) {
+    elements[i].onclick = handler;
+  }
 }</pre>
 
 <p>Nun will ich mit diesem Beispiel nicht sagen, dass alle Funktionen global sein sollten. Die Handler-Funktion <code>handler</code> könnte beispielsweise an einem Object hängen, das als <a href="/js/organisation-module.html#object-literal">Object-Literal</a> notiert wurde. Das Beispiel soll nur eine Variante demonstrieren, bei der Funktionen nicht verschachtelt werden und damit die Performance-Nachteile wegfallen.</p>
@@ -142,17 +142,17 @@ function vegebeHandler () {
 <p>Eine Standardlösung verwendet in jedem Schleifendurchlauf 1.) einen Funktionsausdruck zum notieren einer anonymen Funktion, die sofort ausgeführt wird, und 2.) eine Closure, die den Scope der äußeren anonymen Funktion einschließt.</p>
 
 <pre>function vegebeHandler () {
-	var elements = document.getElementByTagName("p");
-	for (var i = 0; l = elements.length; i < l; i++) {
-		/* Funktionsausdruck (anonyme Funktion): */
-		(function (i) {
-			/* Closure: */
-			elements[i].onclick = function () {
-				alert("Absatz Nummer " + i + " wurde angeklickt.");
-			};
-		})(i);
-		/* Sofortige Ausführung der anonymen Funktion, übergeben des Schleifenzählers */
-	}
+  var elements = document.getElementByTagName("p");
+  for (var i = 0; l = elements.length; i < l; i++) {
+    /* Funktionsausdruck (anonyme Funktion): */
+    (function (i) {
+      /* Closure: */
+      elements[i].onclick = function () {
+        alert("Absatz Nummer " + i + " wurde angeklickt.");
+      };
+    })(i);
+    /* Sofortige Ausführung der anonymen Funktion, übergeben des Schleifenzählers */
+  }
 }</pre>
 
 <p>Performance-Profil:</p>
@@ -258,13 +258,13 @@ function vegebeHandler () {
 <p>Mit Currying können wir das Beispiel eleganter und funktionaler lösen:</p>
 
 <pre>function handler (i) {
-	alert("Absatz Nummer " + i + " wurde angeklickt");
+  alert("Absatz Nummer " + i + " wurde angeklickt");
 }
 function vegebeHandler () {
-	var elements = document.getElementByTagName("p");
-	for (var i = 0, element; l = elements.length; i < l; i++) {
-		element[i].onclick = handler.curry(i);
-	}
+  var elements = document.getElementByTagName("p");
+  for (var i = 0, element; l = elements.length; i < l; i++) {
+    element[i].onclick = handler.curry(i);
+  }
 }</pre>
 
 <p>Wie gesagt wäre hier <code>bindAsEventListener</code> bzw. <code>bindWithEvent</code> angebracht, damit die Handler-Funktion das Event-Objekt browserübergreifend als ersten Parameter übergeben bekommt. Hier geht es jedoch nur um die Weitergabe des korrekten Wertes der Variable <code>i</code>.</p>
@@ -331,13 +331,13 @@ function vegebeHandler () {
 <p>Pro Iteration ist das Currying fast sechs Mal (Chrome) bzw. fast doppelt so langsam (IE). Warum, erklärt sich sehr schnell. Die Standard-Currying-Funktionen müssen wegen einem »Bad Part« (Douglas Crockford) in der ECMAScript-Spezifikation die Parameter-Listen (<code>arguments</code>) von Hand in Arrays umwandeln. Die <code>curry</code>-Funktion hat in der Regel eine solche oder ähnliche Struktur:</p>
 
 <pre id="classic-curry">Function.prototype.curry = (function () {
-	var slice = Array.prototype.slice;
-	return function () {
-		var func = this, args = slice.apply(arguments);
-		return function () {
-			return func.apply(this, args.concat(slice.apply(arguments)));
-		};
-	};
+  var slice = Array.prototype.slice;
+  return function () {
+    var func = this, args = slice.apply(arguments);
+    return function () {
+      return func.apply(this, args.concat(slice.apply(arguments)));
+    };
+  };
 })();</pre>
 
 <p>Hier wird zweimal <code>Array.prototype.slice</code> für die <code>arguments</code>-Listen aufgerufen, um sie in normale JavaScript-Arrays umzuwandeln. Die Geschwindigkeitseinbuße rührt zum großen Teil von diesen <code>slice</code>-Aufrufen her, die mit dem eigentlichen Anlegen der Closures nichts zu tun haben.</p>
@@ -349,10 +349,10 @@ function vegebeHandler () {
 <p>Unter Berücksichtigung dieser Ideen habe ich eine vereinfachte, auf den Testfall zugeschnittene und sehr rudimentäre Currying-Funktion hinsichtlich Performance getestet. Sie nimmt nur ein Parameter entgegen und gibt nur diesen Parameter weiter. <code>Array.prototype.slice</code> kann dadurch gänzlich vermieden werden.</p>
 
 <pre>Function.prototype.simpleCurry = function (arg) {
-	var func = this;
-	return function () {
-		return func.call(this, arg);
-	};
+  var func = this;
+  return function () {
+    return func.call(this, arg);
+  };
 };</pre>
 
 <p>Ein Vergleich zwischen dieser stark reduzierten Currying-Funktion und dem umständlichen Anlegen der Closures von Hand ist schon eher möglich:</p>
@@ -443,17 +443,17 @@ function vegebeHandler () {
 <p>Wenn es nämlich bloß darum geht, dass eine Handler-Funktion Zugriff auf gewisse Kontextinformationen bekommt, so besteht die Möglichkeit, diese Informationen im Dokument selbst in Form von Eigenschaften der jeweiligen Elementobjekte zu speichern. Die DOM-Knotenobjekte sind beliebig mit eigenen Unterobjekten erweiterbar.</p>
 
 <pre>function handler () {
-	alert("Absatz Nummer " + element.__absatznummer + " wurde angeklickt");
-	/* Stoppe Event-Handling bei diesem Element */
-	this.onclick = undefined;
-	delete element.__absatznummer;
+  alert("Absatz Nummer " + element.__absatznummer + " wurde angeklickt");
+  /* Stoppe Event-Handling bei diesem Element */
+  this.onclick = undefined;
+  delete element.__absatznummer;
 }
 function vegebeHandler () {
-	var elements = document.getElementByTagName("p");
-	for (var i = 0, element; element = elements[i]; i++) {
-		element.onclick = handler;
-		element.__absatznummer = i;
-	}
+  var elements = document.getElementByTagName("p");
+  for (var i = 0, element; element = elements[i]; i++) {
+    element.onclick = handler;
+    element.__absatznummer = i;
+  }
 }</pre>
 
 <p>Um den jeweiligen Wert der Variable <code>i</code> der Handler-Funktion bereitzustellen, wird er in der Eigenschaft <code>__absatznummer</code> des Elementobjektes gespeichert. In der Handler-Funktion wird diese Information genutzt. Gleichzeitig wird demonstriert, wie die Eigenschaft nach der Nutzung mit <code>delete</code> entfernt werden kann.</p>
@@ -473,16 +473,16 @@ function vegebeHandler () {
 <p>Das <a href="/js/organisation-module.html#revealing-module">Module-Pattern</a> ist eine prominente Anwendung des Konzept von Closures zur Kapselung. Es erzeugt einen Funktions-Scope und notiert darin verschiedene lokale Objekte und Funktionen. Die verschachtelten Funktionen haben Zugriff auf die restlichen Objekte im selben Scope. Schließlich gibt die äußere Wrapper-Funktion ein Objekt zurück, das einige der »privaten« Eigenschaften und Methoden »öffentlich« macht.</p>
 
 <pre>MeinModul = (function () { // anonyme Funktion, die sofort ausgeführt wird
-	var privateEigenschaft = 123;
-	function privateMethode () {
-		alert(privateEigenschaft);
-	}
-	function priviligierteMethode () {
-		privateMethode();
-	}
-	return {
-		priviligierteMethode : priviligierteMethode
-	};
+  var privateEigenschaft = 123;
+  function privateMethode () {
+    alert(privateEigenschaft);
+  }
+  function priviligierteMethode () {
+    privateMethode();
+  }
+  return {
+    priviligierteMethode : priviligierteMethode
+  };
 })();
 MeinModul.priviligierteMethode();</pre>
 
@@ -495,13 +495,13 @@ MeinModul.priviligierteMethode();</pre>
 <p>Beim Module Pattern wird eine Wrapper-Funktion erzeugt und nur <em>ein</em> »öffentliches«Objekt angelegt, dessen Closure-Funktionen gewisse »private« Objekte einschließen. Die Anzahl der Closures sowie der Umfang der eingeschlossenen Daten bleiben dabei noch überschaubar. Problematischer wird es, wenn private Member sowie öffentliche Methoden komplett in einem Konstruktor notiert werden, der mehrere Instanzen erzeugt:</p>
 
 <pre>function Konstruktor () {
-	var privateEigenschaft = new Date().getTime();
-	function privateMethode () {
-		alert(privateEigenschaft);
-	}
-	this.priviligierteMethode = function () {
-		privateMethode();
-	};
+  var privateEigenschaft = new Date().getTime();
+  function privateMethode () {
+    alert(privateEigenschaft);
+  }
+  this.priviligierteMethode = function () {
+    privateMethode();
+  };
 }
 var instanz = new Konstruktor;
 instanz.priviligierteMethode();</pre>
@@ -509,12 +509,12 @@ instanz.priviligierteMethode();</pre>
 <p>Obwohl <code>privateMethode</code> und <code>priviligierteMethode</code> bei verschiedenen Instanzen gleich sind, werden für jede Instanz neue Funktionsobjekte angelegt, denn sie sollen als Closures wirken. Um private Member zu bekommen, die nicht zwischen Objektinstanzen geteilt werden, zahlen wir einen hohen Performance-Preis im Vergleich zur klassischen Methode, die alle Member über das <code>prototype</code>-Objekt definiert. Diese sind dann notwendig öffentlich:</p>
 
 <pre>function Konstruktor () {
-	this.öffentlicheEigenschaft = new Date().getTime();
+  this.öffentlicheEigenschaft = new Date().getTime();
 }
 Konstruktor.prototype = {
-	öffentlicheMethode : function () {
-		alert(this.öffentlicheEigenschaft);
-	}
+  öffentlicheMethode : function () {
+    alert(this.öffentlicheEigenschaft);
+  }
 };
 var instanz = new Konstruktor;
 instanz.öffentlicheMethode();</pre>

@@ -67,8 +67,8 @@ lang: en
 
 <pre>
 document.addEventListener('DOMContentLoaded', function () {
-	// should read #FF0000 or rgb(255, 0, 0)
-	alert(getComputedStyle(document.getElementById('element'), null).color);
+  // should read #FF0000 or rgb(255, 0, 0)
+  alert(getComputedStyle(document.getElementById('element'), null).color);
 }, false);
 </pre>
 
@@ -139,43 +139,43 @@ document.addEventListener('DOMContentLoaded', function () {
 <tr>
 <th>Browser Engine vs. Behavior</th>
 <th>
-	Stylesheets delay DOMContentLoaded if there are only scripts before the stylesheet link<br>
-	<a href="/assets/domcontentloaded/t1-link-no-script.html">Testcase #1</a>
+  Stylesheets delay DOMContentLoaded if there are only scripts before the stylesheet link<br>
+  <a href="/assets/domcontentloaded/t1-link-no-script.html">Testcase #1</a>
 </th>
 <th>
-	Stylesheets block the execution of subsequent <strong>external</strong> scripts and thereby delay DOMContentLoaded<br>
-	<a href="/assets/domcontentloaded/t2-link-external-script.html">Testcase #2</a>
+  Stylesheets block the execution of subsequent <strong>external</strong> scripts and thereby delay DOMContentLoaded<br>
+  <a href="/assets/domcontentloaded/t2-link-external-script.html">Testcase #2</a>
 </th>
 <th>
-	Stylesheets block the execution of subsequent <strong>inline</strong> scripts execution and thereby delay DOMContentLoaded<br>
-	<a href="/assets/domcontentloaded/t3-link-script.html">Testcase #3</a>
+  Stylesheets block the execution of subsequent <strong>inline</strong> scripts execution and thereby delay DOMContentLoaded<br>
+  <a href="/assets/domcontentloaded/t3-link-script.html">Testcase #3</a>
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-	<th>Presto (Opera)</th>
-	<td>☐ No</td>
-	<td>☐ No</td>
-	<td>☐ No</td>
+  <th>Presto (Opera)</th>
+  <td>☐ No</td>
+  <td>☐ No</td>
+  <td>☐ No</td>
 </tr>
 <tr>
-	<th>Webkit (Safari, Chrome)</th>
-	<td>☐ No</td>
-	<td>☒ Yes</td>
-	<td>☐ No</td>
+  <th>Webkit (Safari, Chrome)</th>
+  <td>☐ No</td>
+  <td>☒ Yes</td>
+  <td>☐ No</td>
 </tr>
 <tr>
-	<th>Gecko (Firefox)</th>
-	<td>☐ No</td>
-	<td>☒ Yes</td>
-	<td>☒ Yes</td>
+  <th>Gecko (Firefox)</th>
+  <td>☐ No</td>
+  <td>☒ Yes</td>
+  <td>☒ Yes</td>
 </tr>
 <tr>
-	<th>Trident (Internet Explorer)</th>
-	<td>n/a</td>
-	<td>☒ Yes</td>
-	<td>☒ Yes</td>
+  <th>Trident (Internet Explorer)</th>
+  <td>n/a</td>
+  <td>☒ Yes</td>
+  <td>☒ Yes</td>
 </tr>
 </tbody>
 </table>
@@ -212,21 +212,21 @@ document.addEventListener('DOMContentLoaded', function () {
 <li>The element content is read until a <a href="https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-incdata"><code>&lt;/script></code> end tag is encountered</a>.</li>
 <li>Case <q>An end tag whose tag name is "script"</q></li>
 <li><a href="https://html.spec.whatwg.org/multipage/webappapis.html#scripting">Run the script</a><ol>
-	<li>Step 7. Fetch the script if it’s external</li>
-	<li>Step 8. <q>Then, the first of the following options that describes the situation must be followed:</q></li>
-	<li>Case <q>If the element has a src attribute, and the element has been flagged as "parser-inserted", and the element does not have an async attribute:</q></li>
-	<li>The element is the pending parsing-blocking script</li>
-	<li>Set the "ready to be parser-executed" when fetched</li>
-	</ol></li>
+  <li>Step 7. Fetch the script if it’s external</li>
+  <li>Step 8. <q>Then, the first of the following options that describes the situation must be followed:</q></li>
+  <li>Case <q>If the element has a src attribute, and the element has been flagged as "parser-inserted", and the element does not have an async attribute:</q></li>
+  <li>The element is the pending parsing-blocking script</li>
+  <li>Set the "ready to be parser-executed" when fetched</li>
+  </ol></li>
 <li>Back to <a href="https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-incdata">tree construction</a>
 <li><q>At this stage, if there is a pending parsing-blocking script, then:</q></li>
 <li>Case <q>Otherwise:</q>
 <li>Step 3. <q>Wait until there is <strong>no style sheet blocking scripts</strong> and the script's "ready to be parser-executed" flag is set.</q></li>
 <li><p>Step 7. <a href="https://html.spec.whatwg.org/multipage/webappapis.html#calling-scripts">Execute the script.</a></p>
 <ol>
-	<li>Step 2. <strong>Pause until either any applicable style sheets have been fetched and applied</strong>, or the user agent has timed out and decided to not wait for those style sheets.</li>
-	<li>Step 3. Execute the JavaScript code synchronously</li>
-	</ol>
+  <li>Step 2. <strong>Pause until either any applicable style sheets have been fetched and applied</strong>, or the user agent has timed out and decided to not wait for those style sheets.</li>
+  <li>Step 3. Execute the JavaScript code synchronously</li>
+  </ol>
 </li>
 </ol>
 

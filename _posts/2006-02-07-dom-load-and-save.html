@@ -17,9 +17,9 @@ keywords: JavaScript, DOM, XML, Load and Save, XMLHttpRequest, AJAX
 
 <pre>if (document.implementation &amp;&amp; document.implementation.hasFeature &amp;&amp;
     document.<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-102161490">implementation</a>.<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-5CED94D7">hasFeature</a>('LS', '3.0')) {
-	// Browser unterstützt DOM 3 Load and Save
+  // Browser unterstützt DOM 3 Load and Save
 } else {
-	// Keine Unterstützung (oder nicht DOM-fähig)
+  // Keine Unterstützung (oder nicht DOM-fähig)
 }</pre>
 
 <h2>Parser erzeugen</h2>
@@ -29,8 +29,8 @@ keywords: JavaScript, DOM, XML, Load and Save, XMLHttpRequest, AJAX
 <p>Um ein XML-Dokument aus einem String oder einer externen Quelle in ein <code>Document</code>-Element einzulesen, wird zunächst ein <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser"><code>LSParser</code></a>-Objekt erzeugt.</p>
 
 <pre>var parser = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSParser">createLSParser</a>(
-	document.implementation.MODE_SYNCHRONOUS,
-	'http://www.w3.org/TR/REC-xml');</pre>
+  document.implementation.MODE_SYNCHRONOUS,
+  'http://www.w3.org/TR/REC-xml');</pre>
 
 <p>Als Schema-Sprache wird XML DTD angegeben (<code>http://www.w3.org/TR/REC-xml</code>). Möglich ist auch zum Beispiel XML Schema (<code>http://www.w3.org/2001/XMLSchema</code>).</p>
 
@@ -41,15 +41,15 @@ keywords: JavaScript, DOM, XML, Load and Save, XMLHttpRequest, AJAX
 <p>Da alle Methoden von Load and Save im Fehlerfall sogenannte Exceptions erzeugen (<a href="http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-17189187"><code>DOMException</code></a>, <a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSException"><code>LSException</code></a>), muss das <code>try</code>-<code>catch</code>-Statement verwendet werden, um den Fehler abzufangen. Der Browser würde die Scriptausführung sonst abbrechen. Falls zum Beispiel ein Fehler beim Parsen des XML-Dokuments auftritt, hat die <code>code</code>-Eigenschaft des <code>LSException</code>-Objekts zum Beispiel den Wert 81 (<code>PARSE_ERR</code>).</p>
 
 <pre>try {
-	var doc = parser.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser-parseURI">parseURI</a>('<var>beispiel.xml</var>');
+  var doc = parser.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser-parseURI">parseURI</a>('<var>beispiel.xml</var>');
 } catch (e) {
-	window.alert('parser.parseURI: Fehlercode ' + e.code);
+  window.alert('parser.parseURI: Fehlercode ' + e.code);
 }</pre>
 
 <p>Auf das erzeugte <code>Document</code>-Objekt kann wie gewohnt über die DOM-Core-Methoden zugegriffen werden. Wenn es sich beispielsweise um ein XHTML-Dokument handelt, kann das <code>title</code>-Element folgendermaßen ausgelesen oder auch manipuliert werden:</p>
 
 <pre>if (doc) {
-	window.alert(doc.getElementsByTagName('title').item(0).firstChild.nodeValue);
+  window.alert(doc.getElementsByTagName('title').item(0).firstChild.nodeValue);
 }</pre>
 
 <p>Obwohl im Beispiel ein XHTML-Dokument eingelesen wurde, ist der Zugriff darauf nur über die DOM-Core-Methoden möglich, nicht über die speziellen Methoden des <a href="http://www.w3.org/TR/DOM-Level-2-HTML/html.html">DOM HTML</a>. Der Dokumenttitel lässt sich also nicht über <code>doc.title</code> auslesen.</p>
@@ -68,12 +68,12 @@ keywords: JavaScript, DOM, XML, Load and Save, XMLHttpRequest, AJAX
 
 <pre>
 try {
-	var xmlstring = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-writeToString">writeToString</a>(doc);
+  var xmlstring = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-writeToString">writeToString</a>(doc);
 } catch (e) {
-	window.alert('serializer.writeToString: Fehlercode ' + e.code);
+  window.alert('serializer.writeToString: Fehlercode ' + e.code);
 }
 if (xmlstring)
-	window.alert(xmlstring);</pre>
+  window.alert(xmlstring);</pre>
 
 <h2>Flexibles Serialisieren</h2>
 
@@ -82,12 +82,12 @@ if (xmlstring)
 <pre>var output = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSOutput">createLSOutput</a>();
 output.encoding = "UTF-8";
 try {
-	var serialize_result = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-write">write</a>(doc, output);
+  var serialize_result = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-write">write</a>(doc, output);
 } catch (e) {
-	window.alert('serializer.write: Fehlercode ' + e.code);
+  window.alert('serializer.write: Fehlercode ' + e.code);
 }
 if (serialize_result)
-	window.alert(output.characterStream);
+  window.alert(output.characterStream);
 </pre>
 
 <p>Der Aufruf von <code>write</code> erzeugt eine Exception mit dem Wert 9 (<code>DOMException.NOT_SUPPORTED_ERR</code>). Dieses Verfahren unterstützt Opera also noch nicht.</p>
@@ -99,12 +99,12 @@ if (serialize_result)
 <p>Falls es sich um eine HTTP-URI handelt, sollte der Browser das XML-Dokument mit der <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6">PUT-Methode</a> an den Webserver übertragen.</p>
 
 <pre>try {
-	var serialize_result = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-writeToURI">writeToURI</a>(doc, '<var>http://example.org/a.xml</var>');
+  var serialize_result = serializer.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSSerializer-writeToURI">writeToURI</a>(doc, '<var>http://example.org/a.xml</var>');
 } catch (e) {
-	window.alert('serializer.writeToURI: Fehlercode ' + e.code);
+  window.alert('serializer.writeToURI: Fehlercode ' + e.code);
 }
 if (serialize_result)
-	window.alert(output);
+  window.alert(output);
 </pre>
 
 <p>Der Aufruf von <code>write</code> erzeugt ebenfalls eine <code>DOMException.NOT_SUPPORTED_ERR</code>. Das Zurücksenden zum Server funktioniert also nicht. Hierzu müsste das besagte <code>XMLHttpRequest</code> verwendet werden. Darüber kann Opera 7.6 die XML-Daten zumindest über die POST-Methode übertragen.</p>
@@ -115,23 +115,23 @@ if (serialize_result)
 
 <pre>var input = document.implementation.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-DOMImplementationLS-createLSInput">createLSInput</a>();
 input.stringData = '&lt;?xml version="1.0" encoding="utf-8" ?>\n'
-	+ '&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"'
-	+ ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	+ '&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">\n'
-	+ '&lt;head>\n'
-	+ '&lt;title>Testtitel&lt;\/title>\n'
-	+ '&lt;\/head>\n'
-	+ '&lt;body>\n'
-	+ '&lt;p>Testabsatz&lt;\/p>\n'
-	+ '&lt;\/body>\n'
-	+ '&lt;\/html>';
+  + '&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"'
+  + ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  + '&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">\n'
+  + '&lt;head>\n'
+  + '&lt;title>Testtitel&lt;\/title>\n'
+  + '&lt;\/head>\n'
+  + '&lt;body>\n'
+  + '&lt;p>Testabsatz&lt;\/p>\n'
+  + '&lt;\/body>\n'
+  + '&lt;\/html>';
 try {
-	var doc = parser.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser-parse">parse</a>(input);
+  var doc = parser.<a href="http://www.w3.org/TR/DOM-Level-3-LS/load-save.html#LS-LSParser-parse">parse</a>(input);
 } catch (e) {
-	window.alert('parser.parse: Fehlercode ' + e.code);
+  window.alert('parser.parse: Fehlercode ' + e.code);
 }
 if (doc)
-	window.alert(doc.getElementsByTagName('title').item(0).firstChild.nodeValue);
+  window.alert(doc.getElementsByTagName('title').item(0).firstChild.nodeValue);
 </pre>
 
 <p>Das Setzen des Attributs <code>encoding</code> scheint ebenso wie die <code>encoding</code>-Angabe in der XML-Deklaration keine Auswirkung zu haben. Der String muss daher dieselbe Kodierung verwenden wie das Dokument, in dem er notiert wird. An versteht sich das von selbst. Folgendes wird in einem ISO-8859-1-kodierten Dokument nicht funktionieren:</p>
@@ -139,7 +139,7 @@ if (doc)
 <pre>
 input.encoding = 'UTF-8';
 input.stringData = '&lt;?xml version="1.0" encoding="utf-8" ?>\n"
-	+ "&lt;data>Ein UTF-8-kodiertes Euro-Zeichen: â‚¬&lt;\/data>';
+  + "&lt;data>Ein UTF-8-kodiertes Euro-Zeichen: â‚¬&lt;\/data>';
 </pre>
 
 <p>Die Oktettfolge 0xE2, 0x82, 0xAC wird nicht als UTF-8-kodiertes »€« erkannt. (Das Steuerzeichen <code>0x82</code> darf sowieso nicht in einem XML-Dokument vorkommen.) Daher sollte man entweder direkt UTF-8 verwenden. Alternativ stehen numerische Zeichenreferenzen (<code>&amp;#8364;</code> für €) oder JavaScript-Escape-Sequenzen (<code>\u20AC</code> für €) zur Verfügung.</p>

@@ -2,18 +2,18 @@
 n = 5000000/*@cc_on / 10 @*/;
 arr = [];
 for (var i = 0, o; i < n; i++) {
-	o = {};
-	arr.push(o);
+  o = {};
+  arr.push(o);
 }
 start = new Date().getTime();
 function f (immer, dieselbe, bloede, funktion) { alle.meine.entchen.schwimmen.auf.dem.see();  koepfchen.inn.das.wasser.schwaenzchen.inn.die.hoeh(); }
 for (var i = 0, o; i < n; i++) {
-	(function () {
-		o = arr[i];
-		o.f = function () {
-			f.call(o);
-		};
-	})();
+  (function () {
+    o = arr[i];
+    o.f = function () {
+      f.call(o);
+    };
+  })();
 }
 diff = new Date().getTime() - start;
 document.write(diff + "ms, " +  (diff / n * 1000) + " µs/n");

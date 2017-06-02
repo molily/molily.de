@@ -28,7 +28,7 @@ description: Wie kann ich herausbekommen, welches Element gerade den Fokus hat (
 
 <pre>
 document.addEventListener("focus", function (e) {
-	alert("Es ist ein focus-Event bei diesem Element passiert: " + e.target);
+  alert("Es ist ein focus-Event bei diesem Element passiert: " + e.target);
 }, true);
 </pre>
 
@@ -39,10 +39,10 @@ document.addEventListener("focus", function (e) {
 <p>Für Browser, die <code>activeElement</code> nicht unterstützen, jedoch DOM Events, können wir activeElement mittels Event Capturing nachbauen:</p>
 
 <pre>
-if (typeof document.activeElement == "undefined" && document.addEventListener) {
-	document.addEventListener("focus", function (e) {
-		document.activeElement = e.target;
-	}, true);
+if (typeof document.activeElement == "undefined" &amp;&amp; document.addEventListener) {
+  document.addEventListener("focus", function (e) {
+    document.activeElement = e.target;
+  }, true);
 }
 </pre>
 
@@ -58,9 +58,9 @@ if (typeof document.activeElement == "undefined" && document.addEventListener) {
 
 <pre>
 document.addEventListener("DOMFocusIn", function (e) {
-	if (e.target != document) {
-		alert("Es ist ein DOMFocusIn-Event bei diesem Element passiert: " + e.target);
-	}
+  if (e.target != document) {
+    alert("Es ist ein DOMFocusIn-Event bei diesem Element passiert: " + e.target);
+  }
 }, false);
 </pre>
 
@@ -78,10 +78,10 @@ document.addEventListener("DOMFocusIn", function (e) {
 
 <pre>
 document.onfocusin = function () {
-	var src = window.event.srcElement;
-	if (src != document.documentElement && src != document.body) {
-		alert("Element wurde fokussiert: " + src.tagName);
-	}
+  var src = window.event.srcElement;
+  if (src != document.documentElement && src != document.body) {
+    alert("Element wurde fokussiert: " + src.tagName);
+  }
 };
 </pre>
 
