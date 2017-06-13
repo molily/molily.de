@@ -562,13 +562,13 @@ h2 a[name], h3 a[name], h4 a[name] {
 <p>Über die Objekteigenschaft <code>location.hash</code> wird abgefragt, ob das aktuelle Dokument mit einem Anker aufgerufen wurde. Falls dies zutrifft, wird der Browser über <code>scrollBy()</code> angewiesen, den Dokumentausschnitt vertikal um die Höhe des fest positionierten Bereiche nach oben (deshalb der negative Wert) zu blättern:</p>
 
 <pre>if (location.hash)
-    window.scrollBy(0, -<var>60</var>);</pre>
+  window.scrollBy(0, -<var>60</var>);</pre>
 
 <p>Dieser Code sollte nach dem vollständigen Laden des Dokuments ausgeführt werden. Dazu wird der <span lang="en">Event</span> <code>load</code> bzw. <span lang="en">Event-Handler</span> <code>onload</code> genutzt. Der Code wird in einer Funktion untergebracht, die den <code>load</code>-<span lang="en">Event</span> verarbeitet:</p>
 
 <pre>function scrollup () {
-    if (location.hash)
-        window.scrollBy(0, -<var>60</var>);
+  if (location.hash)
+    window.scrollBy(0, -<var>60</var>);
 }
 window.onload = scrollup;</pre>
 
@@ -605,7 +605,7 @@ window.onload = scrollup;</pre>
 <p>Eine einfache Möglichkeit, diesen Code beim Anklicken von dokumentinternen Link auszuführen, ist das Auslagern in eine zentrale Funktion im Dokumentkopf (<code>head</code>-Element) sowie das Attribut <code>onclick="scrollup()"</code> bei jedem Link, der in Betracht kommt:</p>
 
 <pre>function link_scrollup () {
-    window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
+  window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
 }</pre>
 
 <pre>&lt;a href="#sprungstelle" onclick="scrollup()">Beispiellink zum Anker&lt;/a></pre>
@@ -624,90 +624,90 @@ window.onload = scrollup;</pre>
 <em id="addevent">/* Allgemeine Funktion zum Hinzufügen von Handlerfunktionen
 für ein bestimmtes Ereignis an einem bestimmten Objekt */</em>
 <strong>function addEvent</strong> (obj, event, func) {
-    if (typeof(obj["on" + event]) == "function") {
-        var old_func = obj["on" + event];
-        obj["on" + event] = function (e) {
-            if (!e)
-                e = window.event;
-            var return1, return2;
-            return1 = old_func(e);
-            return2 = func(e);
-            if (return1 === false || return2 === false)
-                return false;
-        };
-    } else {
-        obj["on" + event] = func;
-    }
+  if (typeof(obj["on" + event]) == "function") {
+    var old_func = obj["on" + event];
+    obj["on" + event] = function (e) {
+      if (!e)
+        e = window.event;
+      var return1, return2;
+      return1 = old_func(e);
+      return2 = func(e);
+      if (return1 === false || return2 === false)
+        return false;
+    };
+  } else {
+    obj["on" + event] = func;
+  }
 }
 
 <em>/* link_scrollup() korrigiert den Fokus beim Klicken
 eines Links zu einem dokumentinternen Anker */</em>
 <strong>function link_scrollup ()</strong> {
-    window.setTimeout('window.scrollBy(0, <var>-60</var>)', <var>100</var>);
+  window.setTimeout('window.scrollBy(0, <var>-60</var>)', <var>100</var>);
 }
 
 <em>/* init_position_fixed() wird beim Laden des Dokuments ausgeführt */</em>
 <strong>function init_position_fixed</strong> () {
-    var i,  hyperlinks, linkcount,  link_uri, document_uri,  hash_position,  pattern;
+  var i,  hyperlinks, linkcount,  link_uri, document_uri,  hash_position,  pattern;
 
-    <em>/* Hier wäre Platz für einen Algorithmus, welcher bestimmt, ob</em>
-    <em>der Browser <code>position:fixed</code> versteht, und welcher die Funktion</em>
-    <em>vorzeitig abbricht, falls dies nicht der Fall ist. */</em>
+  <em>/* Hier wäre Platz für einen Algorithmus, welcher bestimmt, ob</em>
+  <em>der Browser <code>position:fixed</code> versteht, und welcher die Funktion</em>
+  <em>vorzeitig abbricht, falls dies nicht der Fall ist. */</em>
 
-    <em>/* Mindestens muss JavaScript 1.2 unterstützt werden. <code>setTimeout()</code></em>
-    <em>gehört zu JavaScript 1.0 und muss nicht abgefragt werden.</em>
-    <em>Beende die Funktion, wenn <code>scrollBy()</code> nicht zur Verfügung steht. */</em>
-    if (!window.scrollBy)
-        return true;
+  <em>/* Mindestens muss JavaScript 1.2 unterstützt werden. <code>setTimeout()</code></em>
+  <em>gehört zu JavaScript 1.0 und muss nicht abgefragt werden.</em>
+  <em>Beende die Funktion, wenn <code>scrollBy()</code> nicht zur Verfügung steht. */</em>
+  if (!window.scrollBy)
+    return true;
 
-    <em>/* Korrigiere Fokus beim Laden des Dokuments */</em>
-    if (location.hash)
-        window.scrollBy(0, <var>-60</var>);
+  <em>/* Korrigiere Fokus beim Laden des Dokuments */</em>
+  if (location.hash)
+    window.scrollBy(0, <var>-60</var>);
 
-    <em>/* Weise allen Links zu dokumentinternen Ankern den Event-Handler zu */</em>
+  <em>/* Weise allen Links zu dokumentinternen Ankern den Event-Handler zu */</em>
 
-    hyperlinks = document.links;
-    linkcount = hyperlinks.length;
+  hyperlinks = document.links;
+  linkcount = hyperlinks.length;
 
-    <em>/* Konstruiere die Adresse des aktuellen Dokuments ohne Anker */</em>
-    document_uri = location.href;
-    hash_position = document_uri.indexOf("#");
-    if (hash_position > -1) {
-        <em>/* Falls die aktuelle Adresse einen Anker enthält, schneide ihn ab */</em>
-        document_uri = document_uri.substring(0, hash_position);
+  <em>/* Konstruiere die Adresse des aktuellen Dokuments ohne Anker */</em>
+  document_uri = location.href;
+  hash_position = document_uri.indexOf("#");
+  if (hash_position > -1) {
+    <em>/* Falls die aktuelle Adresse einen Anker enthält, schneide ihn ab */</em>
+    document_uri = document_uri.substring(0, hash_position);
+  }
+  <em>/* Falls es sich um ein lokales Dokument handelt (<code>file</code>-Protokoll),</em>
+  <em>vereinheitliche die Schreibweise */</em>
+  pattern = new RegExp("file:///");
+  document_uri = document_uri.replace(pattern, "file://localhost/");
+
+  <em>/* Durchlaufe alle Hyperlinks des Dokuments */</em>
+  for (i = 0; i &lt; linkcount; i++) {
+
+     <em>/* Gehe zum nächsten Link über, falls die <code>hash</code>-Eigenschaft</em>
+     <em>leer ist oder nur <code>#</code> enthält */</em>
+    if (!hyperlinks[i].hash || hyperlinks[i].hash == "#")
+      continue;
+
+    <em>/* Konstruiere die Zieladresse des Links ohne Anker */</em>
+    link_uri = hyperlinks[i].href;
+    hash_position = link_uri.indexOf("#");
+    <em>/* Falls die Zieladresse einen Anker enthält, schneide ihn ab */</em>
+    if (hash_position &gt; -1) {
+      link_uri = link_uri.substring(0, hash_position);
     }
-    <em>/* Falls es sich um ein lokales Dokument handelt (<code>file</code>-Protokoll),</em>
-    <em>vereinheitliche die Schreibweise */</em>
-    pattern = new RegExp("file:///");
-    document_uri = document_uri.replace(pattern, "file://localhost/");
+    <em>/* Vereinheitlichung, falls es sich um einen Link auf</em>
+    <em>ein lokales Dokument handelt */</em>
+    if (link_uri.indexOf("file://") == 0) {
+      link_uri = link_uri.replace(pattern, "file://localhost/");
+    }
 
-    <em>/* Durchlaufe alle Hyperlinks des Dokuments */</em>
-    for (i = 0; i &lt; linkcount; i++) {
-
-       <em>/* Gehe zum nächsten Link über, falls die <code>hash</code>-Eigenschaft</em>
-       <em>leer ist oder nur <code>#</code> enthält */</em>
-        if (!hyperlinks[i].hash || hyperlinks[i].hash == "#")
-            continue;
-
-        <em>/* Konstruiere die Zieladresse des Links ohne Anker */</em>
-        link_uri = hyperlinks[i].href;
-        hash_position = link_uri.indexOf("#");
-        <em>/* Falls die Zieladresse einen Anker enthält, schneide ihn ab */</em>
-        if (hash_position &gt; -1) {
-            link_uri = link_uri.substring(0, hash_position);
-        }
-        <em>/* Vereinheitlichung, falls es sich um einen Link auf</em>
-        <em>ein lokales Dokument handelt */</em>
-        if (link_uri.indexOf("file://") == 0) {
-            link_uri = link_uri.replace(pattern, "file://localhost/");
-        }
-
-        <em>/* Vergleiche das Linkziel mit der aktuellen Adresse */</em>
-        if (link_uri == document_uri) {
-            <em>/* Der Link führt zum aktuellen Dokument und hat einen Anker,</em>
-            <em>damit sind alle Bedingungen erfüllt, vergebe den <span lang="en">Event-Handler</span> */</em>
-            addEvent(hyperlinks[i], "click", link_scrollup);
-        }
+    <em>/* Vergleiche das Linkziel mit der aktuellen Adresse */</em>
+    if (link_uri == document_uri) {
+      <em>/* Der Link führt zum aktuellen Dokument und hat einen Anker,</em>
+      <em>damit sind alle Bedingungen erfüllt, vergebe den <span lang="en">Event-Handler</span> */</em>
+      addEvent(hyperlinks[i], "click", link_scrollup);
+    }
 }
 
 <em>/* Starte die Funktion <code>init_position_fixed()</code> beim Laden des Dokuments */</em>
@@ -832,43 +832,43 @@ der Anker des Links (A) gefüllt ist sowie die Zieladresse des Links ohne Anker 
 
 <pre>
 <strong>function handle_internal_link</strong> (e) {
-    var hashposition, link_uri;
-    var target = e.target;
+  var hashposition, link_uri;
+  var target = e.target;
 
-    if (typeof(target.nodeType) == "undefined" ||
-        typeof(target.nodeName) == "undefined") {
-        return true;
-    }
-    if (target.nodeType == 3) {
-        target = target.parentNode;
-    }
-    if (target.nodeName.toLowerCase() != "a" || target.href.length == 0 ||
-        typeof(target.hash) == "undefined" || target.hash.length == 0 ||
-        target.hash == "#") {
-        return true;
-    }
+  if (typeof(target.nodeType) == "undefined" ||
+    typeof(target.nodeName) == "undefined") {
+    return true;
+  }
+  if (target.nodeType == 3) {
+    target = target.parentNode;
+  }
+  if (target.nodeName.toLowerCase() != "a" || target.href.length == 0 ||
+    typeof(target.hash) == "undefined" || target.hash.length == 0 ||
+    target.hash == "#") {
+    return true;
+  }
 
-    link_uri = target.href;
-    hashposition = link_uri.indexOf("#");
-    if (hashposition &gt; -1) {
-        link_uri = link_uri.substring(0, hashposition);
-    }
-    if (link_uri == document_uri) {
-        window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
-    }
+  link_uri = target.href;
+  hashposition = link_uri.indexOf("#");
+  if (hashposition &gt; -1) {
+    link_uri = link_uri.substring(0, hashposition);
+  }
+  if (link_uri == document_uri) {
+    window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
+  }
 }
 <strong>function init_position_fixed</strong> () {
-    if (location.hash)
-        window.scrollBy(0, -<var>60</var>);
-    document_uri = location.href;
-    var hashposition = document_uri.indexOf("#");
-    if (hashposition &gt; -1) {
-        document_uri = document_uri.substring(0, hashposition);
-    }
-    document.addEventListener("click", handle_internal_link, false);
+  if (location.hash)
+    window.scrollBy(0, -<var>60</var>);
+  document_uri = location.href;
+  var hashposition = document_uri.indexOf("#");
+  if (hashposition &gt; -1) {
+    document_uri = document_uri.substring(0, hashposition);
+  }
+  document.addEventListener("click", handle_internal_link, false);
 }
 if (window.addEventListener &amp;&amp; document.addEventListener)
-    window.addEventListener("load", init_position_fixed, false);
+  window.addEventListener("load", init_position_fixed, false);
 </pre>
 
 <p><strong><a href="/scripts/css-position-fixed-javascript2.js">Quelltext herunterladen</a></strong></p>
@@ -919,4 +919,4 @@ if (window.addEventListener &amp;&amp; document.addEventListener)
 
 <p>An der Entwicklung der Lösungsmöglichkeiten wirkten <a href="http://skop.net/">Roland Skop</a>, Roland Blüthgen und <a href="http://www.kristof-lipfert.de/">Kristof Lipfert</a> maßgeblich mit. Vielen Dank an die drei.</p>
 
-<p>Letzte Änderung: 04.12.2005 &#8212; Version 2.9</p>
+<p>Letzte Änderung: 2005-12-04 &#8212; Version 2.9</p>
