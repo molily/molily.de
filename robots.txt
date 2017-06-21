@@ -1,6 +1,5 @@
 User-agent: *
 Disallow: /impressum/
-Disallow: /resume/
 Disallow: /css-position-fixed-beispiel
 Disallow: /css-position-fixed-loesung1
 Disallow: /css-position-fixed-loesung2
