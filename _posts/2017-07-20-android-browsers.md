@@ -459,7 +459,9 @@ I understand that the company behind UC Browser wants to promote certain content
 
 If my observation is correct that UC Browser is based on a six year old browser engine that hasn’t been updated since, that’s a strong reason against the software.
 
-## [Brave](https://play.google.com/store/apps/details?id=com.brave.browser)
+<h2 id="android-browsers-brave">
+  <a href="https://play.google.com/store/apps/details?id=com.brave.browser">Brave</a>
+</h2>
 
 Tested version: 1.0.24<br>
 Download size: 37.30 MB
@@ -520,3 +522,9 @@ Brave ships with a full browser engine, hence the download size of 37 MB. I gues
 Brave is a promising new browser that satisfies the need of mobile web users for performance and privacy. At the same time, it doesn’t try to reinvent the browser, it just adds a limited set of features to the tried-and-tested Chrome/Chromium foundation. This design decision values the work and experience that went into Chrome.
 
 Currently Brave offers most features I expect from a mobile web browser. I hope Brave improves its integration into the Chrome UI and keeps track with the technical foundation.
+
+## Acknowledgment
+
+Thanks to everyone who answered or shared [my twitter survey](https://twitter.com/molily/status/888006158862221313)! Your input motivated me to have a closer look at the different browsers.
+
+*I’d love to hear your feedback! Send an email to [zapperlott@gmail.com](mailto:zapperlott@gmail.com) or [message me on Twitter: @molily](https://twitter.com/molily).*
