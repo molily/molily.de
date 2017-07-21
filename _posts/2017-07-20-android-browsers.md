@@ -10,9 +10,9 @@ lang: en
 a.android-browser-screenshot {
   float: right;
   clear: both;
-  margin: 0 -1rem 1rem 1rem;
+  margin: 0 -1rem 1.5rem 1.5rem;
   border: 0;
-  box-shadow: 0 1px 3px #777;
+  box-shadow: 0 1px 3px #666;
 }
 
 a.android-browser-screenshot img {
@@ -72,7 +72,7 @@ Tested version: 59.0.3701.125<br>
 
 Chrome is the browser that is pre-installed on all newer Android devices. There’s no full review here – I assume you roughly know what it does, how it looks and feels. Still I’d like to mention a few things about Chrome for reference.
 
-I consider Chrome to be the best Android browser in terms of browsing experience, performance and technical innovation. Chrome can be seen as a “simple” browser that is not particularly rich in features. But compared to other browsers, you’ll realize how sophisticated Chrome’s simplicity in fact is. I think Chrome’s product design has reached a point where “[there is nothing left to take away](https://uxmag.com/articles/when-theres-nothing-left-to-take-away)”. In several regards, Chrome is the standard I measure other browsers against.
+I consider Chrome to be the best Android browser in terms of browsing experience, performance and technical innovation. Chrome can be seen as a “simple” browser that is not particularly rich in features. But compared to other browsers, you’ll realize how sophisticated Chrome’s simplicity in fact is. Chrome’s product design has reached a point where “[there is nothing left to take away](https://uxmag.com/articles/when-theres-nothing-left-to-take-away)”. In several regards, Chrome is the standard I measure other browsers against.
 
 Chrome has a built-in data saving feature, but no ad or tracking blocker yet. Google is one of the biggest players in online advertising. While they announced that Chrome will block some intrusive ads in the future, it’s obvious that Chrome is not going to block any Google ads or trackers.
 
@@ -93,9 +93,11 @@ Opera Mini has a long history as a special browser for low-end feature phones. O
   <img src="/assets/android-browsers/thumbs/opera-mini-1.jpg" alt="">
 </a>
 
-The onboarding experience puts me off a bit: There’s a home screen named Speed Dial with bookmarks but also random news with ads in between. The first thing I do is to disable the news and clean up the pre-defined bookmarks.
+The onboarding experience puts me off a bit: There’s a home screen named Speed Dial with bookmarks but also random news with ads in between. The first thing I do is to disabling the news and cleaning up the pre-defined bookmarks.
 
-Per default, the main user interface has a top and a bottom bar. The top bar contains the current URL and a sharing/saving/bookmarking menu. The bottom bar contains back and forward, home, tabs and the main Opera menu. There are three possible fullscreen modes: Disabled, Enabled, Enabled with status bar. I’m using “fullscreen enabled” which means the top bar is visible all the time, the bottom bar disappears when you scroll down and reappears when you scroll up.
+Per default, the main user interface has a top and a bottom bar. The top bar contains the current URL and a sharing/saving/bookmarking menu. The bottom bar contains back and forward, home, tabs and the main Opera menu.
+
+There are three possible fullscreen modes: Disabled, Enabled, Enabled with status bar. I’m using “fullscreen enabled” which means the top bar is visible all the time, the bottom bar disappears when you scroll down and reappears when you scroll up.
 
 There is an alternative layout for tablets with a large tab bar at the top and a combined bar below.
 
@@ -137,7 +139,7 @@ The data saving has several modes: Automatic, Extreme, High, Off.
 
 There is an additional **image quality setting**: Low, Medium, High. When not browsing photo sites, it’s safe to set it to “Low” which means high compression.
 
-If you’re on a non-metered, fast internet connection, browsing with data saving enabled might actually be slower. Also be aware that proxy-based data saving in all browsers sends your whole browsing history to the proxy.
+If you’re on a non-metered, fast internet connection, browsing with data saving enabled might actually be slower. Also be aware that any proxy-based data saving feature sends your whole browsing history to the proxy.
 
 ### Privacy features
 
@@ -148,16 +150,16 @@ If you’re on a non-metered, fast internet connection, browsing with data savin
 
 ### Web technology support
 
-Opera Mini uses the system-wide Chrome browser component, which is the latest Chrome 59 both on my Huawei P9 and Galaxy S5 mini. This is why the app is just 5 MB – Mini does not ship with its own browser engine.
-
 <a href="http://html5test.com/">html5test</a> score: 501 / 555<br>
 Chrome 59 for reference: 518 / 555
 
-Although Opera Mini is using the same engine as Chrome, some JavaScript APIs are not available. Mostly APIs related to “Progressive Web Apps”: No push notifications, web notifications, web payments. This explains the different html5test score.
+Opera Mini uses the system-wide Chrome browser component, which is the latest Chrome 59 both on my Huawei P9 and Galaxy S5 mini. This is why the app is just 5 MB – Mini does not ship with its own browser engine.
+
+Although Opera Mini uses the same engine as Chrome, some JavaScript APIs are not available. Mostly APIs related to “Progressive Web Apps”: No push notifications, web notifications, web payments. This explains the different html5test score.
 
 ### Conclusion
 
-Opera Mini is a decent mobile browsers that I’m using frequently. It’s up-to-date in terms of web technology, since it’s based on the latest Chrome. The user interface is clear. The bottom bar is not that useful, though. Fortunately Opera Mini allows to configure the app layout.
+Opera Mini is a decent mobile browser I’m using frequently. It’s up-to-date in terms of web technology, since it’s based on the latest Chrome. The user interface is clear. The bottom bar is not that useful, though. Fortunately Opera Mini allows to configure the app layout.
 
 <h2 id="android-browsers-opera">
   <a href="https://play.google.com/store/apps/details?id=com.opera.browser">Opera</a>
@@ -188,7 +190,7 @@ Download size: 33.24 MB
 
 ### General usability
 
-In many ways, Firefox feels like the desktop dinosaur brought to mobile devices. If you’re familiar with the Firefox Desktop, you’ll get along in Firefox since the interface wording is the same.
+In many ways, Firefox feels like the desktop dinosaur brought to mobile devices. If you’re familiar with Firefox Desktop, you’ll get along in Firefox for Android since the interface wording is the same.
 
 When starting the app, you see a welcome screen with a short tutorial. Then you start with a home screen with three tabs: Top sites, bookmarks and history. This screen is also shown when opening a new tab. A clever solution in my opinion.
 
@@ -252,7 +254,7 @@ Images are indeed the biggest cause of mobile internet traffic, so there’s big
 - The “Do not track” HTTP header can be enabled, just like in Chrome.
 - There’s a built-in tracking protection, but as I said, it only works in private browsing mode.
 - “Data choices” allows you to choose which usage data is sent to Mozilla. Chrome has a similar feature but in my opinion, Mozilla makes it more transparent what data they are collecting and why.
-- Cookies: Enabled / Enabled, exclude third party cookies / Disabled. Most Chrome-based browsers allow to disable cookies, but that feature is not useful. Gladly Firefox allows to disable third party cookies, which is a good tradeoff between privacy and, well, working web sites.
+- Cookies: Enabled / Enabled, exclude third party cookies / Disabled. Most Chrome-based browsers allow to disable cookies, but that’s not particularly useful. Gladly Firefox allows to disable third party cookies, which is a good tradeoff between privacy and, well, working web sites.
 - Clear private data manually
 - Clear private data automatically on exit
 
@@ -362,15 +364,15 @@ UC Browser is hugely popular browser in emerging markets like China, India and I
 
 ### General usability
 
-When starting the app, it first asks for the permission to “make and manage phone calls”. According to the welcome screen, this allows the app to use the operator name in order to improve the data saving. I’m not sure about the technical details here, so when in doubt, I do not permissions. UC Browser is still able to operate.
+When starting the app, it first asks for the **permission** to “make and manage phone calls”. According to the welcome screen, this allows the app to use the operator name in order to improve the data saving. I’m not sure about the technical details here, so when in doubt, I do not permissions. UC Browser is still able to operate.
 
 In a four-screen **tutorial**, UC browser quickly introduces its major features. On the fourth screen, you are able to opt out of the “UX Improvement Program”. There’s a quick link to their privacy policy with an explanation of the collected data. Transparency and asking for consent builds trust, nevertheless I’m opting out.
 
-Next, UC Browser asks for the storage permission “to start saving data”. Again I’m not fully sure what that means. It’s not explained why this permission is necessary. For reference, no other browser in this comparison has asked for any permissions on the first run.
+Next, UC Browser asks for the **permission** to “access photos, media and files on the device”. UC Browser says it needs the permission “to start saving data”. Again I’m not fully sure what that means. It’s not explained why this permission is necessary. For reference, no other browser in this comparison has asked for any permissions on the first run.
 
-After having started UC Browser, it installs a Facebook bar in your system-wide Android quick settings dropdown menu. I’m not using Facebook, so the first thing I do is to disable this feature.
+After having started UC Browser, it installs a **Facebook bar** in your system-wide Android quick settings dropdown menu. I’m not using Facebook, so the first thing I do is to disable this feature.
 
-When navigating to the first web page, UC Browser shows a dialog that asks me to install a “Quick Search Shortcut”. That’s a Google search bar for the quick settings dropdown menu. No, thanks.
+When navigating to the first web page, UC Browser shows a dialog that asks me to install a “Quick Search Shortcut”. That’s a **Google search bar** for the settings dropdown menu. No, thanks.
 
 <a href="/assets/android-browsers/full/uc-browser-1.jpg" class="android-browser-screenshot">
   <img src="/assets/android-browsers/thumbs/uc-browser-1.jpg" alt="">
@@ -404,7 +406,7 @@ The **tab overview** is done well. You can switch between horizontal card view (
 
 When exiting UC Browser using the Android back button, I’m asked if I want to clear browsing history or add UC to home screen. I choose “do not ask again”.
 
-When connecting the device to charger, a dialog pops up and asks me to enable “UC Smart Charging” “including hot recommendations and ads”. Creepy!
+But wait, there’s even more. When connecting the device to charger, a dialog pops up and asks me to enable “UC Smart Charging” “including hot recommendations and ads”. Creepy!
 
 ### Nifty usability features
 
@@ -496,7 +498,7 @@ The main feature of Brave is a powerful [ad blocker](https://github.com/brave/ad
 
 ### Data saving
 
-In contrast to Chrome, Brave does not have a data saving feature. Channeling all your web traffic through proxies would thwart the goal of protecting your privacy. Also I suppose Google’s proxy servers are not available for Chromium-based browsers.
+In contrast to Chrome, Brave does not have a data saving feature. Channeling all your web traffic through proxies would thwart the goal of protecting your privacy. Also I suppose Google’s proxy servers are not available for free for Chromium-based browsers. This is an exclusive Chrome feature.
 
 ### Privacy features
 
@@ -515,7 +517,7 @@ Chrome 59 for reference: 518 / 555
 
 Brave for Android is an [open-source browser](https://github.com/brave/browser-android-tabs) shell around the latest Chrome/Chromium 59. So the html5test score is almost the same as Chrome 59.
 
-Brave ships with a full browser engine, hence the download size of 37 MB. I guess there are technical reasons why Brave is not just using the system-wide Chrome component. I suppose the tracking and fingerprint protection hooks into the engine at a low level that makes a custom Chromium build is necessary.
+Brave ships with a full browser engine, hence the download size of 37 MB. I guess there are technical reasons why Brave does not just use the system-wide Chrome component. I suppose the tracking and fingerprint protection hooks into the engine at a low level that makes a custom Chromium build is necessary.
 
 ### Conclusion
 
@@ -525,6 +527,6 @@ Currently Brave offers most features I expect from a mobile web browser. I hope 
 
 ## Acknowledgment
 
-Thanks to everyone who answered or shared [my twitter survey](https://twitter.com/molily/status/888006158862221313)! Your input motivated me to have a closer look at the different browsers.
+Thanks to everyone who answered or shared [my Twitter survey](https://twitter.com/molily/status/888006158862221313)! Your input motivated me to have a closer look at the different browsers.
 
 *I’d love to hear your feedback! Send an email to [zapperlott@gmail.com](mailto:zapperlott@gmail.com) or [message me on Twitter: @molily](https://twitter.com/molily).*
