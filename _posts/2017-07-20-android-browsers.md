@@ -24,7 +24,7 @@ While Google Chrome is the standard browser on modern Android devices, there are
 
 I’m focussing on aspects I find important. Therefore, the descriptions are utterly incomplete and completely subjective. I won’t mention features that almost every browser has, like sharing, bookmarks, history and a combined URL and search bar. I will miss features others regard as crucial, like cross-device syncing, offline saving and download management.
 
-These are the aspects I have examined:
+These are the **aspects** I have examined:
 
 <ul class="compact-list">
 <li>General usability: user experience when browsing the web.</li>
@@ -35,7 +35,7 @@ These are the aspects I have examined:
 <li>Web technology support</li>
 </ul>
 
-I have tested these browsers:
+I have tested these **browsers**:
 
 <ul class="compact-list">
 <li><a href="#android-browsers-chrome">↓ Chrome (for reference)</a></li>
@@ -48,7 +48,7 @@ I have tested these browsers:
 <li><a href="#android-browsers-brave">↓ Brave</a></li>
 </ul>
 
-My test devices:
+My test **devices**:
 
 <ul class="compact-list">
 <li><a href="http://www.gsmarena.com/huawei_p9-7972.php">Huawei P9 (EVA-L09, released 2016)</a> with Android 7.0</li>
@@ -93,11 +93,11 @@ Opera Mini has a long history as a special browser for low-end feature phones. O
   <img src="/assets/android-browsers/thumbs/opera-mini-1.jpg" alt="">
 </a>
 
-The onboarding experience puts me off a bit: There’s a home screen named Speed Dial with bookmarks but also random news with ads in between. The first thing I do is to disabling the news and cleaning up the pre-defined bookmarks.
+The onboarding experience puts me off a bit: There’s a home screen named Speed Dial with bookmarks but also random news with ads in between. The first thing I do is to disable the news and to clean up the pre-defined bookmarks.
 
 Per default, the main user interface has a top and a bottom bar. The top bar contains the current URL and a sharing/saving/bookmarking menu. The bottom bar contains back and forward, home, tabs and the main Opera menu.
 
-There are three possible fullscreen modes: Disabled, Enabled, Enabled with status bar. I’m using “fullscreen enabled” which means the top bar is visible all the time, the bottom bar disappears when you scroll down and reappears when you scroll up.
+There are three possible fullscreen modes: Disabled, Enabled, Enabled with status bar. I’m using “Enabled” which means the top bar is visible all the time, the bottom bar disappears when you scroll down and reappears when you scroll up.
 
 There is an alternative layout for tablets with a large tab bar at the top and a combined bar below.
 
@@ -144,7 +144,7 @@ If you’re on a non-metered, fast internet connection, browsing with data savin
 ### Privacy features
 
 - Private tabs. Unfortunately, these tabs are not blank in the Android “Recent Apps”. Content of private tabs might be seen in the application overview.
-- Disable cookies. Most Chrome-based browsers allow to disable cookies, but that feature is not useful in my opinion. Disabling cookies alltogether renders most login-based sites unusable.
+- Disable cookies. Most Chrome-based browsers allow to disable cookies, but this feature is not useful in my opinion. Disabling cookies altogether renders most login-based sites unusable.
 - Disable usage statistics
 - Clear browsing data manually
 
@@ -231,7 +231,7 @@ The numerous **settings** are grouped and explained well. There are many useful 
 
 Firefox does not have a built-in ad blocker. It has a built-in tracking protection that can only be enabled in private tabs. Why so?
 
-In contrast to most Chrome-based mobile browsers, Firefox Mobile supports the [same extensions](https://addons.mozilla.org/de/firefox/) that can be installed on Firefox Desktop. So we can use well-known extension like [uBlock Origin](https://addons.mozilla.org/de/firefox/addon/ublock-origin/), [Adblock Plus](https://addons.mozilla.org/de/firefox/addon/adblock-plus/) or [Ghostery](https://addons.mozilla.org/de/firefox/addon/ghostery/) on Android as well.
+In contrast to most Chrome-based mobile browsers, Firefox Mobile supports the [same extensions](https://addons.mozilla.org/de/firefox/) that can be installed on Firefox Desktop. So we can use well-known extensions like [uBlock Origin](https://addons.mozilla.org/de/firefox/addon/ublock-origin/), [Adblock Plus](https://addons.mozilla.org/de/firefox/addon/adblock-plus/) or [Ghostery](https://addons.mozilla.org/de/firefox/addon/ghostery/) on Android as well.
 
 Unfortunately, the UI of these blockers might not work well on mobile devices. But if you’re familiar with a certain extension on Firefox desktop, you’ll be able to configure it on mobile as well.
 
@@ -250,7 +250,7 @@ Images are indeed the biggest cause of mobile internet traffic, so there’s big
 
 ### Privacy features
 
-- Firefox kindly asks if you want to enable search suggestions when you type into the URL bar. In other browsers, this is enabled per default and sends all input to the default search engine, which is Google. Consent is cool!
+- Firefox kindly asks if you want to enable search suggestions when you type into the URL field. In other browsers, this is enabled per default and sends all input to the default search engine, which is Google. Consent is cool!
 - The “Do not track” HTTP header can be enabled, just like in Chrome.
 - There’s a built-in tracking protection, but as I said, it only works in private browsing mode.
 - “Data choices” allows you to choose which usage data is sent to Mozilla. Chrome has a similar feature but in my opinion, Mozilla makes it more transparent what data they are collecting and why.
@@ -291,19 +291,19 @@ Firefox Focus is a new, simplistic concept browser for private browsing. It’s 
 
 When starting the app, a quick tutorial explains the main features.
 
-Firefox Focus doesn’t have all the normal browser features you’d probably expect. It doesn’t have multiple tabs. There is just a single tab, a colorful URL bar and large floating button to close the page and clear all data. The motto is “Browse. Erase. Repeat.”
+Firefox Focus doesn’t have all the normal browser features you’d probably expect. It doesn’t have multiple tabs. There is just a single tab, a colorful top bar and large floating button to close the page and clear all data. The motto is “Browse. Erase. Repeat.”
 
 <a href="/assets/android-browsers/full/firefox-focus-2.jpg" class="android-browser-screenshot">
   <img src="/assets/android-browsers/thumbs/firefox-focus-2.jpg" alt="">
 </a>
 
-The URL bar has a short menu with navigate forward, reload, tracker blocking on/off, share and open with other browsers. So if you find a page useful and want to bookmark it, you can still do that with a full-featured browser.
+The top bar has a URL field and a short menu with forward, reload, tracker blocking on/off, share and open with other browsers. So if you find a page useful and want to bookmark it, you can still do that with a full-featured browser.
 
 The user interface is clear and simple, there is little to explain or complain about.
 
 ### Nifty usability features
 
-Nope! Firefox Focus is reduced to the minimum, that’s the whole point. You can tell that the designers looked for the bare necessities by the fact that there is no back button. Almost all Android devices already have a large, central back button. No need to put another back button on the screen.
+Firefox Focus is reduced to the minimum, that’s the whole point. You can tell that the designers looked for the bare necessities by the fact that there is no back button. Almost all Android devices already have a large, central back button. No need to put another back button on the screen.
 
 ### Ad and tracker blocking
 
@@ -347,9 +347,9 @@ Firefox Focus cannot and does not want to be your full-featured browser, but it 
 Tested version: 1.2.1<br>
 Download size: 30.48 MB
 
-Orfox is a special version of Firefox that connects to Tor network to allow anonymous browsing. It requires a second app named Orbot, which is the actual Tor network client.
+Orfox is a special version of Firefox that connects to the Tor onion routing network to allow anonymous browsing. It requires a second app named Orbot, which is the actual Tor network client.
 
-Apart from the onion browsing, Orfox is almost like the normal Firefox. There are slightly different default settings. The NoScript extension is installed per default since JavaScript is a great tool to fingerprint your device and to uncover your anonymity. You’re free to install more extensions like uBlock Origin.
+Apart from the Tor routing, Orfox resembles the normal Firefox. There are slightly different default settings. The NoScript extension is installed per default since JavaScript is a great tool to fingerprint your device and to uncover your anonymity. You’re free to install more extensions like uBlock Origin.
 
 The tested Orfox version is based on Firefox 45.5.1 Extended Support Release from December 2016. The major version 45 was released in March 2016. So it’s not the latest Firefox, but still a pretty recent one.
 
@@ -360,15 +360,15 @@ The tested Orfox version is based on Firefox 45.5.1 Extended Support Release fro
 Tested version: 11.3.8.976<br>
 Download size: 20.15 MB
 
-UC Browser is hugely popular browser in emerging markets like China, India and Indonesia. It’s packed with features and add-ons.
+UC Browser is hugely popular browser in emerging markets like China, India and Indonesia. It’s packed with features.
 
 ### General usability
 
-When starting the app, it first asks for the **permission** to “make and manage phone calls”. According to the welcome screen, this allows the app to use the operator name in order to improve the data saving. I’m not sure about the technical details here, so when in doubt, I do not permissions. UC Browser is still able to operate.
+When starting the app for the first time, it asks for the **permission** to “make and manage phone calls”. According to the welcome screen, this allows the app to use the operator name in order to improve the data saving. I’m not sure about the technical details here, so when in doubt, I do not grant permissions. UC Browser is still able to operate.
 
 In a four-screen **tutorial**, UC browser quickly introduces its major features. On the fourth screen, you are able to opt out of the “UX Improvement Program”. There’s a quick link to their privacy policy with an explanation of the collected data. Transparency and asking for consent builds trust, nevertheless I’m opting out.
 
-Next, UC Browser asks for the **permission** to “access photos, media and files on the device”. UC Browser says it needs the permission “to start saving data”. Again I’m not fully sure what that means. It’s not explained why this permission is necessary. For reference, no other browser in this comparison has asked for any permissions on the first run.
+Next, UC Browser asks for the **permission** to “access photos, media and files on the device”. UC Browser says it needs the permission “to start saving data”. Again I’m not fully sure what that means. It’s not explained why this permission is necessary. For reference, no other data-saving browser in this comparison asked for any permissions on the first run.
 
 After having started UC Browser, it installs a **Facebook bar** in your system-wide Android quick settings dropdown menu. I’m not using Facebook, so the first thing I do is to disable this feature.
 
@@ -382,7 +382,7 @@ The **main interface** has a top bar with a combined title and URL field, a sear
 
 Tapping on the **search** button shows a screen where you can choose what type of content to search for – e.g. web, videos, apps, images, news – and which search engine to use – e.g. Google, Bing, DuckDuckGo, YouTube and some UC-Browser-related sites.
 
-The **start page** of a new tab features pre-defined bookmarks, random news headlines, “Hot Videos” and my most visited pages. When swiping right, there’s a Speed Dial bookmarks list the user manage themselves. By tapping the “Manage Cards” button, one can disable most of the “hot news” rubbish on the start page.
+The **start page** of a new tab features pre-defined bookmarks, random news headlines, “Hot Videos” and my most visited pages. When swiping right, there’s a Speed Dial bookmarks list the user manages themselves. By tapping the “Manage Cards” button, one can disable most of the “hot news” rubbish on the start page.
 
 <a href="/assets/android-browsers/full/uc-browser-3.jpg" class="android-browser-screenshot">
   <img src="/assets/android-browsers/thumbs/uc-browser-3.jpg" alt="">
@@ -436,7 +436,7 @@ The feature works well. According to the statistics, the saved data on the teste
 
 ### Privacy features
 
-- Incognito mode. Note that this is something different than private tabs. This switches the whole browser into a mode where the browsing history is not recorded. When leaving the mode, UC Browser asks to close all opened tabs. This is a refreshing take on private browsing, but I prefer the clarity of normal tabs vs. private tabs. Unfortunately, the preview window in the Android “Recent Apps” is not black when incognito mode is switched on.
+- Incognito mode. Note that this is something different than private tabs. This switches the whole browser into a mode where the browsing history is not recorded. When leaving the mode, UC Browser asks to close all opened tabs. This is a refreshing take on private browsing, but I prefer the clarity of normal tabs vs. private tabs. Unfortunately, the preview window in the Android “Recent Apps” is not blank when incognito mode is switched on.
 - Clear browsing history manually
 - Clear browsing history on exit
 
@@ -447,7 +447,7 @@ Chrome 59 for reference: 518 / 555
 
 UC Browser ships with a custom browser engine called “U3”. According to the user agent, the engine is based on [WebKit version 534.30](https://trac.webkit.org/browser/webkit/tags/Safari-534.30). This version was tagged *six years ago* and roughly corresponds to [Safari 5.1](https://en.wikipedia.org/wiki/Safari_version_history).
 
-The fact that UC Browser seems to use an antediluvian browser engine explains the lousy html5test score. I’m wondering wheather the developers merged in any WebKit security and stability patches since 2011. There are numerous dreaded Android browsers based on outdated WebKits, and apparently UC Browser is yet another offender that hinders technical progress.
+The fact that UC Browser uses an antediluvian browser engine explains the lousy html5test score. I’m wondering wheather the developers merged in any WebKit security and stability patches since 2011. There are numerous dreaded Android browsers based on outdated WebKits, and apparently UC Browser is yet another offender that hinders technical progress.
 
 ### Conclusion
 
@@ -476,13 +476,13 @@ Brave is a fairly new browser by a company co-founded by Brendan Eich, the inven
   <img src="/assets/android-browsers/thumbs/brave-1.jpg" alt="">
 </a>
 
-The user interface is almost identical to a vanilla Chrome. The main addition is the a Brave button in the top bar between the tab overview button and the well-known Chrome menu.
+The user interface is almost identical to a vanilla Chrome. The main addition is the Brave button in the top bar between the tab overview button and the well-known Chrome menu.
 
 <a href="/assets/android-browsers/full/brave-2.jpg" class="android-browser-screenshot">
   <img src="/assets/android-browsers/thumbs/brave-2.jpg" alt="">
 </a>
 
-Tapping the Brave button opens a menu which allows to toggle ad, tracker, cookies and script blocking as well as HTTPS everywhere and fingerprint protection.
+Tapping the Brave button opens a menu which allows to toggle ad, tracker, cookie and script blocking as well as HTTPS everywhere and fingerprint protection.
 
 Web-savvy people might understand all these detailed per-site settings, others might at least understand ad and tracker blocking.
 
