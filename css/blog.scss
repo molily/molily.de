@@ -288,6 +288,7 @@ html {
 
 #zitate {
   font-family: $citation-font;
+  font-variant-ligatures: common-ligatures discretionary-ligatures historical-ligatures contextual;
   font-size: 0.95rem;
 }
 
@@ -325,7 +326,7 @@ html {
  */
 
 .article-archive-heading {
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
 .article-archive {
