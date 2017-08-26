@@ -48,7 +48,7 @@ I have tested these **browsers**:
 <li><a href="#android-browsers-brave">↓ Brave</a></li>
 </ul>
 
-My test **devices**:
+The **test devices**:
 
 <ul class="compact-list">
 <li><a href="http://www.gsmarena.com/huawei_p9-7972.php">Huawei P9 (EVA-L09, released 2016)</a> with Android 7.0</li>
@@ -74,7 +74,7 @@ Chrome is the browser that is pre-installed on all newer Android devices. There�
 
 I consider Chrome to be the best Android browser in terms of browsing experience, performance and technical innovation. Chrome can be seen as a “simple” browser that is not particularly rich in features. But compared to other browsers, you’ll realize how sophisticated Chrome’s simplicity in fact is. Chrome’s product design has reached a point where “[there is nothing left to take away](https://uxmag.com/articles/when-theres-nothing-left-to-take-away)”. In several regards, Chrome is the standard I measure other browsers against.
 
-Chrome has a built-in data saving feature, but no ad or tracking blocker yet. Google is one of the biggest players in online advertising. While they announced that Chrome will block some intrusive ads in the future, it’s obvious that Chrome is not going to block any Google ads or trackers.
+Chrome has a built-in data saving feature, but no ad or tracking blocker yet. Google is one of the biggest players in online advertising. Although Google announced that Chrome will block some intrusive ads in the future, it’s obvious that Chrome is not going to block any Google ads or trackers.
 
 That’s the main reason I’m looking for alternatives. And while I appreciate Chrome’s simplicity, I also like some additional features that Chrome lacks.
 
@@ -263,7 +263,7 @@ Images are indeed the biggest cause of mobile internet traffic, so there’s big
 <a href="http://html5test.com/">html5test</a> score: 477 / 555<br>
 Chrome 59 for reference: 518 / 555
 
-Firefox is the only Android browser in this list that not based on Chrome/Chromium or an older WebKit. Mozilla Firefox comes with its own engine, [Gecko](https://en.wikipedia.org/wiki/Gecko_(software)). Mozilla implements web platform featues with a different pace and different focus than Google. Even though Firefox seems to lag behind in the html5test score, Gecko is a modern browser engine that supports all important web technologies. Also, Firefox is updated frequently with a six-to-eight week release cycle.
+Firefox is the only Android browser in this list that not based on Chrome/Chromium or an older WebKit. Mozilla Firefox comes with its own engine, [Gecko](https://en.wikipedia.org/wiki/Gecko_(software)). Mozilla implements web platform features with a different pace and different focus than Google. Even though Firefox lags behind in the html5test score, Gecko is a modern browser engine that supports all important web technologies. Also, Firefox is updated frequently with a six-to-eight week release cycle.
 
 ### Conclusion
 
