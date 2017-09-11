@@ -235,10 +235,6 @@ a {
     border-color: $link-active-border-color;
   }
 
-  &.blanklink {
-    border-bottom-style: none;
-  }
-
   & img {
     text-decoration: none;
   }
@@ -324,29 +320,6 @@ table.compact th {
  * @section Images
  *
  */
-
-.image-left,
-.image-right {
-  padding: 0.5rem;
-  box-shadow: 1px 1px 4px #aaa;
-  text-align: center;
-}
-
-.image-left {
-  float: left;
-  margin-right: 2rem;
-}
-
-.image-right {
-  float: right;
-  margin-left: 2rem;
-}
-
-.image-left p,
-.image-right p {
-  margin: 0;
-  font-size: 90%;
-}
 
 .image-full {
   display: block;

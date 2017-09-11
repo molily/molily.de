@@ -4,6 +4,21 @@ title: Pseudoklassische Vererbung in JavaScript
 lang: de
 ---
 
+<style>
+.js-pseudoclasses-image-right {
+  float: right;
+  margin-left: 2rem;
+  padding: 0.5rem;
+  box-shadow: 1px 1px 4px #aaa;
+  text-align: center;
+}
+
+.js-pseudoclasses-image-right p {
+  margin: 0;
+  font-size: 90%;
+}
+</style>
+
 <h2>Pseudoklassen in JavaScript</h2>
 
 <p>Objektorientierte Programmierung in JavaScript funktioniert anders als in anderen verbreiteten Programmiersprachen. JavaScript <a href="/js/organisation-ueberblick.html#oop">kennt keine Klassen</a>, sondern veränderbare Objekte und <a href="/js/organisation-instanzen.html#prototyp-vererbung">prototypische Delegation</a>.</p>
@@ -77,7 +92,7 @@ Elektroauto.prototype = new Auto();
 
 <h2>Robustere Umsetzung</h2>
 
-<div class="image-right">
+<div class="js-pseudoclasses-image-right">
   <p><img src="../img/eauto1.jpg" alt="" title=""></p>
   <p><a href="http://de.wikipedia.org/wiki/La_Jamais_Contente">La Jamais Content</a>, 1899</p>
   <p>Quelle: <a href="http://commons.wikimedia.org/wiki/File:Jamais_contente.jpg">Wikipedia Commons</a>, gemeinfrei</p>
@@ -240,7 +255,7 @@ elektroauto.lade(); // La Jamais Content wird geladen
 
 <h2>Fazit</h2>
 
-<div class="image-right">
+<div class="js-pseudoclasses-image-right">
   <p><img src="../img/eauto2.jpg" alt="" title=""></p>
   <p><a href="http://en.wikipedia.org/wiki/Argo_Electric">Argo Brougham</a>, 1912</p>
   <p>Quelle: <a href="http://commons.wikimedia.org/wiki/File:Argo1912.jpg">Wikipedia Commons</a>, gemeinfrei</p>
