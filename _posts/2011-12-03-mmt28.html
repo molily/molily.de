@@ -14,17 +14,23 @@ lang: de
 
 <p><a href="/assets/mmt28.pdf">JavaScript: Von einfachen Scripten zu komplexen Anwendungen (PDF)</a></p>
 
-<p style="position: relative; padding-bottom: 60%">
-<iframe src="https://de.slideshare.net/slideshow/embed_code/key/bu1xMWMpvA1D51" scrolling="no" style="position: absolute; width: 100%; height: 100%; border: 1px solid #CCC;" allowfullscreen></iframe>
+<p class="responsive-media-container">
+  <iframe src="https://de.slideshare.net/slideshow/embed_code/key/bu1xMWMpvA1D51" class="responsive-media-object" scrolling="no" allowfullscreen>
+    <a href="https://de.slideshare.net/molily/javascript-von-einfachen-scripten-zu-komplexen-anwendungen">JavaScript: Von einfachen Scripten zu komplexen Anwendungen</a>
+  </iframe>
 </p>
 
 <h2>Videomitschnitt</h2>
 
-<p><iframe width="640" height="360" src="http://www.youtube-nocookie.com/embed/ADqmoY8Fl-Y" frameborder="0" allowfullscreen></iframe></p>
+<p class="responsive-media-container">
+  <iframe src="https://www.youtube-nocookie.com/embed/ADqmoY8Fl-Y" class="responsive-media-object" allowfullscreen>
+    <a href="https://www.youtube.com/watch?v=ADqmoY8Fl-Y">JavaScript: Von einfachen Scripten zu komplexen Anwendungen - Mathias Schäfer beim MMT 28</a>
+  </iframe>
+</p>
 
 <h2>Korrekturen</h2>
 
-<p>Bastian Sackermann hat mich freundlicherweise darauf <a href="https://twitter.com/#!/Samisdat/status/142987904279523328">aufmerksam gemacht</a>, dass im jQuery-Beispielcode auf der Folie 10 etwas fehlt. Das Szenario ist ein Link zu einer Folgeseite z.B. im Rahmen einer Blätternavigation. Das Script fügt dem Link JavaScript-Funktionalität hinzu, sodass das Linkziel per Ajax im Hintergrund geladen und die Serverrückgabe ins Dokument eingefügt wird. Damit das klappt und nicht das Linkziel auf gewöhnliche Weise angesurft wird, fehlte das <a href="/js/event-handling-objekt.html#standardaktion">Unterdrücken der Standardaktion</a> z.B. mit <a href="http://api.jquery.com/event.preventDefault/"><code>event.preventDefault()</code></a>. Der korrigierte Code:</p>
+<p>Bastian Sackermann hat mich freundlicherweise darauf <a href="https://twitter.com/Samisdat/status/142987904279523328">aufmerksam gemacht</a>, dass im jQuery-Beispielcode auf der Folie 10 etwas fehlt. Das Szenario ist ein Link zu einer Folgeseite z.B. im Rahmen einer Blätternavigation. Das Script fügt dem Link JavaScript-Funktionalität hinzu, sodass das Linkziel per Ajax im Hintergrund geladen und die Serverrückgabe ins Dokument eingefügt wird. Damit das klappt und nicht das Linkziel auf gewöhnliche Weise angesurft wird, fehlte das <a href="/js/event-handling-objekt.html#standardaktion">Unterdrücken der Standardaktion</a> z.B. mit <a href="http://api.jquery.com/event.preventDefault/"><code>event.preventDefault()</code></a>. Der korrigierte Code:</p>
 
 <pre>
 jQuery(document).ready(function ($) {
