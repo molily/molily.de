@@ -14,7 +14,10 @@
       {{ post.description }} &ndash;
     {% endif %}
     {{ post.content | strip_html | truncate: 160 }}
-    <a href="{{ post.url | prepend: site.baseurl }}" title="Read on: {{ post.title }}">Read on</a>
+    <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-on"
+      title="Read on: {{ post.title }}">
+      Read on
+    </a>
   </p>
 
 </article>
