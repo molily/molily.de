@@ -154,21 +154,23 @@ html {
   margin: 0 (-$column-padding) 1rem;
   padding: $column-padding;
   background-color: $post-header-background;
-  text-shadow: 1px 1px 1px #111;
+  text-shadow: 1px 1px 1px #222;
 
   @include big {
     margin: 0 (-$column-padding-big) 1rem;
-    padding: 1.5rem $column-padding-big;
+    padding: $column-padding $column-padding-big;
   }
+}
 
-  .post-link {
+.post-link {
+  &:link {
     display: block;
     border: 0;
     color: inherit;
+  }
 
-    &:visited {
-      color: #eaeaea;
-    }
+  &:visited {
+    color: #eaeaea;
   }
 }
 
@@ -177,8 +179,7 @@ html {
   color: white;
 
   @include big {
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
   }
 }
 
