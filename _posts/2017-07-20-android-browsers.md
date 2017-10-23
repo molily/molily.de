@@ -115,7 +115,7 @@ All necessary features are easy to reach. The horizontal tab overview is clear a
 
 ### Ad and tracker blocking
 
-Opera Mini comes with a built-in ad blocker. It works well, I almost never see typical ads. The downside is that the ad blocking feature is bound to the data saving (see below), you can’t enable the first without the second.
+Opera Mini comes with a built-in ad blocker. It works well, I almost never see typical ads. The downside is that the ad blocking feature is bound to the data saving (see below), you can’t enable the former without the latter.
 
 Apparently there is no blocking of trackers.
 
