@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Zur Lagerung von Schokolade"
-description: "Vegan gourmet vs. vegan gourmand über die richtige Lagerung gute Schokolade"
+description: "Gourmand und Gourmet über die richtige Lagerung gute Schokolade"
 keywords: Schokolade, Lagerung, Kühlung, Vorräte
 lang: de
 ---
@@ -38,4 +38,4 @@ Schokolade wird nicht besser dadurch, dass sie in ungeeigneten Lagern, in Läden
 <h2>Schokolade richtig verpacken</h2>
 Um eine kurzfristige Lagerung kommt man natürlich nicht herum. Wir verpacken die angebrochenen Tafeln in luftdichten, geschmacksneutralen Frischhaltedosen oder Gefrierbeuteln mit Clips und legen sie an einen dunklen Ort. Und essen sie schnell auf! ;)
 
-Siehe auch: <a href="/vegane-schokolade/">Gourmand und Gourmet testen Schokoladen</a>
+<strong>Siehe auch: <a href="/vegane-schokolade/">Gourmand und Gourmet testen Schokoladen</a></strong>

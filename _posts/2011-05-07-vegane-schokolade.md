@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Gourmand und Gourmet testen Schokoladen"
-description: "Vegan gourmet vs. vegan gourmand über die Geschmacksvielfalt dunkler Schokoladen"
+description: "Über die Geschmacksvielfalt dunkler Schokoladen"
 keywords: Schokolade, Dunkle Schokolade, vegan, vegane Schokolade, Nougat
 lang: de
 ---
@@ -79,7 +79,7 @@ Wer also meint, »Bitterschokolade« schmecke immer gleich und aufdringlich star
 
 <a href="/assets/schokolade/coppeneur.jpg" class="schokolade-img"><img src="/assets/schokolade/coppeneur.jpg?w=99" alt="" width="99" height="150"></a>
 
-Von den 72-prozentigen <a href="http://www.coppeneur.de/cms/front_content.php?idart=42">Cru-de-Cacao-Schokoladen von Coppeneur</a> haben wir verschiedene ausprobiert – wir erinnern uns aber nur an <strong>Jamaica</strong>, welche wie folgt beschrieben wird: »Aromen von süßem Rum und frischer Milch. Akzente von Pfirsich und leichten Holznoten von Zedernholzund Wacholder.«
+Von den 72-prozentigen <a href="https://www.coppeneur.de/online-shop/cru-de-cao.html">Cru-de-Cacao-Schokoladen von Coppeneur</a> haben wir verschiedene ausprobiert – wir erinnern uns aber nur an <strong>Jamaica</strong>, welche wie folgt beschrieben wird: »Aromen von süßem Rum und frischer Milch. Akzente von Pfirsich und leichten Holznoten von Zedernholzund Wacholder.«
 
 Die Aromen sind sehr deutlich und die Beschreibungen passend. Einige der Sorten gibt es auch in einer Ausführung mit zugesetzten Gewürzen, Kaffee oder Kakao-Nibs. Wie gesagt sind aber schon die puren Varianten intensiv genug.
 
@@ -91,7 +91,7 @@ Die Grand Crus von <a href="http://www.valrhona.com/">Valrhona</a> sind allesamt
 
 ### Domori
 
-<a href="http://www.domori.com/">Domori</a> gehört wohl zu den renommiertesten und gleichzeitig teuersten Schokoladenmarken. Wir haben die Probierpakete mit je fünf <a href="http://www.domori.com/en/product.php?idProductLine=10&amp;id=82">Criollo</a>- bzw. fünf <a href="http://www.domori.com/en/product.php?idProductLine=9&amp;id=84">Single-Origin</a>-Sorten getestet und waren eher enttäuscht. Dass es sich hierbei um hervorragende Schokolade handelt, merkt man am außergewöhnlichen Schmelz und den feinen Aromen.
+<a href="http://www.domori.com/">Domori</a> gehört wohl zu den renommiertesten und gleichzeitig teuersten Schokoladenmarken. Wir haben die Probierpakete mit je fünf <a href="https://domori.com/criollo/">Criollo</a>- bzw. fünf <a href="https://domori.com/single-origins/">Single-Origin</a>-Sorten getestet und waren eher enttäuscht. Dass es sich hierbei um hervorragende Schokolade handelt, merkt man am außergewöhnlichen Schmelz und den feinen Aromen.
 
 <a href="/assets/schokolade/domori-sambirano.png" class="schokolade-img"><img src="/assets/schokolade/domori-sambirano.png" alt="" width="150" height="148"></a>
 
@@ -106,15 +106,15 @@ Die Single Origins haben uns besser gefallen. Insbesondere schmeckt uns die <str
 <a href="http://www.originalbeans.com/">Original Beans</a> hat sich der Pflege besonderer, seltener Kakaosorten verschrieben, die zum Teil wild im Regenwald gepflanzt und geerntet werden. Dies merkt man an einem außergewöhnlichen, kräftigen Geschmack. Getestet und für gut befunden:
 
 <ul>
-  <li><a href="http://www.originalbeans.com/chocolate/piura-porcelana/">Piura Porcelana</a>, Peru, 75%: »Anregend mit üppigen Noten von Limone, Aprikose und Pekanuss«</li>
-  <li><a href="http://www.originalbeans.com/chocolate/beni-wild-harvest/">Beni Wild Harvest</a>, 66%, Bolivien: »Sonnengetrocknete Beeren, Melone, leichte Noten tropischer Früchte«</li>
+  <li><a href="http://originalbeans.com/piura-porcelana/">Piura Porcelana</a>, Peru, 75%: »Anregend mit üppigen Noten von Limone, Aprikose und Pekanuss«</li>
+  <li><a href="http://originalbeans.com/shop/bars/beni-wild-harvest/">Beni Wild Harvest</a>, 66%, Bolivien: »Sonnengetrocknete Beeren, Melone, leichte Noten tropischer Früchte«</li>
 </ul>
 
 ### Zotter Labooko
 
 <a href="/assets/schokolade/labooko1.jpg" class="schokolade-img"><img src="/assets/schokolade/labooko1.jpg" alt="" width="68" height="150"></a>
 
-In einem <a href="http://www.kruck-atelier-cacao.de/">kleinen Schokoladen-Laden in den Hackeschen Höfen</a> fanden wir Schokoladen der Marke <a href="http://www.zotter.at/de/schoko-laden/labooko/dunkle-schokoladen.html">Labooka von Zotter</a>. Das Doppelpack Ecuador 60%, Bolivien 70% fanden wir hervorragend und werden sicher weitere Sorten testen.
+In einem <a href="http://www.kruck-atelier-cacao.de/">kleinen Schokoladen-Laden in den Hackeschen Höfen</a> fanden wir Schokoladen der Marke <a href="https://www.zotter.at/de/online-shop/marken/labooko.html">Labooka von Zotter</a>. Das Doppelpack Ecuador 60%, Bolivien 70% fanden wir hervorragend und werden sicher weitere Sorten testen.
 
 <h2 style="clear: left;">Nüsse und Nougat</h2>
 
@@ -124,14 +124,14 @@ Tafeln mit ganzen Nüssen sind in Deutschland schwer zu finden. In den Niederlan
 
 <a href="/assets/schokolade/vivani.jpg" class="schokolade-img"><img src="/assets/schokolade/vivani.jpg" alt="" width="72" height="150"></a>
 
-Bekannte vegane Nougatschokoladen sind die <a href="http://www.rapunzel.de/bio-produkt-nirwana-noir-55-prozent-mit-dunkler-trueffelfuellung-hih--1430300.html">Rapunzel Nirwana Noir</a> sowie <a href="http://www.vivani.de/P_Tafeln_Dunkle_Nougat.html">Vivani Dunkle Nougatschokolade</a>. Beide haben eine Haselnusscremefüllung und sind im Bioladen erhältlich. Sie kosten in der Regel um die zwei Euro und sind recht gut. Hinsichtlich Schmelz und Cremigkeit unterscheiden sie sich von Nougatschokoladen mit Milch, sie sind fester und schmecken intensiver nach Schokolade und Nuss.
+Bekannte vegane Nougatschokoladen sind die <a href="https://www.rapunzel.de/bio-produkt-nirwana-noir-55-prozent-mit-dunkler-pralin%C3%A9-fuellung-hand-in-hand--1430300.html">Rapunzel Nirwana Noir</a> sowie <a href="http://www.vivani-schokolade.de/P_Tafeln_Dunkle_Nougat.html">Vivani Dunkle Nougatschokolade</a>. Beide haben eine Haselnusscremefüllung und sind im Bioladen erhältlich. Sie kosten in der Regel um die zwei Euro und sind recht gut. Hinsichtlich Schmelz und Cremigkeit unterscheiden sie sich von Nougatschokoladen mit Milch, sie sind fester und schmecken intensiver nach Schokolade und Nuss.
 
 <a href="/assets/schokolade/venchi1-1.jpg" class="schokolade-img"><img src="/assets/schokolade/venchi1-1.jpg" alt="" width="117" height="150"></a>
 
-Richtig gutes veganes Nougat gibt es etwa von der italienischen Marke <a href="http://www.venchi.it/">Venchi</a>. Ein wahrliches Goldstück ist <a href="http://www.venchi.it/en/shop/cp/Linea_Gianduja/Gianduja_nocciolato_fondente.htm">Gianduja nocciolato fondente</a> mit Piemont-Haselnüssen. Dies ist ein weicher Riegel aus reinem Nougat mit ganzen Nüssen, man muss also feine Scheibchen abschneiden. Der Nussgeschmack ist einfach umwerfend.
+Richtig gutes veganes Nougat gibt es etwa von der italienischen Marke <a href="http://www.venchi.it/">Venchi</a>. Ein wahrliches Goldstück ist <a href="https://www.winterfeldt-schokoladen.de/Venchi-Guanduja-Nocciolato-Fondente-Nougat-aus-Italien">Gianduja nocciolato fondente</a> mit Piemont-Haselnüssen. Dies ist ein weicher Riegel aus reinem Nougat mit ganzen Nüssen, man muss also feine Scheibchen abschneiden. Der Nussgeschmack ist einfach umwerfend.
 
 <a href="/assets/schokolade/venchi2.jpg" class="schokolade-img"><img src="/assets/schokolade/venchi2.jpg" alt="" width="121" height="150"></a>
 
-Wer eine dunkle Schokolade mit ganzen Nüssen sucht, ist mit <a href="http://www.venchi.it/en/shop/cp/Chunks/Pani_Nocciolato_Fondente_Extra.htm">Pani Nocciolato Fondente Extra</a> sehr gut beraten. Darin stecken dieselben Premium-Nüsse. Entsprechend muss man stolze 5-6 Euro für einen Riegel bezahlen. Das ist der Preis in diesem Fall aber Wert.
+Wer eine dunkle Schokolade mit ganzen Nüssen sucht, ist mit <a href="https://www.venchi.com/it/tipologie-cioccolato/cioccolato/cioccolato-fondente/tavoletta-di-cioccolato-fondente-54-nocciole-senza-zuccheri-aggiunti.html">Pani Nocciolato Fondente Extra</a> sehr gut beraten. Darin stecken dieselben Premium-Nüsse. Entsprechend muss man stolze 5-6 Euro für einen Riegel bezahlen. Das ist der Preis in diesem Fall aber Wert.
 
-Siehe auch: <a href="/schokolade-lagerung/">Zur Lagerung von Schokolade</a>
+<strong>Siehe auch: <a href="/schokolade-lagerung/">Zur Lagerung von Schokolade</a></strong>
