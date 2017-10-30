@@ -57,7 +57,7 @@ The **test devices**:
 
 I’ve only tested browsers that are available for both devices, that’s why I’m not reviewing vendor-specific browsers like Samsung Internet here.
 
-<h2 id="android-browsers-">Chrome (for reference)</h2>
+<h2 id="android-browsers-chrome">Chrome (for reference)</h2>
 
 Tested version: 59.0.3701.125<br>
 <a href="http://html5test.com/">html5test</a> score: 518 / 555
