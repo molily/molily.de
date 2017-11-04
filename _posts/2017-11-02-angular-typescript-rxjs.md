@@ -76,7 +76,6 @@ This reminds me of the event-driven architecture that Backbone, Marionette and C
 
 ## Conclusion
 
-I’d glad that I have the opportunity to work with these technologies. All programming concepts and libraries used for web interfaces have to deal with similar problems. As different as approaches like React and Angular, Redux Sagas and ngrx effects might be, they address the same problems using different programming paradigms. It’s great to learn something new and see conceptual similarities to other solutions – both strengths and weaknesses.
+All programming concepts and libraries used for web interfaces have to deal with similar problems. As different as approaches like React and Angular, Redux Sagas and ngrx effects might be, they address the same problems using different programming paradigms. It’s great to learn new solutions new and see conceptual similarities – both strengths and weaknesses. I’m glad that I have the opportunity to work with these technologies.
 
 Thanks to recent libraries and tools, client-side JavaScript has reached a maturity that allows us to write more robust web applications. The downside is that we’ve reached a complexity where it’s virtually impossible to understand the abstraction layers you’re using. Back in the days of jQuery and Backbone, it was possible to read the full source code and at least understand the overall structure. Today we reach for powerful programming paradigms that are not new but still unfamiliar to most web developers.
-
