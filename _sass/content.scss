@@ -35,6 +35,7 @@ html {
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   font-variant-ligatures: common-ligatures discretionary-ligatures contextual;
+  text-decoration-skip: ink;
 }
 
 .fonts-loaded {
@@ -217,10 +218,10 @@ address {
  */
 
 a {
+  text-decoration: none;
 
   &:link {
     color: $link-color;
-    text-decoration: none;
     border-bottom: 1px solid $link-border-color;
     transition: border-color 250ms ease;
   }
@@ -231,13 +232,35 @@ a {
   }
 
   &:hover, &:focus, &:active {
-    color: $link-active-color;
     border-color: $link-active-border-color;
   }
 
   & img {
     text-decoration: none;
   }
+}
+
+@supports (text-decoration-skip: ink) and (text-decoration: underline blue) {
+
+  a {
+
+    &:link {
+      text-decoration: underline $link-underline-color;
+      border-bottom: 0;
+      transition: text-decoration-color 250ms ease;
+    }
+
+    &:visited {
+      text-decoration: underline $link-visited-underline-color;
+      border-bottom: 0;
+    }
+
+    &:hover, &:focus, &:active {
+      text-decoration-color: $link-active-underline-color;
+    }
+
+  }
+
 }
 
 /**

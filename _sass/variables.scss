@@ -21,13 +21,17 @@ $code-text-color: #007;
 $citation-text-color: #4a4a60;
 
 // Link colors
-$link-color: #2000a0;
 $link-color: hsl($hue2, 100%, 30%);
-$link-border-color: #e0e0f0;
 $link-visited-color: $text-color;
+
+$link-border-color: #e0e0f0;
 $link-visited-border-color: lighten($link-border-color, 1%);
-$link-active-color: #2015C0;
+
+$link-underline-color: desaturate(lighten($link-color, 40%), 60%);
+$link-visited-underline-color: lighten($text-color, 60%);
+
 $link-active-border-color: #8080c0;
+$link-active-underline-color: $link-color;
 
 /**
  * @section Typography

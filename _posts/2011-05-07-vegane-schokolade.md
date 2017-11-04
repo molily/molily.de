@@ -26,6 +26,7 @@ lang: de
 .schokolade-img:hover,
 .schokolade-img:active {
   border: 0;
+  text-decoration: none;
 }
 
 .schokolade-img img {
