@@ -278,6 +278,7 @@ q {
  */
 
 abbr, acronym {
+  text-decoration: underline dotted $gray-text-color;
   border-bottom-style: none;
   cursor: help;
   font-style: normal;
