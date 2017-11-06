@@ -36,6 +36,11 @@ Another well-known drawback of Redux is that you need a lot of boilerplate code 
 
 # Angular
 
+<blockquote>
+<p>»Did an Angular beginner’s tutorial on Friday evening, wrote (<abbr title="copy and paste">c&amp;p</abbr> <abbr title="to be quite honest">tbqh</abbr>) Angular code for the first time in my life, I’m a <abbr title="professional">profesh</abbr> <abbr title="JavaScript">JS</abbr> <abbr title="developer">dev</abbr> <abbr title="ask my anything">AMA</abbr>.«<br>
+– <a href="https://twitter.com/molily/status/873325962984869888">molily, 10 Jun 2017 on twitter.com</a></p>
+</blockquote>
+
 This was just the prelude for the topic I’d like to write about. At [9elements](https://9elements.com), we do have standard tools and favorite development stacks. But we try to use the right tool for a job instead of just the tool we’re used to. In a recent client project, we’re using Angular 2+ and I have the pleasure to set up the architecture.
 
 My first impression was that conceptually, Angular and the React ecosystem are very close. The core concept are encapsulated UI components that have a template, scoped styles, well-defined dependencies, inputs/props and outputs/events/callbacks.
