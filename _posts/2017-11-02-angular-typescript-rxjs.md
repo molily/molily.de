@@ -10,7 +10,7 @@ In this post I’d like to share my experience with web development technologies
 
 ## Back story: Backbone, Chaplin, React
 
-I’m developing web sites since the late 1990s, and today I’m a mostly writing frontend code with a focus on JavaScript. I’ve never actively chosen to become a “JavaScript expert”. Ten years ago I was a regular in the German [Selfhtml Forum](https://forum.selfhtml.org/). When JavaScript gained traction in the the wake of “Ajax”, more JavaScript questions were posted and I tried to answer them. By looking into other people’s problems, I’ve learned the depths and shallows of JavaScript.
+I’m developing web sites since the late 1990s, and today I’m a mostly writing frontend code with a focus on JavaScript. I’ve never actively chosen to become a “JavaScript expert”. Ten years ago I was a regular in the German [Selfhtml Forum](https://forum.selfhtml.org/). When JavaScript gained traction in the wake of “Ajax”, more JavaScript questions were posted and I tried to answer them. By looking into other people’s problems, I’ve learned the depths and shallows of JavaScript.
 
 The company I work for, [9elements](https://9elements.com), used JavaScript quite early for animation, visualization and rich interactions. In 2012 we released [Chaplin](http://chaplinjs.org), a [Backbone](http://backbonejs.org/)-based architecture for JavaScript single-page applications. Later we discovered the power of React and Redux, and they are still the tools of our choice. In a recent smaller project, we substituted React with [Preact](https://github.com/developit/preact), and we were happy about that choice.
 
