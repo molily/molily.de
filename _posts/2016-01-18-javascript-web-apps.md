@@ -70,7 +70,7 @@ Which brings us to the well-known problem of **sharing logic**. It exists for ev
 
 Instead of simply <a href="http://roca-style.org/#application-logic">forbidding to have valuable logic</a> on the client, let’s talk about **sharing particular logic for the user’s benefit**. Again, this question not only concerns JavaScript web apps, but all clients that are architecturally separated from the API server.
 
-There are already practical ways to share logic between client and server. In the form validation example, we can specifiy the rules in a neutral, declarative format like JSON or XML. Each client has glue code that reads and applies the rules to the specific user interface.
+There are already practical ways to share logic between client and server. In the form validation example, we can specify the rules in a neutral, declarative format like JSON or XML. Each client has glue code that reads and applies the rules to the specific user interface.
 
 ## Client-server architectures instead of monoliths
 
@@ -89,7 +89,8 @@ If you have a service-oriented architecture, different teams can build different
 Accessibility is a topic that was long neglected in the JavaScript community, and it’s still neglected in the broader web development community. We need meaningful criticism and advice to improve the accessibility of today’s web apps. That’s why I’m disappointed by such blunt statements:
 
 <blockquote>
-<p>“In terms of accessibility, rendering semantic HTML on the server-side provides an out-of-the-box support.”</p>
+<p>“In terms of accessibility, rendering semantic HTML on the server-side provides an out-of-the-box support. There is only a limited set of things that you can do with HTML, and again this is a feature, not a bug.”</p>
+<p>“You can address some of those problems within an SPA, too. But it takes effort. With the ROCA approach, you have a well-known, extremely mature, proven architecture to rely on.”</p>
 </blockquote>
 
 This is misleading. Your HTML is not more accessible or more semantic when it’s rendered on the server. Whether you render HTML on the server or in the browser, <em>you</em> need to write accessible and semantic markup.
