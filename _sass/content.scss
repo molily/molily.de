@@ -48,7 +48,7 @@ html {
  */
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 1.8rem 0 1rem;
+  margin: 2rem 0 1rem;
   color: $heading-color;
   line-height: $heading-line-height;
   font-weight: 500;
@@ -66,7 +66,11 @@ h3 {
   font-size: 1.2rem;
 }
 
-h4, h5, h6 {
+h4 {
+  font-size: 1.1rem;
+}
+
+h5, h6 {
   font-size: inherit;
 }
 
@@ -169,12 +173,19 @@ pre {
 }
 
 pre, code, samp {
-  color: $code-text-color;
+  background-color: $highlight-background-color;
   font-family: $monospace-font;
+  color: $code-text-color;
+}
+
+pre code {
+  background-color: transparent;
+  color: inherit;
 }
 
 p code {
   font-family: inherit;
+  padding: 0 0.2rem;
 }
 
 /**
@@ -291,7 +302,7 @@ abbr, acronym {
 
 table {
   border-spacing: 0;
-  margin-bottom: 1rem;
+  margin: 1rem auto;
 }
 
 caption {
