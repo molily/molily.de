@@ -54,7 +54,7 @@ If your application uses thousands of hosts to serve your JavaScript, such error
 
 I’m mentioning this incident because there were several “told you so!” statements from advocates of progressive enhancement in my timeline. There was the sentiment that progressive enhancement would have prevented this problem. I’d like to discuss this in detail.
 
-Progressive enhancement is about making web sites more robust and providing a good experience to every user. What does this mean for JavaScript apps? Most experts agree that progressive enhancement is [not simply about JavaScript availability](https://www.christianheilmann.com/2015/02/18/progressive-enhancement-is-not-about-javascript-availability/). Since most web clients understand at least some JavaScript today, we need to focus on what happens when the browser *does* run our JavaScript code.
+Progressive enhancement is about making websites more robust and providing a good experience to every user. What does this mean for JavaScript apps? Most experts agree that progressive enhancement is [not simply about JavaScript availability](https://www.christianheilmann.com/2015/02/18/progressive-enhancement-is-not-about-javascript-availability/). Since most web clients understand at least some JavaScript today, we need to focus on what happens when the browser *does* run our JavaScript code.
 
 [In a previous post](/interaction-is-key/#reliability) I listed the precautions we take to write robust JavaScript apps: From feature support checks over polyfills to unit and acceptance tests. [As Christian Heilmann writes](https://www.christianheilmann.com/2015/02/18/progressive-enhancement-is-not-about-javascript-availability/), progressive enhancement “is about asking ‘if’ a lot.” Conceptually, but also literally in JavaScript by using the `if (…) {…}` statement and similar conditions. Explicit checks are better than implicit assumptions.
 
@@ -86,7 +86,7 @@ It’s worth to quote Avery’s conclusion entirely:
 
 ## Updating JavaScript best practices
 
-I agree that the key role of making robust web sites is to have a testing infrastructure in place. I also agree that articles on progressive enhancement haven’t addressed the specific problem of JavaScript failure *yet*. But progressive enhancement is just an abstract concept that needs to be filled and updated. Let’s refine our practices when the environment has changed.
+I agree that the key role of making robust websites is to have a testing infrastructure in place. I also agree that articles on progressive enhancement haven’t addressed the specific problem of JavaScript failure *yet*. But progressive enhancement is just an abstract concept that needs to be filled and updated. Let’s refine our practices when the environment has changed.
 
 In the past, progressive enhancement was dominated by the concept of **[Unobtrusive JavaScript](http://www.onlinetools.org/articles/unobtrusivejavascript/)**, coined back in 2005. The main goals of Unobtrusive JavaScript were to provide a functional user interface when JavaScript is not available or modern JavaScript APIs are not supported. Also, JavaScript should build on the existing HTML structure and “improve” it.
 
@@ -114,7 +114,7 @@ Coming back to the Twitter example: The rich text editor should be an enhancemen
 
 ## A simplistic example (is simplistic)
 
-Let’s have a look at a simple example. Given is a web site with a search feature. The basic version is an HTML form:
+Let’s have a look at a simple example. Given is a website with a search feature. The basic version is an HTML form:
 
 <pre>
 &lt;form action='/search' id='searchForm'>

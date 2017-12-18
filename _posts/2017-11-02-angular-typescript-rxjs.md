@@ -10,7 +10,7 @@ In this post I’d like to share my experience with web development technologies
 
 ## Back story: Backbone, Chaplin, React
 
-I’m developing web sites since the late 1990s, and today I’m a mostly writing frontend code with a focus on JavaScript. I’ve never actively chosen to become a “JavaScript expert”. Ten years ago I was a regular in the German [Selfhtml Forum](https://forum.selfhtml.org/). When JavaScript gained traction in the wake of “Ajax”, more JavaScript questions were posted and I tried to answer them. By looking into other people’s problems, I’ve learned the depths and shallows of JavaScript.
+I’m developing websites since the late 1990s, and today I’m a mostly writing front-end code with a focus on JavaScript. I’ve never actively chosen to become a “JavaScript expert”. Ten years ago I was a regular in the German [Selfhtml Forum](https://forum.selfhtml.org/). When JavaScript gained traction in the wake of “Ajax”, more JavaScript questions were posted and I tried to answer them. By looking into other people’s problems, I’ve learned the depths and shallows of JavaScript.
 
 The company I work for, [9elements](https://9elements.com), used JavaScript quite early for animation, visualization and rich interactions. In 2012 we released [Chaplin](http://chaplinjs.org), a [Backbone](http://backbonejs.org/)-based architecture for JavaScript single-page applications. Later we discovered the power of React and Redux, and they are still the tools of our choice. In a recent smaller project, we substituted React with [Preact](https://github.com/developit/preact), and we were happy about that choice.
 
@@ -22,7 +22,7 @@ Recently [I was wondering](https://twitter.com/molily/status/917477498409152513)
 
 Most people would probably say React had a bigger impact on their work than Redux. For me it’s the opposite; Redux was the eye opener. I’ve always struggled with application-wide state management. [Chaplin and Marionette](https://9elements.com/io/comparison-of-marionette-and-chaplin/) made it easier to keep state in central models, but every non-trivial app ended up as a hairball of internal dependencies and confusing model-view bindings.
 
-Redux and the underlying [Flux architecture](https://facebook.github.io/flux/docs/in-depth-overview.html#content) feature ideas of functional and reactive programming and reintroduced these paradigms into web frontend coding. Redux allowed to talk about application state in formal terms again. When something goes wrong in your app, it’s easy to find the cause. Moreover, the parts of the architecture are clearly separated and relatively easy to test in isolation.
+Redux and the underlying [Flux architecture](https://facebook.github.io/flux/docs/in-depth-overview.html#content) feature ideas of functional and reactive programming and reintroduced these paradigms into web front-end coding. Redux allowed to talk about application state in formal terms again. When something goes wrong in your app, it’s easy to find the cause. Moreover, the parts of the architecture are clearly separated and relatively easy to test in isolation.
 
 ## Side effects in Redux: Thunks and Sagas
 

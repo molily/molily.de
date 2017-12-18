@@ -14,7 +14,7 @@
 @import 'highlight';
 
 /**
- * @section Variables
+ * @section Blog-specific variables
  *
  */
 
@@ -40,15 +40,6 @@ $post-header-background: hsl($hue, 38%, 51%);
   @media (min-width: 57em) {
     @content;
   }
-}
-
-/**
- * @section Box model fix
- *
- */
-
-*, *:before, *:after {
-  box-sizing: border-box;
 }
 
 /**

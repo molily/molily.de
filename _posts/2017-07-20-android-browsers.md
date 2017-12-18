@@ -254,7 +254,7 @@ Images are indeed the biggest cause of mobile internet traffic, so there’s big
 - The “Do not track” HTTP header can be enabled, just like in Chrome.
 - There’s a built-in tracking protection, but as I said, it only works in private browsing mode.
 - “Data choices” allows you to choose which usage data is sent to Mozilla. Chrome has a similar feature but in my opinion, Mozilla makes it more transparent what data they are collecting and why.
-- Cookies: Enabled / Enabled, exclude third party cookies / Disabled. Most Chrome-based browsers allow to disable cookies, but that’s not particularly useful. Gladly Firefox allows to disable third party cookies, which is a good tradeoff between privacy and, well, working web sites.
+- Cookies: Enabled / Enabled, exclude third party cookies / Disabled. Most Chrome-based browsers allow to disable cookies, but that’s not particularly useful. Gladly Firefox allows to disable third party cookies, which is a good tradeoff between privacy and, well, working websites.
 - Clear private data manually
 - Clear private data automatically on exit
 
@@ -394,7 +394,7 @@ The **start page** of a new tab features pre-defined bookmarks, random news head
 
 The **main menu** can be opened from the bottom bar. I think it’s one of the strengths of UC Browser. All important features are easily accessible and clear to understand thanks to proper use of icons.
 
-When swiping right, there are settings for changing the display of the current page: change font size, color theme, fit to screen vs. zoom. These are vital tools to make web sites more readable.
+When swiping right, there are settings for changing the display of the current page: change font size, color theme, fit to screen vs. zoom. These are vital tools to make websites more readable.
 
 After some browsing, a dialog pops up and asks me to rate the app on the Play Store or to leave feedback on the UC Help Center.
 
@@ -413,7 +413,7 @@ But wait, there’s even more. When connecting the device to charger, a dialog p
 <ul class="compact-list">
 <li>Night mode for switching to a low brightness, low contrast display mode</li>
 <li>Quick font size adjustment as well as base font size setting</li>
-<li>Color themes for web sites</li>
+<li>Color themes for websites</li>
 <li>Numerous browser themes to choose from, essentially wallpaper images for the translucent UI</li>
 </ul>
 
@@ -504,7 +504,7 @@ In contrast to Chrome, Brave does not have a data saving feature. Channeling all
 
 <ul class="compact-list">
 <li>Built-in tracking protection</li>
-<li>Fingerprinting protection. This makes it harder for web sites to collect data about your device to create a unique hardware/software fingerprint.</li>
+<li>Fingerprinting protection. This makes it harder for websites to collect data about your device to create a unique hardware/software fingerprint.</li>
 <li>Easy per-site script blocking. Most tracking is performed using JavaScript, and it has a negative impact on performance.</li>
 <li>Cookies: Per default, third party cookies are blocked. This can be configured per site or globally for all sites.</li>
 <li>Clear private data manually</li>

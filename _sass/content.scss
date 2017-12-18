@@ -14,6 +14,15 @@
 @import 'accessible-hide';
 
 /**
+ * @section Box model fix
+ *
+ */
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+/**
  * @section Text selection
  *
  */
@@ -63,11 +72,11 @@ h2 {
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 h4 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 h5, h6 {
@@ -112,7 +121,7 @@ li, li p {
   margin: 0 0 1rem;
 }
 
-/* Kompakte Listen */
+/* Compact lists */
 
 .compact-list li,
 .ultra-compact-list li {
@@ -143,7 +152,7 @@ li, li p {
 }
 
 /**
- * @section Definition Lists
+ * @section Definition lists
  *
  */
 

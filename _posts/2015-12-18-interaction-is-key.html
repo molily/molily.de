@@ -6,23 +6,23 @@ keywords: Progressive enhancement, JavaScript, web applications, single-page app
 lang: en
 ---
 
-<p>Progressive enhancement is a process in web development that starts with a rather simple version of a web site. This version provides the core features to the user. Then you enhance the site by using more demanding technologies, step by step, repeatedly. Web clients that do not support these technologies just render the simpler version instead of the enhanced.</p>
+<p>Progressive enhancement is a process in web development that starts with a rather simple version of a website. This version provides the core features to the user. Then you enhance the site by using more demanding technologies, step by step, repeatedly. Web clients that do not support these technologies just render the simpler version instead of the enhanced.</p>
 
-<h2 id="server-rendered-sites">Robust, server-rendered web sites</h2>
+<h2 id="server-rendered-sites">Robust, server-rendered websites</h2>
 
 <p>The first version has low technical requirements. It supports all devices with web access. It uses a subset of the existing web technologies, and uses them properly. This makes sure all users can access the content and perform the basic tasks.</p>
 
 <p>For example, you write a site in plain HTML and CSS. You upload it to a web server that serves it statically. This rather simple site loads fast and works on all devices.</p>
 
-<p>You may add sophisticated server-side logic without impairing interoperability and accessibility. The backend may be a content management system, an e-commerce shop or a search engine. You can chose the server technology stack freely. The server is – more or less – under your control. Adding complexity on the server does not raise the bar for the client because in the end it’s just HTML served over HTTP.</p>
+<p>You may add sophisticated server-side logic without impairing interoperability and accessibility. The back-end may be a content management system, an e-commerce shop or a search engine. You can chose the server technology stack freely. The server is – more or less – under your control. Adding complexity on the server does not raise the bar for the client because in the end it’s just HTML served over HTTP.</p>
 
-<p>This paradigm sees web sites as a collection of Hypertext documents that consist mostly of text, links, forms and other media with text fallback. For any non-trivial user interaction, a server roundtrip is necessary to generate a new HTML page.</p>
+<p>This paradigm sees websites as a collection of Hypertext documents that consist mostly of text, links, forms and other media with text fallback. For any non-trivial user interaction, a server roundtrip is necessary to generate a new HTML page.</p>
 
 <h2 id="client-side-web-apps">Client-side web applications</h2>
 
 <p>Ten years ago, the possibilities of front-end technologies skyrocketed. A different paradigm slowly took over: the web as a platform for applications that run in the browser. Today we have HTML5, complex CSS layout techniques, high-performance JavaScript engines and powerful device APIs. The browser is an open runtime environment with capabilities similar closed, vendor-specific platforms.</p>
 
-<p>Used properly, these new technologies can make a web site more dynamic and improve the overall user experience. They offer a range of features that server-side logic cannot provide, for example access to the user’s location in real time, or a meaningful offline functionality.</p>
+<p>Used properly, these new technologies can make a website more dynamic and improve the overall user experience. They offer a range of features that server-side logic cannot provide, for example access to the user’s location in real time, or a meaningful offline functionality.</p>
 
 <p>Progressive enhancement embraces technical progress and acknowledges the benefits for the users. But using the latest front-end technologies should not exclude users with devices with limited standards support.</p>
 
@@ -32,7 +32,7 @@ lang: en
 
 <p>In the last couple of years the discussion revolves around the proper usage of JavaScript again. In 2005 the <a href="http://web.archive.org/web/20050616092458/http://maxdesign.com.au/presentation/workshop/slide3.cfm">layer model of front-end technologies</a> put JavaScript in its place: It’s just the icing on your cake, the <a href="http://alistapart.com/article/understandingprogressiveenhancement">chocolate coating</a> on your peanuts, the topping on your ice cream, the jelly on your peanut butter (I’m running out of bad metaphors here). You should never depend on JavaScript, <a href="http://www.digital-web.com/articles/the_behavior_layer/">it was told</a>.</p>
 
-<p>Back to 2015. In the age of JavaScript frameworks and so-called single-page web applications, it’s a sad fact that almost all web sites require JavaScript and particular JavaScript features to work properly. When JavaScript fails to download or execute, there is often nothing to see for the user.</p>
+<p>Back to 2015. In the age of JavaScript frameworks and so-called single-page web applications, it’s a sad fact that almost all websites require JavaScript and particular JavaScript features to work properly. When JavaScript fails to download or execute, there is often nothing to see for the user.</p>
 
 <p>Lately there has been a controversy between authors of JavaScript client-side frameworks and proponents of progressive enhancement. My impression is that the gap between these “camps” just gets bigger over time. Sharing their experiences does not seem to bring them closer.</p>
 
@@ -48,7 +48,7 @@ lang: en
 
 <p>I’m trying to find the practical implications of this viewpoint.</p>
 
-<p>It is true that you can’t “absolutely rely” on front-end technologies. Yet this statement is at odds with our daily development work. We do rely on specific technologies to build complex web sites. And that’s fine to some degree.</p>
+<p>It is true that you can’t “absolutely rely” on front-end technologies. Yet this statement is at odds with our daily development work. We do rely on specific technologies to build complex websites. And that’s fine to some degree.</p>
 
 <p>Writing HTML, CSS and JavaScript <em>bakes in implicit assumptions</em> about the network, the browser, the device, let alone the user. For example, any trivial client-side JavaScript relies on basic ECMAScript and HTML DOM support. Think about how many assumptions are made in widely-deployed front-end libraries like Bootstrap and jQuery. <a href="https://remysharp.com/2015/07/02/assumptions">You need to be aware of this dependency</a>, but it is not necessarily a problem.</p>
 
@@ -80,7 +80,7 @@ lang: en
 
 <p>Is it technically possible to serve an article to the browser without loading 1 MB of complex JavaScript? Isn’t server-rendered HTML more robust? <em>Hell yes.</em></p>
 
-<p><em>But is interaction an enhancement?</em> Not for these web sites, and not for a great share of web sites that are built today.</p>
+<p><em>But is interaction an enhancement?</em> Not for these websites, and not for a great share of websites that are built today.</p>
 
 <p>It’s easy to hit on sites like Gawker and Bustle. We should at least try to understand what they are aiming at and why they built single-page applications. For these sites, <em>interaction is not an enhancement</em>, it’s the <em>fundamental feature</em>, the <em>core functionality</em>.</p>
 
@@ -92,11 +92,11 @@ lang: en
 
 <h2 id="pe-inpractice">Putting progressive enhancement in practice</h2>
 
-<p>In my day job, I have built several JavaScript single-page applications as well as web sites with core features requiring JavaScript. This means I’ve experienced all the pleasure and pain of this approach.</p>
+<p>In my day job, I have built several JavaScript single-page applications as well as websites with core features requiring JavaScript. This means I’ve experienced all the pleasure and pain of this approach.</p>
 
 <p>I’m working for <a href="https://9elements.com">9elements, a software and design agency</a>. Most of our customers have a tight budget and specific goals. They choose us because we fuse design, function, interaction and performance.</p>
 
-<p>I have read articles on progressive enhancement for more than 10 years with great interest. Still they helped little in my daily work developing web sites that need to provide an excellent user experience.</p>
+<p>I have read articles on progressive enhancement for more than 10 years with great interest. Still they helped little in my daily work developing websites that need to provide an excellent user experience.</p>
 
 <p>What did help was the recent “universal JavaScript” movement: Writing JavaScript code that runs on the server and the client, on Node.js and in the browser. This way it’s possible to generate HTML on the server and add client-side behavior on top of it easily. Interestingly, the driving force behind this movement was not progressive enhancement, but the need for a decent start-up performance.</p>
 
@@ -124,7 +124,7 @@ lang: en
 
 <p>What I miss in recent calls for progressive enhancement are two simple truisms: “it depends” and “it’s complicated”.</p>
 
-<p>Jeremy Keith is one of the most renowned advocates of progressive enhancement. <a href="https://adactio.com/journal/9963">In a recent article</a>, he argues that progressive enhancement feels difficult because we’re not yet used to developing web sites this way. With every project, it will become easier and easier, he predicts:</p>
+<p>Jeremy Keith is one of the most renowned advocates of progressive enhancement. <a href="https://adactio.com/journal/9963">In a recent article</a>, he argues that progressive enhancement feels difficult because we’re not yet used to developing websites this way. With every project, it will become easier and easier, he predicts:</p>
 
 <blockquote cite="https://adactio.com/journal/9963">
   <p>So if you’re used to thinking of the all-singing, all-dancing version of your site as the starting point, it’s going to be really, really hard to instead start by building the most basic, accessible version first and then work up to the all-singing, all-dancing version …at first. But eventually it will just become normal.</p>
@@ -147,7 +147,7 @@ lang: en
 
 <p>My explanation is that <em>progressive enhancement even gets harder as the capabilities of the web grow</em>. Web devices are as diverse as never before. Web applications are as complex as never before. JavaScript is as versatile and powerful as never before.</p>
 
-<p>Today’s web sites are skyscrapers, just without elevators. There’s a race to build higher and higher. Each floor is a front-end technology, an HTML, CSS or JavaScript feature. With each floor, it’s harder to make the skyscraper accessible for everyone.</p>
+<p>Today’s websites are skyscrapers, just without elevators. There’s a race to build higher and higher. Each floor is a front-end technology, an HTML, CSS or JavaScript feature. With each floor, it’s harder to make the skyscraper accessible for everyone.</p>
 
 <p>That does not mean we should not try our best. But it explains why only few teams manage to cut the Gordian knot, given the technologies and limited budgets they have.</p>
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Frontend security and Cross-Site Scripting (XSS) for Ruby on Rails developers
+title: Front-end security and Cross-Site Scripting (XSS) for Ruby on Rails developers
 description: Cross-Site Scripting is a security hole that allows attackers to inject and execute JavaScript on your website. The article highlights some important security aspects that affect Ruby on Rails development. Transcript of a presentation I gave at my employer 9elements.
 lang: en
 ---
@@ -61,11 +61,11 @@ lang: en
 
 <div class="xss-article" lang="en">
 
-<p>At the company I work for, I gave an internal presentation about frontend security. <a href="https://9elements.com">9elements</a> is a software development agency that builds server-side Ruby on Rails applications and client-side JavaScript applications, as well as native mobile applications for iOS and Android.</p>
+<p>At the company I work for, I gave an internal presentation about front-end security. <a href="https://9elements.com">9elements</a> is a software development agency that builds server-side Ruby on Rails applications and client-side JavaScript applications, as well as native mobile applications for iOS and Android.</p>
 
 <p>The presentation isn’t a complete introduction to Cross-Site Scripting, but highlights some important aspects that affect Ruby on Rails development. The following text is a transcript of the presentation.</p>
 
-<h2 id="xss-security-concepts">Frontend security concepts to learn</h2>
+<h2 id="xss-security-concepts">Front-end security concepts to learn</h2>
 
 <p>Before I start with the main topic, I’d like to give an overview about security concepts every Rails and JavaScript developer should learn sooner or later. I won’t go into detail here, but mention them so you can read and learn on your own.
 
@@ -80,7 +80,7 @@ lang: en
 
 <h2 id="xss-not-an-introduction">Not a thorough introduction</h2>
 
-<p>In this presentation, I won’t explain all things XSS. I will <a href="#xss-resources">link to articles which do</a>. I will explain the background and then focus on how XSS affects Ruby on Rails frontend development. Later I will show two real-world examples to illustrate how nasty and tricky XSS is.
+<p>In this presentation, I won’t explain all things XSS. I will <a href="#xss-resources">link to articles which do</a>. I will explain the background and then focus on how XSS affects Ruby on Rails front-end development. Later I will show two real-world examples to illustrate how nasty and tricky XSS is.
 
 <h2 id="xss-what-is-xss">What is Cross-Site Scripting (XSS)?</h2>
 
@@ -121,7 +121,7 @@ lang: en
 
 <h2 id="xss-code-injection">Code injection</h2>
 
-<p>Untrusted content can cause processing errors in the backend and frontend, but why is it a security concern?</p>
+<p>Untrusted content can cause processing errors in the back-end and front-end, but why is it a security concern?</p>
 
 <p>Untrusted content gets into the database and eventually into the HTML, CSS or JavaScript code. If not treated correctly, this is a possible code injection.</p>
 
@@ -468,7 +468,7 @@ var userJSON = document.getElementById('user-json').textContent;
 var user = JSON.parse(userJSON);
 </pre>
 
-<p>A more effective solution is to sanitize untrusted data before it appears in the frontend. Remove or filter HTML using <a href="#xss-sanitizers">well-proven sanitizers</a>.
+<p>A more effective solution is to sanitize untrusted data before it appears in the front-end. Remove or filter HTML using <a href="#xss-sanitizers">well-proven sanitizers</a>.
 
 <h2 id="xss-input-validation">Conclusion: Comprehensive input validation</h2>
 
@@ -515,7 +515,7 @@ var user = JSON.parse(userJSON);
 
 <h2 id="xss-more">More than XSS</h2>
 
-<p>As said in the beginning, XSS is not the only frontend security threat. These links cover related security issues:</p>
+<p>As said in the beginning, XSS is not the only front-end security threat. These links cover related security issues:</p>
 
 <ul class="compact-list">
 <li><a href="http://fhemberger.github.io/talks/web-security/en.html">Mitigate Clickjacking and XSS attacks with HTTP headers</a></li>

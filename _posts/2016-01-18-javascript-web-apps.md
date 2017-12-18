@@ -26,9 +26,9 @@ First of all, I think the term “single-page application” is a perpetual sour
 In previous discussions, best practices for JavaScript-heavy web applications have been established.
 Once again, I point to [a comprehensive talk by Pamela Fox](http://blog.pamelafox.org/2013/05/frontend-architectures-server-side-html.html) from 2013 in which she described the requirements for a web application from a user and developer perspective.
 
-The big JavaScript frameworks embrace these best practices as of today. Most problems that we had in 2006 and 2012 are solved today. We can build fast and accessible web sites that are highly dynamic in the browser. Using progressive enhancement, we can build robust JavaScript web apps that still work when JavaScript fails for some reason.
+The big JavaScript frameworks embrace these best practices as of today. Most problems that we had in 2006 and 2012 are solved today. We can build fast and accessible websites that are highly dynamic in the browser. Using progressive enhancement, we can build robust JavaScript web apps that still work when JavaScript fails for some reason.
 
-JavaScript web apps aren’t special snowflakes, they are just Hypertext nodes in the World Wide Web. Therefore they need to [build on URLs just like traditional web sites](http://9elements.com/io/index.php/hybrid-javascript-apps/), so that linking and bookmarking works the same. Technically, this problem is solved since browsers and libraries support the [HTML5 History API](http://caniuse.com/#feat=history), which happened between 2010 and 2012.
+JavaScript web apps aren’t special snowflakes, they are just Hypertext nodes in the World Wide Web. Therefore they need to [build on URLs just like traditional websites](http://9elements.com/io/index.php/hybrid-javascript-apps/), so that linking and bookmarking works the same. Technically, this problem is solved since browsers and libraries support the [HTML5 History API](http://caniuse.com/#feat=history), which happened between 2010 and 2012.
 
 ## Better JavaScript web apps
 
@@ -113,7 +113,7 @@ My main concern with Tilkov’s article is that he sees no use for JavaScript we
 
 There might be JavaScript web apps with simple interactions, but it’s more likely that one cannot see the full complexity by looking at some screens.
 
-Most web apps I work with daily have highly sophisticated in-browser interactions that are built with JavaScript and can only be built with JavaScript: Flickr, YouTube, Facebook, Twitter, GMail, Amazon etc. Most likely the web sites you use everyday are heavily enhanced with JavaScript, too. You might not notice this, because they follow best practices and “just work”.
+Most web apps I work with daily have highly sophisticated in-browser interactions that are built with JavaScript and can only be built with JavaScript: Flickr, YouTube, Facebook, Twitter, GMail, Amazon etc. Most likely the websites you use everyday are heavily enhanced with JavaScript, too. You might not notice this, because they follow best practices and “just work”.
 
 Such sites provide a great benefit to the user. In the end, every software, every information system should enable the user to perform tasks in an easy, fast and approachable way. This should drive your architectural decisions.
 

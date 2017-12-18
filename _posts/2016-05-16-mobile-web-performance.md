@@ -18,15 +18,15 @@ In this article, I won’t talk about structuring CSS, but I’d like to borrow 
 
 Mobile web access today is ubiquitous, and for millions of people it’s the first and only web experience. I’m using the web every day with a powerful smartphone on an EDGE or HSPA+ connection. But the overall user experience is *frustrating*. Both as a user and developer, I found mobile browsers to be unreliable and slow compared to desktop browsers. To improve the performance and reduce data usage, I’m mostly using proxy-based browsers like [Opera Mini](http://www.opera.com/de/mobile/mini) and [UC Browser](https://en.wikipedia.org/wiki/UC_Browser).
 
-There are numerous articles on why the mobile web sucks. Some of them [blame mobile web browsers](http://www.theverge.com/2015/7/20/9002721/the-mobile-web-sucks), some of them blame creators, web developers or advertisers. And they all are right. The whole industry is responsible. Web sites are slow and unresponsive because they are bloated: Slow advertising scripts, large images and videos, too many custom fonts, gigantic JavaScript and CSS frameworks of which only ten percent are used.
+There are numerous articles on why the mobile web sucks. Some of them [blame mobile web browsers](http://www.theverge.com/2015/7/20/9002721/the-mobile-web-sucks), some of them blame creators, web developers or advertisers. And they all are right. The whole industry is responsible. Websites are slow and unresponsive because they are bloated: Slow advertising scripts, large images and videos, too many custom fonts, gigantic JavaScript and CSS frameworks of which only ten percent are used.
 
 Some of these mistakes can be fixed at any time with basic performance optimization. Some of them need to be prevented in the concept and design phase. Some of them require the replacement of generic code with custom tailored code – which is not a viable option for smaller sites.
 
 ## Current performance goals and methods
 
-On low-bandwidth, high-latency mobile internet connections, web sites load slowly compared to wired, high-bandwidth, low-latency connections. But the main problem is not the amount of time a page takes to fully load. It is how the page behaves *while it is loading*.
+On low-bandwidth, high-latency mobile internet connections, websites load slowly compared to wired, high-bandwidth, low-latency connections. But the main problem is not the amount of time a page takes to fully load. It is how the page behaves *while it is loading*.
 
-[Response time](https://www.nngroup.com/articles/response-times-3-important-limits/) and input feedback have the biggest impact on the perceived performance of a user interface. Therefore, web sites should be optimized for the **[time to first render](http://www.websiteoptimization.com/speed/tweak/start-render/)**. The duration from the start of the request to the first render to the screen should be as short as possible. The user should see something within few seconds. And the first appearance should be close to the final appearance. This is what the [Speed Index](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index) measures.
+[Response time](https://www.nngroup.com/articles/response-times-3-important-limits/) and input feedback have the biggest impact on the perceived performance of a user interface. Therefore, websites should be optimized for the **[time to first render](http://www.websiteoptimization.com/speed/tweak/start-render/)**. The duration from the start of the request to the first render to the screen should be as short as possible. The user should see something within few seconds. And the first appearance should be close to the final appearance. This is what the [Speed Index](https://sites.google.com/a/webpagetest.org/docs/using-webpagetest/metrics/speed-index) measures.
 
 While “time to first render” is a crucial performance metric, rendering just something is not enough. A web page is not a static picture, but an interactive interface. Thus, a better performance metric is **[time to first meaningful interaction](https://medium.com/ben-and-dion/stop-painting-and-have-a-meaningful-interaction-with-me-86ef8eb4f5b3)**. How long does the user have to wait before interacting with the site?
 
@@ -44,7 +44,7 @@ This is especially frustrating if the user has already scrolled down and content
 
 ## The best practices that are killing us
 
-So why do mobile web sites perform so badly? In my opinion, developers follow best practices. If they are applied without consideration, these practices may kill us:
+So why do mobile websites perform so badly? In my opinion, developers follow best practices. If they are applied without consideration, these practices may kill us:
 
 <ol class="compact-list">
 <li>Progressive Enhancement and Unobtrusive JavaScript</li>
@@ -52,7 +52,7 @@ So why do mobile web sites perform so badly? In my opinion, developers follow be
 <li>Lazy-loading of non-critical content</li>
 </ol>
 
-The basic idea of progressive enhancement is treating every web device [according to its abilities](https://en.wikipedia.org/wiki/From_each_according_to_his_ability,_to_each_according_to_his_needs). Progressive enhancement helps to focus on the core features of a web site,
+The basic idea of progressive enhancement is treating every web device [according to its abilities](https://en.wikipedia.org/wiki/From_each_according_to_his_ability,_to_each_according_to_his_needs). Progressive enhancement helps to focus on the core features of a website,
 which should lead to high performance.
 
 Although I am a [strong proponent of progressive enhancement](/artikel), I think our understanding is yet incomplete and our practices need to be improved continually. It seems that progressive enhancement is misunderstood: Enhancements are applied *during load time while the user is watching*.

@@ -54,13 +54,13 @@ Let’s take a short detour to find out what single-page apps are about.
 
 Some years ago, there was a broad discussion about JavaScript single page apps. Pamela Fox gave a great overview on the different front-end architectures, discussing the pros and cons for developers and users: [Server-side HTML vs. JS Widgets vs. Single-Page Web Apps](http://blog.pamelafox.org/2013/05/frontend-architectures-server-side-html.html). There is a related conference talk: [slides](http://frontend-architectures.appspot.com/) and [video](https://vimeo.com/65497607).
 
-Even the [original article from 2005 that coined the “Ajax” moniker](http://adaptivepath.org/ideas/ajax-new-approach-web-applications/) might help to understand what single-page apps today are about. According to this definition, Ajax is not merely a front-end technique, not just a fancier name for <code>XMLHttpRequest</code>. It’s a user interface concept for dynamic web sites. The user performs tasks ideally without delays or interruptions, without noticing that server work is being done. Server requests are sent asynchronously in the background.
+Even the [original article from 2005 that coined the “Ajax” moniker](http://adaptivepath.org/ideas/ajax-new-approach-web-applications/) might help to understand what single-page apps today are about. According to this definition, Ajax is not merely a front-end technique, not just a fancier name for <code>XMLHttpRequest</code>. It’s a user interface concept for dynamic websites. The user performs tasks ideally without delays or interruptions, without noticing that server work is being done. Server requests are sent asynchronously in the background.
 
 <h2 id="spa-working-definition">Single-page applications: A working definition</h2>
 
 For now, let’s take this working definition by yours truly:
 
-A single-page web application is a web site with a complex interface that provides a high level of interactivity. A great share of this interactivity is implemented in client-side JavaScript, and particular interactions can only be implemented in JavaScript.
+A single-page web application is a website with a complex interface that provides a high level of interactivity. A great share of this interactivity is implemented in client-side JavaScript, and particular interactions can only be implemented in JavaScript.
 
 Sometimes the HTML is rendered on the client, but not necessarily. All HTML code or at least the initial structure may as well be rendered on the server.
 
