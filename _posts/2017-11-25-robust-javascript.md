@@ -12,12 +12,14 @@ DONE developer / programmer
 DONE parameter / argument
 DONE website / web application / application / software / program
 DONE one / you / passive voice
+DONE
 n’t
+’s
 ’re
 ’d
-fn() vs. fn
-may / might
-fetch / Fetch – fetch as the function, Fetch as the API
+DONE fn() vs. fn
+DONE may / might
+DONE fetch / Fetch – fetch as the function, Fetch as the API
 -->
 
 <script>
@@ -125,7 +127,7 @@ In this guide, we investigate why JavaScript might fail and how to prevent or ha
 
 ### Coding for the web: The browser as a runtime environment
 
-Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment and a few canonical libraries a developer might count on. There is not one hardware architecture or device type. There is not a single vendor that defines and builds the runtime, the compiler and the tools.
+Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment and a few canonical libraries a developer may count on. There is not one hardware architecture or device type. There is not a single vendor that defines and builds the runtime, the compiler and the tools.
 
 The web is an open, vendor-independent, heterogenous publishing platform. It is held together by several technical standards of different quality. New standards appear frequently, old standards are amended or deprecated. Different standardization organizations follow different rules of procedure.
 
@@ -144,7 +146,7 @@ Front-end developers benefit from a web that keeps on evolving and innovating. E
 
 It is true that client-side JavaScript programming is a minefield. But there is a simple, Socratic principle that will light our way: *Do not take anything for granted. Do not count on anything. Question your beliefs.* If you know that you know nothing about the client that runs your JavaScript code, you can turn unfounded assumptions into justified knowledge.
 
-it is necessary and inevitable that JavaScript makes assumptions, but we need to [own these assumptions](https://remysharp.com/2015/07/02/assumptions). Every JavaScript program makes a lot of assumptions about its runtime environment. While having a low entry barrier is certainly desirable, the program needs to fulfill a task. The requirements should be in a well-balanced relation to the provided features.
+Assumptions are necessary and inevitable in JavaScript, but we need to [own these assumptions](https://remysharp.com/2015/07/02/assumptions). Every JavaScript program makes a lot of assumptions about its runtime environment. While having a low entry barrier is certainly desirable, the program needs to fulfill a task. The requirements should be in a well-balanced relation to the provided features.
 
 ### JavaScript standards
 
@@ -154,7 +156,7 @@ The [ECMAScript specification](https://www.ecma-international.org/publications/s
 
 With ECMAScript alone, you cannot do anything useful. For example, there is no way to read or output any data. ECMAScript does not define the so-called <dfn>host environment</dfn> in which a program is executed. It allows several possible host environments. An HTML document in the browser is one possible host environment. Node.js is another popular one.
 
-The host environment we’re interested in here is primarily defined in the [HTML specification](https://www.w3.org/TR/html5/). It not only defines HTML as a markup language, it also defines how JavaScript is executed in the context of an HTML document. It defines how JavaScript can access and alter the document. For this purpose, it relies on yet another specification: the [Document Object Model (DOM)](https://dom.spec.whatwg.org/).
+The host environment we are interested in here is primarily defined in the [HTML specification](https://www.w3.org/TR/html5/). It not only defines HTML as a markup language, it also defines how JavaScript is executed in the context of an HTML document. It defines how JavaScript can access and alter the document. For this purpose, it relies on yet another specification: the [Document Object Model (DOM)](https://dom.spec.whatwg.org/).
 
 The HTML and DOM specifications define the main objects that client-side JavaScript is dealing with: nodes, elements and events. Fundamental objects include `window`, `window.alert()`, `document`, `document.body`, `document.getElementById()` and `document.createElement()`.
 
@@ -182,7 +184,7 @@ Mind that the JavaScript engine is still single-threaded, so only one script or 
 
 ## Achieving Robustness
 
-What does robustness mean? In everyday language, a thing is considered robust when it’s made of solid, strong material that somehow resists to applied force. You can use it for a long time, you can drop it by accident, you can even hit on it with a hammer or throw it around, but it does not break.
+What does robustness mean? In everyday language, a thing is considered robust when it is made of solid, strong material that somehow resists to applied force. You can use it for a long time, you can drop it by accident, you can even hit on it with a hammer or throw it around, but it does not break.
 
 According to this definition, a piece of hard metal may be robust, but an elastic bouncy ball as well. Science looks for materials that combine strength with a certain resistance to force, like [ductility](https://simple.wikipedia.org/wiki/Ductility) and elasticity.
 
@@ -208,7 +210,7 @@ A website still has a set of desired features and a set of client requirements. 
 
 Then, a second version is built that *enhances* the first version by adding new features. The enhanced version checks whether the client supports newer web technologies, then uses them safely. If the client meets the requirements for a certain feature, that feature is activated.
 
-This process is repeated, creating a third, fourth, fifth version and so on. That’s why it’s called *Progressive* Enhancement. In theory, the website can be enhanced endlessly while staying robust and accessible to devices and browsers with restricted capabilities.
+This process is repeated, creating a third, fourth, fifth version and so on. That’s why it is called *Progressive* Enhancement. In theory, the website can be enhanced endlessly while staying robust and accessible to devices and browsers with restricted capabilities.
 
 ### Graceful Degradation vs. Progressive Enhancement
 
@@ -216,7 +218,7 @@ Graceful Degradation and Progressive Enhancement are two implementations of the 
 
 Graceful Degradation aims for the full experience using bleeding-edge technologies – the [moonshot](http://whatis.techtarget.com/definition/moonshot). Building a perfect site takes a lot of time and resources. When such a page is built, it typically only works in one browser on the newest devices.
 
-Then sophisticated fallbacks need to be added after the fact. This turns out to be difficult and tedious. For certain new browser features, it’s virtually impossible to develop equivalent fallbacks. But more importantly, adding fallbacks is often neglected. When the budget is almost exhausted, web developers tend to add “this site requires browser X” signs, excluding many users, instead of writing proper fallbacks.
+Then sophisticated fallbacks need to be added after the fact. This turns out to be difficult and tedious. For certain new browser features, developing equivalent fallbacks is virtually impossible. But more importantly, adding fallbacks is often neglected. When the budget is almost exhausted, web developers tend to add “this site requires browser X” signs, excluding many users, instead of writing proper fallbacks.
 
 Progressive Enhancement in contrast follows the “[minimal viable product](https://en.wikipedia.org/wiki/Minimum_viable_product)” school of product development. The goal is to publish a working website quickly. This first version is not the most user-friendly, and certainly not the shiniest among its competitors. But the site works smoothly on every device. What it does, it does reliably.
 
@@ -224,13 +226,13 @@ Enhancements that make use of the latest browser features can now be added safel
 
 It is widely agreed that Progressive Enhancement offers more benefits, but when applied to an individual website both methods should be considered and even mixed.
 
-If you’re planning a “moonshot” that relies on bleeding-edge technology in its core experience, like video conferencing or augmented reality, Graceful Degradation may help you to build a more inclusive site.
+If you are planning a “moonshot” that relies on bleeding-edge technology in its core experience, like video conferencing or augmented reality, Graceful Degradation may help you to build a more inclusive site.
 
-If you’re planning a service with a rock-solid base and demanding extras, like realtime data analysis and visualization, Progressive Enhancement may help to build high without losing accessibility.
+If you are planning a service with a rock-solid base and demanding extras, like realtime data analysis and visualization, Progressive Enhancement may help to build high without losing accessibility.
 
 When applied to JavaScript programming, both Graceful Degradation and Progressive Enhancement raise a lot of practical questions. How is a fallback applied? How well does it integrate with the rest of the code? To which extent is it possible to built on an existing version and enhance it? Is it not sometimes necessary to make a clear cut? You need to find answers that are specific for your project.
 
-Both Graceful Degradation and Progressive Enhancement rely on checking the client’s capabilities. The crucial technique we’re going to discuss later is called *feature detection* (see below).
+Both Graceful Degradation and Progressive Enhancement rely on checking the client’s capabilities. The crucial technique we are going to discuss later is called *feature detection* (see below).
 
 ### Fault tolerance
 
@@ -238,7 +240,7 @@ Another concept of robustness is <dfn>fault tolerance</dfn>. A technical system 
 
 A system consists of critical sub-systems and non-critical sub-systems. Critical sub-systems provide infrastructure and orchestrate the other parts. If they fail, typically the whole system fails. In contrast, non-critical sub-systems may recover from an error. Or they shut down in a controlled way and report the shutdown to allow for backup systems to take over.
 
-While Graceful Degradation and Progressive Enhancement are native principles of web technologies, fault tolerance is not. It’s probably the hardest yet most beneficial technique for achieving robustness.
+While Graceful Degradation and Progressive Enhancement are native principles of web technologies, fault tolerance is not. It is probably the hardest yet most beneficial technique for achieving robustness.
 
 In particular, fault tolerance is hard to implement in JavaScript. Used without caution, JavaScript is *the opposite of fault-tolerant*. Usually, if one operation fails, if one exception occurs, the whole call stack or the whole program blows up.
 
@@ -288,7 +290,7 @@ Such a crawler wants simple code that it can parse quickly to find valuable data
 
 If a site cares for a decent search engine ranking, it should make it easy for crawlers to find meaningful, unique, structured text content. HTML is the best technology to present such content. This means the relevant content should be accessible without JavaScript, just by looking at the HTML returned by the server. All content should be reachable by plain hyperlinks, like `<a href="…">…</a>`.
 
-For complex interactivity and content that cannot or should not be read by robots, it’s fine to require JavaScript.
+For complex interactivity and content that cannot or should not be read by robots, it is fine to require JavaScript.
 
 ### Disabled JavaScript execution
 
@@ -300,7 +302,7 @@ JavaScript is also used to invade the user’s privacy. Especially the advertise
 
 To protect the users, ad and privacy blockers as well as corporate web proxies may ignore the JavaScript from certain hosts or limit the access to certain JavaScript APIs. Some security proxies even change the author’s JavaScript code.
 
-JavaScript authors need to learn how blockers and web proxies work. They typically match the URL with a whitelist or blacklist. Make sure the host (`example.org`) serving the JavaScript is not on a blacklist. In a corporate intranet with a whitelist, make sure it’s on the whitelist. Also avoid suspicious patterns in the URL path that could trigger the blocking, like `ad.js`.
+JavaScript authors need to learn how blockers and web proxies work. They typically match the URL with a whitelist or blacklist. Make sure the host (`example.org`) serving the JavaScript is not on a blacklist. In a corporate intranet with a whitelist, make sure the host is on the whitelist. Also avoid suspicious patterns in the URL path that could trigger the blocking, like `ad.js`.
 
 Since ads and privacy-invading scripts are typically loaded from third-party servers, blockers tend to allow JavaScript from the same domain and likely block JavaScript from a different domain. Make sure your scripts is placed on the same domain, a custom domain for assets, or a well-known, trusted content delivery network.
 
@@ -310,7 +312,7 @@ In the age of mobile web access, a flaky internet connection is the norm. The co
 
 Network interruptions affect JavaScript more negatively than other formats on the web. HTML, CSS, images and videos can be loaded and processed incrementally. If half of the HTML code has been transmitted and the connection drops, the browser can still render half of the page. Image formats like JPEG and PNG have progressive modes so the user gets to see a low-resolution preview after 10-20% of the file have been transmitted.
 
-For JavaScript, it’s all or nothing. To execute the JavaScript, the full script needs to be transmitted.
+For JavaScript, it is all or nothing. To execute the JavaScript, the full script needs to be transmitted.
 
 JavaScript authors can do little against connectivity loss. But they can prepare for the case by shipping less and smaller scripts, and by making JavaScript optional for key content.
 
@@ -324,13 +326,13 @@ Apart from network connectivity problems, an HTTP request for a script can fail 
 
 The <dfn>parser</dfn> is the part of the browser’s JavaScript engine that reads the JavaScript source code sequentially to build an in-memory representation of the script’s syntax. While the JavaScript code is just a gibberish stream of characters, the engine needs to transform it into a usable data structure in order to execute it later.
 
-What is syntax again? It’s the set of rules in a language that allow us to form a meaningful and correct sentence.
+What is syntax again? It is the set of rules in a language that allow us to form a meaningful and correct sentence.
 
 For example, if you read the sentence “The dog wags its tail”, you may think of a friendly Golden Retriever. A linguist does the same, but involuntarily starts to dissect the sentence, breaking it up into pieces and their relation.
 
 The sentence is made of a noun phrase and a verb phrase. The noun phrase, “the dog”, consists of a determiner and a noun. The verb phrase, “wags its tail”, consists of verb and a noun phrase again. The verb, “wags”, has the third person singular present form. And so on.
 
-For JavaScript, it’s quite similar, yet less familiar since it’s a not a natural language, but an artificial computer language. If you write `window.alert('Hello World!');`, the parser generates an <dfn>Abstract Syntax Tree</dfn> (AST) that may look like this:
+For JavaScript, it is quite similar, yet less familiar since JavaScript is a not a natural language, but an artificial computer language. If you write `window.alert('Hello World!');`, the parser generates an <dfn>Abstract Syntax Tree</dfn> (AST) that may look like this:
 
 <pre>
 <strong>Program</strong>
@@ -365,11 +367,11 @@ The standard solution is to compile newer ECMAScript syntax into an older equiva
 
 ### Exceptions
 
-You might have heard of exceptions in the context of JavaScript, but what are they?
+You may have heard of exceptions in the context of JavaScript, but what are they?
 
-“Exception” does not mean exception to any rule here. An exception is an exceptional error, a fatal error. A program error that the JavaScript engine cannot handle on its own. If such an error occurs, the program is aborted. More specifically, the current function [call stack](https://en.wikipedia.org/wiki/Call_stack) is aborted. It’s still possible to call the same function or other functions later.
+“Exception” does not mean exception to any rule here. An exception is an exceptional error, a fatal error. A program error that the JavaScript engine cannot handle on its own. If such an error occurs, the program is aborted. More specifically, the current function [call stack](https://en.wikipedia.org/wiki/Call_stack) is aborted. It is still possible to call the same function or other functions later.
 
-There are several causes for exceptions, and we’re already encountered one: The SyntaxError occurs during parsing, before your code is even executed. Let’s look at two common exceptions that may happen when the code is run: The `ReferenceError` and the `TypeError`.
+There are several causes for exceptions, and we are already encountered one: The SyntaxError occurs during parsing, before your code is even executed. Let’s look at two common exceptions that may happen when the code is run: The `ReferenceError` and the `TypeError`.
 
 ### Reference errors
 
@@ -599,13 +601,13 @@ function sum(a, b) {
 
 The key to failing fast is to **make your assumptions explicit** with assertions.
 
-The function above uses `typeof` (see below) to assert the types of `a` and `b`. It throws an exception (see below) if they are not numbers or if they are `NaN`. We’re going to explain these techniques later in detail.
+The function above uses `typeof` (see below) to assert the types of `a` and `b`. It throws an exception (see below) if they are not numbers or if they are `NaN`. We are going to explain these techniques later in detail.
 
 This example shows that assertions make small errors visible before they grow into big errors. The problem is, NaN *is a dangerous beast*. NaN is a special value that means “not a number”, but in fact it is a number you can calculate with.
 
 NaN is contagious. All calculations involving NaN fail silently, yielding NaN: `5 + NaN` makes NaN, `Math.sqrt(NaN)` produces NaN. All comparisons with NaN yield false: `5 > NaN` is false, `5 < NaN` is also false. `5 === NaN` is false, `NaN === NaN` is also false.
 
-If a NaN slips into your logic, it’s carried through the rest of the program until the user sees a “NaN” appearing in the interface. It’s hard to find the cause of a NaN since the place where it appears can be far from the place that caused it. Typically, the cause of a NaN is an implicit type conversion. My advice is to raise the alarm as soon as you see a NaN.
+If a NaN slips into your logic, it is carried through the rest of the program until the user sees a “NaN” appearing in the interface. It is hard to find the cause of a NaN since the place where it appears can be far from the place that caused it. Typically, the cause of a NaN is an implicit type conversion. My advice is to raise the alarm as soon as you see a NaN.
 
 You need to decide how to implement assertions. If you throw an exception, like the example above, make sure to catch it in a global error handler and report it to an error logging service (see below). If you follow Postel’s Law (see above) instead, at least output a warning on the console and report the error.
 
@@ -613,7 +615,7 @@ If the user’s task is affected, you should show a useful error message that so
 
 ### Feature detection
 
-<dfn>Feature detection</dfn> is a fundamental technique in an ever-changing web. As web authors, we’d like to use the newest browser features both to provide a rich experience to the users and to make our life easier.
+<dfn>Feature detection</dfn> is a fundamental technique in an ever-changing web. As web authors, we would like to use the newest browser features both to provide a rich experience to the users and to make our life easier.
 
 Feature detection first checks whether a browser supports a certain web technology, then uses the technology safely. In the context of JavaScript, most feature detections are object and value checks, as well as function calls. Before looking at them in detail in the next chapter, let’s learn about the basics of feature detection.
 
@@ -621,15 +623,15 @@ When writing client-side JavaScript, you need to define a baseline of requiremen
 
 **[Can I Use](https://caniuse.com/)** is an essential resource that documents browser support of web technologies. For example, according to Can I Use, the [Fetch API](https://caniuse.com/#feat=fetch) in available in the browsers of 77.81% of the users worldwide. Can I Use allows to import usage data for a certain country in order to see stats for the target market.
 
-The Can I Use data for fetch shows that it is a fairly new API that almost all latest browsers support, but not the older browser generations. So fetch should be used with a feature detection, ideally with a fallback or polyfill (see below).
+The Can I Use data for Fetch shows that it is a fairly new API that almost all latest browsers support, but not the older browser generations. So Fetch should be used with a feature detection, ideally with a fallback or polyfill (see below).
 
 Another essential site is the **[Web API documentation of the Mozilla Developer Network (MDN)](https://developer.mozilla.org/en-US/docs/Web/API)**. Here you’ll find a reference of all major JavaScript APIs, alongside with browser compatibility information and links to the original specifications.
 
-If you’re looking for ECMAScript core features, the place to go are the **[ECMAScript compatibility tables by kangax](https://kangax.github.io/compat-table/es6/)**.
+If you are looking for ECMAScript core features, the place to go are the **[ECMAScript compatibility tables by kangax](https://kangax.github.io/compat-table/es6/)**.
 
-As we have learned before, writing good feature detection requires thorough knowledge of the particular JavaScript API you’d like to use. Fortunately, people have developed and collected feature checks for the relevant APIs so you do not have to wade through the specifications and come up with proper checks yourself.
+As we have learned before, writing good feature detection requires thorough knowledge of the particular JavaScript API you would like to use. Fortunately, people have developed and collected feature checks for the relevant APIs so you do not have to wade through the specifications and come up with proper checks yourself.
 
-**[Modernizr](https://modernizr.com/)** is a comprehensive feature detection library. You can select browser features you’d like to use and build your own minimal library. Modernizr then provides a global object `Modernizr` with boolean properties. For example, `Modernizr.fetch` has the value `true` if the browser supports the Fetch API, or `false` if it does not. This allows you to write:
+**[Modernizr](https://modernizr.com/)** is a comprehensive feature detection library. You can select browser features you would like to use and build your own minimal library. Modernizr then provides a global object `Modernizr` with boolean properties. For example, `Modernizr.fetch` has the value `true` if the browser supports the Fetch API, or `false` if it does not. This allows you to write:
 
 ```js
 if (Modernizr.fetch) {
@@ -669,7 +671,7 @@ if (condition) {
 
 When an `if` statement is evaluated, first the condition expression is evaluated. The result of the expression is then converted into a boolean value, `true` or `false`. If this result is `true`, the first code block is executed, otherwise the second block, if given.
 
-Most likely, this is not new to you. The reason I am revisiting it is the conversion into boolean. It means you can use a condition expression that does not necessarily evaluate to a boolean value. Other types, like Undefined, Null, String or Object are possible. For example, it’s possible to write `if ("Hello!") {…}`.
+Most likely, this is not new to you. The reason I am revisiting it is the conversion into boolean. It means you can use a condition expression that does not necessarily evaluate to a boolean value. Other types, like Undefined, Null, String or Object are possible. For example, it is possible to write `if ("Hello!") {…}`.
 
 If you rely on the implicit conversion, you should learn the conversion rules. ECMAScript defines an [internal function ToBoolean](http://www.ecma-international.org/ecma-262/8.0/#sec-toboolean) for this purpose. In our code, we can use the public [Boolean function](http://www.ecma-international.org/ecma-262/8.0/#sec-boolean-constructor-boolean-value) to convert a value into boolean. This delegates to the internal `ToBoolean` function.
 
@@ -731,9 +733,9 @@ The way ToBoolean works is simple, but with a twist. Let’s quote the ECMAScrip
 
 As you can see, most types have a clear boolean counterpart. All objects, including functions, dates, regular expressions and errors, are truthy. The two types denoting emptyness, `undefined` and `null`, are falsy.
 
-For numbers and strings though, it’s complicated. Numbers are truthy *except for* zeros and NaN. Strings are truthy except for empty strings.
+For numbers and strings though, it is complicated. Numbers are truthy *except for* zeros and NaN. Strings are truthy except for empty strings.
 
-This ECMAScript design decision is controversial. On the one hand, it’s a source of errors, since some developers expect that all numbers and all strings are truthy. On the other hand, it allows to write simple value checks like `if (value) {…}` for non-empty strings and usable non-zero numbers.
+This ECMAScript design decision is controversial. On the one hand, it is a source of errors, since some developers expect that all numbers and all strings are truthy. On the other hand, it allows to write simple value checks like `if (value) {…}` for non-empty strings and usable non-zero numbers.
 
 Usually, a value check aims to distinguish *usable* and *valid* values from *unusable* and *invalid* values. In most cases, truthy values are usable and falsy values are usable. But keep in mind the exceptions for numbers and strings.
 
@@ -743,7 +745,7 @@ If you choose not to use implicit type conversion, make sure the `if` condition 
 
 Does an identifier exist in the scope chain? Ultimately, does an identifier exist in the global scope?
 
-Let’s assume we’d like to detect the Fetch API that specifies a global function `fetch`. Let’s try this:
+Let’s assume we would like to detect the Fetch API that specifies a global function `fetch`. Let’s try this:
 
 <div class="erroneous" markdown="1">
 ```js
@@ -757,7 +759,7 @@ if (fetch) {
 
 This works in browsers that do support fetch, but throws an exception in browsers that do not. Especially, it throws a ReferenceError (see above).
 
-This renders the whole check useless. This is exactly what we’re trying to avoid with the check.
+This renders the whole check useless. This is exactly what we are trying to avoid with the check.
 
 We ca not just use an identifier that cannot be resolved. There are several ways to work around this problem:
 
@@ -783,7 +785,7 @@ We ca not just use an identifier that cannot be resolved. There are several ways
     }
     ```
 
-    This existence check is in fact a value check (see below). We’re relying on the ToBoolean conversion here (see above). A function is *truthy*.
+    This existence check is in fact a value check (see below). We are relying on the ToBoolean conversion here (see above). A function is *truthy*.
 
 3.  Alternatively, use the `typeof` operator (see below). `typeof` does not throw an error in case the reference cannot be resolved, it merely returns the string `'undefined'`.
 
@@ -803,7 +805,7 @@ We ca not just use an identifier that cannot be resolved. There are several ways
 
 `typeof` has a behavior that makes it useful for feature detection: You can place an identifier after `typeof`, like `typeof fetch`. `typeof` does not throw an error in case the identifier cannot be resolved, it simply returns the string `'undefined'`.
 
-The problem is, `typeof` *is a dangerous beast*. `typeof` does not return what you probably expect. This operator is one of the biggest design flaws of ECMAScript. It’s deceiving and in older browsers also incorrect.
+The problem is, `typeof` *is a dangerous beast*. `typeof` does not return what you probably expect. This operator is one of the biggest design flaws of ECMAScript. It is deceiving and in older browsers also incorrect.
 
 First of all, let’s learn about the <dfn>type system of ECMAScript</dfn>. There are seven main types: Undefined, Null, Boolean, Number, String, Symbol and Object. The first six are called <dfn>primitive types</dfn>.
 
@@ -868,7 +870,7 @@ Let’s paraphrase the ECMAScript specification to see [what typeof really retur
   </tbody>
 </table>
 
-The first oddity is that `typeof null` returns `object`, which does not make any sense. It’s a dangerous pitfall.
+The first oddity is that `typeof null` returns `object`, which does not make any sense. It is a dangerous pitfall.
 
 The second oddity is the special detection of functions. A function typically has the type Object, but `typeof` returns `'function'` instead of `'object'`. This exception turns out to be highly useful: `typeof` is the easiest way to detect a function. Unfortunately, there are no other exceptions for common object types. For arrays, dates and regular expressions, `typeof` still returns `'object'`.
 
@@ -880,7 +882,7 @@ In the past, browsers have provided objects that fall into the “non-standard e
 
 Newer browsers adhere to the specification, but the historical pitfalls remain. Since the result of `typeof` used to be unreliable, people have used `typeof` mostly for existence checks instead of explicit type checks.
 
-Let’s look at the fetch example again:
+Let’s look at the Fetch API example again:
 
 ```js
 if (typeof fetch === 'function') {
@@ -890,7 +892,7 @@ if (typeof fetch === 'function') {
 }
 ```
 
-This check uses `typeof` to assert the Function type. This is more explicit: Since we’re going to call `fetch`, we assert it is a function.
+This check uses `typeof` to assert the Function type. This is more explicit: Since we are going to call `fetch`, we assert it is a function.
 
 ```js
 if (typeof fetch !== 'undefined') {
@@ -900,7 +902,7 @@ if (typeof fetch !== 'undefined') {
 }
 ```
 
-This check uses `typeof` to assert `fetch` is defined and has an arbitrary type except Undefined. This is implicit: We assert `fetch` exists, then assume it’s a function defined by the Fetch API.
+This check uses `typeof` to assert `fetch` is defined and has an arbitrary type except Undefined. This is implicit: We assert `fetch` exists, then assume it is a function defined by the Fetch API.
 
 Both are useful feature checks. Personally, I follow the rule “explicit is better than implicit”.
 
@@ -930,7 +932,7 @@ Every browser window has its own set of host objects and therefore constructor f
 
 Assume there is one HTML document embedding another HTML document in an iframe. A script in the iframe document calls a function in the parent document, passing an array of numbers: `parent.reportFigures([ 63, 843, 13 ])`.
 
-The function `reportFigures` now wants to check if the argument is an array. Typically, `value instanceof Array` would be a good fit. But in this scenario, it’s a *foreign* array that does not inherit from `Array.prototype` in the parent window. `value instanceof Array` would return `false` – a false negative.
+The function `reportFigures` now wants to check if the argument is an array. Typically, `value instanceof Array` would be a good fit. But in this scenario, it is a *foreign* array that does not inherit from `Array.prototype` in the parent window. `value instanceof Array` would return `false` – a false negative.
 
 The standard way to solve this particular problem is to use a type check function provided by ECMAScript: [Array.isArray()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray). Unfortunately, equivalents for other types like Date and RegExp do not exist.
 
@@ -940,7 +942,7 @@ As a weakly typed language, JavaScript performs implicit type conversion so deve
 
 `typeof` and `instanceof` check what a value *is*. As we have seen, both operators have serious limitations.
 
-In contrast, duck typing checks what a value *does* and *provides*. After all, you’re not interested in the type of an value, you’re interested in *what you can do with the value*.
+In contrast, duck typing checks what a value *does* and *provides*. After all, you are not interested in the type of an value, you are interested in *what you can do with the value*.
 
 For example, a function that expects a date may check the input with `instanceof Date`:
 
@@ -992,7 +994,7 @@ if (window.fetch) {
 
 When detecting features, testing for a specific value is rare. Most feature detection looks for the existence objects and functions. There’s no specific value to compare them to.
 
-In normal application logic though, testing for specific values is common. For example, you might want to check if an array contains elements or string contains characters:
+In normal application logic though, testing for specific values is common. For example, you may want to check if an array contains elements or string contains characters:
 
 ```js
 if (array.length > 0) { /* … */ }
@@ -1013,7 +1015,7 @@ JavaScript APIs have different ways to report failure. The simplest way is a fun
 
 In addition to return values, APIs may throw exceptions. For example, `document.querySelector('!"§$%')` does not return `null`, but throws a SyntaxError: `'!"§$%' is not a valid selector`.
 
-You might have guessed that `!"§$%` is not a valid CSS selector, but browsers throw the same type of error when they do not recognize the selector. For example, older browsers like Internet Explorer 8 do support `querySelector`, but do not support [CSS Selectors Level 3](https://caniuse.com/#feat=css-sel3). And most recent browsers do not support the [CSS Selectors Level 4 Working Draft](https://drafts.csswg.org/selectors-4/) yet.
+You may have guessed that `!"§$%` is not a valid CSS selector, but browsers throw the same type of error when they do not recognize the selector. For example, older browsers like Internet Explorer 8 do support `querySelector`, but do not support [CSS Selectors Level 3](https://caniuse.com/#feat=css-sel3). And most recent browsers do not support the [CSS Selectors Level 4 Working Draft](https://drafts.csswg.org/selectors-4/) yet.
 
 So a program that calls `querySelector` would need to check both:
 
@@ -1061,7 +1063,7 @@ After executing the `catch (…) {…}` block, the JavaScript engine continues t
 
 `try…catch` is particularly useful when it wraps a small piece code that is likely to throw an error. Wrap an API call in `try…catch` when the API specification states that the call may throw exceptions.
 
-`try…catch` is often misused by placing a large amount of code in the `try { … }` block. Often the `catch (…) {…}` block is left empty. This is not error handling, it’s error suppression. It may be necessary in some cases, but `try…catch` is most useful for catching specific exceptions.
+`try…catch` is often misused by placing a large amount of code in the `try { … }` block. Often the `catch (…) {…}` block is left empty. This is not error handling, it is error suppression. It may be necessary in some cases, but `try…catch` is most useful for catching specific exceptions.
 
 ### Throwing and catching exceptions programmatically
 
@@ -1123,7 +1125,7 @@ function strictFunction() {
 }
 ```
 
-Syntax-wise, `'use strict';` is simply an expression statement with a string literal. This code does not do anything when evaluated. It’s a meaningful marker for browsers that support ECMAScript 5, and innocuous code for browsers that do not.
+Syntax-wise, `'use strict';` is simply an expression statement with a string literal. This code does not do anything when evaluated. It is a meaningful marker for browsers that support ECMAScript 5, and innocuous code for browsers that do not.
 
 Enabling the Strict Mode for a script of a function is contagious. All code syntactically nested in the script or function also switches to Strict Mode. For example:
 
@@ -1172,7 +1174,7 @@ Today, the Strict Mode should be used everywhere unless there are particular rea
 
 Newer ECMAScript versions make the Strict Mode the default when using new features. For example, ECMAScript 6 module code is always evaluated in Strict Mode. Code inside of ECMAScript 6 classes is also Strict Mode per default.
 
-Most likely, if you’re using modules or classes, you’re already using the Strict Mode. If not, I highly recommend to use the `'use strict';` marker in your scripts to enable the Strict Mode.
+Most likely, if you are using modules or classes, you are already using the Strict Mode. If not, I highly recommend to use the `'use strict';` marker in your scripts to enable the Strict Mode.
 
 ### Abstraction libraries
 
@@ -1197,7 +1199,7 @@ Polyfills are like libraries, but instead of defining their own API, they implem
 
 For example, some browsers do not support the Fetch API. A [polyfill for the Fetch API](https://github.com/github/fetch) implements the Fetch specification using older existing techniques like `XMLHttpRequest`. Then it fills the browser’s holes.
 
-A polyfill for the Fetch API might have the following structure:
+A polyfill for the Fetch API may have the following structure:
 
 ```js
 if (!window.fetch) {
@@ -1209,7 +1211,7 @@ if (!window.fetch) {
 
 If the browser does not support the Fetch API, including `window.fetch`, the code fills the hole by defining `window.fetch`.
 
-It’s worth noting that not all APIs can be fully polyfilled. Some APIs include new and special behavior that cannot be implemented by standard ECMAScript means.
+It is worth noting that not all APIs can be fully polyfilled. Some APIs include new and special behavior that cannot be implemented by standard ECMAScript means.
 
 For example, if the browser does not provide access to live audio and video streams from the device, no JavaScript polyfill can implement this feature. In such cases, you need to use Graceful Degradation or Progressive Enhancement (see above) to come up with an alternative.
 
@@ -1219,7 +1221,7 @@ A linter is a program that checks code for potential errors and compatibility is
 
 When developing JavaScript, a linter is an essential tool for writing robust code. If you take one thing away from this guide, let it be the use of a linter. It will point out most issues that are described here and much more.
 
-The most flexible and powerful JavaScript linter is **[ESlint](https://eslint.org/)**. It’s written in JavaScript and runs on Node.js.
+The most flexible and powerful JavaScript linter is **[ESlint](https://eslint.org/)**. It is written in JavaScript and runs on Node.js.
 
 ESlint consists of a ECMAScript parser (see above) and [numerous rules](https://eslint.org/docs/rules/) that examine the Abstract Syntax Tree (AST). The rules search for pitfalls in your code, for deprecated language idioms, for inconsistencies and code style violations.
 
@@ -1227,13 +1229,13 @@ When a rule finds a violation, it outputs a warning or error you can see on the 
 
 In addition to the built-in rules, ESlint is fully extensible via plugins. A lot of libraries and ecosystems have created ESlint plugins that check for the respective best practices. For example, there are [rules for writing React.js code](https://github.com/yannickcr/eslint-plugin-react) and [rules that check React/JSX code for accessibility issues](https://github.com/evcohen/eslint-plugin-jsx-a11y).
 
-Since more and more markup and style logic on the web is expressed in JavaScript, it’s crucial to check the JavaScript code for well-established best practices from these domains as well.
+Since more and more markup and style logic on the web is expressed in JavaScript, it is crucial to check the JavaScript code for well-established best practices from these domains as well.
 
 Before ESlint existed, JavaScript best practices were described in books, blog posts, talks and project style guides. But not all of them could be checked and enforced automatically. ESlint became a tool for documenting best practices as well as checking them.
 
 ESlint continues to shape the way people write JavaScript. Large projects and corporations are sharing their ESlint configurations. For example, the [AirBnB style guide](https://github.com/airbnb/javascript) and the [JavaScript “Standard” Style](https://standardjs.com/) are popular style guides based on ESlint.
 
-ESlint is a safe and easy way to explore different programming paradigms possible in JavaScript. With ESlint, it’s possible to impose strict rules on your JavaScript usage. For example, [ESLint rules for functional programming](https://github.com/jfmengels/eslint-plugin-fp) disallow all JavaScript features that contradict the concepts of pure functional programming.
+ESlint is a safe and easy way to explore different programming paradigms possible in JavaScript. With ESlint, it is possible to impose strict rules on your JavaScript usage. For example, [ESLint rules for functional programming](https://github.com/jfmengels/eslint-plugin-fp) disallow all JavaScript features that contradict the concepts of pure functional programming.
 
 Especially for beginners, the ESlint ecosystem may be confusing. Hundreds of rules with configuration options, hundreds of plugins and conflicting guidelines. There are few things people quarrel about more than the “right" programming style.
 
@@ -1296,11 +1298,11 @@ JavaScript is weakly and dynamically typed. It borrows ideas from multiple parad
 
 Some people make this imprecision and inconsistency responsible for many JavaScript pitfalls. That’s true to some regard. JavaScript was not originally designed for writing large web applications or user interfaces. Recent ECMAScript standards introduced more strictness and consistency to improve [programming in the large](https://en.wikipedia.org/wiki/Programming_in_the_large_and_programming_in_the_small).
 
-When it’s so hard to write robust JavaScript, why not use another programming language?
+When it is so hard to write robust JavaScript, why not use another programming language?
 
 The browsers only have a JavaScript engine built in, so we ca not just run, say, PHP in the browser. But other languages can be translated into JavaScript, like an Arabic text can be translated into English.
 
-Typically, programming languages are compiled into machine code for a specific processor architecture or into bytecode for a virtual machine. It’s also possible to compile them into another language, like JavaScript. As we’ve learned already, such a compiler-translator is called transpiler.
+Typically, programming languages are compiled into machine code for a specific processor architecture or into bytecode for a virtual machine. It is also possible to compile them into another language, like JavaScript. As we’ve learned already, such a compiler-translator is called transpiler.
 
 Transpilers allow to write front-end code in an arbitrary language. Someone has to develop the transpiler, of course. This opens up tremendous possibilities. We can use strictly-typed languages, or purely functional languages, or languages designed for the purpose of building user interfaces.
 
@@ -1315,7 +1317,7 @@ Let’s have a look at a small selection of languages that compile to JavaScript
 
 #### CoffeeScript
 
-[CoffeeScript](http://coffeescript.org/) has a syntax very familiar to JavaScript. Its motto is “It’s just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
+[CoffeeScript](http://coffeescript.org/) has a syntax very familiar to JavaScript. Its motto is “It is just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
 
 In CoffeeScript, whitespace like line breaks and spaces is used for delimiting functions and blocks. The mapping from CoffeeScript to JavaScript is direct, the target code closely resembles the CoffeeScript source.
 
@@ -1328,7 +1330,7 @@ sum = (a, b) =>
 
 When CoffeeScript version 1.0 was released on 2010, it made JavaScript programming more robust since it eliminated several common pitfalls. The JavaScript produced by the CoffeeScript compiler implemented best practices and was less error-prone.
 
-CoffeeScript’s language design and its brevity influenced the work on the ECMAScript standard. ECMAScript 6 and Babel (see above) address several language shortcomings that existed when CoffeeScript was created. So today CoffeeScript is used less then it was several years ago, but it’s still an influential language.
+CoffeeScript’s language design and its brevity influenced the work on the ECMAScript standard. ECMAScript 6 and Babel (see above) address several language shortcomings that existed when CoffeeScript was created. So today CoffeeScript is used less then it was several years ago, but it is still an influential language.
 
 #### TypeScript
 
@@ -1354,9 +1356,9 @@ In plain JavaScript, we need to add type assertions (see above) to make sure tha
 
 Using a language with strong, static typing like TypeScript has these main benefits:
 
-- With proper typings in place, the compiler catches a certain class of bugs early. It’s harder to write code that fails for simple reasons. Runtime errors like TypeError and ReferenceError are almost eliminated.
-- Static typing forces you to handle cases that are logically possible, even though they might be rare in practice. Without type checking, someone has to write automated tests (see below) for the edge cases, otherwise the errors are not caught.
-- Static typing makes you think twice about the structure of your data, about object modeling and API design. In plain JavaScript code, it’s easy to create, mix and mutate complex objects. This makes it hard to see which properties are available and which types they have. In TypeScript, each function has a well-defined signature. The structure of all objects passed around in the code is described by classes or interfaces.
+- With proper typings in place, the compiler catches a certain class of bugs early. It is harder to write code that fails for simple reasons. Runtime errors like TypeError and ReferenceError are almost eliminated.
+- Static typing forces you to handle cases that are logically possible, even though they are rare in practice. Without type checking, someone has to write automated tests (see below) for the edge cases, otherwise the errors are not caught.
+- Static typing makes you think twice about the structure of your data, about object modeling and API design. In plain JavaScript code, it is easy to create, mix and mutate complex objects. This makes it hard to see which properties are available and which types they have. In TypeScript, each function has a well-defined signature. The structure of all objects passed around in the code is described by classes or interfaces.
 - Strong typing means there is no implicit type conversion. Explicit code is simpler code.
 - Editors with strong TypeScript support, like Visual Studio Code, make programming a bliss. They have productivity features known from fully fledged <abbr title="Integrated development environments">IDEs</abbr>. Writing, navigating and refactoring code is much easier since the editor understands the structure of the program, knows all names and types.
 
@@ -1402,7 +1404,7 @@ ClojureScript and functional programming in general keep influencing the way peo
 
 In short, a function is <dfn>pure</dfn> when it is free of <dfn>side effects</dfn>. Such a function takes some input values as arguments and computes a new value. The new value becomes the return value.
 
-A pure function always produces the same output given the same input. There is no internal state. The function does not change its input values nor does it do anything besides computing the return value. It does not “change the world”. So it’s always safe to call a pure function: It may take some computation time, but it does not change the state of your application.
+A pure function always produces the same output given the same input. There is no internal state. The function does not change its input values nor does it do anything besides computing the return value. It does not “change the world”. So it is always safe to call a pure function: It may take some computation time, but it does not change the state of your application.
 
 It turned out that breaking down the logic of an application into pure functions makes the whole application more robust. Pure functions are “simple”, they do only one thing. They are easy to reason about and easy to test automatically. You can simply pass different input values and check the return value.
 
@@ -1435,9 +1437,9 @@ The rule that pure functions do not mutate their input values is actually enforc
 
 #### Elm
 
-Elm is a functional programming language that compiles to JavaScript. In contrast to Clojure/ClojureScript it was specifically designed as a compile-to-JavaScript language. It’s not a general-purpose programming language, it’s a toolkit for developing client-side web applications.
+Elm is a functional programming language that compiles to JavaScript. In contrast to Clojure/ClojureScript it was specifically designed as a compile-to-JavaScript language. It is not a general-purpose programming language, it is a toolkit for developing client-side web applications.
 
-The syntax of Elm does not resemble JavaScript, but it’s quite approachable. Here’s how the familiar `sum` function looks like in Elm with explicit type annotations:
+The syntax of Elm does not resemble JavaScript, but it is quite approachable. Here’s how the familiar `sum` function looks like in Elm with explicit type annotations:
 
 ```elm
 sum : Float -> Float -> Float
@@ -1520,7 +1522,7 @@ window.onerror = function(message, file, line, column, error) {
 
 This code sends a report to the `/error-reporting` using a GET request.
 
-The example above is not enough. It’s not that easy to compile a meaningful, cross-browser report from an exception. Tools like [TraceKit](https://github.com/csnover/TraceKit) and [StackTrace.js](https://www.stacktracejs.com/) help to extract meaning from exceptions.
+The example above is not enough. It is not that easy to compile a meaningful, cross-browser report from an exception. Tools like [TraceKit](https://github.com/csnover/TraceKit) and [StackTrace.js](https://www.stacktracejs.com/) help to extract meaning from exceptions.
 
 There are [several hosted services](https://github.com/cheeaun/javascript-error-logging) that provide such error reporting scripts and the server-side monitoring and data processing.
 
@@ -1546,7 +1548,7 @@ Whenever the feature set changes or the code changes, the test plan needs to be 
 
 For websites, the tester needs to execute the tasks with different browsers, devices and internet connections to catch all possible errors.
 
-Manual testing with step-by-step instructions is probably the most time-consuming and expensive type of testing, but it’s highly beneficial. Alongside with real user testing, manual testing can quickly find errors caused by client-side JavaScript.
+Manual testing with step-by-step instructions is probably the most time-consuming and expensive type of testing, but it is highly beneficial. Alongside with real user testing, manual testing can quickly find errors caused by client-side JavaScript.
 
 Manual testing is more than just following fixed instructions. The challenging role of the software tester grew in the role of a quality assurance engineer to include tasks like setting up test plans, orchestrating test execution and setting up automated tests.
 
@@ -1554,7 +1556,7 @@ Manual testing is more than just following fixed instructions. The challenging r
 
 Automated testing plays a crucial role in writing robust applications. Especially when writing JavaScript code, a simple automated test already catches a lot of common bugs.
 
-There are thousands of great resources on automated testing in general and testing JavaScript in particular. In this guide, I’d like to focus on how automated testing contributes to robust JavaScript.
+There are thousands of great resources on automated testing in general and testing JavaScript in particular. In this guide, I would like to focus on how automated testing contributes to robust JavaScript.
 
 In contrast to manual testing (see above), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
 
@@ -1568,7 +1570,7 @@ For simplicity, let’s write a unit test that deals with a function. But how do
 
 There are numerous ways how to write and run unit tests in JavaScript. Popular testing frameworks include [Jasmine](https://jasmine.github.io/) and [Mocha](https://mochajs.org/). They may be combined with assertion libraries like [Chai](http://chaijs.com/) and [Unexpected](http://unexpected.js.org/). Unit tests are typically executed using test runners like [Jest](https://facebook.github.io/jest/), [Ava](https://github.com/avajs/ava) and [Karma](https://karma-runner.github.io/1.0/index.html).
 
-In my experience, all these libraries allow to write unit tests that make JavaScript more robust. It’s mostly a matter of style and taste which one to use. For the purpose of this guide, I’ll use widely accepted Jasmine testing framework.
+In my experience, all these libraries allow to write unit tests that make JavaScript more robust. It is mostly a matter of style and taste which one to use. For the purpose of this guide, I’ll use widely accepted Jasmine testing framework.
 
 First of all, we need a function to test. Let’s start with the simple, flawed `sum` function:
 
@@ -1692,13 +1694,13 @@ If you do not use unit testing yet, start small by writing specs for your core p
 
 As we’ve learned, unit testing tries to focus on a small reusable unit of code and to put it through its paces. A unit tests assures that a unit works well in isolation.
 
-Such a test is precise, but it’s hard to isolate a unit from the rest. For example, if a function under test calls a second function, the unit tests needs to remove and replace this dependency in order to focus on the function under test. A common technique is called <dfn>dependency injection</dfn>.
+Such a test is precise, but it is hard to isolate a unit from the rest. For example, if a function under test calls a second function, the unit tests needs to remove and replace this dependency in order to focus on the function under test. A common technique is called <dfn>dependency injection</dfn>.
 
 Unit tests are necessary, but not sufficient. An application is a complex combination of units. Having 100% test coverage, having passing unit tests says little about the application as a whole.
 
 This is where <dfn>integration tests</dfn> come in. An integration test describes and verifies the behavior of a several connected units. The integration test does not need to know the internals, it runs against the public interface.
 
-For example, if a function under test calls a second function, the integration test simply lets it be. The test knows that it *integrates* all dependencies. Such a test has a larger impact and covers a lot of code. But it’s hard to set up the different test cases and test side effects thoroughly.
+For example, if a function under test calls a second function, the integration test simply lets it be. The test knows that it *integrates* all dependencies. Such a test has a larger impact and covers a lot of code. But it is hard to set up the different test cases and test side effects thoroughly.
 
 When testing JavaScript, the difference between unit tests and integration tests is subtle. Most things we’ve learned about unit tests also apply to integration tests. For example, integration tests may use the same tools like Jasmine. In practice, unit tests and integration tests are mixed in order to test a codebase precisely and extensively.
 
