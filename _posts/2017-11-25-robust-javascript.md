@@ -1007,9 +1007,11 @@ This message is only effective if it reaches the developer. When the exception i
 
 Second, a programmatic exception is a message to the calling code, similar to the return value of the function. We’ve seen this in the `querySelector` example above. The caller should catch the exception and handle it appropriately. For this purpose, the error object holds a type, a message, the source code position it originates from, a stack trace and possibly more information on the incident.
 
+<!--
 ### Encapsulated code
 
 Encapsulated code that does not interfere with other code, e.g. few global variables, module systems, not changing core prototypes (except for polyfills)
+-->
 
 ### The Strict Mode
 
