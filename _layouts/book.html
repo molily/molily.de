@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+{% capture title %}
+  {% if page.title %}
+    {{ page.title }} &middot; {{ site.title }}
+  {% else %}
+    {{ site.title }}
+  {% endif %}
+{% endcapture %}
+
+<title>{{ title }}</title>
+
+<link rel="stylesheet" href="{{ "/css/book.css" | prepend: site.baseurl }}">
+
+{% include head-common.html %}
+</head>
+<body>
+
+{{ content }}
+
+</body>
+</html>

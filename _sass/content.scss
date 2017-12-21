@@ -61,6 +61,7 @@ h1, h2, h3, h4, h5, h6 {
   color: $heading-color;
   line-height: $heading-line-height;
   font-weight: 500;
+  page-break-after: avoid;
 }
 
 h1 {
@@ -121,7 +122,10 @@ li, li p {
   margin: 0 0 1rem;
 }
 
-/* Compact lists */
+/**
+ * @subsection Compact lists
+ *
+ */
 
 .compact-list li,
 .ultra-compact-list li {
@@ -255,6 +259,13 @@ a {
     border-color: $link-active-border-color;
   }
 
+  &:focus {
+    color: $link-color;
+    border-style: none;
+    outline: 1.5px solid hsl($hue, 100%, 50%);
+    outline-offset: 2px;
+  }
+
   & img {
     text-decoration: none;
   }
@@ -331,6 +342,10 @@ th {
 
 table.compact th {
   font-size: 80%;
+}
+
+td p:last-child {
+  margin-bottom: 0;
 }
 
 /**

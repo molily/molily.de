@@ -1,0 +1,57 @@
+.js-objects {
+  @extend %clearfix;
+}
+
+.js-objects .object {
+  float: left;
+  margin: 0 20px 20px 0;
+  box-shadow: 2px 2px 5px #ccc;
+}
+
+.js-objects table {
+  margin: 0;
+}
+
+.js-objects h3 {
+  margin: 0;
+  padding: 0.3em 0.3em 0.1em;
+  border-style: solid solid none;
+  border-width: 1px;
+  border-color: #ccc;
+  background-color: #f0f0f0;
+  color: black;
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: bold;
+  text-align: center;
+}
+
+.js-objects h3:before {
+  content: none;
+}
+
+.js-objects th,
+.js-objects td {
+  border: 1px solid #ccc;
+  font-size: 0.75rem;
+  padding: 0.3em 0.5em 0.2em;
+  line-height: 1.2;
+}
+
+.js-objects .internal th,
+.js-objects .internal td {
+  color: #600;
+  background-color: #fffbfb;
+}
+
+.js-objects .dontenum th,
+.js-objects .dontenum td {
+  color: gray;
+  background: #fafafa;
+}
+
+.js-objects .own th,
+.js-objects .own td {
+  color: #007;
+  background-color: #f0f0ff;
+}

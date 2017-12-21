@@ -1,0 +1,44 @@
+{% capture canonical_url %}{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}{% endcapture %}
+
+{% capture description %}
+  {% if page.description %}
+    {{ page.description }}
+  {% else %}
+    {{ site.description }}
+  {% endif %}
+{% endcapture %}
+
+<link rel="preload" href="https://fonts.gstatic.com/s/notosans/v7/LeFlHvsZjXu2c3ZRgBq9nJBw1xU1rKptJj_0jans920.woff2" as="font" crossorigin>
+
+<link rel="canonical" href="{{ canonical_url }}">
+<link rel="author" href="mailto:zapperlott@gmail.com" title="E-Mail">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="viewport" content="width=device-width">
+<meta name="description" content="{{ description }}">
+<meta name="keywords" content="{% if page.keywords %}{{ page.keywords | strip | strip_newlines }}{% else %}{{ site.keywords }}{% endif %}">
+<meta name="theme-color" content="#6f53b2">
+<meta name="verify-v1" content="fgMwO6+GylpfJErqz1kfGXR5iWtXq3azC6/M/4dZapo=">
+
+<meta property="twitter:account_id" content="1494951763">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@molily">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:image" content="{{ site.url }}/img/spidermum-gray-bg-square-small.png">
+
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:image" content="{{ site.url }}/img/spidermum-gray-bg-square-small.png">
+
+{% if page.robots %}
+  <meta name="robots" content="{{ page.robots }}">
+{% endif %}
+
+<script>
+if(document.fonts&&document.fonts.load){document.fonts.load('1em Noto Sans','aäß').then(function(){document.documentElement.classList.add('fonts-loaded')})}
+</script>

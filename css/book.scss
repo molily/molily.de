@@ -1,0 +1,142 @@
+---
+# By using these dashes, the file will be compiled to a separate .css
+---
+@charset 'utf-8';
+
+/**
+ * Blog styles
+ *
+ */
+
+@import 'reset';
+@import 'fonts';
+@import 'content';
+@import 'highlight';
+
+body {
+  background-color: white;
+  counter-reset: h2 h3 h4;
+  padding: 1rem 3rem;
+}
+
+@media screen {
+  body {
+    margin: auto;
+    max-width: 40rem;
+  }
+}
+
+@media screen and (min-width: 55rem) {
+  body {
+    max-width: none;
+  }
+}
+
+h2, h3, h4, h5, h6 {
+  margin-top: 3rem;
+}
+
+h2 {
+  counter-reset: h3 h4;
+}
+
+h2::before {
+  counter-increment: h2;
+  content: counter(h2) ".";
+}
+
+h3 {
+  counter-reset: h4;
+}
+
+h3::before {
+  counter-increment: h3;
+  content: counter(h2) "." counter(h3);
+}
+
+h4::before {
+  counter-increment: h4;
+  content: counter(h2) "." counter(h3) "." counter(h4);
+}
+
+h2::before,
+h3::before,
+h4::before {
+  display: inline-block;
+  vertical-align: top;
+  min-width: 2.5rem;
+  margin-right: 0.5rem;
+}
+
+caption {
+  text-align: center;
+}
+
+@media screen and (min-width: 55rem) {
+
+  // The extra container is necessary because of:
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=748518
+  // https://github.com/w3c/csswg-drafts/issues/129
+  #toc-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    width: 25rem;
+    background-color: #fafafa;
+  }
+
+  #toc {
+    padding: 2rem;
+  }
+
+  #main-container {
+    margin-left: 25rem;
+  }
+
+  #main {
+    margin: auto;
+    max-width: 40rem;
+  }
+
+}
+
+#toc h2 {
+  margin: 0 0 1rem;
+
+  &::before {
+    counter-increment: none;
+    content: none;
+  }
+}
+
+#toc ol {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+#toc li {
+  margin: 0;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  #toc a {
+    border-bottom-width: 0.5px;
+  }
+}
+
+.erroneous {
+  background-color: #fcf2f2;
+
+  pre {
+    background-color: transparent;
+  }
+}
+
+.separator {
+  margin: 2rem 0;
+  font-size: 2rem;
+  text-align: center;
+  color: gray;
+}
+
