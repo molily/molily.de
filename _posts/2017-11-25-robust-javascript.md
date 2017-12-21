@@ -6,84 +6,6 @@ keywords: JavaScript, Robustness
 lang: en
 ---
 
-<script>
-(function() {
-
-var TOC = {
-
-  createElement: function(tagName, attributes, innerHTML) {
-    var el = document.createElement(tagName);
-    if (attributes) {
-      for (var prop in attributes) {
-        if (attributes.hasOwnProperty(prop)) {
-          el.setAttribute(prop, attributes[prop]);
-        }
-      }
-    }
-    if (innerHTML) {
-      el.innerHTML = innerHTML
-    }
-    return el;
-  },
-
-  buildList: function() {
-    var headings = document.querySelectorAll('h2, h3, h4');
-    var h2list = TOC.createElement('ol');
-    var lastH2Item = null;
-    var lastH3Item = null;
-    var h3list = null;
-    var h4list = null;
-
-    for (var i = 0, heading; heading = headings[i]; i++) {
-      var a = TOC.createElement('a', { href: '#' + heading.id }, heading.innerHTML);
-      var li = TOC.createElement('li');
-      li.appendChild(a);
-
-      var tagName = heading.tagName;
-
-      if (tagName === 'H2') {
-        h2list.appendChild(li);
-        h3list = null;
-        h4list = null;
-        lastH2Item = li;
-      } else if (tagName === 'H3') {
-        if (!h3list) {
-          h3list = TOC.createElement('ol');
-          lastH2Item.appendChild(h3list);
-        }
-        h3list.appendChild(li);
-        h4list = null;
-        lastH3Item = li;
-      } else if (tagName === 'H4') {
-        if (!h4list) {
-          h4list = TOC.createElement('ol');
-          lastH3Item.appendChild(h4list);
-        }
-        h4list.appendChild(li);
-      }
-    }
-
-    return h2list;
-  },
-
-  init: function(containerSelector) {
-    var container = document.querySelector(containerSelector);
-    var toc = TOC.buildList();
-    container.appendChild(toc);
-    var heading = TOC.createElement('h2', { 'class': 'toc-heading' }, 'Robust JavaScript');
-    container.insertBefore(heading, toc);
-  }
-};
-
-if (document.addEventListener && document.querySelector && document.querySelectorAll) {
-  document.addEventListener('DOMContentLoaded', function() {
-    TOC.init('#toc');
-  });
-}
-
-})();
-</script>
-
 <div id="toc-container">
   <nav id="toc"></nav>
 </div>
@@ -218,7 +140,7 @@ If you are planning a service with a rock-solid base and demanding extras, like 
 
 When applied to JavaScript programming, both Graceful Degradation and Progressive Enhancement raise a lot of practical questions. How is a fallback applied? How well does it integrate with the rest of the code? To which extent is it possible to built on an existing version and enhance it? Is it not sometimes necessary to make a clear cut? You need to find answers that are specific for your project.
 
-Both Graceful Degradation and Progressive Enhancement rely on checking the client’s capabilities. The crucial technique we are going to discuss later is called *feature detection* (see below).
+Both Graceful Degradation and Progressive Enhancement rely on checking the client’s capabilities. The crucial technique we are going to discuss later is called *[feature detection](#feature-detection)*.
 
 ### Fault tolerance
 
@@ -232,7 +154,7 @@ In particular, fault tolerance is hard to implement in JavaScript. Used without 
 
 Implementing fault tolerance in JavaScript means dividing the code into independent, sandboxed sub-systems. Only few of them are critical. Most of them should be non-critical. If the latter fail with an error, the error needs to be caught and handled. Other sub-systems and the system as a whole should not be affected.
 
-JavaScript does not support the definition of native sandboxes yet, but we can employ existing techniques like try…catch (see below) to achieve the desired effect.
+JavaScript does not support the definition of native sandboxes yet, but we can employ existing techniques like [try…catch](#handling-exceptions-with-trycatch) to achieve the desired effect.
 
 ### Postel’s Law
 
@@ -345,11 +267,11 @@ To execute a script, the JavaScript engine needs such a high-level format, not t
 
 If you make a slip of the tongue, a gentle listener will probably ask: “Pardon me, what did you mean by ‘alert Hello World’?” The JavaScript parser is not that polite. It has a draconian, unforgiving error handling. If it encounters a character that is not expected in a certain place, it immediately aborts parsing the current script and throws a [SyntaxError](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError). So one misplaced character, one slip of the pen can ruin your script.
 
-The most frequent syntax error is probably due to typos in hand-written code. Fortunately, these errors are easy to prevent by using an editor with syntax checking or a linter (see below).
+The most frequent syntax error is probably due to typos in hand-written code. Fortunately, these errors are easy to prevent by using an editor with syntax checking or a [linter](#linters).
 
 Even with these safeguards in place, syntax errors occur. There are several ECMAScript versions with different syntaxes. For example, if you use class declarations from ECMAScript 6 (2015) or `async`/`await` from ECMAScript 8 (2017), older browsers are not able to parse your script.
 
-The standard solution is to compile newer ECMAScript syntax into an older equivalent syntax that’s widely supported, usually ECMAScript 3 or 5 (see below).
+The standard solution is to [compile](#the-babel-compiler) newer ECMAScript syntax into an older equivalent syntax that’s widely supported, usually ECMAScript 3 or 5.
 
 ### Exceptions
 
@@ -384,7 +306,7 @@ window.alert(frobnicateFoo);
 
 The identifier “frobnicateFoo” cannot be found in the scope chain. So the JavaScript engine throws a ReferenceError: “frobnicateFoo is not defined”.
 
-So ReferenceErrors happen when the code uses an identifier that cannot be found in the current scope and all parent scopes. This is may be due to a typo. Linters (see below) can catch these bugs easily.
+So ReferenceErrors happen when the code uses an identifier that cannot be found in the current scope and all parent scopes. This is may be due to a typo. [Linters](#linters) can catch these bugs easily.
 
 Another possible cause is the developer assuming that the browser supports a certain API. The developer assumes a global identifier is provided and uses it without caution. These are several examples that assume the availability of certain browser APIs:
 
@@ -409,7 +331,7 @@ fetch('/something')
 
 We can avoid such careless use of APIs by using *feature detection*. In particular, we need to check for the names we intent to use.
 
-Writing good feature checks requires thorough knowledge of the API being used. We’ll go into details later in its own chapter (see below). Here’s how we can guard the API uses above:
+Writing good feature checks requires thorough knowledge of the API being used. We’ll go into details later [in its own chapter](#feature-detection). Here’s how we can guard the API uses above:
 
 ```js
 if (typeof JSON === 'object' && typeof JSON.parse === 'function') {
@@ -440,7 +362,7 @@ if (typeof fetch === 'function') {
 
 These guards are only the first step. They check whether the API objects exist and have a certain type, like function. They do not check whether the browser has full and correct support of the API. They do not check whether the APIs can be used in the current context.
 
-For example, security and privacy preferences might limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like throwing an exception (see below) or returning a value denoting an error.
+For example, security and privacy preferences might limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
 
 ### Type errors
 
@@ -479,7 +401,7 @@ myLibrary.statr();
 
 The problem here is a simple typo. `myLibrary.start` is a function, but `myLibrary.statr` returns “undefined”.
 
-These errors can be avoided by extensive manual and automated testing (see below) as well static code analysis. An <abbr title="Integrated development environments">IDEs</abbr> for example understands that the code defines an object `myLibrary` with the single property `start`. When it encounters `myLibrary.statr`, it shows a warning because it does not recognize the property `statr`.
+These errors can be avoided by extensive [manual](#manual-testing) and [automated testing](#automated-testing) as well static code analysis. An <abbr title="Integrated development environments">IDEs</abbr> for example understands that the code defines an object `myLibrary` with the single property `start`. When it encounters `myLibrary.statr`, it shows a warning because it does not recognize the property `statr`.
 
 There are several other cases where TypeErrors are thrown. For example when you try to redefine the value of a constant:
 
@@ -509,7 +431,7 @@ Object.seal(MyLibrary);
 MyLibrary.newProperty = 1;
 ```
 
-In strict mode (see below), this code throws a TypeError “can't define property \"newProperty\": Object is not extensible”. Without the strict mode, the new property is silently ignored.
+In [Strict Mode](#the-strict-mode), this code throws a TypeError “can't define property \"newProperty\": Object is not extensible”. Without the strict mode, the new property is silently ignored.
 
 The same goes for overwriting properties which are read-only:
 
@@ -587,7 +509,7 @@ function sum(a, b) {
 
 The key to failing fast is to **make your assumptions explicit** with assertions.
 
-The function above uses `typeof` (see below) to assert the types of `a` and `b`. It throws an exception (see below) if they are not numbers or if they are `NaN`. We are going to explain these techniques later in detail.
+The function above uses [`typeof`](#type-checks-with-typeof) to assert the types of `a` and `b`. It [throws an exception](#programmatic-exceptions) if they are not numbers or if they are `NaN`. We are going to explain these techniques later in detail.
 
 This example shows that assertions make small errors visible before they grow into big errors. The problem is, NaN *is a dangerous beast*. NaN is a special value that means “not a number”, but in fact it is a number you can calculate with.
 
@@ -595,7 +517,7 @@ NaN is contagious. All calculations involving NaN fail silently, yielding NaN: `
 
 If a NaN slips into your logic, it is carried through the rest of the program until the user sees a “NaN” appearing in the interface. It is hard to find the cause of a NaN since the place where it appears can be far from the place that caused it. Typically, the cause of a NaN is an implicit type conversion. My advice is to raise the alarm as soon as you see a NaN.
 
-You need to decide how to implement assertions. If you throw an exception, like the example above, make sure to catch it in a global error handler and report it to an error logging service (see below). If you follow Postel’s Law (see above) instead, at least output a warning on the console and report the error.
+You need to decide how to implement assertions. If you throw an exception, like the example above, make sure to catch it in a global error handler and [report it to an error logging service](#error-logging). If you follow [Postel’s Law](#postels-law) instead, at least output a warning on the console and report the error.
 
 If the user’s task is affected, you should show a useful error message that something went wrong and that the incident has been reported. Also suggest workarounds, if applicable.
 
@@ -609,7 +531,7 @@ When writing client-side JavaScript, you need to define a baseline of requiremen
 
 **[Can I Use](https://caniuse.com/)** is an essential resource that documents browser support of web technologies. For example, according to Can I Use, the [Fetch API](https://caniuse.com/#feat=fetch) in available in the browsers of 77.81% of the users worldwide. Can I Use allows to import usage data for a certain country in order to see stats for the target market.
 
-The Can I Use data for Fetch shows that it is a fairly new API that almost all latest browsers support, but not the older browser generations. So Fetch should be used with a feature detection, ideally with a fallback or polyfill (see below).
+The Can I Use data for Fetch shows that it is a fairly new API that almost all latest browsers support, but not the older browser generations. So Fetch should be used with a feature detection, ideally with a fallback or [polyfill](#polyfills).
 
 Another essential site is the **[Web API documentation of the Mozilla Developer Network (MDN)](https://developer.mozilla.org/en-US/docs/Web/API)**. Here you’ll find a reference of all major JavaScript APIs, alongside with browser compatibility information and links to the original specifications.
 
@@ -743,7 +665,7 @@ if (fetch) {
 ```
 </div>
 
-This works in browsers that do support fetch, but throws an exception in browsers that do not. Especially, it throws a ReferenceError (see above).
+This works in browsers that do support fetch, but throws an exception in browsers that do not. Especially, it throws a [ReferenceError](#reference-errors).
 
 This renders the whole check useless. This is exactly what we are trying to avoid with the check.
 
@@ -771,9 +693,9 @@ We ca not just use an identifier that cannot be resolved. There are several ways
     }
     ```
 
-    This existence check is in fact a value check (see below). We are relying on the ToBoolean conversion here (see above). A function is *truthy*.
+    This existence check is in fact a [value check](#value-checks). We are relying on the [ToBoolean conversion](#conditional-statements-and-truthy-values) here. A function is *truthy*.
 
-3.  Alternatively, use the `typeof` operator (see below). `typeof` does not throw an error in case the reference cannot be resolved, it merely returns the string `'undefined'`.
+3.  Alternatively, use the [`typeof` operator](#type-checks-with-typeof). `typeof` does not throw an error in case the reference cannot be resolved, it merely returns the string `'undefined'`.
 
     ```js
     if (typeof fetch === 'function') {
@@ -783,7 +705,7 @@ We ca not just use an identifier that cannot be resolved. There are several ways
     }
     ```
 
-    This existence check is in fact a type check (see below).
+    This existence check is in fact a type check (see next chapter).
 
 ### Type checks with `typeof`
 
@@ -910,7 +832,7 @@ How does `instanceof` fit in here? Let’s investigate what happens when `value 
 
 In consequence, `value instanceof Date` checks whether the value inherits from `Date.prototype` using prototypal inheritance.
 
-The `instanceof` operator is only applicable to the type Object and subtypes like Function, Array, RegExp, Date, etc. `instanceof` always returns false for primitive types (see above).
+The `instanceof` operator is only applicable to the type Object and subtypes like Function, Array, RegExp, Date, etc. `instanceof` always returns false for [primitive types](#type-checks-with-typeof).
 
 Another drawback limits the usefulness of `instanceof`: It does not work across windows, like frames, iframes and popup windows.
 
@@ -1053,7 +975,7 @@ After executing the `catch (…) {…}` block, the JavaScript engine continues t
 
 ### Programmatic exceptions
 
-We’ve touched programmatic exceptions briefly in “fail fast” assertions (see above). Let’s have a deeper look at them.
+We’ve touched programmatic exceptions briefly in [“fail fast” assertions](#failing-fast). Let’s have a deeper look at them.
 
 Typically we take great efforts to avoid or catch exceptions during JavaScript runtime. Why should we deliberately cause exceptions?
 
@@ -1081,7 +1003,7 @@ The example creates a new `TypeError` instance. Every Error should have a meanin
 
 First, a programmatic exception is a message to the developer calling the code. The `sum` function says: “This function needs two numbers in order to work correctly! It does not deal with other types. For reliability, this function does not perform implicit type conversion. Please fix your code to make sure only numbers are passed, before this small error grows to a big one.”
 
-This message is only effective if it reaches the developer. When the exception is thrown in production, then it should be reported and logged (see below) so the developer gets the message as soon as possible.
+This message is only effective if it reaches the developer. When the exception is thrown in production, then it should be [reported and logged](#error-logging) so the developer gets the message as soon as possible.
 
 Second, a programmatic exception is a message to the calling code, similar to the return value of the function. We’ve seen this in the `querySelector` example above. The caller should catch the exception and handle it appropriately. For this purpose, the error object holds a type, a message, the source code position it originates from, a stack trace and possibly more information on the incident.
 
@@ -1093,7 +1015,7 @@ Encapsulated code that does not interfere with other code, e.g. few global varia
 
 ECMAScript 5, released in 2009, started to deprecate error-prone programming practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
 
-In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors – see failing fast (see above).
+In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors – see [failing fast](#failing-fast).
 
 Enable the Strict Mode by placing a marker at the beginning of a script:
 
@@ -1154,7 +1076,7 @@ function sloppyFunction() {
 }
 ```
 
-In Strict Mode, this mistake does not go unnoticed. It leads to a ReferenceError (see above): “assignment to undeclared variable name”.
+In Strict Mode, this mistake does not go unnoticed. It leads to a [ReferenceError](#reference-errors): “assignment to undeclared variable name”.
 
 Today, the Strict Mode should be used everywhere unless there are particular reasons against it.
 
@@ -1199,7 +1121,7 @@ If the browser does not support the Fetch API, including `window.fetch`, the cod
 
 It is worth noting that not all APIs can be fully polyfilled. Some APIs include new and special behavior that cannot be implemented by standard ECMAScript means.
 
-For example, if the browser does not provide access to live audio and video streams from the device, no JavaScript polyfill can implement this feature. In such cases, you need to use Graceful Degradation or Progressive Enhancement (see above) to come up with an alternative.
+For example, if the browser does not provide access to live audio and video streams from the device, no JavaScript polyfill can implement this feature. In such cases, you need to use Graceful Degradation or [Progressive Enhancement](#progressive-enhancement) to come up with an alternative.
 
 ### Linters
 
@@ -1209,7 +1131,7 @@ When developing JavaScript, a linter is an essential tool for writing robust cod
 
 The most flexible and powerful JavaScript linter is **[ESlint](https://eslint.org/)**. It is written in JavaScript and runs on Node.js.
 
-ESlint consists of a ECMAScript parser (see above) and [numerous rules](https://eslint.org/docs/rules/) that examine the Abstract Syntax Tree (AST). The rules search for pitfalls in your code, for deprecated language idioms, for inconsistencies and code style violations.
+ESlint consists of a ECMAScript [parser](#parsing-errors) and [numerous rules](https://eslint.org/docs/rules/) that examine the Abstract Syntax Tree (AST). The rules search for pitfalls in your code, for deprecated language idioms, for inconsistencies and code style violations.
 
 When a rule finds a violation, it outputs a warning or error you can see on the command line or in your editor. Some rules, especially stylistic rules, may automatically fix the problem by changing the source file.
 
@@ -1227,7 +1149,7 @@ Especially for beginners, the ESlint ecosystem may be confusing. Hundreds of rul
 
 Fortunately, ESlint and most ESlint plugins come with a recommended configuration. Start with this configuration to get an impression how ESlint works, then adapt your ESlint configuration to reflect your or your team’s preferences.
 
-### The Babel transpiler
+### The Babel compiler
 
 Every year, a new ECMAScript version is released. Some versions introduce new syntax. For example, ECMAScript 6 (released 2015) introduced a bunch of new syntax features. Here’s a small selection:
 
@@ -1239,7 +1161,7 @@ const func = (x) => x * 2;
 class Cat {}
 ```
 
-The ECMAScript syntax is not forward-compatible. When new syntax is added, engines that do not support the extension cannot parse the code. They throw a SyntaxError (see above) and do not execute the code.
+The ECMAScript syntax is not forward-compatible. When new syntax is added, engines that do not support the extension cannot parse the code. They throw a [SyntaxError](#parsing-errors) and do not execute the code.
 
 There are still browsers around that do not support the ECMAScript 6 syntax. Does this mean we cannot use ECMAScript 6 until all these browsers become extinct?
 
@@ -1274,7 +1196,7 @@ Babel will it translate to:
 var pElements = Array.from(document.querySelectorAll('p'));
 ```
 
-Still, this will not work in a browser that only supports ECMAScript 5 because `Array.from()` is first specified in ECMAScript 6. Babel does not translate the function call. To use new ECMAScript objects and methods, you can use a polyfill (see above). The Babel project provides a [polyfill based on core-js](https://babeljs.io/docs/usage/polyfill/).
+Still, this will not work in a browser that only supports ECMAScript 5 because `Array.from()` is first specified in ECMAScript 6. Babel does not translate the function call. To use new ECMAScript objects and methods, you can use a [polyfill](#polyfills). The Babel project provides a [polyfill based on core-js](https://babeljs.io/docs/usage/polyfill/).
 
 ### Languages that compile to JavaScript
 
@@ -1316,7 +1238,7 @@ sum = (a, b) =>
 
 When CoffeeScript version 1.0 was released on 2010, it made JavaScript programming more robust since it eliminated several common pitfalls. The JavaScript produced by the CoffeeScript compiler implemented best practices and was less error-prone.
 
-CoffeeScript’s language design and its brevity influenced the work on the ECMAScript standard. ECMAScript 6 and Babel (see above) address several language shortcomings that existed when CoffeeScript was created. So today CoffeeScript is used less then it was several years ago, but it is still an influential language.
+CoffeeScript’s language design and its brevity influenced the work on the ECMAScript standard. ECMAScript 6 and [Babel](#the-babel-compiler) address several language shortcomings that existed when CoffeeScript was created. So today CoffeeScript is used less then it was several years ago, but it is still an influential language.
 
 #### TypeScript
 
@@ -1338,12 +1260,12 @@ function sum(a: number, b: number): number {
 
 Do you see the type information added to the parameters `a` and `b` as well as the return value?
 
-In plain JavaScript, we need to add type assertions (see above) to make sure that `sum` is only called with two numbers. In TypeScript, the code simply does not compile when `sum` is called somewhere with non-numbers. By adding type information, the TypeScript compiler can analyze the code and check if the actual type of a value matches the expected type.
+In plain JavaScript, we need to add [type assertions](#type-checks-with-typeof) to make sure that `sum` is only called with two numbers. In TypeScript, the code simply does not compile when `sum` is called somewhere with non-numbers. By adding type information, the TypeScript compiler can analyze the code and check if the actual type of a value matches the expected type.
 
 Using a language with strong, static typing like TypeScript has these main benefits:
 
 - With proper typings in place, the compiler catches a certain class of bugs early. It is harder to write code that fails for simple reasons. Runtime errors like TypeError and ReferenceError are almost eliminated.
-- Static typing forces you to handle cases that are logically possible, even though they are rare in practice. Without type checking, someone has to write automated tests (see below) for the edge cases, otherwise the errors are not caught.
+- Static typing forces you to handle cases that are logically possible, even though they are rare in practice. Without type checking, someone has to write [automated tests](#automated-testing) for the edge cases, otherwise the errors are not caught.
 - Static typing makes you think twice about the structure of your data, about object modeling and API design. In plain JavaScript code, it is easy to create, mix and mutate complex objects. This makes it hard to see which properties are available and which types they have. In TypeScript, each function has a well-defined signature. The structure of all objects passed around in the code is described by classes or interfaces.
 - Strong typing means there is no implicit type conversion. Explicit code is simpler code.
 - Editors with strong TypeScript support, like Visual Studio Code, make programming a bliss. They have productivity features known from fully fledged <abbr title="Integrated development environments">IDEs</abbr>. Writing, navigating and refactoring code is much easier since the editor understands the structure of the program, knows all names and types.
@@ -1477,7 +1399,7 @@ Even if you do not choose to write Elm over plain JavaScript, there’s much to 
 
 ### Error logging
 
-Despite all precautions, with extensive testing in place (see below), errors will happen in production when diverse users with diverse browsers and devices are using your site.
+Despite all precautions, with extensive [testing](#automated-testing) in place, errors will happen in production when diverse users with diverse browsers and devices are using your site.
 
 In particular, JavaScript exceptions will happen in production. We’ve learned that exceptions are helpful messages about problems in your code or your larger infrastructure – as long as you receive these messages and act upon them.
 
@@ -1544,7 +1466,7 @@ Automated testing plays a crucial role in writing robust applications. Especiall
 
 There are thousands of great resources on automated testing in general and testing JavaScript in particular. In this guide, I would like to focus on how automated testing contributes to robust JavaScript.
 
-In contrast to manual testing (see above), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
+In contrast to manual [testing](#manual-testing), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
 
 ### Unit tests
 
@@ -1750,3 +1672,143 @@ License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"
 
   </main>
 </div><!-- #main-container -->
+
+
+<script>
+(function() {
+'use strict';
+
+var TOC = {
+
+  supported: Boolean(
+    document.querySelector && document.querySelectorAll
+  ),
+
+  createElement: function(tagName, attributes, innerHTML) {
+    var el = document.createElement(tagName);
+    if (attributes) {
+      for (var prop in attributes) {
+        if (attributes.hasOwnProperty(prop)) {
+          el.setAttribute(prop, attributes[prop]);
+        }
+      }
+    }
+    if (innerHTML) {
+      el.innerHTML = innerHTML
+    }
+    return el;
+  },
+
+  buildList: function() {
+    var headings = document.querySelectorAll('h2, h3, h4');
+    var h2list = TOC.createElement('ol');
+    var lastH2Item = null;
+    var lastH3Item = null;
+    var h3list = null;
+    var h4list = null;
+
+    for (var i = 0, l = headings.length; i < l; i++) {
+      var heading = headings[i];
+      var a = TOC.createElement('a', { href: '#' + heading.id }, heading.innerHTML);
+      var li = TOC.createElement('li');
+      li.appendChild(a);
+
+      var tagName = heading.tagName;
+
+      if (tagName === 'H2') {
+        h2list.appendChild(li);
+        h3list = null;
+        h4list = null;
+        lastH2Item = li;
+      } else if (tagName === 'H3') {
+        if (!h3list) {
+          h3list = TOC.createElement('ol');
+          lastH2Item.appendChild(h3list);
+        }
+        h3list.appendChild(li);
+        h4list = null;
+        lastH3Item = li;
+      } else if (tagName === 'H4') {
+        if (!h4list) {
+          h4list = TOC.createElement('ol');
+          lastH3Item.appendChild(h4list);
+        }
+        h4list.appendChild(li);
+      }
+    }
+
+    return h2list;
+  },
+
+  install: function(containerSelector) {
+    var container = document.querySelector(containerSelector);
+    var toc = TOC.buildList();
+    container.appendChild(toc);
+    var heading = TOC.createElement('h2', { 'class': 'toc-heading' }, 'Robust JavaScript');
+    container.insertBefore(heading, toc);
+  },
+
+  init: function(containerSelector) {
+    if (TOC.supported) {
+      TOC.install(containerSelector);
+    }
+  }
+};
+
+var LinkTypes = {
+
+  supported: Boolean(
+    document.links &&
+    document.body.getAttribute &&
+    document.body.appendChild &&
+    document.getElementById &&
+    document.createElement &&
+    document.createTextNode &&
+    document.compareDocumentPosition &&
+    window.Node &&
+    Node.DOCUMENT_POSITION_PRECEDING &&
+    Node.DOCUMENT_POSITION_FOLLOWING
+  ),
+
+  install: function() {
+    var links = document.links;
+    for (var i = 0, l = links.length; i < l; i++) {
+      var link = links[i];
+      var href = link.getAttribute('href');
+      if (!(href && href[0] === '#')) continue;
+      var text = ' ↕';
+      var title = 'Link to another chapter';
+      var target = document.getElementById(href.substring(1));
+      if (target) {
+        var position = link.compareDocumentPosition(target);
+        if (position & Node.DOCUMENT_POSITION_PRECEDING) {
+          text = ' ↑';
+          title = 'see above'
+        } else if (position & Node.DOCUMENT_POSITION_FOLLOWING) {
+          text = ' ↓ '
+          title = 'see below'
+        }
+      }
+      var span = document.createElement('span');
+      span.appendChild(
+        document.createTextNode(text)
+      );
+      span.className = 'link-type';
+      span.title = 'Link to another chapter';
+      link.appendChild(span);
+    }
+  },
+
+  init: function() {
+    if (LinkTypes.supported) {
+      LinkTypes.install();
+    }
+  }
+};
+
+
+TOC.init('#toc');
+LinkTypes.init();
+
+})();
+</script>

@@ -119,10 +119,19 @@ caption {
   margin: 0;
 }
 
+#toc .link-type {
+  display: none;
+}
+
 @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
   #toc a {
     border-bottom-width: 0.5px;
   }
+}
+
+.link-type {
+  font-size: 0.8rem;
+  color: gray;
 }
 
 .erroneous {
