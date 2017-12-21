@@ -1666,11 +1666,17 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 
 <p class="separator">❡</p>
 
-## License
+## About the author
 
-Author: [Mathias Schäfer (molily)](https://molily.de/resume-en/) – [zapperlott@gmail.com](mailto:zapperlott@gmail.com) – [@molily](https://twitter.com/molily)
+Author: [Mathias Schäfer (molily)](/)
+
+Twitter: [@molily](https://twitter.com/molily)
+
+Please send feedback and corrections to [zapperlott@gmail.com](mailto:zapperlott@gmail.com).
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution -ShareAlike (CC BY-SA)</a>
+
+<p lang="de" markdown="1">[Impressum](/impressum/)</p>
 
   </main>
 </div><!-- #main-container -->
