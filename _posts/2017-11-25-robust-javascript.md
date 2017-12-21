@@ -8,10 +8,10 @@ lang: en
 
 <!--
 TODO
-developer / programmer
-parameter / argument
-website / web application / application / software
-one / you / passive voice
+DONE developer / programmer
+DONE parameter / argument
+DONE website / web application / application / software / program
+DONE one / you / passive voice
 n’t
 ’re
 ’d
@@ -125,7 +125,7 @@ In this guide, we investigate why JavaScript might fail and how to prevent or ha
 
 ### Coding for the web: The browser as a runtime environment
 
-Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment and a few canonical libraries a programmer might count on. There is not one hardware architecture or device type. There is not one single vendor that defines and builds the runtime, the compiler and the tools.
+Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment and a few canonical libraries a developer might count on. There is not one hardware architecture or device type. There is not a single vendor that defines and builds the runtime, the compiler and the tools.
 
 The web is an open, vendor-independent, heterogenous publishing platform. It is held together by several technical standards of different quality. New standards appear frequently, old standards are amended or deprecated. Different standardization organizations follow different rules of procedure.
 
@@ -136,15 +136,15 @@ This has lead to the following situation:
 - There is technical behavior that is not standardized and that major browsers agree on. – Standards may omit some details, leaving them for implementors to decide. Still browser vendors copy the detailed behavior from other browsers for consistency.
 - There is technical behavior that is not standardized and that major browsers do not agree on. – Typically new web technologies are born as proprietary experiments before entering a standardization process. Or they are never widely adopted and fall into oblivion.
 
-There are numerous relevant browsers in numerous versions running on different operating systems on devices with different hardware abilities, internet connectivity, etc. The fact that the web client is not under their control maddens programmers from other domains. They see the web as the most hostile software runtime environment. They mistake the diversity of web clients as a weakness.
+There are numerous relevant browsers in numerous versions running on different operating systems on devices with different hardware abilities, internet connectivity, etc. The fact that the web client is not under their control maddens developers from other domains. They see the web as the most hostile software runtime environment. They mistake the diversity of web clients as a weakness.
 
-Proponents of the web counter that this heterogeneity and inconsistency is in fact a strength of the web. The web is open, it’s everywhere, it has a low access threshold. The web is adaptive and keeps on absorbing new technologies and fields of applications. No other software environment so far has demonstrated this degree of flexibility.
+Proponents of the web counter that this heterogeneity and inconsistency is in fact a strength of the web. The web is open, it is everywhere, it has a low access threshold. The web is adaptive and keeps on absorbing new technologies and fields of applications. No other software environment so far has demonstrated this degree of flexibility.
 
 Front-end developers benefit from a web that keeps on evolving and innovating. Especially JavaScript developers may quickly adopt new language features as soon as they are specified and implemented by some browsers. In this guide, we will explore how to use new features in a backwards-compatible way.
 
-It is true that client-side JavaScript programming is a minefield. But there is a simple, Socratic principle that will light our way: *Don’t take anything for granted. Don’t count on anything. Question your beliefs.* If you know that you know nothing about the client that runs your JavaScript code, you can turn unfounded assumptions into justified knowledge.
+It is true that client-side JavaScript programming is a minefield. But there is a simple, Socratic principle that will light our way: *Do not take anything for granted. Do not count on anything. Question your beliefs.* If you know that you know nothing about the client that runs your JavaScript code, you can turn unfounded assumptions into justified knowledge.
 
-It’s necessary and inevitable that JavaScript makes assumptions, but we need to [own these assumptions](https://remysharp.com/2015/07/02/assumptions). Every JavaScript program makes a lot of assumptions about its runtime environment. While having a low entry barrier is certainly desirable, the program needs to fulfill a task. The requirements should be in a well-balanced relation to the provided features.
+it is necessary and inevitable that JavaScript makes assumptions, but we need to [own these assumptions](https://remysharp.com/2015/07/02/assumptions). Every JavaScript program makes a lot of assumptions about its runtime environment. While having a low entry barrier is certainly desirable, the program needs to fulfill a task. The requirements should be in a well-balanced relation to the provided features.
 
 ### JavaScript standards
 
@@ -162,7 +162,7 @@ There are a lot of other specifications that add more APIs to the browser’s Ja
 
 ### The global object `window`
 
-The most important ECMAScript object is the <dfn>global object</dfn>. In the browser, the global object is `window`. It is not only the top-most object representing the current browsing instance, it also forms the top-most scope for names defined by the programmer.
+The most important ECMAScript object is the <dfn>global object</dfn>. In the browser, the global object is `window`. It is not only the top-most object representing the current browsing instance, it also forms the top-most scope for names defined by the developer.
 
 These names are called “bindings” in ECMAScript terminology. They include, among others, global variables like `var fooVariable = 1;`, functions declarations like `function fooFunction() {}` and class declarations like `class FooClass {}`. When this code is executed in the global scope, properties on the global object `window` are created: `window.fooVariable`, `window.fooFunction` and `window.FooClass`.
 
@@ -190,7 +190,7 @@ A structure can also be robust. Think of a [lattice tower](https://en.wikipedia.
 
 Similarly, in computer science, a robust program “performs well not only under ordinary conditions but also under unusual conditions that stress its designers’ assumptions.” ([The Linux Information Project](http://www.linfo.org/robust.html)). The program does not stop execution when errors occur. It does not fail when the input data or user input is invalid or bogus.
 
-So robustness is all about *making informed assumptions*. What happens when the programmer’s assumptions are not met? Let’s look at several concepts of robustness.
+So robustness is all about *making informed assumptions*. What happens when the developer’s assumptions are not met? Let’s look at several concepts of robustness.
 
 ### Graceful Degradation
 
@@ -218,7 +218,7 @@ Graceful Degradation aims for the full experience using bleeding-edge technologi
 
 Then sophisticated fallbacks need to be added after the fact. This turns out to be difficult and tedious. For certain new browser features, it’s virtually impossible to develop equivalent fallbacks. But more importantly, adding fallbacks is often neglected. When the budget is almost exhausted, web developers tend to add “this site requires browser X” signs, excluding many users, instead of writing proper fallbacks.
 
-Progressive Enhancement in contrast follows the “[minimal viable product](https://en.wikipedia.org/wiki/Minimum_viable_product)” school of product development. The goal is to publish a working website quickly. This first version isn’t the most user-friendly, and certainly not the shiniest among its competitors. But the site works smoothly on every device. What it does, it does reliably.
+Progressive Enhancement in contrast follows the “[minimal viable product](https://en.wikipedia.org/wiki/Minimum_viable_product)” school of product development. The goal is to publish a working website quickly. This first version is not the most user-friendly, and certainly not the shiniest among its competitors. But the site works smoothly on every device. What it does, it does reliably.
 
 Enhancements that make use of the latest browser features can now be added safely and deployed quickly. There is no stage during development in which the site only works for a small fraction of users.
 
@@ -228,7 +228,7 @@ If you’re planning a “moonshot” that relies on bleeding-edge technology in
 
 If you’re planning a service with a rock-solid base and demanding extras, like realtime data analysis and visualization, Progressive Enhancement may help to build high without losing accessibility.
 
-When applied to JavaScript programming, both Graceful Degradation and Progressive Enhancement raise a lot of practical questions. How is a fallback applied? How well does it integrate with the rest of the code? To which extent is it possible to built on an existing version and enhance it? Isn’t it sometimes necessary to make a clear cut? You need to find answers that are specific for your project.
+When applied to JavaScript programming, both Graceful Degradation and Progressive Enhancement raise a lot of practical questions. How is a fallback applied? How well does it integrate with the rest of the code? To which extent is it possible to built on an existing version and enhance it? Is it not sometimes necessary to make a clear cut? You need to find answers that are specific for your project.
 
 Both Graceful Degradation and Progressive Enhancement rely on checking the client’s capabilities. The crucial technique we’re going to discuss later is called *feature detection* (see below).
 
@@ -266,7 +266,7 @@ Today this principle is often called <dfn>Postel’s Law</dfn>. While the origin
 
 For example, the liberal, fault-tolerant [HTML 5 parser definition](https://www.w3.org/TR/html5/syntax.html#parsing-html-documents) along with the conservative [HTML 5 syntax definition](https://www.w3.org/TR/html5/syntax.html#writing-html-documents) is an application of Postel’s Law.
 
-Personally, I don’t think Postel’s Law should be seen as a “general principle of robustness”. I agree to some degree that a program should accept data “that it can interpret (e.g. not object to technical errors where the meaning is still clear)”. This rule requires interpretation when applying it to a specific case.
+Personally, I do not think Postel’s Law should be seen as a “general principle of robustness”. I agree to some degree that a program should accept data “that it can interpret (e.g. not object to technical errors where the meaning is still clear)”. This rule requires interpretation when applying it to a specific case.
 
 In this guide, I do not argue that every program should be liberal in what it accepts. I find it more important that every program is explicit about what it accepts, is outspoken about technical errors and has a well-defined error handling.
 
@@ -349,7 +349,7 @@ For JavaScript, it’s quite similar, yet less familiar since it’s a not a nat
           value: <em>"Hello World!"</em>
 </pre>
 
-We won’t go into detail here, but let’s describe the structure of the program `window.alert('Hello World!');` in our own words:
+We will not go into detail here, but let’s describe the structure of the program `window.alert('Hello World!');` in our own words:
 
 There is an expression (think of a mathematical term) with a call of a function. To obtain this function, we need to look up the name `window`. We assume the value is an object and get its property named `alert`. We treat this value as the function being called. There is one function argument, a string literal containing `Hello World!`.
 
@@ -398,7 +398,7 @@ The identifier “frobnicateFoo” cannot be found in the scope chain. So the Ja
 
 So ReferenceErrors happen when the code uses an identifier that cannot be found in the current scope and all parent scopes. This is may be due to a typo. Linters (see below) can catch these bugs easily.
 
-Another possible cause is the programmer assuming that the browser supports a certain API. The programmer assumes a global identifier is provided and uses it without caution. These are several examples that assume the availability of certain browser APIs:
+Another possible cause is the developer assuming that the browser supports a certain API. The developer assumes a global identifier is provided and uses it without caution. These are several examples that assume the availability of certain browser APIs:
 
 ```js
 var object = JSON.parse(string);
@@ -468,7 +468,7 @@ undefined();
 null();
 ```
 
-This seems obvious. Why would you try to call a number as if it was a function? You wouldn’t do that on purpose when writing the code, but it happens in production. Let’s look at this example:
+This seems obvious. Why would you try to call a number as if it was a function? You would not do that on purpose when writing the code, but it happens in production. Let’s look at this example:
 
 ```js
 window.frobnicateFoo();
@@ -478,7 +478,7 @@ Here, we have a reference to a property `frobnicateFoo` on the object `window`. 
 
 Such TypeError are both common and hard to debug since they may have highly different causes.
 
-In the example above, the cause is a certain function is used without checking its existence beforehand. `frobnicateFoo` might be a user-defined function or a part of a browser API. If the function call fails because the function doesn’t exist, the script defining the function was not loaded correctly or the browser doesn’t support the API.
+In the example above, the cause is a certain function is used without checking its existence beforehand. `frobnicateFoo` might be a user-defined function or a part of a browser API. If the function call fails because the function does not exist, the script defining the function was not loaded correctly or the browser does not support the API.
 
 Here’s another example of a similar “undefined is not a function” TypeError.
 
@@ -500,7 +500,7 @@ const a = 1;
 a = 2;
 ```
 
-As Shakespeare famously wrote in his sonnets about JavaScript, an immutable binding is not an immutable binding …
+As William Shakespeare famously wrote in his sonnets about JavaScript, an immutable binding is not an immutable binding …
 
 <blockquote>
 <p>Which alters when it alteration finds,<br>
@@ -579,7 +579,7 @@ function sum(a, b) {
 }
 ```
 
-This function expects two numbers and returns their sum. The implicit assumption is that both arguments, `a` and `b`, are numbers. If one of them isn’t, the result *probably* won’t be a number either. Whether the function works correctly depends on correct input types.
+This function expects two numbers and returns their sum. The implicit assumption is that both arguments, `a` and `b`, are numbers. If one of them is not, the result *probably* will not be a number either. Whether the function works correctly depends on correct input types.
 
 The problem is, the `+` operator *is a dangerous beast*. Its purpose is to add two numbers, but also to concatenate two strings. If the operands are not two numbers or two strings, implicit type conversion is performed.
 
@@ -627,9 +627,9 @@ Another essential site is the **[Web API documentation of the Mozilla Developer 
 
 If you’re looking for ECMAScript core features, the place to go are the **[ECMAScript compatibility tables by kangax](https://kangax.github.io/compat-table/es6/)**.
 
-As we have learned before, writing good feature detection requires thorough knowledge of the particular JavaScript API you’d like to use. Fortunately, people have developed and collected feature checks for the relevant APIs so you don’t have to wade through the specifications and come up with proper checks yourself.
+As we have learned before, writing good feature detection requires thorough knowledge of the particular JavaScript API you’d like to use. Fortunately, people have developed and collected feature checks for the relevant APIs so you do not have to wade through the specifications and come up with proper checks yourself.
 
-**[Modernizr](https://modernizr.com/)** is a comprehensive feature detection library. You can select browser features you’d like to use and build your own minimal library. Modernizr then provides a global object `Modernizr` with boolean properties. For example, `Modernizr.fetch` has the value `true` if the browser supports the Fetch API, or `false` if it doesn’t. This allows you to write:
+**[Modernizr](https://modernizr.com/)** is a comprehensive feature detection library. You can select browser features you’d like to use and build your own minimal library. Modernizr then provides a global object `Modernizr` with boolean properties. For example, `Modernizr.fetch` has the value `true` if the browser supports the Fetch API, or `false` if it does not. This allows you to write:
 
 ```js
 if (Modernizr.fetch) {
@@ -637,7 +637,7 @@ if (Modernizr.fetch) {
 }
 ```
 
-If you don’t want to use Modernizr but look for bulletproof feature detection code, look into Modernizr’s [repository of detects](https://github.com/Modernizr/Modernizr/tree/master/feature-detects). For detecting the Fetch API, the [Modernizr simple checks](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/network/fetch.js) `'fetch' in window`.
+If you do not want to use Modernizr but look for bulletproof feature detection code, look into Modernizr’s [repository of detects](https://github.com/Modernizr/Modernizr/tree/master/feature-detects). For detecting the Fetch API, the [Modernizr simple checks](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/network/fetch.js) `'fetch' in window`.
 
 ### Value checks
 
@@ -645,7 +645,7 @@ Writing feature detections in JavaScript means checking for names and values def
 
 There are three levels of checks:
 
-1. <p>**Existence check**: Does a name exist?</p>
+1. <p markdown="1">**Existence check**: Does a name exist?</p>
   - Either: Does an identifier exist in the scope chain? Ultimately, does an identifier exist in the global scope?
   - Or: Does a property exist on a certain object?
 2. **Type check**: After resolving the name to a value, does the value has the expected type?
@@ -669,7 +669,7 @@ if (condition) {
 
 When an `if` statement is evaluated, first the condition expression is evaluated. The result of the expression is then converted into a boolean value, `true` or `false`. If this result is `true`, the first code block is executed, otherwise the second block, if given.
 
-Most likely, this isn’t new to you. The reason I’m revisiting it is the conversion into boolean. It means you can use a condition expression that does not necessarily evaluate to a boolean value. Other types, like Undefined, Null, String or Object are possible. For example, it’s possible to write `if ("Hello!") {…}`.
+Most likely, this is not new to you. The reason I am revisiting it is the conversion into boolean. It means you can use a condition expression that does not necessarily evaluate to a boolean value. Other types, like Undefined, Null, String or Object are possible. For example, it’s possible to write `if ("Hello!") {…}`.
 
 If you rely on the implicit conversion, you should learn the conversion rules. ECMAScript defines an [internal function ToBoolean](http://www.ecma-international.org/ecma-262/8.0/#sec-toboolean) for this purpose. In our code, we can use the public [Boolean function](http://www.ecma-international.org/ecma-262/8.0/#sec-boolean-constructor-boolean-value) to convert a value into boolean. This delegates to the internal `ToBoolean` function.
 
@@ -733,7 +733,7 @@ As you can see, most types have a clear boolean counterpart. All objects, includ
 
 For numbers and strings though, it’s complicated. Numbers are truthy *except for* zeros and NaN. Strings are truthy except for empty strings.
 
-This ECMAScript design decision is controversial. On the one hand, it’s a source of errors, since some programmers expect that all numbers and all strings are truthy. On the other hand, it allows to write simple value checks like `if (value) {…}` for non-empty strings and usable non-zero numbers.
+This ECMAScript design decision is controversial. On the one hand, it’s a source of errors, since some developers expect that all numbers and all strings are truthy. On the other hand, it allows to write simple value checks like `if (value) {…}` for non-empty strings and usable non-zero numbers.
 
 Usually, a value check aims to distinguish *usable* and *valid* values from *unusable* and *invalid* values. In most cases, truthy values are usable and falsy values are usable. But keep in mind the exceptions for numbers and strings.
 
@@ -755,11 +755,11 @@ if (fetch) {
 ```
 </div>
 
-This works in browsers that do support fetch, but throws an exception in browsers that don’t. Especially, it throws a ReferenceError (see above).
+This works in browsers that do support fetch, but throws an exception in browsers that do not. Especially, it throws a ReferenceError (see above).
 
 This renders the whole check useless. This is exactly what we’re trying to avoid with the check.
 
-We can’t just use an identifier that cannot be resolved. There are several ways to work around this problem:
+We ca not just use an identifier that cannot be resolved. There are several ways to work around this problem:
 
 1.  We know that `fetch` is a property of the global object window. So we can use the [`in` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in) to check whether the property exists without checking its type:
 
@@ -914,7 +914,7 @@ More precisely, `instanceof` returns whether an object inherits from the `protot
 
 ECMAScript is a language based on prototypal inheritance. Every object has a prototype reference that may point to another object. If a property cannot be found on the object, the JavaScript engine follows the prototype reference and looks for the property on the prototype.
 
-This principle is quite simple. Imagine someone asking you a question, but you don’t know the answer. You still try to be helpful: “I’m sorry, I don’t know the answer myself, but I know someone who is an expert on this topic!” So the other person walks to the expert and repeats the question.
+This principle is quite simple. Imagine someone asking you a question, but you do not know the answer. You still try to be helpful: “I’m sorry, I do not know the answer myself, but I know someone who is an expert on this topic!” So the other person walks to the expert and repeats the question.
 
 Since a prototype is a simple object, it can have its own prototype again. This way, a [prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain) is formed: Objects referencing other objects, like `a` &rarr; `b` &rarr; `c`. The engine walks up the prototype chain to find a property. When you retrieve a property on `a` and it cannot be found, `b` is searched, then `c`.
 
@@ -936,7 +936,7 @@ The standard way to solve this particular problem is to use a type check functio
 
 ### Duck typing
 
-As a weakly typed language, JavaScript performs implicit type conversion so programmers don’t need to think too much about types. The concept behind this <dfn>duck typing</dfn>: “If it walks like a duck and quacks like a duck, it is a duck.”
+As a weakly typed language, JavaScript performs implicit type conversion so developers do not need to think too much about types. The concept behind this <dfn>duck typing</dfn>: “If it walks like a duck and quacks like a duck, it is a duck.”
 
 `typeof` and `instanceof` check what a value *is*. As we have seen, both operators have serious limitations.
 
@@ -968,7 +968,7 @@ if (!(date && date.getTime)) {
 
 If the value walks and talks like a date, it is a date – for this purpose.
 
-This check isn’t as strict as `typeof` and `instanceof`, and that’s an advantage. A function that does not assert types but object capabilities is more flexible.
+This check is not as strict as `typeof` and `instanceof`, and that’s an advantage. A function that does not assert types but object capabilities is more flexible.
 
 For example, JavaScript has several types that do not inherit from `Array.prototype` but walk and talk like arrays: Arguments, HTMLCollection, NodeList. A function that uses duck typing is able to support all array-like types.
 
@@ -1103,18 +1103,76 @@ Encapsulated code that does not interfere with other code, e.g. few global varia
 
 ### The Strict Mode
 
-TODO
+ECMAScript 5, released in 2009, started to deprecate error-prone coding practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
 
-ECMAScript 5
-deprecates error-prone coding practices
+In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors – see failing fast (see above).
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
+Enable the Strict Mode by placing a marker at the beginning of a script:
 
-http://www.ecma-international.org/ecma-262/8.0/#sec-strict-mode-code
+```js
+'use strict';
+window.alert('This code is evaluated in Strict Mode! Be careful!');
+```
 
-Module code is always strict mode code.
-All parts of a ClassDeclaration or a ClassExpression are strict mode code.
+Or at the beginning of a function:
 
+```js
+function strictFunction() {
+  'use strict';
+  window.alert('This function is evaluated in Strict Mode! Be careful!');
+}
+```
+
+Syntax-wise, `'use strict';` is simply an expression statement with a string literal. This code does not do anything when evaluated. It’s a meaningful marker for browsers that support ECMAScript 5, and innocuous code for browsers that do not.
+
+Enabling the Strict Mode for a script of a function is contagious. All code syntactically nested in the script or function also switches to Strict Mode. For example:
+
+```js
+window.alert('Non-strict mode!');
+
+function strictFunction() {
+  'use strict';
+
+  window.alert('Strict Mode!');
+  nestedFunction();
+
+  function nestedFunction() {
+    window.alert('Strict Mode as well!');
+  }
+}
+```
+
+The Strict Mode changes a lot of small things that you can [read about elsewhere](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode). A big thing is handling of variable assignments in functions.
+
+Consider this function:
+
+<div class="erroneous" markdown="1">
+```js
+function sloppyFunction() {
+  name = 'Alice';
+  window.alert(name);
+}
+```
+</div>
+
+In non-strict mode, the assignment to `name` implicitly creates a global variable, `window.name`. Coincidentally, [window.name](https://developer.mozilla.org/en-US/docs/Web/API/Window/name) already exists and has a special meaning.
+
+`name` is not supposed to be a global variable here, but a local variable in the scope of `sloppyFunction`. We forgot to add `var`, `let` or `const` before the assignment. Here’s the fixed code:
+
+```js
+function sloppyFunction() {
+  var name = 'Alice';
+  window.alert(name);
+}
+```
+
+In Strict Mode, this mistake does not go unnoticed. It leads to a ReferenceError (see above): “assignment to undeclared variable name”.
+
+Today, the Strict Mode should be used everywhere unless there are particular reasons against it.
+
+Newer ECMAScript versions make the Strict Mode the default when using new features. For example, ECMAScript 6 module code is always evaluated in Strict Mode. Code inside of ECMAScript 6 classes is also Strict Mode per default.
+
+Most likely, if you’re using modules or classes, you’re already using the Strict Mode. If not, I highly recommend to use the `'use strict';` marker in your scripts to enable the Strict Mode.
 
 ### Abstraction libraries
 
@@ -1123,9 +1181,9 @@ All parts of a ClassDeclaration or a ClassExpression are strict mode code.
 1. The JavaScript APIs available in the browser were unhandy, clumsy and lacked essential features or expressiveness.
 2. The web lacked technical standards that browser vendors agreed upon. Or old browsers that lacked support for essential web standards still dominated the market.
 
-A main goal of client-side JavaScript libraries is to even out differences between browsers. Back in the beginnings of the web, these differences were enormous. Today, most JavaScript APIs are well-specified and browser vendors care for interoperability. Still, small differences remain. Even after browsers have fixed bugs in their implementations, old browser versions don’t simply vanish into thin air but delight us for years.
+A main goal of client-side JavaScript libraries is to even out differences between browsers. Back in the beginnings of the web, these differences were enormous. Today, most JavaScript APIs are well-specified and browser vendors care for interoperability. Still, small differences remain. Even after browsers have fixed bugs in their implementations, old browser versions do not simply vanish into thin air but delight us for years.
 
-Every year or so, someone writes an article titled “You don’t need jQuery” or “You don’t need Lodash”. These articles point out that the native APIs have been improved since or old browsers that prevented the usage of native APIs have died out. That’s right, but they often miss the other main goal of libraries.
+Every year or so, someone writes an article titled “You do not need jQuery” or “You do not need Lodash”. These articles point out that the native APIs have been improved since or old browsers that prevented the usage of native APIs have died out. That’s right, but they often miss the other main goal of libraries.
 
 Libraries provide a concise and consistent API that is an abstraction of several inconsistent browser APIs. For example, using jQuery for traversing and manipulating the DOM, handling events and animation is still more pleasant than using the respective native APIs. This is because jQuery provides an unbeaten abstraction: A list type containing DOM nodes with powerful map, reduce and filter operations. Also, jQuery still deals with browser inconsistencies and tries to level them.
 
@@ -1149,7 +1207,7 @@ if (!window.fetch) {
 }
 ```
 
-If the browser doesn’t support the Fetch API, including `window.fetch`, the code fills the hole by defining `window.fetch`.
+If the browser does not support the Fetch API, including `window.fetch`, the code fills the hole by defining `window.fetch`.
 
 It’s worth noting that not all APIs can be fully polyfilled. Some APIs include new and special behavior that cannot be implemented by standard ECMAScript means.
 
@@ -1205,7 +1263,7 @@ When using Babel, there is a mandatory compilation step between hand-written cod
 
 Babel is not just a tool to transform code written in a newer ECMAScript version into an older version. Babel is a plugin-based parser and translation framework that may support arbitrary syntax extensions.
 
-As you can imagine, this is both powerful and dangerous. On the one hand, people use Babel to prototype and test new [ECMAScript language proposals](https://github.com/tc39/proposals). On the other hand, people use Babel to add syntax that most likely won’t be standardized, like [JSX](https://reactjs.org/docs/introducing-jsx.html).
+As you can imagine, this is both powerful and dangerous. On the one hand, people use Babel to prototype and test new [ECMAScript language proposals](https://github.com/tc39/proposals). On the other hand, people use Babel to add syntax that most likely will not be standardized, like [JSX](https://reactjs.org/docs/introducing-jsx.html).
 
 This leads to a situation where large codebases are not valid ECMAScript but full of syntax extensions. Some of them are on the standards track, some are not. Such code can only parsed by Babel with certain plugins. Like in the biblical story about the [Tower of Babel](https://en.wikipedia.org/wiki/Tower_of_Babel), language confusion prevents people from working together.
 
@@ -1213,7 +1271,7 @@ The safest approach is to write interoperable code conforming to a released ECMA
 
 A core assumption of compiling new syntax into old syntax is that a fully equivalent old syntax exists at all. This is not always the case. Some new ECMAScript 6 features cannot be fully translated into ECMAScript 5. Babel does its best to reproduce the semantics, but keep in mind that some detailed behavior cannot be reproduced.
 
-These difference aren’t noticeable if you ship the same ECMAScript 5 code to all browsers. But in the future it makes sense to ship a smaller built with ECMAScript 6 to the browsers that support it.
+These difference are not noticeable if you ship the same ECMAScript 5 code to all browsers. But in the future it makes sense to ship a smaller built with ECMAScript 6 to the browsers that support it.
 
 Babel primarily deals with syntax extensions, not with extensions to the standard library, the ECMAScript core objects. For example, if you write:
 
@@ -1228,7 +1286,7 @@ Babel will it translate to:
 var pElements = Array.from(document.querySelectorAll('p'));
 ```
 
-Still, this won’t work in a browser that only supports ECMAScript 5 because `Array.from()` is first specified in ECMAScript 6. Babel does not translate the function call. To use new ECMAScript objects and methods, you can use a polyfill (see above). The Babel project provides a [polyfill based on core-js](https://babeljs.io/docs/usage/polyfill/).
+Still, this will not work in a browser that only supports ECMAScript 5 because `Array.from()` is first specified in ECMAScript 6. Babel does not translate the function call. To use new ECMAScript objects and methods, you can use a polyfill (see above). The Babel project provides a [polyfill based on core-js](https://babeljs.io/docs/usage/polyfill/).
 
 ### Languages that compile to JavaScript
 
@@ -1236,11 +1294,11 @@ From a language design point of view, JavaScript has severe shortcomings and pit
 
 JavaScript is weakly and dynamically typed. It borrows ideas from multiple paradigms and fuses them into one language: imperative programming, object-oriented programming and functional programming.
 
-Some people make this imprecision and inconsistency responsible for many JavaScript pitfalls. That’s true to some regard. JavaScript wasn’t originally designed for writing large web applications or user interfaces. Recent ECMAScript standards introduced more strictness and consistency to improve [programming in the large](https://en.wikipedia.org/wiki/Programming_in_the_large_and_programming_in_the_small).
+Some people make this imprecision and inconsistency responsible for many JavaScript pitfalls. That’s true to some regard. JavaScript was not originally designed for writing large web applications or user interfaces. Recent ECMAScript standards introduced more strictness and consistency to improve [programming in the large](https://en.wikipedia.org/wiki/Programming_in_the_large_and_programming_in_the_small).
 
 When it’s so hard to write robust JavaScript, why not use another programming language?
 
-The browsers only have a JavaScript engine built in, so we can’t just run, say, PHP in the browser. But other languages can be translated into JavaScript, like an Arabic text can be translated into English.
+The browsers only have a JavaScript engine built in, so we ca not just run, say, PHP in the browser. But other languages can be translated into JavaScript, like an Arabic text can be translated into English.
 
 Typically, programming languages are compiled into machine code for a specific processor architecture or into bytecode for a virtual machine. It’s also possible to compile them into another language, like JavaScript. As we’ve learned already, such a compiler-translator is called transpiler.
 
@@ -1280,7 +1338,7 @@ As the name suggest, TypeScript adds static typing to JavaScript. It comes with 
 
 TypeScript is a strict superset of ECMAScript. All valid ECMAScript code is also valid TypeScript, but TypeScript code with type annotations is usually not valid ECMAScript.
 
-This design decision makes learning and adopting TypeScript easier. You don’t have to forget everything you know about JavaScript and learn a new language, you focus on learning additional TypeScript features.
+This design decision makes learning and adopting TypeScript easier. You do not have to forget everything you know about JavaScript and learn a new language, you focus on learning additional TypeScript features.
 
 This is how the `sum` function with explicit type annotations may look like in TypeScript:
 
@@ -1304,7 +1362,7 @@ Using a language with strong, static typing like TypeScript has these main benef
 
 But what are the downsides?
 
-- Although TypeScript is a superset of ECMAScript, learning TypeScript thoroughly takes a lot of effort. Especially for people who haven’t worked with statically typed languages before, the type system is fundamentally new and hard to grasp.
+- Although TypeScript is a superset of ECMAScript, learning TypeScript thoroughly takes a lot of effort. Especially for people who have not worked with statically typed languages before, the type system is fundamentally new and hard to grasp.
 - Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knowns the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in untyped JavaScript land, the type definitions do not always match the reality.
 - TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given all relevant type definitions are available and correct. After the translation to JavaScript, all type information is discarded. Dynamic code and untyped code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
 - Like other compile-to-JavaScript languages, writing TypeScript requires setting up the compiler. To enjoy all benefits, you need to use a specific editor and [linter](https://github.com/palantir/tslint).
@@ -1315,7 +1373,7 @@ In conclusion, TypeScript is a valuable tool to make JavaScript programming more
 
 [ClojureScript](https://clojurescript.org/) is a compile-to-JavaScript language derived from [Clojure](https://clojure.org/), an independent, well-established language. It embraces functional programming with optional type safety. It has a Lisp-like syntax that follows a “code is data” philosophy. Clojure code is typically compiled to bytecode running on the Java virtual machine.
 
-Clojure and ClojureScript share little resemblance with JavaScript and the ties to the JavaScript ecosystem are loose. Both the unfamiliar Lisp-like syntax and the functional programming style may put off JavaScript programmers.
+Clojure and ClojureScript share little resemblance with JavaScript and the ties to the JavaScript ecosystem are loose. Both the unfamiliar Lisp-like syntax and the functional programming style may put off JavaScript developers.
 
 Here’s how the contrived `sum` function looks in ClojureScript:
 
@@ -1338,7 +1396,7 @@ The core philosophy of Clojure is that it aims to be [*simple* in the first plac
 
 Clojure tries to use simple and clear concepts to build large applications. In other words, Clojure tries everything not to be a “footgun”.
 
-JavaScript in contrast is a melting pot of conflated features. New syntax and semantics are added with each version. JavaScript is “easy”, because its idioms are familiar to programmers from different backgrounds.
+JavaScript in contrast is a melting pot of conflated features. New syntax and semantics are added with each version. JavaScript is “easy”, because its idioms are familiar to developers from different backgrounds.
 
 ClojureScript and functional programming in general keep influencing the way people write JavaScript and the way ECMAScript is advanced. In particular, two basic concepts: <dfn>pure functions</dfn> and <dfn>immutable values</dfn>.
 
@@ -1400,7 +1458,7 @@ Elm’s main goal is to prevent runtime exceptions. In this guide, we’ve learn
 
 In Elm, operations still may fail. Like other functional languages, Elm has built-in types for wrapping uncertain values (`Maybe`: `Nothing` & `Just`) and operations that produce a value or an error (`Result`: `Ok` & `Error`). When working with potential values, the success and error cases must be handled explicitly.
 
-Elm is designed with static types from the ground up. Static typing feels natural since Elm has strong type inference. It deduces the types of values so you don’t have to add type annotations in many places.
+Elm is designed with static types from the ground up. Static typing feels natural since Elm has strong type inference. It deduces the types of values so you do not have to add type annotations in many places.
 
 TypeScript has type inference as well, but TypeScript imposes static typing on a dynamic language and ecosystem. Elm makes a clear cut.
 
@@ -1427,7 +1485,7 @@ In additional to synchronous model updates, messages can have asynchronous effec
 
 Elm exists in a niche, but its brilliant concepts have been widely adopted in the larger JavaScript ecosystem. Elm influenced [React](https://reactjs.org/), [Flux](https://facebook.github.io/flux/), [Redux](https://redux.js.org/) and [NgRx](https://github.com/ngrx/platform) as well as several side-effect solutions for Redux.
 
-Even if you don’t choose to write Elm over plain JavaScript, there’s much to learn from Elm regarding robust programming.
+Even if you do not choose to write Elm over plain JavaScript, there’s much to learn from Elm regarding robust programming.
 
 ### Error logging
 
@@ -1476,7 +1534,7 @@ More importantly, the developer perspective is not as meaningful as the user per
 
 There are several effective testing approaches in different development phases. To improve the robustness of client-side JavaScript, I find it most important to add frequent manual testing to the product development cycle.
 
-Typically, designing a software feature produces a [user story](https://en.wikipedia.org/wiki/User_story) that describes who wants what and why: “As a new user, I want to browse restaurants nearby so I can find a cozy place for dinner”.
+Typically, designing an application feature produces a [user story](https://en.wikipedia.org/wiki/User_story) that describes who wants what and why: “As a new user, I want to browse restaurants nearby so I can find a cozy place for dinner”.
 
 The next step may be to design the user interaction that achieves the goal stated in the user story. For example, the home page contains a search form and asks for the user’s location. On form submission, a list of restaurants is shown.
 
@@ -1534,24 +1592,24 @@ describe('sum', function() {
 });
 ```
 
-`describe('…', function() {…});` declares a test suite. The first parameter, `'sum'` in the example, is a description of the unit under test. The function passed to `describe` may contain several specs.
+`describe('…', function() {…});` declares a test suite. The first argument, `'sum'` in the example, is a description of the unit under test. The function passed to `describe` may contain several specs.
 
-A spec is declared with `it('…', function() {…})`. The first parameter, `'adds two numbers'` in the example, is the human-readable requirement. The function passed to `it` contains the actual test code.
+A spec is declared with `it('…', function() {…})`. The first argument, `'adds two numbers'` in the example, is the human-readable requirement. The function passed to `it` contains the actual test code.
 
-The example above tests the `sum` function. Each spec needs to call the function with some parameters and make assertions about the return value. The example calls `sum(1, 3)` and expects the result to be 4 using Jasmine’s `expect` and `toBe` functions. As you can see, Jasmine code tries to be human-readable.
+The example above tests the `sum` function. Each spec needs to call the function with some arguments and make assertions about the return value. The example calls `sum(1, 3)` and expects the result to be 4 using Jasmine’s `expect` and `toBe` functions. As you can see, Jasmine code tries to be human-readable.
 
-If you don’t understand the details of the code above, that’s fine. It is rather important to understand the structure: A unit test describes the behavior of a piece of code and thereby documents the requirements. The unit test tells you whether the implementation meets the specifications.
+If you do not understand the details of the code above, that’s fine. It is rather important to understand the structure: A unit test describes the behavior of a piece of code and thereby documents the requirements. The unit test tells you whether the implementation meets the specifications.
 
 A specification consists of a human-readable text and an executable proof. A spec allows you to describe and verify how the code behaves in particular cases.
 
 Unit testing makes you think about these cases in the first place, then write them down and define behavior. Does the function return the correct result when valid input is given? How does the function behave when invalid input is given? Handling these cases makes the implementation more robust.
 
-As we’ve seen before, the simple `sum` function does not behave well when invalid input is given. Let’s specify how the function *should* behave in this case. We want `sum` to throw an exception in case one parameter is not a number.
+As we’ve seen before, the simple `sum` function does not behave well when invalid input is given. Let’s specify how the function *should behave* in this case. We want `sum` to throw an exception in case one argument is not a number.
 
 Here’s the respective spec:
 
 ```js
-it('throws an error if one parameter is not a number', function() {
+it('throws an error if one argument is not a number', function() {
   expect(function() {
     sum('1', 3);
   }).toThrow();
@@ -1573,19 +1631,19 @@ function sum(a, b) {
 }
 ```
 
-Wait, isn’t something missing there? The code only checks the `a` parameter. Shouldn’t we add a check for `b` as well?
+Wait, is not something missing there? The code only checks the `a` argument. Should we not add a check for `b` as well?
 
 Yes, but first we write a failing spec:
 
 ```js
-it('throws an error if one parameter is not a number', function() {
+it('throws an error if one argument is not a number', function() {
   expect(function() { sum('1', 3);   }).toThrow();
   expect(function() { sum(1, '3');   }).toThrow();
   expect(function() { sum({}, null); }).toThrow();
 });
 ```
 
-Now let’s change the implementation so the test passed:
+Now let’s change the implementation so the test passes:
 
 ```js
 function sum(a, b) {
@@ -1601,7 +1659,7 @@ function sum(a, b) {
 One thing is still missing: The handling of `NaN` values. Let’s add a failing spec:
 
 ```js
-it('throws an error if one parameter is NaN', function() {
+it('throws an error if one argument is NaN', function() {
   expect(function() { sum(NaN, 3);   }).toThrow();
   expect(function() { sum(1, NaN);   }).toThrow();
   expect(function() { sum(NaN, NaN); }).toThrow();
@@ -1622,41 +1680,41 @@ function sum(a, b) {
 }
 ```
 
-Writing unit tests has several benefits. For one, it leads to a programming style that creates small units of code that are easy to test in isolation and have a well-defined interface. Also, it makes you think about robust code. By writing specs for ordinary and unusual conditions, by running the specs in several browsers, you put the assumptions baked into your code to the test.
+Writing unit tests has several benefits. For one, it leads to a programming style that creates small units of code that are easy to test in isolation and have a well-defined interface. Moreover, it makes you think about robust code. By writing specs for ordinary as well as unusual conditions, by running the specs in several browsers, you put the assumptions baked into your code to the test.
 
 In commercial web applications that make heavy use of JavaScript, every line of JavaScript code should be covered by unit tests. Tools like [Istanbul](https://istanbul.js.org/) allow to measure the test coverage.
 
-100% test coverage means there is no logic that is not executed by unit tests. It does not necessarily mean that the logic is correct. Writing meaningful specs that reflect the actual conditions in production instead of specs requires a lot of experience.
+100% test coverage means there is no logic that is not executed by unit tests. It does not necessarily mean that the logic is correct. Writing meaningful specs that reflect the actual conditions in production requires a lot of experience.
 
-If you don’t do unit testing yet, start small by writing specs for your core parts. It gives you a feeling about how testable code looks like and how to test different cases effectively.
+If you do not use unit testing yet, start small by writing specs for your core parts. It gives you a feeling about how testable code looks like and how to test different cases effectively.
 
 ### Integration tests
 
 As we’ve learned, unit testing tries to focus on a small reusable unit of code and to put it through its paces. A unit tests assures that a unit works well in isolation.
 
-Such a test is precise, but it’s hard to isolate a unit from the rest. For example, if a function under test calls a second function, the unit tests tries to remove and replace this dependency in order to focus on the function under test. A common technique is called <dfn>dependency injection</dfn>.
+Such a test is precise, but it’s hard to isolate a unit from the rest. For example, if a function under test calls a second function, the unit tests needs to remove and replace this dependency in order to focus on the function under test. A common technique is called <dfn>dependency injection</dfn>.
 
-Unit tests are necessary, but not sufficient. An application is a complex combination of units. Having 100% test coverage, having meaningful passing tests says little about the application as a whole.
+Unit tests are necessary, but not sufficient. An application is a complex combination of units. Having 100% test coverage, having passing unit tests says little about the application as a whole.
 
-This is where <dfn>integration tests</dfn> come in. An integration test describes and verifies the behavior of a several connected units. The integration test doesn’t need to know the internals, it runs against the public interface.
+This is where <dfn>integration tests</dfn> come in. An integration test describes and verifies the behavior of a several connected units. The integration test does not need to know the internals, it runs against the public interface.
 
 For example, if a function under test calls a second function, the integration test simply lets it be. The test knows that it *integrates* all dependencies. Such a test has a larger impact and covers a lot of code. But it’s hard to set up the different test cases and test side effects thoroughly.
 
-When testing JavaScript, the difference between unit tests and integration tests is subtle. Most things we’ve learned about unit tests also apply to integration tests. For example, the same tools like Jasmine are used. In practice, unit tests and integration tests are mixed in order to test a codebase precisely and extensively.
+When testing JavaScript, the difference between unit tests and integration tests is subtle. Most things we’ve learned about unit tests also apply to integration tests. For example, integration tests may use the same tools like Jasmine. In practice, unit tests and integration tests are mixed in order to test a codebase precisely and extensively.
 
 ### Acceptance tests
 
 Both unit and integration tests consist of code that checks various internal parts of the application code. Again, these tests say little about the application as a whole. The crucial question is whether the application works for the user. Is a user able to complete their tasks?
 
-A certain class of JavaScript bugs only occurs when the code runs on the target website in a real browser. These bugs aren’t caught by unit and integration tests running in a cleanroom environment that bears little resemblance to the production environment.
+A certain class of JavaScript bugs only occurs when the code runs on the target website in a real browser. These bugs are not caught by unit and integration tests running in a cleanroom environment that bears little resemblance to the production environment.
 
-JavaScript is error-prone because it depends on several other front-end technologies. A script typically reads and changes the HTML DOM, changes CSS styles, makes HTTP requests and controls media. So when the script runs in production, it needs to work together with HTML, CSS, other JavaScript code, server APIs and media content.
+JavaScript is error-prone because it depends on several other front-end technologies. A script typically reads and changes the HTML DOM, changes CSS styles, makes HTTP requests and controls media. So when the script runs in production, it needs to work together with the HTML, CSS, other JavaScript code, server APIs and media content.
 
 We need an automated test that checks the website as a whole. This is called <dfn>acceptance testing</dfn> or <dfn>end-to-end testing</dfn> in the web context.
 
-An acceptance test does not tests parts of the software individually, like the front-end, back-end code or database, but the full stack. It ensures that all technologies come together to provide the desired user experience.
+An acceptance test does not tests parts of the application individually, like the front-end, back-end code or database, but the full stack. It ensures that all technologies come together to provide the desired user experience.
 
-In particular, an acceptance test simulates a user by remotely controlling a browser. The tests mimics the input of a user and checks the output of the website. Every test consists of step-by-step instructions like these:
+In particular, an acceptance test simulates a user by remotely controlling a browser. Such a test mimics the input of a user and checks the output of the website. Every test consists of step-by-step instructions like these:
 
 1. Go to the website http://carols.example.org
 2. Wait until the page is fully loaded.
@@ -1674,42 +1732,31 @@ Of course, you can write acceptance tests in JavaScript and run them with Node.j
 
 The technology that makes remote control of the browser possible is called [WebDriver](https://www.w3.org/TR/webdriver/). Today, all big browsers implement the WebDriver protocol. A popular server for orchestrating browsers is [Selenium](http://www.seleniumhq.org/).
 
-Like all types of testing, acceptance tests should run on different devices and browsers for meaningful results. Several commercial services like [Saucelabs](https://saucelabs.com/) and [BrowserStack](https://www.browserstack.com/) allow to run WebDriver tests against numerous devices and browsers.
+Like all types of testing, acceptance tests should run on different devices and browsers for meaningful results. Commercial services like [Saucelabs](https://saucelabs.com/) and [BrowserStack](https://www.browserstack.com/) allow to run WebDriver tests against numerous devices and browsers.
 
-### Not writing JavaScript
+### Writing less JavaScript
 
-As we’ve discussed in the introduction of this guide, JavaScript is the most brittle piece of the front-end web technologies.
+The role of a front-end developer is to improve the user experience with the available technologies. The developer needs to assess which interactions can and should be improved with client-side JavaScript.
 
-It allows to build more sophisticated and more user-friendly interfaces than HTML and CSS alone could do.
+JavaScript allows to build more user-friendly interfaces than HTML and CSS alone could do. It is the best technology to build excellent interactivity in the browser.
 
-But HTML and CSS
+Still, JavaScript is the most brittle of all front-end web technologies. The most important skill of a front-end developer is to know when *not* to solve a problem with client-side JavaScript. It is always more robust to solve a problem further down in the stack.
 
-The last resort
-
-Last but not least:
-
-reducing the code complexity
-
-finding simpler solutions
-
-reducing the amount of code
-
-reducing the JavaScript usage
+If all techniques and tools did not help you to write robust JavaScript, consider to reduce the code complexity and the amount of code. In the last resort, reduce the client-side JavaScript usage. Find simpler solutions that rely on HTML and server-side logic alone.
 
 <p class="separator">❡</p>
 
 ## References
 
-A complete guide to check any JavaScript value
-https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen
-
-http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/#prototype
+- [ECMAScript® 2017 Language Specification (ECMA-262, 8th edition, June 2017)](http://www.ecma-international.org/ecma-262/8.0/)
+- [JavaScript. The Core: 2nd Edition](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/) – Dmitry Soshnikov, 2017
+- [Objektabfragen in JavaScript](https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen) (German) – Mathias Schäfer, 2011
 
 <p class="separator">❡</p>
 
 ## License
 
-Author: [molily](http://molily.de) – [zapperlott@gmail.com](mailto:zapperlott@gmail.com)
+Author: Mathias Schäfer ([molily](http://molily.de)) – [zapperlott@gmail.com](mailto:zapperlott@gmail.com) – [@molily](https://twitter.com/molily)
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution -ShareAlike (CC BY-SA)</a>
 
