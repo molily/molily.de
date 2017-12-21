@@ -6,22 +6,6 @@ keywords: JavaScript, Robustness
 lang: en
 ---
 
-<!--
-TODO
-DONE developer / programmer
-DONE parameter / argument
-DONE website / web application / application / software / program
-DONE one / you / passive voice
-DONE
-n’t
-’s
-’re
-’d
-DONE fn() vs. fn
-DONE may / might
-DONE fetch / Fetch – fetch as the function, Fetch as the API
--->
-
 <script>
 (function() {
 
@@ -107,6 +91,8 @@ if (document.addEventListener && document.querySelector && document.querySelecto
 <div id="main-container">
   <main id="main" markdown="1">
 
+[molily.de – Home](/)
+
 # Robust Client-Side JavaScript – A Developer’s Guide
 
 The JavaScript programming language is an essential tool of web publishers and web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?
@@ -125,7 +111,7 @@ There are thousands of ways HTML, CSS and JavaScript might fail, and it happens 
 
 In this guide, we investigate why JavaScript might fail and how to prevent or handle these errors in a graceful way that ensures a working website.
 
-### Coding for the web: The browser as a runtime environment
+### The browser as a runtime environment
 
 Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment and a few canonical libraries a developer may count on. There is not one hardware architecture or device type. There is not a single vendor that defines and builds the runtime, the compiler and the tools.
 
@@ -1065,7 +1051,7 @@ After executing the `catch (…) {…}` block, the JavaScript engine continues t
 
 `try…catch` is often misused by placing a large amount of code in the `try { … }` block. Often the `catch (…) {…}` block is left empty. This is not error handling, it is error suppression. It may be necessary in some cases, but `try…catch` is most useful for catching specific exceptions.
 
-### Throwing and catching exceptions programmatically
+### Programmatic exceptions
 
 We’ve touched programmatic exceptions briefly in “fail fast” assertions (see above). Let’s have a deeper look at them.
 
@@ -1105,7 +1091,7 @@ Encapsulated code that does not interfere with other code, e.g. few global varia
 
 ### The Strict Mode
 
-ECMAScript 5, released in 2009, started to deprecate error-prone coding practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
+ECMAScript 5, released in 2009, started to deprecate error-prone programming practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
 
 In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors – see failing fast (see above).
 
@@ -1758,12 +1744,9 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 
 ## License
 
-Author: Mathias Schäfer ([molily](http://molily.de)) – [zapperlott@gmail.com](mailto:zapperlott@gmail.com) – [@molily](https://twitter.com/molily)
+Author: [Mathias Schäfer (molily)](https://molily.de/resume-en/) – [zapperlott@gmail.com](mailto:zapperlott@gmail.com) – [@molily](https://twitter.com/molily)
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution -ShareAlike (CC BY-SA)</a>
-
-“Copy me, I want to travel” (Bernadette La Hengst)<br>
-“Copie-moi, je veux voyager” (Rhythm King And Her Friends)
 
   </main>
 </div><!-- #main-container -->
