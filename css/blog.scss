@@ -22,7 +22,7 @@ $column-padding: 1rem;
 $column-padding-big: 2.5rem;
 $body-background: hsl($hue2, 50%, 95%);
 $wrapper-background: white;
-$top-secondary-background: $highlight-background-color;
+$col-secondary-background: $highlight-background-color;
 $post-header-background: hsl($hue, 38%, 51%);
 
 /**
@@ -96,19 +96,12 @@ html {
 .col-secondary {
   // Include floats, equal height columns
   @extend %clearfix;
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: $col-secondary-background;
 
   @include big {
     margin-left: 70%;
-    padding-bottom: 0;
-  }
-}
-
-/* Top columns */
-
-.top-secondary {
-  background-color: $top-secondary-background;
-
-  @include big {
   }
 }
 
@@ -225,6 +218,14 @@ html {
  * @section Sidebar
  *
  */
+
+#sidebar {
+  padding-top: $column-padding;
+
+  @include big {
+    padding-top: $column-padding-big;
+  }
+}
 
 #sidebar h1 {
   margin-top: 0;
