@@ -319,12 +319,17 @@ localStorage.setItem('name', 'Kitty');
 ```
 
 ```js
-var promise = new Promise(function(resolve, reject) { /* … */ });
+var promise = new Promise(function(resolve, reject) {
+  /* … */
+});
 ```
 
 ```js
 fetch('/something')
-  .then(function(response) { /* … */ }, function(error) { /* … */ });
+  .then(
+    function(response) { /* … */ },
+    function(error) { /* … */ }
+  );
 ```
 
 [JSON](https://caniuse.com/#feat=json) is available in 98.14% of the browsers, [localStorage](https://caniuse.com/#feat=namevalue-storage) in 95.31%, [Promise](https://caniuse.com/#feat=promises) in 89.04%, [fetch](https://caniuse.com/#feat=fetch) in 77.81%.
@@ -334,7 +339,8 @@ We can avoid such careless use of APIs by using *feature detection*. In particul
 Writing good feature checks requires thorough knowledge of the API being used. We’ll go into details later [in its own chapter](#feature-detection). Here’s how we can guard the API uses above:
 
 ```js
-if (typeof JSON === 'object' && typeof JSON.parse === 'function') {
+if (typeof JSON === 'object' &&
+  typeof JSON.parse === 'function') {
   /* Call JSON.parse() */
 }
 ```
@@ -586,13 +592,21 @@ If you rely on the implicit conversion, you should learn the conversion rules. E
 To illustrate the conversion, imagine that
 
 ```js
-if (condition) { /* … */ } else { /* … */ }
+if (condition) {
+  // …
+} else {
+  // …
+}
 ```
 
 is a short version of
 
 ```js
-if (Boolean(condition) === true) { /* … */ } else { /* … */ }
+if (Boolean(condition) === true) {
+  // …
+} else {
+  // …
+}
 ```
 
 Values are called <dfn>truthy</dfn> when ToBoolean converts them into `true`. Values are called <dfn>falsy</dfn> when ToBoolean converts them into `false`.

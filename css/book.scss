@@ -4,7 +4,7 @@
 @charset 'utf-8';
 
 /**
- * Blog styles
+ * Book styles
  *
  */
 
@@ -13,24 +13,55 @@
 @import 'content';
 @import 'highlight';
 
+/**
+ * @section Variables
+ *
+ */
+
+$toc-width: 25rem;
+
+/**
+ * @section Mixins
+ *
+ */
+
+@mixin big {
+  @media screen and (min-width: 55rem) {
+    @content;
+  }
+}
+
+@mixin high-dpi {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    @content;
+  }
+}
+
+/**
+ * @section Root element and Body
+ *
+ */
+
+html {
+  overflow-wrap: break-word;
+}
+
 body {
-  background-color: white;
   counter-reset: h2 h3 h4;
-  padding: 1rem 3rem;
-}
 
-@media screen {
-  body {
-    margin: auto;
-    max-width: 40rem;
+  @media screen {
+    padding: 1rem;
+  }
+
+  @include big {
+    padding: 1rem 2rem;
   }
 }
 
-@media screen and (min-width: 55rem) {
-  body {
-    max-width: none;
-  }
-}
+/**
+ * @section Headings
+ *
+ */
 
 h2, h3, h4, h5, h6 {
   margin-top: 3rem;
@@ -68,11 +99,21 @@ h4::before {
   margin-right: 0.5rem;
 }
 
+/**
+ * @section Tables
+ *
+ */
+
 caption {
   text-align: center;
 }
 
-@media screen and (min-width: 55rem) {
+/**
+ * @section Table of contents
+ *
+ */
+
+@include big {
 
   // The extra container is necessary because of:
   // https://bugzilla.mozilla.org/show_bug.cgi?id=748518
@@ -83,7 +124,7 @@ caption {
     top: 0;
     bottom: 0;
     overflow: auto;
-    width: 25rem;
+    width: $toc-width;
     background-color: #fafafa;
   }
 
@@ -92,7 +133,7 @@ caption {
   }
 
   #main-container {
-    margin-left: 25rem;
+    margin-left: $toc-width;
   }
 
   #main {
@@ -123,16 +164,26 @@ caption {
   display: none;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+@include high-dpi {
   #toc a {
     border-bottom-width: 0.5px;
   }
 }
 
+/**
+ * @section Link types
+ *
+ */
+
 .link-type {
   font-size: 0.8rem;
   color: gray;
 }
+
+/**
+ * @section Erroneous code
+ *
+ */
 
 .erroneous {
   background-color: #fcf2f2;
@@ -142,10 +193,14 @@ caption {
   }
 }
 
+/**
+ * @section Typograhpic separator
+ *
+ */
+
 .separator {
   margin: 2rem 0;
   font-size: 2rem;
   text-align: center;
   color: gray;
 }
-
