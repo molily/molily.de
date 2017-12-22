@@ -17,7 +17,7 @@ lang: en
 
 # Robust Client-Side JavaScript – A Developer’s Guide
 
-The JavaScript programming language is an essential tool of web publishers and web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?
+The JavaScript programming language is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?
 
 <p class="separator">❡</p>
 
@@ -84,7 +84,7 @@ JavaScript is typically embedded into an HTML document either directly with a `<
 
 The HTML specification has a lengthy definition on how scripts are loaded and executed. The gist is that normal scripts are downloaded in parallel but are executed one after another in the order they are referenced in the HTML. Such synchronous scripts block the parsing of the HTML code since they might insert new code into the HTML stream using `document.write()`.
 
-Nowadays this is a performance anti-pattern. Scripts should be loaded asynchronously using `<script src="…" defer></script>` or `<script src="…" async"></script>`. And `document.write()` should be avoided altogether. This allows the HTML parser to do its job without being interrupted by JavaScript.
+Nowadays this is a performance anti-pattern. Scripts should be loaded asynchronously using `<script src="…" defer></script>` or `<script src="…" async></script>`. And `document.write()` should be avoided altogether. This allows the HTML parser to do its job without being interrupted by JavaScript.
 
 Mind that the JavaScript engine is still single-threaded, so only one script or function is executed at a given time. ([Web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) are an exception to this rule.) Also the JavaScript execution happens in the browser tab’s main thread, which means in the worst case it freezes the whole page.
 
@@ -929,7 +929,9 @@ Or if an array contains a given value:
 if (array.indexOf(value) !== -1) { /* … */ }
 ```
 
+<!--
 TODO Use === to avoid implicit type conversion
+-->
 
 ### Handling exceptions with try…catch
 
@@ -1482,7 +1484,7 @@ Automated testing plays a crucial role in writing robust applications. Especiall
 
 There are thousands of great resources on automated testing in general and testing JavaScript in particular. In this guide, I would like to focus on how automated testing contributes to robust JavaScript.
 
-In contrast to manual [testing](#manual-testing), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
+In contrast to [manual testing](#manual-testing), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
 
 ### Unit tests
 
