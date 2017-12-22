@@ -1805,10 +1805,10 @@ var LinkTypes = {
         var position = link.compareDocumentPosition(target);
         if (position & Node.DOCUMENT_POSITION_PRECEDING) {
           text = ' ↑';
-          title = 'see above'
+          title = 'see above';
         } else if (position & Node.DOCUMENT_POSITION_FOLLOWING) {
-          text = ' ↓ '
-          title = 'see below'
+          text = ' ↓ ';
+          title = 'see below';
         }
       }
       var span = document.createElement('span');
