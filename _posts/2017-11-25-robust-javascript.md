@@ -1085,16 +1085,19 @@ function sloppyFunction() {
 
 In non-strict mode, the assignment to `name` implicitly creates a global variable, `window.name`. Coincidentally, [window.name](https://developer.mozilla.org/en-US/docs/Web/API/Window/name) already exists and has a special meaning.
 
-`name` is not supposed to be a global variable here, but a local variable in the scope of `sloppyFunction`. We forgot to add `var`, `let` or `const` before the assignment. Here’s the fixed code:
+`name` is not supposed to be a global variable here, but a local variable in the scope of `sloppyFunction`. We forgot to add `var`, `let` or `const` before the assignment.
+
+In Strict Mode, this mistake does not go unnoticed. It leads to a [ReferenceError](#reference-errors): “assignment to undeclared variable name”.
+
+Here’s the fixed code that is also valid in Strict Mode:
 
 ```js
-function sloppyFunction() {
+function strictFunction() {
+  'use strict';
   var name = 'Alice';
   window.alert(name);
 }
 ```
-
-In Strict Mode, this mistake does not go unnoticed. It leads to a [ReferenceError](#reference-errors): “assignment to undeclared variable name”.
 
 Today, the Strict Mode should be used everywhere unless there are particular reasons against it.
 
