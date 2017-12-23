@@ -1070,7 +1070,7 @@ function strictFunction() {
 }
 ```
 
-The Strict Mode changes a lot of small things that you can [read about elsewhere](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode). A big thing is handling of variable assignments in functions.
+The Strict Mode changes a lot of small things that you can [read about elsewhere](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode). A big thing is the handling of variable assignments in functions.
 
 Consider this function:
 
@@ -1243,7 +1243,7 @@ Let’s have a look at a small selection of languages that compile to JavaScript
 
 #### CoffeeScript
 
-[CoffeeScript](http://coffeescript.org/) has a syntax very familiar to JavaScript. Its motto is “It is just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
+[CoffeeScript](http://coffeescript.org/) was one of the first widely-used languages that compile to JavaScript. It has a syntax very familiar to JavaScript. CoffeeScript’s motto is “It is just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
 
 In CoffeeScript, whitespace like line breaks and spaces is used for delimiting functions and blocks. The mapping from CoffeeScript to JavaScript is direct, the target code closely resembles the CoffeeScript source.
 
