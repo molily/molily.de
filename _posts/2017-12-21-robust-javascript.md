@@ -1258,7 +1258,7 @@ Let us have a look at a small selection of languages that compile to JavaScript.
 
 [CoffeeScript](http://coffeescript.org/) was one of the first widely-used languages that compile to JavaScript. It has a syntax very familiar to JavaScript. CoffeeScript’s motto is “It is just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
 
-In CoffeeScript, whitespace like line breaks and spaces is used for delimiting functions and blocks. The mapping from CoffeeScript to JavaScript is direct, the target code closely resembles the CoffeeScript source.
+In JavaScript, curly braces `{ … }` are used to delimit functions and blocks. In CoffeeScript, whitespace like line breaks and spaces is used for that purpose. The mapping from CoffeeScript to JavaScript is direct. The compiled JavaScript code closely resembles the CoffeeScript source.
 
 Here is the `sum` function in CoffeeScript:
 
@@ -1304,8 +1304,8 @@ Using a language with strong, static typing like TypeScript has these main benef
 But what are the downsides?
 
 - Although TypeScript is a superset of ECMAScript, learning TypeScript thoroughly takes a lot of effort. Especially for people who have not worked with statically typed languages before, the type system is fundamentally new and hard to grasp.
-- Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knowns the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in untyped JavaScript land, the type definitions do not always match the reality.
-- TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given all relevant type definitions are available and correct. After the translation to JavaScript, all type information is discarded. Dynamic code and untyped code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
+- Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knowns the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in loosely-typed JavaScript land, the type definitions do not always match the reality.
+- TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given that all code has correct type definitions. After the translation to JavaScript, all type information is discarded. Dynamic code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
 - Like other compile-to-JavaScript languages, writing TypeScript requires setting up the compiler. To enjoy all benefits, you need to use a specific editor and [linter](https://github.com/palantir/tslint).
 
 In conclusion, TypeScript is a valuable tool to make JavaScript programming more robust.
@@ -1335,7 +1335,7 @@ The core philosophy of Clojure is that it aims to be [*simple* in the first plac
 
 “Easy” means familiar, easy to reach. “Easy” is the opposite of “hard”.
 
-Clojure tries to use simple and clear concepts to build large applications. In other words, Clojure tries everything not to be a “footgun”.
+Clojure tries to use “simple” concepts to build large applications. In other words, Clojure tries everything not to be a “footgun”.
 
 JavaScript in contrast is a melting pot of conflated features. New syntax and semantics are added with each version. JavaScript is “easy”, because its idioms are familiar to developers from different backgrounds.
 
@@ -1343,27 +1343,19 @@ ClojureScript and functional programming in general keep influencing the way peo
 
 In short, a function is <dfn>pure</dfn> when it is free of <dfn>side effects</dfn>. Such a function takes some input values as arguments and computes a new value. The new value becomes the return value.
 
-A pure function always produces the same output given the same input. There is no internal state. The function does not change its input values nor does it do anything besides computing the return value. It does not “change the world”. So it is always safe to call a pure function: It may take some computation time, but it does not change the state of your application.
+A pure function always produces the same output given the same input. There is no internal state. The function does not change its input values. It does not do anything besides computing the return value. It does not “change the world”. So it is always safe to call a pure function: It may take some computation time, but it does not change the state of your application.
 
 It turned out that breaking down the logic of an application into pure functions makes the whole application more robust. Pure functions are “simple”, they do only one thing. They are easy to reason about and easy to test automatically. You can simply pass different input values and check the return value.
 
-Here is an example of a pure function in JavaScript:
-
-```js
-function sum(a, b) {
-  return a + b;
-}
-```
-
-Here is an example of an *impure* function:
+Here is an example of an *impure* function in Javascript:
 
 ```js
 const myCats = [];
 
 function adoptCat(cat) {
-  // Mutating the outer value myCats
+  // Mutate the outer value myCats
   myCats.push(cat);
-  // Mutating an input value
+  // Mutate an input value
   cat.owner = 'Alice';
   // Output as a side effect, no return value
   console.log('Cat adopted!', cat);
@@ -1372,7 +1364,22 @@ function adoptCat(cat) {
 adoptCat({ name: 'Cheshire Cat' });
 ```
 
-The rule that pure functions do not mutate their input values is actually enforced in functional programming languages like Clojure. Variable bindings and values are immutable: You can read them to create new values, but you cannot change them in-place.
+Here is an example of a *pure* function in JavaScript:
+
+```js
+function adoptCat(cats, cat) {
+  // Make a copy of the cat object in order to augment it
+  const adoptedCat = { name: cat.name, owner: 'Alice' };
+  // Make a copy of the cats array in order to augment it
+  return cats.concat(adoptedCat);
+}
+
+const myOldCats = [];
+const myNewCats = adoptCat(myOldCats, { name: 'Cheshire Cat' });
+console.log('Cat adopted!', myNewCats[myNewCats.length - 1]);
+```
+
+The rule that pure functions do not mutate their input values is enforced in functional programming languages like Clojure. Variable bindings as well as values are typically *immutable*: You can read them to create new values, but you cannot change them in-place.
 
 #### Elm
 
