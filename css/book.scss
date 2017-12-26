@@ -18,7 +18,9 @@
  *
  */
 
+$breakpoint-big: 55rem;
 $toc-width: 25rem;
+$main-max-width: 39rem;
 
 /**
  * @section Mixins
@@ -26,7 +28,7 @@ $toc-width: 25rem;
  */
 
 @mixin big {
-  @media screen and (min-width: 55rem) {
+  @media screen and (min-width: $breakpoint-big) {
     @content;
   }
 }
@@ -109,7 +111,7 @@ caption {
 }
 
 /**
- * @section Table of contents
+ * @section Base layout
  *
  */
 
@@ -138,10 +140,15 @@ caption {
 
   #main {
     margin: auto;
-    max-width: 40rem;
+    max-width: $main-max-width;
   }
 
 }
+
+/**
+ * @section Table of contents
+ *
+ */
 
 #toc h2 {
   margin: 0 0 1rem;
@@ -153,7 +160,18 @@ caption {
 }
 
 #toc ol {
-  margin: 0.5rem 0 0.5rem 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+#toc > ol {
+  margin-bottom: 2rem;
+}
+
+@include big {
+  #toc > ol {
+    margin-bottom: 0;
+  }
 }
 
 #toc li {
