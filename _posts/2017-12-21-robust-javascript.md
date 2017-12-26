@@ -661,7 +661,7 @@ This ECMAScript design decision is controversial. On the one hand, it is a sourc
 
 Usually, a value check aims to distinguish *usable* and *valid* values from *unusable* and *invalid* values. In most cases, truthy values are usable and falsy values are unusable. But keep in mind the exceptions for numbers and strings.
 
-If you choose not to use implicit type conversion, make sure the `if` condition directly evaluates to boolean. For example, use comparison operators like `===`, `!==`, `>` and `<=`. These always produce boolean values. Also, the strict equality operators `===` and `!==` do not perform implicit type conversion.
+If you choose not to use implicit type conversion, make sure the `if` condition directly evaluates to boolean. For example, use comparison operators like `===`, `!==`, `>` and `<=`. These always produce boolean values.
 
 ### Existence checks
 
@@ -902,9 +902,7 @@ In contrast to existence and type checks, value checks are less relevant for fea
 
 We’ve learned that putting a value in an `if` condition makes a *truthy* test. When being converted to boolean, is the value `true`?
 
-The truthy test is simple and effective to determine if a value is usable, but it comes with several limitations we’ve already visited.
-
-For a lot of feature checks, the truthy test suffices. See the Fetch API example again:
+The truthy test is simple and effective to determine if a value is usable, but it comes with several limitations we’ve already visited. For a lot of feature checks, the truthy test suffices. See the Fetch API example again:
 
 ```js
 if (window.fetch) {
@@ -916,7 +914,9 @@ if (window.fetch) {
 
 When detecting features, testing for a specific value is rare. Most feature detection looks for the existence objects and functions. There is no specific value to compare them to.
 
-In normal application logic though, testing for specific values is common. For example, you may want to check if an array contains elements or string contains characters:
+In normal application logic though, testing for specific values is common. Such value checks make use of JavaScript’s comparison operators: `<`, `>`, `<=`, `>=`, `==`, `!=`, `===` and `!==`.
+
+For example, you may want to check the length of an array or a string:
 
 ```js
 if (array.length > 0) { /* … */ }
@@ -929,9 +929,19 @@ Or if an array contains a given value:
 if (array.indexOf(value) !== -1) { /* … */ }
 ```
 
-<!--
-TODO Use === to avoid implicit type conversion
--->
+Unfortunately, the comparison operators in JavaScripts *are dangerous beasts*. The relational operators like `<`, `>`, `<=` and `>=` are overloaded with behavior so they work both for numbers and strings. They may implicitly convert the operands into numbers.
+
+The equality operators `==` and `!=` are even more complex. If the types of the operands do not match, they perform an implicit type conversion. We will not go into the details of ECMAScript’s equality comparison algorithm. For the sake of robustness, it is best practice to avoid these two operators altogether.
+
+Fortunately, the strict equality operators `===` and `!==` exist. They do not perform implicit type conversion. Hence they are easier to describe:
+
+The `===` operator first checks if the types of the operands match. If they do not, return `false`. This means you have to do manual type conversion if you want to compare values of different types.
+
+Then the operator checks if both operands are of the type Object. If they are, check if both are the same object. If yes return `true`, else return `false`. So two objects are considered unequal unless they are identical. There is no deep comparison of object properties.
+
+Otherwise, both operands must be of [primitive types](#type-checks-with-typeof). The values are compared directly. If they match, return `true`, else return `false`.
+
+These rules are not trivial and you still have to learn and remember them. The strict equality operators force you to think about types again. They make implicit logic explicit.
 
 ### Handling exceptions with try…catch
 
@@ -1685,7 +1695,7 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 
 <p class="separator">❡</p>
 
-## About the author
+## About
 
 Author: [Mathias Schäfer (molily)](/)
 
