@@ -1695,7 +1695,9 @@ Please send feedback and corrections to [zapperlott@gmail.com](mailto:zapperlott
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution -ShareAlike (CC BY-SA)</a>
 
-<p lang="de" markdown="1">[Impressum](/impressum/)</p>
+Published on <time datetime="2017-12-21">December 21st, 2017</time>.
+
+<p style="font-style: italic"><a href="/impressum/" lang="de" hreflang="de">Impressum</a></p>
 
   </main>
 </div><!-- #main-container -->
