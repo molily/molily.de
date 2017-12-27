@@ -1502,7 +1502,7 @@ Manual testing is more than just following fixed instructions. The challenging r
 
 Automated testing plays a crucial role in writing robust applications. Especially when writing JavaScript code, a simple automated test already catches a lot of common bugs.
 
-There are thousands of great resources on automated testing in general and testing JavaScript in particular. In this guide, I would like to focus on how automated testing contributes to robust JavaScript.
+There are plenty of great resources on automated testing in general and testing JavaScript in particular. In this guide, I would like to focus on how automated testing contributes to robust JavaScript.
 
 In contrast to [manual testing](#manual-testing), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
 
@@ -1656,7 +1656,7 @@ Both unit and integration tests consist of code that checks various internal par
 
 A certain class of JavaScript bugs only occurs when the code runs on the target website in a real browser. These bugs are not caught by unit and integration tests running in a cleanroom environment that bears little resemblance to the production environment.
 
-JavaScript is error-prone because it depends on several other front-end technologies. A script typically reads and changes the HTML DOM, changes CSS styles, makes HTTP requests and controls media. So when the script runs in production, it needs to work together with the HTML, CSS, other JavaScript code, server APIs and media content.
+JavaScript is error-prone because it depends on other front-end and back-end technologies. A script typically reads and changes the HTML DOM, changes CSS styles, makes HTTP requests and controls media. So when the script runs in production, it needs to work together with the HTML, CSS, other JavaScript code, server APIs and media content.
 
 We need an automated test that checks the website as a whole. This is called <dfn>acceptance testing</dfn> or <dfn>end-to-end testing</dfn> in the web context.
 
@@ -1688,9 +1688,9 @@ The role of a front-end developer is to improve the user experience with the ava
 
 JavaScript allows to build more user-friendly interfaces than HTML and CSS alone could do. It is the best technology to build excellent interactivity in the browser.
 
-Still, JavaScript is the most brittle of all front-end web technologies. The most important skill of a front-end developer is to know when *not* to solve a problem with client-side JavaScript. It is always more robust to solve a problem further down in the stack.
+Still, JavaScript is the most brittle of all front-end web technologies. An important skill of a front-end developer is to know when *not* to solve a problem with client-side JavaScript. It is always more robust to solve a problem further down in the stack.
 
-If all techniques and tools did not help you to write robust JavaScript, consider to reduce the code complexity and the amount of code. In the last resort, reduce the client-side JavaScript usage. Find simpler solutions that rely on HTML and server-side logic alone.
+If all techniques and tools did not help you to write robust JavaScript, consider reducing the code complexity and the amount of code. In the last resort, reduce the usage of client-side JavaScript. Find simpler solutions that rely on HTML, CSS and server-side logic alone.
 
 <p class="separator">❡</p>
 
