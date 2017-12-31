@@ -98,7 +98,7 @@ According to this definition, a piece of hard metal may be robust, but an elasti
 
 A structure can also be robust. Think of a [lattice tower](https://en.wikipedia.org/wiki/Lattice_tower) that is using a certain type of [truss](https://en.wikipedia.org/wiki/Truss). It is huge and strong, yet light and modular.
 
-Similarly, in computer science, a robust program “performs well not only under ordinary conditions but also under unusual conditions that stress its designers’ assumptions.” ([The Linux Information Project](http://www.linfo.org/robust.html)). The program does not stop execution when errors occur. It does not fail when the input data or user input is invalid or bogus.
+Similarly, in computer science, a robust program <q cite="http://www.linfo.org/robust.html">performs well not only under ordinary conditions but also under unusual conditions that stress its designers’ assumptions.</q> ([The Linux Information Project](http://www.linfo.org/robust.html)). The program does not stop execution when errors occur. It does not fail when the input data or user input is invalid or bogus.
 
 So robustness is all about *making informed assumptions*. What happens when the developer’s assumptions are not met? Let us look at several concepts of robustness.
 
@@ -176,7 +176,7 @@ Today this principle is often called <dfn>Postel’s Law</dfn>. While the origin
 
 For example, the liberal, fault-tolerant [HTML 5 parser definition](https://www.w3.org/TR/html5/syntax.html#parsing-html-documents) along with the conservative [HTML 5 syntax definition](https://www.w3.org/TR/html5/syntax.html#writing-html-documents) is an application of Postel’s Law.
 
-Personally, I do not think Postel’s Law should be seen as a “general principle of robustness”. I agree to some point that a program should accept data “that it can interpret (e.g. not object to technical errors where the meaning is still clear)”. This rule requires careful interpretation.
+Personally, I do not think Postel’s Law should be seen as a “general principle of robustness”. I agree to some point that a program should accept data <q>that it can interpret (e.g. not object to technical errors where the meaning is still clear)</q>. This rule requires careful interpretation.
 
 In this guide, I do not argue that every program should be liberal in what it accepts. I find it more important that every program is explicit about what it accepts, is outspoken about technical errors and has a well-defined error handling.
 
@@ -292,11 +292,11 @@ var name = 'Kitty';
 window.alert('Hello ' + name);
 ```
 
-We have two references here, “window.alert” and “name”. To resolve them to values, the JavaScript engine first looks for the identifiers “window” and “name” in the [scope chain](http://ryanmorr.com/understanding-scope-and-context-in-javascript/).
+We have two references here, `window.alert` and `name`. To resolve them to values, the JavaScript engine first looks for the identifiers `window` and `name` in the [scope chain](http://ryanmorr.com/understanding-scope-and-context-in-javascript/).
 
-“window” is a global identifier, a property of the global object, as we have learned. After having resolved “window” to an object, the JavaScript engine looks for a property “alert” on this object.
+`window` is a global identifier, a property of the global object, as we have learned. After having resolved `window` to an object, the JavaScript engine looks for a property `alert` on this object.
 
-“name” is a local or global variable, depending on the context.
+`name` is a local or global variable, depending on the context.
 
 Now, let us look at erroneous references:
 
@@ -304,7 +304,7 @@ Now, let us look at erroneous references:
 window.alert(frobnicateFoo);
 ```
 
-The identifier “frobnicateFoo” cannot be found in the scope chain. So the JavaScript engine throws a ReferenceError: “frobnicateFoo is not defined”.
+The identifier `frobnicateFoo` cannot be found in the scope chain. So the JavaScript engine throws a ReferenceError: “frobnicateFoo is not defined”.
 
 So ReferenceErrors happen when the code uses an identifier that cannot be found in the current scope and all parent scopes. This is may be due to a typo. [Linters](#linters) can catch these bugs easily.
 
@@ -390,9 +390,9 @@ This seems obvious. Why would you try to call a number as if it was a function? 
 window.frobnicateFoo();
 ```
 
-Here, we have a reference to a property `frobnicateFoo` on the object `window`. Resolving `window` yields the global object. But there is no property `frobnicateFoo` on this very object. If you get the value of a non-existing property on an object, JavaScript does not throw an exception, it simply returns `undefined`. So after resolving `window.frobnicateFoo`, the code is equivalent to `undefined();`.
+Here, we have a reference to a property `frobnicateFoo` on the object `window`. Resolving `window` yields the global object. But there is no property `frobnicateFoo` on this very object. If you get the value of a non-existing property, JavaScript does not throw an exception, it simply returns `undefined`. So after resolving `window.frobnicateFoo`, the code is equivalent to `undefined();`.
 
-Such TypeError are both common and hard to debug since they may have highly different causes.
+Such TypeErrors are both common and hard to debug since they may have highly different causes.
 
 In the example above, the cause the use of a certain function without checking its existence beforehand. `frobnicateFoo` might be a user-defined function or a part of a browser API. If the function call fails because the function does not exist, the script defining the function was not loaded correctly or the browser does not support the API.
 
@@ -405,9 +405,9 @@ var myLibrary = {
 myLibrary.statr();
 ```
 
-The problem here is a simple typo. `myLibrary.start` is a function, but `myLibrary.statr` returns “undefined”.
+The problem here is a simple typo. `myLibrary.start` is a function, but `myLibrary.statr` returns `undefined`.
 
-These errors can be avoided by extensive [manual](#manual-testing) and [automated testing](#automated-testing) as well static code analysis. An <abbr title="Integrated development environments">IDEs</abbr> for example understands that the code defines an object `myLibrary` with the single property `start`. When it encounters `myLibrary.statr`, it shows a warning because it does not recognize the property `statr`.
+These errors can be avoided by [manual](#manual-testing) and [automated testing](#automated-testing) as well static code analysis. An <abbr title="Integrated development environments">IDEs</abbr> for example understands that the code defines an object `myLibrary` with the single property `start`. When it encounters `myLibrary.statr`, it shows a warning because it does not recognize the property `statr`.
 
 There are several other cases where TypeErrors are thrown. For example when you try to redefine the value of a constant:
 
@@ -449,9 +449,9 @@ Object.freeze(MyLibrary);
 MyLibrary.start = () => {};
 ```
 
-In strict mode, this code throws a TypeError “\"start\" is read-only”. Without the strict mode, the new assignment is silently ignored.
+In strict mode, this code throws a TypeError “\"start\" is read-only”. Without the strict mode, the assignment is silently ignored.
 
-Again, these errors can only be avoided by extensive manual and automated testing.
+Again, these errors can only be avoided by manual and automated testing.
 
 ### Security errors
 
@@ -685,7 +685,7 @@ This renders the whole check useless. This is exactly what we are trying to avoi
 
 We cannot just use an identifier that cannot be resolved. There are several ways to work around this problem:
 
-1.  We know that `fetch` is a property of the global object window. So we can use the [`in` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in) to check whether the property exists without checking its type:
+1.  We know that `fetch` is a property of the global object `window. So we can use the [`in` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in) to check whether the property exists without checking its type:
 
     ```js
     if ('fetch' in window) {
@@ -697,7 +697,7 @@ We cannot just use an identifier that cannot be resolved. There are several ways
 
     This existence check is in fact an object property check.
 
-2.  Knowing that `fetch` is a property of `window` with the type function if present, we access the property using the familiar dot notation, `object.property`:
+2.  If present, `fetch` is a property of `window` with the type Function. Knowing this, we access the property using the familiar dot notation, `object.property`:
 
     ```js
     if (window.fetch) {
@@ -709,7 +709,7 @@ We cannot just use an identifier that cannot be resolved. There are several ways
 
     This existence check is in fact a [value check](#value-checks). We are relying on the [ToBoolean conversion](#conditional-statements-and-truthy-values) here. A function is *truthy*.
 
-3.  Alternatively, use the [`typeof` operator](#type-checks-with-typeof). `typeof` does not throw an error in case the reference cannot be resolved, it merely returns the string `'undefined'`.
+3.  Alternatively, use the [`typeof` operator](#type-checks-with-typeof). `typeof` does not throw an error in case the identifier cannot be resolved, it merely returns the string `'undefined'`.
 
     ```js
     if (typeof fetch === 'function') {
@@ -864,7 +864,7 @@ As a weakly typed language, JavaScript performs implicit type conversion so deve
 
 `typeof` and `instanceof` check what a value *is* and *where it comes from*. As we have seen, both operators have serious limitations.
 
-In contrast, duck typing checks what a value *does* and *provides*. After all, you are not interested in the type of an value, you are interested in *what you can do with the value*.
+In contrast, duck typing checks what a value *does* and *provides*. After all, you are not interested in the type of a value, you are interested in *what you can do with the value*.
 
 For example, a function that expects a date may check the input with `instanceof Date`:
 
@@ -898,7 +898,7 @@ For example, JavaScript has several types that do not inherit from `Array.protot
 
 ### Value checks
 
-In contrast to existence and type checks, value checks are less relevant for feature detection, but they are still important for writing robust application logic.
+Compared to existence and type checks, value checks are less relevant for feature detection, but they are still important for writing robust application logic.
 
 We’ve learned that putting a value in an `if` condition makes a *truthy* test. When being converted to boolean, is the value `true`?
 
@@ -1063,7 +1063,7 @@ function strictFunction() {
 
 Syntax-wise, `'use strict';` is simply an expression statement with a string literal. This code does not do anything when evaluated. It is a meaningful marker for browsers that support ECMAScript 5, and innocuous code for browsers that do not.
 
-Enabling the Strict Mode for a script of a function is contagious. All code syntactically nested in the script or function also switches to Strict Mode. For example:
+Enabling the Strict Mode for a script or a function is contagious. All code syntactically nested also switches to Strict Mode. For example:
 
 ```js
 window.alert('Non-strict mode!');
@@ -1172,9 +1172,9 @@ Since more and more markup and style logic on the web is expressed in JavaScript
 
 Before ESlint existed, JavaScript best practices were described in books, blog posts, talks and project style guides. But not all of them could be checked and enforced automatically. ESlint became a tool for documenting best practices as well as checking them.
 
-ESlint continues to shape the way people write JavaScript. Large projects and corporations are sharing their ESlint configurations. For example, the [AirBnB style guide](https://github.com/airbnb/javascript) and the [JavaScript “Standard” Style](https://standardjs.com/) are popular style guides based on ESlint.
+ESlint continues to shape the way people write JavaScript. Large projects and corporations are sharing their ESlint configurations. For example, the [AirBnB style guide](https://github.com/airbnb/javascript) and the [“Standard” style](https://standardjs.com/) are popular style guides based on ESlint.
 
-ESlint is a safe and easy way to explore different programming paradigms possible in JavaScript. With ESlint, it is possible to impose strict rules on your JavaScript usage. For example, [ESLint rules for functional programming](https://github.com/jfmengels/eslint-plugin-fp) disallow all JavaScript features that contradict the concepts of pure functional programming.
+ESlint is a safe and easy way to explore different programming paradigms possible with JavaScript. With ESlint, it is possible to impose strict rules on your JavaScript usage. For example, [ESLint rules for functional programming](https://github.com/jfmengels/eslint-plugin-fp) disallow all JavaScript features that contradict the concepts of pure functional programming.
 
 Especially for beginners, the ESlint ecosystem may be confusing. Hundreds of rules with configuration options, hundreds of plugins and conflicting guidelines. There are few things people quarrel about more than the “right" programming style.
 
@@ -1212,7 +1212,7 @@ The safest approach is to write interoperable code conforming to a released ECMA
 
 A core assumption of compiling new syntax into old syntax is that a fully equivalent old syntax exists at all. This is not always the case. Some new ECMAScript 6 features cannot be fully translated into ECMAScript 5. Babel does its best to reproduce the semantics, but keep in mind that some detailed behavior cannot be reproduced.
 
-These difference are not noticeable if you ship the same ECMAScript 5 code to all browsers. But in the future it makes sense to ship a smaller built with ECMAScript 6 to the browsers that support it.
+These difference are not noticeable if you ship the same ECMAScript 5 code to all browsers. But in the future it makes sense to ship a smaller build with ECMAScript 6 to the browsers that support it.
 
 Babel primarily deals with syntax extensions, not with extensions to the standard library, the ECMAScript core objects. For example, if you write:
 
@@ -1822,16 +1822,16 @@ var LinkTypes = {
       var link = links[i];
       var href = link.getAttribute('href');
       if (!(href && href[0] === '#')) continue;
-      var text = ' ↕';
+      var text = '\u00A0↕';
       var title = 'Link to another chapter';
       var target = document.getElementById(href.substring(1));
       if (target) {
         var position = link.compareDocumentPosition(target);
         if (position & Node.DOCUMENT_POSITION_PRECEDING) {
-          text = ' ↑';
+          text = '\u00A0↑';
           title = 'see above';
         } else if (position & Node.DOCUMENT_POSITION_FOLLOWING) {
-          text = ' ↓ ';
+          text = '\u00A0↓ ';
           title = 'see below';
         }
       }
