@@ -9,15 +9,192 @@ lang: en
 <div id="toc-container">
   <nav id="toc">
     <p><a href="/">molily.de – Home</a></p>
+    <h1 id="toc-heading">
+      Robust JavaScript<br>
+      <span class="subheading">Table of Contents</span>
+    </h1>
+    <ol>
+      <li>
+        <a href="#introduction">Introduction</a>
+        <ol>
+          <li>
+            <a href="#characteristics-of-javascript">Characteristics of JavaScript</a>
+          </li>
+          <li>
+            <a href="#the-browser-as-a-runtime-environment">The browser as a runtime environment</a>
+          </li>
+          <li>
+            <a href="#javascript-standards">JavaScript standards</a>
+          </li>
+          <li>
+            <a href="#the-global-object-window">The global object <code>window</code></a>
+          </li>
+          <li>
+            <a href="#how-javascript-is-executed">How JavaScript is executed</a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#achieving-robustness">Achieving Robustness</a>
+        <ol>
+          <li>
+            <a href="#graceful-degradation">Graceful Degradation</a>
+          </li>
+          <li>
+            <a href="#progressive-enhancement">Progressive Enhancement</a>
+          </li>
+          <li>
+            <a href="#graceful-degradation-vs-progressive-enhancement">Graceful Degradation vs. Progressive Enhancement</a>
+          </li>
+          <li>
+            <a href="#fault-tolerance">Fault tolerance</a>
+          </li>
+          <li>
+            <a href="#postels-law">Postel’s Law</a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#how-javascript-might-fail">How JavaScript might fail</a>
+        <ol>
+          <li>
+            <a href="#web-crawlers-without-javascript-support">Web crawlers without JavaScript support</a>
+          </li>
+          <li>
+            <a href="#disabled-javascript-execution">Disabled JavaScript execution</a>
+          </li>
+          <li>
+            <a href="#network-and-loading-errors">Network and loading errors</a>
+          </li>
+          <li>
+            <a href="#parsing-errors">Parsing errors</a>
+          </li>
+          <li>
+            <a href="#exceptions">Exceptions</a>
+          </li>
+          <li>
+            <a href="#reference-errors">Reference errors</a>
+          </li>
+          <li>
+            <a href="#type-errors">Type errors</a>
+          </li>
+          <li>
+            <a href="#security-errors">Security errors</a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#how-to-prevent-failure">How to prevent failure</a>
+        <ol>
+          <li>
+            <a href="#failing-fast">Failing fast</a>
+          </li>
+          <li>
+            <a href="#feature-detection">Feature detection</a>
+          </li>
+          <li>
+            <a href="#types-of-checks">Types of checks</a>
+          </li>
+          <li>
+            <a href="#conditional-statements-and-truthy-values">Conditional statements and truthy values</a>
+          </li>
+          <li>
+            <a href="#existence-checks">Existence checks</a>
+          </li>
+          <li>
+            <a href="#type-checks-with-typeof">Type checks with <code>typeof</code></a>
+          </li>
+          <li>
+            <a href="#type-checks-with-instanceof">Type checks with <code>instanceof</code></a>
+          </li>
+          <li>
+            <a href="#duck-typing">Duck typing</a>
+          </li>
+          <li>
+            <a href="#value-checks">Value checks</a>
+          </li>
+          <li>
+            <a href="#handling-exceptions-with-trycatch">Handling exceptions with try…catch</a>
+          </li>
+          <li>
+            <a href="#programmatic-exceptions">Programmatic exceptions</a>
+          </li>
+          <li>
+            <a href="#the-strict-mode">The Strict Mode</a>
+          </li>
+          <li>
+            <a href="#abstraction-libraries">Abstraction libraries</a>
+          </li>
+          <li>
+            <a href="#polyfills">Polyfills</a>
+          </li>
+          <li>
+            <a href="#linters">Linters</a>
+          </li>
+          <li>
+            <a href="#the-babel-compiler">The Babel compiler</a>
+          </li>
+          <li>
+            <a href="#languages-that-compile-to-javascript">Languages that compile to JavaScript</a>
+            <ol>
+              <li>
+                <a href="#coffeescript">CoffeeScript</a>
+              </li>
+              <li>
+                <a href="#typescript">TypeScript</a>
+              </li>
+              <li>
+                <a href="#clojurescript">ClojureScript</a>
+              </li>
+              <li>
+                <a href="#elm">Elm</a>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#error-logging">Error logging</a>
+          </li>
+          <li>
+            <a href="#manual-testing">Manual testing</a>
+          </li>
+          <li>
+            <a href="#automated-testing">Automated testing</a>
+          </li>
+          <li>
+            <a href="#unit-tests">Unit tests</a>
+          </li>
+          <li>
+            <a href="#integration-tests">Integration tests</a>
+          </li>
+          <li>
+            <a href="#acceptance-tests">Acceptance tests</a>
+          </li>
+          <li>
+            <a href="#writing-less-javascript">Writing less JavaScript</a>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#references">References</a>
+      </li>
+      <li>
+        <a href="#about">About</a>
+      </li>
+    </ol>
   </nav>
 </div>
 
 <div id="main-container">
   <main id="main" markdown="1">
 
-# Robust Client-Side JavaScript – A Developer’s Guide
+<p class="separator">❦</p>
 
-The JavaScript programming language is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?
+<h1 id="main-heading">
+  Robust Client-Side JavaScript
+  <span class="subheading">A Developer’s Guide</span>
+</h1>
+
+<p class="intro"><em style="font-style: normal; font-variant: small-caps;">The JavaScript programming language</em> is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?</p>
 
 <p class="separator">❡</p>
 
@@ -35,16 +212,16 @@ In this guide, we will investigate why JavaScript might fail and how to prevent 
 
 ### The browser as a runtime environment
 
-Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment and a few canonical libraries a developer may count on. There is not one hardware architecture or device type. There is not a single vendor that defines and builds the runtime, the compiler and the tools.
+Writing client-side JavaScript for the web differs from programming for other platforms. There is not one well-defined runtime environment a developer may count on. There is not one hardware architecture or device type. There is not a single vendor that defines and builds the runtime, the compiler and the tools.
 
 The web is an open, vendor-independent, heterogenous publishing platform. It is held together by several technical standards of different quality. New standards appear frequently, old standards are amended or deprecated. Different standardization organizations follow different rules of procedure.
 
 This has lead to the following situation:
 
-- There is technical behavior that is standardized and that major browsers agree on. – For example, the basic HTML elements are well-supported.
-- There is technical behavior that is standardized and that major browsers do not agree on. – Browsers may have bugs in their implementation or simply not support newer standards yet.
-- There is technical behavior that is not standardized and that major browsers agree on. – Standards may omit some details, leaving them for implementors to decide. Still browser vendors copy the detailed behavior from other browsers for consistency.
-- There is technical behavior that is not standardized and that major browsers do not agree on. – Typically new web technologies are born as proprietary experiments before entering a standardization process. Or they are never widely adopted and fall into oblivion.
+- There is technical behavior that is standardized and that major browsers agree on. For example, the basic HTML elements are well-supported.
+- There is technical behavior that is standardized and that major browsers do not agree on. For example, browsers may have bugs in their implementation or simply not support newer standards yet.
+- There is technical behavior that is not standardized and that major browsers agree on. Standards may omit some details, leaving them for implementors to decide. Still, browser vendors copy the detailed behavior from other browsers for consistency.
+- There is technical behavior that is not standardized and that major browsers do not agree on. Typically new web technologies are born as proprietary experiments before entering a standardization process. Some technologies are never widely adopted and fall into oblivion.
 
 There are numerous relevant browsers in numerous versions running on different operating systems on devices with different hardware abilities, internet connectivity, etc. The fact that the web client is not under their control maddens developers from other domains. They see the web as the most hostile software runtime environment. They understand the diversity of web clients as a weakness.
 
@@ -82,7 +259,7 @@ Understanding scope is crucial since all scripts running on a web page share the
 
 JavaScript is typically embedded into an HTML document either directly with a `<script> … </script>` element, or it is referenced externally with `<script src="…"></script>`. Scripts may load other scripts dynamically.
 
-The HTML specification has a lengthy definition on how scripts are loaded and executed. The gist is that normal scripts are downloaded in parallel but are executed one after another in the order they are referenced in the HTML. Such synchronous scripts block the parsing of the HTML code since they might insert new code into the HTML stream using `document.write()`.
+The HTML specification has a lengthy definition on how scripts are loaded and executed. The gist is that normal scripts are downloaded in parallel but are executed one after another in the order they are referenced in the HTML. Such synchronous scripts block the parsing of the HTML code since they may insert new code into the HTML stream using `document.write()`.
 
 Nowadays this is a performance anti-pattern. Scripts should be loaded asynchronously using `<script src="…" defer></script>` or `<script src="…" async></script>`. And `document.write()` should be avoided altogether. This allows the HTML parser to do its job without being interrupted by JavaScript.
 
@@ -100,7 +277,7 @@ A structure can also be robust. Think of a [lattice tower](https://en.wikipedia.
 
 Similarly, in computer science, a robust program <q cite="http://www.linfo.org/robust.html">performs well not only under ordinary conditions but also under unusual conditions that stress its designers’ assumptions.</q> ([The Linux Information Project](http://www.linfo.org/robust.html)). The program does not stop execution when errors occur. It does not fail when the input data or user input is invalid or bogus.
 
-So robustness is all about *making informed assumptions*. What happens when the developer’s assumptions are not met? Let us look at several concepts of robustness.
+So robustness is all about *making informed assumptions*. What happens when the developer’s assumptions are not met? Let us have a look at several concepts of robustness.
 
 ### Graceful Degradation
 
@@ -336,7 +513,7 @@ fetch('/something')
 
 We can avoid such careless use of APIs by using *feature detection*. In particular, we need to check for the names we intent to use.
 
-Writing good feature checks requires thorough knowledge of the API being used. We’ll go into details later [in its own chapter](#feature-detection). This is how we can guard the API uses above:
+Writing good feature checks requires thorough knowledge of the API being used. We will go into details later [in its own chapter](#feature-detection). This is how we can guard the API uses above:
 
 ```js
 if (typeof JSON === 'object' &&
@@ -368,7 +545,7 @@ if (typeof fetch === 'function') {
 
 These guards are only the first step. They check whether the API objects exist and have a certain type, like function. They do not check whether the browser has full and correct support of the API. They do not check whether the APIs can be used in the current context.
 
-For example, security and privacy preferences might limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
+For example, security and privacy preferences may limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
 
 ### Type errors
 
@@ -539,7 +716,7 @@ When writing client-side JavaScript, you need to define a baseline of requiremen
 
 The Can I Use data for Fetch shows that it is a fairly new API that almost all latest browsers support, but not the older browser generations. So Fetch should be used with a feature detection, ideally with a fallback or [polyfill](#polyfills).
 
-Another essential site is the **[Web API documentation of the Mozilla Developer Network (MDN)](https://developer.mozilla.org/en-US/docs/Web/API)**. Here you’ll find a reference of all major JavaScript APIs, alongside with browser compatibility information and links to the original specifications.
+Another essential site is the **[Web API documentation of the Mozilla Developer Network (MDN)](https://developer.mozilla.org/en-US/docs/Web/API)**. Here you will find a reference of all major JavaScript APIs, alongside with browser compatibility information and links to the original specifications.
 
 If you are looking for ECMAScript core features, the place to go are the **[ECMAScript compatibility tables by kangax](https://kangax.github.io/compat-table/es6/)**.
 
@@ -1304,8 +1481,8 @@ Using a language with strong, static typing like TypeScript has these main benef
 But what are the downsides?
 
 - Although TypeScript is a superset of ECMAScript, learning TypeScript thoroughly takes a lot of effort. Especially for people who have not worked with statically typed languages before, the type system is fundamentally new and hard to grasp.
-- Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knowns the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in loosely-typed JavaScript land, the type definitions do not always match the reality.
-- TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given that all code has correct type definitions. After the translation to JavaScript, all type information is discarded. Dynamic code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
+- Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knows the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in loosely-typed JavaScript land, the type definitions do not always match the reality.
+- TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given that all code has correct type definitions. After the trans bvlation to JavaScript, all type information is discarded. Dynamic code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
 - Like other compile-to-JavaScript languages, writing TypeScript requires setting up the compiler. To enjoy all benefits, you need to use a specific editor and [linter](https://github.com/palantir/tslint).
 
 In conclusion, TypeScript is a valuable tool to make JavaScript programming more robust.
@@ -1445,12 +1622,12 @@ Therefore, sending information about exceptions to you, the developer, is vital 
 
 The standard approach is to monitor all exceptions on a page and to handle them in a central handler, for example using [window.onerror](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror). Then gather a bunch of context information and send an incident report to a log server. That server stores all reports, makes them accessible using an interface and probably sends an email to the developer.
 
-Here is a very simple global error reporter:
+Here is a simple global error reporter:
 
 ```js
 window.onerror = function(message, file, line, column, error) {
   var errorToReport = {
-    type: error ? error.name : '',
+    type: error ? error.type : '',
     message: message,
     file: file,
     line: line,
@@ -1466,7 +1643,7 @@ window.onerror = function(message, file, line, column, error) {
 };
 ```
 
-This code sends a report to the `/error-reporting` using a GET request.
+This code sends a report to the address `/error-reporting` using a GET request.
 
 The example above is not enough. It is not that easy to compile a meaningful, cross-browser report from an exception. Tools like [TraceKit](https://github.com/csnover/TraceKit) and [StackTrace.js](https://www.stacktracejs.com/) help to extract meaning from exceptions.
 
@@ -1494,15 +1671,13 @@ Whenever the feature set changes or the code changes, the test plan needs to be 
 
 For websites, the tester needs to execute the tasks with different browsers, devices and internet connections to catch all possible errors.
 
-Manual testing with step-by-step instructions is probably the most time-consuming and expensive type of testing, but it is highly beneficial. Alongside with real user testing, manual testing can quickly find errors caused by client-side JavaScript.
-
-Manual testing is more than just following fixed instructions. The challenging role of the software tester grew in the role of a quality assurance engineer to include tasks like setting up test plans, orchestrating test execution and setting up automated tests.
+Manual testing with step-by-step instructions is probably the most time-consuming and expensive type of testing, but it is highly beneficial. Alongside with real user testing, manual testing can quickly find errors caused by client-side JavaScript.s.
 
 ### Automated testing
 
 Automated testing plays a crucial role in writing robust applications. Especially when writing JavaScript code, a simple automated test already catches a lot of common bugs.
 
-There are plenty of great resources on automated testing in general and testing JavaScript in particular. In this guide, I would like to focus on how automated testing contributes to robust JavaScript.
+There are plenty of resources on automated testing in general and testing JavaScript in particular. In this guide, I will focus on how automated testing contributes to robust JavaScript.
 
 In contrast to [manual testing](#manual-testing), automated testing verifies that the software meets the requirements using automated means. This typically includes writing test code or another formal proof. Once the automated test is set up, it can be executed repeatedly without human interference.
 
@@ -1516,7 +1691,7 @@ For simplicity, let us write a unit test that deals with a function. But how do 
 
 There are numerous ways how to write and run unit tests in JavaScript. Popular testing frameworks include [Jasmine](https://jasmine.github.io/) and [Mocha](https://mochajs.org/). They may be combined with assertion libraries like [Chai](http://chaijs.com/) and [Unexpected](http://unexpected.js.org/). Unit tests are typically executed using test runners like [Jest](https://facebook.github.io/jest/), [Ava](https://github.com/avajs/ava) and [Karma](https://karma-runner.github.io/1.0/index.html).
 
-In my experience, all these libraries allow to write unit tests that make JavaScript more robust. It is mostly a matter of style and taste which one to use. For the purpose of this guide, I’ll use widely accepted Jasmine testing framework.
+In my experience, all these libraries allow to write unit tests that make JavaScript more robust. It is mostly a matter of style and taste which one to use. For the purpose of this guide, I will use widely accepted Jasmine testing framework.
 
 First of all, we need a function to test. Let us start with the simple, flawed `sum` function:
 
@@ -1528,7 +1703,7 @@ function sum(a, b) {
 
 How would a unit test for this function look like and how does it make the code more robust?
 
-In Jasmine, a single unit test is called test suite. It *describes* the unit under test. The suite consists of <dfn>specifications</dfn> or shortly <dfn>specs</dfn>. Each spec sets up the necessary environment, pokes the unit under tests and finally makes some <dfn>expectations</dfn>, also called <dfn>assertions</dfn>. If all expectations are met, the spec passes, otherwise the spec fails.
+In Jasmine, a single unit test is called test suite. It *describes* the unit under test. The suite consists of <dfn>specifications</dfn> or shortly <dfn>specs</dfn>. Each spec sets up the necessary environment, pokes the unit under test and finally makes some <dfn>expectations</dfn>, also called <dfn>assertions</dfn>. If all expectations are met, the spec passes, otherwise the spec fails.
 
 Here is a simple Jasmine test suite for the `sum` function:
 
@@ -1564,7 +1739,7 @@ it('throws an error if one argument is not a number', function() {
 });
 ```
 
-This spec fails when being tested against the implementation `function sum(a, b) { return a + b; }`. It is common practice to write a failing spec first. <dfn>Test-driven development</dfn> advices to first define the cases, specify the behavior and then write as little code as possible to implement the behavior and make the test pass.
+This spec fails when being tested against the implementation `function sum(a, b) { return a + b; }`. It is common practice to write a failing spec first. <dfn>Test-driven development</dfn> advises to first define the cases, specify the behavior and then write as little code as necessary to make the test pass.
 
 Let us do that! Here is the `sum` function that makes the test pass:
 
@@ -1614,7 +1789,7 @@ it('throws an error if one argument is NaN', function() {
 });
 ```
 
-Finally, this is the implementation that conforms to both specifications:
+Finally, this is the implementation that conforms to all specifications:
 
 ```js
 function sum(a, b) {
@@ -1638,7 +1813,7 @@ If you do not use unit testing yet, start small by writing specs for your core p
 
 ### Integration tests
 
-As we’ve learned, unit testing tries to focus on a small reusable unit of code and to put it through its paces. A unit tests assures that a unit works well in isolation.
+As we’ve learned, unit testing tries to focus on a small reusable unit of code and to put it through its paces. A unit test assures that a unit works well in isolation.
 
 Such a test is precise, but it is hard to isolate a unit from the rest. For example, if a function under test calls a second function, the unit tests needs to remove and replace this dependency in order to focus on the function under test. A common technique is called <dfn>dependency injection</dfn>.
 
@@ -1646,7 +1821,7 @@ Unit tests are necessary, but not sufficient. An application is a complex combin
 
 This is where <dfn>integration tests</dfn> come in. An integration test describes and verifies the behavior of a several connected units. The integration test does not need to know the internals, it runs against the public interface.
 
-For example, if a function under test calls a second function, the integration test simply lets it be. The test knows that it *integrates* all dependencies. Such a test has a larger impact and covers a lot of code. But it is hard to set up the different test cases and test side effects thoroughly.
+For example, if a function under test calls a second function, the integration test simply lets it be. The test knows that it *integrates* all dependencies. Such a test has a larger impact and covers a lot of code. But it is hard to set up the different cases and test side effects thoroughly.
 
 When testing JavaScript, the difference between unit tests and integration tests is subtle. Most things we’ve learned about unit tests also apply to integration tests. For example, integration tests may use the same tools like Jasmine. In practice, unit tests and integration tests are mixed in order to test a codebase precisely and extensively.
 
@@ -1654,7 +1829,7 @@ When testing JavaScript, the difference between unit tests and integration tests
 
 Both unit and integration tests consist of code that checks various internal parts of the application code. Again, these tests say little about the application as a whole. The crucial question is whether the application works for the user. Is a user able to complete their tasks?
 
-A certain class of JavaScript bugs only occurs when the code runs on the target website in a real browser. These bugs are not caught by unit and integration tests running in a cleanroom environment that bears little resemblance to the production environment.
+A certain class of JavaScript bugs only occurs when the code runs on the target website in a real browser. These bugs are not caught by unit or integration tests running in a cleanroom environment that bears little resemblance to the production environment.
 
 JavaScript is error-prone because it depends on other front-end and back-end technologies. A script typically reads and changes the HTML DOM, changes CSS styles, makes HTTP requests and controls media. So when the script runs in production, it needs to work together with the HTML, CSS, other JavaScript code, server APIs and media content.
 
@@ -1674,7 +1849,7 @@ In particular, an acceptance test simulates a user by remotely controlling a bro
 7. Expect that the top-level heading reads “Hark! The Herald Angels Sing”.
 8. Expect that the first paragraph contains “Peace on earth and mercy mild”.
 
-An acceptance test expresses these instructions as code. Since the test interacts with the website through a browser, it can be written in any language. It does not have to be JavaScript or whatever language is used in the back-end.
+An acceptance test expresses these instructions as code. Since the test interacts with the website through a browser, it can be written in any language. It does not need to be JavaScript or whatever language is used in the back-end.
 
 Of course, you can write acceptance tests in JavaScript and run them with Node.js. Popular libraries include [Nightwatch.js](http://nightwatchjs.org/) and [WebdriverIO](http://webdriver.io/).
 
@@ -1710,7 +1885,7 @@ Twitter: [@molily](https://twitter.com/molily)
 
 Please send feedback and corrections to [zapperlott@gmail.com](mailto:zapperlott@gmail.com).
 
-License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution -ShareAlike (CC BY-SA)</a>
+License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
 Published on <time datetime="2017-12-21">December 21st, 2017</time>.
 
@@ -1723,83 +1898,6 @@ Published on <time datetime="2017-12-21">December 21st, 2017</time>.
 <script>
 (function() {
 'use strict';
-
-var TOC = {
-
-  supported: Boolean(
-    document.querySelector && document.querySelectorAll
-  ),
-
-  createElement: function(tagName, attributes, innerHTML) {
-    var el = document.createElement(tagName);
-    if (attributes) {
-      for (var prop in attributes) {
-        if (attributes.hasOwnProperty(prop)) {
-          el.setAttribute(prop, attributes[prop]);
-        }
-      }
-    }
-    if (innerHTML) {
-      el.innerHTML = innerHTML
-    }
-    return el;
-  },
-
-  buildList: function() {
-    var headings = document.querySelectorAll('h2, h3, h4');
-    var h2list = TOC.createElement('ol');
-    var lastH2Item = null;
-    var lastH3Item = null;
-    var h3list = null;
-    var h4list = null;
-
-    for (var i = 0, l = headings.length; i < l; i++) {
-      var heading = headings[i];
-      var a = TOC.createElement('a', { href: '#' + heading.id }, heading.innerHTML);
-      var li = TOC.createElement('li');
-      li.appendChild(a);
-
-      var tagName = heading.tagName;
-
-      if (tagName === 'H2') {
-        h2list.appendChild(li);
-        h3list = null;
-        h4list = null;
-        lastH2Item = li;
-      } else if (tagName === 'H3') {
-        if (!h3list) {
-          h3list = TOC.createElement('ol');
-          lastH2Item.appendChild(h3list);
-        }
-        h3list.appendChild(li);
-        h4list = null;
-        lastH3Item = li;
-      } else if (tagName === 'H4') {
-        if (!h4list) {
-          h4list = TOC.createElement('ol');
-          lastH3Item.appendChild(h4list);
-        }
-        h4list.appendChild(li);
-      }
-    }
-
-    return h2list;
-  },
-
-  install: function(containerSelector) {
-    var container = document.querySelector(containerSelector);
-    var toc = TOC.buildList();
-    container.appendChild(toc);
-    var heading = TOC.createElement('h2', { 'class': 'toc-heading' }, 'Robust JavaScript');
-    container.insertBefore(heading, toc);
-  },
-
-  init: function(containerSelector) {
-    if (TOC.supported) {
-      TOC.install(containerSelector);
-    }
-  }
-};
 
 var LinkTypes = {
 

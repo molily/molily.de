@@ -150,13 +150,17 @@ caption {
  *
  */
 
-#toc h2 {
+#toc-heading {
   margin: 0 0 1rem;
 
   &::before {
     counter-increment: none;
     content: none;
   }
+}
+
+#toc-heading .subheading {
+  font-size: 1rem;
 }
 
 #toc ol {
@@ -186,6 +190,28 @@ caption {
   #toc a {
     border-bottom-width: 0.5px;
   }
+}
+
+
+/**
+ * @section Main
+ *
+ */
+
+#main-heading {
+  margin: 3rem 0;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+#main-heading .subheading {
+  display: block;
+  margin: 3rem 0;
+  font-size: 1.5rem;
+}
+
+.intro {
+  font-size: 1.1rem;
 }
 
 /**
@@ -218,7 +244,7 @@ caption {
 
 .separator {
   margin: 2rem 0;
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-align: center;
-  color: gray;
+  color: #ccc;
 }
