@@ -349,11 +349,11 @@ In [RFC 761](https://tools.ietf.org/html/rfc761), also published in January 1980
   <p>TCP implementations should follow a general principle of robustness: be conservative in what you do, be liberal in what you accept from others.</p>
 </blockquote>
 
-Today this principle is often called <dfn>Postel’s Law</dfn>. While the original context was very specific – processing packets on a wide-area computer network –, today it is applied to all programs that read, parse and process user input, file formats, or other structured data.
+Today this principle is often called <dfn>Postel’s Law</dfn>. While the original context was very specific – processing packets on a wide-area computer network –, today it is applied to all programs that read, parse and process user input, file formats or other structured data.
 
 For example, the liberal, fault-tolerant [HTML 5 parser definition](https://www.w3.org/TR/html5/syntax.html#parsing-html-documents) along with the conservative [HTML 5 syntax definition](https://www.w3.org/TR/html5/syntax.html#writing-html-documents) is an application of Postel’s Law.
 
-Personally, I do not think Postel’s Law should be seen as a “general principle of robustness”. I agree to some point that a program should accept data <q>that it can interpret (e.g. not object to technical errors where the meaning is still clear)</q>. This rule requires careful interpretation.
+Personally, I do not think Postel’s Law should be seen as a <q>general principle of robustness</q>. I agree to some point that a program should accept data <q>that it can interpret (e.g. not object to technical errors where the meaning is still clear)</q>. This rule requires careful interpretation.
 
 In this guide, I do not argue that every program should be liberal in what it accepts. I find it more important that every program is explicit about what it accepts, is outspoken about technical errors and has a well-defined error handling.
 
@@ -367,7 +367,7 @@ Adding JavaScript to a website assumes that the client downloads and executes th
 
 Some try to forage the JavaScript code for URLs or other valuable information. Some try to analyze the JavaScript to find malware or security vulnerabilities. Some even try to execute JavaScript in a fake browser environment.
 
-What these robots have in common that they are not interested in JavaScript per se. JavaScript typically makes a web page interactive, but a robot aims to analyze the page without simulating user interaction.
+What these robots have in common is that they are not interested in JavaScript per se. JavaScript typically makes a web page interactive, but a robot aims to analyze the page without simulating user interaction.
 
 A search engine for example needs to evaluate if a page is valuable with regard to a query. So a search engine crawler is interested in text content, semantic markup, hyperlinks and probably media files.
 
@@ -389,7 +389,7 @@ To protect the users, ad and privacy blockers as well as corporate web proxies m
 
 JavaScript authors need to learn how blockers and web proxies work. They typically match the URL with a whitelist or blacklist. Make sure the host (`example.org`) serving the JavaScript is not on a blacklist. In a corporate intranet with a whitelist, make sure the host is on the whitelist. Also avoid suspicious patterns in the URL path that could trigger the blocking, like `ad.js`.
 
-Since ads and privacy-invading scripts are typically loaded from third-party servers, blockers tend to allow JavaScript from the same domain and likely block JavaScript from a different domain. Make sure your scripts is placed on the same domain, a custom domain for assets, or a well-known, trusted content delivery network (see next chapter).
+Since ads and privacy-invading scripts are typically loaded from third-party servers, blockers tend to allow JavaScript from the same domain and likely block JavaScript from a different domain. Make sure your scripts are placed on the same domain, a custom domain for assets, or a well-known, trusted content delivery network (see next chapter).
 
 ### Network and loading errors
 
@@ -405,7 +405,7 @@ One way to improve the loading performance of scripts is to host JavaScript on <
 
 For example, if a user in Indonesia visits a site hosted in Europe, the network latency slows down the transfer. With a <abbr title="content delivery networks">CDN</abbr> server in Indonesia, the assets can be served more quickly, lowering the risk of connection interruption.
 
-Apart from network connectivity problems, an HTTP request for a script can fail for other obvious reasons: 404 Not found, 500 Server error, etc. This seems trivial but these types of errors are probable the most common. Monitor the server log to catch these errors. Use tools to find broken links and check the output of web crawlers like the [Google search robot](https://www.google.com/webmasters/tools/home?hl=en).
+Apart from network connectivity problems, an HTTP request for a script can fail for other obvious reasons: 404 Not found, 500 Server error, etc. This seems trivial but these types of errors are probably the most common. Monitor the server log to catch these errors. Use tools to find broken links and check the output of web crawlers like the [Google search robot](https://www.google.com/webmasters/tools/home?hl=en).
 
 ### Parsing errors
 

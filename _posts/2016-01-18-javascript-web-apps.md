@@ -38,7 +38,7 @@ Does the concept make it hard to apply priciples of robustness? Let’s refine t
 
 ## Why are we building JavaScript web apps again?
 
-[Ten years ago](http://adaptivepath.org/ideas/ajax-new-approach-web-applications/), web creators tried to understand how user interfaces of native apps work, and what benefits they provide. To catch up with the <q cite="http://adaptivepath.org/ideas/ajax-new-approach-web-applications/">“richness and responsiveness”</q> of desktop apps, they adapted certain existing patterns for the web.
+[Ten years ago](http://adaptivepath.org/ideas/ajax-new-approach-web-applications/), web creators tried to understand how user interfaces of native apps work, and what benefits they provide. To catch up with the <q cite="http://adaptivepath.org/ideas/ajax-new-approach-web-applications/">richness and responsiveness</q> of desktop apps, they adapted certain existing patterns for the web.
 
 Today, we need to recall the benefits of user interfaces that overcome server round-trips and full-page refreshes. We can only improve the user experience with the front-end technologies we have. So we need to identify interactions that can and should be improved with client-side JavaScript.
 
@@ -121,7 +121,7 @@ By denying that JavaScript contributes significantly to user experience, Tilkov 
 
 ## JavaScript web apps are “on the web”
 
-[As Greg Babiars puts it](https://twitter.com/gbabiars/status/687395730298941440), <q cite="https://twitter.com/gbabiars/status/687395730298941440">“I’m ‘fatigued’ by posts like this taking nuanced technical and UX discussions and declaring [there’s] one right way that fits all needs.”</q>
+[As Greg Babiars puts it](https://twitter.com/gbabiars/status/687395730298941440), <q cite="https://twitter.com/gbabiars/status/687395730298941440">I’m ‘fatigued’ by posts like this taking nuanced technical and UX discussions and declaring [there’s] one right way that fits all needs.</q>
 
 JavaScript web apps have proven useful and won’t go away. So [let’s put an end to JavaScript shaming](https://www.youtube.com/watch?v=puOrC7cfjRI). JavaScript is an essential tool in our front-end toolbelt. Just as with any other web technology, we need to discuss when and how to use it properly for the user’s benefit.
 

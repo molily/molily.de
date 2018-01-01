@@ -60,16 +60,14 @@ caption, th, td {
 /**
   * @section Quotes
   *
-  * No quotation marks
   */
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: "";
+:lang(en) q {
+  quotes: "“" "”" "‘" "’";
 }
 
-blockquote, q {
-  quotes: "" "";
+:lang(de) q {
+  quotes: "»" "«" "›" "‹";
 }
 
 /**
