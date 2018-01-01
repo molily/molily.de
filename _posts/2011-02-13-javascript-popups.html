@@ -45,7 +45,7 @@ function oeffnefenster (url) {
 
 <p>Zum Öffnen eines neuen Fensters lässt sich die JavaScript-Methode <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open"><code>window.open</code></a> nutzen. Der Methodenaufruf wird in einer Helferfunktion mit dem Namen <code>oeffnefenster</code> untergebracht. Diese Funktion wird in einem <code>script</code>-Element im <code>head</code>-Element (Dokumentkopf) des HTML-Dokuments definiert:</p>
 
-<pre>&lt;script type="text/javascript"&gt;
+<pre>&lt;script&gt;
 function oeffnefenster (url) {
    fenster = window.open(url, "fenster1", "width=600,height=400,status=yes,scrollbars=yes,resizable=yes");
    fenster.focus();
@@ -106,7 +106,7 @@ function oeffnefenster (url) {
 
 <h3>Popup-Fenster sind nicht anpassungsfähig</h3>
 
-<p>Die erzeugten Popup-Fenster haben meist eine feste, unveränderbare Größe und können nicht flexibel auf Umgebungsbedingungen und Benutzervorlieben reagieren. Auch ein dynamisches Anpassen der Popup-Größe kann dieses Unvermögen nicht wettmachen &ndash; es würde nur zu weiteren Unstimmigkeiten führen. Somit sind Popups und deren Inhalte zwangsläufig nicht anpassungsfähig. Dies kann die grundlegende Lesbarkeit der Seite gefährden.</p>
+<p>Die erzeugten Popup-Fenster haben meist eine feste, unveränderbare Größe und können nicht flexibel auf Umgebungsbedingungen und Benutzervorlieben reagieren. Auch ein dynamisches Anpassen der Popup-Größe kann dieses Unvermögen nicht wettmachen – es würde nur zu weiteren Unstimmigkeiten führen. Somit sind Popups und deren Inhalte zwangsläufig nicht anpassungsfähig. Dies kann die grundlegende Lesbarkeit der Seite gefährden.</p>
 
 <h3>Die Zurück-Navigation wird unmöglich</h3>
 
@@ -122,7 +122,7 @@ function oeffnefenster (url) {
 
 <h3>Ausschließliche Berücksichtigung von Desktop-Computern</h3>
 
-<p>Websites sollten mit jedem denkbaren Ausgabegerät und jedem Browser so gut aufnehmbar sein, wie es die Inhalte der Seite und die Fähigkeiten der Zugangstechnik erlauben &ndash; sei es ein Desktop-Rechner, ein Laptop oder Netbook, ein Smartphone, ein Sprachbrowser oder eine Braillezeile. Alternative Zugangstechniken, vor allem mobile, finden immer breitere Anwendung. Die Interoperabilität einer Website ist damit verstärkt ein Qualitätsmerkmal.</p>
+<p>Websites sollten mit jedem denkbaren Ausgabegerät und jedem Browser so gut aufnehmbar sein, wie es die Inhalte der Seite und die Fähigkeiten der Zugangstechnik erlauben – sei es ein Desktop-Rechner, ein Laptop oder Netbook, ein Smartphone, ein Sprachbrowser oder eine Braillezeile. Alternative Zugangstechniken, vor allem mobile, finden immer breitere Anwendung. Die Interoperabilität einer Website ist damit verstärkt ein Qualitätsmerkmal.</p>
 
 <h3>Fenstermanipulationen werden zunehmend unterbunden</h3>
 
@@ -154,7 +154,7 @@ function oeffnefenster (url) {
 
 <p>Dem Benutzer sollte die Kompetenz und Freiheit zugestanden werden, selbst zu entscheiden, ob er eine Seite in einem neuen Fenster parallel betrachten möchte. Ihm sollte darin vertraut werden, dass er die wesentlichen Navigationsfunktionen seines Browsers bedienen kann, sodass er zwischen mehreren Tabs eigenständig wechseln kann. Der Autor sollte dem Benutzer daher Vorschläge machen und Hilfestellung geben, anstatt ihn vor vollendete Tatsachen zu stellen.</p>
 
-<h3>Lightboxen &ndash; Dokumentinterne JavaScript-Layer</h3>
+<h3>Lightboxen – Dokumentinterne JavaScript-Layer</h3>
 
 <p>Die Verwendung von Popup-Fenstern ist stark zurückgegangen, seit es sogenannte <a href="http://planetozh.com/projects/lightbox-clones/" hreflang="en" lang="en">Lightbox-Scripte</a> gibt. Diese ermöglichen, beliebige Inhalte in einer Ebene (<em lang="en">layer</em>) darzustellen, die über dem normalen Inhalt liegt. Der Rest des Dokuments wird beim Anzeigen des Layers ausgegraut. Der Layer verschwindet wieder, wenn zum Hauptinhalt zurückgekehrt wird. Auf ein neues Browserfenster wird gänzlich verzichtet.</p>
 

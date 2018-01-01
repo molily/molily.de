@@ -11,7 +11,7 @@
 
   <p class="post-excerpt">
     {% if post.description %}
-      {{ post.description }} &ndash;
+      {{ post.description }} –
     {% endif %}
     {{ post.content | strip_html | truncate: 160 }}
     <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-on"

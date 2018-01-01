@@ -18,7 +18,7 @@ lang: de
 
 <pre>
 &lt;p>Inhalt&lt;/p>
-&lt;script type="text/javascript"
+&lt;script
    src="http://adserver.example.org/werbung.js?kunde=1234">&lt;/script>
 &lt;p>Inhalt&lt;/p>
 </pre>
@@ -59,10 +59,9 @@ document.write('&lt;p&gt;&lt;a href="http://adserver.example.org/werbung-geklick
 
 <pre>
 &lt;div id="ad_example_1234_1">&lt;/div>
-&lt;script type="text/javascript">
+&lt;script>
 (function () {
    var script = document.createElement('script');
-   script.type = 'text/javascript';
    script.async = true;
    script.src = 'http://adserver.example.org/werbung.js?kunde=1234&nummer=1';
    (document.getElementsByTagName('head')[0] || document.body).appendChild(script);

@@ -649,7 +649,7 @@ eines Links zu einem dokumentinternen Anker */</em>
 
 <em>/* init_position_fixed() wird beim Laden des Dokuments ausgeführt */</em>
 <strong>function init_position_fixed</strong> () {
-  var i,  hyperlinks, linkcount,  link_uri, document_uri,  hash_position,  pattern;
+  var i,  hyperlinks, linkcount,  link_url, document_url,  hash_position,  pattern;
 
   <em>/* Hier wäre Platz für einen Algorithmus, welcher bestimmt, ob</em>
   <em>der Browser <code>position:fixed</code> versteht, und welcher die Funktion</em>
@@ -671,16 +671,16 @@ eines Links zu einem dokumentinternen Anker */</em>
   linkcount = hyperlinks.length;
 
   <em>/* Konstruiere die Adresse des aktuellen Dokuments ohne Anker */</em>
-  document_uri = location.href;
-  hash_position = document_uri.indexOf("#");
+  document_url = location.href;
+  hash_position = document_url.indexOf("#");
   if (hash_position > -1) {
     <em>/* Falls die aktuelle Adresse einen Anker enthält, schneide ihn ab */</em>
-    document_uri = document_uri.substring(0, hash_position);
+    document_url = document_url.substring(0, hash_position);
   }
   <em>/* Falls es sich um ein lokales Dokument handelt (<code>file</code>-Protokoll),</em>
   <em>vereinheitliche die Schreibweise */</em>
   pattern = new RegExp("file:///");
-  document_uri = document_uri.replace(pattern, "file://localhost/");
+  document_url = document_url.replace(pattern, "file://localhost/");
 
   <em>/* Durchlaufe alle Hyperlinks des Dokuments */</em>
   for (i = 0; i &lt; linkcount; i++) {
@@ -691,20 +691,20 @@ eines Links zu einem dokumentinternen Anker */</em>
       continue;
 
     <em>/* Konstruiere die Zieladresse des Links ohne Anker */</em>
-    link_uri = hyperlinks[i].href;
-    hash_position = link_uri.indexOf("#");
+    link_url = hyperlinks[i].href;
+    hash_position = link_url.indexOf("#");
     <em>/* Falls die Zieladresse einen Anker enthält, schneide ihn ab */</em>
     if (hash_position &gt; -1) {
-      link_uri = link_uri.substring(0, hash_position);
+      link_url = link_url.substring(0, hash_position);
     }
     <em>/* Vereinheitlichung, falls es sich um einen Link auf</em>
     <em>ein lokales Dokument handelt */</em>
-    if (link_uri.indexOf("file://") == 0) {
-      link_uri = link_uri.replace(pattern, "file://localhost/");
+    if (link_url.indexOf("file://") == 0) {
+      link_url = link_url.replace(pattern, "file://localhost/");
     }
 
     <em>/* Vergleiche das Linkziel mit der aktuellen Adresse */</em>
-    if (link_uri == document_uri) {
+    if (link_url == document_url) {
       <em>/* Der Link führt zum aktuellen Dokument und hat einen Anker,</em>
       <em>damit sind alle Bedingungen erfüllt, vergebe den <span lang="en">Event-Handler</span> */</em>
       addEvent(hyperlinks[i], "click", link_scrollup);
@@ -723,7 +723,7 @@ addEvent(window, "load", init_position_fixed);
 
 <h3>Funktionsweise des Scripts</h3>
 
-<p>Ein Link zu einem dokumentinterner Anker ist daran erkennbar, dass der <code>href</code>-Attributwert mit einem <code>#</code> beginnt und dahinter ein Ankername folgt. Um alle Eventualitäten zu berücksichtigen, wird zudem angenommen, dass ein dokumentinterner Anker auch zusätzlich die Adresse des aktuellen Dokuments enthalten kann. Der erste Fall ließe sich einfach überprüfen, wenn es in JavaScript möglich wäre, den direkten <code>href</code>-Attributwert in Erfahrung zu bringen. Dieser lässt sich jedoch nicht in allen relevanten Browsern mit <code>getAttribute("href")</code> unverfälscht auslesen. In anderen Browsern hängt immer der <abbr title="Uniform Resource Identifier" lang="en">URI</abbr> des aktuellen Dokuments vorne dran, obwohl im Attribut selbst nur <code>#ankername</code> steht.</p>
+<p>Ein Link zu einem dokumentinterner Anker ist daran erkennbar, dass der <code>href</code>-Attributwert mit einem <code>#</code> beginnt und dahinter ein Ankername folgt. Um alle Eventualitäten zu berücksichtigen, wird zudem angenommen, dass ein dokumentinterner Anker auch zusätzlich die Adresse des aktuellen Dokuments enthalten kann. Der erste Fall ließe sich einfach überprüfen, wenn es in JavaScript möglich wäre, den direkten <code>href</code>-Attributwert in Erfahrung zu bringen. Dieser lässt sich jedoch nicht in allen relevanten Browsern mit <code>getAttribute("href")</code> unverfälscht auslesen. In anderen Browsern hängt immer die <abbr title="Uniform Resource Locator" lang="en">URL</abbr> des aktuellen Dokuments vorne dran, obwohl im Attribut selbst nur <code>#ankername</code> steht.</p>
 
 <p>Angenommen, das Dokument wird mit einem Anker aufgerufen und <code>testlink</code> steht für einen Hyperlink im Dokument mit <code>id="testlink"</code>, welcher über den Array <code>document.links</code> oder über <code>document.getElementById("testlink")</code> angesprochen wird, so lassen sich folgende Werte beobachten:</p>
 
@@ -744,51 +744,51 @@ addEvent(window, "load", init_position_fixed);
 <tbody>
 <tr>
 <th scope="row">Netscape 4.51, 4.8</th>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
 <td>n/a</td>
 </tr>
 <tr>
 <th scope="row">Opera 5.12, 6.0, 6.01, 6.06</th>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]</td>
-<td>[voller URI]</td>
+<td>[volle URL]</td>
+<td>[volle URL]</td>
 <td>#testlink</td>
-<td>[voller URI]</td>
+<td>[volle URL]</td>
 </tr>
 <tr>
 <th scope="row">Opera 7.02, 7.11, 7.23</th>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
 </tr>
 <tr>
 <th scope="row">Internet Explorer 5.0, 5.5, 6.0, Opera 7.50, 8.0</th>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
 </tr>
 <tr>
 <th scope="row">Gecko, Konqueror, Safari</th>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
-<td>[voller URI]#testlink</td>
-<td>[voller URI]#testlink</td>
+<td>[volle URL]#testlink</td>
+<td>[volle URL]#testlink</td>
 <td>#testlink</td>
 <td>#testlink</td>
 </tr>
@@ -802,7 +802,7 @@ der Anker des Links (A) gefüllt ist sowie die Zieladresse des Links ohne Anker 
 
 <p>Anfangs wird die Adresse des aktuellen Dokuments ohne Anker (C) in Erfahrung gebracht. Die Eigenschaften <code>location</code> und <code>location.href</code> enthalten leider den Anker am Ende, wenn das Dokument mit einem Anker aufgerufen wurde. Daher muss dieser gegebenfalls abgeschnitten werden. Am Anfang der <code>for</code>-Schleife wird geprüft, ob der aktuelle Link einen Anker enthält (A). Anhand dessen wird entschieden, ob der Link weiter untersucht wird. Daraufhin muss die volle Zieladresse des Links ohne Anker (B) herausgefunden werden. Dazu wird die Eigenschaft <code>href</code> genutzt. Falls sie den Anker am Ende enthält, wird dieser abgeschnitten, ansonsten wird sie direkt übernommen.</p>
 
-<p>Nachdem diese Schritte ausgeführt sind, stehen die nötigen Parameter zur Verfügung. Im Code entspricht B. der Variable <code>link_uri</code> und C. der Variable <code>document_uri</code>. Am Ende wird überprüft, ob diese identisch sind. Falls dies zutrifft, wird die <span lang="en">Handler</span>-Funktion registriert.</p>
+<p>Nachdem diese Schritte ausgeführt sind, stehen die nötigen Parameter zur Verfügung. Im Code entspricht B. der Variable <code>link_url</code> und C. der Variable <code>document_url</code>. Am Ende wird überprüft, ob diese identisch sind. Falls dies zutrifft, wird die <span lang="en">Handler</span>-Funktion registriert.</p>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -833,7 +833,7 @@ der Anker des Links (A) gefüllt ist sowie die Zieladresse des Links ohne Anker 
 
 <pre>
 <strong>function handle_internal_link</strong> (e) {
-  var hashposition, link_uri;
+  var hashposition, link_url;
   var target = e.target;
 
   if (typeof(target.nodeType) == "undefined" ||
@@ -849,22 +849,22 @@ der Anker des Links (A) gefüllt ist sowie die Zieladresse des Links ohne Anker 
     return true;
   }
 
-  link_uri = target.href;
-  hashposition = link_uri.indexOf("#");
+  link_url = target.href;
+  hashposition = link_url.indexOf("#");
   if (hashposition &gt; -1) {
-    link_uri = link_uri.substring(0, hashposition);
+    link_url = link_url.substring(0, hashposition);
   }
-  if (link_uri == document_uri) {
+  if (link_url == document_url) {
     window.setTimeout('window.scrollBy(0, -<var>60</var>)', <var>100</var>);
   }
 }
 <strong>function init_position_fixed</strong> () {
   if (location.hash)
     window.scrollBy(0, -<var>60</var>);
-  document_uri = location.href;
-  var hashposition = document_uri.indexOf("#");
+  document_url = location.href;
+  var hashposition = document_url.indexOf("#");
   if (hashposition &gt; -1) {
-    document_uri = document_uri.substring(0, hashposition);
+    document_url = document_url.substring(0, hashposition);
   }
   document.addEventListener("click", handle_internal_link, false);
 }

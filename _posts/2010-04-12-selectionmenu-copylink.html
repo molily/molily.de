@@ -69,15 +69,15 @@ new SelectionMenu({
          id = target.id,
          selectedText = this.selectedText,
          query = encodeURI(selectedText.replace(/\s/g, '+')),
-         searchURI;
+         searchURL;
 
       if (id == 'selection-menu-google') {
-         searchURI = 'http://www.google.de/search?ie=utf-8&q=';
+         searchURL = 'http://www.google.de/search?ie=utf-8&q=';
       } else if (id == 'selection-menu-bing') {
-         searchURI = 'http://www.bing.com/search?q=';
+         searchURL = 'http://www.bing.com/search?q=';
       }
 
-      location.href = searchURI + query;
+      location.href = searchURL + query;
    }
 });
 </pre>
@@ -192,6 +192,6 @@ CopyLink.addEvent(window, 'load', function () {
 <p>Sie können an der Weiterentwicklung der Scripte über Github teilnehmen: <a href="http://github.com/molily/selectionmenu">github.com/molily/selectionmenu</a></p>
 
 <link rel="stylesheet" href="../assets/domranges/selectionmenu.css">
-<script type="text/javascript" src="/assets/domranges/selectionmenu.js"></script>
-<script type="text/javascript" src="/assets/domranges/copylink.js"></script>
-<script type="text/javascript" src="/assets/domranges/setup-demo.js"></script>
+<script src="/assets/domranges/selectionmenu.js"></script>
+<script src="/assets/domranges/copylink.js"></script>
+<script src="/assets/domranges/setup-demo.js"></script>
