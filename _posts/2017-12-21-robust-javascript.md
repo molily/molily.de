@@ -1950,8 +1950,6 @@ var LinkTypes = {
   }
 };
 
-
-TOC.init('#toc');
 LinkTypes.init();
 
 })();
