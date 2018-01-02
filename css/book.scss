@@ -44,10 +44,6 @@ $main-max-width: 39rem;
  *
  */
 
-html {
-  overflow-wrap: break-word;
-}
-
 body {
   counter-reset: h2 h3 h4;
 
@@ -108,6 +104,15 @@ h4::before {
 
 caption {
   text-align: center;
+}
+
+/**
+ * @section Code
+ *
+ */
+
+pre, code {
+  overflow-wrap: break-word;
 }
 
 /**

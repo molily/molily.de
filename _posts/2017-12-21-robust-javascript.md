@@ -301,7 +301,7 @@ This process is repeated, creating a third, fourth, fifth version and so on. Tha
 
 Graceful Degradation and Progressive Enhancement are two implementations of the same idea, but with a different twist.
 
-Graceful Degradation aims for the full experience using bleeding-edge technologies – the [moonshot](http://whatis.techtarget.com/definition/moonshot). Building a perfect site takes a lot of time and resources. When such a page is built, it typically only works in one browser on the newest devices.
+Graceful Degradation aims for the full experience using bleeding-edge technologies – the [moonshot](http://whatis.techtarget.com/definition/moonshot). Building a perfect site takes a lot of time and resources. When such a page is built, it typically works only in one browser on the newest devices.
 
 Then sophisticated fallbacks need to be added after the fact. This turns out to be difficult and tedious. For certain new browser features, developing equivalent fallbacks is virtually impossible. But more importantly, adding fallbacks is often neglected. When the budget is almost exhausted, web developers tend to add “this site requires browser X” signs, excluding many users, instead of writing proper fallbacks.
 
@@ -571,7 +571,7 @@ Here, we have a reference to a property `frobnicateFoo` on the object `window`. 
 
 Such TypeErrors are both common and hard to debug since they may have highly different causes.
 
-In the example above, the cause the use of a certain function without checking its existence beforehand. `frobnicateFoo` might be a user-defined function or a part of a browser API. If the function call fails because the function does not exist, the script defining the function was not loaded correctly or the browser does not support the API.
+In the example above, the cause is the use of a function without checking its existence beforehand. `frobnicateFoo` might be a user-defined function or a part of a browser API. If the function call fails because the function does not exist, the script defining the function was not loaded correctly or the browser does not support the API.
 
 Here is another example of a similar “undefined is not a function” TypeError.
 
@@ -1007,7 +1007,7 @@ Both are useful feature checks. Personally, I follow the rule “explicit is bet
 
 ### Type checks with `instanceof`
 
-Besides `typeof`, there are several other ways to check the type of a value. One of them is the `instanceof` operator.
+Besides `typeof`, there are several other ways to check the type of a value. One of them is the [`instanceof` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof).
 
 Simply speaking, `instanceof` returns whether an object is an instance of a given class. For example, `value instanceof Date` returns true if the value is a `Date` object. `instanceof` expects the object on the left side and a class on the right side.
 
@@ -1147,7 +1147,7 @@ if (element !== null) {
 
 But how do we check whether the function threw an exception?
 
-The `try { … } catch (error) { … }` statement wraps a piece of code and adds exception handling.
+The [`try { … } catch (error) { … }` statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) wraps a piece of code and adds exception handling.
 
 ```js
 const selector = 'a selector that might be unknown or invalid';
@@ -1339,9 +1339,9 @@ When developing JavaScript, a linter is an essential tool for writing robust cod
 
 The most flexible and powerful JavaScript linter is **[ESlint](https://eslint.org/)**. It is written in JavaScript and runs on Node.js.
 
-ESlint consists of a ECMAScript [parser](#parsing-errors) and [numerous rules](https://eslint.org/docs/rules/) that examine the Abstract Syntax Tree (AST). The rules search for pitfalls in your code, for deprecated language idioms, for inconsistencies and code style violations.
+ESlint consists of an ECMAScript [parser](#parsing-errors) and [numerous rules](https://eslint.org/docs/rules/) that examine the Abstract Syntax Tree (AST). The rules search for pitfalls in your code, for deprecated language idioms, for inconsistencies and code style violations.
 
-When a rule finds a violation, it outputs a warning or error you can see on the command line or in your editor. Some rules, especially stylistic rules, may automatically fix the problem by changing the source file.
+When a rule finds a violation, it outputs a warning or an error you can see on the command line or in your editor. Some rules, especially stylistic rules, may automatically fix the problem by changing the source file.
 
 In addition to the built-in rules, ESlint is fully extensible via plugins. A lot of libraries and ecosystems have created ESlint plugins that check for the respective best practices. For example, there are [rules for writing React.js code](https://github.com/yannickcr/eslint-plugin-react) and [rules that check React/JSX code for accessibility issues](https://github.com/evcohen/eslint-plugin-jsx-a11y).
 
@@ -1383,7 +1383,7 @@ Babel is not just a tool to transform code written in a newer ECMAScript version
 
 As you can imagine, this is both powerful and dangerous. On the one hand, people use Babel to prototype and test new [ECMAScript language proposals](https://github.com/tc39/proposals). On the other hand, people use Babel to add syntax that most likely will not be standardized, like [JSX](https://reactjs.org/docs/introducing-jsx.html).
 
-This leads to a situation where large codebases are not valid ECMAScript but full of syntax extensions. Some of them are on the standards track, some are not. Such code can only parsed by Babel with certain plugins. Like in the biblical story about the [Tower of Babel](https://en.wikipedia.org/wiki/Tower_of_Babel), language confusion prevents people from working together.
+This leads to a situation where large codebases are not valid ECMAScript but full of syntax extensions. Some of them are on the standards track, some are not. Such code can only be parsed by Babel with certain plugins. Like in the biblical story about the [Tower of Babel](https://en.wikipedia.org/wiki/Tower_of_Babel), language confusion prevents people from working together.
 
 The safest approach is to write interoperable code conforming to a released ECMAScript specification and compile it to an older version using Babel.
 
@@ -1861,7 +1861,7 @@ Like all types of testing, acceptance tests should run on different devices and 
 
 The role of a front-end developer is to improve the user experience with the available technologies. The developer needs to assess which interactions can and should be improved with client-side JavaScript.
 
-JavaScript allows to build more user-friendly interfaces than HTML and CSS alone could do. It is the best technology to build excellent interactivity in the browser.
+JavaScript allows to build more user-friendly interfaces than HTML and CSS alone can do. It is the best technology to build excellent interactivity in the browser.
 
 Still, JavaScript is the most brittle of all front-end web technologies. An important skill of a front-end developer is to know when *not* to solve a problem with client-side JavaScript. It is always more robust to solve a problem further down in the stack.
 
