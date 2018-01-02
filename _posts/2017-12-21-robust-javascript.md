@@ -862,7 +862,7 @@ This renders the whole check useless. This is exactly what we are trying to avoi
 
 We cannot just use an identifier that cannot be resolved. There are several ways to work around this problem:
 
-1.  We know that `fetch` is a property of the global object `window. So we can use the [`in` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in) to check whether the property exists without checking its type:
+1.  We know that `fetch` is a property of the global object `window`. So we can use the [`in` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in) to check whether the property exists without checking its type:
 
     ```js
     if ('fetch' in window) {
