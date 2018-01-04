@@ -1,23 +1,20 @@
 <article class="post post-short"{% if post.lang %} lang="{{ post.lang }}"{% endif %}>
 
   <header class="post-header">
-    <h1 class="post-title">
-      <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">{{ post.title }}</a>
-    </h1>
-    <p class="post-sup">
-      <time class="post-date" datetime="{{ post.date | date: "%F" }}">{{ post.date | date: "%B %-d, %Y" }}</time>
-    </p>
+    <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+      <h1 class="post-title">{{ post.title }}</h1>
+      <p class="post-sup">
+        <time class="post-date" datetime="{{ post.date | date: "%F" }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+      </p>
+    </a>
   </header>
 
   <p class="post-excerpt">
     {% if post.description %}
-      {{ post.description }} –
+      {{ post.description }}
+    {% else %}
+      {{ post.content | markdownify | strip_html | truncate: 240 }}
     {% endif %}
-    {{ post.content | strip_html | truncate: 160 }}
-    <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-on"
-      title="Read on: {{ post.title }}">
-      Read on
-    </a>
   </p>
 
 </article>

@@ -20,7 +20,7 @@
 
 $column-padding: 1rem;
 $column-padding-big: 2.5rem;
-$body-background: hsl($hue2, 50%, 95%);
+$body-background: hsl($hue2, 40%, 95%);
 $wrapper-background: white;
 $col-secondary-background: $highlight-background-color;
 $post-header-background: hsl($hue, 38%, 51%);
@@ -137,13 +137,16 @@ html {
 
 .post-header {
   margin: 0 (-$column-padding) 1rem;
-  padding: $column-padding;
+  padding: 1.5rem $column-padding;
   background-color: $post-header-background;
-  text-shadow: 1px 1px 1px #222;
+  color: white;
+  text-shadow: 1px 1px 2px #333;
 
   @include big {
-    margin: 0 (-$column-padding-big) 1rem;
-    padding: $column-padding $column-padding-big;
+    margin-left: -$column-padding-big;
+    margin-right: -$column-padding-big;
+    padding-left: $column-padding-big;
+    padding-right: $column-padding-big;
   }
 }
 
@@ -156,7 +159,7 @@ html {
   }
 
   &:visited {
-    color: #eaeaea;
+    color: #f0f0f0;
   }
 
   &:focus {
@@ -164,13 +167,10 @@ html {
   }
 }
 
-.post-read-on {
-  white-space: nowrap;
-}
-
 .post-title {
-  margin: 0 0 0.5rem;
-  color: white;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: inherit;
 
   @include big {
     letter-spacing: 0.5px;
@@ -179,8 +179,11 @@ html {
 
 .post-sup {
   margin-bottom: 0;
-  font-size: 0.89em;
-  color: white;
+  font-size: 0.8em;
+
+  @include big {
+    font-size: 0.9em;
+  }
 }
 
 .post-description {
@@ -198,6 +201,12 @@ html {
   font-weight: normal;
 }
 
+/*
+.post-read-on {
+  white-space: nowrap;
+}
+*/
+
 .post-body {
   & > p:last-child,
   & > ol:last-child,
@@ -208,10 +217,11 @@ html {
 
 .post-short {
   margin-bottom: 2.5rem;
+}
 
-  .post-excerpt {
-    margin-bottom: 0;
-  }
+.post-excerpt {
+  margin-bottom: 0;
+  font-size: 1.1rem;
 }
 
 /**
