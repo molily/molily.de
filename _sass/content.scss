@@ -44,7 +44,9 @@ html {
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   font-variant-ligatures: common-ligatures discretionary-ligatures contextual;
-  text-decoration-skip: ink;
+  text-decoration-skip: ink; // Deprecated
+  -webkit-text-decoration-skip: ink; // Deprecated
+  text-decoration-skip-ink: auto;
 }
 
 .fonts-loaded {
@@ -271,7 +273,7 @@ a {
   &:focus {
     color: $link-color;
     border-style: none;
-    outline: 1.5px solid hsl($hue, 100%, 50%);
+    outline: 1px solid hsl($hue, 100%, 50%);
     outline-offset: 2px;
   }
 
@@ -280,7 +282,7 @@ a {
   }
 }
 
-@supports (text-decoration-skip: ink) and (text-decoration: underline blue) {
+@supports (text-decoration-skip-ink: auto) and (text-decoration: underline blue) {
 
   a {
 
