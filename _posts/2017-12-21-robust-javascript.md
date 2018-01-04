@@ -194,7 +194,7 @@ lang: en
   <span class="subheading">A Developer’s Guide</span>
 </h1>
 
-<p class="intro"><em style="font-style: normal; font-variant: small-caps;">The JavaScript programming language</em> is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?</p>
+<p class="intro"><em class="intro-caps">The JavaScript programming language</em> is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?</p>
 
 <p class="separator">❡</p>
 
@@ -1579,7 +1579,7 @@ main =
   )
 ```
 
-Elm’s main goal is to prevent runtime exceptions. In this guide, we’ve learned how hard that is in JavaScript when done manually. Elm’s idea is to free the developer from this burden. If the program may throw exceptions during runtime, it simply should not compile. The Elm compiler is known for its strictness as well as for friendly error messages that help you making the code compile.
+Elm’s main goal is to prevent runtime exceptions. In this guide, we’ve learned how hard that is in JavaScript when done manually. Elm’s idea is to free the developer from this burden. If the program may throw exceptions during runtime, it simply should not compile. The Elm compiler is known for its strictness as well as for friendly error messages that help you to make the code compile.
 
 In Elm, operations still may fail. Like other functional languages, Elm has built-in types for wrapping uncertain values (`Maybe`: `Nothing` & `Just`) and operations that produce a value or an error (`Result`: `Ok` & `Error`). When working with potential values, the success and error cases must be handled explicitly.
 
@@ -1620,7 +1620,7 @@ In particular, JavaScript exceptions will happen in production. We’ve learned 
 
 Therefore, sending information about exceptions to you, the developer, is vital for every site that relies on JavaScript.
 
-The standard approach is to monitor all exceptions on a page and to handle them in a central handler, for example using [window.onerror](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror). Then gather a bunch of context information and send an incident report to a log server. That server stores all reports, makes them accessible using an interface and probably sends an email to the developer.
+The standard approach is to monitor all exceptions on a page and to handle them centrally, for example using [window.onerror](https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror). Then gather a bunch of context information and send an incident report to a log server. That server stores all reports, makes them accessible using an interface and probably sends an email to the developer.
 
 Here is a simple global error reporter:
 

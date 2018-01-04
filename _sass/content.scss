@@ -37,8 +37,8 @@
  */
 
 html {
-  color: $text-color;
   background-color: white;
+  color: $text-color;
   font-family: $sans-serif-font;
   // Enable kerning and ligatures
   font-kerning: normal;
@@ -69,12 +69,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 2rem 0 1rem;
   color: $heading-color;
   line-height: $heading-line-height;
-  font-weight: 500;
   page-break-after: avoid;
 }
 
 h1 {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 h2 {
@@ -100,7 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /**
- * @section All Copy Text Elements
+ * @section All copy text elements
  *
  */
 
@@ -198,6 +197,7 @@ pre, code, samp {
   background-color: $highlight-background-color;
   font-family: $monospace-font;
   color: $code-text-color;
+  overflow-wrap: break-word;
 }
 
 pre code {

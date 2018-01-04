@@ -107,15 +107,6 @@ caption {
 }
 
 /**
- * @section Code
- *
- */
-
-pre, code {
-  overflow-wrap: break-word;
-}
-
-/**
  * @section Base layout
  *
  */
@@ -222,7 +213,13 @@ pre, code {
 }
 
 .intro {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+}
+
+.intro-caps {
+  font-style: normal;
+  font-variant: small-caps;
+  text-transform: capitalize;
 }
 
 /**
