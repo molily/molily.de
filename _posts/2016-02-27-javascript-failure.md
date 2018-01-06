@@ -116,26 +116,26 @@ Coming back to the Twitter example: The rich text editor should be an enhancemen
 
 Let’s have a look at a simple example. Given is a website with a search feature. The basic version is an HTML form:
 
-<pre>
-&lt;form action='/search' id='searchForm'>
-  &lt;p>
-    &lt;label>
+```html
+<form action='/search' id='searchForm'>
+  <p>
+    <label>
       Search term:
-      &lt;input type='search' name='q' id='searchQuery'>
-    &lt;/label>
-  &lt;/p>
-  &lt;p>&lt;button type='submit'>Search!</button>&lt;/p>
-&lt;/form>
-</pre>
+      <input type='search' name='q' id='searchQuery'>
+    </label>
+  </p>
+  <p><button type='submit'>Search!</button></p>
+</form>
+```
 
 Now we’re enhancing the site. We’re using JavaScript to fetch the search results in the background, without a full page refresh:
 
-<pre>
-&lt;div id='searchResults' tabindex="0">
-  &lt;!-- Search results go here! -->
-&lt;/div>
+```html
+<div id='searchResults' tabindex="0">
+  <!-- Search results go here! -->
+</div>
 
-&lt;script>
+<script>
 (function() {
   // Cutting the mustard
   var isFunction = function(obj, prop) {
@@ -183,8 +183,8 @@ Now we’re enhancing the site. We’re using JavaScript to fetch the search res
     searchResults.textContent = reason;
   }
 })();
-&lt;/script>
-</pre>
+</script>
+```
 
 This example is using the shiny new [fetch API](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) to send an HTTP request. At the beginning, we’re ‘cutting the mustard’ by performing browser feature tests. The browser doesn’t support `fetch` yet? No problem, the enhancement just doesn’t take effect. The search still works without it.
 
@@ -194,21 +194,21 @@ The problem with this script is that is is *not prepared for JavaScript failure*
 
 The first task of the `submit` event handler is to prevent the default event action by calling `event.preventDefault()`. The default action of the `submit` event is to send the form data to the server.
 
-<pre>
+```js
 function performSearch(event) {
-  <strong>event.preventDefault();</strong>
+  event.preventDefault();
   // … Perform search with JavaScript, may cause exceptions …
 }
-</pre>
+```
 
 We’re terribly *optimistic* here, disabling the browser’s standard behavior, assuming our JavaScript will take over, fetch and display the results. Let’s be *realistic* instead, assuming our JavaScript might fail with an exception. Let’s enable the fall back to the previous, non-JavaScript version by calling `preventDefault` *at the end* of the handler:
 
-<pre>
+```js
 function performSearch(event) {
   // … Perform search with JavaScript, may cause exceptions …
-  <strong>event.preventDefault();</strong>
+  event.preventDefault();
 }
-</pre>
+```
 
 `preventDefault` is not called if an exception aborts the function prematurely. This means the search form is submitted normally without JavaScript, and a new page is loaded from the server.
 
@@ -226,15 +226,15 @@ More and more APIs and libraries use promises to split the logic into a chain of
 
 If an individual operation fails, it’s easy to handle intentional and exceptional errors:
 
-<pre>
+```js
 // Installs the basic version, returns a promise
 basic()
   .then(handleBasicSuccess, handleBasicError)
-</pre>
+```
 
 If the result of an operation is a necessary input for the next operation, we need to stop the execution of the chain in case of failure. A rejected promise automatically stops the chain and “bubbles up”:
 
-<pre>
+```js
 basic()
   // Depends on basic. Not called when basic fails.
   .then(enhancement1)
@@ -242,11 +242,11 @@ basic()
   .then(enhancement2)
   // Handle errors in basic, enhancement1 or enhancement2.
   .catch(logError)
-</pre>
+```
 
 Or we use a fallback value and carry on:
 
-<pre>
+```js
 basic().then(
   () => {
     // Only install enhancements when basic succeeded.
@@ -260,11 +260,11 @@ basic().then(
   },
   handleBasicError
 )
-</pre>
+```
 
 If the operation is not crucial and just an enhancement, we only log the error and continue anyway:
 
-<pre>
+```js
 basic().then(
   () => {
     // Depends on basic.
@@ -279,7 +279,7 @@ basic().then(
   },
   handleBasicError
 )
-</pre>
+```
 
 ## Failing fast: Making failure visible and tangible
 
