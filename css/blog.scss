@@ -62,13 +62,12 @@ html {
   margin: auto;
 }
 
-.wrapper-top,
-.wrapper-bottom {
-  @extend %clearfix;
-}
-
 .wrapper-top {
   background-color: $wrapper-background;
+
+  @include big {
+    display: flex;
+  }
 }
 
 .wrapper-bottom {
@@ -78,7 +77,6 @@ html {
 
 .col-primary,
 .col-secondary {
-  min-height: 1px;
   padding: $column-padding;
 
   @include big {
@@ -88,27 +86,27 @@ html {
 
 .col-primary {
   @include big {
-    float: left;
+    flex: 0 0 auto;
     width: 70%;
   }
 }
 
 .col-secondary {
-  // Include floats, equal height columns
-  @extend %clearfix;
   padding-top: 0;
   padding-bottom: 0;
   background-color: $col-secondary-background;
 
   @include big {
-    margin-left: 70%;
+    flex: 0 0 auto;
+    width: 30%;
   }
 }
 
 /* Top navigation (Mobile) */
 
 .top-navigation {
-  @extend %clearfix;
+  display: flex;
+  justify-content: space-between;
   margin-top: 0;
 
   @include big {
@@ -117,11 +115,10 @@ html {
 }
 
 .top-navigation__home {
-  float: left;
 }
 
 .top-navigation__jump-to-bottom {
-  float: right;
+  text-align: right;
 }
 
 /* Document footer */
@@ -231,6 +228,7 @@ html {
 
 #sidebar {
   padding-top: $column-padding;
+  padding-bottom: 0.1px; // Include margins
 
   @include big {
     padding-top: $column-padding-big;
