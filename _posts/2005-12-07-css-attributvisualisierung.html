@@ -7,19 +7,38 @@ lang: de
 ---
 
 <style>
-code {color:#202070; background-color:#f5f5f5;}
-.code {padding:0.4em; background-color:#f5f5f5; border:1px solid #eaeaea;}
-var {font-style:normal;}
-#testumgebung a[target="_blank"]:before {content:"[^]"; color:#f00;}
-#testumgebung *[title] {border-bottom:thin dotted #777; cursor:help;}
-#testumgebung *[title]:after {content:" ["attr(title)"]"; font-size:0.8em;}
-#testumgebung a[hreflang]:before {content:"["attr(hreflang)"]"; color:#f55; background-color:transparent;}
-#testumgebung a[hreflang="en"]:before {content:url(/img/flag-en.png); margin-right:3px;}
-#testumgebung a[hreflang="fr"]:before {content:url(/img/flag-fr.png); margin-right:3px;}
-#testumgebung a[hreflang][target="_blank"]:before {content:"[^"attr(hreflang)"]"; color:#f00;}
-#testumgebung a[href^="javascript:"]:before {content:"[js] "; color:#f55;}
-/* #testumgebung a[href*="javascript:"]:before {content:"[js] "; color:#f55;} */
-#testumgebung a[href="#"][onclick]:before {content:"[js] "; color:#f55;}
+#testumgebung a[target="_blank"]:before {
+  content: "[^]";
+  color: #e00000;
+}
+#testumgebung *[title] {
+  border-bottom: thin dotted #777;
+  cursor: help;
+}
+#testumgebung *[title]:after {
+  content: " [" attr(title) "]";
+  font-size: 0.8em;
+}
+#testumgebung a[hreflang]:before {
+  content: "[" attr(hreflang) "]";
+  background-color: transparent;
+  color: #e00000;
+}
+#testumgebung a[hreflang][target="_blank"]:before {
+  content: "[^" attr(hreflang) "]";
+  color: #e00000;
+}
+#testumgebung a[href^="javascript:"]:before {
+  content: "[js] ";
+  color: #e00000;
+}
+#testumgebung a[href="#"][onclick]:before {
+  content: "[js] ";
+  color: #e00000;
+}
+#testumgebung .inserted {
+  color: #e00000;
+}
 </style>
 
 <p>Mit Hilfe von speziellen CSS-Regeln können einige wichtige HTML-Attribute, welche durch <span lang="en">Browser</span> oft nicht direkt ausgegeben werden und so der Informationsgehalt dem Benutzer vorenthalten wird, sichtbar gemacht machen. Dazu bedient man sich <em>erzeugter</em> beziehungsweise <em>eingefügter Inhalte</em>, genauer gesagt der <a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap12.html#heading-12.2">Eigenschaft <code>content</code></a>, der <a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap12.html#heading-12.1">Pseudoelemente <code>:before</code> und <code>:after</code></a> sowie <a href="http://edition-w3c.de/TR/1998/REC-CSS2-19980512/kap05.html#heading-5.8">Attributselektoren</a>.</p>
@@ -36,7 +55,7 @@ var {font-style:normal;}
 
 <p>Neben der Verwendung für <span lang="en">Framesets</span> wird das <code>target</code>-Attribut dazu gebraucht, um in der Regel unvermittelt neue Browserfenster beim Aktivieren eines Hyperlinks zu öffnen. Mittels der folgenden Regel können <code>target="_blank"</code>-Attribute gekennzeichnet und gegebenenfalls außer Kraft gesetzt werden, indem der <span lang="en">Browser</span> beispielsweise angewiesen wird, den Link nicht in einer neuen Browserinstanz zu laden:</p>
 
-<p class="code"><code>a[target="_blank"]:before {content:"[^]"; color:#f00;}</code></p>
+<pre>a[target="_blank"]:before { content: "[^]"; color: #f00; }</pre>
 
 <h2>Das <code>title</code>-Attribut</h2>
 
@@ -44,40 +63,41 @@ var {font-style:normal;}
 
 <p>Durch folgende Regel können alle Elemente, welche ein <code>title</code>-Attribut enthalten, durch eine Art Unterstreichung hervorgehoben werden. Die <span lang="en">Browser</span> Mozilla und Opera (Version 7) wenden ähnliche Formatierungen standardmäßig bei <code>abbr</code>- und <code>acronym</code>-Elementen an.</p>
 
-<p class="code"><code>*[title] {border-bottom:thin dotted #777; cursor:help;}</code></p>
+<pre>*[title] { border-bottom: thin dotted #777; cursor:help; }</pre>
 
 <p>Bei Blockelementen könnte diese Regel eventuell problematisch werden, weshalb möglicherweise nicht auf alle Elemente abgezielt werden sollte.</p>
 
 <p>Wenn beispielsweise als Eingabegerät in erster Linie die Tastatur verwendet wird oder der Zusatztext leichter zugänglich sein soll, ist es hilfreich, den Inhalt des <code>title</code>-Attributs im Fließtext anzuzeigen. Dazu kann folgender Regel verwendet werden:</p>
 
-<p class="code"><code>*[title]:after {content:" ["attr(title)"]"; font-size:0.8em;}</code></p>
+<pre>*[title]:after { content: " ["attr(title)"]"; font-size:0.8em; }</pre>
 
 <p>Dies bewirkt, dass der <code>title</code>-Text in eckigen Klammern in kleinerer Schrift hinter das ausgezeichnete Element gestellt wird.</p>
 
 <h2>Das <code>hreflang</code>-Attribut</h2>
 
-<p>Das Attribut <code>hreflang</code> kennzeichnet die Sprache eines Verweisziels. Es wird momentan noch recht wenig von Netzautoren verwendet, unter anderem weil gängige <span lang="en">Browser</span> es nicht darstellen beziehungsweise einfach zugänglich machen, wodurch ein ausdrücklicher Zusatz nötig ist, welcher die Sprache des Zieldokuments beschreibt. Per CSS könnte das jeweilige Sprachenkürzel (<code>de</code>, <code>fr</code>, <code>en</code> usw.) dem Link vorangestellt werden:</p>
+<p>Das Attribut <code>hreflang</code> kennzeichnet die Sprache eines Verweisziels. Es wird momentan noch recht wenig von Netzautoren verwendet, unter anderem weil gängige <span lang="en">Browser</span> es nicht darstellen beziehungsweise einfach zugänglich machen. Dadurch ist ein ausdrücklicher Zusatz nötig, welcher die Sprache des Zieldokuments beschreibt. Per CSS könnte das jeweilige Sprachenkürzel (<code>de</code>, <code>fr</code>, <code>en</code> usw.) dem Link automatisch vorangestellt werden:</p>
 
-<p class="code"><code>a[hreflang]:before {content:"["attr(hreflang)"]"; color:#a00;}</code></p>
+<pre>a[hreflang]:before { content: "[" attr(hreflang) "]"; color: #a00; }</pre>
 
-<p>Ebenso besteht die Möglichkeit, den Verweis durch eine vorangestellte Grafik, welche etwa eine Landesflagge symbolisiert, zu kennzeichnen:</p>
-
-<p class="code"><code>a[hreflang="en"]:before {content:url(flag-en.png);}</code></p>
-
-<p>Vorausgesetzt wird, dass eine Grafikdatei namens <var>flag-en.png</var> im Verzeichnis des Benutzerstylesheets existiert.</p>
-
-<p>Speziell für solche Anwendungsfälle existiert im Übrigen ein Attributselektor, mit welchem auch Kürzel für Sprachunterarten erkannt werden. Diese Sprachcodes setzen sich aus dem Hauptkürzel und beliebig vielen über Bindestriche abgetrennten Kürzeln für Untergattungen zusammen. Während <code>a[hreflang="en"]</code> nur <code>a</code>-Elemente mit exakt dem Attribut <code>hreflang="en"</code> auswählt, trifft der Selektor <code>a[hreflang|="en"]</code> zusätzlich auch auf Hyperlink-Elemente zu, deren <code>hreflang</code>-Attributwert lediglich mit <code>en</code> beginnt &#8211; beispielsweise <code>en-gb</code> (britisches Englisch) und <code>en-us</code> (amerikanisches Englisch).</p>
+<p>Speziell für solche Anwendungsfälle existiert ein Attributselektor, mit dem auch Kürzel für Sprachunterarten erkannt werden. Diese Sprachcodes setzen sich aus dem Hauptkürzel und beliebig vielen über Bindestriche abgetrennten Kürzeln für Untergattungen zusammen. Während <code>a[hreflang="en"]</code> nur <code>a</code>-Elemente mit exakt dem Attribut <code>hreflang="en"</code> auswählt, trifft der Selektor <code>a[hreflang|="en"]</code> zusätzlich auch auf Hyperlink-Elemente zu, deren <code>hreflang</code>-Attributwert lediglich mit <code>en</code> beginnt &#8211; beispielsweise <code>en-gb</code> (britisches Englisch) und <code>en-us</code> (amerikanisches Englisch).</p>
 
 <p>Falls beide oben genannte Fälle &#8211; <code>target="_blank"</code> und <code>hreflang</code> &#8211; eintreten, kann mit mehreren Attributselektoren gearbeitet werden:</p>
 
-<p class="code"><code>a[hreflang][target="_blank"]:before {content:"[^"attr(hreflang)"]"; color:#f00;}</code></p>
+<pre>
+a[hreflang][target="_blank"]:before {
+  content: "[^" attr(hreflang) "]";
+  color: #f00;
+}
+</pre>
 
 <h2>Problematische Benutzung von JavaScript kennzeichnen</h2>
 
 <p>Viele Netzseiten verwenden <code>javascript:</code> mit anschließendem JavaScript-Code als Verweisziel. Im Artikel <cite>Popups mit JavaScript</cite> finden sich <a href="/javascript-popups/#javascriptlink">Argumente gegen <code>javascript:</code> als Verweisziel</a>. Um solch eventuell unliebsame Verweise kenntlich zu machen, bevor sie anwählt werden, bieten sich folgende Regeln an:</p>
 
-<p class="code"><code>a[href^="javascript:"]:before {content:"[js] "; color:#f55;}<br>
-a[href="#"][onclick]:before {content:"[js] "; color:#f55;}</code></p>
+<pre>
+a[href^="javascript:"]:before { content: "[js] "; color: #e00000; }
+a[href="#"][onclick]:before {content: "[js] "; color: #e00000; }
+</pre>
 
 <p>Der Attributselektor <code>[href^="javascript:"]</code>, beziehungsweise verallgemeinert <code>[<var>attribut</var>^="<var>wert</var>"]</code>, wählt diejenigen Elemente, deren Wert des angegebenen Attributs (<code>href</code>) mit der angegebenen Zeichenkette (<code>javascript:</code>) beginnt. Dieser Selektortyp ist erst in <a href="http://www.w3.org/TR/css3-selectors/#attribute-substrings" title="Attributselektoren in CSS3">CSS 3</a> verfügbar und momentan noch nicht standardisiert.</p>
 
@@ -89,16 +109,16 @@ a[href="#"][onclick]:before {content:"[js] "; color:#f55;}</code></p>
 
 <li>Dieser <span title="Testtitel">Text</span> hat einen Titel. Der mit dem <code>title</code>-Attribut ausgezeichnete Text sollte fein unterstrichen sein und der Inhalt des <code>title</code>-Attributs sollte in eckigen Klammern und kleinerer Schrift dahinter sichtbar sein.</li>
 
-<li>Dieser <a href="/" target="_blank">Verweis</a> öffnet ein neues Fenster (<code>target="_blank"</code>). Dem Verweis sollte ein Akzent in eckigen Klammern vorangestellt sein: <span style="color:#f00;">[^]</span>. Denkbar wären natürlich auch Unicode-Pfeilsymbole.</li>
+<li>Dieser <a href="/" target="_blank">Verweis</a> öffnet ein neues Fenster (<code>target="_blank"</code>). Dem Verweis sollte ein Akzent in eckigen Klammern vorangestellt sein: <span class="inserted">[^]</span>. Denkbar wären natürlich auch Unicode-Pfeilsymbole.</li>
 
-<li>Dieser <a href="http://www.w3.org/" hreflang="en">Verweis</a> führt auf eine englischsprachige Seite (<code>hreflang="en"</code>). Dem Verweis sollte der <em lang="en">union jack</em> vorangestellt sein.<br>
-Dieser <a href="http://www.assemblee-nationale.fr/" hreflang="fr">Verweis</a> führt auf eine französischsprachige Seite (<code>hreflang="fr"</code>). Dem Verweis sollte eine französische Flagge vorangestellt sein.</li>
+<li>Dieser <a href="http://www.w3.org/" hreflang="en">Verweis</a> führt auf eine englischsprachige Seite (<code>hreflang="en"</code>). Dem Verweis sollte <span class="inserted">[en]</span> vorangestellt sein.<br>
+Dieser <a href="http://www.assemblee-nationale.fr/" hreflang="fr">Verweis</a> führt auf eine französischsprachige Seite (<code>hreflang="fr"</code>). Dem Verweis sollte <span class="inserted">[^fr]</span> vorangestellt sein.</li>
 
-<li>Dieser <a href="http://www.w3.org/" target="_blank" hreflang="en">Verweis</a> führt auf eine englische Seite und wird in einem neuen Fenster geöffnet. Dem Verweis sollte <span style="color:#f00;">[^en]</span> vorangestellt sein.</li>
+<li>Dieser <a href="http://www.w3.org/" target="_blank" hreflang="en">Verweis</a> führt auf eine englischsprachige Seite und wird in einem neuen Fenster geöffnet. Dem Verweis sollte <span class="inserted">[^en]</span> vorangestellt sein.</li>
 
-<li><a href="javascript:window.alert('foo');">Verweis mit <code>javascript:</code> und <code>alert()</code></a>. Dem Verweis sollte <span style="color:#f00;">[js]</span> vorangestellt sein.</li>
+<li><a href="javascript:window.alert('foo');">Verweis mit <code>javascript:</code> und <code>alert()</code></a>. Dem Verweis sollte <span class="inserted">[js]</span> vorangestellt sein.</li>
 
-<li><a href="#" onclick="alert('foo');">Verweis mit <code>href="#"</code> und <code>onclick</code> (<code>alert()</code>)</a>. Dem Verweis sollte <span style="color:#f00;">[js]</span> vorangestellt sein.</li>
+<li><a href="#" onclick="alert('foo');">Verweis mit <code>href="#"</code> und <code>onclick</code> (<code>alert()</code>)</a>. Dem Verweis sollte <span class="inserted">[js]</span> vorangestellt sein.</li>
 
 </ol>
 
