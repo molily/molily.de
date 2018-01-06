@@ -2,7 +2,7 @@
 layout: book
 title: "Robust Client-Side JavaScript – A Developer’s Guide"
 description: "Why do we need to talk about robust JavaScript and how do we achieve it?"
-keywords: JavaScript, Robustness
+keywords: JavaScript, Robustness, ECMAScript
 lang: en
 ---
 
@@ -25,12 +25,6 @@ lang: en
           </li>
           <li>
             <a href="#javascript-standards">JavaScript standards</a>
-          </li>
-          <li>
-            <a href="#the-global-object-window">The global object <code>window</code></a>
-          </li>
-          <li>
-            <a href="#how-javascript-is-executed">How JavaScript is executed</a>
           </li>
         </ol>
       </li>
@@ -68,6 +62,9 @@ lang: en
           </li>
           <li>
             <a href="#parsing-errors">Parsing errors</a>
+          </li>
+          <li>
+            <a href="#conflicting-scripts">Conflicting scripts</a>
           </li>
           <li>
             <a href="#exceptions">Exceptions</a>
@@ -120,7 +117,13 @@ lang: en
             <a href="#programmatic-exceptions">Programmatic exceptions</a>
           </li>
           <li>
+            <a href="#encapsulated-code">Encapsulated code</a>
+          </li>
+          <li>
             <a href="#the-strict-mode">The Strict Mode</a>
+          </li>
+          <li>
+            <a href="#promises">Promises</a>
           </li>
           <li>
             <a href="#abstraction-libraries">Abstraction libraries</a>
@@ -246,24 +249,6 @@ The host environment we are interested in here is primarily defined in the [HTML
 The HTML and DOM specifications define the main objects that client-side JavaScript is dealing with: nodes, elements and events. Fundamental objects include `window`, `window.alert()`, `document`, `document.body`, `document.getElementById()` and `document.createElement()`.
 
 There are a lot of other specifications that add more APIs to the browser’s JavaScript environment. [The web platform: Browser technologies](https://platform.html5.org/) gives an overview.
-
-### The global object `window`
-
-The most important ECMAScript object is the <dfn>global object</dfn>. In the browser, the global object is `window`. It is not only the top-most object representing the current browsing instance, it also forms the top-most scope for names defined by the developer.
-
-These names are called “bindings” in ECMAScript terminology. They include, among others, global variables like `var fooVariable = 1;`, functions declarations like `function fooFunction() {}` and class declarations like `class FooClass {}`. When this code is executed in the global scope, properties on the global object `window` are created: `window.fooVariable`, `window.fooFunction` and `window.FooClass`.
-
-Understanding scope is crucial since all scripts running on a web page share the same global scope. A script needs to be careful to not conflict with built-in `window` properties – there are hundreds – and properties created by other scripts.
-
-### How JavaScript is executed
-
-JavaScript is typically embedded into an HTML document either directly with a `<script> … </script>` element, or it is referenced externally with `<script src="…"></script>`. Scripts may load other scripts dynamically.
-
-The HTML specification has a lengthy definition on how scripts are loaded and executed. The gist is that normal scripts are downloaded in parallel but are executed one after another in the order they are referenced in the HTML. Such synchronous scripts block the parsing of the HTML code since they may insert new code into the HTML stream using `document.write()`.
-
-Nowadays this is a performance anti-pattern. Scripts should be loaded asynchronously using `<script src="…" defer></script>` or `<script src="…" async></script>`. And `document.write()` should be avoided altogether. This allows the HTML parser to do its job without being interrupted by JavaScript.
-
-Mind that the JavaScript engine is still single-threaded, so only one script or function is executed at a given time. ([Web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) are an exception to this rule.) Also the JavaScript execution happens in the browser tab’s main thread, which means in the worst case it freezes the whole page.
 
 <p class="separator">❡</p>
 
@@ -450,13 +435,27 @@ Even with these safeguards in place, syntax errors occur. There are several ECMA
 
 The standard solution is to [compile](#the-babel-compiler) newer ECMAScript syntax into an older equivalent syntax that is widely supported, usually ECMAScript 3 or 5.
 
+### Conflicting scripts
+
+In ECMAScript, the most important object is the <dfn>global object</dfn>. In the browser, the global object is `window`.
+
+`window` is the topmost object representing the current browsing instance. It contains hundreds of built-in properties, the ECMAScript core objects and most browser APIs.
+
+`window` also forms the outermost scope for names defined by scripts. These names are called *bindings* in ECMAScript terminology. They include, among others, variables like `var fooVariable = 1;` and functions declarations like `function fooFunction() {}`. When this code is executed in the global scope, properties on the global object `window` are created: `window.fooVariable` and `window.fooFunction`.
+
+So the global object is a public space shared by browser APIs and all scripts running on a page. A global name can only be used once and hundreds of names are already taken. It is likely that one script overwrites an existing `window` property and thereby foils the efforts of another script.
+
+The solution is to *avoid global names* wherever possible. Most variables, functions and classes you declare should have a limited scope. Only a few selected values of your scripts need to be globally accessible. For example, a public API for other scripts needs to be global.
+
+The chapter [Encapsulated code](#encapsulated-code) describes practical solutions for avoiding global names.
+
 ### Exceptions
 
 You may have heard of exceptions in the context of JavaScript, but what are they?
 
 “Exception” does not mean exception to any rule here. An exception is an exceptional error, a fatal error. A program error that the JavaScript engine cannot handle on its own. If such an error occurs, the program is aborted. More specifically, the current function [call stack](https://en.wikipedia.org/wiki/Call_stack) is aborted. It is still possible to call the same function or other functions later.
 
-There are several causes for exceptions, and we are already encountered one: The SyntaxError occurs during parsing, before your code is even executed. Let us look at two common exceptions that may happen when the code is run: The `ReferenceError` and the `TypeError`.
+There are several causes for exceptions, and we already encountered one: The SyntaxError occurs during parsing, before your code is even executed. Let us look at two common exceptions that may happen when the code is run: The `ReferenceError` and the `TypeError`.
 
 ### Reference errors
 
@@ -513,7 +512,7 @@ fetch('/something')
 
 We can avoid such careless use of APIs by using *feature detection*. In particular, we need to check for the names we intent to use.
 
-Writing good feature checks requires thorough knowledge of the API being used. We will go into details later [in its own chapter](#feature-detection). This is how we can guard the API uses above:
+Writing good feature checks requires thorough knowledge of the API being used. We will go into details later in the chapter on [feature detection](#feature-detection). This is how we can guard the API uses above:
 
 ```js
 if (typeof JSON === 'object' &&
@@ -543,9 +542,9 @@ if (typeof fetch === 'function') {
 }
 ```
 
-These guards are only the first step. They check whether the API objects exist and have a certain type, like function. They do not check whether the browser has full and correct support of the API. They do not check whether the APIs can be used in the current context.
+These guards are only the first step. They check whether the API objects exist and have a certain type. They do not check whether the browser has full and correct support of the API. They do not check whether the APIs can be used in the current context.
 
-For example, security and privacy preferences may limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
+For example, [security and privacy preferences](#security-errors) may limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
 
 ### Type errors
 
@@ -584,7 +583,7 @@ myLibrary.statr();
 
 The problem here is a simple typo. `myLibrary.start` is a function, but `myLibrary.statr` returns `undefined`.
 
-These errors can be avoided by [manual](#manual-testing) and [automated testing](#automated-testing) as well static code analysis. An <abbr title="Integrated development environments">IDEs</abbr> for example understands that the code defines an object `myLibrary` with the single property `start`. When it encounters `myLibrary.statr`, it shows a warning because it does not recognize the property `statr`.
+These errors can be avoided by [manual](#manual-testing) and [automated testing](#automated-testing) as well as static code analysis. An <abbr title="Integrated development environments">IDEs</abbr> for example understands that the code defines an object `myLibrary` with the single property `start`. When it encounters `myLibrary.statr`, it shows a warning because it does not recognize the property `statr`.
 
 There are several other cases where TypeErrors are thrown. For example when you try to redefine the value of a constant:
 
@@ -692,7 +691,7 @@ function sum(a, b) {
 
 The key to failing fast is to **make your assumptions explicit** with assertions.
 
-The function above uses [`typeof`](#type-checks-with-typeof) to assert the types of `a` and `b`. It [throws an exception](#programmatic-exceptions) if they are not numbers or if they are `NaN`. We are going to explain these techniques later in detail.
+The function above uses [`typeof`](#type-checks-with-typeof) to assert the types of `a` and `b`. It [throws an exception](#programmatic-exceptions) if they are not numbers or if they are `NaN`. We are going to explore these techniques later in detail.
 
 This example shows that assertions make small errors visible before they grow into big errors. The problem is, NaN *is a dangerous beast*. NaN is a special value that means “not a number”, but in fact it is a number you can calculate with.
 
@@ -706,7 +705,7 @@ If the user’s task is affected, you should show a useful error message that so
 
 ### Feature detection
 
-<dfn>Feature detection</dfn> is a fundamental technique in an ever-changing web. As web authors, we want to use the newest browser features to provide a rich experience to the users and to make our life easier.
+<dfn>Feature detection</dfn> is a fundamental technique in an ever-changing web. As web authors, we want to use the newest browser features to provide a rich experience to the users and to make our lifes easier.
 
 Feature detection first checks whether a browser supports a certain web technology, then uses the technology safely. In the context of JavaScript, most feature detections are object and value checks, as well as function calls. Before looking at them in detail in the next chapter, let us learn about the basics of feature detection.
 
@@ -762,7 +761,7 @@ if (condition) {
 
 When an `if` statement is evaluated, first the condition expression is evaluated. The result of the expression is then converted into a boolean value, `true` or `false`. If this result is `true`, the first code block is executed, otherwise the second block, if given.
 
-Most likely, this is not new to you. The reason I am revisiting it is the conversion into boolean. It means you can use a condition expression that does not necessarily evaluate to a boolean value. Other types, like Undefined, Null, String or Object are possible. For example, it is possible to write `if ("Hello!") {…}`.
+Most likely, this is not new to you. The reason we are revisiting it is the conversion into boolean. It means you can use a condition expression that does not necessarily evaluate to a boolean value. Other types, like Undefined, Null, String or Object are possible. For example, it is possible to write `if ("Hello!") {…}`.
 
 If you rely on the implicit conversion, you should learn the conversion rules. ECMAScript defines an [internal function ToBoolean](http://www.ecma-international.org/ecma-262/8.0/#sec-toboolean) for this purpose. In our code, we can use the [public `Boolean()` function](http://www.ecma-international.org/ecma-262/8.0/#sec-boolean-constructor-boolean-value) to convert a value into boolean. This delegates to the internal ToBoolean function.
 
@@ -1210,15 +1209,101 @@ This message is only effective if it reaches the developer. When the exception i
 
 Second, a programmatic exception is a message to the calling code, similar to the return value of the function. We’ve seen this in the `querySelector` example above. The caller should catch the exception and handle it appropriately. For this purpose, the error object holds a type, a message, the source code position it originates from, a stack trace and possibly more information on the incident.
 
-<!--
 ### Encapsulated code
 
-Encapsulated code that does not interfere with other code, e.g. few global variables, module systems, not changing core prototypes (except for polyfills)
--->
+On a typical page, JavaScript code of different origin is executed: libraries, custom application code, advertising scripts, third-party widgets, web analytics, media players, etc. All these scripts need to be encapsulated to play together nicely and to not interfere with each other.
+
+As we have learned, all scripts [share the same global scope](#conflicting-scripts). Using only few global names helps to avoid conflict.
+
+There are three important types of scope in JavaScript, from big to small:
+
+1. Global scope
+2. Function scope
+3. Block scope
+
+The scope of a name should be as small as possible.
+
+If applicable, use [`let`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let) and [`const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const) from ECMAScript 6 to declare variables and constants, respectively. The scope of these names is the current block delimited by curly braces `{…}`. The name is available from inside the block, but not from outside.
+
+Such blocks are created by functions, `if` statements, `for` and `while` loops, among others. Here is an example of using `let` in a `for` loop:
+
+```js
+for (let i = 0; i < 10; i++) {
+  console.log(i); // Outputs 0, 1, …
+}
+console.log(i); // ReferenceError: i is not defined
+```
+
+If `let` and `const` are not available, declare variables with [`var`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var) inside of functions. The scope of these variables is the current function.
+
+```js
+function createLink(title, url) {
+  var link = document.createElement('a');
+  link.href = url;
+  var text = document.createTextNode(title);
+  link.appendChild(text)
+  return link;
+}
+document.body.appendChild(
+  createLink('Cinnamon rolls', 'https://cinnamon.example.org')
+);
+```
+
+The `createLink` function in the example declares two variables within the function scope, `link` and `text`. In addition, it accepts two parameters, `title` and `url`. All four names are bound to the function scope and are not available from outside.
+
+Every script declares some variables, constants, functions and classes, and does some initialization. The first thing a script should do is to create a scope for these names. Creating a wrapper function works, but it needs to be declared with a name:
+
+```js
+function init() {
+  // Safely declare your names inside this function.
+  var variabl1 = 1;
+  let variable2 = 2;
+  const constant = 3;
+  function someFunction() {}
+  class SomeClass {}
+}
+init();
+```
+
+The global name `init` will likely clash with other scripts. We could try to find a more unique name like `betaritKrimsBlawernfoth` or `f8c3f9a214cf093ae`, but it is possible to use an anonymous function instead.
+
+The best practice is to create an [Immediately-Invoked Function Expression (IIFE)](http://benalman.com/news/2010/11/immediately-invoked-function-expression/). This sounds more intimidating than it actually is.
+
+```js
+(function () {
+  // Safely declare your names inside this function.
+  var variabl1 = 1;
+  let variable2 = 2;
+  const constant = 3;
+  function someFunction() {}
+  class SomeClass {}
+})();
+```
+
+At the heart of this pattern, there is an anonymous function `function () {…}`. This is a function *expression* that simply creates a function and returns it as a value, in contrast to a function *declaration* that creates a function and inevitably binds it to a name.
+
+The braces around the anonymous function, `( function() {…} )`,  allow the parser to recognize the function expression correctly. Finally, the braces at the end `()` call the function immediately. That is why it is called immediately-invoked function expression.
+
+With ECMAScript 6 (2015), creating a private scope became much easier. You can simply use curly braces to create a block:
+
+```js
+{
+  // Safely declare your names inside this function.
+  var variabl1 = 1;
+  let variable2 = 2;
+  const constant = 3;
+  function someFunction() {}
+  class SomeClass {}
+}
+```
+
+ECMAScript 6 also introduced modules to solve the problem of public and private scopes as well as script dependencies once and for all. Module code always exists in its own scope. If it wants to access other scripts, it needs to `import` them explicitly. If it wants to make a value available to other scripts, it needs to `export` them explicitly. This is a better solution than letting scripts communicate via the global object.
+
+Read more about [the background and the usage of modules](http://exploringjs.com/es6/ch_modules.html). You can also [use modules directly in the browser](https://jakearchibald.com/2017/es-modules-in-browsers/).
 
 ### The Strict Mode
 
-ECMAScript 5, released in 2009, started to deprecate error-prone programming practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
+ECMAScript 5 (2009) started to deprecate error-prone programming practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
 
 In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors – see [failing fast](#failing-fast).
 
@@ -1292,6 +1377,123 @@ Newer ECMAScript versions make the Strict Mode the default when using new featur
 
 Most likely, if you are using modules or classes, you are already using the Strict Mode. If not, I highly recommend to use the `'use strict';` marker in your scripts to enable the Strict Mode.
 
+### Promises
+
+A Promise is an object that wraps a value that will possibly be available in the future. This value is typically the result of an asynchronous operation, like an HTTP request to the server.
+
+“Asynchronous” means the operation takes some time during which the JavaScript engine does not halt, but continues execution.
+
+A Promise allows to register observer functions for the success and error cases. In the success case, the Promise is “fulfilled” with a value. In the error case, the Promise is “rejected” with an error object.
+
+For example, the `fetch()` function of the Fetch API returns a Promise. The promised value is a response object that contains information about the HTTP server response. If the request could not be sent, for example due to a network error, the Promise is rejected with an error.
+
+Here is a simple example:
+
+```js
+fetch('/data.json')
+  .then(
+    // Success handler
+    function(response) {
+      console.log('Response:', response.status);
+    },
+    // Error handler
+    function(error) {
+      console.error(error);
+    }
+  );
+```
+
+This example makes a GET request to <var>/data.json</var>. In the success case, it prints the response status code. In the error case, it prints the rejection reason.
+
+Every Promise has a method called `then()`. The first parameter to `then()` is the success handler, also called `onFulfilled`. The second parameter is the error handler, also called `onRejected`.
+
+So far, Promises look like yet another solution for accessing an asynchronous value. Before Promises existed, callbacks were used for this purpose: two callbacks for the success and error cases or one callback that receives an error or the result.
+
+But this is [not the point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/). They are not another syntax for writing callbacks. Promises are a tool to write more robust JavaScript. They were designed to make asynchronous programming as easy and as powerful as synchronous programming.
+
+Promises wrap the value of an asynchronous operation so that it can be passed around. A Promise provides a simple yet powerful interface for working with the result. Thanks to this uniform interface, asynchronous values can be easily combined. For example, you can wait for several operations to finish and then work with all results.
+
+Processing one Promise may yield a new Promise. This way, synchronous and asynchronous operations can be chained. With Promises, you can set up a proper success and error handling logic.
+
+You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
+
+In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to reject the new Promise. They may also return a Promise, which becomes the new Promise.
+
+This still might sound theoretical to you. But when working with the Promise-based Fetch API, chaining Promises is common. Here is a typical chain:
+
+```js
+fetch('/data.json')
+  .then(
+    // The promise is fulfilled with the response object.
+    function(response) {
+      // If the response was not successful,
+      // stop the chain by throwing an error.
+      if (!response.ok) {
+        throw new Error(
+          `${response.status} ${response.statusText}`
+        );
+      }
+      // Otherwise parse the response body as JSON.
+      // This returns a new Promise.
+      return response.json();
+    }
+  )
+  // Continue with the Promise returned by response.json().
+  .then(
+    function(data) {
+      // data is now a JavaScript object.
+      // Do something with it.
+      console.log('Success!', data);
+    }
+  )
+  // Handle all potential errors that happened above.
+  // Only pass an error handler, no success handler.
+  // This is equivalent to .catch(function(…) {…}).
+  .then(
+    null,
+    function(error) {
+      console.error('Error!', error);
+      // Report the error to a logging service,
+      // activate a fallback or send the request again.
+    }
+  );
+```
+
+The example chains several operations: Making the HTTP request, checking the response status, parsing the response as JSON and finally working with the data. It handles both the success and error cases.
+
+Understanding the example requires deep knowledge of Promises and the Fetch API. For now, you do not need to understand every bit, only the overall structure. You can [learn more about Promise chaining elsewhere](https://javascript.info/promise-chaining).
+
+Promises are part of ECMAScript 6 (2015). In older browsers that do not support Promises, a [polyfill](https://github.com/stefanpenner/es6-promise) can retrofit the Promise API.
+
+The point of Promises is the ability to work with asynchronous values like with synchronous values. ECMAScript 8 (2017) introduced a new way to work with Promises that closely resembles synchronous code.
+
+A function can be marked as asynchronous with the [`async` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Such a function returns a Promise. Inside the function, you can use the [`await` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) in front of functions calls that return promises. The function call directly returns the unwrapped value instead of the Promise wrapper.
+
+Here is the above example with `async` and `await`:
+
+```js
+async function fetchData() {
+  try {
+    const response = await fetch('/data.json')
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    console.log('Success!', data);
+    return data;
+  } catch(error) {
+    console.error('Error!', error);
+  }
+}
+fetchData();
+```
+
+This is much easier to write and to read! Although we are working with Promises all over, we do not see them. We directly work with values and handle exceptions with [try…catch](#handling-exceptions-with-trycatch), just like in synchronous code.
+
+Promises are an essential tool to [apply JavaScript enhancements safely](/javascript-failure/#chaining-enhancements-with-promises) and deal with failure properly. But asynchronous programming with Promises is complex and hard to learn. It comes with several pitfalls that you will run into. `async`/`await` introduce a friendlier syntax to express a sequence of operations, but the logical complexity remains.
+
+My recommendation is to learn Promises step by step. Use Promise-based APIs like Fetch and write simple Promise chains. Learn how to handle errors in the chain properly. Then build your own Promises-based APIs and express your application flows with Promises.
+
 ### Abstraction libraries
 
 [jQuery](https://jquery.com/), [Underscore](http://underscorejs.org/), [Lodash](https://lodash.com/) and [Moment.js](https://momentjs.com/) are probably the most used client-side JavaScript libraries. They all emerged for two main reasons:
@@ -1359,7 +1561,7 @@ Fortunately, ESlint and most ESlint plugins come with a recommended configuratio
 
 ### The Babel compiler
 
-Every year, a new ECMAScript version is released. Some versions introduce new syntax. For example, ECMAScript 6 (released 2015) introduced a bunch of new syntax features. Here is a small selection:
+Every year, a new ECMAScript version is released. Some versions introduce new syntax. For example, ECMAScript 6 (2015) introduced a bunch of new syntax features. Here is a small selection:
 
 ```js
 let a = 1;
