@@ -74,7 +74,11 @@ function oeffnefenster (url) {
 
 <p>Es wird nun der <a href="https://wiki.selfhtml.org/wiki/JavaScript/DOM/Event/click" lang="en">Event-Handler <code>onclick</code></a> hinzugefügt. In diesem Attribut wird die Funktion <code>oeffnefenster</code> aufgerufen:</p>
 
-<pre>&lt;a href="foo.html" onclick="oeffnefenster(this.href); return false"&gt;Linktext&lt;a&gt;</pre>
+<pre>
+&lt;a href="foo.html" onclick="oeffnefenster(this.href); return false"&gt;
+  Linktext
+&lt;/a&gt;
+</pre>
 
 <p>Der negative Rückgabewert <code>return false</code> <a href="/js/event-handling-objekt.html#standardaktion">unterdrückt die Standard-Ereignisbehandlung</a> für den Klick auf den Hyperlink. Damit wird verhindert, dass nach dem Öffnen des Popup-Fensters zusätzlich das Linkziel im Ausgangsfenster aufgerufen wird.</p>
 
