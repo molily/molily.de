@@ -73,46 +73,49 @@ window.onload = function () {
 
 <h2>Der Scriptcode</h2>
 
-<pre>function liste_unterknoten (knoten) {
-    var ausgabe;
-    ausgabe = '&lt;li>';
-    switch (knoten.nodeType) {
-        case 1 :
-            ausgabe += '&lt;strong>' + knoten.nodeName + '&lt;\/strong>-Element';
-            if (knoten.hasChildNodes()) {
-                ausgabe += ', ' + knoten.childNodes.length + ' Unterknoten';
-            }
-            break;
-        case 3 :
-            var knotenwert = knoten.nodeValue.replace(/&lt;/g, '&amp;lt;').replace(/\n/g, '\\n');
-            ausgabe += 'Textknoten: [&lt;strong>' + knotenwert + '&lt;\/strong>]';
-            break;
-        case 8 :
-            var knotenwert = knoten.nodeValue.replace(/&lt;/g, '&amp;lt;').replace(/\n/g, '\\n');
-            ausgabe += 'Kommentarknoten: [' + knotenwert + ']';
-            break;
-        default :
-            ausgabe += 'Knoten des Typs ' + knoten.nodeType +
-                ', Wert: [' + knoten.nodeValue + ']';
+<pre>
+function liste_unterknoten(knoten) {
+  var ausgabe;
+  ausgabe = '&lt;li>';
+  switch (knoten.nodeType) {
+    case 1:
+      ausgabe += '&lt;strong>' + knoten.nodeName + '&lt;\/strong>-Element';
+      if (knoten.hasChildNodes()) {
+        ausgabe += ', ' + knoten.childNodes.length + ' Unterknoten';
+      }
+      break;
+    case 3:
+      var knotenwert = knoten.nodeValue.replace(/&lt;/g, '&amp;lt;').replace(/\n/g, '\\n');
+      ausgabe += 'Textknoten: [&lt;strong>' + knotenwert + '&lt;\/strong>]';
+      break;
+    case 8:
+      var knotenwert = knoten.nodeValue.replace(/&lt;/g, '&amp;lt;').replace(/\n/g, '\\n');
+      ausgabe += 'Kommentarknoten: [' + knotenwert + ']';
+      break;
+    default:
+      ausgabe += 'Knoten des Typs ' + knoten.nodeType +
+        ', Wert: [' + knoten.nodeValue + ']';
+  }
+  if (knoten.hasChildNodes()) {
+    ausgabe += '\n&lt;ol>\n';
+    for (var i = 0; i & lt; knoten.childNodes.length; i++) {
+      knotenneu = knoten.childNodes[i];
+      ausgabe += liste_unterknoten(knotenneu); // Rekursion
     }
-    if (knoten.hasChildNodes()) {
-        ausgabe += '\n&lt;ol>\n';
-        for (var i = 0; i &lt; knoten.childNodes.length; i++) {
-            knotenneu = knoten.childNodes[i];
-            ausgabe += liste_unterknoten(knotenneu); // Rekursion
-        }
-        ausgabe += '&lt;/ol>\n';
-    }
-    ausgabe += '&lt;/li>\n';
-    return ausgabe;
-}</pre>
+    ausgabe += '&lt;/ol>\n';
+  }
+  ausgabe += '&lt;/li>\n';
+  return ausgabe;
+}
+</pre>
 
 <p>Es wird beispielhaft nach dem vollständigen Laden des Dokuments mit dem <code>html</code>-Element als Anfangsknoten gestartet. Die produzierte Ausgabe wird mit <code>innerHTML</code> in ein <code>ol</code>-Element geschrieben (mit der ID <code>anzeige</code>).</p>
 
-<pre>window.onload = function () {
-    var obj = document.documentElement;
-    var ausgabe = liste_unterknoten(obj);
-    document.getElementById('anzeige').innerHTML = ausgabe;
+<pre>
+window.onload = function () {
+  var obj = document.documentElement;
+  var ausgabe = liste_unterknoten(obj);
+  document.getElementById('anzeige').innerHTML = ausgabe;
 };</pre>
 
 <h2>Beispielausgabe</h2>
