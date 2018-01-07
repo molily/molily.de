@@ -705,7 +705,7 @@ If the user’s task is affected, you should show a useful error message that so
 
 ### Feature detection
 
-<dfn>Feature detection</dfn> is a fundamental technique in an ever-changing web. As web authors, we want to use the newest browser features to provide a rich experience to the users and to make our lifes easier.
+<dfn>Feature detection</dfn> is a fundamental technique in an ever-changing web. As web authors, we want to use the newest browser features to provide a rich experience to the users and to make our lives easier.
 
 Feature detection first checks whether a browser supports a certain web technology, then uses the technology safely. In the context of JavaScript, most feature detections are object and value checks, as well as function calls. Before looking at them in detail in the next chapter, let us learn about the basics of feature detection.
 
@@ -829,7 +829,7 @@ The way ToBoolean works is simple, but with a twist. Let us quote the ECMAScript
   </tbody>
 </table>
 
-As you can see, most types have a clear boolean counterpart. All objects, including functions, dates, regular expressions and errors, are truthy. The two types denoting emptyness, `undefined` and `null`, are falsy.
+As you can see, most types have a clear boolean counterpart. All objects, including functions, dates, regular expressions and errors, are truthy. The two types denoting emptiness, `undefined` and `null`, are falsy.
 
 For numbers and strings though, it is complicated. Numbers are truthy *except for* zeros and NaN. Strings are truthy except for empty strings.
 
@@ -1684,7 +1684,7 @@ But what are the downsides?
 
 - Although TypeScript is a superset of ECMAScript, learning TypeScript thoroughly takes a lot of effort. Especially for people who have not worked with statically typed languages before, the type system is fundamentally new and hard to grasp.
 - Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knows the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in loosely-typed JavaScript land, the type definitions do not always match the reality.
-- TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given that all code has correct type definitions. After the trans bvlation to JavaScript, all type information is discarded. Dynamic code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
+- TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given that all code has correct type definitions. After the translation to JavaScript, all type information is discarded. Dynamic code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
 - Like other compile-to-JavaScript languages, writing TypeScript requires setting up the compiler. To enjoy all benefits, you need to use a specific editor and [linter](https://github.com/palantir/tslint).
 
 In conclusion, TypeScript is a valuable tool to make JavaScript programming more robust.
@@ -2089,7 +2089,7 @@ Please send feedback and corrections to [zapperlott@gmail.com](mailto:zapperlott
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
-Published on <time datetime="2017-12-21">December 21st, 2017</time>.
+Published on <time datetime="2017-12-21">December 21, 2017</time>.
 
 <p style="font-style: italic"><a href="/impressum/" lang="de" hreflang="de">Impressum</a></p>
 
