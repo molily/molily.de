@@ -226,13 +226,13 @@ This has lead to the following situation:
 - There is technical behavior that is not standardized and that major browsers agree on. Standards may omit some details, leaving them for implementors to decide. Still, browser vendors copy the detailed behavior from other browsers for consistency.
 - There is technical behavior that is not standardized and that major browsers do not agree on. Typically new web technologies are born as proprietary experiments before entering a standardization process. Some technologies are never widely adopted and fall into oblivion.
 
-There are numerous relevant browsers in numerous versions running on different operating systems on devices with different hardware abilities, internet connectivity, etc. The fact that the web client is not under their control maddens developers from other domains. They see the web as the most hostile software runtime environment. They understand the diversity of web clients as a weakness.
+There are several relevant browsers in numerous versions running on different operating systems on devices with different hardware abilities, internet connectivity, etc. The fact that the web client is not under their control maddens developers from other domains. They see the web as the most hostile software runtime environment. They understand the diversity of web clients as a weakness.
 
 Proponents of the web counter that this heterogeneity and inconsistency is in fact a strength of the web. The web is open, it is everywhere, it has a low access threshold. The web is adaptive and keeps on absorbing new technologies and fields of applications. No other software environment so far has demonstrated this degree of flexibility.
 
 Front-end developers benefit from a web that keeps on evolving and innovating. Especially JavaScript developers may quickly adopt new language features as soon as they are specified and implemented by some browsers. In this guide, we will explore how to use new features in a backwards-compatible way.
 
-It is true that client-side JavaScript programming is a minefield. But there is a simple, Socratic principle that will light our way: *Do not take anything for granted. Do not count on anything. Question your beliefs.* If you know that you know nothing about the client that runs your JavaScript code, you can turn unfounded assumptions into justified knowledge.
+It is true that client-side JavaScript programming is a minefield. But there is a simple, [Socratic principle](https://en.wikipedia.org/wiki/I_know_that_I_know_nothing) that will light our way: *Do not take anything for granted. Do not count on anything. Question your beliefs.* If you know that you know nothing about the client that runs your JavaScript code, you can turn unfounded assumptions into justified knowledge.
 
 Assumptions are necessary and inevitable in JavaScript, but we need to [own these assumptions](https://remysharp.com/2015/07/02/assumptions). Every JavaScript program makes a lot of assumptions about its runtime environment. While having a low entry barrier is certainly desirable, the program needs to fulfill a task. The requirements should be in a well-balanced relation to the provided features.
 
@@ -266,7 +266,7 @@ So robustness is all about *making informed assumptions*. What happens when the 
 
 ### Graceful Degradation
 
-In the context of web development, Graceful Degradation means building a full-featured website, than adding fallbacks for clients that lack certain capabilities.
+In the context of web development, <dfn>Graceful Degradation</dfn> means building a full-featured website, than adding fallbacks for clients that lack certain capabilities.
 
 A website starts with a large, fixed set of features and, consequently, a large set of requirements. The client may not meet a requirement, so a feature depending on it may not be available. If a requirement is not met, the site does not break, but handles the situation gracefully. For example, it falls back to a simpler version.
 
@@ -274,7 +274,7 @@ For JavaScript, Graceful Degradation could mean to implement the site using the 
 
 ### Progressive Enhancement
 
-Progressive Enhancement is similar to Graceful Degradation, but turns the process around.
+<dfn>Progressive Enhancement</dfn> is similar to Graceful Degradation, but turns the process around.
 
 A website still has a set of desired features and a set of client requirements. But the implementation starts with a minimal set of features. A first version of the site has a low entry barrier because it only uses well-established technologies.
 
