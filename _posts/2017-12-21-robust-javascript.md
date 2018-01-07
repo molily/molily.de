@@ -1407,15 +1407,15 @@ This example makes a GET request to <var>/data.json</var>. In the success case, 
 
 Every Promise has a method called `then()`. The first parameter to `then()` is the success handler, also called `onFulfilled`. The second parameter is the error handler, also called `onRejected`.
 
-So far, Promises look like yet another solution for accessing an asynchronous value. Before Promises existed, callbacks were used for this purpose: two callbacks for the success and error cases or one callback that receives an error or the result.
+So far, Promises look like yet another solution for accessing an asynchronous value. Before Promises existed, callbacks were used for this purpose: two callbacks for the success and error cases or one callback that receives the value or an error.
 
 But this is [not the point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/). They are not another syntax for writing callbacks. Promises are a tool to write more robust JavaScript. They were designed to make asynchronous programming as easy and as powerful as synchronous programming.
 
-Promises wrap the value of an asynchronous operation so that it can be passed around. A Promise provides a simple yet powerful interface for working with the result. Thanks to this uniform interface, asynchronous values can be easily combined. For example, you can wait for several operations to finish and then work with all results.
+Promises wrap the value of an asynchronous operation so that it can be passed around. A Promise provides a simple yet powerful interface for working with the result. Thanks to this uniform interface, asynchronous values can be easily combined. For example, you can wait for several operations to finish and then work with all values.
 
-Processing one Promise may yield a new Promise. This way, synchronous and asynchronous operations can be chained. With Promises, you can set up a proper success and error handling logic.
+Processing one Promise may yield a new Promise. This way, synchronous and asynchronous operations can be *chained*.
 
-You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
+With Promises, you can set up a proper success and error handling logic: You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
 
 In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to reject the new Promise. They may also return a Promise, which becomes the new Promise.
 
@@ -1461,11 +1461,11 @@ fetch('/data.json')
 
 The example chains several operations: Making the HTTP request, checking the response status, parsing the response as JSON and finally working with the data. It handles both the success and error cases.
 
-Understanding the example requires deep knowledge of Promises and the Fetch API. For now, you do not need to understand every bit, only the overall structure. You can [learn more about Promise chaining elsewhere](https://javascript.info/promise-chaining).
+Understanding the example requires deep knowledge of Promises and the Fetch API. As a start, you do not need to understand every bit, only the overall structure. You can [learn more about Promise chaining elsewhere](https://javascript.info/promise-chaining).
 
 Promises are part of ECMAScript 6 (2015). In older browsers that do not support Promises, a [polyfill](https://github.com/stefanpenner/es6-promise) can retrofit the Promise API.
 
-The point of Promises is the ability to work with asynchronous values like with synchronous values. ECMAScript 8 (2017) introduced a new way to work with Promises that closely resembles synchronous code.
+The point of Promises is the ability to work with asynchronous values as if they were with synchronous values. ECMAScript 8 (2017) introduced a new way to work with Promises that closely resembles synchronous code.
 
 A function can be marked as asynchronous with the [`async` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Such a function returns a Promise. Inside the function, you can use the [`await` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) in front of functions calls that return promises. The function call directly returns the unwrapped value instead of the Promise wrapper.
 
