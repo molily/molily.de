@@ -385,6 +385,12 @@ html {
   font-size: 1.2rem;
 }
 
+.artikel-titel[hreflang="de"]:before {
+  content: 'DE  ';
+  font-size: 60%;
+  margin-right: 0.3rem;
+}
+
 /**
  * @subsection Floats einschliessen
  * /css-floats-einschliessen/
