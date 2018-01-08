@@ -1215,7 +1215,7 @@ On a typical page, JavaScript code of different origin is executed: libraries, c
 
 As we have learned, all scripts [share the same global scope](#conflicting-scripts). Using only few global names helps to avoid conflict.
 
-There are three important types of scope in JavaScript, from big to small:
+Every declared name in JavaScript has a particular scope. There are three important types of scope in JavaScript, from big to small:
 
 1. Global scope
 2. Function scope
@@ -1415,7 +1415,7 @@ Promises wrap the value of an asynchronous operation so that it can be passed ar
 
 Processing one Promise may yield a new Promise. This way, synchronous and asynchronous operations can be *chained*.
 
-With Promises, you can set up a proper success and error handling logic: You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
+With Promises, you can set up a proper error handling logic: You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
 
 In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to reject the new Promise. They may also return a Promise, which becomes the new Promise.
 
@@ -1654,7 +1654,7 @@ CoffeeScript’s language design and its brevity influenced the work on the ECMA
 
 [TypeScript](https://www.typescriptlang.org/) is an ambitious effort by Microsoft to create a language that compiles to JavaScript by extending standard ECMAScript.
 
-As the name suggest, TypeScript adds static typing to JavaScript. It comes with well-known ways to define types, like classes, interfaces, unions and generics.
+As the name suggests, TypeScript adds static typing to JavaScript. It comes with well-known ways to define types, like classes, interfaces, unions and generics.
 
 TypeScript is a strict superset of ECMAScript. All valid ECMAScript code is also valid TypeScript, but TypeScript code with type annotations is usually not valid ECMAScript.
 
