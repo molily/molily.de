@@ -44,15 +44,18 @@ $main-max-width: 39rem;
  *
  */
 
+html, body {
+  @include big {
+    height: 100%;
+  }
+}
+
 body {
   counter-reset: h2 h3 h4;
-
-  @media screen {
-    padding: 1rem;
-  }
+  padding: 1rem;
 
   @include big {
-    padding: 1rem 2rem;
+    padding: 0;
   }
 }
 
@@ -113,17 +116,20 @@ caption {
 
 @include big {
 
+  #toc-and-main {
+    display: flex;
+    height: 100%;
+  }
+
   // The extra container is necessary because of:
   // https://bugzilla.mozilla.org/show_bug.cgi?id=748518
   // https://github.com/w3c/csswg-drafts/issues/129
   #toc-container {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    overflow: auto;
+    flex: 0 0 auto;
     width: $toc-width;
     background-color: #fafafa;
+    overflow: auto;
+    resize: horizontal;
   }
 
   #toc {
@@ -131,7 +137,9 @@ caption {
   }
 
   #main-container {
-    margin-left: $toc-width;
+    flex: 1 1 auto;
+    overflow: auto;
+    padding: 0 2rem;
   }
 
   #main {
@@ -142,12 +150,48 @@ caption {
 }
 
 /**
+ * @section Sticky menu
+ *
+ */
+
+#sticky-menu {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -1rem -1rem 1rem;
+  background-color: #f0f0f0;
+  font-size: 0.8rem;
+  text-align: center;
+
+  @include big {
+    display: none;
+  }
+}
+
+#sticky-menu a:link {
+  padding: 0.5rem;
+  border: 0;
+}
+
+/**
  * @section Table of contents
  *
  */
 
-#toc-heading {
-  margin: 0 0 1rem;
+#toc-home-link {
+  display: none;
+
+  @include big {
+    display: block;
+  }
+}
+
+#toc-book-title, #toc-heading {
+  margin: 2rem 0;
 
   &::before {
     counter-increment: none;
@@ -155,8 +199,21 @@ caption {
   }
 }
 
-#toc-heading .subheading {
-  font-size: 1rem;
+#toc-book-title {
+  text-align: center;
+
+  @include big {
+    display: none;
+  }
+}
+
+#toc-heading {
+  font-size: 1.2rem;
+  text-align: center;
+
+  @include big {
+    margin: 1.5rem 0;
+  }
 }
 
 #toc ol {
@@ -166,10 +223,8 @@ caption {
 
 #toc > ol {
   margin-bottom: 2rem;
-}
 
-@include big {
-  #toc > ol {
+  @include big {
     margin-bottom: 0;
   }
 }
@@ -188,7 +243,6 @@ caption {
   }
 }
 
-
 /**
  * @section Main
  *
@@ -198,10 +252,8 @@ caption {
   margin: 3rem 0;
   font-size: 2rem;
   text-align: center;
-}
 
-@include big {
-  #main-heading {
+  @include big {
     font-size: 2.5rem;
   }
 }
@@ -209,11 +261,15 @@ caption {
 #main-heading .subheading {
   display: block;
   margin: 3rem 0;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 .intro {
   font-size: 1.2rem;
+
+  @include big {
+    font-size: 1.25rem;
+  }
 }
 
 .intro-caps {
@@ -251,8 +307,9 @@ caption {
  */
 
 .separator {
-  margin: 2rem 0;
-  font-size: 2.5rem;
+  margin: 4.5rem 0;
+  font-size: 3rem;
+  line-height: 1;
   text-align: center;
-  color: #ccc;
+  color: #e0e0e0;
 }

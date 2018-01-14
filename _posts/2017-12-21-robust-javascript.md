@@ -6,189 +6,196 @@ keywords: JavaScript, Robustness, ECMAScript
 lang: en
 ---
 
-<div id="toc-container">
-  <nav id="toc">
-    <p><a href="/">molily.de – Home</a></p>
-    <h1 id="toc-heading">
-      Robust JavaScript<br>
-      <span class="subheading">Table of Contents</span>
-    </h1>
-    <ol>
-      <li>
-        <a href="#introduction">Introduction</a>
-        <ol>
-          <li>
-            <a href="#characteristics-of-javascript">Characteristics of JavaScript</a>
-          </li>
-          <li>
-            <a href="#the-browser-as-a-runtime-environment">The browser as a runtime environment</a>
-          </li>
-          <li>
-            <a href="#javascript-standards">JavaScript standards</a>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <a href="#achieving-robustness">Achieving Robustness</a>
-        <ol>
-          <li>
-            <a href="#graceful-degradation">Graceful Degradation</a>
-          </li>
-          <li>
-            <a href="#progressive-enhancement">Progressive Enhancement</a>
-          </li>
-          <li>
-            <a href="#graceful-degradation-vs-progressive-enhancement">Graceful Degradation vs. Progressive Enhancement</a>
-          </li>
-          <li>
-            <a href="#fault-tolerance">Fault tolerance</a>
-          </li>
-          <li>
-            <a href="#postels-law">Postel’s Law</a>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <a href="#how-javascript-might-fail">How JavaScript might fail</a>
-        <ol>
-          <li>
-            <a href="#web-crawlers-without-javascript-support">Web crawlers without JavaScript support</a>
-          </li>
-          <li>
-            <a href="#disabled-javascript-execution">Disabled JavaScript execution</a>
-          </li>
-          <li>
-            <a href="#network-and-loading-errors">Network and loading errors</a>
-          </li>
-          <li>
-            <a href="#parsing-errors">Parsing errors</a>
-          </li>
-          <li>
-            <a href="#conflicting-scripts">Conflicting scripts</a>
-          </li>
-          <li>
-            <a href="#exceptions">Exceptions</a>
-          </li>
-          <li>
-            <a href="#reference-errors">Reference errors</a>
-          </li>
-          <li>
-            <a href="#type-errors">Type errors</a>
-          </li>
-          <li>
-            <a href="#security-errors">Security errors</a>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <a href="#how-to-prevent-failure">How to prevent failure</a>
-        <ol>
-          <li>
-            <a href="#failing-fast">Failing fast</a>
-          </li>
-          <li>
-            <a href="#feature-detection">Feature detection</a>
-          </li>
-          <li>
-            <a href="#types-of-checks">Types of checks</a>
-          </li>
-          <li>
-            <a href="#conditional-statements-and-truthy-values">Conditional statements and truthy values</a>
-          </li>
-          <li>
-            <a href="#existence-checks">Existence checks</a>
-          </li>
-          <li>
-            <a href="#type-checks-with-typeof">Type checks with <code>typeof</code></a>
-          </li>
-          <li>
-            <a href="#type-checks-with-instanceof">Type checks with <code>instanceof</code></a>
-          </li>
-          <li>
-            <a href="#duck-typing">Duck typing</a>
-          </li>
-          <li>
-            <a href="#value-checks">Value checks</a>
-          </li>
-          <li>
-            <a href="#handling-exceptions-with-trycatch">Handling exceptions with try…catch</a>
-          </li>
-          <li>
-            <a href="#programmatic-exceptions">Programmatic exceptions</a>
-          </li>
-          <li>
-            <a href="#encapsulated-code">Encapsulated code</a>
-          </li>
-          <li>
-            <a href="#the-strict-mode">The Strict Mode</a>
-          </li>
-          <li>
-            <a href="#promises">Promises</a>
-          </li>
-          <li>
-            <a href="#abstraction-libraries">Abstraction libraries</a>
-          </li>
-          <li>
-            <a href="#polyfills">Polyfills</a>
-          </li>
-          <li>
-            <a href="#linters">Linters</a>
-          </li>
-          <li>
-            <a href="#the-babel-compiler">The Babel compiler</a>
-          </li>
-          <li>
-            <a href="#languages-that-compile-to-javascript">Languages that compile to JavaScript</a>
-            <ol>
-              <li>
-                <a href="#coffeescript">CoffeeScript</a>
-              </li>
-              <li>
-                <a href="#typescript">TypeScript</a>
-              </li>
-              <li>
-                <a href="#clojurescript">ClojureScript</a>
-              </li>
-              <li>
-                <a href="#elm">Elm</a>
-              </li>
-            </ol>
-          </li>
-          <li>
-            <a href="#error-logging">Error logging</a>
-          </li>
-          <li>
-            <a href="#manual-testing">Manual testing</a>
-          </li>
-          <li>
-            <a href="#automated-testing">Automated testing</a>
-          </li>
-          <li>
-            <a href="#unit-tests">Unit tests</a>
-          </li>
-          <li>
-            <a href="#integration-tests">Integration tests</a>
-          </li>
-          <li>
-            <a href="#acceptance-tests">Acceptance tests</a>
-          </li>
-          <li>
-            <a href="#writing-less-javascript">Writing less JavaScript</a>
-          </li>
-        </ol>
-      </li>
-      <li>
-        <a href="#references">References</a>
-      </li>
-      <li>
-        <a href="#about">About</a>
-      </li>
-    </ol>
-  </nav>
-</div>
+<p id="sticky-menu">
+  <a href="/" title="Home">molily.de</a>
+  &bull;
+  <a href="#toc">Table of Contents</a>
+  &bull;
+  <a href="htps://twitter.com/molily" target="_blank">@molily</a>
+</p>
 
-<div id="main-container">
-  <main id="main" markdown="1">
+<div id="toc-and-main">
+  <div id="toc-container">
+    <nav id="toc">
+      <p id="toc-home-link"><a href="/">molily.de – Home</a></p>
+      <h1 id="toc-book-title">Robust Client-Side JavaScript</h1>
+      <h1 id="toc-heading">Table of Contents</h1>
+      <ol>
+        <li>
+          <a href="#introduction">Introduction</a>
+          <ol>
+            <li>
+              <a href="#characteristics-of-javascript">Characteristics of JavaScript</a>
+            </li>
+            <li>
+              <a href="#the-browser-as-a-runtime-environment">The browser as a runtime environment</a>
+            </li>
+            <li>
+              <a href="#javascript-standards">JavaScript standards</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#achieving-robustness">Achieving Robustness</a>
+          <ol>
+            <li>
+              <a href="#graceful-degradation">Graceful Degradation</a>
+            </li>
+            <li>
+              <a href="#progressive-enhancement">Progressive Enhancement</a>
+            </li>
+            <li>
+              <a href="#graceful-degradation-vs-progressive-enhancement">Graceful Degradation vs. Progressive Enhancement</a>
+            </li>
+            <li>
+              <a href="#fault-tolerance">Fault tolerance</a>
+            </li>
+            <li>
+              <a href="#postels-law">Postel’s Law</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#how-javascript-might-fail">How JavaScript might fail</a>
+          <ol>
+            <li>
+              <a href="#web-crawlers-without-javascript-support">Web crawlers without JavaScript support</a>
+            </li>
+            <li>
+              <a href="#disabled-javascript-execution">Disabled JavaScript execution</a>
+            </li>
+            <li>
+              <a href="#network-and-loading-errors">Network and loading errors</a>
+            </li>
+            <li>
+              <a href="#parsing-errors">Parsing errors</a>
+            </li>
+            <li>
+              <a href="#conflicting-scripts">Conflicting scripts</a>
+            </li>
+            <li>
+              <a href="#exceptions">Exceptions</a>
+            </li>
+            <li>
+              <a href="#reference-errors">Reference errors</a>
+            </li>
+            <li>
+              <a href="#type-errors">Type errors</a>
+            </li>
+            <li>
+              <a href="#security-errors">Security errors</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#how-to-prevent-failure">How to prevent failure</a>
+          <ol>
+            <li>
+              <a href="#failing-fast">Failing fast</a>
+            </li>
+            <li>
+              <a href="#feature-detection">Feature detection</a>
+            </li>
+            <li>
+              <a href="#types-of-checks">Types of checks</a>
+            </li>
+            <li>
+              <a href="#conditional-statements-and-truthy-values">Conditional statements and truthy values</a>
+            </li>
+            <li>
+              <a href="#existence-checks">Existence checks</a>
+            </li>
+            <li>
+              <a href="#type-checks-with-typeof">Type checks with <code>typeof</code></a>
+            </li>
+            <li>
+              <a href="#type-checks-with-instanceof">Type checks with <code>instanceof</code></a>
+            </li>
+            <li>
+              <a href="#duck-typing">Duck typing</a>
+            </li>
+            <li>
+              <a href="#value-checks">Value checks</a>
+            </li>
+            <li>
+              <a href="#handling-exceptions-with-trycatch">Handling exceptions with try…catch</a>
+            </li>
+            <li>
+              <a href="#programmatic-exceptions">Programmatic exceptions</a>
+            </li>
+            <li>
+              <a href="#encapsulated-code">Encapsulated code</a>
+            </li>
+            <li>
+              <a href="#the-strict-mode">The Strict Mode</a>
+            </li>
+            <li>
+              <a href="#promises">Promises</a>
+            </li>
+            <li>
+              <a href="#abstraction-libraries">Abstraction libraries</a>
+            </li>
+            <li>
+              <a href="#polyfills">Polyfills</a>
+            </li>
+            <li>
+              <a href="#linters">Linters</a>
+            </li>
+            <li>
+              <a href="#the-babel-compiler">The Babel compiler</a>
+            </li>
+            <li>
+              <a href="#languages-that-compile-to-javascript">Languages that compile to JavaScript</a>
+              <ol>
+                <li>
+                  <a href="#coffeescript">CoffeeScript</a>
+                </li>
+                <li>
+                  <a href="#typescript">TypeScript</a>
+                </li>
+                <li>
+                  <a href="#clojurescript">ClojureScript</a>
+                </li>
+                <li>
+                  <a href="#elm">Elm</a>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <a href="#error-logging">Error logging</a>
+            </li>
+            <li>
+              <a href="#manual-testing">Manual testing</a>
+            </li>
+            <li>
+              <a href="#automated-testing">Automated testing</a>
+            </li>
+            <li>
+              <a href="#unit-tests">Unit tests</a>
+            </li>
+            <li>
+              <a href="#integration-tests">Integration tests</a>
+            </li>
+            <li>
+              <a href="#acceptance-tests">Acceptance tests</a>
+            </li>
+            <li>
+              <a href="#writing-less-javascript">Writing less JavaScript</a>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#references">References</a>
+        </li>
+        <li>
+          <a href="#about">About</a>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <div id="main-container">
+    <main id="main" markdown="1">
 
 <p class="separator">❦</p>
 
@@ -2091,13 +2098,14 @@ License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"
 
 Published on <time datetime="2017-12-21">December 21, 2017</time>.
 
-<p style="font-style: italic"><a href="/impressum/" lang="de" hreflang="de">Impressum</a></p>
+<p><a href="/impressum/" lang="de" hreflang="de">Impressum</a></p>
 
-  </main>
-</div><!-- #main-container -->
-
+    </main>
+  </div><!-- #main-container -->
+</div><!-- #toc-and-main -->
 
 <script>
+/*
 (function() {
 'use strict';
 
@@ -2155,4 +2163,5 @@ var LinkTypes = {
 LinkTypes.init();
 
 })();
+*/
 </script>
