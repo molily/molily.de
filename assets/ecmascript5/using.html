@@ -21,7 +21,7 @@ function using (original) {
     get: function (receiver, propName) {
       var propVal = original[propName];
       // Handelt es sich um eine Funktion?
-      if (typeof propVal == 'function' || toString.call(propVal) == '[object Function]') {
+      if (typeof propVal === 'function' || toString.call(propVal) === '[object Function]') {
         propVal = null;
         // Gib eine Chaining-fähige Wrapper-Funktion zurück
         return function chainableMethodWrapper () {

@@ -248,7 +248,7 @@ function vegebeHandler () {
 
 <p>JavaScript-Bibliotheken wie <a href="http://api.prototypejs.org/language/Function/">Prototype</a> und <a href="http://mootools.net/core/docs/1.6.0/Types/Function">Mootools</a> erleichtern die JavaScript-Programmierung, indem sie Funktionsobjekte protoypisch erweitern und mit Methoden versehen, die Currying und Binding erlauben.</p>
 
-<p>Currying ist das geordnete Anlegen von Closures, die gewisse Parameter einschließen und sie an die Ursprungsfunktion übergeben. So wird eine neue Funktion erzeugt, die die Ursprungsfunktion mit vorbelegten Parametern aufruft und ihre Parameter hinzufügt und weitergibt. Mit Binding kommt die Möglichkeit hinzu, die Ursprungsfunktion in Kontext eines Objektes auszuführen, damit »<code>this</code>« in der Funktion auf das gewünschte Objekt zeigt.</p>
+<p>Currying ist das geordnete Anlegen von Closures, die gewisse Parameter einschließen und sie an die Ursprungsfunktion übergeben. So wird eine neue Funktion erzeugt, die die Ursprungsfunktion mit vorbelegten Parametern aufruft und ihre Parameter hinzufügt und weitergibt. Mit Binding kommt die Möglichkeit hinzu, die Ursprungsfunktion in Kontext eines Objekts auszuführen, damit »<code>this</code>« in der Funktion auf das gewünschte Objekt zeigt.</p>
 
 <p>Currying und Binding sind in Prototype über <a href="http://api.prototypejs.org/language/Function/prototype/curry/">curry</a> bzw. <a href="http://api.prototypejs.org/language/Function/prototype/bind/">bind</a> möglich. In Mootools gibt es dafür <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Deprecated-Functions:create">create</a> und ebenfalls <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Function:bind">bind</a>. Speziell für den Einsatz bei Event-Handlern existiert bei Prototype <a href="http://api.prototypejs.org/language/Function/prototype/bindAsEventListener/">bindAsEventListener</a> und bei Mootools <a href="http://mootools.net/core/docs/1.6.0/Types/Function#Deprecated-Functions:bindWithEvent">bindWithEvent</a>. All diese sind durch prototypische Erweiterung Methoden von beliebigen Funktionsobjekten. Wir erinnern uns: Funktionen sind Objekte erster Klasse, daher geht das in JavaScript.</p>
 
@@ -457,7 +457,7 @@ function vegebeHandler () {
   }
 }</pre>
 
-<p>Um den jeweiligen Wert der Variable <code>i</code> der Handler-Funktion bereitzustellen, wird er in der Eigenschaft <code>__absatznummer</code> des Elementobjektes gespeichert. In der Handler-Funktion wird diese Information genutzt. Gleichzeitig wird demonstriert, wie die Eigenschaft nach der Nutzung mit <code>delete</code> entfernt werden kann.</p>
+<p>Um den jeweiligen Wert der Variable <code>i</code> der Handler-Funktion bereitzustellen, wird er in der Eigenschaft <code>__absatznummer</code> des Elementobjekts gespeichert. In der Handler-Funktion wird diese Information genutzt. Gleichzeitig wird demonstriert, wie die Eigenschaft nach der Nutzung mit <code>delete</code> entfernt werden kann.</p>
 
 <p>Wenn das Element z.B. Teil eines Widgets ist, kann eine Referenz auf das Widget-Objekt angelegt werden. Zur Sicherheit lässt sich ein eigener Namespace am Element anlegen, sodass sich verschiedene Scripte, die Kontextdaten speichern, sich nicht in die Quere kommen.</p>
 

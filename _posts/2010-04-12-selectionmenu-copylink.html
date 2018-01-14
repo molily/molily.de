@@ -58,27 +58,28 @@ lang: de
 
 <pre>
 new SelectionMenu({
-   // Überwache das Element mit der ID selectionmenu-demo
-   container : document.getElementById('selectionmenu-demo'),
-   // Menü-HTML
-   menuHTML : '<a id="selection-menu-google">Google-Suche</a>' +
-              '<a id="selection-menu-bing">Bing-Suche</a>',
-   // Handler-Funktion
-   handler : function (e) {
-      var target = e.target || e.srcElement,
-         id = target.id,
-         selectedText = this.selectedText,
-         query = encodeURI(selectedText.replace(/\s/g, '+')),
-         searchURL;
+  // Überwache das Element mit der ID selectionmenu-demo
+  container: document.getElementById('selectionmenu-demo'),
+  // Menü-HTML
+  menuHTML:
+    '&lt;a id="selection-menu-google">Google-Suche&lt;/a>' +
+    '&lt;a id="selection-menu-bing">Bing-Suche&lt;/a>',
+  // Handler-Funktion
+  handler: function (e) {
+    var target = e.target || e.srcElement;
+    var id = target.id;
+    var selectedText = this.selectedText;
+    var query = encodeURI(selectedText.replace(/\s/g, '+'));
+    var searchURL;
 
-      if (id == 'selection-menu-google') {
-         searchURL = 'http://www.google.de/search?ie=utf-8&q=';
-      } else if (id == 'selection-menu-bing') {
-         searchURL = 'http://www.bing.com/search?q=';
-      }
+    if (id === 'selection-menu-google') {
+      searchURL = 'http://www.google.de/search?ie=utf-8&amp;q=';
+    } else if (id === 'selection-menu-bing') {
+      searchURL = 'http://www.bing.com/search?q=';
+    }
 
-      location.href = searchURL + query;
-   }
+    location.href = searchURL + query;
+  }
 });
 </pre>
 
@@ -143,8 +144,8 @@ Quelle: http://molily.de/
 
 <pre>
 new CopyLink({
-  container : document.getElementById('copylink-demo'),
-  handler : function () {
+  container: document.getElementById('copylink-demo'),
+  handler: function () {
     return '&lt;br&gt;Quelle: ' + location.href;
   }
 });

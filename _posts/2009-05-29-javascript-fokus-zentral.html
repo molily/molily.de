@@ -40,7 +40,7 @@ document.addEventListener("focus", function (e) {
 <p>Für Browser, die <code>activeElement</code> nicht unterstützen, jedoch DOM Events, können wir activeElement mittels Event Capturing nachbauen:</p>
 
 <pre>
-if (typeof document.activeElement == "undefined" &amp;&amp; document.addEventListener) {
+if (typeof document.activeElement === "undefined" &amp;&amp; document.addEventListener) {
   document.addEventListener("focus", function (e) {
     document.activeElement = e.target;
   }, true);

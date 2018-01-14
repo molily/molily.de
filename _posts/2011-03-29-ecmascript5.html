@@ -42,7 +42,7 @@ weiteresObjekt.methode2();
 
 <p>Methodenverkettung ändert nun die <a href="http://de.wikipedia.org/wiki/Signatur_(Programmierung)">Signatur von Methoden</a> – in erster Linie derjenigen Methoden, die keinen Rückgabewert (also <code>undefined</code>) besitzen. Diese Methoden werden so geändert, dass sie das Objekt zurückgeben, auf dem sie aufgerufen werden.</p>
 
-<p>Die <a href="http://api.jquery.com/">API von jQuery</a> verwendet Methodenverkettung ziemlich konsequent und ist daher ein gutes Beispiel. jQuery-Objekte sind Listen von DOM-Elementknoten. Auf diesem DOM-Wrapper lassen sich gewisse Methoden aufrufen. Alle Methoden, die keinen natürlichen Rückgabewert haben, geben wieder das Wrapper-Objekt zurück. Dadurch kann man folgende Methodenketten schreiben:</p>
+<p>Die <a href="http://api.jquery.com/">API von jQuery</a> verwendet Methodenverkettung ziemlich konsequent und ist daher ein gutes Beispiel. jQuery-Objekte sind Listen von DOM-Elementobjekten. Auf diesem Wrapper-Objekt lassen sich gewisse Methoden aufrufen. Alle Methoden, die keinen natürlichen Rückgabewert haben, geben wieder das Wrapper-Objekt zurück. Dadurch kann man folgende Methodenketten schreiben:</p>
 
 <pre>
 $('#ausgabe').find('h2').html('Wichtige Nachricht!').end().fadeIn('fast').delay(5000).slideUp();
@@ -67,7 +67,7 @@ $('#ausgabe')
 <pre>
 var input = $('input[name=email]');
 var email = input.val();
-if (jQuery.trim(email) == '') {
+if (jQuery.trim(email) === '') {
   input.addClass('error');
 }
 </pre>
@@ -278,7 +278,7 @@ Object.defineProperty(objekt, 'eigenschaftsname', descriptorObjekt);
 
 <p>Die ersten beiden Zugriffsrechte bleiben also gewahrt. <code>setProperties</code> kann später wieder überschrieben oder gelöscht werden. Sie taucht allerdings nicht in <code>for-in</code>-Schleifen auf.</p>
 
-<p>Nach dem <code>defineProperty</code>-Aufruf steht eine Methode <code>setProperties</code> durch prototypische Vererbung bei jeder <code>Baby</code>-Instanz zur Verfügung. Was passiert nun in dieser Methode? Es werden weitere ECMAScript-5-Methoden verwendet, um die Eigenschaften des übergebenen Objektes an das gegenwärtige Objekt zu kopieren. ECMAScript 5 vereinfacht das Arbeiten mit Listen durch verschiedene neue Methoden, die an Ruby und Python erinnern:</p>
+<p>Nach dem <code>defineProperty</code>-Aufruf steht eine Methode <code>setProperties</code> durch prototypische Vererbung bei jeder <code>Baby</code>-Instanz zur Verfügung. Was passiert nun in dieser Methode? Es werden weitere ECMAScript-5-Methoden verwendet, um die Eigenschaften des übergebenen Objekts an das gegenwärtige Objekt zu kopieren. ECMAScript 5 vereinfacht das Arbeiten mit Listen durch verschiedene neue Methoden, die an Ruby und Python erinnern:</p>
 
 <pre>
 Object
@@ -356,7 +356,7 @@ ada.<strong>properties</strong> = {
 
 <p>Nachdem wir das massenhafte Zuweisen von Eigenschaften betrachtet haben, wenden wir uns wieder der Verkettung von Methoden zu. Auch diese lässt sich mit ECMAScript 5 vereinfachen. Damit Methodenverkettung möglich ist, muss wie gesagt jede beteiligte Methode entsprechend vorbereitet sein und wieder das Objekt zurückgeben. Nicht alle APIs sind entsprechend ausgelegt und nicht alle Methoden können das Objekt zurückgeben.</p>
 
-<p>Das bedeutet nicht, dass man auf Chaining verzichten muss. Es ist möglich, eine API nachträglich Chaining-fähig zu machen, ohne den Ursprungscode zu ändern. Tim Tepaße schlägt dafür ein Proxy-Objekt vor, welches die Methodenaufrufe kapselt. Anstelle der Original-Funktion wird eine Wrapper-Funktion des Proxy-Objektes aufgerufen. Diese ruft die Original-Funktion auf und gibt in jedem Fall wieder das Objekt zurück, sodass Chaining möglich ist.</p>
+<p>Das bedeutet nicht, dass man auf Chaining verzichten muss. Es ist möglich, eine API nachträglich Chaining-fähig zu machen, ohne den Ursprungscode zu ändern. Tim Tepaße schlägt dafür ein Proxy-Objekt vor, welches die Methodenaufrufe kapselt. Anstelle der Original-Funktion wird eine Wrapper-Funktion des Proxy-Objekts aufgerufen. Diese ruft die Original-Funktion auf und gibt in jedem Fall wieder das Objekt zurück, sodass Chaining möglich ist.</p>
 
 <pre>
 Object.defineProperty(Baby.prototype, 'chaining', {
@@ -455,7 +455,7 @@ ada.chaining
 
 <p><a href="/assets/ecmascript5/baby-chaining.html">Beispiel ansehen</a></p>
 
-<p>Auch hier gilt: Das Konzept eines Proxy-Objektes erfordert nicht zwingend ECMAScript-5-Getter und könnte auch mit einer herkömmlichen Methode in ECMAScript 3 umgesetzt werden. ECMAScript 5 macht die Anwendung lediglich komfortabler.</p>
+<p>Auch hier gilt: Das Konzept eines Proxy-Objekts erfordert nicht zwingend ECMAScript-5-Getter und könnte auch mit einer herkömmlichen Methode in ECMAScript 3 umgesetzt werden. ECMAScript 5 macht die Anwendung lediglich komfortabler.</p>
 
 
 <h2 id="harmony-proxies">Proxy-Objekte in ECMAScript Harmony</h2>
@@ -486,8 +486,8 @@ Object.defineProperty(Baby.prototype, 'chaining', {
       get: function (receiver, propName) {
         var propVal = original[propName];
         // Handelt es sich um eine Funktion?
-        if (typeof propVal == 'function' ||
-          toString.call(propVal) == '[object Function]') {
+        if (typeof propVal === 'function' ||
+          toString.call(propVal) === '[object Function]') {
           propVal = null;
           // Gib eine Chaining-fähige Wrapper-Funktion zurück
           return function chainableMethodWrapper () {
@@ -566,8 +566,8 @@ function using (original) {
     get: function (receiver, propName) {
       var propVal = original[propName];
       // Handelt es sich um eine Funktion?
-      if (typeof propVal == 'function' ||
-        toString.call(propVal) == '[object Function]') {
+      if (typeof propVal === 'function' ||
+        toString.call(propVal) === '[object Function]') {
         propVal = null;
         // Gebe eine Chaining-fähige Wrapper-Funktion zurück
         return function chainableMethodWrapper () {
@@ -596,7 +596,7 @@ function using (original) {
 
 <p><code>using</code> erzeugt ebenfalls einen ECMAScript-Harmony-Proxy. In dem Handler für die Eigenschaftsabfrage wird zunächst geprüft, ob eine Methode existiert, die den gewünschten Namen besitzt. Wenn dies zutrifft, wird der bekannte Methoden-Wrapper zurückgegeben. Im anderen Fall wird eine überladene Methode erzeugt, mit dem sich die Eigenschaft mit dem gewünschten Namen lesen oder setzen lässt.</p>
 
-<p>In diesem Beispiel wird auf das Caching des Proxy-Objektes und auf das Caching der erzeugten Funktionen verzichtet. Dies kann natürlich außerhalb von <code>using</code> erfolgen, indem dessen Rückgabewert, das Proxy-Objekt, in einer Variable gespeichert wird.</p>
+<p>In diesem Beispiel wird auf das Caching des Proxy-Objekts und auf das Caching der erzeugten Funktionen verzichtet. Dies kann natürlich außerhalb von <code>using</code> erfolgen, indem dessen Rückgabewert, das Proxy-Objekt, in einer Variable gespeichert wird.</p>
 
 
 <h2 id="praxisanwendung">Praxisanwendung</h2>

@@ -248,7 +248,7 @@ alert(ginger instanceof Chicken); // true
 alert(ginger instanceof Bird);    // true
 </pre>
 
-<p><code>instanceof</code> schaut, ob der Prototyp der angegebenen Funktion (also <code>Chicken.prototype</code> bzw. <code>Bird.prototype</code>) in der Prototype-Kette des angegebenen Objektes (<code>ginger</code>) existiert.</p>
+<p><code>instanceof</code> schaut, ob der Prototyp der angegebenen Funktion (also <code>Chicken.prototype</code> bzw. <code>Bird.prototype</code>) in der Prototype-Kette des angegebenen Objekts (<code>ginger</code>) existiert.</p>
 
 <p>Die Vererbungshierarchie, die wir direkt mit <code>Y.Object</code> angelegt haben, sieht übrigens genauso aus. Es fehlt dort lediglich die Trennung zwischen Instanzen, Konstruktoren und Prototypen, stattdessen gibt es nur Objekte, die andere Objekte als Prototyp besitzen.</p>
 
@@ -387,10 +387,10 @@ Y.augment(Bird, Flighted);
 
 var bird = new Bird();
 bird.sing();
-alert(bird.fly == Flighted.prototype.fly);
+alert(bird.fly === Flighted.prototype.fly);
 // … ergibt false, verweist auf eine Wrapperfunktion
 bird.fly(); // Ruft indirekt den Flighted-Konstruktor auf
-alert(bird.fly == Flighted.prototype.fly);
+alert(bird.fly === Flighted.prototype.fly);
 // … ergibt true, verweist nun auf die Originalfunktion
 </pre>
 
@@ -439,7 +439,7 @@ Modul.methode2();
 
 <p>Bekannt sein sollte hier, dass die einzelnen gekapselten Module nicht gegenseitig auf ihre privaten Objekte zugreifen können.</p>
 
-<p>Auch bei vereinfachter prototypischer Vererbung mit <code>Y.Object</code> bietet sich <code>Y.mix</code> an, um die Funktionalität eines anderen Objektes einzumixen:</p>
+<p>Auch bei vereinfachter prototypischer Vererbung mit <code>Y.Object</code> bietet sich <code>Y.mix</code> an, um die Funktionalität eines anderen Objekts einzumixen:</p>
 
 <pre>
 var bird = {

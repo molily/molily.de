@@ -5,7 +5,7 @@
 <title>Beispiel: ES5-Getter Baby.prototype.chaining mit Harmony-Proxy</title>
 </head>
 <body>
-  
+
 <h1>Beispiel: ES5-Getter <code>Baby.prototype.chaining</code> mit Harmony-Proxy</h1>
 
 <script>
@@ -31,17 +31,17 @@ Object.defineProperty(Baby.prototype, 'chaining', {
     var original = this,
       toString = Object.prototype.toString,
       proxy;
-    
+
     if (original.hasOwnProperty('_proxy')) {
       return original._proxy;
     }
-    
+
     // Erzeuge ein natives Proxy-Objekt (ECMAScript Harmony)
     proxy = Proxy.create({
       get : function (receiver, propName) {
         var propVal = original[propName];
         // Handelt es sich um eine Funktion?
-        if (typeof propVal == 'function' || toString.call(propVal) == '[object Function]') {
+        if (typeof propVal === 'function' || toString.call(propVal) === '[object Function]') {
           propVal = null;
           // Gib eine Chaining-fähige Wrapper-Funktion zurück
           return function chainableMethodWrapper () {
@@ -53,14 +53,14 @@ Object.defineProperty(Baby.prototype, 'chaining', {
         return propVal;
       }
     });
-    
+
     Object.defineProperty(this, '_proxy', {
       value : proxy,
       writable : false,
       enumerable : false,
       configurable : true
     });
-    
+
     return proxy;
   },
   enumerable : false,
