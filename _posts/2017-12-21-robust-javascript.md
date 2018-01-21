@@ -194,8 +194,8 @@ lang: en
     </nav>
   </div>
 
-  <div id="main-container">
-    <main id="main" markdown="1">
+<div id="main-container">
+<main id="main" markdown="1">
 
 <p class="separator">❦</p>
 
@@ -1095,7 +1095,7 @@ if (window.fetch) {
 }
 ```
 
-When detecting features, testing for a specific value is rare. Most feature detection looks for the existence objects and functions. There is no specific value to compare them to.
+When detecting features, testing for a specific value is rare. Most feature detection looks for the existence of specific objects and functions. There is no specific value to compare them to.
 
 In normal application logic though, testing for specific values is common. Such value checks make use of JavaScript’s comparison operators: `<`, `>`, `<=`, `>=`, `==`, `!=`, `===` and `!==`.
 
@@ -1112,7 +1112,7 @@ Or if an array contains a given value:
 if (array.indexOf(value) !== -1) { /* … */ }
 ```
 
-Unfortunately, the comparison operators in JavaScripts *are dangerous beasts*. The relational operators like `<`, `>`, `<=` and `>=` are overloaded with behavior so they work both for numbers and strings. They may implicitly convert the operands into numbers.
+Unfortunately, the comparison operators in JavaScripts *are dangerous beasts*. The relational operators like `<`, `>`, `<=` and `>=` are overloaded with behavior so they work for numbers and strings. They may implicitly convert the operands into numbers.
 
 The equality operators `==` and `!=` are even more complex. If the types of the operands do not match, they perform an implicit type conversion. We will not go into the details of ECMAScript’s equality comparison algorithm. For the sake of robustness, it is best practice to avoid these two operators altogether.
 
@@ -1222,7 +1222,7 @@ On a typical page, JavaScript code of different origin is executed: libraries, c
 
 As we have learned, all scripts [share the same global scope](#conflicting-scripts). Using only few global names helps to avoid conflict.
 
-Every declared name in JavaScript has a particular scope. There are three important types of scope in JavaScript, from big to small:
+Every declared name in JavaScript belongs to a certain scope. There are three important types of scope in JavaScript, from big to small:
 
 1. Global scope
 2. Function scope
@@ -2100,12 +2100,11 @@ Published on <time datetime="2017-12-21">December 21, 2017</time>.
 
 <p><a href="/impressum/" lang="de" hreflang="de">Impressum</a></p>
 
-    </main>
-  </div><!-- #main-container -->
+</main>
+</div><!-- #main-container -->
 </div><!-- #toc-and-main -->
 
 <script>
-/*
 (function() {
 'use strict';
 
@@ -2163,5 +2162,4 @@ var LinkTypes = {
 LinkTypes.init();
 
 })();
-*/
 </script>
