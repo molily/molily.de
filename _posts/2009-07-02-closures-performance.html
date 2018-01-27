@@ -478,14 +478,14 @@ function vegebeHandler () {
   function privateMethode () {
     alert(privateEigenschaft);
   }
-  function priviligierteMethode () {
+  function privilegierteMethode () {
     privateMethode();
   }
   return {
-    priviligierteMethode : priviligierteMethode
+    privilegierteMethode : privilegierteMethode
   };
 })();
-MeinModul.priviligierteMethode();</pre>
+MeinModul.privilegierteMethode();</pre>
 
 <p>(Das Beispiel zeigt das <a href="http://www.wait-till-i.com/2007/08/22/again-with-the-module-pattern-reveal-something-to-the-world/">Revealing Module Pattern</a>.)</p>
 
@@ -500,14 +500,14 @@ MeinModul.priviligierteMethode();</pre>
   function privateMethode () {
     alert(privateEigenschaft);
   }
-  this.priviligierteMethode = function () {
+  this.privilegierteMethode = function () {
     privateMethode();
   };
 }
 var instanz = new Konstruktor;
-instanz.priviligierteMethode();</pre>
+instanz.privilegierteMethode();</pre>
 
-<p>Obwohl <code>privateMethode</code> und <code>priviligierteMethode</code> bei verschiedenen Instanzen gleich sind, werden für jede Instanz neue Funktionsobjekte angelegt, denn sie sollen als Closures wirken. Um private Member zu bekommen, die nicht zwischen Objektinstanzen geteilt werden, zahlen wir einen hohen Performance-Preis im Vergleich zur klassischen Methode, die alle Member über das <code>prototype</code>-Objekt definiert. Diese sind dann notwendig öffentlich:</p>
+<p>Obwohl <code>privateMethode</code> und <code>privilegierteMethode</code> bei verschiedenen Instanzen gleich sind, werden für jede Instanz neue Funktionsobjekte angelegt, denn sie sollen als Closures wirken. Um private Member zu bekommen, die nicht zwischen Objektinstanzen geteilt werden, zahlen wir einen hohen Performance-Preis im Vergleich zur klassischen Methode, die alle Member über das <code>prototype</code>-Objekt definiert. Diese sind dann notwendig öffentlich:</p>
 
 <pre>function Konstruktor () {
   this.öffentlicheEigenschaft = new Date().getTime();
