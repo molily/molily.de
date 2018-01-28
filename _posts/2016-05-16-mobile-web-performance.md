@@ -10,7 +10,7 @@ lang: en
 
 Some years ago, web developer Nicole Sullivan gave an influential talk named [Our (CSS) Best Practices Are Killing Us](http://www.stubbornella.org/content/2011/04/28/our-best-practices-are-killing-us/). Sullivan was one of the first who set up rules for predictable, maintainable, large-scale CSS.
 
-In her talk from 2011, Sullivan argues that CSS practices considered the best back then are actually holding us back. With [OOCSS](https://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/), she started a movement that eventually led to frameworks like Bootstrap and Foundation as well as methodologies like [SMACSS](https://smacss.com/), [BEM](https://css-tricks.com/bem-101/), [CSS modules](https://github.com/css-modules/css-modules) and inline CSS. Today in front-end development, we try to create reusable and encapsulated components. Sullivan helped to shape the idea of having such “lego bricks”.
+In her talk from 2011, Sullivan argues that CSS practices considered the best back then are actually holding us back. With [OOCSS](https://www.smashingmagazine.com/2011/12/an-introduction-to-object-oriented-css-oocss/), she started a movement that eventually led to frameworks like Bootstrap and Foundation as well as methodologies like [SMACSS](https://smacss.com/), [BEM](https://css-tricks.com/bem-101/), [CSS modules](https://github.com/css-modules/css-modules) and CSS-in-JS. Today in front-end development, we try to create reusable and encapsulated components. Sullivan helped to shape the idea of having such “lego bricks”.
 
 In this article, I won’t talk about structuring CSS, but I’d like to borrow the idea that our best practices may harm us sometimes, and apply it to mobile web development.
 
@@ -55,7 +55,7 @@ So why do mobile websites perform so badly? In my opinion, developers follow bes
 The basic idea of progressive enhancement is treating every web device [according to its abilities](https://en.wikipedia.org/wiki/From_each_according_to_his_ability,_to_each_according_to_his_needs). Progressive enhancement helps to focus on the core features of a website,
 which should lead to high performance.
 
-Although I am a [strong proponent of progressive enhancement](/artikel), I think our understanding is yet incomplete and our practices need to be improved continually. It seems that progressive enhancement is misunderstood: Enhancements are applied *during load time while the user is watching*.
+Although I am a [strong proponent of progressive enhancement](/artikel/), I think our understanding is yet incomplete and our practices need to be improved continually. It seems that progressive enhancement is misunderstood: Enhancements are applied *during load time while the user is watching*.
 
 While the user is [riding a skateboard](http://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp), it suddenly transforms into a bicycle, then into a motorcycle, then into a car. Not that the user does not enjoy driving a car, but when they just learned to ride the skateboard, they get angry when you take it away shortly after.
 

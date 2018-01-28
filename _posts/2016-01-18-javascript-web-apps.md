@@ -28,7 +28,7 @@ Once again, I point to [a comprehensive talk by Pamela Fox](http://blog.pamelafo
 
 The big JavaScript frameworks embrace these best practices as of today. Most problems that we had in 2006 and 2012 are solved today. We can build fast and accessible websites that are highly dynamic in the browser. Using progressive enhancement, we can build robust JavaScript web apps that still work when JavaScript fails for some reason.
 
-JavaScript web apps aren’t special snowflakes, they are just Hypertext nodes in the World Wide Web. Therefore they need to [build on URLs just like traditional websites](http://9elements.com/io/index.php/hybrid-javascript-apps/), so that linking and bookmarking works the same. Technically, this problem is solved since browsers and libraries support the [HTML5 History API](http://caniuse.com/#feat=history), which happened between 2010 and 2012.
+JavaScript web apps aren’t special snowflakes, they are just Hypertext nodes in the World Wide Web. Therefore they need to [build on URLs just like traditional websites](https://9elements.com/io/hybrid-javascript-apps/), so that linking and bookmarking works the same. Technically, this problem is solved since browsers and libraries support the [HTML5 History API](http://caniuse.com/#feat=history), which happened between 2010 and 2012.
 
 ## Better JavaScript web apps
 

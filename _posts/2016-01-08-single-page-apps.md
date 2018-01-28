@@ -91,7 +91,7 @@ After this detour, I’d like to examine how a progressively-enhanced TodoMVC im
 
 As far as I can see, these features fit hardly into the structure the [Smashing Mag article](http://www.smashingmagazine.com/2015/12/reimagining-single-page-applications-progressive-enhancement/) describes. Todos can be created and removed arbitrarily. A todo needs to have a unique ID, it needs to be addressable. So we need to transcend the model of having fixed parts of a single page that are just shown and hidden.
 
-For non-trivial apps, it is not practical to plug all content into one page and address parts using fragment identifiers. Without JavaScript, each server round-trip would transmit all content again, even if only one part has changed its state. [JavaScript web applications should rather embrace traditional URLs](http://9elements.com/io/index.php/hybrid-javascript-apps/). While <code>hashchange</code> is the easiest way to implement client-side routing, the community has already moved away from such stopgaps.
+For non-trivial apps, it is not practical to plug all content into one page and address parts using fragment identifiers. Without JavaScript, each server round-trip would transmit all content again, even if only one part has changed its state. [JavaScript web applications should rather embrace traditional URLs](https://9elements.com/io/hybrid-javascript-apps/). While <code>hashchange</code> is the easiest way to implement client-side routing, the community has already moved away from such stopgaps.
 
 <h2 id="coherence-maintenance">Coherence and maintenance</h2>
 

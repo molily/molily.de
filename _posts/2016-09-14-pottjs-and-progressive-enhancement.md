@@ -17,7 +17,7 @@ On July 2nd and 3rd, the first international JavaScript conference in the [Ruhr 
     <a href="https://www.facebook.com/ruhrjs/photos/?tab=album&album_id=519266088258193">Some photos have been uploaded to Facebook.</a>
   </li>
   <li>
-    <a href="http://9elements.com/io/index.php/retrospect-ruhrjs/">Madeleine has written a retrospective on the RuhrJS.</a>
+    <a href="https://9elements.com/io/retrospect-ruhrjs/">Madeleine has written a retrospective on the RuhrJS.</a>
   </li>
 </ul>
 
