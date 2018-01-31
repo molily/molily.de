@@ -247,7 +247,7 @@ Assumptions are necessary and inevitable in JavaScript, but we need to [own thes
 
 There is no single technical specification that defines JavaScript, but a whole bunch of specifications.
 
-The [ECMAScript specification](https://www.ecma-international.org/publications/standards/Ecma-262.htm) defines the core of the language: the basic language features, the syntax, the execution and the standard library. A new version of ECMAScript is published every year, and [ECMAScript 2017, Edition 8](https://www.ecma-international.org/ecma-262/8.0/), also called ECMAScript 8, is the latest at the time of writing.
+The [ECMAScript specification](https://www.ecma-international.org/publications/standards/Ecma-262.htm) defines the core of the language: the basic language features, the syntax, the execution and the standard library. A new version of ECMAScript is published every year. at the time of writing, [ECMAScript 2017, Edition 8](https://www.ecma-international.org/ecma-262/8.0/), also called ECMAScript 8, is the latest version.
 
 With ECMAScript alone, you cannot do anything useful. For example, there is no way to read or output any data. ECMAScript does not define the so-called <dfn>host environment</dfn> in which a program is executed. It allows several possible host environments. An HTML document in the browser is one possible host environment. Node.js is another popular one.
 
