@@ -1424,7 +1424,7 @@ Processing one Promise may yield a new Promise. This way, synchronous and asynch
 
 With Promises, you can set up a proper error handling logic: You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
 
-In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to reject the new Promise. They may also return a Promise, which becomes the new Promise.
+In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to rejectit. They may also return a Promise, which becomes the new Promise.
 
 This still might sound theoretical to you. But when working with the Promise-based Fetch API, chaining Promises is common. Here is a typical chain:
 
@@ -1619,7 +1619,7 @@ Still, this will not work in a browser that only supports ECMAScript 5 because `
 
 From a language design point of view, JavaScript has severe shortcomings and pitfalls. The technical term is “footgun”: A technology that makes it easy to shoot yourself in the foot.
 
-JavaScript is weakly and dynamically typed. It borrows ideas from multiple paradigms and fuses them into one language: imperative programming, object-oriented programming and functional programming.
+JavaScript is weakly and dynamically typed. It borrows ideas from multiple paradigms and fuses them into one language: imperative, object-oriented and functional programming.
 
 Some people make this imprecision and inconsistency responsible for many JavaScript pitfalls. That is true to some regard. JavaScript was not originally designed for writing large web applications or user interfaces. Recent ECMAScript standards introduced more strictness and consistency to improve [programming in the large](https://en.wikipedia.org/wiki/Programming_in_the_large_and_programming_in_the_small).
 
@@ -1627,7 +1627,7 @@ When it is so hard to write robust JavaScript, why not use another programming l
 
 The browsers only have a JavaScript engine built in, so we cannot just run, say, PHP in the browser. But other languages can be translated into JavaScript, like an Arabic text can be translated into English.
 
-Typically, programming languages are compiled into machine code for a specific processor architecture or into bytecode for a virtual machine. It is also possible to compile them into another language, like JavaScript. As we’ve learned already, such a compiler-translator is called transpiler.
+Typically, programming languages are compiled into machine code for a specific processor architecture or into bytecode for a virtual machine. It is also possible to compile them into another language, like JavaScript. As we’ve learned already, such a translator-compiler is called transpiler.
 
 Transpilers allow to write front-end code in an arbitrary language. Someone has to develop the transpiler, of course. This opens up tremendous possibilities. We can use strictly-typed languages, or purely functional languages, or languages designed for the purpose of building user interfaces.
 
@@ -1862,7 +1862,7 @@ There are [several hosted services](https://github.com/cheeaun/javascript-error-
 
 Once a feature of a website is implemented, it needs to be tested manually. The first tester is typically the developer, switching between code editor and browser, adding logic and making the necessary input to test the logic. Before committing the code, there is probably a final test.
 
-These ad hoc tests do not scale. They are not exhaustive, not documented, not repeatable and they do not catch regressions. A regression is when a change in one part breaks another part. For example, improving one feature may accidentally break another feature.
+These ad hoc tests do not scale. They are not exhaustive, not documented, not repeatable and they do not catch regressions. A regression is when a change in one part breaks another, seemingly unrelated part. For example, improving one feature may accidentally break another feature.
 
 More importantly, the developer perspective is not as meaningful as the user perspective.
 
@@ -1880,7 +1880,7 @@ Whenever the feature set changes or the code changes, the test plan needs to be 
 
 For websites, the tester needs to execute the tasks with different browsers, devices and internet connections to catch all possible errors.
 
-Manual testing with step-by-step instructions is probably the most time-consuming and expensive type of testing, but it is highly beneficial. Alongside with real user testing, manual testing can quickly find errors caused by client-side JavaScript.s.
+Manual testing with step-by-step instructions is probably the most time-consuming and expensive type of testing, but it is highly beneficial. Alongside with real user testing, manual testing can quickly find errors caused by client-side JavaScript.
 
 ### Automated testing
 
@@ -1924,7 +1924,7 @@ describe('sum', function() {
 });
 ```
 
-`describe('…', function() {…});` declares a test suite. The first argument, `'sum'` in the example, is a description of the unit under test. The function passed to `describe` may contain several specs.
+`describe('…', function() {…});` declares a test suite. The first argument, `'sum'` in the example, is a description of the unit under test. The function passed to `describe` contains one or more specs.
 
 A spec is declared with `it('…', function() {…})`. The first argument, `'adds two numbers'` in the example, is the human-readable requirement. The function passed to `it` contains the actual test code.
 
@@ -1998,7 +1998,7 @@ it('throws an error if one argument is NaN', function() {
 });
 ```
 
-Finally, this is the implementation that conforms to all specifications:
+Finally, this implementation that conforms to all specifications:
 
 ```js
 function sum(a, b) {
