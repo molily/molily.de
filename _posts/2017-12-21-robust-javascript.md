@@ -247,7 +247,7 @@ Assumptions are necessary and inevitable in JavaScript, but we need to [own thes
 
 There is no single technical specification that defines JavaScript, but a whole bunch of specifications.
 
-The [ECMAScript specification](https://www.ecma-international.org/publications/standards/Ecma-262.htm) defines the core of the language: the basic language features, the syntax, the execution and the standard library. A new version of ECMAScript is published every year. at the time of writing, [ECMAScript 2017, Edition 8](https://www.ecma-international.org/ecma-262/8.0/), also called ECMAScript 8, is the latest version.
+The [ECMAScript specification](https://www.ecma-international.org/publications/standards/Ecma-262.htm) defines the core of the language: the basic language features, the syntax, the execution and the standard library. A new version of ECMAScript is published every year. At the time of writing, [ECMAScript 2017, Edition 8](https://www.ecma-international.org/ecma-262/8.0/), also called ECMAScript 8, is the latest version.
 
 With ECMAScript alone, you cannot do anything useful. For example, there is no way to read or output any data. ECMAScript does not define the so-called <dfn>host environment</dfn> in which a program is executed. It allows several possible host environments. An HTML document in the browser is one possible host environment. Node.js is another popular one.
 
@@ -323,11 +323,11 @@ In particular, fault tolerance is hard to implement in JavaScript. Used without 
 
 Implementing fault tolerance in JavaScript means dividing the code into independent, sandboxed sub-systems. Only few of them are critical. Most of them should be non-critical. If the latter fail with an error, the error needs to be caught and handled. Other sub-systems and the system as a whole should not be affected.
 
-JavaScript does not support the definition of native sandboxes yet, but we can employ existing techniques like [try…catch](#handling-exceptions-with-trycatch) to achieve the desired effect.
+JavaScript does not support the definition of native sandboxes yet, but we can employ existing techniques like [try…catch](#handling-exceptions-with-trycatch) and [Promises](#promises) to achieve the desired effect.
 
 ### Postel’s Law
 
-John Postel was a computer scientist that helped designing the core technologies of the internet. He edited the technical specifications of fundamental internet protocols, called Request for Comments (RFC).
+Jon Postel was a computer scientist that helped designing the core technologies of the internet. He edited the technical specifications of fundamental internet protocols, called Request for Comments (RFC).
 
 In [RFC 790](https://tools.ietf.org/html/rfc760), published in January 1980, Postel first described the Internet Protocol (IPv4). There is a precise description of how implementations should behave:
 
@@ -341,11 +341,11 @@ In [RFC 761](https://tools.ietf.org/html/rfc761), also published in January 1980
   <p>TCP implementations should follow a general principle of robustness: be conservative in what you do, be liberal in what you accept from others.</p>
 </blockquote>
 
-Today this principle is often called <dfn>Postel’s Law</dfn>. While the original context was very specific – processing packets on a wide-area computer network –, today it is applied to all programs that read, parse and process user input, file formats or other structured data.
+Today this principle is often called <dfn>Postel’s Law</dfn>. While the original context was very specific&thinsp;—&thinsp;processing packets on a wide-area computer network&thinsp;—, today it is applied to all programs that read, parse and process user input, file formats or other structured data.
 
 For example, the liberal, fault-tolerant [HTML 5 parser definition](https://www.w3.org/TR/html5/syntax.html#parsing-html-documents) along with the conservative [HTML 5 syntax definition](https://www.w3.org/TR/html5/syntax.html#writing-html-documents) is an application of Postel’s Law.
 
-Personally, I do not think Postel’s Law should be seen as a <q>general principle of robustness</q>. I agree to some point that a program should accept data <q>that it can interpret (e.g. not object to technical errors where the meaning is still clear)</q>. This rule requires careful interpretation.
+Personally, I do not think Postel’s Law should be seen as a <q>general principle of robustness</q>. I agree to some point that a program should accept data <q>that it can interpret (e.g. not object to technical errors where the meaning is still clear)</q>. But this rule requires careful interpretation.
 
 In this guide, I do not argue that every program should be liberal in what it accepts. I find it more important that every program is explicit about what it accepts, is outspoken about technical errors and has a well-defined error handling.
 
@@ -363,7 +363,7 @@ What these robots have in common is that they are not interested in JavaScript p
 
 A search engine for example needs to evaluate if a page is valuable with regard to a query. So a search engine crawler is interested in text content, semantic markup, hyperlinks and probably media files.
 
-Such a crawler wants simple code that it can parse quickly to find valuable data. Like HTML code. Executing arbitrary JavaScript is complex, slow and a potential a security risk. Some crawlers might do it anyhow, but just as a way to find text content, semantic markup, hyperlinks, etc.
+Such a crawler wants simple code that it can parse quickly to find valuable data. Like HTML code. Executing arbitrary JavaScript is complex, slow and a potential security risk. Some crawlers might do it anyhow, but just as a way to find text content, semantic markup, hyperlinks, etc.
 
 If a site cares for a decent search engine ranking, it should make it easy for crawlers to find meaningful, unique, structured text content. HTML is the best technology to present such content. This means the relevant content should be accessible without JavaScript, just by looking at the HTML returned by the server. All content should be reachable by plain hyperlinks, like `<a href="…">…</a>`.
 
@@ -466,7 +466,7 @@ There are several causes for exceptions, and we already encountered one: The Syn
 
 ### Reference errors
 
-A `ReferenceError` is thrown when the program references a name – an identifier in ECMAScript terminology – that cannot be resolved to a value.
+A `ReferenceError` is thrown when the program references a name&thinsp;—&thinsp;an identifier in ECMAScript terminology&thinsp;—&thinsp;that cannot be resolved to a value.
 
 First, let us look at successful references:
 
@@ -487,7 +487,7 @@ Now, let us look at erroneous references:
 window.alert(frobnicateFoo);
 ```
 
-The identifier `frobnicateFoo` cannot be found in the scope chain. So the JavaScript engine throws a ReferenceError: “frobnicateFoo is not defined”.
+The identifier `frobnicateFoo` cannot be found in the scope chain. Therefore the JavaScript engine throws a ReferenceError: “frobnicateFoo is not defined”.
 
 So ReferenceErrors happen when the code uses an identifier that cannot be found in the current scope and all parent scopes. This is may be due to a typo. [Linters](#linters) can catch these bugs easily.
 
@@ -736,7 +736,7 @@ if (Modernizr.fetch) {
 }
 ```
 
-If you do not want to use Modernizr but look for bulletproof feature detection code, look into Modernizr’s [repository of detects](https://github.com/Modernizr/Modernizr/tree/master/feature-detects). For detecting the Fetch API, the [Modernizr simple checks](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/network/fetch.js) `'fetch' in window`.
+If you do not want to use Modernizr but look for bulletproof feature detection code, look into Modernizr’s [repository of detects](https://github.com/Modernizr/Modernizr/tree/master/feature-detects). For detecting the Fetch API, the [Modernizr simple checks](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/network/fetch.js#L18) `'fetch' in window`.
 
 ### Types of checks
 
@@ -1037,7 +1037,7 @@ Every browser window has its own set of host objects and therefore constructor f
 
 Assume there is one HTML document embedding another HTML document in an iframe. A script in the iframe document calls a function in the parent document, passing an array of numbers: `parent.reportFigures([ 63, 843, 13 ])`.
 
-The function `reportFigures` now wants to check if the argument is an array. Typically, `value instanceof Array` would be a good fit. But in this scenario, it is a *foreign* array that does not inherit from `Array.prototype` in the parent window. `value instanceof Array` would return `false` – a false negative.
+The function `reportFigures` now wants to check if the argument is an array. Typically, `value instanceof Array` would be a good fit. But in this scenario, it is a *foreign* array that does not inherit from `Array.prototype` in the parent window. `value instanceof Array` would return `false`&thinsp;—&thinsp;a false negative.
 
 The standard way to solve this particular problem is to use a type check function provided by ECMAScript: [Array.isArray()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray). Unfortunately, equivalents for other types like Date and RegExp do not exist.
 
@@ -1073,7 +1073,7 @@ if (!(date && typeof date.getTime === 'function')) {
 }
 ```
 
-If the value walks and talks like a date, it is a date – for this purpose.
+If the value walks and talks like a date, it is a date&thinsp;—&thinsp;for this purpose.
 
 This check is not as strict as `instanceof`, and that is an advantage. A function that does not assert types but object capabilities is more flexible.
 
@@ -1312,7 +1312,7 @@ Read more about [the background and the usage of modules](http://exploringjs.com
 
 ECMAScript 5 (2009) started to deprecate error-prone programming practices. But it could not just change code semantics from one day to the next. This would have broken most existing code.
 
-In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors – see [failing fast](#failing-fast).
+In order to maintain backwards compatibility, ECMAScript 5 introduces the <dfn>Strict Mode</dfn> as an opt-in feature. In Strict Mode, common pitfalls are removed from the language or throw visible exceptions. Previously, several programming mistakes and bogus code were ignored silently. The Strict Mode turns these mistakes into visible errors&thinsp;—&thinsp;see [failing fast](#failing-fast).
 
 Enable the Strict Mode by placing a marker at the beginning of a script:
 
@@ -1802,9 +1802,9 @@ Typically, such interfaces are built using patterns like [Model View Controller]
 
 In Elm, a dynamic user interface consists of three parts:
 
-- <dfn>Model</dfn> – A type describing the state of the application, as well as the initial value. This is where all work data is stored. There is no logic here.
-- <dfn>Update</dfn> – A pure function that takes a message and the existing model, processes the message and returns a new model. This is where all state changes happen, but in an immutable way.
-- <dfn>View</dfn> – A pure function that takes the model and returns the description of an HTML element tree. This is similar to a declarative HTML template. The view may embed information from the model in the HTML, for rendering data, and may register messages as event handlers, for adding interactivity.
+- <dfn>Model</dfn>: A type describing the state of the application, as well as the initial value. This is where all work data is stored. There is no logic here.
+- <dfn>Update</dfn>: A pure function that takes a message and the existing model, processes the message and returns a new model. This is where all state changes happen, but in an immutable way.
+- <dfn>View</dfn>: A pure function that takes the model and returns the description of an HTML element tree. This is similar to a declarative HTML template. The view may embed information from the model in the HTML, for rendering data, and may register messages as event handlers, for adding interactivity.
 
 The update cycle in Elm looks like this:
 
@@ -1825,7 +1825,7 @@ Even if you do not choose to write Elm over plain JavaScript, there is much to l
 
 Despite all precautions, with extensive [testing](#automated-testing) in place, errors will happen in production when diverse users with diverse browsers and devices are using your site.
 
-In particular, JavaScript exceptions will happen in production. We’ve learned that exceptions are helpful messages about problems in your code or your larger infrastructure – as long as you receive these messages and act upon them.
+In particular, JavaScript exceptions will happen in production. We’ve learned that exceptions are helpful messages about problems in your code or your larger infrastructure&thinsp;—&thinsp;as long as you receive these messages and act upon them.
 
 Therefore, sending information about exceptions to you, the developer, is vital for every site that relies on JavaScript.
 
