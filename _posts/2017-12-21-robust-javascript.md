@@ -197,8 +197,6 @@ lang: en
 <div id="main-container">
 <main id="main" markdown="1">
 
-<p class="separator">❦</p>
-
 <h1 id="main-heading">
   Robust Client-Side JavaScript
   <span class="subheading">A Developer’s Guide</span>
@@ -1642,7 +1640,7 @@ Let us have a look at a small selection of languages that compile to JavaScript.
 
 #### CoffeeScript
 
-[CoffeeScript](http://coffeescript.org/) was one of the first widely-used languages that compile to JavaScript. It has a syntax very familiar to JavaScript. CoffeeScript’s motto is “It is just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
+[CoffeeScript](http://coffeescript.org/) was one of the first widely-used languages that compile to JavaScript. Its syntax is very familiar to JavaScript. CoffeeScript’s motto is “It is just JavaScript”. It mostly provides “syntactic sugar” that makes writing common JavaScript idioms easier.
 
 In JavaScript, curly braces `{ … }` are used to delimit functions and blocks. In CoffeeScript, whitespace like line breaks and spaces is used for that purpose. The mapping from CoffeeScript to JavaScript is direct. The compiled JavaScript code closely resembles the CoffeeScript source.
 
