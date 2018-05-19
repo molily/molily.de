@@ -383,7 +383,7 @@ Since ads and privacy-invading scripts are typically loaded from third-party ser
 
 ### Network and loading errors
 
-In the age of mobile web access, a flaky internet connection is the norm. The connections from the client to a server are interrupted frequently. Sometimes the browser re-establishes the connections to send requests again. Sometimes the user needs to reload the page manually so all parts are fully loaded.
+In the age of mobile web access, a flaky internet connection is the norm. The connections from a client to a server are interrupted frequently. Sometimes the browser re-establishes the connections to send requests again. Sometimes the user needs to reload the page manually so all parts are fully loaded.
 
 Network interruptions affect JavaScript more negatively than other formats on the web. HTML, CSS, images and videos can be loaded and processed incrementally. If half of the HTML code has been transmitted and the connection drops, the browser can still render half of the page. Image formats like JPEG and PNG have progressive modes so the user gets to see a low-resolution preview after 10-20% of the file have been transmitted.
 
@@ -513,7 +513,7 @@ fetch('/something')
   );
 ```
 
-[JSON](https://caniuse.com/#feat=json) is available in 98.14% of the browsers, [localStorage](https://caniuse.com/#feat=namevalue-storage) in 95.31%, [Promise](https://caniuse.com/#feat=promises) in 89.04%, [fetch](https://caniuse.com/#feat=fetch) in 77.81%.
+At the time of writing, [JSON](https://caniuse.com/#feat=json) is available in 98.14% of the browsers, [localStorage](https://caniuse.com/#feat=namevalue-storage) in 95.31%, [Promise](https://caniuse.com/#feat=promises) in 89.04%, [fetch](https://caniuse.com/#feat=fetch) in 77.81%.
 
 We can avoid such careless use of APIs by using *feature detection*. In particular, we need to check for the names we intent to use.
 
