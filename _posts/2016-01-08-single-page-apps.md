@@ -128,10 +128,10 @@ Please see my other articles on the topic:
   <li><a href="/interaction-is-key/">Interaction is Key: Progressive Enhancement and JavaScript</a></li>
   <li><a href="/javascript-web-apps/">JavaScript web apps considered valuable</a></li>
   <li><a href="/javascript-failure/">Progressive enhancement and JavaScript failure</a></li>
+  <li><a href="/robust-javascript/">Robust Client-Side JavaScript – A Developer’s Guide</a></li>
 </ul>
 
 For a full list of references, see [my bookmarks tagged with progressive enhancement](https://www.diigo.com/user/molily/progressive-enhancement).
-
 
 *I’d love to hear your feedback! Send an email to [zapperlott@gmail.com](mailto:zapperlott@gmail.com) or [message me on Twitter: @molily](https://twitter.com/molily).*
 
