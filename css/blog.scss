@@ -387,8 +387,9 @@ html {
 
 .artikel-titel[hreflang="de"]:before {
   content: 'DE  ';
-  font-size: 60%;
   margin-right: 0.3rem;
+  font-size: 60%;
+  color: gray;
 }
 
 /**
