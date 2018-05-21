@@ -271,7 +271,7 @@ So robustness is all about *making informed assumptions*. What happens when the 
 
 ### Graceful Degradation
 
-In the context of web development, <dfn>Graceful Degradation</dfn> means building a full-featured website, than adding fallbacks for clients that lack certain capabilities.
+In the context of web development, <dfn>Graceful Degradation</dfn> means building a full-featured website, then adding fallbacks for clients that lack certain capabilities.
 
 A website starts with a large, fixed set of features and, consequently, a large set of requirements. The client may not meet a requirement, so a feature depending on it may not be available. If a requirement is not met, the site does not break, but handles the situation gracefully. For example, it falls back to a simpler version.
 
