@@ -204,6 +204,7 @@ caption {
 }
 
 #toc-book-title {
+  font-size: 2rem;
   text-align: center;
 
   @include big {
@@ -258,7 +259,8 @@ caption {
   text-align: center;
 
   @include big {
-    font-size: 2.5rem;
+    margin: 4rem 0;
+    font-size: 3rem;
   }
 }
 
