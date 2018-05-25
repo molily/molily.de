@@ -305,7 +305,7 @@ If you are planning a “moonshot” that relies on bleeding-edge technology in 
 
 If you are planning a service with a rock-solid base and demanding extras, like realtime data analysis and visualization, Progressive Enhancement may help you to build high without losing accessibility.
 
-When applied to JavaScript programming, both Graceful Degradation and Progressive Enhancement raise a lot of practical questions. How is a fallback applied? How well does it integrate with the rest of the code? To which extent is it possible to built on an existing version and enhance it? Is it not sometimes necessary to make a clear cut? You need to find answers that are specific for your project.
+When applied to JavaScript programming, both Graceful Degradation and Progressive Enhancement raise a lot of practical questions. How is a fallback applied? How well does it integrate with the rest of the code? To which extent is it possible to build on an existing version and enhance it? Is it not sometimes necessary to make a clear cut? You need to find answers that are specific for your project.
 
 Both Graceful Degradation and Progressive Enhancement rely on checking the client’s capabilities. The crucial technique we are going to discuss later is called *[feature detection](#feature-detection)*.
 
@@ -407,7 +407,7 @@ For example, if you read the sentence “The dog wags its tail”, you may think
 
 The sentence is made of a noun phrase and a verb phrase. The noun phrase, “the dog”, consists of a determiner and a noun. The verb phrase, “wags its tail”, consists of verb and a noun phrase again. The verb, “wags”, has the third person singular present form. And so on.
 
-For JavaScript, it is quite similar, yet less familiar since JavaScript is a not a natural language, but an artificial computer language. If you write `window.alert('Hello World!');`, the parser generates an <dfn>Abstract Syntax Tree</dfn> (AST) that may look like this:
+For JavaScript, it is quite similar, yet less familiar since JavaScript is not a natural language, but an artificial computer language. If you write `window.alert('Hello World!');`, the parser generates an <dfn>Abstract Syntax Tree</dfn> (AST) that may look like this:
 
 <pre>
 <strong>Program</strong>
@@ -734,7 +734,7 @@ if (Modernizr.fetch) {
 }
 ```
 
-If you do not want to use Modernizr but look for bulletproof feature detection code, look into Modernizr’s [repository of detects](https://github.com/Modernizr/Modernizr/tree/master/feature-detects). For detecting the Fetch API, the [Modernizr simple checks](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/network/fetch.js#L18) `'fetch' in window`.
+If you do not want to use Modernizr but look for bulletproof feature detection code, look into Modernizr’s [repository of detects](https://github.com/Modernizr/Modernizr/tree/master/feature-detects). For detecting the Fetch API, [Modernizr simply checks](https://github.com/Modernizr/Modernizr/blob/master/feature-detects/network/fetch.js#L18) `'fetch' in window`.
 
 ### Types of checks
 
@@ -748,7 +748,7 @@ There are three levels of checks:
 2. **Type check**: After resolving the name to a value, does the value has the expected type?
 3. **Value check**: Does the value equals the expected value?
 
-This is a cascade of checks you can perform. From top to bottom, the checks get more specific. Typically, we need check the existence and the type of a value in order to use it safely. Sometimes checking the value is necessary as well.
+This is a cascade of checks you can perform. From top to bottom, the checks get more specific. Typically, we need to check the existence and the type of a value in order to use it safely. Sometimes checking the value is necessary as well.
 
 ### Conditional statements and truthy values
 
@@ -1422,7 +1422,7 @@ Processing one Promise may yield a new Promise. This way, synchronous and asynch
 
 With Promises, you can set up a proper error handling logic: You can stop the chain if an error occurs. You can recover from an error and continue with the execution of the chain. You can [throw your own errors](#programmatic-exceptions). You can handle a single error immediately and/or handle several errors at the end of the chain.
 
-In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to rejectit. They may also return a Promise, which becomes the new Promise.
+In practice, every call to `then()` returns a new Promise. The `onFulfilled` and `onRejected` handlers determine what the result of the new Promise is. They may return a normal value to fulfill the new Promise or throw an exception to reject it. They may also return a Promise, which becomes the new Promise.
 
 This still might sound theoretical to you. But when working with the Promise-based Fetch API, chaining Promises is common. Here is a typical chain:
 
@@ -1470,7 +1470,7 @@ Understanding the example requires deep knowledge of Promises and the Fetch API.
 
 Promises are part of ECMAScript 6 (2015). In older browsers that do not support Promises, a [polyfill](https://github.com/stefanpenner/es6-promise) can retrofit the Promise API.
 
-The point of Promises is the ability to work with asynchronous values as if they were with synchronous values. ECMAScript 8 (2017) introduced a new way to work with Promises that closely resembles synchronous code.
+The point of Promises is the ability to work with asynchronous values as if they were synchronous values. ECMAScript 8 (2017) introduced a new way to work with Promises that closely resembles synchronous code.
 
 A function can be marked as asynchronous with the [`async` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). Such a function returns a Promise. Inside the function, you can use the [`await` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) in front of functions calls that return promises. The function call directly returns the unwrapped value instead of the Promise wrapper.
 
@@ -1898,7 +1898,7 @@ For simplicity, let us write a unit test that deals with a function. But how do 
 
 There are numerous ways how to write and run unit tests in JavaScript. Popular testing frameworks include [Jasmine](https://jasmine.github.io/) and [Mocha](https://mochajs.org/). They may be combined with assertion libraries like [Chai](http://chaijs.com/) and [Unexpected](http://unexpected.js.org/). Unit tests are typically executed using test runners like [Jest](https://facebook.github.io/jest/), [Ava](https://github.com/avajs/ava) and [Karma](https://karma-runner.github.io/1.0/index.html).
 
-In my experience, all these libraries allow to write unit tests that make JavaScript more robust. It is mostly a matter of style and taste which one to use. For the purpose of this guide, I will use widely accepted Jasmine testing framework.
+In my experience, all these libraries allow to write unit tests that make JavaScript more robust. It is mostly a matter of style and taste which one to use. For the purpose of this guide, I will use the widely accepted Jasmine testing framework.
 
 First of all, we need a function to test. Let us start with the simple, flawed `sum` function:
 
@@ -2026,7 +2026,7 @@ Such a test is precise, but it is hard to isolate a unit from the rest. For exam
 
 Unit tests are necessary, but not sufficient. An application is a complex combination of units. Having 100% test coverage, having passing unit tests says little about the application as a whole.
 
-This is where <dfn>integration tests</dfn> come in. An integration test describes and verifies the behavior of a several connected units. The integration test does not need to know the internals, it runs against the public interface.
+This is where <dfn>integration tests</dfn> come in. An integration test describes and verifies the behavior of several connected units. The integration test does not need to know the internals, it runs against the public interface.
 
 For example, if a function under test calls a second function, the integration test simply lets it be. The test knows that it *integrates* all dependencies. Such a test has a larger impact and covers a lot of code. But it is hard to set up the different cases and test side effects thoroughly.
 
@@ -2091,6 +2091,8 @@ Author: [Mathias Schäfer (molily)](/)
 Twitter: [@molily](https://twitter.com/molily)
 
 Please send feedback and corrections to [zapperlott@gmail.com](mailto:zapperlott@gmail.com).
+
+Thanks to Pablo Tamarit for several corrections.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
