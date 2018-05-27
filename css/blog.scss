@@ -227,6 +227,7 @@ html {
  */
 
 #sidebar {
+  @extend %clearfix;
   padding-top: $column-padding;
   padding-bottom: 0.1px; // Include margins
 
@@ -264,7 +265,7 @@ html {
 
   #sidebar h1 {
     float: left;
-    width: 114px;
+    width: 120px;
   }
 
   #sidebar #zitate {
