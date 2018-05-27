@@ -2093,7 +2093,7 @@ Author: [Mathias Schäfer (molily)](/)
 
 Twitter: [@molily](https://twitter.com/molily)
 
-Please send feedback and corrections to [zapperlott@gmail.com](mailto:zapperlott@gmail.com).
+Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).
 
 Thanks to Pablo Tamarit for several corrections.
 

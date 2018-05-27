@@ -529,4 +529,4 @@ Currently Brave offers most features I expect from a mobile web browser. I hope 
 
 Thanks to everyone who answered or shared [my Twitter survey](https://twitter.com/molily/status/888006158862221313)! Your input motivated me to have a closer look at the different browsers.
 
-*I’d love to hear your feedback! Send an email to [zapperlott@gmail.com](mailto:zapperlott@gmail.com) or [message me on Twitter: @molily](https://twitter.com/molily).*
+*I’d love to hear your feedback! Send an email to [molily@mailbox.org](mailto:molily@mailbox.org) or [message me on Twitter: @molily](https://twitter.com/molily).*

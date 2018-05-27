@@ -136,4 +136,4 @@ I’m recommending these action points:
 - Leave cross-site navigation as it is: a simple link to the existing footer.
 - Avoid flashy ads. Use placeholder space for the main banners. Avoid pop-up banners or use less intrusive interstitials.
 
-*I’d love to hear your feedback! Send an email to [zapperlott@gmail.com](mailto:zapperlott@gmail.com) or [message me on Twitter: @molily](https://twitter.com/molily).*
+*I’d love to hear your feedback! Send an email to [molily@mailbox.org](mailto:molily@mailbox.org) or [message me on Twitter: @molily](https://twitter.com/molily).*
