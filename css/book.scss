@@ -190,7 +190,8 @@ caption {
   display: none;
 
   @include big {
-    display: block;
+    display: flex;
+    justify-content: space-between;
   }
 }
 

@@ -11,13 +11,16 @@ lang: en
   &bull;
   <a href="#toc">Table of Contents</a>
   &bull;
-  <a href="htps://twitter.com/molily" target="_blank">@molily</a>
+  <a href="htps://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
 </p>
 
 <div id="toc-and-main">
   <div id="toc-container">
     <nav id="toc">
-      <p id="toc-home-link"><a href="/">molily.de – Home</a></p>
+      <p id="toc-home-link">
+        <a href="/" title="Home">molily.de</a>
+        <a href="htps://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
+      </p>
       <h1 id="toc-book-title">Robust Client-Side JavaScript</h1>
       <h1 id="toc-heading">Table of Contents</h1>
       <ol>
