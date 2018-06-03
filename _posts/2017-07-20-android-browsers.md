@@ -37,16 +37,16 @@ These are the **aspects** I have examined:
 
 I have tested these **browsers**:
 
-<ul class="compact-list">
-<li><a href="#android-browsers-chrome">↓ Chrome (for reference)</a></li>
-<li><a href="#android-browsers-opera-mini">↓ Opera Mini</a></li>
-<li><a href="#android-browsers-opera">↓ Opera</a></li>
-<li><a href="#android-browsers-firefox">↓ Firefox</a></li>
-<li><a href="#android-browsers-firefox-focus">↓ Firefox Focus</a></li>
-<li><a href="#android-browsers-orfox">↓ Orfox and Orbot</a></li>
-<li><a href="#android-browsers-uc-browser">↓ UC Browser</a></li>
-<li><a href="#android-browsers-brave">↓ Brave</a></li>
-</ul>
+<ol class="compact-list">
+<li><a href="#android-browsers-chrome">Chrome (for reference) ↓</a></li>
+<li><a href="#android-browsers-opera-mini">Opera Mini ↓</a></li>
+<li><a href="#android-browsers-opera">Opera ↓</a></li>
+<li><a href="#android-browsers-firefox">Firefox ↓</a></li>
+<li><a href="#android-browsers-firefox-focus">Firefox Focus ↓</a></li>
+<li><a href="#android-browsers-orfox">Orfox and Orbot ↓</a></li>
+<li><a href="#android-browsers-uc-browser">UC Browser ↓</a></li>
+<li><a href="#android-browsers-brave">Brave ↓</a></li>
+</ol>
 
 The **test devices**:
 
