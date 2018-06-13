@@ -22,7 +22,8 @@ lang: en
         <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
       </p>
       <h1 id="toc-book-title">Robust Client-Side JavaScript</h1>
-      <h1 id="toc-heading">Table of Contents</h1>
+      <p id="toc-epub-link"><strong><a href="/assets/robust-javascript.epub" download>Download this book as EPUB (724 KB)</a></strong></p>
+      <h2 id="toc-heading">Table of Contents</h2>
       <ol>
         <li>
           <a href="#introduction">Introduction</a>
@@ -2098,6 +2099,9 @@ Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailb
 Thanks to Pablo Tamarit for several corrections.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
+
+EPUB cover image: [Photo of the Tokyo Tower by Martin Abegglen](https://www.flickr.com/photos/twicepix/4085401611/) (modified). License:
+  [Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)](https://creativecommons.org/licenses/by-sa/2.0/)
 
 Published on <time datetime="2017-12-21">December 21, 2017</time>.
 
