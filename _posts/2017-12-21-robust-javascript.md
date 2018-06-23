@@ -199,7 +199,7 @@ lang: en
   </div>
 
 <div id="main-container">
-<main id="main" markdown="1">
+<main role="main" id="main" markdown="1">
 
 <h1 id="main-heading">
   Robust Client-Side JavaScript
