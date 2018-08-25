@@ -24,7 +24,7 @@ Bei kleinen, hochwertigeren Tafeln ist man dazu gezwungen, sie langsam und mit G
 
 Kleine Tafeln sind auch meist flach und einfacher in kleine Stücke zu brechen. Das ermöglicht erst, dass man sie auf der Zunge zergehen lässt, lutscht und damit den vollen Geschmack genießt.
 <h2>Keine Vorräte anlegen</h2>
-Kauft Schokolade nicht auf Vorrat, sondern nur soviel, wie ihr in den nächsten ein bis zwei Wochen essen werdet. <em>Wieviel</em> ihr für diesen Zeitraum kauft, bleibt natürlich euch überlassen. ;)
+Kauft Schokolade nicht auf Vorrat, sondern nur soviel, wie ihr in den nächsten ein bis zwei Wochen essen werdet. <em>Wie viel</em> ihr für diesen Zeitraum kauft, bleibt natürlich euch überlassen. ;)
 
 Wir haben meist zwei bis drei Schokoladen gleichzeitig geöffnet, essen diese in relativ kurzer Zeit und kaufen anschließend neue.
 <h2>Frische Ware ist wichtiger als Lagerung nach dem Kauf</h2>

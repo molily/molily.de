@@ -749,8 +749,8 @@ There are three levels of checks:
 1. <p markdown="1">**Existence check**: Does a name exist?</p>
   - Either: Does an identifier exist in the scope chain? Ultimately, does an identifier exist in the global scope?
   - Or: Does a property exist on a certain object?
-2. **Type check**: After resolving the name to a value, does the value has the expected type?
-3. **Value check**: Does the value equals the expected value?
+2. **Type check**: After resolving the name to a value, does the value have the expected type?
+3. **Value check**: Does the value equal the expected value?
 
 This is a cascade of checks you can perform. From top to bottom, the checks get more specific. Typically, we need to check the existence and the type of a value in order to use it safely. Sometimes checking the value is necessary as well.
 
@@ -840,7 +840,7 @@ The way ToBoolean works is simple, but with a twist. Let us quote the ECMAScript
 
 As you can see, most types have a clear boolean counterpart. All objects, including functions, dates, regular expressions and errors, are truthy. The two types denoting emptiness, `undefined` and `null`, are falsy.
 
-For numbers and strings though, it is complicated. Numbers are truthy *except for* zeros and NaN. Strings are truthy except for empty strings.
+For numbers and strings though, it is complicated. Numbers are truthy *except for* zeros and NaN. Strings are truthy *except for* empty strings.
 
 This ECMAScript design decision is controversial. On the one hand, it is a source of errors, since some developers expect that all numbers and all strings are truthy. On the other hand, it allows to write simple value checks like `if (value) {…}` for non-empty strings and usable non-zero numbers.
 
