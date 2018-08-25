@@ -166,7 +166,7 @@ Neu:  &lt;!ELEMENT P <strong>- -</strong> (%inline;)*            -- paragraph --
 
 <h2>OpenSP zur Validierung nutzen</h2>
 
-<p>Nachdem wir SGML-Deklaration und HTML-4.01-DTD entsprechend angepasst haben, müssen wir uns einen validierenden SGML-Parser aufsetzen, der Dokumente anhand der definierten Grammatik prüft. Der hier beschriebene Weg nutzt ein Kommandozeilenprogramm, das für viele Betriebssysteme verfügbar ist: Der SGML-Parser <a href="http://openjade.sourceforge.net/doc/nsgmls.htm">onsgmls</a>, Teil von <a href="http://openjade.sourceforge.net/doc/index.htm">OpenSP</a>.</p>
+<p>Nachdem wir SGML-Deklaration und HTML-4.01-DTD entsprechend angepasst haben, müssen wir einen validierenden SGML-Parser aufsetzen, der Dokumente anhand der definierten Grammatik prüft. Der hier beschriebene Weg nutzt ein Kommandozeilenprogramm, das für viele Betriebssysteme verfügbar ist: Der SGML-Parser <a href="http://openjade.sourceforge.net/doc/nsgmls.htm">onsgmls</a>, Teil von <a href="http://openjade.sourceforge.net/doc/index.htm">OpenSP</a>.</p>
 
 <p>Ich werde im Folgenden die Windows-Variante näher beschreiben, habe das Schema aber auch unter Linux erfolgreich angewandt.</p>
 
@@ -205,12 +205,12 @@ Neu:  &lt;!ELEMENT P <strong>- -</strong> (%inline;)*            -- paragraph --
 
 <p><samp>dokument.html:6:21</samp> heißt hier Zeile 6 in Spalte 21 in der Datei <var>dokument.html</var>.</p>
 
-<p>Das manuelle Aufrufen über die Kommandozeile ist alles andere als komfortabel. Um den Aufruf zu vereinfachen, könnte man sich eine Batch-Datei (oder ein Script in Perl, PHP, Ruby, Python) schreiben, das sich einfacher aufrufen lässt, sodass man bspw. nur noch <code>html4valid dokument.html</code> eintippen muss. Ich hatte mir eine PHP-Datei geschrieben, die rekursiv ein Verzeichnis nach HTML-Dateien durchsucht und alle darin validiert. <a href="http://web.archive.org/web/20060924192831/http://www.codestyle.org/html/tools/nsgmls-Validate.shtml">Validate your markup with NSGMLS</a> beschreibt, wie nsgmls in verschiedene Editoren als externes Tool eingebunden werden kann.</p>
+<p>Das manuelle Aufrufen über die Kommandozeile ist alles andere als komfortabel. Um den Aufruf zu vereinfachen, könnte man sich eine Batch-Datei (oder ein Script in Perl, PHP, Ruby, Python) schreiben, das sich einfacher aufrufen lässt, sodass man bspw. nur noch <code>html4valid dokument.html</code> eintippen muss. Ich habe mir eine PHP-Datei geschrieben, die rekursiv ein Verzeichnis nach HTML-Dateien durchsucht und alle darin validiert. <a href="http://web.archive.org/web/20060924192831/http://www.codestyle.org/html/tools/nsgmls-Validate.shtml">Validate your markup with NSGMLS</a> beschreibt, wie nsgmls in verschiedene Editoren als externes Tool eingebunden werden kann.</p>
 
 <h2>Fazit</h2>
 
-<p>Das soll nur grob den Weg skizzieren, den ich zur Qualitätssicherung gewählt hatte. Über Korrekturen und Ergänzungen freue ich mich, am besten <a href="mailto:molily@mailbox.org">per Mail</a>.</p>
+<p>Das soll nur grob den Weg skizzieren, den ich zur Qualitätssicherung gewählt habe. Über Korrekturen und Ergänzungen freue ich mich, am besten <a href="mailto:molily@mailbox.org">per Mail</a>.</p>
 
-<p>Wie gesagt wäre noch viel zu tun, um von einem solchen Proof-of-Concept zu einem praktisch vielseitig einsetzbaren Tool zu kommen. Es liegt jedoch nicht (mehr) in meinem Interesse, einen Web-Service um eine solche SGML-Validierung herum zu bauen (z.B. mit dem <a href="http://validator.w3.org/source/">W3C-Validator</a>), da ich keine Zukunftshoffnungen HTML 4 in setze. Mir bedeutet die Qualitätssicherung von »Altlasten« zunehmend weniger und ich halte ich eine Migration zu (X)HTML 5 für angebrachter.</p>
+<p>Wie gesagt wäre noch viel zu tun, um von einem solchen Proof-of-Concept zu einem praktisch vielseitig einsetzbaren Tool zu kommen. Es liegt jedoch nicht (mehr) in meinem Interesse, einen Web-Service um eine solche SGML-Validierung herum zu bauen (z.B. mit dem <a href="http://validator.w3.org/source/">W3C-Validator</a>), da ich keine Zukunftshoffnungen auf HTML 4 setze. Mir bedeutet die Qualitätssicherung von »Altlasten« zunehmend weniger und ich halte ich eine Migration zu (X)HTML 5 für angebrachter.</p>
 
 <p>Ein ähnlicher Ansatz: <a href="http://web.archive.org/web/20041213220034/http://www.spartanicus.utvinternet.ie/custom_dtd.htm">Validating against a custom DTD</a> von Spartanicus.</p>
