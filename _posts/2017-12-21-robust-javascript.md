@@ -201,6 +201,11 @@ lang: en
 <div id="main-container">
 <main role="main" id="main" markdown="1">
 
+<p id="cover">
+  <img src="/img/robust-js-500-q75.jpg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x" alt="Photo of the Tokyo Tower by Martin Abegglen" id="cover-image">
+  <a href="#cover-credits" id="cover-credits-link" class="no-link-type" title="Cover credits">CC-BY-SA</a>
+</p>
+
 <h1 id="main-heading">
   Robust Client-Side JavaScript
   <span class="subheading">A Developer’s Guide</span>
@@ -2100,8 +2105,7 @@ Thanks to Pablo Tamarit for several corrections.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
-EPUB cover image: [Photo of the Tokyo Tower by Martin Abegglen](https://www.flickr.com/photos/twicepix/4085401611/) (modified). License:
-  [Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)](https://creativecommons.org/licenses/by-sa/2.0/)
+<p id="cover-credits">Cover image: <a href="https://www.flickr.com/photos/twicepix/4085401611/">Photo of the Tokyo Tower by Martin Abegglen</a>. License: <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)</a></p>
 
 Published on <time datetime="2017-12-21">December 21, 2017</time>.
 
@@ -2136,6 +2140,7 @@ var LinkTypes = {
       var link = links[i];
       var href = link.getAttribute('href');
       if (!(href && href[0] === '#')) continue;
+      if (link.className.match(/(^|\s)no-link-type($|\s)/)) continue;
       var text = '\u00A0↕';
       var title = 'Link to another chapter';
       var target = document.getElementById(href.substring(1));
