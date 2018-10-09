@@ -14,7 +14,7 @@ Model and Collection Classes
 
 const Photos = Backbone.Collection.extend({
 
-  url: 'http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?',
+  url: '//api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?',
 
   parse(response) {
     return response.items;
@@ -39,12 +39,12 @@ View Classes
 
 const SearchView = Backbone.View.extend({
 
-  template: _.template(
-    '<p id="search">\
-    <label>Suche: <input type="search" class="searchterm" value="flower"></label>\
-    <input type="button" class="submit" value="Suchen">\
-    </p>'
-  ),
+  template: _.template(`
+    <p id="search">
+      <label>Suche: <input type="search" class="searchterm" value="flower"></label>
+      <input type="button" class="submit" value="Suchen">
+    </p>
+  `),
 
   events: {
     'click .submit': 'startSearch'
@@ -98,9 +98,9 @@ const PhotoItemView = Backbone.View.extend({
 
   className: 'result',
 
-  template: _.template(
-    '<a href=""><img src="{{media.m}}" class="result-image" alt=""></a>'
-  ),
+  template: _.template(`
+    <a href=""><img src="{{media.m}}" class="result-image" alt=""></a>
+  `),
 
   events: {
     click: 'showFullPhoto'
@@ -124,13 +124,12 @@ const PhotoItemView = Backbone.View.extend({
 
 const FullPhotoView = Backbone.View.extend({
 
-  template: _.template('\
-    <h2>{{title}}</h2>\
-    <p><img src="{{media.m}}" alt="" class="fullview-image"></p>\
-    <p>Tags: {{tags}}</p>\
-    <p><a href="{{link}}" target="_blank">{{link}}</a></p>\
-    '
-  ),
+  template: _.template(`
+    <h2>{{title}}</h2>
+    <p><img src="{{media.m}}" alt="" class="fullview-image"></p>
+    <p>Tags: {{tags}}</p>
+    <p><a href="{{link}}" target="_blank">{{link}}</a></p>
+  `),
 
   render() {
     this.$el.html(this.template(this.model.attributes));

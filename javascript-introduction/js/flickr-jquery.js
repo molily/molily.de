@@ -2,12 +2,11 @@ jQuery(document).ready(($) => {
   'use strict';
 
   // Configuration
-  const flickrUrl = 'http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
+  const flickrUrl = '//api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
 
   // Setup event handling
   const initialize = () => {
     $('#search-form').submit(search);
-    $('#results').on('click', 'li', showFullView);
   };
 
   // Start the search
@@ -38,7 +37,7 @@ jQuery(document).ready(($) => {
       .val('Suche läuft…');
   };
 
-  const showResults = function (data) {
+  const showResults = (data) => {
     // Release search
     $('#search-submit')
       .prop('disabled', false)
