@@ -636,7 +636,7 @@ const MyLibrary = {
   start() {}
 };
 Object.freeze(MyLibrary);
-MyLibrary.start = () => {};
+MyLibrary.start = function() {};
 ```
 
 In strict mode, this code throws a TypeError “\"start\" is read-only”. Without the strict mode, the assignment is silently ignored.
@@ -1425,7 +1425,7 @@ So far, Promises look like yet another solution for accessing an asynchronous va
 
 But this is [not the point of Promises](https://blog.domenic.me/youre-missing-the-point-of-promises/). They are not another syntax for writing callbacks. Promises are a tool to write more robust JavaScript. They were designed to make asynchronous programming as easy and as powerful as synchronous programming.
 
-Promises wrap the value of an asynchronous operation so that it can be passed around. A Promise provides a simple yet powerful interface for working with the result. Thanks to this uniform interface, asynchronous values can be easily combined. For example, you can wait for several operations to finish and then work with all values.
+Promises wrap the value of an asynchronous operation so that it can be passed around. A Promise provides a simple yet powerful interface for working with the result. Thanks to this uniform interface, asynchronous values can be combined easily. For example, you can wait for several operations to finish and then work with all values.
 
 Processing one Promise may yield a new Promise. This way, synchronous and asynchronous operations can be *chained*.
 

@@ -36,13 +36,13 @@ Another well-known drawback of Redux is that you need a lot of boilerplate code 
 
 # Angular
 
-This was just the prelude for the topic I’d like to write about. At [9elements](https://9elements.com), we do have standard tools and favorite development stacks. But we try to use the right tool for a job instead of just the tool we’re used to. In a recent client project, we’re using Angular 2+ and I have the pleasure to set up the architecture.
+This was just the prelude for the topic I’d like to write about. At [9elements](https://9elements.com), we do have standard tools and favorite development stacks. But we try to use the right tool for a job instead of just the tool we’re used to. In a recent client project, we have been using Angular 2+ and I had the pleasure to set up the architecture.
 
 My impression was that the Angular and the React ecosystems are very close. The core concept are encapsulated UI components that have a template, scoped styles, well-defined dependencies, inputs/props and outputs/callbacks.
 
 So I quickly felt at home when setting up an architecture with Angular. Over the years, we had to discover the best practices for React ourselves (e.g. [pure components](https://reactjs.org/docs/react-api.html#reactpurecomponent), Redux, [reselect](https://github.com/reactjs/reselect), [Webpack](https://github.com/webpack/webpack), [Babel](https://babeljs.io/), [eslint](https://eslint.org/), [CSS Modules](https://github.com/css-modules/css-modules) and [CSS-in-JS](https://github.com/MicheleBertoli/css-in-js), [Jest](https://facebook.github.io/jest/), [Enzyme](http://airbnb.io/enzyme/), [create-react-app](https://github.com/facebookincubator/create-react-app) etc.). It seems that Angular 2 together with [angular-cli](https://cli.angular.io/) took the insights of Angular 1 and these common practices to put them in one framework and development environment. So I found Angular to be familiar right from the start and I was pleased that most things worked nicely.
 
-Angular has its own specialties that make any app and any single component more complex than in React – at first sight. For example, [dependency injection](https://angular.io/guide/dependency-injection) produces a lot of code that might scare off beginners. For me, the benefit was easy to comprehend, having tested React apps with home-grown dependency injection. In a typical Angular app, there is one obvious way how to test a component, service or module. The spec boilerplate is even created by angular-cli. Having these conventions in place is a huge benefit. It makes it easy for a team to develop a good testing discipline.
+Angular has its own quirks that make any app and any single component more complex than in React – at first sight. For example, [dependency injection](https://angular.io/guide/dependency-injection) produces a lot of code that might scare off beginners. For me, the benefit was easy to comprehend, having tested React apps with home-grown dependency injection. In a typical Angular app, there is one obvious way how to test a component, service or module. The spec boilerplate is even created by angular-cli. Having these conventions in place is a huge benefit. It makes it easy for a team to develop a good testing discipline.
 
 Angular feels “enterprisey” with its several abstraction layers, meta-structures and boilerplate code. I will probably never grok all details of Angular. But all in all there were no big surprises for me. What I found challenging so far wasn’t Angular, but two adjacent technologies: TypeScript and RxJS.
 
@@ -56,7 +56,7 @@ Still I find it hard to express some structures in TypeScript. Using TypeScript 
 
 Previously, I’ve used the JavaScript IDE [WebStorm](https://www.jetbrains.com/webstorm/)/[RubyMine](https://www.jetbrains.com/ruby/) which offered statical analysis of the JavaScript source code. Navigating in the code base, refactoring and auto-completion was easier than with a plain text editor. With TypeScript and Visual Studio Code however, you gain all the productivity of well-known IDEs.
 
-## RxJS
+## RxJS: Reactive Programming
 
 It was a good decision by the Angular team to write Angular 2 in TypeScript, and to recommend TypeScript for every new Angular project. What I found even more radical was the decision to build Angular core parts on top of [RxJS Observables](http://reactivex.io/rxjs/manual/overview.html). I’ve watched (functional) reactive programming grow from a distance, but I’ve never found a good entry.
 
