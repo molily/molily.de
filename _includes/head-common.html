@@ -15,7 +15,7 @@
 <link rel="author" href="mailto:molily@mailbox.org" title="E-Mail">
 
 <meta name="viewport" content="width=device-width">
-<meta name="description" content="{{ description }}">
+<meta name="description" content="{{ description | strip }}">
 <meta name="keywords" content="{% if page.keywords %}{{ page.keywords | strip | strip_newlines }}{% else %}{{ site.keywords }}{% endif %}">
 <meta name="theme-color" content="#6f53b2">
 
@@ -23,14 +23,14 @@
 
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@molily">
-<meta name="twitter:title" content="{{ title }}">
-<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:title" content="{{ title | strip }}">
+<meta name="twitter:description" content="{{ description | strip }}">
 <meta name="twitter:image" content="{{ site.url }}/img/spidermum-gray-bg-square-small.png">
 
 <meta property="og:url" content="{{ canonical_url }}">
 <meta property="og:type" content="article">
-<meta property="og:title" content="{{ title }}">
-<meta property="og:description" content="{{ description }}">
+<meta property="og:title" content="{{ title | strip }}">
+<meta property="og:description" content="{{ description | strip }}">
 <meta property="og:image" content="{{ site.url }}/img/spidermum-gray-bg-square-small.png">
 
 <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">

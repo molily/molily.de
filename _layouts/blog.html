@@ -15,7 +15,7 @@ layout: compress
   {% endif %}
 {% endcapture %}
 
-<title>{{ title }}</title>
+<title>{{ title | strip }}</title>
 
 <link rel="stylesheet" href="{{ "/css/blog.css" | prepend: site.baseurl }}">
 
