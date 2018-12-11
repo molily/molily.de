@@ -2175,3 +2175,5 @@ LinkTypes.init();
 
 })();
 </script>
+
+{% include register-service-worker.html %}
