@@ -110,11 +110,28 @@ html {
   margin-top: 0;
 
   @include big {
-    @include accessible-hide;
+    margin: 0;
   }
 }
 
-.top-navigation__home {
+.top-navigation__home,
+.top-navigation__jump-to-bottom {
+  @include big {
+    @include accessible-hide;
+
+    // Make visible on focus
+    &:focus {
+      @include accessible-show;
+      background-color: white;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      padding: 0.5rem 1rem;
+      outline-offset: 0;
+      transform: translateX(-50%);
+    }
+
+  }
 }
 
 .top-navigation__jump-to-bottom {

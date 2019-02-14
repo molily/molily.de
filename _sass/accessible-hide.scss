@@ -16,6 +16,18 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
+@mixin accessible-show {
+  position: static;
+  height: auto;
+  width: auto;
+  overflow: visible;
+  clip: auto;
+}
+
 %accessible-hide {
+  @include accessible-hide;
+}
+
+%accessible-show {
   @include accessible-hide;
 }
