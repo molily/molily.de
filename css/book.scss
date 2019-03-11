@@ -261,19 +261,25 @@ caption {
 #cover {
   margin: 2rem 0;
   text-align: center;
-  line-height: 1;
+  font-size: 0.6rem;
 }
 
 #cover-image {
   display: block;
   margin: auto;
   max-width: 100%;
-  max-height: 45vh;
+
+  @media (orientation: portrait) {
+    max-width: 65%;
+  }
+
+  @media (orientation: landscape) {
+    max-height: 45vh;
+  }
 }
 
 #cover-credits-link {
-  margin: 0;
-  font-size: 0.7rem;
+  border: 0;
 }
 
 /**
