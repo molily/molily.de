@@ -213,7 +213,7 @@ lang: en
 
 <p class="intro"><em class="intro-caps">The JavaScript programming language</em> is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?</p>
 
-<p class="separator">❡</p>
+<p class="separator" aria-hidden="true">❡</p>
 
 ## Introduction
 
@@ -264,7 +264,7 @@ The HTML and DOM specifications define the main objects that client-side JavaScr
 
 There are a lot of other specifications that add more APIs to the browser’s JavaScript environment. [The web platform: Browser technologies](https://platform.html5.org/) gives an overview.
 
-<p class="separator">❡</p>
+<p class="separator" aria-hidden="true">❡</p>
 
 ## Achieving Robustness
 
@@ -356,7 +356,7 @@ Personally, I do not think Postel’s Law should be seen as a <q>general princip
 
 In this guide, I do not argue that every program should be liberal in what it accepts. I find it more important that every program is explicit about what it accepts, is outspoken about technical errors and has a well-defined error handling.
 
-<p class="separator">❡</p>
+<p class="separator" aria-hidden="true">❡</p>
 
 ## How JavaScript might fail
 
@@ -659,7 +659,7 @@ There is no common error type for security errors in ECMAScript. Browser APIs th
 
 As you can see, handling security errors requires a careful study of a particular API documentation.
 
-<p class="separator">❡</p>
+<p class="separator" aria-hidden="true">❡</p>
 
 ## How to prevent failure
 
@@ -2083,7 +2083,7 @@ Still, JavaScript is the most brittle of all front-end web technologies. An impo
 
 If all techniques and tools did not help you to write robust JavaScript, consider reducing the code complexity and the amount of code. In the last resort, reduce the usage of client-side JavaScript. Find simpler solutions that rely on HTML, CSS and server-side logic alone.
 
-<p class="separator">❡</p>
+<p class="separator" aria-hidden="true">❡</p>
 
 ## References
 
@@ -2091,7 +2091,7 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 - [JavaScript. The Core: 2nd Edition](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/) – Dmitry Soshnikov, 2017
 - [Objektabfragen in JavaScript](https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen) (German) – Mathias Schäfer, 2011
 
-<p class="separator">❡</p>
+<p class="separator" aria-hidden="true">❡</p>
 
 ## About
 
