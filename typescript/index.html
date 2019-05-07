@@ -49,7 +49,7 @@
 </section>
 
 <section>
-  <h1><span style="display: inline-block; transform: scaleX(-1)"> 🧚🏻‍♂️</span> Weak vs. strong typing <span>🧘🏾‍♀️</span></h1>
+  <h1><span style="display: inline-block; transform: scaleX(-1)"> 🧚🏻‍♂️</span> Weak vs. strong typing <span>🏋🏽‍♀️</span></h1>
   <p>Weak: Implicit type conversions</p>
   <p>Strong: Explicit conversion necessary</p>
   <p><small>(Disclaimer: There are several definitions and criteria.)</small></p>
@@ -67,7 +67,7 @@ NaN
 </section>
 
 <section>
-  <h1><span>🧘🏾‍♀️</span> Ruby:<br>Explicit conversion necessary</h1>
+  <h1><span>🏋🏽‍♀️</span> Ruby:<br>Explicit conversion necessary</h1>
 <pre><code data-trim>
 > 5 + "5"
 TypeError: String can't be coerced into Integer
@@ -148,7 +148,7 @@ error[E0308]: mismatched types
   <h1><span>🏋🏽‍♀️</span> <span>🧘🏾‍♀️</span> Benefits of strong & static</h1>
   <p>Developer productivity</p>
   <p>Explicit, readable, self-documenting code</p>
-  <p>Catch a certain type of bugs early</p>
+  <p>Catch a certain bugs early</p>
   <p>Helps with complex logic</p>
 </section>
 
@@ -182,24 +182,30 @@ error[E0308]: mismatched types
 </section>
 
 <section>
+  <h1>Playground</h1>
+  <p><a href="https://www.typescriptlang.org/play/" target="_blank">typescriptlang.org/play/</a></p>
+</section>
+
+<section>
   <h1>Example</h1>
 <pre><code class="typescript" data-trim>
-const a = 1;
-const b = 2;
-const c = a + b;
-const d = false;
-const e = "Garfield";
+let a = 1;
+let b = 2;
+let c = a + b;
+let d = false;
+let e = "Garfield";
 </code></pre>
+  <p style="font-size: 200%">🧠💡</p>
 </section>
 
 <section>
   <h1>Type annotations</h1>
 <pre><code class="typescript" data-trim>
-const a: number = 1;
-const b: number = 2;
-const c: number = a + b;
-const d: boolean = false;
-const e: string = "Garfield";
+let a: number = 1;
+let b: number = 2;
+let c: number = a + b;
+let d: boolean = false;
+let e: string = "Garfield";
 </code></pre>
 </section>
 
@@ -225,6 +231,7 @@ console.log(height.startsWith("1"));
   <h1>Implicit types</h1>
 <pre><code class="typescript" data-trim>
 const cat = { name: 'Garfield' };
+// Inferred type: { name: string; }
 console.log(cat.name);
 console.log(cat.age);
 </code></pre>
@@ -336,7 +343,7 @@ class Cat {
   constructor(name: string) {
     this.name = this.sanitizeName(name)
   }
-  private sanitizeName(name: string) {
+  private sanitizeName(name: string): void {
     return name.replace(/[^a-zA-Z]/g, '');
   }
   public meow(): void {
@@ -496,16 +503,14 @@ console.log('found', foundName);
 
 <section>
   <h1>Optional properties and parameters</h1>
-  <p><code>someType?</code> is a short notation for <code>someType | undefined</code></p>
+  <p><code>property?: someType</code> is short for<br><code>property: someType | undefined</code></p>
 <pre><code class="typescript" data-trim>
 class Cat {
   constructor(public name: string) {}
   birthday?: Date;
   meow(addressee?: string) {
     const to = addressee || 'everyone';
-    console.log(
-      `${this.name} says meow to ${to}`
-    );
+    console.log(`${this.name} says meow to ${to}`);
   }
 }
 </code></pre>
@@ -522,7 +527,7 @@ cat.meow('you'); // … to you
 
 <section>
   <h1>Optional properties and parameters</h1>
-  <p>Maybe forces you to handle both cases</p>
+  <p>TypeScript forces you to handle both cases</p>
 <pre><code class="typescript" data-trim>
 console.log(cat.birthday.getFullYear());
 </code></pre>
@@ -533,7 +538,6 @@ console.log(cat.birthday.getFullYear());
   <h1>Type assertions</h1>
   <p>Narrow down union types</p>
 <pre><code class="typescript" data-trim>
-// birthday?: Date
 // cat.birthday is a Date or undefined
 if (cat.birthday) {
   // cat.birthday is a Date in this branch
@@ -609,7 +613,6 @@ enum OrderState { New = 'NEW', /* … */ }
   <p>Array of <em>Cats</em></p>
   <p>Map of <em>ID</em> & <em>Person</em></p>
   <p>Promise of <em>User</em></p>
-  <p>Observable of <em>SearchResults</em></p>
 </section>
 
 <section>
@@ -631,12 +634,12 @@ const arrayOfCats: Array&lt;Cat> = [
 <section>
   <h1>Generics</h1>
 <pre><code class="typescript" data-trim>
-const catMap = new Map&lt;string, Cat>();
+const catsByName = new Map&lt;string, Cat>();
 arrayOfCats.forEach((cat) => {
-  catMap.set(cat.name, cat);
+  catsByName.set(cat.name, cat);
 })
 // Type: Cat | undefined
-const cat = catMap.get('Grumpy Cat');
+const cat = catsByName.get('Grumpy Cat');
 console.log(cat);
 </code></pre>
 </section>
@@ -658,9 +661,10 @@ interface GenericNode&lt;T> {
   <p>Example: Category with sub-categories</p>
 <pre><code class="typescript" data-trim>
 interface Category { name: string; }
-type CategoryNode = GenericNode&lt;Category>;
-const drama: Category  = { name: 'Drama' }
+const drama: Category  = { name: 'Drama' };
 const romance: Category = { name: 'Romance' };
+
+type CategoryNode = GenericNode&lt;Category>;
 const categoryTree: CategoryNode = {
   data: drama,
   children: [
@@ -674,7 +678,7 @@ const categoryTree: CategoryNode = {
   <h1>Generic functions</h1>
   <p>More frequent than generic types</p>
   <p>Type information often gets lost,<br>the return type gets <code>any</code></p>
-  <p>Input type should determine output type</p>
+  <p>Input type is variable but determines output type</p>
 </section>
 
 <section>
@@ -690,9 +694,9 @@ function compact(array) {
   return result;
 }
 // Inferred type: (number | null | undefined)[]
-const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Inferred type: any[] 😧
-const compactArray = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(arrayOfNumbers);
 </code></pre>
 </section>
 
@@ -709,9 +713,9 @@ function compact(array: any[]): any[] {
   return result;
 }
 // Inferred type: (number | null | undefined)[]
-const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Type: any[] 😕
-const compactArray = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(arrayOfNumbers);
 </code></pre>
 </section>
 
@@ -728,9 +732,9 @@ function compact&lt;T>(array: T[]): T[] {
   return result;
 }
 // Inferred type: (number | null | undefined)[]
-const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Type: (number | null | undefined)[] 😀😧😟
-const compactArray = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(arrayOfNumbers);
 </code></pre>
 </section>
 
@@ -747,9 +751,9 @@ function compact&lt;T>(array: (T | undefined | null)[]): T[] {
   return result;
 }
 // Inferred type: (number | null | undefined)[]
-const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Type: number[] 😍😍😍
-const compactArray = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(arrayOfNumbers);
 </code></pre>
 </section>
 
@@ -764,9 +768,9 @@ const compactArray = compact(arrayOfNumbers);
   <h1>Strict Mode</h1>
   <p>Switch that enables several compiler options,<br>most importantly <code>strictNullChecks</code></p>
   <p>In loose mode:</p>
-  <p><code class="typescript">const userName: string = undefined; // valid 😱</code></p>
+  <pre><code class="typescript">const userName: string = undefined; // valid 😱</code></pre>
   <p>In strict mode:</p>
-  <p><code class="typescript">const userName: string = undefined; // invalid 😤</code></p>
+  <pre><code class="typescript">const userName: string = undefined; // invalid 😤</code></pre>
 </section>
 
 <section>
@@ -777,23 +781,23 @@ const compactArray = compact(arrayOfNumbers);
 
 <section>
   <h1>Strengths</h1>
-  <p>Declare the application state as interfaces &rarr;<br>Type checking everywhere</p>
-  <p>Especially useful when using Redux, mobx-state-tree etc.</p>
+  <p>Good entry into statically-typed programming</p>
+  <p>Expressive and correct (in strict mode)</p>
+  <p>The language and the ecosystem grows and matures</p>
 </section>
 
 <section>
   <h1>Strengths</h1>
-  <p>Developer productivity</p>
-  <p>Visual Studio Code: Auto-completion, function signatures…</p>
+  <p>Developer productivity (Visual Studio Code)</p>
   <p>Self-documenting code</p>
+  <p>Easier refactoring</p>
   <p>Type checks are a thin testing layer</p>
 </section>
 
 <section>
   <h1>Strengths</h1>
-  <p>Good entry into statically-typed programming</p>
-  <p>Expressive and correct (in strict mode)</p>
-  <p>The language and the ecosystem grows and matures</p>
+  <p>Declare the application state as interfaces &rarr;<br>Type checking everywhere</p>
+  <p>Works well with Redux, mobx-state-tree etc.</p>
 </section>
 
 <section>
@@ -808,29 +812,28 @@ const compactArray = compact(arrayOfNumbers);
   <h1>Weaknesses</h1>
   <p>Compiler toolchain is necessary</p>
   <p>ECMAScript vs. TypeScript evolve separately</p>
-  <p>Unit & integration tests are still necessary</p>
 </section>
 
 <section>
   <h1>Weaknesses</h1>
   <p>TypeScript is Work in Progress</p>
-  <p>Some things are still broken, incorrect or missing</p>
-  <p>The error messages are long and cryptic</p>
+  <p>Some things are incorrect or missing</p>
+  <p>The error messages are cryptic</p>
   <p>Workaround: Declare types explicitly and early</p>
 </section>
 
 <section>
   <h1>Weaknesses</h1>
   <p>After compilation, it’s plain JavaScript</p>
-  <p>🌈 Typed fantasy dream land vs.<br>⛈️ untyped JavaScript land</p>
   <p>Type definitions may be incorrect</p>
+  <p>🌈 Typed fantasy dream land vs.<br>⛈️ untyped JavaScript land</p>
 </section>
 
 <section>
   <h1>Resources</h1>
   <p><a href="https://www.typescriptlang.org/">typescriptlang.org</a></p>
-  <p><a href="https://www.typescriptlang.org/play/index.html">Playground</a></p>
-  <p><a href="https://mariusschulz.com/blog/series/typescript-evolution">Marius Schulz</a></p>
+  <p><a href="https://www.typescriptlang.org/play/">Playground</a></p>
+  <p><a href="https://mariusschulz.com/blog/series/typescript-evolution">Marius Schulz’ articles</a></p>
   <p><a href="https://github.com/typescript-cheatsheets/react-typescript-cheatsheet">React+TypeScript Cheatsheets</a></p>
   <p><a href="https://github.com/Microsoft/TypeScript/tree/master/lib">Type definitions for ES, Browser, Node etc.</a></p>
 </section>
