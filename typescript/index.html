@@ -341,9 +341,9 @@ console.log(garfield.name);
 class Cat {
   private name: string;
   constructor(name: string) {
-    this.name = this.sanitizeName(name)
+    this.name = this.sanitizeName(name);
   }
-  private sanitizeName(name: string): void {
+  private sanitizeName(name: string): string {
     return name.replace(/[^a-zA-Z]/g, '');
   }
   public meow(): void {
@@ -381,8 +381,7 @@ garfield.sanitizeName();
   <h1>Interfaces</h1>
   <p>Defines the abstract shape of an object</p>
 <pre><code class="typescript" data-trim>
-interface User {
-  id: number;
+interface CatOwner {
   name: string;
   birthday: Date;
   cats: Cat[];
@@ -394,10 +393,9 @@ interface User {
 <section>
   <h1>Interface usage</h1>
   <pre><code class="typescript" data-trim>
-const jon: User = {
-  id: 1,
+const jon: CatOwner = {
   name: 'Jon Arbuckle',
-  email: 'john@example.org',
+  birthday: new Date(1951, 6, 28),
   cats: [
     new Cat('Garfield')
   ],
@@ -411,11 +409,13 @@ const jon: User = {
 <section>
   <h1>Class implements interface</h1>
   <pre><code class="typescript" data-trim>
-class Admin implements User {
-  public cats: Cat[] = [];
+class User implements CatOwner {
+  public cats: Cat[] = []; // init
   constructor(
-    public id: number, public name: string,
-    public email: string, public birthday: Date
+    public name: string,   // init
+    public birthday: Date, // init
+    // New instance property
+    public email: Date,
   ) {}
   public adoptCat(cat: Cat) {
     this.cats.push(cat);
@@ -430,8 +430,9 @@ class Admin implements User {
 interface Serializable {
   serialize: () => string
 }
-type SerializableUser = User & Serializable;
-const serializableJon: SerializableUser = {
+type SerializableCatOwner =
+  CatOwner & Serializable;
+const serialJon: SerializableCatOwner = {
   ...jon,
   serialize() {
     return JSON.stringify(this)
@@ -463,8 +464,8 @@ type Pet = Cat | Dog;
   <h1>Using a union type</h1>
 <pre><code class="typescript" data-trim>
 class PetOwner {
-  constructor(public name: string) {}
   public pets: Pet[] = [];
+  constructor(public name: string) {}
   adoptPet(pet: Pet) {
     this.pets.push(pet);
   }
