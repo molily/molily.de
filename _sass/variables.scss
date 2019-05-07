@@ -38,9 +38,13 @@ $link-active-underline-color: $link-color;
  *
  */
 
+// Font stack without webfont
 $sans-serif-font: 'Segoe UI', Corbel, "-apple-system", system-ui, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+// Font stack with webfont
 $base-font: 'Noto Sans', $sans-serif-font;
+
 $monospace-font: 'Monaco', 'Consolas', 'Droid Sans Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Lucida Console', 'Liberation Mono', 'Courier New', monospace;
+
 $citation-font: 'Century Schoolbook', 'Book Antiqua', 'Palatino Linotype', Didot, 'URW Palladio L', Georgia, serif;
 
 $content-line-height: 1.8;
