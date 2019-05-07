@@ -1,0 +1,857 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Introduction to TypeScript</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple-molily.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+<!-- ###################################################################### -->
+
+<section>
+  <h1>Introduction to TypeScript</h1>
+  <p>Mathias Schäfer<br>9elements<br>2019-05-08</p>
+</section>
+
+<section>
+  <h1>First, let’s talk about JavaScript (ECMAScript).</h1>
+</section>
+
+<section>
+  <h1>ECMAScript’s type system</h1>
+  <h2>WEAK 🧚🏻‍♂️</h2>
+  <h2>DYNAMIC 🏃🏾‍♀️</h2>
+</section>
+
+<section>
+  <h1>🏋🏽‍♀️ Strong vs. weak typing 🧚🏻‍♂️</h1>
+  <p>Strong: Explicit conversion necessary</p>
+  <p>Weak: Implicit type conversions</p>
+  <p>(among others)</p>
+</section>
+
+<section>
+  <h1>ECMAScript: Implicit type conversions</h1>
+
+<pre><code data-trim>
+> 5 + "5"
+'55'
+> 5 + "a"
+NaN
+</code></pre>
+</section>
+
+<section>
+  <h1>Ruby: Explicit conversion necessary</h1>
+<pre><code data-trim>
+> 5 + "5"
+TypeError: String can't be coerced into Integer
+from (pry):1:in `+'
+> 5 + "a"
+TypeError: String can't be coerced into Integer
+from (pry):2:in `+'
+> 5 + Integer("5", 10)
+=> 10
+> 5.to_s + "a"
+=> "5a"
+</code></pre>
+</section>
+
+<section>
+  <h1>🧘🏾 Static vs. dynamic typing 🏃🏾‍♀️</h1>
+  <p>Static: A variable may only hold values of a certain type</p>
+  <p>Dynamic: A variable may hold arbitrary values</p>
+  <p><small>(Disclaimer: There are several definitions and criteria.)</small></p>
+</section>
+
+<section>
+  <h1>Dynamic typing 🏃🏾‍♀️</h1>
+  <p>The type of a variable is not known at compile time</p>
+  <p>Type may change at runtime</p>
+  <p>Type needs to be checked at runtime</p>
+</section>
+
+<section>
+  <h1>Type changes at runtime</h1>
+<pre><code class="javascript" data-trim>
+let age = 56;
+age = "fifty-six";
+</code></pre>
+  <p style="font-size: 5rem">🤷</p>
+</section>
+
+<section>
+  <h1>Type check at runtime</h1>
+  <pre><code class="javascript" data-trim>
+let age = 56;
+age(); // TypeError: age is not a function
+</code></pre>
+</section>
+
+<section>
+  <h1>Static typing 🧘🏾</h1>
+  <p>The type of a variable is known at compile time</p>
+  <p>Type may not change at runtime</p>
+  <p>Type may be checked at compile time</p>
+</section>
+
+<section>
+  <h1>Rust: Type check at compile time</h1>
+<pre><code class="rust" data-trim>
+fn main() {
+  let mut x = 56;
+  x = "fifty-six";
+}
+</code></pre>
+</section>
+
+<section>
+  <h1>Rust: Type check at compile time</h1>
+<pre><code data-trim>
+error[E0308]: mismatched types
+ --> src/main.rs:3:9
+  |
+3 |     x = "fifty-six";
+  |         ^^^^^^^^^^^ expected integer, found reference
+  |
+  = note: expected type `{integer}`
+             found type `&'static str`
+</code></pre>
+</section>
+
+<section>
+  <h1>🏋🏽‍♀️ 🧘🏾 Benefits of strong & static</h1>
+  <p>Developer productivity</p>
+  <p>Explicit, readable, self-documenting code</p>
+  <p>Catch a certain type of bugs early</p>
+  <p>Helps with complex logic</p>
+</section>
+
+<section>
+  <h1>ECMAScript types</h1>
+  <p>Primitive types:<br>Undefined, Null, Boolean, Number, String, Symbol.</p>
+  <p>Complex type:<br>Object.</p>
+</section>
+
+<section>
+  <h1>Built-in Object types</h1>
+  <p>Object, Function, Error, Date, RegExp, Array, typed arrays, (Weak)Map, (Weak)Set, Promise…</p>
+  <p>Boxed primitives (Boolean, Number, String)</p>
+</section>
+
+<section>
+  <h1>TypeScript</h1>
+  <p>A language that compiles to JavaScript</p>
+  <p>TypeScript adds type information</p>
+  <p>A superset (extension) of TypeScript</p>
+  <p>All valid ECMAScript is valid TypeScript</p>
+  <p>Open source project by Microsoft</p>
+</section>
+
+<section>
+  <h1>TypeScript Compiler</h1>
+  <p>Takes *.ts files</p>
+  <p>Type checks</p>
+  <p>Translation to the ECMAScript target version</p>
+  <p>Outputs *.js files</p>
+</section>
+
+<section>
+  <h1>Example</h1>
+<pre><code class="typescript" data-trim>
+const a = 1;
+const b = 2;
+const c = a + b;
+const d = false;
+const e = "Garfield";
+</code></pre>
+</section>
+
+<section>
+  <h1>Type annotations</h1>
+<pre><code class="typescript" data-trim>
+const a: number = 1;
+const b: number = 2;
+const c: number = a + b;
+const d: boolean = false;
+const e: string = "Garfield";
+</code></pre>
+</section>
+
+<section>
+  <h1>Type inference</h1>
+  <p>All values have a type</p>
+  <p>A variable or property has an implicit or explicit type</p>
+  <p>Type annotations are optional</p>
+  <p>The compiler <em>infers</em> the type logically</p>
+</section>
+
+<section>
+  <h1>Implicit types</h1>
+<pre><code class="typescript" data-trim>
+const height = 1.7;
+console.log(height.toFixed(2));
+console.log(height.startsWith("1"));
+</code></pre>
+<p><em style="color: darkred">Property 'startsWith' does not exist on type '1.7'.</em></p>
+</section>
+
+<section>
+  <h1>Implicit types</h1>
+<pre><code class="typescript" data-trim>
+const cat = { name: 'Garfield' };
+console.log(cat.name);
+console.log(cat.age);
+</code></pre>
+<p><em style="color: darkred">Property 'age' does not exist on type '{ name: string; }'.</em></p>
+</section>
+
+<section>
+  <h1>Array types</h1>
+<pre><code class="typescript" data-trim>
+const cats = [
+  'Grumpy Cat', 'Maru', 'Lil Bub'
+];
+</code></pre>
+
+<pre><code class="typescript" data-trim>
+const cats: string[] = [
+  'Grumpy Cat', 'Maru', 'Lil Bub'
+];
+</code></pre>
+
+<p><code>string[]</code> means array of strings</p>
+</section>
+
+<section>
+  <h1>Array types</h1>
+  <pre><code class="typescript" data-trim>
+const cats = [
+  'Grumpy Cat', 'Maru', 'Lil Bub'
+];
+cats.push(12345);
+</code></pre>
+  <p><em style="color: darkred">Argument of type '12345' is not assignable to parameter of type 'string'.</em></p>
+</section>
+
+<section>
+  <h1>Function type annotations</h1>
+<pre><code class="javascript" data-trim>
+const sum = (a, b) =>
+  a + b;
+</code></pre>
+<pre><code class="typescript" data-trim>
+const sum = (a: number, b: number): number =>
+  a + b;
+</code></pre>
+</section>
+
+<section>
+  <h1>Parameter type check</h1>
+<pre><code class="typescript" data-trim>
+const sum = (a: number, b: number): number =>
+  a + b;
+console.log(sum(5, '5'));
+</code></pre>
+
+<p><em style="color: darkred">Argument of type '"5"' is not assignable to parameter of type 'number'.</em></p>
+</section>
+
+<section>
+  <h1>Classes</h1>
+<pre><code class="typescript" data-trim>
+class Cat {
+  // Declare instance property
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  meow(): void {
+    console.log(`${this.name} says meow!`);
+  }
+}
+const garfield = new Cat('Garfield');
+garfield.meow();
+</code></pre>
+</section>
+
+<section>
+  <h1>Public vs. private properties</h1>
+<pre><code class="typescript" data-trim data-line-numbers="3">
+class Cat {
+  // Declare instance property
+  private name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  meow(): void {
+    console.log(`${this.name} says meow!`);
+  }
+}
+const garfield = new Cat('Garfield');
+garfield.meow();
+</code></pre>
+</section>
+
+<section>
+  <h1>Public vs. private properties</h1>
+<pre><code class="typescript" data-trim>
+const garfield = new Cat('Garfield');
+garfield.meow();
+console.log(garfield.name);
+</code></pre>
+<p><em style="color: darkred">Property 'name' is private and only accessible within class 'Cat'.</em></p>
+</section>
+
+<section>
+  <h1>Public vs. private methods</h1>
+<pre><code class="typescript" data-trim>
+class Cat {
+  private name: string;
+  constructor(name: string) {
+    this.name = this.sanitizeName(name)
+  }
+  private sanitizeName(name: string) {
+    return name.replace(/[^a-zA-Z]/g, '');
+  }
+  public meow(): void {
+    console.log(`${this.name} says meow!`);
+  }
+}
+</code></pre>
+</section>
+
+<section>
+  <h1>Public vs. private methods</h1>
+<pre><code class="typescript" data-trim>
+const garfield = new Cat('Garfield!');
+garfield.meow(); // Garfield says meow!
+garfield.sanitizeName();
+</code></pre>
+  <p><em style="color: darkred">Property 'sanitizeName' is private and only accessible within class 'Cat'.</em></p>
+</section>
+
+<section>
+  <h1>Type definitions</h1>
+  <p>TypeScript knows ECMAScript’s built-in types</p>
+  <p>Host environments: Node.js and browsers</p>
+  <p>Type definitions for libraries &amp; frameworks (e.g. DefinitelyTyped)</p>
+</section>
+
+<section>
+  <h1>Own type definitions</h1>
+  <p>TypeScript allows to define custom types</p>
+  <p>Create Types by combining and modifying other types</h1>
+  <p>AKA algebraic data types</p>
+</section>
+
+<section>
+  <h1>Interfaces</h1>
+  <p>Defines the abstract shape of an object</p>
+<pre><code class="typescript" data-trim>
+interface User {
+  id: number;
+  name: string;
+  birthday: Date;
+  cats: Cat[];
+  adoptCat: (cat: Cat) => void
+}
+</code></pre>
+</section>
+
+<section>
+  <h1>Interface usage</h1>
+  <pre><code class="typescript" data-trim>
+const jon: User = {
+  id: 1,
+  name: 'Jon Arbuckle',
+  email: 'john@example.org',
+  cats: [
+    new Cat('Garfield')
+  ],
+  adoptCat(cat: Cat) {
+    this.cats.push(cat);
+  }
+};
+</code></pre>
+</section>
+
+<section>
+  <h1>Class implements interface</h1>
+  <pre><code class="typescript" data-trim>
+class Admin implements User {
+  public cats: Cat[] = [];
+  constructor(
+    public id: number, public name: string,
+    public email: string, public birthday: Date
+  ) {}
+  public adoptCat(cat: Cat) {
+    this.cats.push(cat);
+  }
+}
+</code></pre>
+</section>
+
+<section>
+  <h1>Intersection types</h1>
+<pre><code class="typescript" data-trim>
+interface Serializable {
+  serialize: () => string
+}
+type SerializableUser = User & Serializable;
+const serializableJon: SerializableUser = {
+  ...jon,
+  serialize() {
+    return JSON.stringify(this)
+  }
+};
+</code></pre>
+</section>
+
+<section>
+  <h1>Union types</h1>
+<pre><code class="typescript" data-trim>
+class Cat {
+  constructor(public name: string) {}
+  meow() {
+    console.log(`${this.name} says meow!`);
+  }
+}
+class Dog {
+  constructor(public name: string) {}
+  woof() {
+    console.log(`${this.name} says woof!`);
+  }
+}
+type Pet = Cat | Dog;
+</code></pre>
+</section>
+
+<section>
+  <h1>Using a union type</h1>
+<pre><code class="typescript" data-trim>
+class PetOwner {
+  constructor(public name: string) {}
+  public pets: Pet[] = [];
+  adoptPet(pet: Pet) {
+    this.pets.push(pet);
+  }
+}
+const jon = new PetOwner('Jon');
+jon.adoptPet(new Cat('Garfield'));
+jon.adoptPet(new Dog('Laika'));
+</code></pre>
+</section>
+
+<section>
+  <h1>Most common union type</h1>
+<pre><code class="typescript" data-trim>
+someType | undefined
+</code></pre>
+  <p>AKA Maybe, Some</p>
+</section>
+
+<section>
+  <h1>Maybe</h1>
+<pre><code class="typescript" data-trim>
+const prefix = 'B';
+const names = [ 'Anton', 'Berta', /* … */ ];
+
+let foundName: string | undefined;
+for (let i = 0, l = names.length; i &lt; l; i++) {
+  const name = names[i];
+  if (name.startsWith(prefix)) {
+    foundName = name
+    break;
+  }
+}
+console.log('found', foundName);
+</code></pre>
+</section>
+
+<section>
+  <h1>Optional properties and parameters</h1>
+  <p><code>someType?</code> is a short notation for <code>someType | undefined</code></p>
+<pre><code class="typescript" data-trim>
+class Cat {
+  constructor(public name: string) {}
+  birthday?: Date;
+  meow(addressee?: string) {
+    const to = addressee || 'everyone';
+    console.log(
+      `${this.name} says meow to ${to}`
+    );
+  }
+}
+</code></pre>
+</section>
+
+<section>
+  <h1>Optional properties and parameters</h1>
+<pre><code class="typescript" data-trim>
+const cat = new Cat('Maru');
+cat.meow(); // … to everyone
+cat.meow('you'); // … to you
+</code></pre>
+</section>
+
+<section>
+  <h1>Optional properties and parameters</h1>
+<pre><code class="typescript" data-trim>
+console.log(cat.birthday.getFullYear());
+</code></pre>
+
+<p><em style="color: darkred">cat.birthday: Object is possible undefined.</em></p>
+
+</section>
+
+<section>
+  <h1>Type assertions</h1>
+  <p>Narrow down union types</p>
+<pre><code class="typescript" data-trim>
+// birthday?: Date
+// cat.birthday is a Date or undefined
+if (cat.birthday) {
+  // cat.birthday is a Date in this branch
+  console.log(cat.birthday.getFullYear());
+} else {
+  // cat.birthday is undefined in this branch
+  console.error('🤷🏽‍♂️');
+}
+</code></pre>
+</section>
+
+<section>
+  <h1><code>any</code> type</h1>
+<pre><code class="typescript" data-trim>
+let x: any; // undefined
+x = 1;
+x = '1';
+x = {};
+</code></pre>
+</section>
+
+<section>
+  <h1><code>any</code> type</h1>
+  <p><code>any</code> means untyped code.</p>
+  <p><code>any</code> is contagious, you’ll end up with all code untyped.</p>
+  <p>Use sparingly. Avoid at all cost!</p>
+</section>
+
+<section>
+  <h1>Enums</h1>
+  <p>A set of constants</p>
+<pre><code class="typescript" data-trim>
+const ORDER_NEW_STATE = 0;
+const ORDER_QUEUED_STATE = 1;
+const ORDER_PROCESSED_STATE = 2;
+const ORDER_IN_SHIPMENT_STATE = 3;
+const ORDER_DELIVERED_STATE = 4;
+const ORDER_CANCELED_STATE = 5;
+</code></pre>
+</section>
+
+<section>
+  <h1>Enums</h1>
+<pre><code class="typescript" data-trim>
+enum OrderState {
+  New,
+  Queued,
+  Processed,
+  InShipment,
+  Delivered,
+  Canceled
+}
+interface Order { state: OrderState }
+const order: Order = { state: OrderState.New };
+</code></pre>
+</section>
+
+<section>
+  <h1>Enums</h1>
+  <p>Numerical by default (0, 1, 2…)</p>
+  <p><code>OrderState</code> is compiled to an object</p>
+  <p><code>OrderState.New</code> is a property with the value 0 etc.</p>
+  <p>String enums:</p>
+<pre><code class="typescript" data-trim>
+enum OrderState { New = 'NEW', /* … */ }
+</code></pre>
+</section>
+
+<section>
+  <h1>Generics</h1>
+  <p>A generic type has other types as variables, e.g.</p>
+  <p>Array of <em>Cats</em></p>
+  <p>Map of <em>ID</em> & <em>Person</em></p>
+  <p>Promise of <em>User</em></p>
+  <p>Observable of <em>SearchResults</em></p>
+</section>
+
+<section>
+  <h1>Generics</h1>
+<pre><code class="typescript" data-trim>
+const arrayOfCats: Cat[] = [
+  new Cat('Grumpy Cat'),
+  new Cat('Maru'),
+  new Cat('Lil Bub')
+];
+const arrayOfCats: Array&lt;Cat> = [
+  new Cat('Grumpy Cat'),
+  new Cat('Maru'),
+  new Cat('Lil Bub')
+];
+</code></pre>
+</section>
+
+<section>
+  <h1>Generics</h1>
+<pre><code class="typescript" data-trim>
+const catMap = new Map&lt;string, Cat>();
+arrayOfCats.forEach((cat) => {
+  catMap.set(cat.name, cat);
+})
+// Type: Cat | undefined
+const cat = catMap.get('Grumpy Cat');
+console.log(cat);
+</code></pre>
+</section>
+
+<section>
+  <h1>Your own generics</h1>
+  <p>Example: Tree structure with nodes</p>
+<pre><code class="typescript" data-trim>
+interface GenericNode&lt;T> {
+  data: T;
+  children?: GenericNode&lt;T>[];
+}
+</code></pre>
+  <p>Type variable <code>T</code></p>
+</section>
+
+<section>
+  <h1>Your own generics</h1>
+  <p>Example: Category with sub-categories</p>
+<pre><code class="typescript" data-trim>
+interface Category { name: string; }
+type CategoryNode = GenericNode&lt;Category>;
+const drama: Category  = { name: 'Drama' }
+const romance: Category = { name: 'Romance' };
+const categoryTree: CategoryNode = {
+  data: drama,
+  children: [
+    { data: romance }
+  ]
+};
+</code></pre>
+</section>
+
+<section>
+  <h1>Generic functions</h1>
+  <p>More frequent than generic types</p>
+  <p>Type information often gets lost,<br>the return type gets <code>any</code></p>
+  <p>Input type should determine output type</p>
+</section>
+
+<section>
+<pre><code class="typescript" data-trim>
+function compact(array) {
+  const result = [];
+  for (let i = 0, l = array.length; i &lt; l; i++) {
+    const item = array[i];
+    if (!(item === undefined || item === null)) {
+      result.push(item);
+    }
+  }
+  return result;
+}
+// Inferred type: (number | null | undefined)[]
+const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+// Inferred type: any[] 😧
+const compactArray = compact(arrayOfNumbers);
+</code></pre>
+</section>
+
+<section>
+<pre><code class="typescript" data-trim>
+function compact(array: any[]): any[] {
+  const result = [];
+  for (let i = 0, l = array.length; i &lt; l; i++) {
+    const item = array[i];
+    if (!(item === undefined || item === null)) {
+      result.push(item);
+    }
+  }
+  return result;
+}
+// Inferred type: (number | null | undefined)[]
+const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+// Type: any[] 😕
+const compactArray = compact(arrayOfNumbers);
+</code></pre>
+</section>
+
+<section>
+<pre><code class="typescript" data-trim>
+function compact&lt;T>(array: T[]): T[] {
+  const result = [];
+  for (let i = 0, l = array.length; i &lt; l; i++) {
+    const item = array[i];
+    if (!(item === undefined || item === null)) {
+      result.push(item);
+    }
+  }
+  return result;
+}
+// Inferred type: (number | null | undefined)[]
+const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+// Type: (number | null | undefined)[] 😀😧😟
+const compactArray = compact(arrayOfNumbers);
+</code></pre>
+</section>
+
+<section>
+<pre><code class="typescript" data-trim>
+function compact&lt;T>(array: (T | undefined | null)[]): T[] {
+  const result: T[] = [];
+  for (let i = 0, l = array.length; i &lt; l; i++) {
+    const item = array[i];
+    if (!(item === undefined || item === null)) {
+      result.push(item); // undefined & null are excluded
+    }
+  }
+  return result;
+}
+// Inferred type: (number | null | undefined)[]
+const arrayOfNumbers = [ 1, 2, undefined, null, 5 ]
+// Type: number[] 😍😍😍
+const compactArray = compact(arrayOfNumbers);
+</code></pre>
+</section>
+
+<section>
+  <h1>TypeScript compiler options</h1>
+  <p>Per default, the configuration is very loose</p>
+  <p>You need to activate…</p>
+  <p class="fragment" style="font-size: 250%; text-transform: uppercase; font-family: Phosphate, sans-serif; font-weight: 100; color: darkred; text-shadow: 3px 2px 1.5px rgb(246, 0, 245), -3px -2px 1.5px rgb(0, 217, 255); transition: opacity 2s linear">the strict mode</p>
+</section>
+
+<section>
+  <h1>Strict Mode</h1>
+  <p>Switch that enables several compiler options,<br>most importantly <code>strictNullChecks</code></p>
+  <p>In loose mode:</p>
+  <p><code class="typescript">const userName: string = undefined; // valid 😱</code></p>
+  <p>In strict mode:</p>
+  <p><code class="typescript">const userName: string = undefined; // invalid 😤</code></p>
+</section>
+
+<section>
+  <h1>Strict Mode</h1>
+  <p>TypeScript is rather pointless without strict mode.</p>
+  <p>It exists to ease the migration from untyped JS to TS.</p>
+</section>
+
+<section>
+  <h1>Strengths</h1>
+  <p>Declare the application state as interfaces &rarr;<br>Type checking everywhere</p>
+  <p>Especially useful when using Redux, mobx-state-tree etc.</p>
+</section>
+
+<section>
+  <h1>Strengths</h1>
+  <p>Developer productivity</p>
+  <p>Visual Studio Code: Auto-completion, function signatures…</p>
+  <p>Self-documenting code</p>
+  <p>Type checks are a thin testing layer</p>
+</section>
+
+<section>
+  <h1>Strengths</h1>
+  <p>Good entry into statically-typed programming</p>
+  <p>Expressive and correct (in strict mode)</p>
+  <p>The language and the ecosystem grows and matures</p>
+</section>
+
+<section>
+  <h1>Strengths</h1>
+  <p>Integrates with libraries, frameworks, tools</p>
+  <p>Create React App, Angular CLI, Vue CLI…</p>
+  <p><code>npx create-react-app my-app --typescript</code></p>
+  <p>Libraries and frameworks are written in TypeScript</p>
+</section>
+
+<section>
+  <h1>Weaknesses</h1>
+  <p>Compiler toolchain is necessary</p>
+  <p>ECMAScript vs. TypeScript evolve separately</p>
+  <p>Unit & integration tests are still necessary</p>
+</section>
+
+<section>
+  <h1>Weaknesses</h1>
+  <p>TypeScript is Work in Progress</p>
+  <p>Some things are still broken, incorrect or missing</p>
+  <p>The error messages are long and cryptic</p>
+  <p>Workaround: Declare types explicitly and early</p>
+</section>
+
+<section>
+  <h1>Weaknesses</h1>
+  <p>After compilation, it’s plain JavaScript</p>
+  <p>Typed fantasy dream land vs.<br>untyped JavaScript land</p>
+  <p>Type definitions may be incorrect</p>
+</section>
+
+<section>
+  <h1>Resources</h1>
+  <p><a href="https://www.typescriptlang.org/">typescriptlang.org</a></p>
+  <p><a href="https://www.typescriptlang.org/play/index.html">Playground</a></p>
+  <p><a href="https://mariusschulz.com/blog/series/typescript-evolution">Marius Schulz</a></p>
+  <p><a href="https://github.com/typescript-cheatsheets/react-typescript-cheatsheet">React+TypeScript Cheatsheets</a></p>
+  <p><a href="https://github.com/Microsoft/TypeScript/tree/master/lib">Type definitions for ES, Browser, Node etc.</a></p>
+</section>
+
+<section>
+  <h1>Questions? 🙋 Remarks? </h1>
+</section>
+
+<!-- ###################################################################### -->
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        controls: false,
+        history: true,
+        slideNumber: true,
+        transition: 'fade',
+        dependencies: [
+          { src: 'plugin/highlight/highlight.js', async: true, condition: function () { return !!document.querySelector('pre code'); }, callback: function () { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
