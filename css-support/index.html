@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <title>Testing CSS support with JavaScript</title>
+
+    <link rel="stylesheet" href="../reveal/css/reset.css">
+    <link rel="stylesheet" href="../reveal/css/reveal.css">
+    <link rel="stylesheet" href="../reveal/css/theme/simple-molily.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../reveal/lib/css/monokai.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal/css/print/pdf.css' : '../reveal/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+<!-- ******************************************************************** -->
+
+<section>
+<h1>Testing CSS support with JavaScript</h1>
+
+<p><img src="images/nausicaa-forscher.jpg" width="70%" alt="Nausicaä" title="Nausicaä"></p>
+
+<p><a href="http://2014.jsunconf.eu/">jsunconf 2014</a>, 2014-04-26</p>
+
+</section>
+
+<section>
+<h1>molily</h1>
+
+<p><a href="http://chaplinjs.org"><img src="images/chaplin.gif" width="30%" alt="Chaplin.js"></a></p>
+
+<ul>
+<li><a href="http://molily.de">molily.de</a> – <a href="https://twitter.com/molily">@molily</a></li>
+<li>Software developer at <a href="http://9elements.com">9elements</a></li>
+<li>Initiator of <a href="http://chaplinjs.org">Chaplin.js</a></li>
+</ul>
+</section>
+
+<section>
+<h1>Testing CSS support</h1>
+
+<ul>
+<li>Does the browser support a property?</li>
+<li>Does the browser support a specific property value?</li>
+<li>What’s the vendor prefix, if any?</li>
+</ul>
+</section>
+
+<section>
+<h1>Why bother?</h1>
+
+<ul>
+<li>General rule: Avoid inline styles, toggle classes</li>
+<li>Separation of concerns:<br>JavaScript: Behavior, CSS: Presentation</li>
+<li>Sometimes inline styles are necessary
+  <ul>
+    <li>Trigger CSS transitions</li>
+    <li>Manual step animations (like jQuery#animate)</li>
+  </ul>
+</li>
+<li>Load a polyfill or a less-fancy fallback</li>
+</ul>
+</section>
+
+<section>
+<h1>CSS Object Model (CSSOM)</h1>
+
+<ul>
+<li>The bridge between CSS and JavaScript</li>
+<li>Accessing stylesheets and element style via JavaScript</li>
+<li><a href="http://dev.w3.org/csswg/cssom/">CSSOM – Editor’s Draft, W3C CSS Working Group</a></li>
+<li>Origin: <a href="http://www.w3.org/TR/DOM-Level-2-Style/">DOM 2 CSS</a></li>
+</ul>
+</section>
+
+<section>
+<h1>CSSOM Introduction</h1>
+
+<ul>
+<li>
+  Inline Styles
+  <ul>
+    <li><code>el.style.property = 'value';</code></li>
+    <li>HTML attribute <code>style='property: value;'`</code></li>
+  </ul>
+ </li>
+<li>
+  Computed style
+  <ul>
+    <li><code>getComputedStyle(el).property</code></li>
+  </ul>
+</li>
+<li>
+  Stylesheets
+  <ul>
+    <li><code>#foo { color: red;  }</code></li>
+    <li><code>document.styleSheets</code></li>
+  </ul>
+ </li>
+ </ul>
+</section>
+
+<section>
+<h1>CSSOM Introduction</h1>
+
+<p>Stylesheets</p>
+
+<pre><code class="css" data-trim>
+#foo { color: red;  }
+</code></pre>
+
+</section>
+
+<section>
+<h1>Inline styles vs. computed styles</h1>
+
+<pre><code class="javascript" data-trim>
+var el = document.getElementById('foo');
+console.log( el.style.color ); // ''
+console.log( getComputedStyle(el).color ); // 'red'
+
+el.style.color = 'blue';
+console.log( el.style.color ); // blue
+console.log( getComputedStyle(el).color ); // 'blue'
+
+el.style.color = '';
+console.log( getComputedStyle(el).color ); // 'red'
+</code></pre>
+</section>
+
+<section>
+<h1>CSS vs. JavaScript naming</h1>
+
+<ul>
+<li>
+  CSS uses dashed property names:<br>
+  <code>border-bottom-right-radius</code>
+</li>
+<li>
+  JavaScript uses camelCase:<br>
+  <code>borderBottomRightRadius</code>
+</li>
+<li>It’s easy to transform them</li>
+<li><code>camelize</code> and <code>dasherize</code> from <a href="http://api.prototypejs.org/language/String/prototype/camelize/">Prototype.js</a>, <a href="https://github.com/epeli/underscore.string#string-functions">underscore.string</a>, …</li>
+</ul>
+</section>
+
+<section>
+<h1>Vendor prefixes #yolo</h1>
+
+<p>Experimental implementations</p>
+<pre><code class="css" data-trim>
+-moz-transform: scale(2);
+-webkit-transform: scale(2);
+-ms-transform: scale(2);
+transform: scale(2);
+</code></pre>
+<pre><code class="javascript" data-trim>
+el.style.MozTransform
+el.style.WebkitTransform
+el.style.msTransform // Yes
+el.style.transform
+</code></pre>
+<p><a href="http://caniuse.com/#feat=transforms2d">caniuse.com</a></p>
+</section>
+
+<section>
+<h1>Modernizr</h1>
+
+<ul>
+<li><a href="http://modernizr.com/">Modernizr</a> is a feature detection library</li>
+<li>Allows to detect support for HTML/CSS/JS/SVG…</li>
+<li>
+  <code>var supported = <a href="http://modernizr.com/docs/#testprop">Modernizr.testProp</a>('someProperty');</code><br>
+  camelCase needed
+</li>
+<li>
+  <code>var supported = <a href="http://modernizr.com/docs/#testallprops">Modernizr.testAllProps</a>('someProperty')</code><br>
+  Test ALL the vendor prefixes!
+</li>
+</ul>
+</section>
+
+<section>
+<h1>Modernizr’s approach</h1>
+
+<ul>
+<li>I will talk about the internals of the <a href="https://github.com/Modernizr/Modernizr">upcoming version 3.0 (master branch)</a></li>
+<li>Modernizr tries three detection methods</li>
+<li>For all possible properties (with vendor prefixes), do:
+  <ol>
+    <li><code>CSS.supports(property, value)</code> else</li>
+    <li>Use an <code>@supports</code> rule else</li>
+    <li>Check object properties</li>
+  </ol>
+</ul>
+</section>
+
+<section>
+<h1><code>CSS.supports(property, value)</code></h1>
+
+<ul>
+<li><code>var supported = CSS.supports(property, value);</code></li>
+<li>Finally, a simple JavaScript API</li>
+<li>The future is here (Firefox and Chrome)</li>
+<li><a href="http://dev.w3.org/csswg/css-conditional/#the-css-interface">CSS Conditional Rules Module</a></li>
+<li><a href="https://github.com/Modernizr/Modernizr/blob/master/src/nativeTestProps.js">Modernizr implementation</a></li>
+</ul>
+</section>
+
+<section>
+<h1>@supports CSS rule</h1>
+
+<ol>
+<li>Create a <code>style</code> element, append it to the <code>head</code></li>
+<li>
+  Add a <code>@supports</code> rule with a normal rule that styles an element in the DOM
+  <pre><code class="css" data-trim>
+  @supports (transform-style: preserve-3d) {
+    #test-element { position: absolute; }
+  }
+  </code></pre>
+</li>
+<li>
+  Read the computed style of the element<br>
+  <code>var supported = getComputedStyle(el).position === 'absolute';</code>
+</li>
+</ol>
+</section>
+
+<section>
+<h1>@supports CSS rule</h1>
+
+<ul>
+<li><a href="http://dev.w3.org/csswg/css-conditional/#at-supports">CSS Conditional Rules Module</a>
+<li><a href="https://github.com/Modernizr/Modernizr/blob/master/src/nativeTestProps.js">Modernizr implementation</a>
+</ul>
+</section>
+
+<section>
+<h1>Last resort: Check object properties</h1>
+
+<ol>
+  <li>
+    Test if JavaScript property exists (must be a string)<br>
+    <code>'property' in el.style</code>
+  </li>
+  <li>
+    Set the value to test<br>
+    <code>el.style.property = 'value';</code>
+  </li>
+  <li>
+    Check if the browser accepted the value. If not, the value is an empty string.<br>
+    <code>var supported = el.style.property === 'valueToTest';</code>
+  </li>
+</ol>
+</section>
+
+<section>
+<h1>Credits &lt;3</h1>
+
+<ul>
+<li><a href="http://tif.ca">Tiffany Conroy</a>: <a href="https://speakerdeck.com/theophani/what-about-the-cssom">What about the CSSOM?</a></li>
+<li><a href="http://tiffanybbrown.com">Tiffany B. Brown</a>: <a href="http://webinista.github.io/Conditional-CSS/">Conditional CSS</a></li>
+<li>The Modernizr team (Alex Sexton, Patrick Kettner, Stu Cox…)</li>
+</ul>
+</section>
+
+<section>
+
+<h1>Questions? Feedback?</h1>
+
+<ul>
+<li><a href="https://twitter.com/molily">@molily on Twitter</a></li>
+<li><a href="mailto:zapperlott@gmail.com">zapperlott@gmail.com</a></li>
+</ul>
+</section>
+
+<!-- ******************************************************************** -->
+
+      </div>
+    </div>
+
+    <script src="../reveal/js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        history: true,
+        slideNumber: true,
+        transition: 'fade',
+        dependencies: [
+          { src: '../reveal/plugin/highlight/highlight.js', async: true, condition: function () { return !!document.querySelector('pre code'); }, callback: function () { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
