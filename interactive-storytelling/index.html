@@ -2,23 +2,26 @@
 <html lang="de">
   <head>
     <meta charset="utf-8">
-    <title>Interactive Storytelling</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-    <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
-    <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <title>Interactive Storytelling</title>
+
+    <link rel="stylesheet" href="../reveal/css/reset.css">
+    <link rel="stylesheet" href="../reveal/css/reveal.css">
+    <link rel="stylesheet" href="../reveal/css/theme/simple-molily.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../reveal/lib/css/monokai.css">
+
     <!-- Printing and PDF exports -->
     <script>
-    var link = document.createElement( 'link' );
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = window.location.search.match( /print-pdf/gi ) ?
-      'css/print/pdf.css' :
-      'css/print/paper.css';
-    document.getElementsByTagName( 'head' )[0].appendChild( link );
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal/css/print/pdf.css' : '../reveal/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
-    <base target="_blank">
+
     <style>
     .reveal .nametag {
       margin: 0 auto 1em;
@@ -61,8 +64,6 @@
   <body>
   <div class="reveal">
     <div class="slides">
-
-<!-- ******************************************************************** -->
 
 <!-- ******************************************************************** -->
 
@@ -239,33 +240,25 @@
 
 <!-- ******************************************************************** -->
 
-  </div>
-</div>
+<!-- ******************************************************************** -->
 
-<script src="lib/js/head.min.js"></script>
-<script src="js/reveal.js"></script>
+      </div>
+    </div>
 
-<script>
-// Full list of configuration options available at:
-// https://github.com/hakimel/reveal.js#configuration
-Reveal.initialize({
-  controls: false,
-  progress: true,
-  history: true,
-  center: true,
-  rollingLinks: false,
-  slideNumber: true,
+    <script src="../reveal/js/reveal.js"></script>
 
-  theme: 'simple-molily',
-  transition: 'fade', // none/fade/slide/convex/concave/zoom
-
-  // Optional reveal.js plugins
-  dependencies: [
-    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
-  ]
-});
-</script>
-
-</body>
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        history: true,
+        slideNumber: true,
+        transition: 'fade',
+        dependencies: [
+          { src: '../reveal/plugin/highlight/highlight.js', async: true, condition: function () { return !!document.querySelector('pre code'); }, callback: function () { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
 </html>

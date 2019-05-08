@@ -2,24 +2,27 @@
 <html lang="de">
   <head>
     <meta charset="utf-8">
-    <title>Einführung in JavaScript</title>
-    <meta name="description" content="Einführung in JavaScript">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-    <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/simple-molily.css" id="theme">
-    <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <title>Einführung in JavaScript (ECMAScript 6)</title>
+    <meta name="description" content="ECMAScript 6">
+
+    <link rel="stylesheet" href="../reveal/css/reset.css">
+    <link rel="stylesheet" href="../reveal/css/reveal.css">
+    <link rel="stylesheet" href="../reveal/css/theme/simple-molily.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../reveal/lib/css/monokai.css">
+
     <!-- Printing and PDF exports -->
     <script>
-    var link = document.createElement( 'link' );
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
-    link.href = window.location.search.match( /print-pdf/gi ) ?
-      'css/print/pdf.css' :
-      'css/print/paper.css';
-    document.getElementsByTagName( 'head' )[0].appendChild( link );
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? '../reveal/css/print/pdf.css' : '../reveal/css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
-    <base target="_blank">
+
   </head>
   <body>
     <div class="reveal">
@@ -35,7 +38,7 @@
 <path d="m 375,520.13 48.20625,-27.91125 c 12.69,20.72375 29.1825,35.9475 58.36125,35.9475 24.53125,0 40.17375,-12.26475 40.17375,-29.18125 0,-20.29875 -16.06875,-27.48875 -43.135,-39.32625 l -14.7975,-6.3475 c -42.715,-18.18125 -71.05,-41.0175 -71.05,-89.2275 0,-44.40375 33.83125,-78.2375 86.695,-78.2375 37.6375,0 64.7025,13.11125 84.15375,47.36625 l -46.09625,29.60125 c -10.15,-18.1825 -21.1425,-25.37125 -38.0575,-25.37125 -17.33875,0 -28.335,10.995 -28.335,25.37125 0,17.7625 10.99625,24.9525 36.3675,35.94875 l 14.8,6.3425 c 50.325,21.56875 78.66,43.5575 78.66,93.03375 0,53.2875 -41.86625,82.465 -98.11,82.465 -54.97625,0 -90.5,-26.2175 -107.83625,-60.47375"/>
 </svg>
 
-<h1>Einführung in JavaScript (ECMAScript 6)</h1>
+<h1>Einführung in JavaScript<br>(ECMAScript 6)</h1>
 
 <p>
 Mathias Schäfer, 9elements<br>
@@ -2865,35 +2868,25 @@ $.ajax({
 
 <!-- ******************************************************************** -->
 
-  </div>
-</div>
+      </div>
+    </div>
 
-<script src="lib/js/head.min.js"></script>
-<script src="js/reveal.js"></script>
+    <script src="../reveal/js/reveal.js"></script>
 
-<script>
-// Full list of configuration options available at:
-// https://github.com/hakimel/reveal.js#configuration
-Reveal.initialize({
-  controls: false,
-  progress: true,
-  history: true,
-  center: true,
-  rollingLinks: false,
-  slideNumber: true,
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        history: true,
+        slideNumber: true,
+        transition: 'fade',
+        dependencies: [
+          { src: '../reveal/plugin/highlight/highlight.js', async: true, condition: function () { return !!document.querySelector('pre code'); }, callback: function () { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
 
-  theme: 'simple-molily',
-  transition: 'fade', // none/fade/slide/convex/concave/zoom
-
-  // Optional reveal.js plugins
-  dependencies: [
-    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } }
-  ]
-});
-</script>
-
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-
-</body>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </body>
 </html>
