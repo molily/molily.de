@@ -697,7 +697,7 @@ function compact(array) {
 // Inferred type: (number | null | undefined)[]
 const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Inferred type: any[] 😧
-const arrayOfNumbers = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(mixedArray);
 </code></pre>
 </section>
 
@@ -716,7 +716,7 @@ function compact(array: any[]): any[] {
 // Inferred type: (number | null | undefined)[]
 const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Type: any[] 😕
-const arrayOfNumbers = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(mixedArray);
 </code></pre>
 </section>
 
@@ -735,7 +735,7 @@ function compact&lt;T>(array: T[]): T[] {
 // Inferred type: (number | null | undefined)[]
 const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Type: (number | null | undefined)[] 😀😧😟
-const arrayOfNumbers = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(mixedArray);
 </code></pre>
 </section>
 
@@ -754,7 +754,7 @@ function compact&lt;T>(array: (T | undefined | null)[]): T[] {
 // Inferred type: (number | null | undefined)[]
 const mixedArray = [ 1, 2, undefined, null, 5 ];
 // Type: number[] 😍😍😍
-const arrayOfNumbers = compact(arrayOfNumbers);
+const arrayOfNumbers = compact(mixedArray);
 </code></pre>
 </section>
 
