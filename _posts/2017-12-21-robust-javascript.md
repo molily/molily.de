@@ -199,7 +199,7 @@ lang: en
   </div>
 
 <div id="main-container">
-<main role="main" id="main" markdown="1">
+<mainid="main" markdown="1">
 
 <p id="cover">
   <img src="/img/robust-js-500-q75.jpg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x" alt="Photo of the Tokyo Tower, a 332 meter lattice tower in Tokyo, Japan." id="cover-image">

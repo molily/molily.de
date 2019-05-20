@@ -34,7 +34,7 @@ To make things more tricky, Redux Saga uses the clever hack of [ECMAScript 6 gen
 
 Another well-known drawback of Redux is that you need a lot of boilerplate code if you have multiple similar records with <abbr title="create, read, update, delete">CRUD</abbr> actions that are transmitted over a [RESTful HTTP API](https://en.wikipedia.org/wiki/Representational_state_transfer). We used helper functions to create reducers, action creators and the corresponding tests. This felt like a step backwards from good old Backbone models that had these conventions baked-in. There are tools to implement [model-based state management](https://github.com/tommikaikkonen/redux-orm) with Redux, but for me these approaches just don’t fit together.
 
-# Angular
+## Angular
 
 This was just the prelude for the topic I’d like to write about. At [9elements](https://9elements.com), we do have standard tools and favorite development stacks. But we try to use the right tool for a job instead of just the tool we’re used to. In a recent client project, we have been using Angular 2+ and I had the pleasure to set up the architecture.
 
@@ -62,7 +62,7 @@ It was a good decision by the Angular team to write Angular 2 in TypeScript, and
 
 The technologies I’ve mentioned here were quite approachable to me. React and Redux for example encourage some functional and reactive programming practices, but these are still quite basic and learnable. Similarly, TypeScript doesn’t offer anything fundamentally new that I haven’t seen in other languages before. RxJS though, and to a lesser extent Redux Sagas, open a window to a world of declarative programming that I haven’t visited before.
 
-# NgRx: Redux for Angular
+## NgRx: Redux for Angular
 
 So I’m struggling with expressing logic in RxJS that would be simple to implement imperatively. At the same time, I’m convinced that this way of programming has its clear benefits in some cases. For example, I’m using [NgRx, a Redux implementation for Angular](https://github.com/ngrx/platform). NgRx is standing on the shoulders of giants and ships with a practical solution for the side effects riddle: NgRx effects.
 
