@@ -352,9 +352,9 @@ caption {
  */
 
 .separator {
-  margin: 4.5rem 0;
-  font-size: 3rem;
-  line-height: 1;
-  text-align: center;
+  display: block;
+  margin: 4.5rem auto;
+  width: 3rem;
+  height: 3rem;
   color: #e0e0e0;
 }

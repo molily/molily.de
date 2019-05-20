@@ -6,6 +6,12 @@ keywords: JavaScript, Robustness, ECMAScript
 lang: en
 ---
 
+<svg style="display: none">
+  <symbol id="ornament" viewbox="0 0 14.666 16.598">
+      <path d="M6.262 13.106q0 1.464-.988 2.47-.988 1.022-2.31 1.022-1.2 0-1.994-.776-.776-.758-.776-1.834 0-.988.6-1.57.617-.6 1.658-.6.723 0 1.217.494.511.476.511 1.094 0 .529-.493.97-.477.458-1.059.458-.44 0-.74-.317-.283-.3-.283-.776 0-.212.124-.459.123-.265.123-.3 0-.529-.37-.529-.3 0-.565.476-.247.459-.247 1.13 0 .881.653 1.498.67.635 1.676.635 1.058 0 1.852-.864.793-.864.793-2.046 0-1.535-2.046-3.404l-1.481-1.34q-.565-.53-.565-.812 0-.459.441-.459.07 0 .212.07.159.071.247.071.194 0 .194-.282 0-.264-.459-.617-.564-.406-1.111-.812-.882-.723-.882-1.57 0-.229.335-.229.035 0 .106.018.088.017.159.017.353 0 .353-.229 0-.035-.283-.688-.388-.846-.688-1.71Q0 .81 0 .581 0 0 .353 0q.23 0 .423.829.318 1.358.759 2.381.458 1.006.687 1.447.653 1.27 1.606 2.646 2.434 3.51 2.434 5.803zM14.666 14.146q0 .97-.811 1.676-.847.759-2.082.759-1.375 0-2.31-1.059-.918-1.04-.918-2.628 0-1.27.777-2.822.282-.547 1.834-3.122.917-1.517 1.27-2.258 1.164-2.452 1.252-3.51.053-.6.071-.67.053-.23.282-.23.318 0 .318.388 0 .177-.741 2.787-.035.124-.035.212 0 .194.14.194.107 0 .3-.07.212-.071.3-.071.23 0 .23.282 0 .706-.882 1.323-1.323.935-1.323 1.164 0 .23.3.23.123 0 .353-.071.229-.088.335-.088.388 0 .388.44 0 .46-.706.9-1.358.882-1.482.988-.6.494-1.234 1.535-1.006 1.64-1.006 2.557 0 1.517.653 2.329.67.81 1.834.81 1.059 0 1.711-.563.653-.547.653-1.43 0-1.887-1.482-1.887h-.105q-.089.018-.089.106 0 .07.388.459.388.388.388.9 0 .51-.405.846-.406.335-1.023.335-.477 0-.83-.476-.352-.476-.352-1.147 0-.67.564-1.199.582-.53 1.288-.53.952 0 1.57.76.617.74.617 1.851z" fill="currentColor" />
+  </symbol>
+</svg>
+
 <p id="sticky-menu">
   <a href="/" title="Home">molily.de</a>
   &bull;
@@ -213,7 +219,7 @@ lang: en
 
 <p class="intro"><em class="intro-caps">The JavaScript programming language</em> is an essential tool of web developers today. Websites ship more and more JavaScript to the browser to be more interactive. The more complex client-side JavaScript gets, the more error-prone and fragile the user experience might get. Why do we need to talk about robust JavaScript and how do we achieve it?</p>
 
-<p class="separator" aria-hidden="true">❡</p>
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Introduction
 
@@ -264,7 +270,7 @@ The HTML and DOM specifications define the main objects that client-side JavaScr
 
 There are a lot of other specifications that add more APIs to the browser’s JavaScript environment. [The web platform: Browser technologies](https://platform.html5.org/) gives an overview.
 
-<p class="separator" aria-hidden="true">❡</p>
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Achieving Robustness
 
@@ -356,7 +362,7 @@ Personally, I do not think Postel’s Law should be seen as a <q>general princip
 
 In this guide, I do not argue that every program should be liberal in what it accepts. I find it more important that every program is explicit about what it accepts, is outspoken about technical errors and has a well-defined error handling.
 
-<p class="separator" aria-hidden="true">❡</p>
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## How JavaScript might fail
 
@@ -659,7 +665,7 @@ There is no common error type for security errors in ECMAScript. Browser APIs th
 
 As you can see, handling security errors requires a careful study of a particular API documentation.
 
-<p class="separator" aria-hidden="true">❡</p>
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## How to prevent failure
 
@@ -2083,7 +2089,7 @@ Still, JavaScript is the most brittle of all front-end web technologies. An impo
 
 If all techniques and tools did not help you to write robust JavaScript, consider reducing the code complexity and the amount of code. In the last resort, reduce the usage of client-side JavaScript. Find simpler solutions that rely on HTML, CSS and server-side logic alone.
 
-<p class="separator" aria-hidden="true">❡</p>
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## References
 
@@ -2091,7 +2097,7 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 - [JavaScript. The Core: 2nd Edition](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/) – Dmitry Soshnikov, 2017
 - [Objektabfragen in JavaScript](https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen) (German) – Mathias Schäfer, 2011
 
-<p class="separator" aria-hidden="true">❡</p>
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## About
 
