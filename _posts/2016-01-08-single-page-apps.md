@@ -44,7 +44,7 @@ From an architectural point, it gets interesting when JavaScript logic is added 
   <p>As part of the [callback] function of a particular view, you could insert new DOM nodes and attach new event handlers, for instance. Maybe throw in some AJAX to fetch some fresh data before compiling a template in place of the server-rendered HTML. You could include a form that runs a PHP script on the server when JavaScript is unavailable and that returns the user to the form’s specific view with <code>header('Location: http://my-app-thing.com#submission-form')</code>. You could also handle query parameters, using URLs like <code>http://my-app-thing.com/?foo=bar#some-view</code>.</p>
 </blockquote>
 
-The goal of this structure is to have static parts, which are fully accessible and usable without JavaScript, “<q cite="https://www.smashingmagazine.com/2015/12/reimagining-single-page-applications-progressive-enhancement/#completely-static-views">side by side with views that are (potentially) highly augmented by JavaScript.</q>”
+The goal of this structure is to have static parts, which are fully accessible and usable without JavaScript, <q cite="https://www.smashingmagazine.com/2015/12/reimagining-single-page-applications-progressive-enhancement/#completely-static-views">side by side with views that are (potentially) highly augmented by JavaScript.</q>
 
 This is where the article tries to make a connection to dynamic web apps and JavaScript single-page apps, but falls short in my opinion. Any non-trivial JavaScript logic – like fetching additional data, replacing the static content, processing user input – is disconnected from the server-side logic. I don’t think this is a viable approach to progressive enhancement – more on this later.
 
@@ -72,7 +72,7 @@ Usually single-page apps set the URL according to the application state and, vic
 
 <h2 id="crud-examples">Simple <abbr title="Create, Read, Update, Delete">CRUD</abbr> example apps</h2>
 
-A group of developers has created the [TodoMVC](http://todomvc.com) example app as a comparison of JavaScript frameworks and as a learning resource. The app implements a todo list that allows to create, filter and complete todos. It [has been criticized as simplistic](http://tomdale.net/2015/11/javascript-frameworks-and-mobile-performance/) since it only covers a small part of what today’s web apps – and therefore today’s frameworks – deal with. Still it has realistic user interface with well-defined features and gives a glimpse on how interactions in web apps work.
+A group of developers has created the [TodoMVC](http://todomvc.com) example app as a comparison of JavaScript frameworks and as a learning resource. The app implements a todo list that allows to create, filter and complete todos. It [has been criticized as simplistic](https://tomdale.net/2015/11/javascript-frameworks-and-mobile-performance/) since it only covers a small part of what today’s web apps – and therefore today’s frameworks – deal with. Still it has realistic user interface with well-defined features and gives a glimpse on how interactions in web apps work.
 
 For [Chaplin.js, an application architecture based on Backbone.js](http://chaplinjs.org/), I have created the [cars example app](http://molily.github.io/chaplin-cars/) ([source code](https://github.com/molily/chaplin-cars)) some while ago. It implements a simple [Create, Read, Update, Delete (CRUD)](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) workflow for a list of records. Most Backbone &amp; Chaplin apps have such a workflow somewhere. Compared to TodoMVC, this example has more single-page app features like REST-style routes, module loading, arbitrary HTML templates and controlled data sharing.
 
@@ -95,9 +95,9 @@ For non-trivial apps, it is not practical to plug all content into one page and 
 
 <h2 id="coherence-maintenance">Coherence and maintenance</h2>
 
-If we want web apps that do not have a hard dependency on client-side JavaScript, we need to implement the basic HTML rendering, form input processing and data logic on the server. There is a risk of code duplication as soon as we enhance this basic implementation with client-side JavaScript. This leads to incoherence as [Tom Dale described](http://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/) (emphasis mine):
+If we want web apps that do not have a hard dependency on client-side JavaScript, we need to implement the basic HTML rendering, form input processing and data logic on the server. There is a risk of code duplication as soon as we enhance this basic implementation with client-side JavaScript. This leads to incoherence as [Tom Dale described](https://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/) (emphasis mine):
 
-<blockquote cite="http://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/">
+<blockquote cite="https://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/">
 <p>The traditional approach of sprinkling JavaScript on top of server-rendered HTML was fine for a long time, but the more AJAX and other ad hoc dynamic behavior you have, the more it turns into <em>a giant ball of mud</em>.</p>
 <p>Worst of all, <strong>you now have state and behavior for the same task—UI rendering—implemented in two languages</strong> and running on two computers separated by a high-latency network. Congratulations, you’ve just signed up to solve one of the hardest problems in distributed computing.</p>
 </blockquote>
@@ -111,7 +111,7 @@ Most architectures do not allow us to create rich and dynamic web apps using pro
 There is the notion that developers choose JavaScript single-page apps merely for their own convenience. Quite the contrary, the main purpose is to deliver an excellent user experience with the given budget within the given time frame. By sharing logic between client and server, we can build faster interfaces with less bugs.
 
 <h2 id="universal-todo-list">
-  <a href="https://github.com/molily/universal-progressive-todos">Todo list with universal JavaScript and progressive enhancement</a>
+  &rarr; <a href="https://github.com/molily/universal-progressive-todos">Todo list with universal JavaScript and progressive enhancement</a>
 </h2>
 
 To explore this problem in a more practical way, I’m working on a todo list implementation using “universal” JavaScript, specifically [Express](http://expressjs.com), [React](https://facebook.github.io/react/) and [Redux](https://github.com/rackt/redux). There are numerous React examples that render the first page on the server using Node.js. What’s special about my attempt is that it uses progressive enhancement. The app should work when JavaScript is disabled or fails for some reason.
