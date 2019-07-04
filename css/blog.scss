@@ -243,6 +243,8 @@ html {
  *
  */
 
+$sidebar-line-height: 1.5;
+
 #sidebar {
   @extend %clearfix;
   padding-top: $column-padding;
@@ -271,11 +273,11 @@ html {
 #sidebar ul {
   list-style-type: none;
   margin: 0 0 2rem;
-  line-height: 1.5;
+  line-height: $sidebar-line-height;
 }
 
 #sidebar li {
-  margin: 0 0 0.2rem 0;
+  margin: 0 0 0.3rem 0;
 }
 
 @include medium {
@@ -318,7 +320,6 @@ html {
 #zitate {
   font-family: $citation-font;
   font-variant-ligatures: common-ligatures discretionary-ligatures historical-ligatures contextual;
-  font-size: 0.95rem;
 }
 
 #zitate li {
@@ -332,7 +333,8 @@ html {
 #zitate cite {
   display: block;
   font-style: normal;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  line-height: $sidebar-line-height * 1rem;
 }
 
 #zitate a {
