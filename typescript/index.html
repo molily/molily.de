@@ -59,9 +59,9 @@
   <h1><span style="display: inline-block; transform: scaleX(-1)"> 🧚🏻‍♂️</span> ECMAScript:<br>Implicit type conversions</h1>
 
 <pre><code data-trim>
-> 5 + "5"
-'55'
-> 5 + "a"
+> 5 * "5"
+25
+> 5 * "a"
 NaN
 </code></pre>
 </section>
@@ -69,16 +69,14 @@ NaN
 <section>
   <h1><span>🏋🏽‍♀️</span> Ruby:<br>Explicit conversion necessary</h1>
 <pre><code data-trim>
-> 5 + "5"
+> 5 * "5"
 TypeError: String can't be coerced into Integer
-from (pry):1:in `+'
-> 5 + "a"
+from (pry):1:in `*'
+> 5 * "a"
 TypeError: String can't be coerced into Integer
-from (pry):2:in `+'
-> 5 + Integer("5", 10)
-=> 10
-> 5.to_s + "a"
-=> "5a"
+from (pry):2:in `*'
+> 5 * Integer("5", 10)
+=> 25
 </code></pre>
 </section>
 
@@ -148,7 +146,7 @@ error[E0308]: mismatched types
   <h1><span>🏋🏽‍♀️</span> <span>🧘🏾‍♀️</span> Benefits of strong & static</h1>
   <p>Developer productivity</p>
   <p>Explicit, readable, self-documenting code</p>
-  <p>Catch a certain bugs early</p>
+  <p>Catch certain bugs early</p>
   <p>Helps with complex logic</p>
 </section>
 
@@ -678,7 +676,7 @@ const categoryTree: CategoryNode = {
 <section>
   <h1>Generic functions</h1>
   <p>More frequent than generic types</p>
-  <p>Type information often gets lost,<br>the return type gets <code>any</code></p>
+  <p>Type information often gets lost,<br>the return type becomes <code>any</code></p>
   <p>Input type is variable but determines output type</p>
 </section>
 
