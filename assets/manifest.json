@@ -1,5 +1,8 @@
 {
  "name": "molily",
+ "short_name": "molily",
+ "display": "browser",
+ "theme_color": "#6f53b2",
  "icons": [
   {
    "src": "/img/android-icon-36x36.png",
