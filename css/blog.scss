@@ -70,9 +70,6 @@ html {
   }
 }
 
-.wrapper-bottom {
-}
-
 /* Two columns */
 
 .col-primary,
@@ -140,8 +137,25 @@ html {
 
 /* Document footer */
 
+.document-footer {
+  background-color: $col-secondary-background
+}
+
 .document-footer-content {
+  display: flex;
+  list-style: none;
   margin: 0;
+}
+
+.document-footer-content li {
+  margin-bottom: 0;
+  flex: 1 0 auto;
+  text-align: center;
+}
+
+.document-footer-content a {
+  display: block;
+  padding: 1rem 0;
 }
 
 /**
