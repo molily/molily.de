@@ -2115,7 +2115,7 @@ License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"
 
 Published on <time datetime="2017-12-21">December 21, 2017</time>.
 
-<p><a href="/impressum/" lang="de" hreflang="de">Impressum</a></p>
+<p><a href="/impressum/" lang="de" hreflang="de">Impressum und Datenschutz</a></p>
 
 </main>
 </div><!-- #main-container -->
