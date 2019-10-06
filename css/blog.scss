@@ -62,9 +62,7 @@ html {
   margin: auto;
 }
 
-.wrapper-top {
-  background-color: $wrapper-background;
-
+.col-wrapper {
   @include big {
     display: flex;
   }
@@ -262,6 +260,12 @@ html {
   margin-bottom: 2.5rem;
 }
 
+@include big {
+  .post-short:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .post-excerpt {
   margin-bottom: 0;
   font-size: 1.1rem;
@@ -384,22 +388,24 @@ $sidebar-line-height: 1.5;
 .article-archive {
   margin-left: 0;
   list-style: none;
+}
 
-  li {
-    display: table;
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
+.article-archive-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 
-  .post-date {
-    display: table-cell;
-    width: 5.5rem;
-    padding-right: 1rem;
-    font-size: 0.8rem;
-    line-height: $content-line-height * 1rem;
-    color: $gray-text-color;
-  }
+.article-archive-date {
+  flex: 0 0 auto;
+  width: 5.5rem;
+  padding-right: 1rem;
+  font-size: 0.8rem;
+  color: $gray-text-color;
+}
 
+.article-archive-link {
+  flex: 1 1 auto;
 }
 
 /**

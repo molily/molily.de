@@ -8,25 +8,25 @@ layout: blog
   {% include post-short.html %}
 {% endfor %}
 
-{% include divider.html %}
+{% include col-sidebar.html %}
 
+<div class="page-wrapper col-wrapper wrapper-bottom">
 <div class="col-primary bottom-primary">
 
   <h2 class="article-archive-heading">Older articles</h2>
   <ul class="article-archive">
   {% for post in site.posts offset: 5 %}
-    <li>
-      <time class="post-date" datetime="{{ post.date | date: "%F" }}">{{ post.date | date: "%F" }}</time>
-      <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+    <li class="article-archive-item">
+      <time datetime="{{ post.date | date: "%F" }}" class="article-archive-date">{{ post.date | date: "%F" }}</time>
+      <a href="{{ post.url | prepend: site.baseurl }}" class="article-archive-link">{{ post.title }}</a>
     </li>
   {% endfor %}
   </ul>
 </div>
 
-{% comment %}
-<div class="bottom-secondary bottom-secondary">
-</div>
-{% endcomment %}
+<div class="col-secondary"></div>
+
+</div><!-- /wrapper-bottom -->
 
 {% include footer.html %}
 
