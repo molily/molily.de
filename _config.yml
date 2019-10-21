@@ -1,8 +1,8 @@
 # Site settings
 title: molily
 email: molily@mailbox.org
-description: "molily über HTML, CSS, JavaScript und Webentwicklung"
-keywords: "HTML, CSS, JavaScript, Webdesign, Webentwicklung, Browser, Webstandards"
+description: "HTML, CSS, JavaScript and web development"
+keywords: "HTML, CSS, JavaScript, web design, web development, browsers, web standards"
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://molily.de"
 permalink: /:title/
