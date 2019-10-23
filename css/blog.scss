@@ -275,7 +275,7 @@ $sidebar-line-height: 1.5;
 
 #sidebar {
   @extend %clearfix;
-  padding-top: $column-padding-min;
+  padding-top: 2.5rem;
   padding-bottom: 0.1px; // Include margins
 }
 
