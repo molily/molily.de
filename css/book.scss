@@ -18,7 +18,7 @@
  *
  */
 
-$breakpoint-big: 55rem;
+$breakpoint-large: 55rem;
 $toc-width: 25rem;
 $main-max-width: 39rem;
 
@@ -27,8 +27,8 @@ $main-max-width: 39rem;
  *
  */
 
-@mixin big {
-  @media screen and (min-width: $breakpoint-big) {
+@mixin large {
+  @media screen and (min-width: $breakpoint-large) {
     @content;
   }
 }
@@ -45,7 +45,7 @@ $main-max-width: 39rem;
  */
 
 html, body {
-  @include big {
+  @include large {
     height: 100%;
   }
 }
@@ -54,7 +54,7 @@ body {
   counter-reset: h2 h3 h4;
   padding: 1rem;
 
-  @include big {
+  @include large {
     padding: 0;
   }
 }
@@ -114,7 +114,7 @@ caption {
  *
  */
 
-@include big {
+@include large {
 
   #toc-and-main {
     display: flex;
@@ -167,7 +167,7 @@ caption {
   font-size: 0.8rem;
   text-align: center;
 
-  @include big {
+  @include large {
     display: none;
   }
 }
@@ -189,7 +189,7 @@ caption {
 #toc-home-link {
   display: none;
 
-  @include big {
+  @include large {
     display: flex;
     justify-content: space-between;
   }
@@ -208,7 +208,7 @@ caption {
   font-size: 2rem;
   text-align: center;
 
-  @include big {
+  @include large {
     display: none;
   }
 }
@@ -217,7 +217,7 @@ caption {
   font-size: 1.2rem;
   text-align: center;
 
-  @include big {
+  @include large {
     margin: 1.5rem 0;
   }
 }
@@ -234,7 +234,7 @@ caption {
 #toc > ol {
   margin-bottom: 2rem;
 
-  @include big {
+  @include large {
     margin-bottom: 0;
   }
 }
@@ -292,7 +292,7 @@ caption {
   font-size: 2rem;
   text-align: center;
 
-  @include big {
+  @include large {
     margin: 4rem 0;
     font-size: 3rem;
   }
@@ -302,7 +302,7 @@ caption {
     margin: 2rem 0;
     font-size: 1.5rem;
 
-    @include big {
+    @include large {
       font-size: 2.25rem;
     }
   }
@@ -312,7 +312,7 @@ caption {
 .intro {
   font-size: 1.2rem;
 
-  @include big {
+  @include large {
     font-size: 1.25rem;
   }
 }

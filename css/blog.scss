@@ -18,8 +18,14 @@
  *
  */
 
-$column-padding: 1rem;
-$column-padding-big: 2.5rem;
+$col-left-width: 67%;
+
+$breakpoint-medium: 30rem;
+$breakpoint-large: 56rem;
+
+$column-padding-min: 1.5rem;
+$column-padding-flexible: 1.5vw;
+
 $body-background: hsl($hue2, 50%, 95%);
 $wrapper-background: white;
 $col-secondary-background: $highlight-background-color;
@@ -31,13 +37,13 @@ $post-header-background: hsl($hue, 40%, 50%);
  */
 
 @mixin medium {
-  @media (min-width: 30em) {
+  @media (min-width: $breakpoint-medium) {
     @content;
   }
 }
 
-@mixin big {
-  @media (min-width: 57em) {
+@mixin large {
+  @media (min-width: $breakpoint-large) {
     @content;
   }
 }
@@ -58,12 +64,19 @@ html {
 
 .page-wrapper {
   background-color: $wrapper-background;
-  max-width: 65rem;
   margin: auto;
+
+  @include medium {
+    max-width: $breakpoint-medium + 13rem;
+  }
+
+  @include large {
+    max-width: $breakpoint-large + 10rem;
+  }
 }
 
 .col-wrapper {
-  @include big {
+  @include large {
     display: flex;
   }
 }
@@ -72,17 +85,13 @@ html {
 
 .col-primary,
 .col-secondary {
-  padding: $column-padding;
-
-  @include big {
-    padding: $column-padding-big;
-  }
+  padding: 2.5rem calc(#{$column-padding-min} + #{$column-padding-flexible});
 }
 
 .col-primary {
-  @include big {
+  @include large {
     flex: 0 0 auto;
-    width: 70%;
+    width: $col-left-width;
   }
 }
 
@@ -91,9 +100,9 @@ html {
   padding-bottom: 0;
   background-color: $col-secondary-background;
 
-  @include big {
+  @include large {
     flex: 0 0 auto;
-    width: 30%;
+    width: 100% - $col-left-width;
   }
 }
 
@@ -104,14 +113,14 @@ html {
   justify-content: space-between;
   margin-top: 0;
 
-  @include big {
+  @include large {
     margin: 0;
   }
 }
 
 .top-navigation__home,
 .top-navigation__jump-to-bottom {
-  @include big {
+  @include large {
     @include accessible-hide;
 
     // Make visible on focus
@@ -154,7 +163,6 @@ html {
 }
 
 @include medium {
-
   .document-footer-list {
     display: flex;
     margin: 0;
@@ -177,18 +185,11 @@ html {
  */
 
 .post-header {
-  margin: 0 (-$column-padding) 1rem;
-  padding: 1.5rem $column-padding;
+  margin: 0 calc(-1 * (#{$column-padding-min} + #{$column-padding-flexible})) 1rem;
+  padding: 1.5rem calc(#{$column-padding-min} + #{$column-padding-flexible});
   background-color: $post-header-background;
   color: white;
   text-shadow: 1px 1px 2px #333;
-
-  @include big {
-    margin-left: -$column-padding-big;
-    margin-right: -$column-padding-big;
-    padding-left: $column-padding-big;
-    padding-right: $column-padding-big;
-  }
 }
 
 .post-link {
@@ -213,7 +214,7 @@ html {
   margin-bottom: 0.5rem;
   color: inherit;
 
-  @include big {
+  @include large {
     letter-spacing: 0.5px;
   }
 }
@@ -222,20 +223,14 @@ html {
   margin-bottom: 0;
   font-size: 0.8em;
 
-  @include big {
+  @include large {
     font-size: 0.9em;
   }
 }
 
 .post-description {
-  margin: $column-padding-big 1rem;
-  font-size: 1.1rem;
-
-  @include big {
-    margin-left: 2rem;
-    margin-right: 2rem;
-    font-size: 1.2rem;
-  }
+  margin: 2.5rem 0;
+  font-size: 1.2rem;
 }
 
 .post-description-strong {
@@ -260,7 +255,7 @@ html {
   margin-bottom: 2.5rem;
 }
 
-@include big {
+@include large {
   .post-short:last-child {
     margin-bottom: 0;
   }
@@ -280,12 +275,8 @@ $sidebar-line-height: 1.5;
 
 #sidebar {
   @extend %clearfix;
-  padding-top: $column-padding;
+  padding-top: $column-padding-min;
   padding-bottom: 0.1px; // Include margins
-
-  @include big {
-    padding-top: $column-padding-big;
-  }
 }
 
 #sidebar h1 {
@@ -314,7 +305,6 @@ $sidebar-line-height: 1.5;
 }
 
 @include medium {
-
   #sidebar h1 {
     float: left;
     width: 120px;
@@ -330,7 +320,7 @@ $sidebar-line-height: 1.5;
   }
 }
 
-@include big {
+@include large {
   #sidebar h1 {
     float: none;
     width: auto;
