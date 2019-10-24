@@ -85,7 +85,12 @@ html {
 
 .col-primary,
 .col-secondary {
-  padding: 2.5rem calc(#{$column-padding-min} + #{$column-padding-flexible});
+  padding: 1rem calc(#{$column-padding-min} + #{$column-padding-flexible});
+
+  @include large {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
 }
 
 .col-primary {
