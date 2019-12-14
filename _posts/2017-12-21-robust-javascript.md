@@ -1689,11 +1689,11 @@ This design decision makes learning and adopting TypeScript easier. You do not h
 
 This is how the `sum` function with explicit type annotations may look like in TypeScript:
 
-<pre>
+```typescript
 function sum(a: number, b: number): number {
   return a + b;
 }
-</pre>
+```
 
 Do you see the type information added to the parameters `a` and `b` as well as the return value?
 
