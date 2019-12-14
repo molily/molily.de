@@ -208,8 +208,15 @@ lang: en
 <main id="main" markdown="1">
 
 <p id="cover">
-  <img src="/img/robust-js-500-q75.jpg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x" alt="Photo of the Tokyo Tower, a 332 meter lattice tower in Tokyo, Japan." loading="lazy" id="cover-image">
-  <a href="#cover-credits" id="cover-credits-link" class="no-link-type" title="Cover credits">Martin Abegglen – CC-BY-SA</a>
+
+<picture>
+  <source type="image/webp" srcset="/img/robust-js-500-q80-sharp_yuv.webp, /img/robust-js-1000-q40-sharp-yuv.webp 2x" >
+  <source type="image/jpeg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x">
+  <img id="cover-image" src="/img/robust-js-500-q75.jpg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x" alt="Photo of the Tokyo Tower, a 332 meter lattice tower in Tokyo, Japan." loading="lazy">
+</picture>
+
+<a href="#cover-credits" id="cover-credits-link" class="no-link-type" title="Cover credits">Tokyo Tower by Martin Abegglen – CC-BY-SA</a>
+
 </p>
 
 <h1 id="main-heading">
@@ -2063,13 +2070,13 @@ In particular, an acceptance test simulates a user by remotely controlling a bro
 
 1. Go to the website http://carols.example.org
 2. Wait until the page is fully loaded.
-2. Expect that the top-level heading reads “Christmas Carols”.
-3. Focus the search field by clicking on it.
-4. Enter the text “hark”.
-5. Submit the form by pressing enter.
-6. Wait until the next page is fully loaded.
-7. Expect that the top-level heading reads “Hark! The Herald Angels Sing”.
-8. Expect that the first paragraph contains “Peace on earth and mercy mild”.
+3. Expect that the top-level heading reads “Christmas Carols”.
+4. Focus the search field by clicking on it.
+5. Enter the text “hark”.
+6. Submit the form by pressing enter.
+7. Wait until the next page is fully loaded.
+8. Expect that the top-level heading reads “Hark! The Herald Angels Sing”.
+9. Expect that the first paragraph contains “Peace on earth and mercy mild”.
 
 An acceptance test expresses these instructions as code. Since the test interacts with the website through a browser, it can be written in any language. It does not need to be JavaScript or whatever language is used in the back-end.
 
@@ -2111,7 +2118,7 @@ Thanks to Pablo Tamarit for several corrections.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
-<p id="cover-credits">Cover image: <a href="https://www.flickr.com/photos/twicepix/4085401611/">Photo of the Tokyo Tower by Martin Abegglen</a>. License: <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)</a></p>
+<p id="cover-credits">Cover photo: <a href="https://www.flickr.com/photos/twicepix/4085401611/">Tokyo Tower by Martin Abegglen</a>. License: <a href="https://creativecommons.org/licenses/by-sa/2.0/">Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)</a></p>
 
 Published on <time datetime="2017-12-21">December 21, 2017</time>.
 

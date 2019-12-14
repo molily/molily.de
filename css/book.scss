@@ -270,11 +270,11 @@ caption {
   max-width: 100%;
 
   @media (orientation: portrait) {
-    max-width: 65%;
+    max-width: 70vw;
   }
 
   @media (orientation: landscape) {
-    max-height: 45vh;
+    max-height: 48vh;
   }
 }
 
