@@ -1283,7 +1283,7 @@ Every script declares some variables, constants, functions and classes, and does
 ```js
 function init() {
   // Safely declare your names inside this function.
-  var variabl1 = 1;
+  var variable1 = 1;
   let variable2 = 2;
   const constant = 3;
   function someFunction() {}
@@ -1299,7 +1299,7 @@ The best practice is to create an [Immediately-Invoked Function Expression (IIFE
 ```js
 (function () {
   // Safely declare your names inside this function.
-  var variabl1 = 1;
+  var variable1 = 1;
   let variable2 = 2;
   const constant = 3;
   function someFunction() {}
@@ -1316,7 +1316,7 @@ With ECMAScript 6 (2015), creating a private scope became much easier. You can s
 ```js
 {
   // Safely declare your names inside this function.
-  var variabl1 = 1;
+  var variable1 = 1;
   let variable2 = 2;
   const constant = 3;
   function someFunction() {}
