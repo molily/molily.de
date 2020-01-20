@@ -135,7 +135,7 @@ The data saving has several modes: Automatic, Extreme, High, Off.
 
 - “**High**” means Opera Mini uses a proxy-based solution to compress web pages (text-based formats like HTML, CSS and JavaScript), images and videos.
 - Originally conceived for feature phones, the “**extreme**” mode is radically different: Web pages aren’t downloaded normally and rendered on the device. They are pre-rendered on the server using the good-old [Opera Presto engine](https://en.wikipedia.org/wiki/Presto_(layout_engine)). Opera Mini then downloads a compressed binary format, not a bunch of individual resources. This mode works surprisingly well and indeed allows “extreme” data savings. But it does not work for highly interactive sites like JavaScript applications.
-- I recommend the default setting “**automatic**”, which uses the proxy-based solution in most cases. I guess there’s a small whitelist for sites that are rendered on the server with Presto.
+- I recommend the default setting “**automatic**”, which uses the proxy-based solution in most cases. I guess there’s a small allow list for sites that are rendered on the server with Presto.
 
 There is an additional **image quality setting**: Low, Medium, High. When not browsing photo sites, it’s safe to set it to “Low” which means high compression.
 

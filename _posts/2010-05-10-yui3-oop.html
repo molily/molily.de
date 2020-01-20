@@ -45,13 +45,13 @@ YUI().use('oop', function (Y) {
   <a href="#y-augment">Mixins mit <code>Y.augment</code></a>
   <ol class="compact-list">
   <li><a href="#y-augment-einzeln">Einzelnen Objekten Funktionalität hinzufügen</a></li>
-  <li><a href="#y-augment-parameter">Weitere Parameter von <code>Y.augment</code>: Überschreiben erzwingen und Whitelist</a></li>
+  <li><a href="#y-augment-parameter">Weitere Parameter von <code>Y.augment</code>: Überschreiben erzwingen und Allow-List</a></li>
   </ol>
 </li>
 <li>
   <a href="#y-mix">Eigenschaften kopieren mit <code>Y.mix</code></a>
   <ol class="compact-list">
-  <li><a href="#y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Whitelist</a></li>
+  <li><a href="#y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Allow-List</a></li>
   <li><a href="#y-merge">Mehrere Objekte vereinen mit <code>Y.merge</code></a></li>
   <li><a href="#y-augment-vs-y-mix"><code>Y.augment</code> vs. <code>Y.mix</code></a></li>
   </ol>
@@ -404,9 +404,9 @@ Y.augment(hedwig, Flighted);
 hedwig.fly();
 </pre>
 
-<h3 id="y-augment-parameter">Weitere <code>Y.augment</code>-Parameter: Überschreiben erzwingen und Whitelist</h3>
+<h3 id="y-augment-parameter">Weitere <code>Y.augment</code>-Parameter: Überschreiben erzwingen und Allow-List</h3>
 
-<p><code>Y.augment</code> nimmt noch drei weitere, optionale Parameter entgegen. Der dritte Parameter vom Typ Boolean gibt an, ob bereits vorhandene Methoden beim Kopieren überschrieben werden sollen. Standard ist <code>false</code>. Mit dem vierten Parameter lässt sich eine weiße Liste (Whitelist) mit Eigenschaftsnamen übergeben, das ist ein Array mit String-Einträgen. Der fünfte Parameter erlaubt die Angabe eines Arrays mit Parametern, die dem vererbenden Konstruktor (im Beispiel <code>Flighted</code>) übergeben werden.</p>
+<p><code>Y.augment</code> nimmt noch drei weitere, optionale Parameter entgegen. Der dritte Parameter vom Typ Boolean gibt an, ob bereits vorhandene Methoden beim Kopieren überschrieben werden sollen. Standard ist <code>false</code>. Mit dem vierten Parameter lässt sich eine Liste erlaubter Eigenschaften (Allow-List) übergeben, das ist ein Array mit String-Einträgen. Der fünfte Parameter erlaubt die Angabe eines Arrays mit Parametern, die dem vererbenden Konstruktor (im Beispiel <code>Flighted</code>) übergeben werden.</p>
 
 <h2 id="y-mix">Eigenschaften kopieren mit <code>Y.mix</code></h2>
 
@@ -468,9 +468,9 @@ robin.fly();
 
 <p><code>Y.mix</code> erzeugt standardmäßig eine sogenannte flache Kopie (<em lang="en">shallow copy</em>). Das heißt, dass Objekte wie etwa Arrays bloß referenziert werden und keine echte Kopie von ihnen angelegt wird. Für eine tiefe Kopie (<em lang="en">deep copy</em>) ist das hier nicht besprochene <a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_clone">Y.clone</a> zuständig, für das kontrollierte Erweitern von Eigenschaften vom Typ Objekten und Arrays gibt es die Methode <a href="http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_aggregate">Y.aggregate</a>.</p>
 
-<h3 id="y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Whitelist</h3>
+<h3 id="y-mix-parameter">Weitere Parameter von <code>Y.mix</code>: Überschreiben erzwingen und Allow-List</h3>
 
-<p><code>Y.mix</code> nimmt insgesamt sechs Parameter entgegen, davon sind die letzten vier optional. Interessant sind noch der dritte und vierte Parameter, wir haben sie schon bei <code>Y.augment</code> kennengelernt: Der dritte gibt an, ob gleichnamige Eigenschaften beim Kopieren überschrieben werden. Dies ist standardmäßig nicht der Fall und kann mit <code>true</code> erzwungen werden. Der vierte Parameter ermöglicht die Übergabe einer weißen Liste (Whitelist). Diese wird als Filter verwendet, sodass nur die angegebenen Eigenschaften kopiert werden.</p>
+<p><code>Y.mix</code> nimmt insgesamt sechs Parameter entgegen, davon sind die letzten vier optional. Interessant sind noch der dritte und vierte Parameter, wir haben sie schon bei <code>Y.augment</code> kennengelernt: Der dritte gibt an, ob gleichnamige Eigenschaften beim Kopieren überschrieben werden. Dies ist standardmäßig nicht der Fall und kann mit <code>true</code> erzwungen werden. Der vierte Parameter ermöglicht die Übergabe einer weißen Liste (Allow-List). Diese wird als Filter verwendet, sodass nur die angegebenen Eigenschaften kopiert werden.</p>
 
 <h3 id="y-merge">Mehrere Objekte vereinen mit <code>Y.merge</code></h3>
 

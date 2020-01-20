@@ -399,7 +399,7 @@ JavaScript is also used to invade the user’s privacy. Especially the advertise
 
 To protect the users, ad and privacy blockers as well as corporate web proxies may ignore the JavaScript from certain hosts or limit the access to certain JavaScript APIs. Some security proxies even change the author’s JavaScript code.
 
-JavaScript authors need to learn how blockers and web proxies work. They typically match the URL with a whitelist or blacklist. Make sure the host (`example.org`) serving the JavaScript is not on a blacklist. In a corporate intranet with a whitelist, make sure the host is on the whitelist. Also avoid suspicious patterns in the URL path that could trigger the blocking, like `ad.js`.
+JavaScript authors need to learn how blockers and web proxies work. They typically match the URL with an allow list or block list. Make sure the host (`example.org`) serving the JavaScript is not on a block list. In a corporate intranet with an allow list, make sure the host is on this list. Also avoid suspicious patterns in the URL path that could trigger the blocking, like `ad.js`.
 
 Since ads and privacy-invading scripts are typically loaded from third-party servers, blockers tend to allow JavaScript from the same domain and likely block JavaScript from a different domain. Make sure your scripts are placed on the same domain, a custom domain for assets, or a well-known, trusted content delivery network (see next chapter).
 
