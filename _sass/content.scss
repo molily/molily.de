@@ -195,6 +195,7 @@ pre {
 pre, code, samp {
   background-color: $highlight-background-color;
   font-family: $monospace-font;
+  font-size: 100%;
   color: $code-text-color;
   overflow-wrap: break-word;
 }
