@@ -13,10 +13,11 @@ lang: en
 </svg>
 
 <p id="sticky-menu">
+  <a href="#toc" class="toc-link">
+    <span class="tokyo-tower">🗼</span>
+    Table of Contents
+  </a>
   <a href="/" title="Home">molily.de</a>
-  &bull;
-  <a href="#toc">Table of Contents</a>
-  &bull;
   <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
 </p>
 

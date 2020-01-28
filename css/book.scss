@@ -160,9 +160,9 @@ caption {
   left: 0;
   right: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: -1rem -1rem 1rem;
+  height: 2.5rem;
   background-color: #f0f0f0;
   font-size: 0.8rem;
   text-align: center;
@@ -170,15 +170,24 @@ caption {
   @include large {
     display: none;
   }
-}
 
-#sticky-menu a:link {
-  padding: 0.5rem;
-  border: 0;
-}
+  .tokyo-tower {
+    font-size: 250%;
+    line-height: 1;
+  }
 
-#sticky-menu .link-type {
-  display: none;
+  a:link {
+    border: 0;
+    padding: 0 1rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
+  }
+
+  .link-type {
+    display: none;
+  }
 }
 
 /**
@@ -209,7 +218,7 @@ caption {
   text-align: center;
 
   @include large {
-    display: none;
+    font-size: 1.5rem;
   }
 }
 
@@ -218,7 +227,7 @@ caption {
   text-align: center;
 
   @include large {
-    margin: 1.5rem 0;
+    margin: 1.6rem 0;
   }
 }
 
@@ -267,15 +276,8 @@ caption {
 #cover-image {
   display: block;
   margin: auto;
-  max-width: 100%;
-
-  @media (orientation: portrait) {
-    max-width: 70vw;
-  }
-
-  @media (orientation: landscape) {
-    max-height: 48vh;
-  }
+  max-width: 70vw;
+  max-height: 48vh;
 }
 
 #cover-credits-link {
