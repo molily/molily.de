@@ -74,8 +74,21 @@ body {
  *
  */
 
+table {
+  font-size: 0.9rem;
+}
+
 caption {
   text-align: center;
+}
+
+th,
+td {
+  border-style: none none solid;
+}
+
+th {
+  font-weight: bold;
 }
 
 /**
