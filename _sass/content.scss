@@ -28,6 +28,7 @@
  */
 
 ::selection {
+  color: $text-color;
   background-color: hsl($hue, 100%, 90%);
 }
 
@@ -37,7 +38,7 @@
  */
 
 html {
-  background-color: white;
+  background-color: $background-color;
   color: $text-color;
   font-family: $base-font;
   // Enable kerning and ligatures
@@ -46,6 +47,11 @@ html {
   font-variant-ligatures: common-ligatures;
   -webkit-text-decoration-skip: ink; // Deprecated
   text-decoration-skip-ink: auto;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $background-color-inverted;
+    color: $text-color-inverted;
+  }
 }
 
 /**
@@ -63,11 +69,15 @@ main, section, nav, article, aside, header, footer {
  */
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 2rem 0 1rem;
+  margin: 3rem 0 1rem;
   color: $heading-color;
   line-height: $heading-line-height;
   page-break-after: avoid;
   font-variant-ligatures: common-ligatures discretionary-ligatures contextual;
+
+  @media (prefers-color-scheme: dark) {
+    color: $heading-color-inverted;
+  }
 }
 
 h1 {
@@ -186,7 +196,6 @@ dd p {
 
 pre {
   padding: 1rem;
-  background-color: $highlight-background-color;
   overflow: auto;
   font-size: 90%;
   line-height: 1.8;
@@ -198,6 +207,11 @@ pre, code, samp {
   font-size: 100%;
   color: $code-text-color;
   overflow-wrap: break-word;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $highlight-background-color-inverted;
+    color: $code-text-color-inverted;
+  }
 }
 
 pre code {
@@ -205,9 +219,16 @@ pre code {
   color: inherit;
 }
 
-p code {
-  font-family: inherit;
-  padding: 0 0.2rem;
+p, li, th, td {
+  code {
+    font-family: inherit;
+    padding: 0 0.2rem;
+
+    @media (prefers-color-scheme: dark) {
+      padding: 0;
+      background-color: transparent;
+    }
+  }
 }
 
 /**
@@ -219,6 +240,11 @@ blockquote {
   padding: 1px 2rem;
   background-color: $highlight-background-color;
   color: $citation-text-color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $highlight-background-color-inverted;
+    color: inherit;
+  }
 
   blockquote {
     border: 1px solid #eaeaf0;
@@ -257,22 +283,41 @@ a {
     color: $link-color;
     border-bottom: 1px solid $link-border-color;
     transition: border-color 250ms ease;
+
+    @media (prefers-color-scheme: dark) {
+      color: $link-color-inverted;
+      border-color: $link-border-color-inverted;
+    }
   }
 
   &:visited {
     color: $link-visited-color;
     border-bottom: 1px solid $link-visited-border-color;
+
+    @media (prefers-color-scheme: dark) {
+      color: $link-visited-color-inverted;
+      border-color: $link-visited-border-color-inverted;
+    }
   }
 
   &:hover, &:focus, &:active {
     border-color: $link-active-border-color;
+
+    @media (prefers-color-scheme: dark) {
+      border-color: $link-active-border-color-inverted;
+    }
   }
 
   &:focus {
     color: $link-color;
     border-style: none;
-    outline: 1px solid hsl($hue, 100%, 50%);
+    outline: 1px solid hsl($hue, 100%, 80%);
     outline-offset: 2px;
+
+    @media (prefers-color-scheme: dark) {
+      color: $link-color-inverted;
+      outline-color: $link-color-inverted;
+    }
   }
 
   & img {
@@ -285,18 +330,30 @@ a {
   a {
 
     &:link {
-      text-decoration: underline $link-underline-color;
+      text-decoration: underline $link-border-color;
       border-bottom: 0;
       transition: text-decoration-color 250ms ease;
+
+      @media (prefers-color-scheme: dark) {
+        text-decoration-color: $link-border-color-inverted;
+      }
     }
 
     &:visited {
-      text-decoration: underline $link-visited-underline-color;
+      text-decoration: underline $link-visited-border-color;
       border-bottom: 0;
+
+      @media (prefers-color-scheme: dark) {
+        text-decoration-color: $link-visited-border-color-inverted;
+      }
     }
 
     &:hover, &:focus, &:active {
-      text-decoration-color: $link-active-underline-color;
+      text-decoration-color: $link-active-border-color;
+
+      @media (prefers-color-scheme: dark) {
+        text-decoration-color: $link-active-border-color-inverted;
+      }
     }
 
   }
@@ -310,6 +367,10 @@ a {
 
 q {
   color: $citation-text-color;
+
+  @media (prefers-color-scheme: dark) {
+    color: $citation-text-color-inverted;
+  }
 }
 
 /**
@@ -347,6 +408,10 @@ th, td {
 
 th {
   background-color: #fefefe;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: transparent;
+  }
 }
 
 table.compact th {

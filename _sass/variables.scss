@@ -13,6 +13,7 @@ $hue: 258;
 $hue2: 220;
 
 // Text and background colors
+$background-color: white;
 $text-color: #252527;
 $gray-text-color: #666;
 $heading-color: hsl($hue, 60%, 25%);
@@ -20,18 +21,33 @@ $highlight-background-color: hsl($hue2, 50%, 98%);
 $code-text-color: #009;
 $citation-text-color: #4a4a60;
 
+// Inverted text and background colors
+$background-color-inverted: hsl(253, 40%, 7%);
+$text-color-inverted: #d0d0d0;
+$heading-color-inverted: hsl($hue + 10, 100%, 75%);
+$highlight-background-color-inverted: hsl($hue, 50%, 12%);
+$code-text-color-inverted: hsl(170, 55%, 70%);
+$citation-text-color-inverted: #b0b0b0;
+
 // Link colors
 $link-color: hsl($hue2, 100%, 30%);
-$link-visited-color: $text-color;
+$link-border-color: desaturate(lighten($link-color, 40%), 60%);
 
-$link-border-color: #e0e0f0;
+$link-visited-color: $text-color;
 $link-visited-border-color: lighten($link-border-color, 1%);
 
-$link-underline-color: desaturate(lighten($link-color, 40%), 60%);
-$link-visited-underline-color: lighten($text-color, 60%);
-
 $link-active-border-color: #8080c0;
-$link-active-underline-color: $link-color;
+
+// Inverted link colors
+$link-color-inverted-hue: 57;
+
+$link-color-inverted: hsl($link-color-inverted-hue, 60%, 80%);
+$link-border-color-inverted: darken($link-color-inverted, 45%);
+
+$link-visited-color-inverted: hsl($link-color-inverted-hue, 15%, 40%);
+$link-visited-border-color-inverted: inherit;
+
+$link-active-border-color-inverted: $link-border-color-inverted;
 
 /**
  * @section Typography

@@ -26,10 +26,17 @@ $breakpoint-large: 56rem;
 $column-padding-min: 1.5rem;
 $column-padding-flexible: 1.5vw;
 
+// Colors
 $body-background: hsl($hue2, 50%, 95%);
 $wrapper-background: white;
-$col-secondary-background: $highlight-background-color;
+$secondary-background: $highlight-background-color;
 $post-header-background: hsl($hue, 40%, 50%);
+
+// Inverted colors
+$body-background-inverted: hsl($hue2, 100%, 3%);
+$wrapper-background-inverted: $background-color-inverted;
+$secondary-background-inverted: $background-color-inverted;
+$post-header-background-inverted: $highlight-background-color-inverted;
 
 /**
  * @section Mixins
@@ -58,13 +65,21 @@ $post-header-background: hsl($hue, 40%, 50%);
 html {
   height: 100%;
   background-color: $body-background;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $body-background-inverted;
+  }
 }
 
 /* Wrapper */
 
 .page-wrapper {
-  background-color: $wrapper-background;
   margin: auto;
+  background-color: $wrapper-background;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $wrapper-background-inverted;
+  }
 
   @include medium {
     max-width: $breakpoint-medium + 13rem;
@@ -103,7 +118,11 @@ html {
 .col-secondary {
   padding-top: 0;
   padding-bottom: 0;
-  background-color: $col-secondary-background;
+  background-color: $secondary-background;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $secondary-background-inverted;
+  }
 
   @include large {
     flex: 0 0 auto;
@@ -150,7 +169,11 @@ html {
 /* Document footer */
 
 .document-footer {
-  background-color: $col-secondary-background
+  background-color: $secondary-background;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $secondary-background-inverted;
+  }
 }
 
 .document-footer-list {
@@ -195,6 +218,11 @@ html {
   background-color: $post-header-background;
   color: white;
   text-shadow: 1px 1px 2px #333;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $post-header-background-inverted;
+    color: inherit;
+  }
 }
 
 .post-link {
@@ -297,6 +325,10 @@ $sidebar-line-height: 1.5;
   text-indent: 101%;
   overflow: hidden;
   background: url(/img/spidermum.png) no-repeat center / contain;
+
+  @media (prefers-color-scheme: dark) {
+    filter: drop-shadow(0 0 10px #666);
+  }
 }
 
 #sidebar ul {
@@ -356,6 +388,10 @@ $sidebar-line-height: 1.5;
 
 #zitate q {
   color: black;
+
+  @media (prefers-color-scheme: dark) {
+    color: inherit;
+  }
 }
 
 #zitate cite {

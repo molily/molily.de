@@ -44,10 +44,9 @@ $main-max-width: 40rem;
  *
  */
 
-html, body {
-  @include large {
-    height: 100%;
-  }
+html {
+  // Slightly larger font size than the default
+  font-size: 1.06rem;
 }
 
 body {
@@ -66,6 +65,11 @@ body {
 
 h2, h3, h4, h5, h6 {
   margin-top: 3rem;
+
+  @media (prefers-color-scheme: dark) {
+    padding-bottom: 1rem;
+    border-bottom: 2px dotted darken($heading-color-inverted, 50%);
+  }
 }
 
 h2 {
@@ -116,20 +120,21 @@ caption {
 
 @include large {
 
-  #toc-and-main {
-    display: flex;
-    height: 100%;
-  }
+  // #toc-and-main {}
 
-  // The extra container is necessary because of:
-  // https://bugzilla.mozilla.org/show_bug.cgi?id=748518
-  // https://github.com/w3c/csswg-drafts/issues/129
   #toc-container {
-    flex: 0 0 auto;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: $toc-width;
     background-color: #fafafa;
     overflow: auto;
     resize: horizontal;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: transparent;
+    }
   }
 
   #toc {
@@ -137,8 +142,7 @@ caption {
   }
 
   #main-container {
-    flex: 1 1 auto;
-    overflow: auto;
+    margin-left: $toc-width;
     padding: 0 2rem;
   }
 
@@ -169,6 +173,10 @@ caption {
 
   @include large {
     display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: $highlight-background-color-inverted;
   }
 
   .tokyo-tower {
@@ -342,6 +350,10 @@ caption {
 
 .erroneous {
   background-color: #fcf2f2;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: adjust-color($highlight-background-color-inverted, $red: 15);
+  }
 
   pre {
     background-color: transparent;
