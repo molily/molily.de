@@ -1,10 +1,8 @@
 /**
- * Generic clearfix
- *
+ * Clearfix that contains the top and bottom margins of children
+ * http://nicolasgallagher.com/micro-clearfix-hack/
  */
 
-// Clearfix that contains the top and bottom margins of children
-// http://nicolasgallagher.com/micro-clearfix-hack/
 @mixin clearfix {
   &:before,
   &:after {

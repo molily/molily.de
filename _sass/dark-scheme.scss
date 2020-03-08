@@ -1,0 +1,13 @@
+/**
+ * Dark color scheme
+ *
+ */
+
+// Clearfix that contains the top and bottom margins of children
+// http://nicolasgallagher.com/micro-clearfix-hack/
+
+@mixin dark-scheme {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}

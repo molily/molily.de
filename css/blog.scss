@@ -28,14 +28,14 @@ $column-padding-flexible: 1.5vw;
 
 // Colors
 $body-background: hsl($hue2, 50%, 95%);
-$wrapper-background: white;
+$primary-background: white;
 $secondary-background: $highlight-background-color;
 $post-header-background: hsl($hue, 40%, 50%);
 
 // Inverted colors
-$body-background-inverted: hsl($hue2, 100%, 3%);
-$wrapper-background-inverted: $background-color-inverted;
-$secondary-background-inverted: $background-color-inverted;
+$body-background-inverted: $background-color-inverted;
+$primary-background-inverted: $medium-background-color-inverted;
+$secondary-background-inverted: $dark-background-color-inverted;
 $post-header-background-inverted: $highlight-background-color-inverted;
 
 /**
@@ -66,7 +66,7 @@ html {
   height: 100%;
   background-color: $body-background;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $body-background-inverted;
   }
 }
@@ -75,11 +75,6 @@ html {
 
 .page-wrapper {
   margin: auto;
-  background-color: $wrapper-background;
-
-  @media (prefers-color-scheme: dark) {
-    background-color: $wrapper-background-inverted;
-  }
 
   @include medium {
     max-width: $breakpoint-medium + 13rem;
@@ -109,6 +104,12 @@ html {
 }
 
 .col-primary {
+  background-color: $primary-background;
+
+  @include dark-scheme {
+    background-color: $primary-background-inverted;
+  }
+
   @include large {
     flex: 0 0 auto;
     width: $col-left-width;
@@ -120,7 +121,7 @@ html {
   padding-bottom: 0;
   background-color: $secondary-background;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $secondary-background-inverted;
   }
 
@@ -171,7 +172,7 @@ html {
 .document-footer {
   background-color: $secondary-background;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $secondary-background-inverted;
   }
 }
@@ -219,7 +220,7 @@ html {
   color: white;
   text-shadow: 1px 1px 2px #333;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $post-header-background-inverted;
     color: inherit;
   }
@@ -235,6 +236,10 @@ html {
 
   &:visited {
     color: #f0f0f0;
+
+    @include dark-scheme {
+      color: darken($text-color-inverted, 15%);
+    }
   }
 
   &:focus {
@@ -326,7 +331,7 @@ $sidebar-line-height: 1.5;
   overflow: hidden;
   background: url(/img/spidermum.png) no-repeat center / contain;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     filter: drop-shadow(0 0 10px #666);
   }
 }
@@ -389,7 +394,7 @@ $sidebar-line-height: 1.5;
 #zitate q {
   color: black;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     color: inherit;
   }
 }
@@ -402,9 +407,13 @@ $sidebar-line-height: 1.5;
 }
 
 #zitate a {
-  color: $gray-text-color;
+  color: $darker-text-color;
   border-bottom: 0;
   text-decoration: none;
+
+  @include dark-scheme {
+    color: $darker-text-color-inverted;
+  }
 }
 
 /**
@@ -432,7 +441,11 @@ $sidebar-line-height: 1.5;
   width: 5.5rem;
   padding-right: 1rem;
   font-size: 0.8rem;
-  color: $gray-text-color;
+  color: $darker-text-color;
+
+  @include dark-scheme {
+    color: $darker-text-color-inverted;
+  }
 }
 
 .article-archive-link {

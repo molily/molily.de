@@ -12,6 +12,7 @@
 
 @import 'clearfix';
 @import 'accessible-hide';
+@import 'dark-scheme';
 
 /**
  * @section Box model fix
@@ -48,7 +49,7 @@ html {
   -webkit-text-decoration-skip: ink; // Deprecated
   text-decoration-skip-ink: auto;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $background-color-inverted;
     color: $text-color-inverted;
   }
@@ -75,7 +76,7 @@ h1, h2, h3, h4, h5, h6 {
   page-break-after: avoid;
   font-variant-ligatures: common-ligatures discretionary-ligatures contextual;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     color: $heading-color-inverted;
   }
 }
@@ -122,7 +123,7 @@ p, ul, ol, dl, pre, address, blockquote {
  */
 
 ul, ol {
-  margin-left: 1.5rem;
+  margin-left: 2rem;
   padding-left: 0;
 }
 
@@ -208,7 +209,7 @@ pre, code, samp {
   color: $code-text-color;
   overflow-wrap: break-word;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $highlight-background-color-inverted;
     color: $code-text-color-inverted;
   }
@@ -224,7 +225,7 @@ p, li, th, td {
     font-family: inherit;
     padding: 0 0.2rem;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark-scheme {
       padding: 0;
       background-color: transparent;
     }
@@ -241,7 +242,7 @@ blockquote {
   background-color: $highlight-background-color;
   color: $citation-text-color;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: $highlight-background-color-inverted;
     color: inherit;
   }
@@ -284,7 +285,7 @@ a {
     border-bottom: 1px solid $link-border-color;
     transition: border-color 250ms ease;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark-scheme {
       color: $link-color-inverted;
       border-color: $link-border-color-inverted;
     }
@@ -294,27 +295,27 @@ a {
     color: $link-visited-color;
     border-bottom: 1px solid $link-visited-border-color;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark-scheme {
       color: $link-visited-color-inverted;
       border-color: $link-visited-border-color-inverted;
     }
   }
 
-  &:hover, &:focus, &:active {
-    border-color: $link-active-border-color;
+  &:hover {
+    border-color: $link-hover-border-color;
 
-    @media (prefers-color-scheme: dark) {
-      border-color: $link-active-border-color-inverted;
+    @include dark-scheme {
+      border-color: $link-hover-border-color-inverted;
     }
   }
 
-  &:focus {
+  &:focus, &:active {
     color: $link-color;
     border-style: none;
     outline: 1px solid hsl($hue, 100%, 80%);
     outline-offset: 2px;
 
-    @media (prefers-color-scheme: dark) {
+    @include dark-scheme {
       color: $link-color-inverted;
       outline-color: $link-color-inverted;
     }
@@ -334,7 +335,7 @@ a {
       border-bottom: 0;
       transition: text-decoration-color 250ms ease;
 
-      @media (prefers-color-scheme: dark) {
+      @include dark-scheme {
         text-decoration-color: $link-border-color-inverted;
       }
     }
@@ -343,19 +344,22 @@ a {
       text-decoration: underline $link-visited-border-color;
       border-bottom: 0;
 
-      @media (prefers-color-scheme: dark) {
+      @include dark-scheme {
         text-decoration-color: $link-visited-border-color-inverted;
       }
     }
 
-    &:hover, &:focus, &:active {
-      text-decoration-color: $link-active-border-color;
+    &:hover {
+      text-decoration-color: $link-hover-border-color;
 
-      @media (prefers-color-scheme: dark) {
-        text-decoration-color: $link-active-border-color-inverted;
+      @include dark-scheme {
+        text-decoration-color: $link-hover-border-color-inverted;
       }
     }
 
+    &:focus, &:active {
+      text-decoration-color: transparent;
+    }
   }
 
 }
@@ -368,7 +372,7 @@ a {
 q {
   color: $citation-text-color;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     color: $citation-text-color-inverted;
   }
 }
@@ -379,7 +383,7 @@ q {
  */
 
 abbr, acronym {
-  text-decoration: underline dotted $gray-text-color;
+  text-decoration: underline dotted $darker-text-color;
   border-bottom-style: none;
   cursor: help;
   font-style: normal;
@@ -409,7 +413,7 @@ th, td {
 th {
   background-color: #fefefe;
 
-  @media (prefers-color-scheme: dark) {
+  @include dark-scheme {
     background-color: transparent;
   }
 }
