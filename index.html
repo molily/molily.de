@@ -5,7 +5,9 @@ layout: blog
 {% include top.html %}
 
 {% for post in site.posts limit: 5 %}
-  {% include post-short.html %}
+  {% unless post.draft %}
+    {% include post-short.html %}
+  {% endunless %}
 {% endfor %}
 
 {% include col-sidebar.html %}
@@ -16,10 +18,12 @@ layout: blog
   <h2 class="article-archive-heading">Older articles</h2>
   <ul class="article-archive">
   {% for post in site.posts offset: 5 %}
-    <li class="article-archive-item">
-      <time datetime="{{ post.date | date: "%F" }}" class="article-archive-date">{{ post.date | date: "%F" }}</time>
-      <a href="{{ post.url | prepend: site.baseurl }}" class="article-archive-link">{{ post.title }}</a>
-    </li>
+    {% unless post.draft %}
+      <li class="article-archive-item">
+        <time datetime="{{ post.date | date: "%F" }}" class="article-archive-date">{{ post.date | date: "%F" }}</time>
+        <a href="{{ post.url | prepend: site.baseurl }}" class="article-archive-link">{{ post.title }}</a>
+      </li>
+    {% endunless %}
   {% endfor %}
   </ul>
 </div>
