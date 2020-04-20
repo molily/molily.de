@@ -5,6 +5,7 @@ description: ""
 keywords: JavaScript, Angular, Testing, Automated Tests
 lang: en
 draft: true
+robots: noindex, follow
 ---
 
 <svg style="display: none">
@@ -65,9 +66,9 @@ Often individual developers are blamed for the lack of tests. The claim that dev
 
 If you are struggling with writing tests, it is not your fault or deficit. We are all struggling because testing software automatically is inherently complicated and difficult.
 
-Why is testing so difficult? First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over. You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable tactic to improve your code.
+Why is testing so difficult? First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over. You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable strategy to improve your code.
 
-Second, testing has a steep learning curve. If testing can be seen as a tool, it is not a like a screwdriver or power drill. It rather compares to a tractor or excavator. It takes training to operate these machines. And it takes experience to apply them accurately and safely.
+Second, testing has a steep learning curve. If testing can be seen as a tool, it is not a like a screwdriver or power drill. Rather, it compares to a tractor or excavator. It takes training to operate these machines. And it takes experience to apply them accurately and safely.
 
 This is meant to encourage you. Getting started with testing is hard, but it gets easier and easier with more practice. The goal of this guide is to empower you to write tests on a daily basis that cover the important features of your Angular application.
 
@@ -83,15 +84,15 @@ This guide cannot not explain all potential benefits of automated testing. Let u
 
 - **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the problems they had to deal with.
 
-  A test is valuable if it clearly describes how the implementation code should behave. The test uses a proper language to talk to developers and convey the requirements. The test list all possible cases the implementation has to deal with.
+  A test is valuable if it clearly describes how the implementation code should behave. The test uses a proper language to talk to developers and convey the requirements. The test lists known cases the implementation has to deal with.
 
 - **Testing ensures that the code implements the requirements and does not exhibit bugs.** Testing taps every part of the code in order to find flaws.
 
   A test is valuable if it covers the most important scenarios, both correct and incorrect input, expected cases as well as exceptional cases.
 
-- **Testing makes change safe by preventing regressions.** Tests not only verify that the current implementation meets the requirements. They also verify that the code still works as expected after changes. With proper automated tests in place, accidentally breakage is less likely, implementing new features and code refactoring is safer.
+- **Testing makes change safe by preventing regressions.** Tests not only verify that the current implementation meets the requirements. They also verify that the code still works as expected after changes. With proper automated tests in place, accidentally breakage is less likely. Implementing new features and code refactoring is safer.
 
-  A test is valuable if it fails when essential code is changed or deleted. Design the test to fail if dependent behavior is changed. It test still passes if unrelated code is changed.
+  A test is valuable if it fails when essential code is changed or deleted. Design the test to fail if dependent behavior is changed. It should still pass if unrelated code is changed.
 
 ### What testing can achieve
 
@@ -105,11 +106,11 @@ https://www.istqb.org/downloads/send/2-foundation-level-documents/281-istqb-ctfl
 
 The purpose of a test is to discover bugs. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that *this particular test setup* did not trigger a bug. It does not prove that the code is correct and free of bugs.
 
-So should you write automated tests to for all possible cases to ensure correctness? No, say the ISTQB principles: “Exhaustive testing is impossible”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should analyze the risks of a certain case and write tests for high-risk cases first.
+So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “Exhaustive testing is impossible”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should *assess the risks* of a certain case and write tests for high-risk cases first.
 
 Even if it was viable to cover all cases, it would give you a false sense of security. No software is without errors, and a fully tested software may still be a usability nightmare that does not satisfy its users.
 
-Another core idea is that testing depends on its context and that it needs to be adapted again and again to provide meaning. The specific context in this guide are single-page web applications written in JavaScript, made with Angular. Such applications need specific testing methods and testing tools we will get to know.
+Another core idea is that testing depends on its context and that it needs to be adapted again and again to provide meaning. The specific context in this guide are single-page web applications written in JavaScript, made with Angular. Such applications need specific testing methods and tools we will get to know.
 
 Once you have learned and applied these tools, you should not stop. A fixed toolchain will only discover certain types of bugs. You need to try out different approaches to find new classes of bugs. Likewise, an existing test suite needs to be updated regularly so that it still finds regressions.
 
@@ -130,7 +131,7 @@ This technical assessment is as important as an inquiry of your development team
 - What is the current testing practice? For example, developers sometimes write tests, but not as a daily routine.
 - What is the experience on writing tests? For example, some developers have written tests for several environments, while others understand the basic concepts but have not yet gotten into practice.
 - What are the obstacles that impede a good testing routing? For example, developers have not been trained on the existing testing tools.
-- Are tests well-integrated into your development workflow? For example, a continous integration server automatically runs the test suite on every feature branch.
+- Are tests well-integrated into your development workflow? For example, a continous integration server automatically runs the test suite on every change set.
 
 Once you have answered these questions, you should set up a testing goal and implements steps to achieve it. A good start is to think economically. What is the return on investment of writing a test? Pick the low-hanging fruits. Find business-critical features and make sure they are covered by tests. Write tests that are easy to write but cover large parts of the code.
 
@@ -142,19 +143,15 @@ Writing automated tests should be easy and fun for your team members. Remove any
 
 A fierce debate revolves around the right amount of testing. Too little testing is a problem: Features are not properly specified, bugs go unnoticed, regressions happen. But too much testing consumes development time, yields no additional profit and slows down development in the long run.
 
-So there is a sweet spot to reach. If your testing practice deteriorates, you run into problems. If you take efforts to add more tests, you observe little benefit.
+So we need to reach a sweet spot. If your testing practice deteriorates from this spot, you run into problems. If you add more tests, you observe little benefit.
 
-Some tests are more meaningful than others. If they fail, your application is actually unusable. These are typically high-level tests. Low-level tests on the other hand are sometimes tedious to write and their value is disputed. They run the risk of mirroring or even duplicating implementation details.
-
-These implementation details may change quickly because of changed requirements elsewhere or because of internal refactorings. If you change a line of code somewhere, some distant tests suddenly fail. This makes sense if you have touched shared types or shared logic, but it may just be a false alarm.  You have to fix these failing tests for technical reasons, not because something broke.
-
-That does not mean that high-level tests inherently are more valueable than low-level tests. On all levels, you need to find meaningful tests.
+Tests differ in their value and quality. Some tests are more meaningful than others. If they fail, your application is actually unusable. This means the quality of tests is more important than their quantity.
 
 A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code (file, method/function, block, expression etc.) are executed at all. Code coverage is typically expressed as percent values, e.g. 79% statements, 53% branches, 74% functions, 78% lines.
 
-This metric on testing is useful but also deeply flawed because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance. The coverage report may point to important behavior that is not yet covered by tests. It does not tell whether the existing tests are meaningful and make the right expectations. You can merely infer that the code does not throw exceptions under test conditions.
+This metric on testing is useful but also deeply flawed because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance. The coverage report may point to important behavior that is not yet covered by tests, but should be. It does not tell whether the existing tests are meaningful and make the right expectations. You can merely infer that the code does not throw exceptions under test conditions.
 
-It is controversial whether one should strive for 100% code coverage. While it is feasible to cover 100% of certain business-critical code, it requires immense efforts to cover all parts of an application written in Angular and TypeScript. If you write tests for the main features of your app from a user’s perspective, you can easily achieve a code coverage of 60-75%. Every percent gain now takes more and more time and leads to weird and twisted tests that do not reflect the actual usage of your application.
+It is controversial whether one should strive for 100% code coverage. While it is feasible to cover 100% of certain business-critical code, it requires immense efforts to cover all parts of an application written in Angular and TypeScript. If you write tests for the main features of your app from a user’s perspective, you can easily achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and leads to weird and twisted tests that do not reflect the actual usage of your application.
 
 We are going to discuss the practical use of code coverage tools later.
 
@@ -162,37 +159,79 @@ We are going to discuss the practical use of code coverage tools later.
 
 We can distinguish automated tests by their perspective and proximity to the code.
 
-<p id="e2e-tests">Some tests have a <em>bird’s-eye view</em> on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a a link or button, filling out a form, moving the mouse or typing on the keyboard. They make expectations about what the user sees and reads in their browser.</p>
+#### End-to-end tests
 
-From the user’s perspective, it does not matter that your application is implemented in Angular. Technical details like the inner structure of your code are irrelevant. There is no distinction between front-end and back-end, between parts of your code. The full experience is tested.
+
+Some tests have a *high-level, bird’s-eye view* on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. They make expectations about what the user sees and reads in their browser.
+
+From the user’s perspective, it does not matter that your application is implemented in Angular. Technical details like the inner structure of your code are not relevant. There is no distinction between front-end and back-end, between parts of your code. The full experience is tested.
 
 These tests are called **end-to-end (E2E) tests** since they integrate all parts of the application from one end (the user) to the other end (the darkest corners of the back-end). End-to-end tests also form the automated part of **acceptance tests** since they tell whether the application works for the user.
 
-<p id="unit-tests">Other tests have a <em>worm’s-eye view</em> on the application. They pick a small piece of code and put it through its paces. From this perspective, implementation details matter. The developer needs to set up an appropriate testing environment to trigger all relevant cases.</p>
+#### Unit tests
+
+Other tests have a *low-level, worm’s-eye view* on the application. They pick a small piece of code and put it through its paces. From this perspective, implementation details matter. The developer needs to set up an appropriate testing environment to trigger all relevant cases.
 
 The shortsighted worm only sees what is directly in front. This perspective tries to cut off the ties of the code under test with its dependencies. It tries to *isolate* the code in order to examine it.
 
 These tests are called **unit tests**. A unit is a small piece of code that is reasonable to test.
 
-<p id="integration-tests">Between these two extreme perspectives, there are tests that operate on specific parts of the code, but test cohesive groups. They prescind from implementation details and try to take the user’s perspective.</p>
+#### Integration tests
 
-These tests are called **integration tests** since they test how well the parts *integrate* into the group. For example, all parts of one feature are tested together. An integration test proves that all parts work together properly.
+Between these two extreme perspectives, there are tests that operate on specific parts of the code, but test cohesive groups. They prescind from implementation details and try to take the user’s perspective.
+
+These tests are called **integration tests** since they test how well the parts *integrate* into the group. For example, all parts of one feature may be tested together. An integration test proves that all parts work together properly.
 
 ### Distribution of testing efforts
 
-All levels of testing are necessary and valuable. Different types of tests need to be combined to create a thorough test suite. But how should we divide our attention? On which level should we spend most of the time? Should we focus on end-to-end tests since they mimic how the user interacts with the application?
-
-Again, this is a controversial issue among testing experts.
+All levels of testing are necessary and valuable. Different types of tests need to be combined to create a thorough test suite. But how should we divide our attention? On which level should we spend most of the time? Should we focus on end-to-end tests since they mimic how the user interacts with the application? Again, this is a controversial issue among testing experts.
 
 What is indisputable is that high-level tests like end-to-end tests are expensive and slow, while lower-level tests like integration and unit tests are cheaper and faster.
 
 End-to-end tests are brittle, meaning they often produce false negatives. Sometimes they fail for now apparent reason – when you run the same tests again, they suddenly pass. Even if the test failure is a true negative, it is hard to find the root cause of the problem. You need to wander through the full stack to locate the bug.
 
-End-to-end test are computationally expensive and run slow. Since they use a real, sometimes “headless” browser and run against the full software stack, the testing setup is immense. You need to deploy front-end, back-end, databases, caches etc. to testing machines and then have machines that run the end-to-end tests.
+End-to-end test are computationally expensive and run slow. Since they use a real, sometimes “headless” browser and run against the full software stack, the testing setup is immense. You need to deploy front-end, back-end, databases, caches etc. to testing machines and then have machines to run the end-to-end tests.
 
-Several commercial tools try to make end-to-end tests easier, faster and more robust. Since end-to-end tests are unreliable because of their complexity, these tools try to reduce the complexity. For example, they remote-control one possible browser instead of all browsers that support a generic automation protocol like WebDriver.
+Several commercial tools try to make end-to-end tests easier, faster and more robust. Since end-to-end tests are unreliable because of their complexity, these tools try to reduce complexity at the expense of flexibility. For example, they remote-control one possible browser instead of all browsers that support a generic automation protocol like WebDriver.
 
 In comparison, integration tests are simpler and unit tests even more so. Since they have less moving parts and fewer dependencies, they run faster and the results are reproducible. The setup is relatively simple. Integration and unit tests typically run on one machine with a build of the code under test.
+
+The crucial question for dividing your testing efforts is: Which tests yield the most return on investment? How much work is it to maintain a test in relation to its benefit?
+
+In theory, the benefit of end-to-end tests is the highest, since they indicate whether the application works for the user. In practice, they are flaky, imprecise, painful to write and debug. The business value of integration and unit tests is estimated higher.
+
+For this reason, some experts argue you should write few end-to-end test, a fair amount of integration tests and many unit tests. If this distribution is visualized, it looks like a pyramid:
+
+<p>
+<svg style="display: block; margin: auto; width: 100%; max-width: 25rem" viewbox="0 0 500 350">
+  <path d="M 250 10 L 490 340 H 10 Z" stroke="gray" stroke-width="2" fill="white" />
+  <text x="250" y="65" style="font-size: 20px; text-anchor: middle; dominant-baseline: middle">
+    <tspan>End</tspan>
+    <tspan x="250" dy="30">to</tspan>
+    <tspan x="250" dy="30">end</tspan>
+  </text>
+  <path d="M 152 145 H 349" stroke="gray" stroke-width="2" />
+  <text x="250" y="200" style="font-size: 25px; text-anchor: middle; dominant-baseline: middle">Integration</text>
+  <line x1="79" y1="245" x2="421" y2="245" stroke="gray" stroke-width="2" />
+  <text x="250" y="295" style="font-size: 30px; text-anchor: middle; dominant-baseline: middle">Unit</text>
+</svg>
+</p>
+
+These proportions are known as the **[Testing Pyramid](https://martinfowler.com/bliki/TestPyramid.html)**. They are widely recognized in software testing across domains, platforms and programming languages.
+
+However, this common distribution also drew criticism. In particular, experts disagree on the value of unit tests.
+
+On the one hand, unit tests are precise and cheap. They are ideal to specify all tiny details of a shared module. They help you to design small, composable modules that “do one thing and do it well”. This level of testing forces you to reconsider how the module interacts with other modules.
+
+On the other hand, unit test are too low-level to check whether a certain feature works for the user. They give you little confidence that your application works. In addition, unit tests might increase the cost of every code change.
+
+Unit tests run the risk of mirroring or even duplicating implementation details. These details change frequently because of new requirements elsewhere or during internal refactorings. If you change a line of code somewhere, some distant unit test suddenly fails. This makes sense if you have touched shared types or shared logic, but it may just be a false alarm. You have to fix this failing test for technical reasons, not because something broke.
+
+Integration tests provide a better tradeoff. These mid-level tests prescind from implementation details, cover a group of code units and provide more confidence. They are less likely to fail if you refactor code inside of the group.
+
+That is why some experts deem integration tests more valuable and recommend that you spend most of your testing efforts on this level.
+
+In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe etc. Dependencies are replaced with fakes. An integration test spans one component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
 
 <table class="testing-levels-table">
 <caption>Comparison of software testing levels</caption>
@@ -232,40 +271,6 @@ In comparison, integration tests are simpler and unit tests even more so. Since 
 
 <p><small>(Table adapted from <a href="https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html">Just Say No to More End-to-End Tests</a> by Mike Wacker.)</small></p>
 
-The crucial question for dividing your testing efforts is: Which tests yield the most return on investment? How much work is it to maintain a test in relation to its benefit?
-
-In theory, the benefit of end-to-end tests is the highest, since they indicate whether the application works for the user. In practice, they are flaky, imprecise, painful to write and debug. The business value of integration and unit tests is estimated higher.
-
-For this reason, some experts argue you should write few end-to-end test, a fair amount of integration tests and many unit tests. If this distribution is visualized, it looks like a pyramid:
-
-<p>
-<svg style="display: block; margin: auto; width: 100%; max-width: 25rem" viewbox="0 0 500 350">
-  <path d="M 250 10 L 490 340 H 10 Z" stroke="gray" stroke-width="2" fill="white" />
-  <text x="250" y="65" style="font-size: 20px; text-anchor: middle; dominant-baseline: middle">
-    <tspan>End</tspan>
-    <tspan x="250" dy="30">to</tspan>
-    <tspan x="250" dy="30">end</tspan>
-  </text>
-  <path d="M 152 145 H 349" stroke="gray" stroke-width="2" />
-  <text x="250" y="200" style="font-size: 25px; text-anchor: middle; dominant-baseline: middle">Integration</text>
-  <line x1="79" y1="245" x2="421" y2="245" stroke="gray" stroke-width="2" />
-  <text x="250" y="295" style="font-size: 30px; text-anchor: middle; dominant-baseline: middle">Unit</text>
-</svg>
-</p>
-
-These proportions are known as the **[Testing Pyramid](https://martinfowler.com/bliki/TestPyramid.html)**. They are widely recognized in software testing across domains, platforms and programming languages.
-
-However, this common distribution also drew criticism. In particular, experts disagree on the value of unit tests.
-
-On the one hand, unit tests are precise and cheap. They are ideal to specify all tiny details of a shared module. They help you to design small, composable modules that “do one thing and do it well”. This level of testing forces you to reconsider how the module interacts with other modules.
-
-On the other hand, unit test are too low-level to check whether a certain feature works for the user. They give you little confidence that your application works. In addition, unit test are prone to fail when implementation details have changed. You have to adapt the tests even though the unit’s outer shape has not changed. For this reason, unit tests might increase the cost of every code change.
-
-Integration tests provide a better tradeoff. These mid-level tests prescind from implementation details, cover a group of code units and provide more confidence. They are less likely to fail if you refactor code inside of the group.
-
-That is why some experts deem integration tests more valuable and recommend that you spend most of your testing efforts on this level.
-
-In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe etc. Dependencies are replaced with fakes. An integration test spans one component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
 
 ### Black box vs. white box testing
 
@@ -351,7 +356,7 @@ That is why **dependency injection** and the underlying **inversion of control**
 
 This division of work decouples an application part from its dependencies: One part does not need to know how to set up a dependency, let alone the dependency’s dependencies and so forth.
 
-Dependency injection turns tight coupling into loose coupling. A certain application part no longer depends on a specific class, function, object or other value. It rather depends on an abstract **token** that can be traded in for a concrete implementation. The injector takes the token the and exchanges it for a real value.
+Dependency injection turns tight coupling into loose coupling. A certain application part no longer depends on a specific class, function, object or other value. It rather depends on an abstract **token** that can be traded in for a concrete implementation. The injector takes the token and exchanges it for a real value.
 
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
@@ -362,11 +367,11 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 
 ### Angular’s testing tools
 
-Angular provides solid testing tools out of the box. When you create an Angular project using the Angular CLI’s `ng new`, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
+Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
 So the Angular team already made important decisions for you: It chose Jasmine as testing framework, Karma as test runner as well as Protractor and WebDriver for running end-to-end tests. Implementation and test code are bundled with Webpack. Angular application parts are typically tested inside Angular’s `TestBed` maintained by the Angular team.
 
-This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people remove Jasmine and Karma and use Jest instead. Some people swap Protractor with Cypress. Some people use Spectator as an astraction instead of using `TestBed` directly.
+This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people remove Jasmine and Karma and use Jest instead. Some people swap Protractor with Cypress. Some people use Spectator as an abstraction instead of using `TestBed` directly.
 
 Other testing tools are not simply better or worse, but make different trade-offs. This guide assumes you begin with the recommended setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your specific application easier, faster and more reliable.
 
@@ -376,9 +381,85 @@ Angular offers some tools and conventions on testing, but you need to decide how
 
 This freedom of choice benefits experts, but confuses and paralyses beginners. In your project, there should be one preferrable way how to test a specific application part. You need to make choices and set up project-wide conventions and patterns.
 
-The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You need to create high-level testing tools that cast your conventions into code. These high-level allow to write short, readable and understandable tests.
+The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You need to create high-level testing tools that cast your conventions into code in order to write short, readable and understandable tests.
 
 This guide values strong conventions and introduces simple helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
+
+
+### Jasmine
+
+Angular ships with two tools that enable you to write and execute unit and integration tests: Karma and Jasmine.
+
+Jasmine is a testing framework consisting basically of three parts. First, a library with classes and functions to construct tests. Second, the ability to execute these tests. Third, the ability to output test reports in different formats.
+
+This guide cannot provide a full introduction to Jasmine,
+
+If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite). Still, let us recap Jasmine’s basic structure and terminology.
+
+In terms of Jasmine, a test consists of one or more *suites*. A suite is declared with a `describe` block:
+
+```typescript
+describe('Suite description', () => {
+  /* … */
+})
+```
+
+Each suite *describes* a piece of code, the *code under test*. That is why the block is called `describe`.
+
+`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, it should contain the name of the class or function under test. For example, `describe('NewsletterSubscriptionComponent', /* … */)` if the suite is testing the `NewsletterSubscriptionComponent` class. The second parameter is a function containing the suite definition.
+
+Each suit consists of one of more *specs* (short for *specifications*). A spec is declared with an `it` block:
+
+```typescript
+describe('Suite description', () => {
+  it('Spec description', () => {
+    /* … */
+  });
+  /* … more specs …  */
+})
+```
+
+Again, `it` is a function that takes two parameters.
+
+`it` is a pronoun a sentence should start with
+
+in the form
+The pronoun *it* refers to the code under test. *It* does something.
+describe the behavior in a natural language
+in this case, English
+
+For example,
+NewsletterSubscriptionComponent
+it('subscribes the user to the newsletter')
+it('unsubscribes the user from the newsletter')
+
+
+Expectations
+expect + Value + Matcher
+
+Setup, teardown
+before/After/Each/All
+
+Spies, Mocking
+
+
+General structure of a test
+
+Arrange
+Act
+Assert
+
+Given
+When
+Then
+
+
+https://jasmine.github.io/tutorials/your_first_suite
+
+
+
+### Karma
+
 
 <hr>
 
