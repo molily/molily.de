@@ -72,6 +72,14 @@ Second, testing has a steep learning curve. If testing can be seen as a tool, it
 
 This is meant to encourage you. Getting started with testing is hard, but it gets easier and easier with more practice. The goal of this guide is to empower you to write tests on a daily basis that cover the important features of your Angular application.
 
+## Terminology
+
+Before we dive in, a quick note regarding the technical terms. Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish between these meanings by using a different case.
+
+When referring to core Angular concepts, this guide uses **upper case**: *Module, Component, Service, Input, Output, Directive, Pipe* etc.
+
+When using these terms in the common sense, this guide uses **lower case**: *module, component, service, input, output* etc.
+
 ## Testing principles
 
 There is a gap between practical introductions – how to test a feature at all – and essential discussions on the core concepts – what does testing achieve, which type of tests are beneficial etc. Before we dive into the practical tutorial, we need to reflect on a few basics about testing.
@@ -80,19 +88,25 @@ There is a gap between practical introductions – how to test a feature at all 
 
 When you are writing tests, you need to keep in mind what the goals of testing are. You need to judge whether a test is valuable with regard to these goals.
 
-This guide cannot not explain all potential benefits of automated testing. Let us look at three that are useful to judge a test:
+Automated testing has several technical, economical and organizational benefits. Let us look pick a few that are useful to judge a test:
 
-- **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the problems they had to deal with.
+- **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 
-  A test is valuable if it clearly describes how the implementation code should behave. The test uses a proper language to talk to developers and convey the requirements. The test lists known cases the implementation has to deal with.
+  Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyse and fix the bug in order to regain the user’s trust.
+
+  **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
+
+- **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the challenges they had to deal with.
+
+  **A valuable test clearly describes how the implementation code should behave.** The test uses a proper language to talk to developers and convey the requirements. The test lists known cases the implementation has to deal with.
 
 - **Testing ensures that the code implements the requirements and does not exhibit bugs.** Testing taps every part of the code in order to find flaws.
 
-  A test is valuable if it covers the most important scenarios, both correct and incorrect input, expected cases as well as exceptional cases.
+  **A valuable test covers the important scenarios** – both correct and incorrect input, expected cases as well as exceptional cases.
 
 - **Testing makes change safe by preventing regressions.** Tests not only verify that the current implementation meets the requirements. They also verify that the code still works as expected after changes. With proper automated tests in place, accidentally breakage is less likely. Implementing new features and code refactoring is safer.
 
-  A test is valuable if it fails when essential code is changed or deleted. Design the test to fail if dependent behavior is changed. It should still pass if unrelated code is changed.
+  **A valuable test fails when essential code is changed or deleted.** Design the test to fail if dependent behavior is changed. It should still pass if unrelated code is changed.
 
 ### What testing can achieve
 
@@ -139,7 +153,7 @@ Simultaneously, integrate testing into your team’s workflow. Make sure everyon
 
 Writing automated tests should be easy and fun for your team members. Remove any obstacles that make testing difficult or inefficient.
 
-#### Right amount of testing
+#### The right amount of testing
 
 A fierce debate revolves around the right amount of testing. Too little testing is a problem: Features are not properly specified, bugs go unnoticed, regressions happen. But too much testing consumes development time, yields no additional profit and slows down development in the long run.
 
@@ -161,8 +175,7 @@ We can distinguish automated tests by their perspective and proximity to the cod
 
 #### End-to-end tests
 
-
-Some tests have a *high-level, bird’s-eye view* on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. They make expectations about what the user sees and reads in their browser.
+Some tests have a *high-level, bird’s-eye view* on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. They make expectations about what the user sees and reads in the browser.
 
 From the user’s perspective, it does not matter that your application is implemented in Angular. Technical details like the inner structure of your code are not relevant. There is no distinction between front-end and back-end, between parts of your code. The full experience is tested.
 
@@ -344,15 +357,74 @@ The following table shows which properties and methods of an Angular Component y
 
 ## Testing in Angular
 
-### Dependency injection and mock objects
+### Example applications
 
-In contrast to other popular front-end JavaScript libraries, Angular is a an opinionated, comprehensive framework that tries to cover all important aspects of developing a JavaScript web application. Angular provides high-level application structure, low-level modularity and means to bundle everything together into a usable application.
+In this guide, we will explore the different aspects of testing Angular applications by looking at two examples.
 
-The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application play by the same rules and apply the same patterns? One important reason is testability. Angular’s architecture guarantees that all parts of an application can be tested easily in a similar way.
+#### The counter Component
+
+* [Counter Component: Source code](https://github.com/9elements/angular-workshop)
+* [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
+
+<p style="position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%;">
+<iframe src="https://9elements.github.io/angular-workshop/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white"></iframe>
+</p>
+
+The counter is a reusable Component that allows to increase, decrease and reset a number using buttons and input fields.
+
+For advanced Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but still struggle testing the ins and outs.
+
+The goals of this example are:
+
+- **Simplicity**: Quickly grasp what the Component is supposed to do.
+- **Covering core Angular features**: Reusable Components with state, Inputs, Outputs, templates, event handling.
+- **Scalability**: Starting point for more complex application architectures.
+
+The counter comes in three flavors with different state management solutions:
+
+1. An independent, self-sufficient counter Component that holds its own state.
+2. A counter that is connected to a Service using dependency injection. The counter shares its state with other counters. It changes the state by calling Service methods.
+3. A counter that is connected to a central NgRx Store and changes the state indirectly by dispatching NgRx Actions. NgRx is a state management library we will introduce later.
+
+As trivial this example might seem from an implementation perspective, it already offers valuable challenges from a testing perspective.
+
+#### The Flickr photo search
+
+* [Flickr search: Source code](https://github.com/9elements/angular-flickr-search)
+* [Flickr search: Run the app](https://9elements.github.io/angular-flickr-search/)
+
+<p style="position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%;">
+<iframe src="https://9elements.github.io/angular-flickr-search/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white"></iframe>
+</p>
+
+This app that allows to search public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
+
+This application is straightforward and relatively simple to implement. Still it raises important questions:
+
+- **App structure**: How to split responsibilities into Components and how to model dependencies.
+- **API communication**: How to fetch data by making HTTP requests and update the user interface.
+- **State management**: Where to hold the state, how to pass it down in the Component tree, how to alter it.
+
+The Flickr Search comes in two flavors using different state management solutions:
+
+1. The state is managed in the top-level Component, passed down in the Component tree and altered using Outputs.
+2. The state is managed by an NgRx Store. Components are connected to the store to pull state and dispatch Actions. The state is altered in a Reducer. The side effects of an Action are handled by NgRx Effects.
+
+Once you are able to write automatic tests for this example application, you will be able to test most features of a typical Angular application.
+
+## Testing Angular applications
+
+### Testable application parts
+
+In contrast to other popular front-end JavaScript libraries, Angular is a an opinionated, comprehensive framework that covers all important aspects of developing a JavaScript web application. Angular provides high-level structure, low-level building blocks and means to bundle everything together into a usable application.
+
+The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application apply the same patterns? One important reason is **testability**. Angular’s architecture guarantees that all parts of an application can be tested easily in a similar way.
 
 We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunk loosely.
 
-That is why **dependency injection** and the underlying **inversion of control** are major design patterns in Angular. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an *injector* that sits on top.
+### Dependency injection and mock objects
+
+A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an *injector* that sits on top.
 
 This division of work decouples an application part from its dependencies: One part does not need to know how to set up a dependency, let alone the dependency’s dependencies and so forth.
 
@@ -386,15 +458,21 @@ The testing tools that ship with Angular are low-level. They merely provide the 
 This guide values strong conventions and introduces simple helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
 
 
-### Jasmine
+### Jasmine test suites
 
 Angular ships with two tools that enable you to write and execute unit and integration tests: Karma and Jasmine.
 
-Jasmine is a testing framework consisting basically of three parts. First, a library with classes and functions to construct tests. Second, the ability to execute these tests. Third, the ability to output test reports in different formats.
+Jasmine is a testing framework consisting basically of three parts:
 
-This guide cannot provide a full introduction to Jasmine,
+1. A library with classes and functions for constructing tests.
+2. A test execution engine.
+3. A reporting engine that outputs test results in different formats.
 
-If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite). Still, let us recap Jasmine’s basic structure and terminology.
+If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite).
+
+This guide does not provide a full introduction to Jasmine, but let us recap Jasmine’s basic structure and terminology that will be used throughout this guide.
+
+#### Creating a Jasmine suite
 
 In terms of Jasmine, a test consists of one or more *suites*. A suite is declared with a `describe` block:
 
@@ -404,11 +482,13 @@ describe('Suite description', () => {
 })
 ```
 
-Each suite *describes* a piece of code, the *code under test*. That is why the block is called `describe`.
+Each suite *describes* a piece of code, the *code under test*.
 
-`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, it should contain the name of the class or function under test. For example, `describe('NewsletterSubscriptionComponent', /* … */)` if the suite is testing the `NewsletterSubscriptionComponent` class. The second parameter is a function containing the suite definition.
+`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` if the suite is testing the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
-Each suit consists of one of more *specs* (short for *specifications*). A spec is declared with an `it` block:
+#### Specifications
+
+Each suit consists of one of more *specifications*, or shorter, *specs*. A spec is declared with an `it` block:
 
 ```typescript
 describe('Suite description', () => {
@@ -419,170 +499,69 @@ describe('Suite description', () => {
 })
 ```
 
-Again, `it` is a function that takes two parameters.
+Again, `it` is a function that takes two parameters. The first parameter is a string with a human-readable spec description. The second parameter is a function containing the spec code.
 
-`it` is a pronoun a sentence should start with
+The pronoun `it` refers to the code under test. `it` should be the subject of a human-readable sentence that asserts the behavior of the code under test. The actual spec code then prove this assertion. This style of writing specs originates from the concept of Behavior-Driven Development (BDD).
 
-in the form
-The pronoun *it* refers to the code under test. *It* does something.
-describe the behavior in a natural language
-in this case, English
+One goal of BDD is to describe the code behavior in a natural language – in this case, English. Every stakeholder should be able to understand what the code is supposed to do, just by reading the `it` sentences. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
 
-For example,
-NewsletterSubscriptionComponent
-it('subscribes the user to the newsletter')
-it('unsubscribes the user from the newsletter')
+Ask yourself, what does the code under test do? For example, in case of a `CounterComponent`, *it* increments the counter value. And *it* resets the counter to a specific value. So you could write:
 
+```typescript
+it('increments the count', () => {
+  /* … */
+})
+it('resets the count', () => {
+  /* … */
+})
+```
 
-Expectations
+After `it`, typically a verb follows, like `increments` and `resets` in the example.
+
+Some people prefer to write `it('should increment the count')`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test *should* do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
+
+#### The structure of a test
+
+Inside the `it` block lies the actual testing code. Irrespective of the testing framework, the testing code typically consists of three phases: **Arrange, Act and Assert**.
+
+1. **Arrange** is the preparation and setup phase. For example, the class under test is instantiated. Dependencies are set up. Spies and mocks are created.
+2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an element in the DOM is clicked.
+3. **Assert** is the phase where the code behavior is checked and verified. For example, the actual output is compared to the expected output.
+
+In BDD, these phases are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and allow a natural way to think of a test’s structure: “*Given* these specific conditions, *when* the user interacts with the application, *then* it behaves in a certain way.”
+
+Let us assume we would like to write the spec `it('resets the count', /* … */)` for the `CounterComponent`. The structure could look like this:
+
+1. Arrange / Given:
+  * Create an instance of `CounterComponent`.
+  * Render the Component into the document.
+2. Act / When:
+  * Find and focus the reset input field.
+  * Enter the text “5”.
+  * Find and click the “Reset” button.
+3. Assert / Then:
+  * Expect that the displayed count now reads “5”.
+
+Structuring specs allows you
+user interaction
+clear expectations
+
+#### Expectations
+
 expect + Value + Matcher
 
+#### Efficient test suites: structure
+
 Setup, teardown
+
 before/After/Each/All
 
-Spies, Mocking
-
-
-General structure of a test
-
-Arrange
-Act
-Assert
-
-Given
-When
-Then
-
-
-https://jasmine.github.io/tutorials/your_first_suite
-
-
+#### Spies, Mocking
 
 ### Karma
+### Testing Components
 
-
-<hr>
-
-<h2>Beispielanwendungen mit Tests</h2>
-
-<ul>
-  <li><a href="https://github.com/9elements/angular-workshop">Counter in drei Ausführungen</a></li>
-  <li><a href="https://github.com/9elements/angular-flickr-search">Flickr-Suche</a></li>
-</ul>
-
-<h2>Testing in Angular: Ziele</h2>
-
-<ul>
-  <li>Testing sollte selbstverständlich sein</li>
-  <li>Testing sollte einfach sein und Spaß machen</li>
-  <li>Übertragbare Beispieltests</li>
-  <li>Copy’n’Paste ist unser Freund</li>
-</ul>
-
-<h2>Unit Test in Angular (1)</h2>
-
-<ul>
-  <li>Testet die kleinste mögliche Code-Einheit</li>
-  <li>Testet eine Funktion oder Klasse</li>
-  <li>Testet einen Teil der App:<br>Modul, Komponente, Service, Direktive…</li>
-</ul>
-
-<h2>Unit Test in Angular (2)</h2>
-
-<ul>
-  <li>Black-Box-Testing</li>
-  <li>Testet das öffentliche Interface oder die Ausgabe</li>
-  <li>Interna werden nicht angefasst, selbst wenn sie technisch erreichbar sind</li>
-</ul>
-
-<h2>Unit Test in Angular (3)</h2>
-
-<ul>
-  <li>Testet die Einheit möglichst <em>isoliert</em></li>
-  <li>Abhängigkeiten werden durch Mock-Objekte ersetzt</li>
-  <li>Verifizieren des Aufrufs der Abhängigkeiten</li>
-  <li>Keine Nebenwirkungen (Side Effects, z.B. HTTP-Requests)</li>
-</ul>
-
-<h2>Terminologie</h2>
-
-<dl>
-  <dt>Stubs</dt>
-  <dd>Ersatz für eine Abhängigkeit</dd>
-  <dd>Vordefinierte Eigenschaften &amp; Rückgabewerte</dd>
-  <dd>Zustand verifizieren</dd>
-  <dt>Mocks</dt>
-  <dd>Wie Stubs</dd>
-  <dd>Erwartungen gegen den Mock ausführen</dd>
-  <dd>Zustand &amp; Verhalten verifizieren</dd>
-</dl>
-
-<p><small><a href="https://angular-buch.com/">Quelle: Angular-Buch, dpunkt.verlag, 1. Auflage 2017, S. 383</a></small></p>
-
-<h2>Unit Test in Angular (3)</h2>
-
-<ul>
-  <li>Vorteil: Effektiv und gezielt</li>
-  <li>Vorteil: Einfach, nah am Code</li>
-  <li>Nachteil: Sehr technisch, wenig aus User-Sicht</li>
-  <li>Nachteil: Herauslösen aus dem Kontext</li>
-  <li>Nachteil: Mocking-Aufwand</li>
-</ul>
-
-<h2>Unit Test in Angular (4)</h2>
-
-<ul>
-  <li>Testet einen Teil der App<br>(Modul, Komponente, Service, Direktive…)</li>
-  <li><code>*.spec.ts</code></li>
-  <li><a href="https://karma-runner.github.io">Karma Test Runner</a></li>
-  <li><a href="https://jasmine.github.io/">Jasmine</a> für Test Suites und Assertions</li>
-  <li><code>TestBed</code></li>
-</ul>
-
-<h2>Integration Tests</h2>
-
-<ul>
-  <li>Testet mehrere zusammenhängende Einheiten</li>
-  <li>Testet eine Einheit mitsamt Abhängigkeiten / Kindern</li>
-  <li>Meist eine komplexe Einheit auf hoher Ebene</li>
-</ul>
-
-<h2>Integration Test in Angular</h2>
-
-<ul>
-  <li>Testet einen Teil der App auf hoher Ebene</li>
-  <li>Modul</li>
-  <li>Komponente mit Kindern</li>
-  <li>Service mit anderen Services</li>
-</ul>
-
-<h2>Integration Test in Angular</h2>
-
-<ul>
-  <li>Zusammenhängendes wird nicht künstlich getrennt</li>
-  <li>Komplexer, immer noch nah am Code</li>
-  <li>Mehr aus User-Sicht</li>
-  <li>Nebenwirkungen schwer zu vermeiden</li>
-</ul>
-
-<h2>End-to-End Tests</h2>
-
-<ul>
-  <li>Testet die gesamte App aus User-Sicht</li>
-  <li>User ↔ Frontend ↔ Backend ↔ DB</li>
-  <li>Implementierungsdetails sind irrelevant</li>
-</ul>
-
-<h2>End-to-End Test in Angular</h2>
-
-<ul>
-  <li>Startet einen Browser, navigiert zur App</li>
-  <li>Simuliert Eingaben, z.B. Klicks auf Links</li>
-  <li>Operiert nicht auf Code-Ebene</li>
-  <li>Schaut nur die HTML-Ausgabe an</li>
-</ul>
-
-<h2>Unit Test ausführlich</h2>
+Writing a unit test for a Component
 
 <ul>
   <li>Wir erstellen einen <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/independent-counter/independent-counter.component.ts">Counter</a></li>
