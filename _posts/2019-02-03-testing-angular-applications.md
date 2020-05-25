@@ -383,10 +383,10 @@ The goals of this example are:
 The counter comes in three flavors with different state management solutions:
 
 1. An independent, self-sufficient counter Component that holds its own state.
-2. A counter that is connected to a Service using dependency injection. The counter shares its state with other counters. It changes the state by calling Service methods.
-3. A counter that is connected to a central NgRx Store and changes the state indirectly by dispatching NgRx Actions. NgRx is a state management library we will introduce later.
+2. A counter that is connected to a Service using dependency injection. It shares its state with other counters and changes it by calling Service methods.
+3. A counter that is connected to a central NgRx Store. (NgRx is a state management library we will introduce later.) The counter changes the state indirectly by dispatching NgRx Actions.
 
-As trivial this example might seem from an implementation perspective, it already offers valuable challenges from a testing perspective.
+While this example seems trivial to implement, it already offers valuable challenges from a testing perspective.
 
 #### The Flickr photo search
 
@@ -407,8 +407,8 @@ This application is straightforward and relatively simple to implement. Still it
 
 The Flickr Search comes in two flavors using different state management solutions:
 
-1. The state is managed in the top-level Component, passed down in the Component tree and altered using Outputs.
-2. The state is managed by an NgRx Store. Components are connected to the store to pull state and dispatch Actions. The state is altered in a Reducer. The side effects of an Action are handled by NgRx Effects.
+1. The state is managed in the top-level Component, passed down in the Component tree and changed using Outputs.
+2. The state is managed by an NgRx Store. Components are connected to the store to pull state and dispatch Actions. The state is changed in a Reducer. The side effects of an Action are handled by NgRx Effects.
 
 Once you are able to write automatic tests for this example application, you will be able to test most features of a typical Angular application.
 
@@ -418,7 +418,9 @@ Once you are able to write automatic tests for this example application, you wil
 
 In contrast to other popular front-end JavaScript libraries, Angular is a an opinionated, comprehensive framework that covers all important aspects of developing a JavaScript web application. Angular provides high-level structure, low-level building blocks and means to bundle everything together into a usable application.
 
-The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application apply the same patterns? One important reason is **testability**. Angular’s architecture guarantees that all parts of an application can be tested easily in a similar way.
+The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application apply the same patterns?
+
+An important reason is **testability**. Angular’s architecture guarantees that all application parts can be tested easily in a similar way.
 
 We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunk loosely.
 
@@ -441,9 +443,9 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 
 Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
-So the Angular team already made important decisions for you: It chose Jasmine as testing framework, Karma as test runner as well as Protractor and WebDriver for running end-to-end tests. Implementation and test code are bundled with Webpack. Angular application parts are typically tested inside Angular’s `TestBed` maintained by the Angular team.
+So the Angular team already made important decisions for you: **[Jasmine](https://jasmine.github.io/)** as testing framework, **[Karma](https://karma-runner.github.io/)** as test runner as well as **[Protractor](https://www.protractortest.org/)** for running end-to-end tests. Implementation and test code are bundled with Webpack. Application parts are typically tested inside Angular’s `TestBed`.
 
-This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people remove Jasmine and Karma and use Jest instead. Some people swap Protractor with Cypress. Some people use Spectator as an abstraction instead of using `TestBed` directly.
+This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people remove Jasmine and Karma and use **Jest** instead. Some people swap Protractor with **[Cypress](https://www.cypress.io/)**. Some people use **[Spectator](https://github.com/ngneat/spectator)** as an abstraction instead of using `TestBed` directly.
 
 Other testing tools are not simply better or worse, but make different trade-offs. This guide assumes you begin with the recommended setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your specific application easier, faster and more reliable.
 
@@ -458,7 +460,7 @@ The testing tools that ship with Angular are low-level. They merely provide the 
 This guide values strong conventions and introduces simple helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
 
 
-### Jasmine test suites
+### Test suites with Jasmine
 
 Angular ships with two tools that enable you to write and execute unit and integration tests: Karma and Jasmine.
 
@@ -518,37 +520,88 @@ it('resets the count', () => {
 
 After `it`, typically a verb follows, like `increments` and `resets` in the example.
 
-Some people prefer to write `it('should increment the count')`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test *should* do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
+Some people prefer to write `it('should increment the count', /* … */)`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test *should* do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
 
 #### The structure of a test
 
 Inside the `it` block lies the actual testing code. Irrespective of the testing framework, the testing code typically consists of three phases: **Arrange, Act and Assert**.
 
 1. **Arrange** is the preparation and setup phase. For example, the class under test is instantiated. Dependencies are set up. Spies and mocks are created.
-2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an element in the DOM is clicked.
+2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an HTML element in the DOM is clicked.
 3. **Assert** is the phase where the code behavior is checked and verified. For example, the actual output is compared to the expected output.
-
-In BDD, these phases are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and allow a natural way to think of a test’s structure: “*Given* these specific conditions, *when* the user interacts with the application, *then* it behaves in a certain way.”
 
 Let us assume we would like to write the spec `it('resets the count', /* … */)` for the `CounterComponent`. The structure could look like this:
 
-1. Arrange / Given:
+1. <p><strong>Arrange:</strong></p>
   * Create an instance of `CounterComponent`.
   * Render the Component into the document.
-2. Act / When:
+2. <p><strong>Act:</strong></p>
   * Find and focus the reset input field.
   * Enter the text “5”.
   * Find and click the “Reset” button.
-3. Assert / Then:
+3. <p><strong>Assert:</strong></p>
   * Expect that the displayed count now reads “5”.
 
-Structuring specs allows you
-user interaction
-clear expectations
+This structure makes it easier to come up with a test and also to implement it. Ask yourself:
+
+* What is the necessary setup? Which dependencies do I need to provide? How do they behave? (Arrange)
+* What is the user input or API call that triggers the behavior I would like to test? (Act)
+* What is the expected behavior? How do I prove that the behavior is correct? (Assert)
+
+In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and allow a natural way to think of a test’s structure: “*Given* these specific conditions, *when* the user interacts with the application, *then* it behaves in a certain way.”
 
 #### Expectations
 
 expect + Value + Matcher
+
+In the *Assert* phase, the test compares the actual output or return value to the expected output or return value. If they are the same, the test passes. If they differ, the test fails.
+
+Let us examine a simple contrived example, an `add` function:
+
+```javascript
+const add = (a, b) => a + b;
+```
+
+A primitive test without any testing tools could look like this:
+
+```javascript
+const expectedValue = 5;
+const actualValue = add(2, 3);
+if (expectedValue !== actualValue) {
+  throw new Error(
+    `Wrong return value: ${actualValue}. Expected: ${expectedValue}`
+  );
+}
+```
+
+We could write that code in a Jasmine spec, but Jasmine allows to create expectations in an easier and more concise manner: The `expect` function together with a *Matcher*.
+
+```javascript
+const expectedValue = 5;
+const actualValue = add(2, 3);
+expect(actualValue).toBe(expectedValue):
+```
+
+First, we pass the actual value to the `expect()` function. It returns an expectation object with methods for checking the actual value. We would like to compare the actual value to the expected value, so we use the `toBe` matcher.
+
+`toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`. So <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
+
+`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the same. It fails if two objects are different but happen to have the same properties and values.
+
+For checking the deep equality of two objects, Jasmine offers the `toEqual` matcher. This example illustrates the difference:
+
+```javascript
+ // Fails, objects not identical
+expect({ name: 'Linda' }).toBe({ name: 'Linda' });
+ // Passes, objects not identical but deeply equal
+expect({ name: 'Linda' }).toEqual({ name: 'Linda' });
+```
+
+Jasmine has numerous useful [matchers](https://jasmine.github.io/api/edge/matchers) built-in, `toBe` and `toEqual` being the most common. You can add your own custom matchers to hide a complex check behind a short name.
+
+BDD
+sentence!!
+
 
 #### Efficient test suites: structure
 
