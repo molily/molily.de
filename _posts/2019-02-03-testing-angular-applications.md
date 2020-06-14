@@ -8,6 +8,16 @@ draft: true
 robots: noindex, follow
 ---
 
+<style>
+#toc li {
+  list-style: none;
+}
+#toc .toc-heading-level-2 { margin-left: calc(1 * 1rem); }
+#toc .toc-heading-level-3 { margin-left: calc(2 * 1rem); }
+#toc .toc-heading-level-4 { margin-left: calc(3 * 1rem); }
+#toc .toc-heading-level-5 { margin-left: calc(4 * 1rem); }
+</style>
+
 <svg style="display: none">
   <symbol id="ornament" viewbox="0 0 14.666 16.598">
       <path d="M6.262 13.106q0 1.464-.988 2.47-.988 1.022-2.31 1.022-1.2 0-1.994-.776-.776-.758-.776-1.834 0-.988.6-1.57.617-.6 1.658-.6.723 0 1.217.494.511.476.511 1.094 0 .529-.493.97-.477.458-1.059.458-.44 0-.74-.317-.283-.3-.283-.776 0-.212.124-.459.123-.265.123-.3 0-.529-.37-.529-.3 0-.565.476-.247.459-.247 1.13 0 .881.653 1.498.67.635 1.676.635 1.058 0 1.852-.864.793-.864.793-2.046 0-1.535-2.046-3.404l-1.481-1.34q-.565-.53-.565-.812 0-.459.441-.459.07 0 .212.07.159.071.247.071.194 0 .194-.282 0-.264-.459-.617-.564-.406-1.111-.812-.882-.723-.882-1.57 0-.229.335-.229.035 0 .106.018.088.017.159.017.353 0 .353-.229 0-.035-.283-.688-.388-.846-.688-1.71Q0 .81 0 .581 0 0 .353 0q.23 0 .423.829.318 1.358.759 2.381.458 1.006.687 1.447.653 1.27 1.606 2.646 2.434 3.51 2.434 5.803zM14.666 14.146q0 .97-.811 1.676-.847.759-2.082.759-1.375 0-2.31-1.059-.918-1.04-.918-2.628 0-1.27.777-2.822.282-.547 1.834-3.122.917-1.517 1.27-2.258 1.164-2.452 1.252-3.51.053-.6.071-.67.053-.23.282-.23.318 0 .318.388 0 .177-.741 2.787-.035.124-.035.212 0 .194.14.194.107 0 .3-.07.212-.071.3-.071.23 0 .23.282 0 .706-.882 1.323-1.323.935-1.323 1.164 0 .23.3.23.123 0 .353-.071.229-.088.335-.088.388 0 .388.44 0 .46-.706.9-1.358.882-1.482.988-.6.494-1.234 1.535-1.006 1.64-1.006 2.557 0 1.517.653 2.329.67.81 1.834.81 1.059 0 1.711-.563.653-.547.653-1.43 0-1.887-1.482-1.887h-.105q-.089.018-.089.106 0 .07.388.459.388.388.388.9 0 .51-.405.846-.406.335-1.023.335-.477 0-.83-.476-.352-.476-.352-1.147 0-.67.564-1.199.582-.53 1.288-.53.952 0 1.57.76.617.74.617 1.851z" fill="currentColor" />
@@ -32,11 +42,14 @@ robots: noindex, follow
       <h1 id="toc-book-title">Testing Angular Applications</h1>
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
+      <!--
       <ol>
-      <li>
+        <li>
           <a href="#introduction">Introduction</a>
         </li>
       </ol>
+      -->
+      <ol id="generated-toc"></ol>
     </nav>
   </div>
 
@@ -60,7 +73,7 @@ Does the site allow the user to complete their tasks? Is the site still function
 
 I believe the benefits of automated testing are easy to grasp. Developers want to sleep well and be confident that their application works correctly. Moreover, testing helps developers to write better software. Software that is more robust, better to understand and easier to maintain.
 
-In stark contrast, I have met only few web developers with a steady testing practice. Only few find it *easy*, let alone *enjoy* writing tests. This task is seen as a chore or nuisance.
+In stark contrast, I have met only few web developers with a steady testing practice. Only few find it _easy_, let alone _enjoy_ writing tests. This task is seen as a chore or nuisance.
 
 Often individual developers are blamed for the lack of tests. The claim that developers are just too ignorant or lazy to write tests is simplistic and downright toxic. If testing has an indisputable value, we need to examine why developers avoid it while being convinced of the benefits. Testing should be easy, straight-forward and commonplace.
 
@@ -76,9 +89,9 @@ This is meant to encourage you. Getting started with testing is hard, but it get
 
 Before we dive in, a quick note regarding the technical terms. Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish between these meanings by using a different case.
 
-When referring to core Angular concepts, this guide uses **upper case**: *Module, Component, Service, Input, Output, Directive, Pipe* etc.
+When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_ etc.
 
-When using these terms in the common sense, this guide uses **lower case**: *module, component, service, input, output* etc.
+When using these terms in the common sense, this guide uses **lower case**: _module, component, service, input, output_ etc.
 
 ## Testing principles
 
@@ -118,9 +131,9 @@ Testing Principles that shed light on what testing can achieve and what not. Wit
 https://www.istqb.org/downloads/category/2-foundation-level-documents.html
 https://www.istqb.org/downloads/send/2-foundation-level-documents/281-istqb-ctfl-syllabus-2018-v3-1.html
 
-The purpose of a test is to discover bugs. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that *this particular test setup* did not trigger a bug. It does not prove that the code is correct and free of bugs.
+The purpose of a test is to discover bugs. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that _this particular test setup_ did not trigger a bug. It does not prove that the code is correct and free of bugs.
 
-So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “Exhaustive testing is impossible”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should *assess the risks* of a certain case and write tests for high-risk cases first.
+So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “Exhaustive testing is impossible”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should _assess the risks_ of a certain case and write tests for high-risk cases first.
 
 Even if it was viable to cover all cases, it would give you a false sense of security. No software is without errors, and a fully tested software may still be a usability nightmare that does not satisfy its users.
 
@@ -175,7 +188,7 @@ We can distinguish automated tests by their perspective and proximity to the cod
 
 #### End-to-end tests
 
-Some tests have a *high-level, bird’s-eye view* on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. They make expectations about what the user sees and reads in the browser.
+Some tests have a _high-level, bird’s-eye view_ on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. They make expectations about what the user sees and reads in the browser.
 
 From the user’s perspective, it does not matter that your application is implemented in Angular. Technical details like the inner structure of your code are not relevant. There is no distinction between front-end and back-end, between parts of your code. The full experience is tested.
 
@@ -183,9 +196,9 @@ These tests are called **end-to-end (E2E) tests** since they integrate all parts
 
 #### Unit tests
 
-Other tests have a *low-level, worm’s-eye view* on the application. They pick a small piece of code and put it through its paces. From this perspective, implementation details matter. The developer needs to set up an appropriate testing environment to trigger all relevant cases.
+Other tests have a _low-level, worm’s-eye view_ on the application. They pick a small piece of code and put it through its paces. From this perspective, implementation details matter. The developer needs to set up an appropriate testing environment to trigger all relevant cases.
 
-The shortsighted worm only sees what is directly in front. This perspective tries to cut off the ties of the code under test with its dependencies. It tries to *isolate* the code in order to examine it.
+The shortsighted worm only sees what is directly in front. This perspective tries to cut off the ties of the code under test with its dependencies. It tries to _isolate_ the code in order to examine it.
 
 These tests are called **unit tests**. A unit is a small piece of code that is reasonable to test.
 
@@ -193,7 +206,7 @@ These tests are called **unit tests**. A unit is a small piece of code that is r
 
 Between these two extreme perspectives, there are tests that operate on specific parts of the code, but test cohesive groups. They prescind from implementation details and try to take the user’s perspective.
 
-These tests are called **integration tests** since they test how well the parts *integrate* into the group. For example, all parts of one feature may be tested together. An integration test proves that all parts work together properly.
+These tests are called **integration tests** since they test how well the parts _integrate_ into the group. For example, all parts of one feature may be tested together. An integration test proves that all parts work together properly.
 
 ### Distribution of testing efforts
 
@@ -284,7 +297,6 @@ In Angular, the difference between unit and integration tests is sometimes subtl
 
 <p><small>(Table adapted from <a href="https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html">Just Say No to More End-to-End Tests</a> by Mike Wacker.)</small></p>
 
-
 ### Black box vs. white box testing
 
 Once you have identified a piece of code you would like to test, you have to decide how to test it properly. One important distinction is whether a test treats the implementation as a closed box (black box) or an opened box (white box). In this metaphor, the code under test is seen as a machine in a box with holes for inputs and outputs.
@@ -355,16 +367,14 @@ The following table shows which properties and methods of an Angular Component y
 </tr>
 </table>
 
-## Testing in Angular
-
-### Example applications
+## Example applications
 
 In this guide, we will explore the different aspects of testing Angular applications by looking at two examples.
 
-#### The counter Component
+### The Counter Component
 
-* [Counter Component: Source code](https://github.com/9elements/angular-workshop)
-* [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
+- [Counter Component: Source code](https://github.com/9elements/angular-workshop)
+- [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
 
 <p style="position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%;">
 <iframe src="https://9elements.github.io/angular-workshop/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white"></iframe>
@@ -388,10 +398,10 @@ The counter comes in three flavors with different state management solutions:
 
 While this example seems trivial to implement, it already offers valuable challenges from a testing perspective.
 
-#### The Flickr photo search
+### The Flickr photo search
 
-* [Flickr search: Source code](https://github.com/9elements/angular-flickr-search)
-* [Flickr search: Run the app](https://9elements.github.io/angular-flickr-search/)
+- [Flickr search: Source code](https://github.com/9elements/angular-flickr-search)
+- [Flickr search: Run the app](https://9elements.github.io/angular-flickr-search/)
 
 <p style="position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%;">
 <iframe src="https://9elements.github.io/angular-flickr-search/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white"></iframe>
@@ -412,7 +422,7 @@ The Flickr Search comes in two flavors using different state management solution
 
 Once you are able to write automatic tests for this example application, you will be able to test most features of a typical Angular application.
 
-## Testing Angular applications
+## Angular testing principles
 
 ### Testable application parts
 
@@ -426,7 +436,7 @@ We know from experience that code that is easy to test is also simpler, better s
 
 ### Dependency injection and mock objects
 
-A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an *injector* that sits on top.
+A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an _injector_ that sits on top.
 
 This division of work decouples an application part from its dependencies: One part does not need to know how to set up a dependency, let alone the dependency’s dependencies and so forth.
 
@@ -434,8 +444,8 @@ Dependency injection turns tight coupling into loose coupling. A certain applica
 
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
-* We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](#integration-tests) that includes direct and indirect dependencies.
-* Or we provide a **fake** implementation, also called **mock**, that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in *isolation*.
+- We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](#integration-tests) that includes direct and indirect dependencies.
+- Or we provide a **fake** implementation, also called **mock**, that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in _isolation_.
 
 A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and to reconnect it with equivalent mock objects.
 
@@ -443,9 +453,9 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 
 Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
-So the Angular team already made important decisions for you: **[Jasmine](https://jasmine.github.io/)** as testing framework, **[Karma](https://karma-runner.github.io/)** as test runner as well as **[Protractor](https://www.protractortest.org/)** for running end-to-end tests. Implementation and test code are bundled with Webpack. Application parts are typically tested inside Angular’s `TestBed`.
+So the Angular team already made important decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with Webpack. Application parts are typically tested inside Angular’s `TestBed`.
 
-This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people remove Jasmine and Karma and use **Jest** instead. Some people swap Protractor with **[Cypress](https://www.cypress.io/)**. Some people use **[Spectator](https://github.com/ngneat/spectator)** as an abstraction instead of using `TestBed` directly.
+This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
 
 Other testing tools are not simply better or worse, but make different trade-offs. This guide assumes you begin with the recommended setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your specific application easier, faster and more reliable.
 
@@ -459,8 +469,7 @@ The testing tools that ship with Angular are low-level. They merely provide the 
 
 This guide values strong conventions and introduces simple helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
 
-
-### Test suites with Jasmine
+## Test suites with Jasmine
 
 Angular ships with two tools that enable you to write and execute unit and integration tests: Karma and Jasmine.
 
@@ -474,23 +483,23 @@ If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](h
 
 This guide does not provide a full introduction to Jasmine, but let us recap Jasmine’s basic structure and terminology that will be used throughout this guide.
 
-#### Creating a Jasmine suite
+### Creating a Jasmine suite
 
-In terms of Jasmine, a test consists of one or more *suites*. A suite is declared with a `describe` block:
+In terms of Jasmine, a test consists of one or more _suites_. A suite is declared with a `describe` block:
 
 ```typescript
 describe('Suite description', () => {
   /* … */
-})
+});
 ```
 
-Each suite *describes* a piece of code, the *code under test*.
+Each suite _describes_ a piece of code, the _code under test_.
 
 `describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` if the suite is testing the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
-#### Specifications
+### Specifications
 
-Each suit consists of one of more *specifications*, or shorter, *specs*. A spec is declared with an `it` block:
+Each suit consists of one of more _specifications_, or shorter, _specs_. A spec is declared with an `it` block:
 
 ```typescript
 describe('Suite description', () => {
@@ -498,31 +507,31 @@ describe('Suite description', () => {
     /* … */
   });
   /* … more specs …  */
-})
+});
 ```
 
 Again, `it` is a function that takes two parameters. The first parameter is a string with a human-readable spec description. The second parameter is a function containing the spec code.
 
 The pronoun `it` refers to the code under test. `it` should be the subject of a human-readable sentence that asserts the behavior of the code under test. The actual spec code then prove this assertion. This style of writing specs originates from the concept of Behavior-Driven Development (BDD).
 
-One goal of BDD is to describe the code behavior in a natural language – in this case, English. Every stakeholder should be able to understand what the code is supposed to do, just by reading the `it` sentences. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
+One goal of BDD is to describe software behavior in a natural language – in this case, English. Every stakeholder should be able to read the `it` sentences and understand how the code is supposed to behave. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
 
-Ask yourself, what does the code under test do? For example, in case of a `CounterComponent`, *it* increments the counter value. And *it* resets the counter to a specific value. So you could write:
+Ask yourself, what does the code under test do? For example, in case of a `CounterComponent`, _it_ increments the counter value. And _it_ resets the counter to a specific value. So you could write:
 
 ```typescript
 it('increments the count', () => {
   /* … */
-})
+});
 it('resets the count', () => {
   /* … */
-})
+});
 ```
 
 After `it`, typically a verb follows, like `increments` and `resets` in the example.
 
-Some people prefer to write `it('should increment the count', /* … */)`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test *should* do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
+Some people prefer to write `it('should increment the count', /* … */)`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test _should_ do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
 
-#### The structure of a test
+### The structure of a test
 
 Inside the `it` block lies the actual testing code. Irrespective of the testing framework, the testing code typically consists of three phases: **Arrange, Act and Assert**.
 
@@ -530,31 +539,29 @@ Inside the `it` block lies the actual testing code. Irrespective of the testing 
 2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an HTML element in the DOM is clicked.
 3. **Assert** is the phase where the code behavior is checked and verified. For example, the actual output is compared to the expected output.
 
-Let us assume we would like to write the spec `it('resets the count', /* … */)` for the `CounterComponent`. The structure could look like this:
+How could the structure of the spec `it('resets the count', /* … */)` for the `CounterComponent` look like?
 
 1. <p><strong>Arrange:</strong></p>
-  * Create an instance of `CounterComponent`.
-  * Render the Component into the document.
+  - Create an instance of `CounterComponent`.
+  - Render the Component into the document.
 2. <p><strong>Act:</strong></p>
-  * Find and focus the reset input field.
-  * Enter the text “5”.
-  * Find and click the “Reset” button.
+  - Find and focus the reset input field.
+  - Enter the text “5”.
+  - Find and click the “Reset” button.
 3. <p><strong>Assert:</strong></p>
-  * Expect that the displayed count now reads “5”.
+  - Expect that the displayed count now reads “5”.
 
 This structure makes it easier to come up with a test and also to implement it. Ask yourself:
 
-* What is the necessary setup? Which dependencies do I need to provide? How do they behave? (Arrange)
-* What is the user input or API call that triggers the behavior I would like to test? (Act)
-* What is the expected behavior? How do I prove that the behavior is correct? (Assert)
+- What is the necessary setup? Which dependencies do I need to provide? How do they behave? (Arrange)
+- What is the user input or API call that triggers the behavior I would like to test? (Act)
+- What is the expected behavior? How do I prove that the behavior is correct? (Assert)
 
-In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and allow a natural way to think of a test’s structure: “*Given* these specific conditions, *when* the user interacts with the application, *then* it behaves in a certain way.”
+In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and allow a natural way to think of a test’s structure: “_Given_ these specific conditions, _when_ the user interacts with the application, _then_ it behaves in a certain way.”
 
-#### Expectations
+### Expectations
 
-expect + Value + Matcher
-
-In the *Assert* phase, the test compares the actual output or return value to the expected output or return value. If they are the same, the test passes. If they differ, the test fails.
+In the _Assert_ phase, the test compares the actual output or return value to the expected output or return value. If they are the same, the test passes. If they differ, the test fails.
 
 Let us examine a simple contrived example, an `add` function:
 
@@ -574,45 +581,392 @@ if (expectedValue !== actualValue) {
 }
 ```
 
-We could write that code in a Jasmine spec, but Jasmine allows to create expectations in an easier and more concise manner: The `expect` function together with a *Matcher*.
+We could write that code in a Jasmine spec, but Jasmine allows to create expectations in an easier and more concise manner: The `expect` function together with a **Matcher**.
 
 ```javascript
 const expectedValue = 5;
 const actualValue = add(2, 3);
-expect(actualValue).toBe(expectedValue):
+expect(actualValue).toBe(expectedValue);
 ```
 
 First, we pass the actual value to the `expect()` function. It returns an expectation object with methods for checking the actual value. We would like to compare the actual value to the expected value, so we use the `toBe` matcher.
 
-`toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`. So <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
+`toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`, also called identity operator. <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
 
-`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the same. It fails if two objects are different but happen to have the same properties and values.
+`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the identical. It fails if two objects are identical but happen to have the same properties and values.
 
 For checking the deep equality of two objects, Jasmine offers the `toEqual` matcher. This example illustrates the difference:
 
 ```javascript
- // Fails, objects not identical
+// Fails, objects not identical
 expect({ name: 'Linda' }).toBe({ name: 'Linda' });
- // Passes, objects not identical but deeply equal
+// Passes, objects not identical but deeply equal
 expect({ name: 'Linda' }).toEqual({ name: 'Linda' });
 ```
 
-Jasmine has numerous useful [matchers](https://jasmine.github.io/api/edge/matchers) built-in, `toBe` and `toEqual` being the most common. You can add your own custom matchers to hide a complex check behind a short name.
+Jasmine has numerous useful [matchers](https://jasmine.github.io/api/edge/matchers) built-in, `toBe` and `toEqual` being the most common. You can add [custom matchers](https://jasmine.github.io/tutorials/custom_matcher) to hide a complex check behind a short name.
 
-BDD
-sentence!!
+The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Driven Development (BDD) again. The code forms a human-readable sentence: “Expect the actual value to equal the expected value.” The `expect` function call and the matcher methods starting with `to` allow to form a readable sentence. The goal is to write a specification that is as readable as a plain text but can be verified automatically.
+
+### Efficient test suites
+
+When writing multiple specs in one suite, you quickly realize that the _Arrange_ phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the _Arrange_ phase always consists of creating an instance of the class and rendering the Component into the document.
+
+This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But Jasmine allows to declare code that is called before and after each spec, or before and after all specs. Fur this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
+
+```typescript
+describe('Suite description', () => {
+  beforeAll(() => {
+    console.log('Called before all specs are run');
+  });
+  afterAll(() => {
+    console.log('Called after all specs are run');
+  });
+
+  beforeEach(() => {
+    console.log('Called before each spec is run');
+  });
+  afterEach(() => {
+    console.log('Called after each spec is run');
+  });
+
+  it('Spec 1', () => {
+    console.log('Spec 1');
+  });
+  it('Spec 2', () => {
+    console.log('Spec 2');
+  });
+});
+```
+
+This suite has two specs and defines shared setup and teardown code. The output is:
+
+```
+Called before all specs are run
+Called before each spec is run
+Spec 1
+Called after each spec is run
+Called before each spec is run
+Spec 2
+Called after each spec is run
+Called after all specs are run
+```
+
+## Faking dependencies
+
+When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
+
+These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, this guide simply uses the umbrella term “fake” and “faking” for any dependency substitution.
+
+### Rules for faking dependencies
+
+Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – it is powerful and dangerous at the same time. We need to set up rules to apply the technique safely.
+
+A fake implementation must have the same shape, the same public API as the original. It does not need to be complete, but sufficient enough to act as a replacement. Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
+
+The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get of sync later when the original is changed.
+
+When the original dependency changes its public API, dependent code needs to be adapted. Also, the fake needs to be aligned to the changed API. Otherwise the corresponding unit test produces a false positive. When a fake is outdated, the unit test is a dreamworld where everything works and all tests are green. In reality, the code under test is broken.
+
+How can we ensure that the fake is up to date with the original? We can use TypeScript to enforce that the fake has a matching type. If the code involved is properly typed, TypeScript reminds us to update the implementation and the fake – the code simply does not compile if we forget to. We will see how to declare matching types in the upcoming examples.
+
+### Faking function dependencies with Jasmine spies
+
+Jasmine provides simple yet powerful patterns to create fake implementations. The most basic pattern is the **Jasmine spy** for replacing a function dependency.
+
+In its simplest form, a spy is a function that records its calls. For each call, it records the function parameters. Using this record, we later assert that the spy has been called with particular input values. For example, we declare in a spec: “Expect that the spy has been called two times with the values `mickey` and `minnie`, respectively.”
+
+Like every other function, a spy can have a meaningful return value. In the simple case, this may be a fixed value. The spy will always return the same value, regardless of the input parameters. In a more complex case, the return value may originate from an underlying fake function.
+
+A standalone spy is created by calling `jasmine.createSpy`:
+
+```typescript
+const spy = jasmine.createSpy('name');
+```
+
+`createSpy` expects one parameter, an optional name. It is recommended to pass a name that describes the original. The name will be used in error messages when you make expectations against the spy.
+
+Assuming we have class `TodoService` responsible for fetching a to-do list from the server. The class uses the [Fetch API](https://developer.mozilla.org/de/docs/Web/API/Fetch_API) to make an HTTP request. (This is a plain JavaScript example. It is uncommon to use `fetch` directly in an Angular app.)
+
+```typescript
+class TodoService {
+  constructor(
+    // Bind `fetch ` to `window` to ensure that `window` is the `this` context
+    private fetch = window.fetch.bind(window)
+  ) {}
+
+  public async getTodos(): Promise<string[]> {
+    const response = await this.fetch('/todos');
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+  }
+}
+```
+
+The `TodoService` uses a pattern called _constructor injection_, meaning the `fetch` dependency can be injected via an optional constructor parameter. In production code, this parameter is empty and defaults to the original `window.fetch`. In the test, a fake dependency is passed to the constructor. The `fetch` parameter, whether original or fake, is saved as an instance property `this.fetch`. Eventually, the public method `getTodos` uses it to make an HTTP request.
+
+In our unit test, we do not want the service to make any HTTP requests. We pass in a Jasmine spy as replacement for `window.fetch`.
+
+```typescript
+// Fake todos and response object
+const todos = [
+  'shop groceries',
+  'mow the lawn',
+  'take the cat to the vet'
+];
+const okResponse = new Response(JSON.stringify(todos), {
+  status: 200,
+  statusText: 'OK',
+});
+
+describe('TodoService', () => {
+  it('gets the to-dos', async () => {
+    // Arrange
+    const fetchSpy = jasmine.createSpy('fetch').and.returnValue(okResponse);
+    const todoService = new TodoService(fetchSpy);
+
+    // Act
+    const actualTodos = await todoService.getTodos();
+
+    // Assert
+    expect(fetchSpy).toHaveBeenCalledWith('/todos');
+    expect(actualTodos).toEqual(todos);
+  });
+});
+```
+
+There is a lot to unpack in this example. First, we set up the fake data before the `describe` block:
+
+```typescript
+const todos = [
+  'shop groceries',
+  'mow the lawn',
+  'take the cat to the vet'
+];
+const okResponse = new Response(JSON.stringify(todos), {
+  status: 200,
+  statusText: 'OK',
+});
+```
+
+First, we define the fake data we want the `fetch` spy to return. Essentially, this is an array of strings.
+
+The original `fetch` function returns a `Response` object. We create one using the built-in `Response` constructor. The original server response is a string before it is parsed as JSON. So we need to serialize the array into a string before passing it to the `Response` constructor. (You do not have to understand these `fetch` details to grasp the overall example.)
+
+Then, we declare a test suite using `describe`:
+
+```typescript
+describe('TodoService', () => {
+  /* … */
+});
+```
+
+The suite contains one spec that tests the `getTodos` method:
+
+```typescript
+it('gets the to-dos', async () => {
+    /* … */
+});
+```
+
+The spec starts with *Arrange* code:
+
+```typescript
+// Arrange
+const fetchSpy = jasmine.createSpy('fetch').and.returnValue(okResponse);
+const todoService = new TodoService(fetchSpy);
+```
+
+Here, we create a spy. With `.and.returnValue(…)`, we set a fixed return value: the successful response.
+
+We also create an instance of `TodoService`, the class under test. We pass the spy into the constructor.
+
+In the _Act_ phase, we call the method under test:
+
+```typescript
+// Act
+const actualTodos = await todoService.getTodos();
+```
 
 
-#### Efficient test suites: structure
+`getTodos` returns a Promise We use an `async` function together with `await` to access the return value easily. Jasmine deals with async functions just fine and waits for them to complete.
 
-Setup, teardown
+In the _Assert_ phase, we make two expectations:
 
-before/After/Each/All
+```typescript
+// Assert
+expect(fetchSpy).toHaveBeenCalledWith('/todos');
+expect(actualTodos).toEqual(todos);
+```
 
-#### Spies, Mocking
+First, we verify the return value. We compare the actual data (`actualTodos`) with the fake data the spy has returned (`todos`). If they are equal, we have proven that `getTodos` parsed the response as JSON and returned the result. (Since there is no other way `getTodos` could access the fake data, we can also deduce that the spy has been called at all.)
+
+Second, we verify that the `fetch` spy has been called with the correct parameter, the API endpoint URL. Jasmine offers several matchers for making expectations on spies. The example uses `toHaveBeenCalledWith` to assert that the spy has been called with the parameter `'/todos'`.
+
+Both expectations are necessary to guarantee that `getTodos` works correctly.
+
+---
+
+After having written the first spec for `getTodos`, we need to ask ourselves: Did the test fully cover its behavior? We did test the success case, also called *happy path*, but the error case, also called `unhappy path`, is yet to be tested. In particular, this error handling code:
+
+```typescript
+if (!response.ok) {
+  throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+}
+```
+
+When the server response is not “ok”, we throw an error. “Ok” means the HTTP response status code is 200-299. Examples of “not ok” are 403 Forbidden, 404 Not Found and 500 Internal Server Error. Throwing an error rejects the Promise so the caller of `getTodos` knows that fetching the to-dos failed.
+
+The fake `okResponse` mimics the success case. For the error case, we need to define another fake `Response`. Let us call it `errorResponse` with the notorious HTTP status 404 Not Found:
+
+```typescript
+const errorResponse = new Response('Not Found', {
+  status: 404,
+  statusText: 'Not Found',
+});
+```
+
+Assuming the server does not return JSON in the error case, the response body is simply the string `'Not Found'`.
+
+Now we add a second spec for the error case.
+
+```typescript
+describe('TodoService', () => {
+  /* … */
+  it('handles an HTTP error when getting the to-dos', async () => {
+    // Arrange
+    const fetchSpy = jasmine.createSpy('fetch').and.returnValue(errorResponse);
+    const todoService = new TodoService(fetchSpy);
+
+    // Act & Assert exception
+    expect(async () => {
+      await todoService.getTodos();
+    }).toThrowError('HTTP error: 404 Not Found');
+
+    // Assert: Verify spy
+    expect(fetchSpy).toHaveBeenCalledWith('/todos');
+  });
+});
+```
+
+ We need to inject a spy that returns the error response:
+
+Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses [`HttpClient`](https://angular.io/guide/http) instead. The test typically uses [`HttpTestingController`](https://angular.io/guide/http#testing-http-requests). We will get to know this way of testing later.
+
+---
+
+### Spying on existing methods
+
+Angular is using constructo injection
+global JavaScript functions
+
+We have used `jasmine.createSpy('name')` to create a standalone spy. If there is already an object whose method you want to overwrite with a spy, you can use the `spyOn()` method. This is especially helpful if the code uses global methods from the JavaScript environment.
+
+```typescript
+spyOn(window, 'alert');
+```
+
+This installs a spy on the global `alert` method. Under the hood it saves the original `window.alert` function for later and overwrites `window.alert` with a spy. Once the spec is completed, Jasmine automatically restores the original function.
+
+#### Faking object dependencies
+
+We have learned to use spies to fake dependencies on individual functions or methods. But most of the time, dependencies are objects with methods – including instances of classes.
+
+For example, the `ServiceCounterComponent` depends on the `CounterService`. In a unit test, we need create and provide a fake `CounterService`. This is the outer shape of `CounterService`:
+
+```typescript
+class CounterService {
+  public getCount(): Observable<number> {
+    /* … */
+  }
+  public increment(): void {
+    /* … */
+  }
+  public decrement(): void {
+    /* … */
+  }
+  public reset(newCount: number): void {
+    /* … */
+  }
+  private notify(): void {
+    /* … */
+  }
+}
+```
+
+The fake implementation needs to have the same shape, the same public API as the original. It does not need to be complete, but sufficient enough to act as a replacement.
+
+How do we create a fake instance of `CounterService`? The simplest way is to use an object literal `{…}` with methods:
+
+```typescript
+const fakeCounterService = {
+  getCount() {
+    return of(count);
+  },
+  increment() {},
+  decrement() {},
+  reset() {},
+};
+```
+
+This is far from perfect, but already a viable replacement for a `CounterService` instance. It walks like the original and talks like the original. It does not do anything useful, though. The methods are empty or return fixed data.
+
+Our fake implementation happens to have the same shape as the original, but this is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be add a type declaration:
+
+```typescript
+const fakeCounterService: CounterService = {
+  /* … */
+};
+```
+
+Unfortunately, this does not work. TypeScript complains that the private method `notify` is missing. Since cannot and should not provide an implementation for a private method, we use a TypeScript trick. Using [Pick](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktk) and [keyof](https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types), we create a derived type that only contains the public methods:
+
+```typescript
+const fakeCounterService: Pick<CounterService, keyof CounterService> = {
+  /* … */
+};
+```
+
+This type contract ensures that the fake looks exactly the same as the original. This is important because it prevents the fake and therefore the whole test to get out of sync with the original. When the original `CounterService` changes its public API, dependents like `ServiceCounterComponent` need to be adapted. Also, the fake implementations of `CounterService` need to be aligned to reflect the change. Otherwise the corresponding unit tests would produce a false positive. The TypeScript type declaration reminds you to update the fake – the code simply does not compile if you forget it.
+
+If the code under test does not use the full API, the fake does not need to provide the full API either. Feel free to declare only those methods and properties that the code under test actually accesses.
+
+For example, if the code under test only calls `getCount`, just provide this method. Do not forget to add a type declaration that picks the method from the original type:
+
+```typescript
+const fakeCounterService: Pick<CounterService, 'getCount'> = {
+  getCount() {
+    return of(count);
+  },
+};
+```
+
+TypeScript’s mapped types allow to bind the fake object to the original type in a way that TypeScript can check whether they are equivalent.
 
 ### Karma
+
 ### Testing Components
+
+Components are the power houses of an Angular application. Together, they compose the user interface.
+
+A component deals with several concerns. Amongst them are:
+
+- A component renders a certain HTML DOM using the template.
+- It accepts data from parent components using Input properties.
+- It emits data to parent components using Outputs.
+- It reacts to user input using event handlers.
+- It renders the content and uses templates that are passed.
+- It allows to enter and edit data using form controls.
+- It talks to services or other state management solutions, using dependency injection.
+- It uses routing information like the URL and its parameters.
+
+All these tasks need to be tested properly
+
+What does the component do, what needs to be tested, and how to test
+
+You will spend
 
 Writing a unit test for a Component
 
@@ -717,15 +1071,15 @@ debugElement.triggerEventHandler(
 <h2>Synthetisches Event-Objekt</h2>
 
 ```typescript
-debugElement.triggerEventHandler('click', null)
-debugElement.triggerEventHandler('click', {
+debugElement.triggerEventHandler("click", null);
+debugElement.triggerEventHandler("click", {
   preventDefault() {},
   stopPropagation() {},
   target: debugElement.nativeElement,
   currentTarget: debugElement.nativeElement,
   pageX: 100,
-  pageY: 200
-})
+  pageY: 200,
+});
 ```
 
 <h2>Interaktivität testen</h2>
@@ -779,10 +1133,7 @@ debugElement.triggerEventHandler('click', {
 </ul>
 
 ```html
-<app-counter
-  [startCount]="5"
-  (countChange)="logCount($event)"
-></app-counter>
+<app-counter [startCount]="5" (countChange)="logCount($event)"></app-counter>
 ```
 
 <h2>Inputs im Test setzen</h2>
@@ -811,7 +1162,7 @@ component.countChange.subscribe((value: number) => {
   actualValue = value;
 });
 
-click(fixture, 'increment-button');
+click(fixture, "increment-button");
 expect(actualValue).toBe(1);
 ```
 
@@ -893,8 +1244,7 @@ expect(actualValue).toBe(1);
 <h2>Shallow Rendering (3):<br>Kindkomponente vorhanden?</h2>
 
 ```typescript
-const el =
-  fixture.debugElement.query(By.css('app-counter'));
+const el = fixture.debugElement.query(By.css("app-counter"));
 expect(el).toBeTruthy();
 ```
 
@@ -902,7 +1252,7 @@ expect(el).toBeTruthy();
 
 ```typescript
 // Helferlein: Wirft einen Fehler, wenn nichts gefunden
-const el = findComponent(fixture, 'app-counter');
+const el = findComponent(fixture, "app-counter");
 expect(el).toBeTruthy();
 // Oder
 expect().nothing();
@@ -921,10 +1271,9 @@ expect().nothing();
 ```
 
 ```typescript
-const el = findComponent(fixture, 'app-counter');
+const el = findComponent(fixture, "app-counter");
 expect(el.properties.startCount).toBe(5);
 ```
-
 
 <h2>Shallow Rendering (6):<br>Output testen</h2>
 
@@ -1006,7 +1355,7 @@ class ServiceCounterComponent {
 ```typescript
 type PartialCounterService = Pick<
   CounterService,
-  'getCount' | 'increment' | 'decrement' | 'reset'
+  "getCount" | "increment" | "decrement" | "reset"
 >;
 ```
 
@@ -1015,10 +1364,7 @@ type PartialCounterService = Pick<
 <p>Alle öffentlichen Methoden</p>
 
 ```typescript
-type PartialCounterService = Pick<
-  CounterService,
-  keyof CounterService
->;
+type PartialCounterService = Pick<CounterService, keyof CounterService>;
 ```
 
 <h2>☀️ Mock-Service als Klasse</h2>
@@ -1043,7 +1389,7 @@ const mockCounterService: PartialCounterService = {
   },
   increment() {},
   decrement() {},
-  reset() {}
+  reset() {},
 };
 ```
 
@@ -1054,17 +1400,13 @@ const mockCounterService: PartialCounterService = {
 <h3>useClass</h3>
 
 ```typescript
-providers: [
-  { provide: CounterService, useClass: MockCounterService }
-]
+providers: [{ provide: CounterService, useClass: MockCounterService }];
 ```
 
 <h3>useValue</h3>
 
 ```typescript
-providers: [
-  { provide: CounterService, useValue: mockCounterService }
-]
+providers: [{ provide: CounterService, useValue: mockCounterService }];
 ```
 
 <h2>Interaktion mit dem Mock testen</h2>
@@ -1095,9 +1437,9 @@ const spy = jasmine.createSpy('name').and.callFake((…) => {…});
 <h2>Spy wrappt eine vorhandene Methode</h2>
 
 ```typescript
-spyOn(object, 'method');
-spyOn(object, 'method').and.callThrough();
-spyOn(object, 'method').and.returnValue(value);
+spyOn(object, "method");
+spyOn(object, "method").and.callThrough();
+spyOn(object, "method").and.returnValue(value);
 ```
 
 <h2>Spies verifizieren</h2>
@@ -1106,18 +1448,18 @@ spyOn(object, 'method').and.returnValue(value);
 expect(spy).toHaveBeenCalled();
 expect(spy).not.toHaveBeenCalled();
 expect(spy).toHaveBeenCalledTimes(5);
-expect(spy).toHaveBeenCalledWith(param1, /* … */);
+expect(spy).toHaveBeenCalledWith(param1 /* … */);
 expect(object.method).toHaveBeenCalled();
-expect(object.method).toHaveBeenCalledWith(param1, /* … */);
+expect(object.method).toHaveBeenCalledWith(param1 /* … */);
 ```
 
 <h2>Spies am Mock-Service installieren</h2>
 
 ```typescript
-spyOn(mockCounterService, 'getCount').and.callThrough();
-spyOn(mockCounterService, 'increment');
-spyOn(mockCounterService, 'decrement');
-spyOn(mockCounterService, 'reset');
+spyOn(mockCounterService, "getCount").and.callThrough();
+spyOn(mockCounterService, "increment");
+spyOn(mockCounterService, "decrement");
+spyOn(mockCounterService, "reset");
 ```
 
 <h2>Mock-Service als Spy-Objekt</h2>
@@ -1161,7 +1503,7 @@ expect(mockCounterService.reset).toHaveBeenCalledWith(newCount);
 ```typescript
 class NgRxCounterComponent {
   constructor(private store: Store<AppState>) {
-    this.count$ = store.pipe(select('counter'));
+    this.count$ = store.pipe(select("counter"));
   }
 }
 ```
@@ -1177,10 +1519,8 @@ provideMockStore({ initialState: {…}, selectors: {…} })
 
 ```typescript
 TestBed.configureTestingModule({
-  declarations: [ NgRxCounterComponent ],
-  providers: [
-    provideMockStore({ initialState: mockState })
-  ]
+  declarations: [NgRxCounterComponent],
+  providers: [provideMockStore({ initialState: mockState })],
 }).compileComponents();
 ```
 
@@ -1188,7 +1528,7 @@ TestBed.configureTestingModule({
 
 ```typescript
 const mockState: Partial<AppState> = {
-  counter: 1
+  counter: 1,
 };
 ```
 
@@ -1207,16 +1547,16 @@ const mockState: Partial<AppState> = {
 
 ```typescript
 store = TestBed.get(Store);
-spyOn(store, 'dispatch');
+spyOn(store, "dispatch");
 ```
 
 <h2>Dispatch von Actions testen (2)</h2>
 
 ```typescript
-it('resets the count', () => {
+it("resets the count", () => {
   const newCount = 15;
-  findEl(fixture, 'reset-input').nativeElement.value = newCount;
-  click(fixture, 'reset-button');
+  findEl(fixture, "reset-input").nativeElement.value = newCount;
+  click(fixture, "reset-button");
   expect(store.dispatch).toHaveBeenCalledWith(reset({ count: newCount }));
 });
 ```
@@ -1234,12 +1574,12 @@ it('resets the count', () => {
 ```typescript
 function setup(mockState: Partial<AppState>) {
   TestBed.configureTestingModule({
-    declarations: [ NgRxCounterComponent ],
-    providers: [ provideMockStore({ initialState: mockState }) ]
+    declarations: [NgRxCounterComponent],
+    providers: [provideMockStore({ initialState: mockState })],
   }).compileComponents();
 
   const store: Store<AppState> = TestBed.get(Store);
-  spyOn(store, 'dispatch');
+  spyOn(store, "dispatch");
 
   const fixture = TestBed.createComponent(NgRxCounterComponent);
   fixture.detectChanges();
@@ -1251,11 +1591,11 @@ function setup(mockState: Partial<AppState>) {
 <h2>Verschiedene States testen</h2>
 
 ```typescript
-it('renders the data from the store', () => {
+it("renders the data from the store", () => {
   const mockState: Partia<AppState> = { counter: 1 };
   const { fixture, store } = setup(mockState);
-  expectText(fixture, 'count', String(mockState.counter));
-})
+  expectText(fixture, "count", String(mockState.counter));
+});
 ```
 
 <p>Baut Helferlein, die komplexen Mock-State generieren</p>
@@ -1309,8 +1649,8 @@ it('renders the data from the store', () => {
 
 ```typescript
 TestBed.configureTestingModule({
-  imports: [ HttpClientTestingModule ],
-  providers: [ CounterApiService ]
+  imports: [HttpClientTestingModule],
+  providers: [CounterApiService],
 });
 ```
 
@@ -1319,15 +1659,14 @@ TestBed.configureTestingModule({
 <p>HTTP-Requests finden</p>
 
 ```typescript
-const httpMock: HttpTestingController =
-  TestBed.get(HttpTestingController);
+const httpMock: HttpTestingController = TestBed.get(HttpTestingController);
 
 const request = httpMock.expectOne({
-  method: 'GET', url: expectedURL
+  method: "GET",
+  url: expectedURL,
 });
 
-const predicate = (candidateRequest) =>
-  candidateRequest.method === 'GET';
+const predicate = (candidateRequest) => candidateRequest.method === "GET";
 const request = httpMock.expectOne(predicate);
 const requests = httpMock.match(predicate);
 ```
@@ -1343,10 +1682,10 @@ request.flush(serverResponse);
 <p>Fehler simulieren</p>
 
 ```typescript
-request.error(
-  new ErrorEvent('API error'),
-  { status: 404, statusText: 'Not Found' }
-);
+request.error(new ErrorEvent("API error"), {
+  status: 404,
+  statusText: "Not Found",
+});
 ```
 
 <h2>HttpClientTestingModule (3)</h2>
@@ -1435,7 +1774,6 @@ public constructor(
 ) {}
 ```
 
-
 <h2>Effects: Abhängigkeiten mocken</h2>
 
 ```typescript
@@ -1462,21 +1800,21 @@ TestBed.configureTestingModule({
 <h2>Input-Observable mit Actions bereitstellen</h2>
 
 ```typescript
-import { from, of } from 'rxjs';
-import { provideMockActions } from '@ngrx/effects/testing';
+import { from, of } from "rxjs";
+import { provideMockActions } from "@ngrx/effects/testing";
 
 const action = reset({ count: 123 });
-provideMockActions(of(action))
+provideMockActions(of(action));
 
-const actions = [ reset({ count: 123 }) ];
-provideMockActions(from(actions))
+const actions = [reset({ count: 123 })];
+provideMockActions(from(actions));
 ```
 
 <h2>Mock-State erzeugen</h2>
 
 ```typescript
 const mockState: Partial<AppState> = {
-  counter: 1
+  counter: 1,
 };
 ```
 
@@ -1500,23 +1838,23 @@ const mockState: Partial<AppState> = {
 <h2>Mock für <code>CounterApiService</code></h2>
 
 ```typescript
-type PartialCounterApiService = Pick<CounterApiService, 'saveCounter'>;
+type PartialCounterApiService = Pick<CounterApiService, "saveCounter">;
 
 const mockCounterApi: PartialCounterApiService = {
   saveCounter() {
     return of({});
-  }
+  },
 };
 
-spyOn(mockCounterApi, 'saveCounter').and.callThrough();
+spyOn(mockCounterApi, "saveCounter").and.callThrough();
 ```
 
 <h2>Mock für <code>CounterApiService</code> (Alternative)</h2>
 
 ```typescript
 const mockCounterApi = jasmine.createSpyObj<CounterApiService>(
-  'CounterApiService',
-  ['saveCounter']
+  "CounterApiService",
+  ["saveCounter"]
 );
 mockCounterApi.saveCounter.and.returnValue(of({}));
 ```
@@ -1528,37 +1866,27 @@ counterEffects.saveOnChange$.subscribe((outputAction) => {
   expect(outputAction).toEqual(saveSuccess());
 });
 
-counterEffects.saveOnChange$
-  .pipe(toArray())
-  .subscribe((outputActions) => {
-    expect(outputActions).toEqual([ saveSuccess() ]);
-  });
+counterEffects.saveOnChange$.pipe(toArray()).subscribe((outputActions) => {
+  expect(outputActions).toEqual([saveSuccess()]);
+});
 ```
 
 <h2>Output-Observable prüfen: Helferlein</h2>
 
 ```typescript
-function expectActions(
-  effect: Observable<Action>, actions: Action[]
-) {
-  effect.pipe(toArray()).subscribe(
-    (actualActions) => {
-      expect(actualActions).toEqual(actions);
-    },
-    fail
-  );
+function expectActions(effect: Observable<Action>, actions: Action[]) {
+  effect.pipe(toArray()).subscribe((actualActions) => {
+    expect(actualActions).toEqual(actions);
+  }, fail);
 }
 
-expectActions(counterEffects.saveOnChange$, [
-  saveSuccess()
-]);
+expectActions(counterEffects.saveOnChange$, [saveSuccess()]);
 ```
 
 <h2>Service-Mock verifizieren</h2>
 
 ```typescript
-expect(mockCounterApi.saveCounter)
-  .toHaveBeenCalledWith(mockState.counter);
+expect(mockCounterApi.saveCounter).toHaveBeenCalledWith(mockState.counter);
 ```
 
 <h2>Fehlerfall testen</h2>
@@ -1569,16 +1897,14 @@ expect(mockCounterApi.saveCounter)
 const mockCounterApiError: PartialCounterApiService = {
   saveCounter() {
     return throwError(apiError);
-  }
+  },
 };
 ```
 
 <p>Eine Error-Action erwarten</p>
 
 ```typescript
-expectActions(counterEffects.saveOnChange$, [
-  saveError({ error: apiError })
-]);
+expectActions(counterEffects.saveOnChange$, [saveError({ error: apiError })]);
 ```
 
 <h2>Komplexe Effects testen</h2>
@@ -1613,9 +1939,13 @@ expectActions(counterEffects.saveOnChange$, [
 ```typescript
 function partReducer(state: StatePart, action: Action): StatePart {}
 
-const state: StatePart = { /* … */ };
+const state: StatePart = {
+  /* … */
+};
 const action = someAction();
-const newState: StatePart = { /* … */ };
+const newState: StatePart = {
+  /* … */
+};
 expect(partReducer(state, action)).toEqual(newState);
 ```
 
@@ -1705,13 +2035,13 @@ expect(partReducer(state, action)).toEqual(newState);
 <h2>Protractor: Einzelne Elemente finden</h2>
 
 ```typescript
-element(by.id('…'))
-element(by.name('…'))
-element(by.className('…'))
-element(by.css('…'))
-$('…')
-element(by.css('[data-testid="count"]'))
-findEl('count')
+element(by.id("…"));
+element(by.name("…"));
+element(by.className("…"));
+element(by.css("…"));
+$("…");
+element(by.css('[data-testid="count"]'));
+findEl("count");
 ```
 
 <p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEl</code></a></p>
@@ -1719,13 +2049,13 @@ findEl('count')
 <h2>Protractor: Viele Elemente finden</h2>
 
 ```typescript
-element.all(by.id('…'))
-element.all(by.name('…'))
-element.all(by.className('…'))
-element.all(by.css('…'))
-$$('…')
-element.all(by.css('[data-testid="count"]'))
-findEls('count')
+element.all(by.id("…"));
+element.all(by.name("…"));
+element.all(by.className("…"));
+element.all(by.css("…"));
+$$("…");
+element.all(by.css('[data-testid="count"]'));
+findEls("count");
 ```
 
 <p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEls</code></a></p>
@@ -1734,22 +2064,22 @@ findEls('count')
 
 ```typescript
 // <h1 data-testid="count">Hello</h1>
-const el = findEl('heading');
-expect(heading.getText()).toBe('Hello');
+const el = findEl("heading");
+expect(heading.getText()).toBe("Hello");
 ```
 
 <h2>Protractor: Klicks</h2>
 
 ```typescript
 // <button data-testid="increment-button">+</button>
-findEl('increment-button').click();
+findEl("increment-button").click();
 ```
 
 <h2>Protractor: Tastatureingaben</h2>
 
 ```typescript
 // <input data-testid="reset-input">
-findEl('reset-input').sendKeys('123');
+findEl("reset-input").sendKeys("123");
 ```
 
 <h2>Protractor: Page Objects</h2>
@@ -1806,7 +2136,6 @@ findEl(…)
   .then((text) => expect(text).toBe('Hello');
 ```
 
-
 <h2>End-to-End Tests: Fazit</h2>
 
 <ul>
@@ -1829,3 +2158,21 @@ findEl(…)
 
 </main>
 </div>
+
+<script type="module">
+const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+const output = document.getElementById('generated-toc');
+const fragment = document.createDocumentFragment();
+Array.from(headings).forEach((heading) => {
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = `#${heading.id}`;
+  const tag = heading.tagName.toLowerCase();
+  const level = parseInt(tag[1], 10);
+  a.textContent = heading.textContent;
+  li.classList.add(`toc-heading-level-${level}`);
+  li.appendChild(a);
+  fragment.appendChild(li);
+});
+output.appendChild(fragment);
+</script>
