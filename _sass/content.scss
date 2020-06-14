@@ -195,13 +195,6 @@ dd p {
  *
  */
 
-pre {
-  padding: 1rem;
-  overflow: auto;
-  font-size: 90%;
-  line-height: 1.8;
-}
-
 pre, code, samp {
   background-color: $highlight-background-color;
   font-family: $monospace-font;
@@ -213,6 +206,13 @@ pre, code, samp {
     background-color: $highlight-background-color-inverted;
     color: $code-text-color-inverted;
   }
+}
+
+pre {
+  padding: 1rem;
+  overflow: auto;
+  font-size: 90%;
+  line-height: 1.8;
 }
 
 pre code {
