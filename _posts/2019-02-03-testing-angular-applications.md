@@ -731,8 +731,8 @@ describe('TodoService', () => {
     const actualTodos = await todoService.getTodos();
 
     // Assert
-    expect(fetchSpy).toHaveBeenCalledWith('/todos');
     expect(actualTodos).toEqual(todos);
+    expect(fetchSpy).toHaveBeenCalledWith('/todos');
   });
 });
 ```
@@ -797,8 +797,8 @@ In the _Assert_ phase, we make two expectations:
 
 ```typescript
 // Assert
-expect(fetchSpy).toHaveBeenCalledWith('/todos');
 expect(actualTodos).toEqual(todos);
+expect(fetchSpy).toHaveBeenCalledWith('/todos');
 ```
 
 First, we verify the return value. We compare the actual data (`actualTodos`) with the fake data the spy has returned (`todos`). If they are equal, we have proven that `getTodos` parsed the response as JSON and returned the result. (Since there is no other way `getTodos` could access the fake data, we can also deduce that the spy has been called at all.)
@@ -830,28 +830,36 @@ const errorResponse = new Response('Not Found', {
 
 Assuming the server does not return JSON in the error case, the response body is simply the string `'Not Found'`.
 
-Now we add a second spec for the error case.
+Now we add a second spec for the error case:
 
 ```typescript
 describe('TodoService', () => {
   /* … */
   it('handles an HTTP error when getting the to-dos', async () => {
-    // Arrange
-    const fetchSpy = jasmine.createSpy('fetch').and.returnValue(errorResponse);
-    const todoService = new TodoService(fetchSpy);
+      // Arrange
+      const fetchSpy = jasmine.createSpy('fetch').and.returnValue(errorResponse);
+      const todoService = new TodoService(fetchSpy);
 
-    // Act & Assert exception
-    expect(async () => {
-      await todoService.getTodos();
-    }).toThrowError('HTTP error: 404 Not Found');
+      // Act
+      let error;
+      try {
+        await todoService.getTodos();
+      } catch (e) {
+        error = e;
+      }
 
-    // Assert: Verify spy
-    expect(fetchSpy).toHaveBeenCalledWith('/todos');
-  });
+      // Assert
+      expect(error).toEqual(new Error('HTTP error: 404 Not Found'));
+      expect(fetchSpy).toHaveBeenCalledWith('/todos');
+    });
 });
 ```
 
- We need to inject a spy that returns the error response:
+In the *Arrange* phase, we inject a spy that returns the new error response.
+
+In the *Act* phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the thrown error. Most likely, this is how implementation code would handle the error.
+
+In the *Assert* phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
 Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses [`HttpClient`](https://angular.io/guide/http) instead. The test typically uses [`HttpTestingController`](https://angular.io/guide/http#testing-http-requests). We will get to know this way of testing later.
 
