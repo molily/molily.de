@@ -662,7 +662,9 @@ These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a
 
 Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – it is powerful and dangerous at the same time. We need to set up rules to apply the technique safely.
 
-A fake implementation must have the same shape, the same public API as the original. It does not need to be complete, but sufficient enough to act as a replacement. Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
+A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same methods and properties.
+
+The fake does not need to be complete, but sufficient enough to act as a replacement. Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
 
 The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get of sync later when the original is changed.
 
@@ -698,7 +700,9 @@ class TodoService {
   public async getTodos(): Promise<string[]> {
     const response = await this.fetch('/todos');
     if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `HTTP error: ${response.status} ${response.statusText}`
+      );
     }
     return await response.json();
   }
@@ -724,7 +728,8 @@ const okResponse = new Response(JSON.stringify(todos), {
 describe('TodoService', () => {
   it('gets the to-dos', async () => {
     // Arrange
-    const fetchSpy = jasmine.createSpy('fetch').and.returnValue(okResponse);
+    const fetchSpy = jasmine.createSpy('fetch')
+      .and.returnValue(okResponse);
     const todoService = new TodoService(fetchSpy);
 
     // Act
@@ -775,7 +780,8 @@ The spec starts with *Arrange* code:
 
 ```typescript
 // Arrange
-const fetchSpy = jasmine.createSpy('fetch').and.returnValue(okResponse);
+const fetchSpy = jasmine.createSpy('fetch')
+  .and.returnValue(okResponse);
 const todoService = new TodoService(fetchSpy);
 ```
 
@@ -789,7 +795,6 @@ In the _Act_ phase, we call the method under test:
 // Act
 const actualTodos = await todoService.getTodos();
 ```
-
 
 `getTodos` returns a Promise We use an `async` function together with `await` to access the return value easily. Jasmine deals with async functions just fine and waits for them to complete.
 
@@ -807,13 +812,13 @@ Second, we verify that the `fetch` spy has been called with the correct paramete
 
 Both expectations are necessary to guarantee that `getTodos` works correctly.
 
----
-
 After having written the first spec for `getTodos`, we need to ask ourselves: Did the test fully cover its behavior? We did test the success case, also called *happy path*, but the error case, also called `unhappy path`, is yet to be tested. In particular, this error handling code:
 
 ```typescript
 if (!response.ok) {
-  throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+  throw new Error(
+    `HTTP error: ${response.status} ${response.statusText}`
+  );
 }
 ```
 
@@ -837,7 +842,8 @@ describe('TodoService', () => {
   /* … */
   it('handles an HTTP error when getting the to-dos', async () => {
       // Arrange
-      const fetchSpy = jasmine.createSpy('fetch').and.returnValue(errorResponse);
+      const fetchSpy = jasmine.createSpy('fetch')
+        .and.returnValue(errorResponse);
       const todoService = new TodoService(fetchSpy);
 
       // Act
@@ -857,54 +863,99 @@ describe('TodoService', () => {
 
 In the *Arrange* phase, we inject a spy that returns the new error response.
 
-In the *Act* phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the thrown error. Most likely, this is how implementation code would handle the error.
+In the *Act* phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the error. Most likely, this is how implementation code would handle the error.
 
 In the *Assert* phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
 Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses [`HttpClient`](https://angular.io/guide/http) instead. The test typically uses [`HttpTestingController`](https://angular.io/guide/http#testing-http-requests). We will get to know this way of testing later.
 
----
+### Spying on existing object methods
 
-### Spying on existing methods
+We have used `jasmine.createSpy('name')` to create a standalone spy and have injected it into the constructor. Explicit constructor injection is a straightforward and recommended way to provide a dependency. It is also the predominant dependency injection strategy in Angular.
 
-Angular is using constructo injection
-global JavaScript functions
+Sometimes, there is already an object whose method we need to spy on. This is especially helpful if the code uses global methods from the browser environment, like `window.fetch` in the example above.
 
-We have used `jasmine.createSpy('name')` to create a standalone spy. If there is already an object whose method you want to overwrite with a spy, you can use the `spyOn()` method. This is especially helpful if the code uses global methods from the JavaScript environment.
+For this purpose, we can use the `spyOn()` method:
 
 ```typescript
-spyOn(window, 'alert');
+spyOn(window, 'fetch');
 ```
 
-This installs a spy on the global `alert` method. Under the hood it saves the original `window.alert` function for later and overwrites `window.alert` with a spy. Once the spec is completed, Jasmine automatically restores the original function.
+This installs a spy on the global `fetch` method. Under the hood it saves the original `window.fetch` function for later and overwrites `window.fetch` with a spy. Once the spec is completed, Jasmine automatically restores the original function.
 
-#### Faking object dependencies
-
-We have learned to use spies to fake dependencies on individual functions or methods. But most of the time, dependencies are objects with methods – including instances of classes.
-
-For example, the `ServiceCounterComponent` depends on the `CounterService`. In a unit test, we need create and provide a fake `CounterService`. This is the outer shape of `CounterService`:
+`spyOn` returns the created spy, allowing to set a return value, like we have learned above.
 
 ```typescript
-class CounterService {
-  public getCount(): Observable<number> {
-    /* … */
-  }
-  public increment(): void {
-    /* … */
-  }
-  public decrement(): void {
-    /* … */
-  }
-  public reset(newCount: number): void {
-    /* … */
-  }
-  private notify(): void {
-    /* … */
+spyOn(window, 'fetch');
+  .and.returnValue(okResponse);
+```
+
+We can create a version of TodoService that does not rely on construction injection, but uses `fetch` directly:
+
+```typescript
+class TodoService {
+  public async getTodos(): Promise<string[]> {
+    const response = await fetch('/todos');
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error: ${response.status} ${response.statusText}`
+      );
+    }
+    return await response.json();
   }
 }
 ```
 
-The fake implementation needs to have the same shape, the same public API as the original. It does not need to be complete, but sufficient enough to act as a replacement.
+The test suite then uses `spyOn` to catch all calls to `window.fetch`:
+
+```typescript
+// Fake todos and response object
+const todos = [
+  'shop groceries',
+  'mow the lawn',
+  'take the cat to the vet'
+];
+const okResponse = new Response(JSON.stringify(todos), {
+  status: 200,
+  statusText: 'OK',
+});
+
+describe('TodoService', () => {
+  it('gets the to-dos', async () => {
+    // Arrange
+    spyOn(window, 'fetch')
+      .and.returnValue(okResponse);
+    const todoService = new TodoService();
+
+    // Act
+    const actualTodos = await todoService.getTodos();
+
+    // Assert
+    expect(actualTodos).toEqual(todos);
+    expect(window.fetch).toHaveBeenCalledWith('/todos');
+  });
+});
+```
+
+Not much has changed here. We spy on `fetch` and make it return `okResponse`. Since `window.fetch` is overwritten with a spy, we make the expectation against it to verify that it has been called.
+
+Creating standalone spies and spying on existing methods are not mutually exclusive. Both will be used frequently when testing Angular applications, and both work well with dependencies injected into the constructor.
+
+#### Faking object dependencies
+
+We have learned to use spies to fake dependencies on individual functions or methods. But most of the time, dependencies are objects with methods. This includes instances of classes.
+
+In the [counter example](https://9elements.github.io/angular-workshop/), the [`ServiceCounterComponent`](https://github.com/9elements/angular-workshop/blob/master/src/app/service-counter/service-counter.component.ts) depends on the [`CounterService`](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.ts). In  `ServiceCounterComponent`’s unit test, we need to create and provide an appropriate fake `CounterService`. This is the outer shape of `CounterService`:
+
+```typescript
+class CounterService {
+  public getCount(): Observable<number> { /* … */ }
+  public increment(): void { /* … */ }
+  public decrement(): void { /* … */ }
+  public reset(newCount: number): void { /* … */ }
+  private notify(): void { /* … */ }
+}
+```
 
 How do we create a fake instance of `CounterService`? The simplest way is to use an object literal `{…}` with methods:
 
@@ -919,9 +970,9 @@ const fakeCounterService = {
 };
 ```
 
-This is far from perfect, but already a viable replacement for a `CounterService` instance. It walks like the original and talks like the original. It does not do anything useful, though. The methods are empty or return fixed data.
+This is far from perfect, but already a viable replacement for a `CounterService` instance. It walks like the original and talks like the original. The methods are empty or return fixed data.
 
-Our fake implementation happens to have the same shape as the original, but this is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be add a type declaration:
+The fake implementation happens to have the same shape as the original. As we have discussed, it is of utter importance that the fake remains up to date with the original. This is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be add a type declaration:
 
 ```typescript
 const fakeCounterService: CounterService = {
@@ -929,7 +980,8 @@ const fakeCounterService: CounterService = {
 };
 ```
 
-Unfortunately, this does not work. TypeScript complains that the private method `notify` is missing. Since cannot and should not provide an implementation for a private method, we use a TypeScript trick. Using [Pick](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktk) and [keyof](https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types), we create a derived type that only contains the public methods:
+Unfortunately, this does not work. TypeScript complains that the private method `notify` is missing.
+That is correct, but we cannot add a private method to the object literal, nor should we. To fix this problem, we use a TypeScript trick. Using [Pick](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktk) and [keyof](https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types), we create a derived type that only contains the public methods:
 
 ```typescript
 const fakeCounterService: Pick<CounterService, keyof CounterService> = {
@@ -937,11 +989,11 @@ const fakeCounterService: Pick<CounterService, keyof CounterService> = {
 };
 ```
 
-This type contract ensures that the fake looks exactly the same as the original. This is important because it prevents the fake and therefore the whole test to get out of sync with the original. When the original `CounterService` changes its public API, dependents like `ServiceCounterComponent` need to be adapted. Also, the fake implementations of `CounterService` need to be aligned to reflect the change. Otherwise the corresponding unit tests would produce a false positive. The TypeScript type declaration reminds you to update the fake – the code simply does not compile if you forget it.
+This type ensures that the fake looks exactly the same as the original. This prevents the fake and therefore the whole test to get out of sync with the original. When the original `CounterService` changes its public API, the dependents `ServiceCounterComponent` needs to be adapted. Likewise, `fakeCounterService`, the fake implementation of `CounterService`, needs to reflect the change. The type declaration reminds you to update the fake.
 
-If the code under test does not use the full API, the fake does not need to provide the full API either. Feel free to declare only those methods and properties that the code under test actually accesses.
+If the code under test does not use the full API, the fake does not need to provide the full API either. We can declare only those methods and properties that the code under test actually accesses.
 
-For example, if the code under test only calls `getCount`, just provide this method. Do not forget to add a type declaration that picks the method from the original type:
+For example, if the code under test only calls `getCount`, just provide this method. Make sure to add a type declaration that picks the method from the original type:
 
 ```typescript
 const fakeCounterService: Pick<CounterService, 'getCount'> = {
@@ -951,11 +1003,44 @@ const fakeCounterService: Pick<CounterService, 'getCount'> = {
 };
 ```
 
-TypeScript’s mapped types allow to bind the fake object to the original type in a way that TypeScript can check whether they are equivalent.
+TypeScript’s [mapped types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types) allow to bind the fake object to the original type in a way that TypeScript can check whether they are equivalent.
 
-### Karma
+A plain object literal with methods is an easy way to provide a fake instance. We should not forgot that the spec needs to verify that these methods have been called with the right parameters. Jasmine spies are the right tool for this job. We can combine the object literal with Jasmine spies. A first approach could look like this:
 
-### Testing Components
+```typescript
+const fakeCounterService: Pick<CounterService, keyof CounterService> = {
+  getCount: jasmine.createSpy('getCount').and.returnValue(of(count)),
+  increment: jasmine.createSpy('increment'),
+  decrement: jasmine.createSpy('decrement'),
+  reset: jasmine.createSpy('reset'),
+};
+```
+
+This is fine, but overly verbose. Jasmine provides a helper function to create an object with multiple spy methods, `jasmine.createSpyObj()`. It expects a descriptive name and a list of methods:
+
+```typescript
+const fakeCounterService =
+  jasmine.createSpyObj<CounterService>('CounterService', {
+    getCount: of(count),
+    increment: undefined,
+    decrement: undefined,
+    reset: undefined,
+  });
+```
+
+The code above creates an object with four methods, all of them being spies. They return the values that are given. `getCount` returns an `Observable<number>`. The other methods return `undefined`.
+
+`createSpyObj` accepts a type parameter to declare the type the object adheres to. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
+
+In the *Assert* phase, we can now make an expectation against the spies, for example:
+
+```typescript
+expect(fakeCounterService.getCount).toHaveBeenCalled();
+```
+
+## Karma
+
+## Testing Components
 
 Components are the power houses of an Angular application. Together, they compose the user interface.
 
@@ -965,18 +1050,18 @@ A component deals with several concerns. Amongst them are:
 - It accepts data from parent components using Input properties.
 - It emits data to parent components using Outputs.
 - It reacts to user input using event handlers.
-- It renders the content and uses templates that are passed.
-- It allows to enter and edit data using form controls.
-- It talks to services or other state management solutions, using dependency injection.
-- It uses routing information like the URL and its parameters.
+- It renders the content (`ng-content`) and templates (`ng-template`) that are passed.
+- It binds data to form controls and allows to edit the data.
+- It talks to services or other state managers.
+- It uses routing information like the current URL and its parameters.
 
-All these tasks need to be tested properly
+All these tasks need to be tested properly.
 
-What does the component do, what needs to be tested, and how to test
-
-You will spend
+When designing a component test, the guiding questions are: What does the component do? What needs to be tested? How do I test this behavior?
 
 Writing a unit test for a Component
+
+---
 
 <ul>
   <li>Wir erstellen einen <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/independent-counter/independent-counter.component.ts">Counter</a></li>
