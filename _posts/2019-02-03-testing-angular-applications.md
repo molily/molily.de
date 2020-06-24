@@ -16,6 +16,9 @@ robots: noindex, follow
 #toc .toc-heading-level-3 { margin-left: calc(2 * 1rem); }
 #toc .toc-heading-level-4 { margin-left: calc(3 * 1rem); }
 #toc .toc-heading-level-5 { margin-left: calc(4 * 1rem); }
+
+.responsive-iframe { position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%; }
+.responsive-iframe__iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white; }
 </style>
 
 <svg style="display: none">
@@ -376,8 +379,8 @@ In this guide, we will explore the different aspects of testing Angular applicat
 - [Counter Component: Source code](https://github.com/9elements/angular-workshop)
 - [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
 
-<p style="position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%;">
-<iframe src="https://9elements.github.io/angular-workshop/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white"></iframe>
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
 
 The counter is a reusable Component that allows to increase, decrease and reset a number using buttons and input fields.
@@ -403,8 +406,8 @@ While this example seems trivial to implement, it already offers valuable challe
 - [Flickr search: Source code](https://github.com/9elements/angular-flickr-search)
 - [Flickr search: Run the app](https://9elements.github.io/angular-flickr-search/)
 
-<p style="position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%;">
-<iframe src="https://9elements.github.io/angular-flickr-search/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white"></iframe>
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe></iframe>
 </p>
 
 This app that allows to search public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
@@ -434,7 +437,7 @@ An important reason is **testability**. Angular’s architecture guarantees that
 
 We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunk loosely.
 
-### Dependency injection and mock objects
+### Dependency injection and fake objects
 
 A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an _injector_ that sits on top.
 
@@ -445,9 +448,9 @@ Dependency injection turns tight coupling into loose coupling. A certain applica
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
 - We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](#integration-tests) that includes direct and indirect dependencies.
-- Or we provide a **fake** implementation, also called **mock**, that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in _isolation_.
+- Or we provide a **fake** implementation, also called *mock*, that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in _isolation_.
 
-A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and to reconnect it with equivalent mock objects.
+A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and reconnect it with equivalent fake objects.
 
 ### Angular’s testing tools
 
@@ -531,11 +534,11 @@ After `it`, typically a verb follows, like `increments` and `resets` in the exam
 
 Some people prefer to write `it('should increment the count', /* … */)`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test _should_ do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
 
-### The structure of a test
+### Structure of a test
 
 Inside the `it` block lies the actual testing code. Irrespective of the testing framework, the testing code typically consists of three phases: **Arrange, Act and Assert**.
 
-1. **Arrange** is the preparation and setup phase. For example, the class under test is instantiated. Dependencies are set up. Spies and mocks are created.
+1. **Arrange** is the preparation and setup phase. For example, the class under test is instantiated. Dependencies are set up. Spies and fakes are created.
 2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an HTML element in the DOM is clicked.
 3. **Assert** is the phase where the code behavior is checked and verified. For example, the actual output is compared to the expected output.
 
@@ -1044,7 +1047,7 @@ expect(fakeCounterService.getCount).toHaveBeenCalled();
 
 Components are the power houses of an Angular application. Together, they compose the user interface.
 
-A component deals with several concerns. Amongst them are:
+A component deals with several concerns, among others:
 
 - A component renders a certain HTML DOM using the template.
 - It accepts data from parent components using Input properties.
@@ -1057,19 +1060,120 @@ A component deals with several concerns. Amongst them are:
 
 All these tasks need to be tested properly.
 
-When designing a component test, the guiding questions are: What does the component do? What needs to be tested? How do I test this behavior?
+### Unit test for the Counter Component
 
-Writing a unit test for a Component
+As a first example, we are going to test the [IndependentCounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/independent-counter). This is how it looks in action:
+
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
+</p>
+
+When designing a Component test, the guiding questions are: What does the Component do? What needs to be tested? How do I test this behavior?
+
+First, we will focus on four features of the `IndependentCounterComponent`:
+
+- It displays the current count. The initial value is set by the
+- When the user activates the “+” button, the count increases.
+- When the user activates the “-” button, the count decreases.
+- When the user enters a number into the reset input field and activates the reset button, the count is set to the given value.
+
+Writing down what the Component does already helps to structure the unit test: The four features above can roughly translate into four specs in a test suite.
+
+### TestBed
+
+It takes several chores to render a Component in Angular, even a simple “Hello world!” or Counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
+
+Behind the scenes, the Angular compiler translates the templates into JavaScript code (if they are not compiled yet). Once this is set up, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. You could do all that manually, but you would need to dive deeply into Angular internals.
+
+Instead, the Angular team provides the `TestBed` to make unit testing easy. The `TestBed` creates and configures an Angular environment so you can test particular application parts like Components and Services safely and easily.
+
+Note that `TestBed` is a global singleton, meaninig there is only one `TestBed` at a given time. Usually, a test suite reconfigures the test bed in a `beforeAll` or `beforeEach` function. This assumes only one test suite runs at a particular time, which is guaranteed by Jasmine.
+
+The `TestBed` comes with a testing Module that is configured just like normal Modules in your application. You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` which accepts a Module definition:
+
+```typescript
+TestBed.configureTestingModule({
+  imports: [ /*… */ ],
+  declarations: [ /*… */ ],
+  providers: [ /*… */ ],
+});
+```
+
+In a unit test, you just add to the Module what is strictly necessary: the code under test, mandatory dependencies and fakes. For example, when writing a unit test for `IndependentCounterComponent`, we need to declare that Component class. Since the Component does not have dependencies, does not render other Components, Directives or Pipes, we are done.
+
+```typescript
+TestBed.configureTestingModule({
+  declarations: [ IndependentCounterComponent ],
+});
+```
+
+Our Component under test is now part of a Module. We are ready to render it, right? Not yet. First we need to compile all declared Components, Directives and Pipes:
+
+```typescript
+TestBed.compileComponents();
+```
+
+This instructs Angular just-in-time (JIT) compiler to translate the template files into JavaScript code.
+
+Since `configureTestingModule()` returns the `TestBed` class again, we can chain those two calls:
+
+```typescript
+TestBed.configureTestingModule({
+  declarations: [ IndependentCounterComponent ],
+}).compileComponents();
+```
+
+You will see this pattern in most Angular tests that rely on the `TestBed`.
+
+Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `TestBed.createComponent()`:
+
+```typescript
+const fixture = TestBed.createComponent(IndependentCounterComponent);
+```
+
+This renders the Component into a predefined `div` element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{{ count }}` in the example, are not evaluated.
+
+In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows to test behavior that is asynchronous in a live Angular application in a synchronous manner.
+
+So the last thing we need to do is to trigger change detection:
+
+```typescript
+fixture.detectChanges();
+```
+
+Before we examine what `fixture` is, let us wrap the code above in a Jasmine test suite:
+
+```typescript
+describe('IndependentCounterComponent', () => {
+  let fixture: ComponentFixture<IndependentCounterComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [IndependentCounterComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IndependentCounterComponent);
+    fixture.detectChanges();
+  });
+
+  it('…', () => {
+    /* TODO */
+  });
+});
+```
+
+Using `describe()`, we define a test suite for the `IndependentCounterComponent`. Inside, there are two `beforeEach()` blocks.
+
+confusing
+you might wonder
+compileComponents is async
+async – we will look at that later
+
+
 
 ---
-
-<ul>
-  <li>Wir erstellen einen <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/independent-counter/independent-counter.component.ts">Counter</a></li>
-  <li><code>npm install -g @angular/cli</code></li>
-  <li><code>ng new counter</code></li>
-  <li><code>"strict": true</code> in tsconfig.json aktivieren</li>
-  <li><code>ng generate component counter</code></li>
-</ul>
 
 <h2>Counter-Funktionalität</h2>
 
