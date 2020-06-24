@@ -42,7 +42,7 @@ In essence, this is an ecological idea. Reduce pollution to improve your life, t
 
 Reducing pollution could have been an important aspect of the game, but it is not. There is little incentive not to clear a forest. (You cannot reforest. Trees do not regrow either.) There is little motivation not to pave the ground and seal the soil. To defend against alien attacks attracted by pollution, it is much easier and more obvious to build up arms, to optimize your war machinery, to achieve superior firepower.
 
-Early in the game, when you burn massive amounts of fossil fuels, there are little ways to reduce pollution. So you need to invest in military to counter the inevitable attacks. Later in the game, you can reduce pollution easily, but mostly as a byproduct of energy efficience. In that stage, you have already built a powerful military industry and do not have to care about pollution.
+Early in the game, when you burn massive amounts of fossil fuels, there are little ways to reduce pollution. So you need to invest in military to counter the inevitable attacks. Later in the game, you can reduce pollution easily, but mostly as a byproduct of energy efficiency. In that stage, you have already built a powerful military industry and do not have to care about pollution.
 
 Upgrading your weapons is the natural way of handling the negative impact of pollution. The game offers plenty of strategies how to decimate aliens or keep them at bay. Funnily enough, pollution does not harm yourself directly. Only the aliens are bothered. This does not make sense given the player seems to be a living organism as well.
 
