@@ -519,10 +519,6 @@ var object = JSON.parse(string);
 ```
 
 ```js
-localStorage.setItem('name', 'Kitty');
-```
-
-```js
 var promise = new Promise(function(resolve, reject) {
   /* … */
 });
@@ -536,7 +532,7 @@ fetch('/something')
   );
 ```
 
-At the time of writing, [JSON](https://caniuse.com/#feat=json) is available in 98.14% of the browsers, [localStorage](https://caniuse.com/#feat=namevalue-storage) in 95.31%, [Promise](https://caniuse.com/#feat=promises) in 89.04%, [fetch](https://caniuse.com/#feat=fetch) in 77.81%.
+At the time of writing, [JSON](https://caniuse.com/#feat=json) is available in 98.14% of the browsers, [Promise](https://caniuse.com/#feat=promises) in 89.04%, [fetch](https://caniuse.com/#feat=fetch) in 77.81%.
 
 We can avoid such careless use of APIs by using *feature detection*. In particular, we need to check for the names we intent to use.
 
@@ -546,15 +542,6 @@ Writing good feature checks requires thorough knowledge of the API being used. W
 if (typeof JSON === 'object' &&
   typeof JSON.parse === 'function') {
   /* Call JSON.parse() */
-}
-```
-
-```js
-if (
-  typeof localStorage === 'object' &&
-  typeof localStorage.setItem === 'function'
-) {
-  /* Call localStorage.setItem() */
 }
 ```
 
@@ -572,7 +559,7 @@ if (typeof fetch === 'function') {
 
 These guards are only the first step. They check whether the API objects exist and have a certain type. They do not check whether the browser has full and correct support of the API. They do not check whether the APIs can be used in the current context.
 
-For example, [security and privacy preferences](#security-errors) may limit the usage of APIs like `localStorage` or `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
+For example, [security and privacy preferences](#security-errors) may limit the usage of APIs like `fetch`. Each API defines its own way how to deal with failure, like [throwing an exception](#handling-exceptions-with-trycatch) or returning a value denoting an error.
 
 ### Type errors
 
