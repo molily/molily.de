@@ -1081,15 +1081,13 @@ Writing down what the Component does already helps to structure the unit test: T
 
 ### TestBed
 
-It takes several chores to render a Component in Angular, even a simple “Hello world!” or Counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
+Several chores are necessary to render a Component in Angular, even the simple Counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
 
-Behind the scenes, the Angular compiler translates the templates into JavaScript code (if they are not compiled yet). Once this is set up, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. You could do all that manually, but you would need to dive deeply into Angular internals.
+Before rendering, the Angular compiler translates the templates into JavaScript code. Once this is set up, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. For testing, you could do all that manually, but you would need to dive deeply into Angular internals.
 
-Instead, the Angular team provides the `TestBed` to make unit testing easy. The `TestBed` creates and configures an Angular environment so you can test particular application parts like Components and Services safely and easily.
+Instead, the Angular team provides the `TestBed` to ease unit testing. The `TestBed` creates and configures an Angular environment so you can test particular application parts like Components and Services safely and easily.
 
-Note that `TestBed` is a global singleton, meaninig there is only one `TestBed` at a given time. Usually, a test suite reconfigures the test bed in a `beforeAll` or `beforeEach` function. This assumes only one test suite runs at a particular time, which is guaranteed by Jasmine.
-
-The `TestBed` comes with a testing Module that is configured just like normal Modules in your application. You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` which accepts a Module definition:
+The `TestBed` comes with a testing Module that is configured like normal Modules in your application: You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` which accepts a Module definition:
 
 ```typescript
 TestBed.configureTestingModule({
@@ -1099,7 +1097,7 @@ TestBed.configureTestingModule({
 });
 ```
 
-In a unit test, you just add to the Module what is strictly necessary: the code under test, mandatory dependencies and fakes. For example, when writing a unit test for `IndependentCounterComponent`, we need to declare that Component class. Since the Component does not have dependencies, does not render other Components, Directives or Pipes, we are done.
+In a unit test, add those parts to the Module that are strictly necessary: the code under test, mandatory dependencies and fakes. For example, when writing a unit test for `IndependentCounterComponent`, we need to declare that Component class. Since the Component does not have dependencies, does not render other Components, Directives or Pipes, we are done.
 
 ```typescript
 TestBed.configureTestingModule({
@@ -1113,7 +1111,7 @@ Our Component under test is now part of a Module. We are ready to render it, rig
 TestBed.compileComponents();
 ```
 
-This instructs Angular just-in-time (JIT) compiler to translate the template files into JavaScript code.
+This instructs the Angular compiler to translate the template files into JavaScript code.
 
 Since `configureTestingModule()` returns the `TestBed` class again, we can chain those two calls:
 
@@ -1125,15 +1123,17 @@ TestBed.configureTestingModule({
 
 You will see this pattern in most Angular tests that rely on the `TestBed`.
 
-Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `TestBed.createComponent()`:
+Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `createComponent()`:
 
 ```typescript
 const fixture = TestBed.createComponent(IndependentCounterComponent);
 ```
 
-This renders the Component into a predefined `div` element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{{ count }}` in the example, are not evaluated.
+`createComponent()` returns a `ComponentFixture`, essentially a wrapper around the Component with useful testing tools. We will learn more about the `ComponentFixture` later.
 
-In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows to test behavior that is asynchronous in a live Angular application in a synchronous manner.
+`createComponent()` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{{ count }}` in the example, are not evaluated.
+
+In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows to test asynchronous behavior in a synchronous manner, which is much simpler.
 
 So the last thing we need to do is to trigger change detection:
 
@@ -1141,7 +1141,7 @@ So the last thing we need to do is to trigger change detection:
 fixture.detectChanges();
 ```
 
-Before we examine what `fixture` is, let us wrap the code above in a Jasmine test suite:
+Now the code for rendering a component using the `TestBed` is complete. Let us wrap the code in a Jasmine test suite.
 
 ```typescript
 describe('IndependentCounterComponent', () => {
@@ -1164,7 +1164,21 @@ describe('IndependentCounterComponent', () => {
 });
 ```
 
-Using `describe()`, we define a test suite for the `IndependentCounterComponent`. Inside, there are two `beforeEach()` blocks.
+Using `describe`, we define a test suite for the `IndependentCounterComponent`. Inside, there are two `beforeEach` blocks. The first `beforeEach` block configures the `TestBed`. The second renders the component.
+
+You might wonder why there are two `beforeEach` blocks. The slight difference is that the first is wrapped in a call to `async()` from `@angular/core/testing`. This function is a helper for dealing with asynchronous test code. (Do not confuse the `async()` testing helper with async functions, a ECMAScript language feature.)
+
+Per default, Jasmine expects that your testing code is synchronous. The functions you pass to `it` but also `beforeEach`, `beforeAll`, `afterEach`, `afterAll` need to finish in a certain amount of time, also known as timeout. Jasmine also supports asynchronous specs, and `async()` helps to declare such specs.
+
+`async()` returns a function that calls the wrapped function. In addition, it waits for all asynchronous tasks to finish and then gets back to Jasmine. Internally, it uses Zone.js to determine whether all tasks have finished.
+
+We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet. If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
+
+beforeEach(() => {
+  fixture = TestBed.createComponent(IndependentCounterComponent);
+  fixture.detectChanges();
+});
+
 
 confusing
 you might wonder
