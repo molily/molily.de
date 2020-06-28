@@ -338,38 +338,6 @@ More importantly, white box tests run the risk of forgetting to check the real o
 
 For an Angular Component, Directive, Service, Pipe etc., a black box test passes a certain input and expects a proper output or measures side effects. The test only calls methods that are marked with `public` in the TypeScript code. Internal methods should be marked with `private`.
 
-In Angular Components, the difference between external and internal class members does not coincide with their TypeScript visibility (`public` vs. `private`). Properties and methods need to be `public` so that the template is able to access them. This makes sense for `@Input` and `@Output` properties. They need to be read and written from the outside, from your test. However, internal properties and methods exist that are `public` only for the template. Just because they are `public` does not mean you should access them from the test.
-
-The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
-
-<table>
-<caption>Black box testing an Angular component</caption>
-<tr>
-<th scope="col">Class member</th>
-<th scope="col">Access from test</th>
-</tr>
-<tr>
-<th scope="row"><code>@Input</code> properties</th>
-<td>Yes (write)</td>
-</tr>
-<tr>
-<th scope="row"><code>@Output</code> properties</th>
-<td>Yes (subscribe)</td>
-</tr>
-<tr>
-<th scope="row">Lifecycle methods</th>
-<td>Avoid except for <code>ngOnChanges</code></td>
-</tr>
-<tr>
-<th scope="row">Other public methods</th>
-<td>Avoid</td>
-</tr>
-<tr>
-<th scope="row">Private properties<br>and methods</th>
-<td>No access</td>
-</tr>
-</table>
-
 ## Example applications
 
 In this guide, we will explore the different aspects of testing Angular applications by looking at two examples.
@@ -407,7 +375,7 @@ While this example seems trivial to implement, it already offers valuable challe
 - [Flickr search: Run the app](https://9elements.github.io/angular-flickr-search/)
 
 <p class="responsive-iframe">
-<iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe></iframe>
+<iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
 </p>
 
 This app that allows to search public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
@@ -1087,6 +1055,8 @@ Before rendering, the Angular compiler translates the templates into JavaScript 
 
 Instead, the Angular team provides the `TestBed` to ease unit testing. The `TestBed` creates and configures an Angular environment so you can test particular application parts like Components and Services safely and easily.
 
+#### Configuring the testing Module
+
 The `TestBed` comes with a testing Module that is configured like normal Modules in your application: You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` which accepts a Module definition:
 
 ```typescript
@@ -1123,6 +1093,8 @@ TestBed.configureTestingModule({
 
 You will see this pattern in most Angular tests that rely on the `TestBed`.
 
+#### Rendering the Component
+
 Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `createComponent()`:
 
 ```typescript
@@ -1140,6 +1112,8 @@ So the last thing we need to do is to trigger change detection:
 ```typescript
 fixture.detectChanges();
 ```
+
+#### TestBed + Jasmine
 
 Now the code for rendering a component using the `TestBed` is complete. Let us wrap the code in a Jasmine test suite.
 
@@ -1174,18 +1148,75 @@ Per default, Jasmine expects that your testing code is synchronous. The function
 
 We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet. If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
 
-beforeEach(() => {
-  fixture = TestBed.createComponent(IndependentCounterComponent);
-  fixture.detectChanges();
+Now we have built the scaffold for our test using the `TestBed`, we need to write the first spec. `createComponent` returns a fixture, an instance of `ComponentFixture`. What is the fixture and what does it provide?
+
+TODO
+
+### Fixture
+
+The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test and
+
+
+### Black box testing an Angular Component
+
+We have talked about [black box vs. white box testing](TODO). Both are valid testing methods. As stated, this guide advises to use black box testing first and foremost.
+
+When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Components.
+
+White box testing may be more efficient, but it is an advanced technique with severe drawbacks: A white box test might miss crucial Component behavior while giving the illusion that all code is tested.
+
+A common technique to enforce black box testing is to mark internal methods as `private` so they cannot be called in the test. The test should only inspect the documented, public API.
+
+In Angular Components, the difference between external and internal class members does not coincide with their TypeScript visibility (`public` vs. `private`). Properties and methods need to be `public` so that the template is able to access them. This makes sense for Input and Output properties. They need to be read and written from the outside, from your test. However, internal properties and methods exist that are `public` only for the template.
+
+If you reach into the component to access `public` properties or methods that are neither Inputs nor Outputs, you are writing a white box test. This is not wrong, but it is commonly misused. You should test a Component from the DOM perspective and interact with the component primarily using Inputs, Outputs and the rendered DOM. Calling other methods or writing other properties directly runs the risk that you fail to cover important code behavior, most importantly template logic and event handling.
+
+The test we wrote for the `IndependentCounterComponent` is a black box test. It interacts with the DOM by clicking the buttons and typing into form fields. To increase the count, the test simulate a click on the “+” button. It *does not* call the `increase` method although it is public.
+
+```typescript
+/* Caution! Not recommended! */
+describe('IndependentCounterComponent', () => {
+  /* … */
+  it('increases the count', () => {
+    component.increase();
+    fixture.detectChanged();
+    expectCount(1),
+  });
 });
+```
+
+TODO
 
 
-confusing
-you might wonder
-compileComponents is async
-async – we will look at that later
+The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
 
-
+<table>
+<caption>Black box testing an Angular component</caption>
+<tr>
+<th scope="col">Class member</th>
+<th scope="col">Access from test</th>
+</tr>
+<tr>
+<th scope="row"><code>@Input</code> properties</th>
+<td>Yes (write)</td>
+</tr>
+<tr>
+<th scope="row"><code>@Output</code> properties</th>
+<td>Yes (subscribe)</td>
+</tr>
+<tr>
+<th scope="row">Lifecycle methods</th>
+<td>Avoid except for <code>ngOnChanges</code></td>
+</tr>
+<tr>
+<th scope="row">Other public methods</th>
+<td>Avoid</td>
+</tr>
+<tr>
+<th scope="row">Private properties<br>and methods</th>
+<td>No access</td>
+</tr>
+</table>
 
 ---
 
