@@ -351,7 +351,7 @@ In this guide, we will explore the different aspects of testing Angular applicat
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
 
-The counter is a reusable Component that allows to increase, decrease and reset a number using buttons and input fields.
+The counter is a reusable Component that allows to increment, decrement and reset a number using buttons and input fields.
 
 For advanced Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but still struggle testing the ins and outs.
 
@@ -1040,9 +1040,9 @@ When designing a Component test, the guiding questions are: What does the Compon
 
 First, we will focus on four features of the `IndependentCounterComponent`:
 
-- It displays the current count. The initial value is set by the
-- When the user activates the “+” button, the count increases.
-- When the user activates the “-” button, the count decreases.
+- It displays the current count. The initial value is set by an Input.
+- When the user activates the “+” button, the count increments.
+- When the user activates the “-” button, the count decrements.
 - When the user enters a number into the reset input field and activates the reset button, the count is set to the given value.
 
 Writing down what the Component does already helps to structure the unit test: The four features above can roughly translate into four specs in a test suite.
@@ -1086,9 +1086,11 @@ This instructs the Angular compiler to translate the template files into JavaScr
 Since `configureTestingModule()` returns the `TestBed` class again, we can chain those two calls:
 
 ```typescript
-TestBed.configureTestingModule({
-  declarations: [ IndependentCounterComponent ],
-}).compileComponents();
+TestBed
+  .configureTestingModule({
+    declarations: [ IndependentCounterComponent ],
+  })
+  .compileComponents();
 ```
 
 You will see this pattern in most Angular tests that rely on the `TestBed`.
@@ -1140,6 +1142,8 @@ describe('IndependentCounterComponent', () => {
 
 Using `describe`, we define a test suite for the `IndependentCounterComponent`. Inside, there are two `beforeEach` blocks. The first `beforeEach` block configures the `TestBed`. The second renders the component.
 
+<aside>
+
 You might wonder why there are two `beforeEach` blocks. The slight difference is that the first is wrapped in a call to `async()` from `@angular/core/testing`. This function is a helper for dealing with asynchronous test code. (Do not confuse the `async()` testing helper with async functions, a ECMAScript language feature.)
 
 Per default, Jasmine expects that your testing code is synchronous. The functions you pass to `it` but also `beforeEach`, `beforeAll`, `afterEach`, `afterAll` need to finish in a certain amount of time, also known as timeout. Jasmine also supports asynchronous specs, and `async()` helps to declare such specs.
@@ -1148,45 +1152,838 @@ Per default, Jasmine expects that your testing code is synchronous. The function
 
 We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet. If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
 
+</aside>
+
 Now we have built the scaffold for our test using the `TestBed`, we need to write the first spec. `createComponent` returns a fixture, an instance of `ComponentFixture`. What is the fixture and what does it provide?
 
-TODO
+#### ComponentFixture and DebugElement
 
-### Fixture
+The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test, connects to electrical contacts and allows to take measurements.
 
-The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test and
+In the context of Angular, the `ComponentFixture` holds the component and provides a convenient interface to both the Component instance and the rendered DOM.
 
-
-### Black box testing an Angular Component
-
-We have talked about [black box vs. white box testing](TODO). Both are valid testing methods. As stated, this guide advises to use black box testing first and foremost.
-
-When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Components.
-
-White box testing may be more efficient, but it is an advanced technique with severe drawbacks: A white box test might miss crucial Component behavior while giving the illusion that all code is tested.
-
-A common technique to enforce black box testing is to mark internal methods as `private` so they cannot be called in the test. The test should only inspect the documented, public API.
-
-In Angular Components, the difference between external and internal class members does not coincide with their TypeScript visibility (`public` vs. `private`). Properties and methods need to be `public` so that the template is able to access them. This makes sense for Input and Output properties. They need to be read and written from the outside, from your test. However, internal properties and methods exist that are `public` only for the template.
-
-If you reach into the component to access `public` properties or methods that are neither Inputs nor Outputs, you are writing a white box test. This is not wrong, but it is commonly misused. You should test a Component from the DOM perspective and interact with the component primarily using Inputs, Outputs and the rendered DOM. Calling other methods or writing other properties directly runs the risk that you fail to cover important code behavior, most importantly template logic and event handling.
-
-The test we wrote for the `IndependentCounterComponent` is a black box test. It interacts with the DOM by clicking the buttons and typing into form fields. To increase the count, the test simulate a click on the “+” button. It *does not* call the `increase` method although it is public.
+The fixture references the Component instance via the `componentInstance` property. In our example, it contains a `IndependentCounterComponent` instance.
 
 ```typescript
-/* Caution! Not recommended! */
-describe('IndependentCounterComponent', () => {
+const component = fixture.componentInstance;
+```
+
+The Component instance is mainly used to set Inputs and subscribe to Outputs, for example:
+
+```typescript
+// This is a ComponentFixture<IndependentCounterComponent>
+const component = fixture.componentInstance;
+// Set Input
+component.startCount = 10;
+// Subscribe to Output
+component.countChange.subscribe((count) => {
+  /* … */
+});
+```
+
+More no Inputs and Outputs later.
+
+For accessing elements in the DOM, Angular has another abstraction: The `DebugElement` wraps the native DOM elements. The fixture’s `debugElement` property returns the host element of the component. For the `IndependentCounterComponent`, this is the `app-independent-counter` element.
+
+```typescript
+const { debugElement } = fixture;
+```
+
+The `DebugElement` offers handy properties like `properties`, `attributes`, `classes` and `styles` to examine the node itself. The properties `parent`, `children` and `childNodes` help navigating in the DOM tree. They return `DebugElement`s as well.
+
+Often it is necessary to unwrap the `DebugElement` to access the native DOM element inside. Every `DebugElement` has a `nativeElement` property:
+
+```typescript
+const { debugElement } = fixture;
+const { nativeElement } = debugElement;
+console.log(nativeElement.tagName);
+console.log(nativeElement.textContent);
+console.log(nativeElement.innerHTML);
+```
+
+`nativeElement` is typed as `any` because Angular does not know the exact type of the wrapped DOM element. Most of the time, it is a subclass of [`HTMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement). For example, a `button` element is represented as [`HTMLButtonElement`](https://developer.mozilla.org/en-US/docs/Web/API/) in the DOM. When you use `nativeElement`, you need to learn about the DOM interface of the specific element.
+
+#### Writing the first spec
+
+We have compiled a test suite that renders the `IndependentCounterComponent`. We have met Angular’s primary testing abstractions: `TestBed`, `ComponentFixture` and `DebugElement`.
+
+Now let us roll up our sleeves and write the first spec! The main feature of our little counter is the ability to increment the count. Hence the spec:
+
+```typescript
+it('increments the count', () => {
   /* … */
-  it('increases the count', () => {
-    component.increase();
-    fixture.detectChanged();
-    expectCount(1),
+});
+```
+
+The **Arrange, Act and Assert** structure helps us to structure the spec. We have already covered the *Arrange* phase in the `beforeEach` blocks that render the Component. In the *Act* phase, we click on the increment button. In the *Assert* phase, we check that the displayed count has incremented.
+
+```typescript
+it('increments the count', () => {
+  // Act: Click on the increment button
+  // Assert: Expect that the displayed count now reads “1”.
+});
+```
+
+To click on the increment button, two actions are necessary:
+
+1. Find the increment button element in the DOM.
+2. Fire a click event on it.
+
+Let us learn about finding elements in the DOM first.
+
+#### Querying the DOM with test ids
+
+Every `DebugElement` features the methdos `query` and `queryAll` for finding descendant elements (children, grandchildren etc.). `query` returns the first decendant element that meets a condition while `queryAll` returns an array of all matching elements. Both methods expect a predicate, that is a function judging every element and returning `true` or `false`.
+
+Angular ships with predefined predicate functions that allow to query the DOM using familiar CSS selectors. For this purpose, pass `By.css('…')` with a CSS selector to `query` and `queryAll`.
+
+```typescript
+const { debugElement } = fixture;
+// Find the first h1 element
+const h1 = debugElement.query(By.css('h1'));
+// Find all elements with the class .user
+const userElements = debugElement.query(By.css('.user'));
+```
+
+The return value of `query` is a `DebugElement` again, those of `queryAll` is an array of `DebugElement`s (`DebugElement[]` in TypeScript notation).
+
+In the example above, we have used a type selector (`h1`) and a class selector (`.user`) to find elements in the DOM. For everyone familiar with CSS, this is familiar as well. While these selectors are fine when styling Components, using them in a test needs to be challenged.
+
+Type and class selectors introduce a tight couling between the test and the template. HTML elements are picked for semantic reasons and classes are picked mostly for visual styling. Both change frequently when the Component template is refactored. Should the test fail if the element type or class changes?
+
+Sometimes the element type or the class are crucial for the feature under test. But most of the time, they are not relevant for the feature. Then, the test should better find the element by a feature that never changes and that bears no additional meaning: test ids.
+
+A **test id** is an identifier given to an element just for the purpose of finding it in a test. The test will still find the element if unrelated features change.
+
+The preferred way to mark an HTML element is a [data attribute](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). In contrast to element types, `class` or `id` attributes, data attributes do not come with any predefined meaning. Data attributes never clash
+
+For the purpose of this guide, we use the **`data-testid`** attribute. For example, we mark the increment button in the `IndependentCounterComponent` with `data-testid="increment-button"`:
+
+```html
+<button (click)="increment()" data-testid="increment-button">+</button>
+```
+
+In the test, we use the corresponding attribute selector:
+
+```typescript
+const incrementButton = debugElement.query(
+  By.css('[data-testid="increment-button"]')
+);
+```
+
+There is a nuanced discussion around the best way to find elements during testing. Certainly, there are several valid and elaborate approaches. This guide will only present one possible approach that is simple and approachable.
+
+The Angular testing tools are neutral when it comes to DOM querying: They allow different approaches and do not recommend a specific solution. After consideration, you should opt for way, document it as a [testing convention](#testing-conventions) and apply it consistently across all tests.
+
+#### Triggering event handlers
+
+Now that we have marked and got hold of the increment button, we need to click on it.
+
+It is a common task in tests to simulate user input like clicking, typing in text, moving pointers and pressing keys. From an Angular perspective, user input causes DOM events. The Component template registers event handlers using the schema `(event)="handler($event)"`. In the test, we need to simulate an event to call these handlers.
+
+`DebugElement` has a useful method for firing events: `triggerEventHandler`. This method calls all event handlers for a given event type (like `click`). As a second parameter, it expects a fake event object that is passed to the handlers:
+
+```typescript
+incrementButton.triggerEventHandler('click', {
+  /* … Event properties … */
+});
+```
+
+This example fires a `click` event on the increment button. Since the template contains `(click)="increment()"`, the `increment` method of `IndependentCounterComponent` will be called.
+
+The `increment` method does not access the event object. The call is simply `increment()`, not `increment($event)`. Therefore, we do not need to pass a fake event object, we can simply pass `null`:
+
+```typescript
+incrementButton.triggerEventHandler('click', null);
+```
+
+
+It is worth noting that `triggerEventHandler` does not dispatch a synthetic DOM event. The effect stays on the `DebugElement` abstraction level and does not touch the native DOM. This is fine as long as the event handler is registered on the element itself. If the event handler is registered on a parent and relies on event bubbling, you need to call `triggerEventHandler` directly on that parent. `triggerEventHandler` does not simulate event bubbling or any other effect a real event might have.
+
+#### Expecting text output
+
+We have completed the *Act* phase in which the test clicks on the increment button. In the *Assert* phase, we need to expect that the displayed count changes from “0” to “1”.
+
+In the template, the count is rendered into a `strong` element:
+
+```html
+<strong>{{ count }}</strong>
+```
+
+In our test, we need to find this element and read its text content. For this purpose, we add a test id:
+
+```html
+<strong data-testid="count">{{ count }}</strong>
+```
+
+We can now find the element easily:
+
+```typescript
+const countOutput = debugElement.query(
+  By.css('[data-testid="count"]')
+);
+```
+
+The next step is to read the element’s content. In the DOM, the count is a text node that is a child of `strong`. Unfortunately, the `DebugElement` does not have a method or property for reading the text content. We need to access the native DOM element which has a convenient `textContent` property.
+
+```typescript
+countOutput.nativeElement.textContent
+```
+
+Finally, we expect that this string is `"1"` using Jasmine’s `expect()`:
+
+```typescript
+expect(countOutput.nativeElement.textContent).toBe("1");
+```
+
+The complete `independent-counter.component.spec.ts` now looks like this:
+
+```typescript
+/* Incomplete! */
+describe('IndependentCounterComponent', () => {
+  let fixture: ComponentFixture<IndependentCounterComponent>;
+  let debugElement: DebugElement;
+
+  // Arrange
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [IndependentCounterComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IndependentCounterComponent);
+    fixture.detectChanges();
+    debugElement = fixture.debugElement;
+  });
+
+  it('increments the count', () => {
+    // Act
+    const incrementButton = debugElement.query(
+      By.css('[data-testid="increment-button"]')
+    );
+    incrementButton.triggerEventHandler('click', null);
+
+    // Assert
+    const countOutput = debugElement.query(
+      By.css('[data-testid="count"]')
+    );
+    expect(countOutput.nativeElement.textContent).toBe("1");
   });
 });
 ```
 
+When we run that suite, the spec fails:
+
+```
+IndependentCounterComponent increments the count FAILED
+  Error: Expected '0' to be '1'.
+```
+
+What is wrong here? Is the implementation faulty? No, the test just missed something important. We have mentioned that in the testing environment, Angular does not automatically detect changes and does not update the DOM. Clicking the increment button changes the `count` property of the Component instance. To update the template binding `{% raw %}{{ count }}{% endraw %}`, we need to trigger the change detection manually.
+
+```typescript
+fixture.detectChanges();
+```
+
+The full test suite now looks like this:
+
+```typescript
+describe('IndependentCounterComponent', () => {
+  let fixture: ComponentFixture<IndependentCounterComponent>;
+  let debugElement: DebugElement;
+
+  // Arrange
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [IndependentCounterComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IndependentCounterComponent);
+    fixture.detectChanges();
+    debugElement = fixture.debugElement;
+  });
+
+  it('increments the count', () => {
+    // Act
+    const incrementButton = debugElement.query(
+      By.css('[data-testid="increment-button"]')
+    );
+    incrementButton.triggerEventHandler('click', null);
+    // Re-render the Component
+    fixture.detectChanges();
+
+    // Assert
+    const countOutput = debugElement.query(
+      By.css('[data-testid="count"]')
+    );
+    expect(countOutput.nativeElement.textContent).toBe("1");
+  });
+});
+```
+
+Congratulations! We have written our first Component test. It is not complete yet, but it already features a typical workflow. We will make small improvements to the existing code with each spec we add.
+
+
+#### Testing helpers
+
+The next `IndependentCounterComponent` feature we need to test is the decrement button. It is very similar to the increment button, so the spec looks almost the same.
+
+First, we add a test id to the decrement button:
+
+```html
+<button (click)="decrement()" data-testid="decrement-button">-</button>
+```
+
+Then we write the spec:
+
+```typescript
+it('increments the count', () => {
+  // Act
+  const decrementButton = debugElement.query(
+    By.css('[data-testid="decrement-button"]')
+  );
+  decrementButton.triggerEventHandler('click', null);
+  // Re-render the Component
+  fixture.detectChanges();
+
+  // Assert
+  const countOutput = debugElement.query(
+    By.css('[data-testid="count"]')
+  );
+  expect(countOutput.nativeElement.textContent).toBe('-1');
+});
+```
+
+There is nothing new here, only the test id, the variable names and the expected output changed.
+
+Now we have two specs that are almost identical. The code is repetitive and the signal-to-noise ratio is low, meaning there is much code that does little. Let us identify the patterns repeated here:
+
+1. Finding an element by test id
+2. Clicking on an element (found by test id)
+3. Expecting a given text content on an element (found by test id)
+
+These tasks are highly generic and they will appear in almost every Component spec. It is worth writing testing helpers for them.
+
+A **testing helper** is a piece of code that makes writing tests easier. It makes test code more concise and more meaningful. Since a spec should describe the implementation, a readable spec is better than an obscure, convoluted one.
+
+Your testing helpers should cast your [testing conventions](#testing-conventions) into code. They not only improve the individual test, but make sure all tests use the same patterns and work the same.
+
+A testing helper can be a simple function, but it can also be an abstraction class or a Jasmine extension. For the start, we extract common tasks into plain functions.
+
+First, let us write a helper for finding an element by test id. We have used this pattern multiple times:
+
+```typescript
+const xyzElement = fixture.debugElement.query(
+  By.css('[data-testid="xyz"]')
+);
+```
+
+We move this code into a reusable function:
+
+```typescript
+function findEl<T>(
+  fixture: ComponentFixture<T>,
+  testId: string
+): DebugElement {
+  return fixture.debugElement.query(
+    By.css(`[data-testid="${testId}"]`)
+  );
+}
+```
+
+This function is self-contained. The Component fixture needs to be passed in explictly. Since `ComponentFixture<T>` requires a type parameter – the wrapped Component type –, `findEl` also has a type parameter called `T`. TypeScript will infer the Component type automatically when you pass a `ComponentFixture`.
+
+Second, we write a testing helper that clicks on an element with a given test id. This helper can build on `findEl`.
+
+```typescript
+export function click<T>(
+  fixture: ComponentFixture<T>,
+  testId: string,
+  event: Partial<MouseEvent>
+): void {
+  const element = findEl(fixture, testId);
+  element.triggerEventHandler('click', event);
+}
+```
+
+This is the simplest possible implementation. We will expand the helper when required.
+
+The `click` helper can be used on every element that has a `(click)="…"` event handler.  For accessibility, make sure the element can be focussed and activated. This is the case for buttons or links.
+
+Historically, the `click` event was specific to mouse input. Today, it is still triggered by a mouse click, but it transformed into a generic “activate” event. It is also triggered by a “tap” (touch input), keyboard input or voice input. So in your Component, you do not need to listen for touch or keyboard events separately. In the test, a generic `click` event usually suffices.
+
+Third, we write a testing helper that expects a given text content on an element with a given test id.
+
+```typescript
+export function expectText<T>(
+  fixture: ComponentFixture<T>,
+  testId: string,
+  text: string,
+): void {
+  const element = findEl(fixture, testId);
+  const actualText = element.nativeElement.textContent;
+  expect(actualText).toBe(text);
+}
+```
+
+Again, this is a simple implementation that will be improved later.
+
+Using these helpers, we are going to rewrite our spec:
+
+```typescript
+it('increments the count', () => {
+  // Act
+  click(fixture, 'decrement-button', null);
+  // Re-render the Component
+  fixture.detectChanges();
+
+  // Assert
+  expectText(fixture, 'count', '-1');
+});
+```
+
+That is much better to read and less to write! You can tell what the spec is doing at first glance.
+
+#### Filling out forms
+
+We have tested the increment and decrement button successfully. The remaining user-facing feature we need to test is the reset feature.
+
+In the user interface, there is a reset input field and a reset button. The user enters a new number into to field, then clicks on the reset button. The Component should reset the count to the user-provided number.
+
+We already know how to click a button, but how do we fill out a form field? Unfortunately, Angular’s testing tools do not provide a solution for filling out forms easily.
+
+The answer depends on the field type and value. The generic answer is: Find the native DOM element and set the `value` property to the new value.
+
+```typescript
+const resetInput = debugElement.query(
+  By.css('[data-testid="reset-input"]')
+);
+resetInput.nativeElement.value = '123';
+```
+
+With our testing helper:
+
+```typescript
+const resetInputEl = findEl(fixture, 'reset-input').nativeElement;
+resetInputEl.value = '123';
+```
+
+This fills in the value programmatically.
+
+In `IndependentCounterComponent`’s template, the reset input has a *template reference variable*, `#resetInput`:
+
+```html
+<input type="number" #resetInput data-testid="reset-input" />
+<button (click)="reset(resetInput.value)" data-testid="reset-button">
+  Reset
+</button>
+```
+
+The click handler uses `resetInput` to access the `input` element, reads the `value` and passes it to the `reset` method.
+
+The example already works because the form is very simple. Setting a field’s `value`  is not a full simulation of user input and will not work with Template-driven or Reactive Forms yet.
+
+Angular forms cannot observe `value` changes directly. Instead Angular listens for an `input` event that the browser fires when a field value changes. For compatibility with Template-driven and Reactive Forms, we need to dispatch a fake `input` event.
+
+DOM elements have a `dispatchEvent` method for this purpose. In newer browsers, we can create a fake (so-called synthetic) `input` event with `new Event('input')`.
+
+```typescript
+const resetInputEl = findEl(fixture, 'reset-input').nativeElement;
+resetInputEl.value = '123';
+resetInputEl.dispatchEvent(new Event('input'));
+```
+
+If you need to run your tests in legac Internet Explorer, a bit more code is necessary. Internet Explorer does not support `new Event('…')`, but the `document.createEvent` method:
+
+```typescript
+const event = document.createEvent('Event');
+event.initEvent('input', true, false);
+resetInputEl.dispatchEvent(event);
+```
+
+The full spec for the reset feature then looks like this:
+
+```typescript
+it('resets the count', () => {
+  const newCount = '123';
+
+  // Act
+  const resetInputEl = findEl(fixture, 'reset-input').nativeElement;
+  // Set field value
+  resetInputEl.value = newCount;
+  // Dispatch input event
+  const event = document.createEvent('Event');
+  event.initEvent('input', true, false);
+  resetInputEl.dispatchEvent(event);
+
+  // Click on reset button
+  click(fixture, 'reset-button');
+  // Re-render the Component
+  fixture.detectChanges();
+
+  // Assert
+  expectText(fixture, 'count', newCount);
+});
+```
+
+Filling out forms is a common task in tests, so it makes sense to extract the code and put it into a helper. The helper function takes a test id and a string value. It finds the corresponding element, sets the `value` and dispatches an `input` event.
+
+```typescript
+export function setFieldValue<T>(
+  fixture: ComponentFixture<T>,
+  testId: string,
+  value: string,
+): void {
+  const element = findEl(fixture, testId).nativeElement;
+  element.value = value;
+  // Dispatch a fake input event so Angular form bindings
+  // take notice of the change.
+  const event = document.createEvent('Event');
+  event.initEvent('input', true, false);
+  element.dispatchEvent(event);
+}
+```
+
+Using the newly created `setFieldValue` helper, we can simplify the spec:
+
+```typescript
+it('resets the count', () => {
+  const newCount = '123';
+
+  // Act
+  setFieldValue(fixture, 'reset-input', newCount);
+  click(fixture, 'reset-button');
+  fixture.detectChanges();
+
+  // Assert
+  expectText(fixture, 'count', newCount);
+});
+```
+
+That is it! While the reset feature is simple, this is how to test most form logic.
+
+#### Testing Inputs
+
+`IndependentCounterComponent` has an Input `startCount` that sets the initial count. We need to test that the counter reacts to the Input properly. For example, if we set `startCount` to `123`, the rendered count should be `123` as well. If the Input is empty, the rendered count should be `0`, the default value.
+
+Setting an Input during testing is rather easy: An Input is a special property of the Component instance. We can set this property in the *Arrange* phase.
+
+```typescript
+const component = fixture.componentInstance;
+component.startCount = 10;
+```
+
+It is a good practice not to change an Input value within a Component. An Input property should always reflect the data passed in by the parent Component. That is why `IndependentCounterComponent` has a public Input named `startCount` as well as an internal property named `count`. When the user clicks the increment or decrement buttons, `count` is changed, but `startCount` remains unchanged.
+
+Whenever the `startCount` Input changes, `count` needs to be set to `startCount`. The safe place to do that is the `ngOnChanges` lifecycle function:
+
+```typescript
+public ngOnChanges(): void {
+  this.count = this.startCount;
+}
+```
+
+`ngOnChanges` is called whenever a “data-bound property” changes, including Inputs and Outputs.
+
+Let us write a test for the `startCount` Input. We set the Input in the `beforeEach` block that creates the component, before calling `detectChanges`. The spec `it`self checks that the correct count is rendered.
+
+```typescript
+/* Incomplete! */
+beforeEach(() => {
+  fixture = TestBed.createComponent(IndependentCounterComponent);
+  component = fixture.componentInstance;
+  // Set the Input
+  component.startCount = startCount;
+  fixture.detectChanges();
+});
+
+it('shows the start count', () => {
+  expectText(fixture, 'count', String(count));
+});
+```
+
+When we run this spec, we find that it fails:
+
+```
+IndependentCounterComponent > shows the start count
+  Expected '0' to be '123'.
+```
+
+What is wrong here? Did we forget to call `detectChanges` again? No, but we forgot to call `ngOnChanges`! In the testing environment, `ngOnChanges` is not called automatically. We have to call it manually after setting the Input.
+
+Here is the full corrected example:
+
+```typescript
+describe('IndependentCounterComponent', () => {
+  let component: IndependentCounterComponent;
+  let fixture: ComponentFixture<IndependentCounterComponent>;
+
+  const startCount = 123;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [IndependentCounterComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IndependentCounterComponent);
+    component = fixture.componentInstance;
+    component.startCount = startCount;
+    // Call ngOnChanges, then re-render
+    component.ngOnChanges();
+    fixture.detectChanges();
+  });
+
+  /* … */
+
+  it('shows the start count', () => {
+    expectText(fixture, 'count', String(startCount));
+  });
+});
+```
+
+The `IndependentCounterComponent` expects a `number` Input and renders it into the DOM. When reading text from the DOM, we always deal with strings. What is why we pass in a number `123` but expect to find the string `'123'`.
+
+In addition to primitive values, Components usually expect complex objects, arrays or even Observables. Sometimes they process the Input values before displaying them. Testing this behavior takes more effort. The test needs to define meaningful fake data first. Setting the Input properties is straightforward. The Assert phase get more complex because the Input values are not directly rendered.
+
 TODO
 
+#### Testing Outputs
+
+While Inputs pass data from parent to child, Outputs allow to send data from child to parent. In combination, a Component can perform a specific operation just with the required data. For example, a Component may render a form so the user can edit or review the data. Once completed, the Component emits the data as an Output.
+
+Outputs are not a user-facing feature, but a vital part of the public Component API. Technically, Output are a Component instance properties. A unit test must inspect the Outputs thoroughly to proof that the Component plays well with other Components.
+
+The `IndependentCounterComponent` has an output named `countChange`. Whenever the count changes, the `countChange` Output emits the new value.
+
+```typescript
+export class IndependentCounterComponent implements OnChanges {
+  /* … */
+  @Output()
+  public countChange = new EventEmitter<number>();
+  /* … */
+}
+```
+
+The Output’s type `EventEmitter` is a subclass of RxJS `Subject`, which is itself extends RxJS `Observable`. The Component uses the `emit` method to publish new values. The parent Component uses the `subscribe` method to listen for emitted values. In the testing environment, we will do the same.
+
+Let us write a spec for the `countChange` Output!
+
+```typescript
+it('emits countChange events', () => {
+    /* … */
+});
+```
+
+Within the spec, we access the Output via `fixture.componentInstance.countChange`. In the *Arrange*. phase, we subscribe to the `EventEmitter`.
+
+```typescript
+it('emits countChange events on increment', () => {
+  // Arrange
+  component.countChange.subscribe((count) => {
+    /* … */
+  });
+});
+```
+
+We need to verify that the observer function is called with the right value when the increment button is clicked. In the *Act* phase, we click on the button using our helper function:
+
+```typescript
+it('emits countChange events on increment', () => {
+  // Arrange
+  component.countChange.subscribe((count) => {
+    /* … */
+  });
+
+  // Act
+  click(fixture, 'increment-button', null);
+});
+```
+
+In the *Assert* phase, we expect that `count` has the correct value.  The easiest way is to declare a variable in the spec scope. Let us name it `actualCount`. Initially, it is `undefined`. The observer function sets a value – or not, if it is never called.
+
+```typescript
+it('emits countChange events on increment', () => {
+  // Arrange
+  let actualCount: number | undefined;
+  component.countChange.subscribe((count: number) => {
+    actualCount = count;
+  });
+
+  // Act
+  click(fixture, 'increment-button', null);
+
+  // Assert
+  expect(actualCount).toBe(1);
+});
+```
+
+The click on the button emits the count and calls the observer function synchronously. That is why the next line of code can expect that `actualCount` has been changed.
+
+You might wonder why we did not put the `expect` call in the observer function:
+
+```typescript
+/* Not recommended! */
+it('emits countChange events on increment', () => {
+  // Arrange
+  component.countChange.subscribe((count: number) => {
+    // Assert
+    expect(count).toBe(1);
+  });
+
+  // Act
+  click(fixture, 'increment-button', null);
+});
+```
+
+This works as well, but it is might produce false positives. If the feature under test is broken and the Output does not emit, `expect` is never called. Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful. We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
+
+Now we have verified that `countChange` emits when the increment button is clicked. We also need to proof that the Output emits when using the decrement or reset features. We could do that by copying the code and adding two more specs:
+
+```typescript
+it('emits countChange events on decrement', () => {
+  // Arrange
+  let actualCount: number | undefined;
+  component.countChange.subscribe((count: number) => {
+    actualCount = count;
+  });
+
+  // Act
+  click(fixture, 'decrement-button', null);
+
+  // Assert
+  expect(actualCount).toBe(-1);
+});
+
+it('emits countChange events on reset', () => {
+  const newCount = '123';
+
+  // Arrange
+  let actualCount: number | undefined;
+  component.countChange.subscribe((count: number) => {
+    actualCount = count;
+  });
+
+  // Act
+  setFieldValue(fixture, 'reset-input', newCount);
+  click(fixture, 'reset-button');
+
+  // Assert
+  expect(actualCount).toBe(newCount);
+});
+```
+
+TODO: section
+
+This works fine, but the spec code is highly repetitive. Experts disagree on whether this is a problem.
+
+On the one hand, abstractions like helper functions make tests more complex and therefore harder to understand. After all, tests should be more readable than the implementation code.
+
+On the other hand, it is hard to grasp the essence of repetitive specs. Testing helpers form a high-level language to express testing instructions clear and brief. For example, if all your specs find DOM elements via test ids, they should hide that detail behind a testing helper.
+
+There is a controversial debate in software development around “do not repeat yourself” and the value of abstractions. Sandi Metz [famously stated](https://www.sandimetz.com/blog/2016/1/20/the-wrong-abstraction) “duplication is far cheaper than the wrong abstraction”.
+
+This is especially true when writing specs. You should try to eliminate duplication and boilerplate code with `beforeEach`/`beforeAll`, simple helper functions and even testing libraries. But do not try to apply your optimization habits and skills to test code. A test is supposed to reproduce all relevant logical cases. Finding an abstraction for all these diverse, sometimes mutually exclusive cases is often futile.
+
+Your mileage may vary on this question. For completeness, let us discuss how we could reduce the repetition in the code above.
+
+As Output is an `EventEmitter`, which is a fully-functional RxJS `Observable`. This allows us to transform the `Observable` as we please. Specifically, we can click all three buttons and then expect that the `countChange` Output has emitted three values.
+
+```typescript
+it('emits countChange events', () => {
+  // Arrange
+  const newCount = 123;
+
+  // Capture all emitted values in an array
+  let actualCounts: number[] | undefined;
+
+  // Transform the Observable, then subscribe
+  component.countChange.pipe(
+    // Close the Observable after three values
+    take(3),
+    // Collect all values in an array
+    toArray()
+  ).subscribe((counts) => {
+    actualCounts = counts;
+  });
+
+  // Act
+  click(fixture, 'increment-button', null);
+  click(fixture, 'decrement-button', null);
+  setFieldValue(fixture, 'reset-input', String(newCount));
+  click(fixture, 'reset-button', null);
+
+  // Assert
+  expect(actualCounts).toEqual([1, 0, newCount]);
+});
+```
+
+This example requires some RxJS knowledge. We are going to encounter RxJS Observables again and again when testing Angular applications. If you do not understand the example above, that is totally fine. It is just optional way to merge three specs into one.
+
+### Black vs. white box testing an Angular Component
+
+Component tests turn out to be most meaningful if they closely mimic how the user interacts with the Component. The tests we have written try to apply this principle. We have worked directly with the DOM to read text, click on buttons and fill out form fields because that is what the user does.
+
+These tests are black box tests. We have already talked about [black box vs. white box testing](#black-box-vs-white-box-testing) in theory. Both are valid testing methods. As stated, this guide advises to use black box testing first and foremost.
+
+A common technique to enforce black box testing is to mark internal methods as `private` so they cannot be called in the test. The test should only inspect the documented, public API.
+
+In Angular Components, the difference between external and internal properties and methods does not coincide with their TypeScript visibility (`public` vs. `private`). Properties and methods need to be `public` so that the template is able to access them. This makes sense for Input and Output properties. They need to be read and written from the outside, from your test. However, internal properties and methods exist that are `public` only for the template.
+
+For example, the `IndependentCounterComponent` has an Input `startCount` and an Output `countChange`. Both are `public`:
+
+```typescript
+@Input()
+public startCount = 0;
+
+@Output()
+public countChange = new EventEmitter<number>();
+```
+
+They form the public API. However, there are several more properties and methods that are `public`:
+
+```typescript
+public count = 0;
+public increment(): void { /* … */ }
+public decrement(): void { /* … */ }
+public reset(newCount: string): void { /* … */ }
+```
+
+These properties and methods are internal, they are used only within the Component. Yet they need to be `public` so the template may access them. Angular compiles templates into TypeScript code, and TypeScript ensures that the template code only accesses public properties and methods.
+
+Many Angular testing tutorials conduct Component white box tests. How does such a test look like? In our `IndependentCounterComponent` black box test, we increment the count by simulating a click on the “+” button. A white box test would call the `increment` method directly:
+
+```typescript
+/* Not recommended! */
+describe('IndependentCounterComponent', () => {
+  /* … */
+  it('increments the count', () => {
+    component.increment();
+    fixture.detectChanged();
+    expectText(fixture, 'count', '1');
+  });
+});
+```
+
+This white box test reaches into the Component to access an internal, yet `public` method. This is not wrong and sometimes valuable, but it is mostly misused. As we have learned, a Component test is meaningful if it interacts with the Component using Inputs, Outputs and the rendered DOM. Calling internal methods or accessing internal properties runs the risk of failing to cover important behavior like template logic and event handling.
+
+The spec above deals with the increment feature. It calls the `increment` method, but does not test the corresponding template code, the increment button:
+
+```html
+<button (click)="increment()" data-testid="increment-button">+</button>
+```
+
+If we remove the increment button from the template entirely, the feature is obviously broken. But the white box test does not fail, it produces a false positive.
+
+When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Components. Then imitate the real usage in your test.
+
+A white box test that does not examine the Component from the DOM perspective runs the risk of missing crucial Component behavior. It gives the illusion that all code is tested.
+
+That being said, white box testing is viable advanced technique. If you are a testing expert, you can write efficient Component specs this way that still test out all features and cover all code.
 
 The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
 
@@ -1219,96 +2016,8 @@ The following table shows which properties and methods of an Angular Component y
 </table>
 
 ---
-
-<h2>Counter-Funktionalität</h2>
-
-<ul>
-  <li>Komponente hält aktuellen Count-Wert</li>
-  <li>Anzeige des Count-Werts</li>
-  <li>Button zum Erhöhen des Count-Wertes</li>
-</ul>
-
-<h2>Aufbau eines Unit Test</h2>
-
-<ul>
-  <li>Jasmine <code>describe()</code>, <code>beforeEach()</code>, <code>it()</code></li>
-  <li><code>TestBed</code> konfigurieren</li>
-  <li><code>configureTestingModule</code>, <code>createComponent</code></li>
-  <li><code>fixture.detectChanges()</code></li>
-</ul>
-
-<h2>Funktionalität einer Komponente testen</h2>
-
-<ul>
-  <li>Wie testen wir die Funktionalität?</li>
-  <li>HTML-DOM ansehen!</li>
-  <li>Komponente rendern</li>
-  <li>Elemente heraussuchen</li>
-  <li>Inhalte prüfen</li>
-</ul>
-
-<h2>Komponente in einem Unit Test</h2>
-
-<ul>
-  <li>ComponentFixture, Komponenteninstanz, DebugElement</li>
-  <li><code>fixture</code></li>
-  <li><code>fixture.componentInstance</code></li>
-  <li><code>fixture.nativeElement</code></li>
-</ul>
-
-<h2>Elemente heraussuchen</h2>
-
-<ul>
-  <li><code>fixture.debugElement.query(By.css('…'))</code></li>
-  <li><code>fixture.debugElement.queryAll(By.css('…'))</code></li>
-</ul>
-
-<h2>Wie Elemente markieren und finden?</h2>
-
-<ul>
-  <li><del>IDs</del></li>
-  <li>Klassen: <code>class="qa-count"</code></li>
-  <li>data-Attribute: <code>data-testid="count"</code></li>
-  <li>Empfehlung: <code>data-testid</code></li>
-  <li><code>query(By.css('[data-testid="count"]'))</code></li>
-</ul>
-
-<h2>Textinhalte überprüfen (1)</h2>
-
-<ul>
-  <li><code>query()</code> liefert ein <code>DebugElement</code></li>
-  <li>Wrapper um das echte DOM-Element</li>
-  <li><code>debugElement.nativeElement</code> liefert den DOM-Knoten</li>
-</ul>
-
-<h2>Textinhalte überprüfen (2)</h2>
-
-<ul>
-  <li><code>const text =<br>debugElement.nativeElement.textContent;</code></li>
-  <li><code>expect(text).toBe('…');</code></li>
-  <li><code>expect(text).toContain('…');</code></li>
-</ul>
-
-<h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/independent-counter/independent-counter.component.spec.ts">Counter-Test</a></h2>
-
-<ul>
-  <li>✅ `it('renders the initial count', …)`</li>
-  <li>❌ `it('increments', …)`</li>
-</ul>
-
-<h2>Ereignisse simulieren</h2>
-
-<ul>
-  <li>Element heraussuchen</li>
-  <li><code>triggerEventHandler</code> aufrufen</li>
-</ul>
-
-```typescript
-debugElement.triggerEventHandler(
-  type: string,
-  event: Event
-)
-```
+---
+---
 
 <h2>Synthetisches Event-Objekt</h2>
 
