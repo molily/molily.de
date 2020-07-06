@@ -466,7 +466,7 @@ describe('Suite description', () => {
 
 Each suite _describes_ a piece of code, the _code under test_.
 
-`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` if the suite is testing the `CounterComponent` class. The second parameter is a function containing the suite definition.
+`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('IndependentCounterComponent', /* … */)` if the suite is testing the `IndependentCounterComponent` class. The second parameter is a function containing the suite definition.
 
 ### Specifications
 
@@ -487,7 +487,7 @@ The pronoun `it` refers to the code under test. `it` should be the subject of a 
 
 One goal of BDD is to describe software behavior in a natural language – in this case, English. Every stakeholder should be able to read the `it` sentences and understand how the code is supposed to behave. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
 
-Ask yourself, what does the code under test do? For example, in case of a `CounterComponent`, _it_ increments the counter value. And _it_ resets the counter to a specific value. So you could write:
+Ask yourself, what does the code under test do? For example, in case of a `IndependentCounterComponent`, _it_ increments the counter value. And _it_ resets the counter to a specific value. So you could write:
 
 ```typescript
 it('increments the count', () => {
@@ -510,10 +510,10 @@ Inside the `it` block lies the actual testing code. Irrespective of the testing 
 2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an HTML element in the DOM is clicked.
 3. **Assert** is the phase where the code behavior is checked and verified. For example, the actual output is compared to the expected output.
 
-How could the structure of the spec `it('resets the count', /* … */)` for the `CounterComponent` look like?
+How could the structure of the spec `it('resets the count', /* … */)` for the `IndependentCounterComponent` look like?
 
 1. <p><strong>Arrange:</strong></p>
-  - Create an instance of `CounterComponent`.
+  - Create an instance of `IndependentCounterComponent`.
   - Render the Component into the document.
 2. <p><strong>Act:</strong></p>
   - Find and focus the reset input field.
@@ -564,14 +564,14 @@ First, we pass the actual value to the `expect()` function. It returns an expect
 
 `toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`, also called identity operator. <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
 
-`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the identical. It fails if two objects are identical but happen to have the same properties and values.
+`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the same. It fails if two objects are not identical, even if they happen to have the same properties and values.
 
 For checking the deep equality of two objects, Jasmine offers the `toEqual` matcher. This example illustrates the difference:
 
 ```javascript
-// Fails, objects not identical
+// Fails, objects are not identical
 expect({ name: 'Linda' }).toBe({ name: 'Linda' });
-// Passes, objects not identical but deeply equal
+// Passes, objects are not identical but deeply equal
 expect({ name: 'Linda' }).toEqual({ name: 'Linda' });
 ```
 
@@ -581,7 +581,7 @@ The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Dri
 
 ### Efficient test suites
 
-When writing multiple specs in one suite, you quickly realize that the _Arrange_ phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the _Arrange_ phase always consists of creating an instance of the class and rendering the Component into the document.
+When writing multiple specs in one suite, you quickly realize that the _Arrange_ phase is similar or even identical across these specs. For example, when testing the `IndependentCounterComponent`, the _Arrange_ phase always consists of creating an instance of the class and rendering the Component into the document.
 
 This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But Jasmine allows to declare code that is called before and after each spec, or before and after all specs. Fur this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
 
@@ -627,7 +627,7 @@ Called after all specs are run
 
 When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
 
-These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, this guide simply uses the umbrella term “fake” and “faking” for any dependency substitution.
+These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, this guide uses the umbrella term “fake” and “faking” for any dependency substitution.
 
 ### Rules for faking dependencies
 
@@ -1011,6 +1011,8 @@ expect(fakeCounterService.getCount).toHaveBeenCalled();
 
 ## Karma
 
+TODO
+
 ## Testing Components
 
 Components are the power houses of an Angular application. Together, they compose the user interface.
@@ -1036,22 +1038,23 @@ As a first example, we are going to test the [IndependentCounterComponent](https
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
 
-When designing a Component test, the guiding questions are: What does the Component do? What needs to be tested? How do I test this behavior?
+When designing a Component test, the guiding questions are: What does the Component do, what needs to be tested? How do I test this behavior?
 
-First, we will focus on four features of the `IndependentCounterComponent`:
+We will test the following features of the `IndependentCounterComponent`:
 
-- It displays the current count. The initial value is set by an Input.
+- It displays the current count. The initial value is 0 and can be set by an Input.
 - When the user activates the “+” button, the count increments.
 - When the user activates the “-” button, the count decrements.
 - When the user enters a number into the reset input field and activates the reset button, the count is set to the given value.
+- When the user changes the count, an Output emits the new count.
 
-Writing down what the Component does already helps to structure the unit test: The four features above can roughly translate into four specs in a test suite.
+Writing down what the Component does already helps to structure the unit test. The features above roughly translate into specs in a test suite.
 
 ### TestBed
 
 Several chores are necessary to render a Component in Angular, even the simple Counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
 
-Before rendering, the Angular compiler translates the templates into JavaScript code. Once this is set up, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. For testing, you could do all that manually, but you would need to dive deeply into Angular internals.
+The Angular compiler translates the templates into JavaScript code. To prepare the rendering, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. For testing, you could do all that manually, but you would need to dive deeply into Angular internals.
 
 Instead, the Angular team provides the `TestBed` to ease unit testing. The `TestBed` creates and configures an Angular environment so you can test particular application parts like Components and Services safely and easily.
 
@@ -1142,7 +1145,7 @@ describe('IndependentCounterComponent', () => {
 
 Using `describe`, we define a test suite for the `IndependentCounterComponent`. Inside, there are two `beforeEach` blocks. The first `beforeEach` block configures the `TestBed`. The second renders the component.
 
-<aside>
+<aside markdown="1">
 
 You might wonder why there are two `beforeEach` blocks. The slight difference is that the first is wrapped in a call to `async()` from `@angular/core/testing`. This function is a helper for dealing with asynchronous test code. (Do not confuse the `async()` testing helper with async functions, a ECMAScript language feature.)
 
@@ -1150,7 +1153,9 @@ Per default, Jasmine expects that your testing code is synchronous. The function
 
 `async()` returns a function that calls the wrapped function. In addition, it waits for all asynchronous tasks to finish and then gets back to Jasmine. Internally, it uses Zone.js to determine whether all tasks have finished.
 
-We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet. If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
+We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet.
+
+If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
 
 </aside>
 
@@ -1181,7 +1186,7 @@ component.countChange.subscribe((count) => {
 });
 ```
 
-More no Inputs and Outputs later.
+More on testing Inputs and Outputs later.
 
 For accessing elements in the DOM, Angular has another abstraction: The `DebugElement` wraps the native DOM elements. The fixture’s `debugElement` property returns the host element of the component. For the `IndependentCounterComponent`, this is the `app-independent-counter` element.
 
@@ -1255,7 +1260,7 @@ Sometimes the element type or the class are crucial for the feature under test. 
 
 A **test id** is an identifier given to an element just for the purpose of finding it in a test. The test will still find the element if unrelated features change.
 
-The preferred way to mark an HTML element is a [data attribute](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). In contrast to element types, `class` or `id` attributes, data attributes do not come with any predefined meaning. Data attributes never clash
+The preferred way to mark an HTML element is a [data attribute](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). In contrast to element types, `class` or `id` attributes, data attributes do not come with any predefined meaning. Data attributes never clash with each other.
 
 For the purpose of this guide, we use the **`data-testid`** attribute. For example, we mark the increment button in the `IndependentCounterComponent` with `data-testid="increment-button"`:
 
