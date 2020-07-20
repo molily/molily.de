@@ -201,6 +201,7 @@ pre, code, samp {
   font-size: 100%;
   color: $code-text-color;
   overflow-wrap: break-word;
+  font-variant-ligatures: none;
 
   @include dark-scheme {
     background-color: $highlight-background-color-inverted;
