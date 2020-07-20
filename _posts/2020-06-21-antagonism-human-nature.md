@@ -7,7 +7,10 @@ lang: en
 ---
 
 <p>
-<video src="/assets/factorio.mp4" autoplay muted loop style="display: block; margin; auto; max-width: 100%"></video>
+  <video autoplay muted loop playsinline style="display: block; margin; auto; max-width: 100%">
+    <source type='video/mp4; codecs="av01.0.05M.08"' src="/assets/factorio-av1.mp4">
+  	<source type='video/mp4; codecs="avc1.42E01E"' src="/assets/factorio.mp4">
+	</video>
 </p>
 
 The video game Factorio got me hooked and I have played it longer than any other single-player game. While it is still in the early access phase and scheduled to be released in August, more than two million copies of the game have been sold.
