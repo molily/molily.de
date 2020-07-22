@@ -1153,7 +1153,7 @@ describe('CounterComponent', () => {
   });
 
   it('…', () => {
-    /* TODO */
+    /* … */
   });
 });
 ```
@@ -2052,7 +2052,7 @@ Again, both are valid approaches we are going to discuss.
 
 ### Shallow vs. deep rendering
 
-In the counter example application, the [`AppComponent`](https://github.com/9elements/angular-workshop/blob/master/src/app/app.component.ts) contains `CounterComponent`s, `ServiceCounterComponent`s and `NgRxCounterComponent`s. From the [template](https://github.com/9elements/angular-workshop/blob/master/src/app/app.component.html):
+In the counter example application, the [`HomeComponent`](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.ts) contains `CounterComponent`s, `ServiceCounterComponent`s and `NgRxCounterComponent`s. From the [template](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.html):
 
 ```html
 <app-counter [startCount]="5" (countChange)="handleCountChange($event)"></app-counter>
@@ -2064,29 +2064,29 @@ In the counter example application, the [`AppComponent`](https://github.com/9ele
 
 These custom `app-*` elements end up in the DOM tree. They become the host elements of the child Components.
 
-A **unit test of `AppComponent`** does not render these children. The host elements are rendered, but they remain empty. You might wonder, what is the point of such a test? What does it do after all?
+A **unit test of `HomeComponent`** does not render these children. The host elements are rendered, but they remain empty. You might wonder, what is the point of such a test? What does it do after all?
 
-From `AppComponent`’s perspective, the inner workings of its children are not relevant. We need to test that the template contains the children. Also, we need to check that `AppComponent` and its children are wired up correctly using Inputs and Outputs.
+From `HomeComponent`’s perspective, the inner workings of its children are not relevant. We need to test that the template contains the children. Also, we need to check that `HomeComponent` and its children are wired up correctly using Inputs and Outputs.
 
-In particular, the `AppComponent` unit test checks that an `app-counter` element is present, that the `startCount` Input is passed correctly and that `AppComponent` handles the `countChange` event. The same is done for the other children, `app-service-counter` and `app-service-counter`.
+In particular, the `HomeComponent` unit test checks that an `app-counter` element is present, that the `startCount` Input is passed correctly and that `HomeComponent` handles the `countChange` event. The same is done for the other children, `app-service-counter` and `app-service-counter`.
 
-An **integration test of `AppComponent`** renders the child Components. The host elements are filled with the output of `CounterComponent`, `ServiceCounterComponent` and `NgRxCounterComponent`, respectively. This integration test is actually testing all four Components. We need to decide in what level of detail we test the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
+An **integration test of `HomeComponent`** renders the child Components. The host elements are filled with the output of `CounterComponent`, `ServiceCounterComponent` and `NgRxCounterComponent`, respectively. This integration test is actually testing all four Components. We need to decide in what level of detail we test the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
 
-Let us write a unit test for `AppComponent` first. The setup looks familiar to the `CounterComponent` test suite. We are using `TestBed` to configure a testing Module and to render the Component under test.
+Let us write a unit test for `HomeComponent` first. The setup looks familiar to the `CounterComponent` test suite. We are using `TestBed` to configure a testing Module and to render the Component under test.
 
 ```typescript
-describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
-  let component: AppComponent;
+describe('HomeComponent', () => {
+  let fixture: ComponentFixture<HomeComponent>;
+  let component: HomeComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [HomeComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -2123,11 +2123,11 @@ Since we plan to write a unit test, we opt for the second.
 
 When configuring the testing Module, we can specify `schemas` to tell Angular how to deal with elements which are not handled by Directives or Components.
 
-The warning suggests `CUSTOM_ELEMENTS_SCHEMA`, but `app-component` etc. are not Web Components. We want Angular to simply ignore the elements. Therefore we use the `NO_ERRORS_SCHEMA`, “a schema that allows any property on any element”.
+The warning suggests `CUSTOM_ELEMENTS_SCHEMA`, but `app-counter` etc. are not Web Components. We want Angular to simply ignore the elements. Therefore we use the `NO_ERRORS_SCHEMA`, “a schema that allows any property on any element”.
 
 ```typescript
 TestBed.configureTestingModule({
-  declarations: [AppComponent],
+  declarations: [HomeComponent],
   schemas: [NO_ERRORS_SCHEMA],
 }).compileComponents();
 ```
@@ -2192,7 +2192,7 @@ it('renders an independent counter', () => {
 });
 ```
 
-The next feature we need to test is the `startCount` Input. In particular, the property binding `[startCount]="5"` in `AppComponent`’s template. Let us create a new spec:
+The next feature we need to test is the `startCount` Input. In particular, the property binding `[startCount]="5"` in `HomeComponent`’s template. Let us create a new spec:
 
 ```typescript
 it('passes a start count', () => {
@@ -2215,7 +2215,7 @@ it('passes a start count', () => {
 
 That was quite easy! Last but not least, we need to test the Output.
 
-From `AppComponent`’s perspective, reacting to the Output is like handling an event on the `app-counter` element. The template uses the familiar `(event)="handler($event)"` syntax:
+From `HomeComponent`’s perspective, reacting to the Output is like handling an event on the `app-counter` element. The template uses the familiar `(event)="handler($event)"` syntax:
 
 ```html
 <app-counter
@@ -2227,7 +2227,7 @@ From `AppComponent`’s perspective, reacting to the Output is like handling an 
 The `handleCountChange` method is defined in the Component class. It simply calls `console.log` to prove that the child-parent communication worked:
 
 ```typescript
-export class AppComponent {
+export class HomeComponent {
   public handleCountChange(count: number): void {
     console.log('countChange event from CounterComponent', count);
   }
@@ -2298,7 +2298,7 @@ it('listens for count changes', () => {
 });
 ```
 
-So much for testing the `CounterComponent` child. The `AppComponent` also renders a `ServiceCounterComponent` and an `NgRxCounterComponent` like this:
+So much for testing the `CounterComponent` child. The `HomeComponent` also renders a `ServiceCounterComponent` and an `NgRxCounterComponent` like this:
 
 ```html
 <app-service-counter></app-service-counter>
@@ -2320,11 +2320,11 @@ it('renders a NgRx counter', () => {
 });
 ```
 
-This is it! We have written a unit test with shallow rendering that proves that `AppComponent` correctly embeds several child Components.
+This is it! We have written a unit test with shallow rendering that proves that `HomeComponent` correctly embeds several child Components.
 
 Note that this is one possible testing method. As always, it has pros and cons. Compared with a full integration test, there is little setup. The specs can use Angular’s `DebugElement` abstraction to test presence as well as Inputs and Outputs.
 
-However, the unit test gives little confidence that `AppComponent` works in production. We have instructed Angular not to find matching Components for the custom elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `AppComponent` uses a wrong element name and the test copies that error? We will not notice the false positive unless the involved Components are rendered together.
+However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular not to find matching Components for the custom elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `HomeComponent` uses a wrong element name and the test copies that error? We will not notice the false positive unless the involved Components are rendered together.
 
 ### Faking a child Component
 
@@ -2354,12 +2354,12 @@ In our test suite, we may put the `FakeCounterComponent` before the `describe` b
 
 ```typescript
 TestBed.configureTestingModule({
-  declarations: [AppComponent, FakeCounterComponent],
+  declarations: [HomeComponent, FakeCounterComponent],
   schemas: [NO_ERRORS_SCHEMA],
 }).compileComponents();
 ```
 
-When Angular encounters an `app-counter` element, it instantiates and mounts a `FakeCounterComponent`. The element stays empty since the fake template is empty as well. The `startCount` Input property is set and the parent `AppComponent` subscribes to the `countChange` Output.
+When Angular encounters an `app-counter` element, it instantiates and mounts a `FakeCounterComponent`. The element stays empty since the fake template is empty as well. The `startCount` Input property is set and the parent `HomeComponent` subscribes to the `countChange` Output.
 
 Our test suite needs to change to account for the child Component being rendered. Instead of searching for an `app-counter` element and inspecting its properties, we explicitly
 search for a `FakeCounterComponent` instance.
@@ -2423,7 +2423,7 @@ it('passes a start count', () => {
 });
 ```
 
-The third spec checks the Output handling: If the counter emits a value, the `AppComponent` passes it to `console.log`.
+The third spec checks the Output handling: If the counter emits a value, the `HomeComponent` passes it to `console.log`.
 
 As mentioned earlier, an Output is an `EventEmitter` that is also a property of the Component instance. Previously, we have simulated an Output event using the `triggerEventHandler` abstraction. Now we can access the Output directly and call its `emit` method, just like the code in the child Component does.
 
@@ -2446,7 +2446,7 @@ it('listens for count changes', () => {
 });
 ```
 
-We are done! Here is the `AppComponent` test suite that vets the `CounterComponent` child. To minimize repetition and noise, we move the query part into the `beforeEach` block.
+We are done! Here is the `HomeComponent` test suite that vets the `CounterComponent` child. To minimize repetition and noise, we move the query part into the `beforeEach` block.
 
 ```typescript
 @Component({
@@ -2461,20 +2461,20 @@ class FakeCounterComponent implements Partial<CounterComponent> {
   public countChange = new EventEmitter<number>();
 }
 
-describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
-  let component: AppComponent;
+describe('HomeComponent', () => {
+  let fixture: ComponentFixture<HomeComponent>;
+  let component: HomeComponent;
   let counter: FakeCounterComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, FakeCounterComponent],
+      declarations: [HomeComponent, FakeCounterComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -2506,9 +2506,9 @@ describe('AppComponent', () => {
 
 TODO: findComponentInstance helper
 
-Let us discuss what we have gained with this type of testing the `AppComponent`.
+Let us discuss what we have gained with this type of testing the `HomeComponent`.
 
-We have replaced a Component dependency with a fake that behaves the same, as far as `AppComponent` is concerned. The fake child is rendered, but the template may be empty.
+We have replaced a Component dependency with a fake that behaves the same, as far as `HomeComponent` is concerned. The fake child is rendered, but the template may be empty.
 
 The original child Component, `CounterComponent`, is imported only to create the derived fake Component. Our test remains a fast and short unit test.
 
@@ -2532,7 +2532,7 @@ Among other things, ng-mocks helps creating fake Components to substitute childr
 ```typescript
 beforeEach(async(() => {
   TestBed.configureTestingModule({
-    declarations: [AppComponent, MockComponent(CounterComponent)],
+    declarations: [HomeComponent, MockComponent(CounterComponent)],
     schemas: [NO_ERRORS_SCHEMA],
   }).compileComponents();
 }));
@@ -2542,21 +2542,21 @@ We can then query the rendered DOM for an instance of `CounterComponent`. The fo
 Still, we can declare the type `CounterComponent`.
 
 ```typescript
-describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
-  let component: AppComponent;
+describe('HomeComponent', () => {
+  let fixture: ComponentFixture<HomeComponent>;
+  let component: HomeComponent;
   // Original type!
   let counter: CounterComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, MockComponent(CounterComponent)],
+      declarations: [HomeComponent, MockComponent(CounterComponent)],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -2576,20 +2576,20 @@ From a TypeScript viewpoint, the fake conforms to the `CounterComponent` type. T
 The full code:
 
 ```typescript
-describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
-  let component: AppComponent;
+describe('HomeComponent', () => {
+  let fixture: ComponentFixture<HomeComponent>;
+  let component: HomeComponent;
   let counter: CounterComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, Mock(CounterComponent)],
+      declarations: [HomeComponent, Mock(CounterComponent)],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
@@ -2623,8 +2623,114 @@ We have elimated the manual `FakeCounterComponent`. We are using `MockComponent(
 
 This was only a glimpse of ng-mocks. The library not only helps with nested Components, but provides high-level helpers for setting up the Angular test environment. These helpers replace the conventional setup with `TestBed.configureTestingModule` and allow to fake Modules, Components, Directives, Pipes and Services.
 
-###
+### Components depending on Services
 
+We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the `ServiceCounterComponent`.
+
+
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-workshop/service-counter-component" class="responsive-iframe__iframe"></iframe>
+</p>
+
+As the name suggests, this Component depends on the `CounterService`. The counter state is not stored in the Component itself, but in the central Service. Angular’s dependency injection maintains only one app-wide instance of the Service, a so-called singleton. Therefore, multiple instances of `ServiceCounterComponent` share the same counter state. If the user increments the count with one instance, the count also changes in the other instance.
+
+Again, there are two fundamental ways to test the Component:
+
+- A unit test that replaces the `CounterService` dependency with a fake.
+- An integration test that includes a real `CounterService`.
+
+This guide will demonstrate both. For your Components, you need to make a decision on an individual basis. These questions
+may guide you: Which type of test is more beneficial, more meaningful? Which test is easier (less costly) to set up and to maintain in the long run?
+
+For our trivial `ServiceCounterComponent`, both unit and integration tests are relatively easy to set up. The `CounterService` has little logic and no further dependencies itself. It does not have side effects we wish to suppress in the testing environment, like HTTP requests. It only changes its internal state.
+
+Let us start with the **integration test** because it is almost identical to the `CounterComponent` test we have already written.
+
+```typescript
+describe('ServiceCounterComponent: integration test', () => {
+  let component: ServiceCounterComponent;
+  let fixture: ComponentFixture<ServiceCounterComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ServiceCounterComponent],
+      providers: [CounterService],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ServiceCounterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('shows the start count', () => {
+    expectText(fixture, 'count', '0');
+  });
+
+  it('increments the count', () => {
+    click(fixture, 'increment-button');
+    fixture.detectChanges();
+    expectText(fixture, 'count', '1');
+  });
+
+  it('decrements the count', () => {
+    click(fixture, 'decrement-button');
+    fixture.detectChanges();
+    expectText(fixture, 'count', '-1');
+  });
+
+  it('resets the count', () => {
+    const newCount = '123';
+    setFieldValue(fixture, 'reset-input', newCount);
+    click(fixture, 'reset-button');
+    fixture.detectChanges();
+    expectText(fixture, 'count', newCount);
+  });
+});
+```
+
+Compared to the `CounterComponent` test, there is nothing new here except for one line:
+
+```typescript
+providers: [CounterService],
+```
+
+This line adds the `CounterService` to the testing Module. Angular creates an instance of the Service and injects it into the Component under test. The test is shorter because the `ServiceCounterComponent` does not have Inputs or Outputs to test.
+
+As the `CounterService` always starts with the count `0`, the test needs to take that for granted. Neither the Component nor the Service allow to set a different start count.
+
+The integration test does not examine the Component’s inner workings. It only provides the Service but does not check how the Component and the Service interact. The Component might not talk to the Service at all.
+
+If we want an integration test to verify that the Component stores the count in the Service, we would need a test with two `ServiceCounterComponent`s: When increasing the count using one Component, the displayed count in the other should change accordingly.
+
+### Faking Service dependencies
+
+Now comes the **unit test** for the `ServiceCounterComponent`. We need to learn the arts of faking Service dependencies to tackle this challenge.
+
+There are plenty of effective ways to fake a Service. There is not one best practice, but several practical approaches with pros and cons. There a manual solutions, small testing helpers and powerful libraries that create fakes automatically.
+
+This guide will discuss the requirements on fake Services and present one solution that meets these needs.
+
+1.
+The [rules for faking dependencies](#rules-for-faking-dependencies) we stated that the fake needs to be equal to the original. This is of utter importance. We need to guarantee this equivalence in the long run and prevent any possible divergency. The test should fail if the fake is not up-to-date instead of producing a false positive.
+
+An important tool to  TypeScript type checker
+TypeScript
+The fake needs to be strictly type.
+The fake’s type needs to be derived from the original’s type.
+
+* Mock und Original müssen auf dem gleichen Stand sein
+  ⇒ Mock muss eine Typableitung des Originals sein
+
+2.
+In addition
+the fake needs to be effective
+hide the original
+shield the original
+
+* Original darf nie aufgerufen werden (Nebenwirkungen!)
+* ⇒ Es darf nicht möglich sein, das Überschreiben einer Methode zu vergessen
 
 ---
 ---
@@ -2643,26 +2749,6 @@ debugElement.triggerEventHandler("click", {
   pageY: 200,
 });
 ```
-
-<h2>Komponente mit Service-Abhängigkeit (1)</h2>
-
-<p>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/service-counter/service-counter.component.ts">ServiceCounterComponent</a></p>
-
-```typescript
-class ServiceCounterComponent {
-  constructor(private counterService: CounterService) {
-    this.count$ = this.counterService.getCount();
-  }
-}
-```
-
-<h2>Komponente mit Service-Abhängigkeit (2)</h2>
-
-<ul>
-  <li>Unit Test – Service wird gemockt</li>
-  <li>Integration Test – Service wird mitgetestet</li>
-</ul>
-
 <h2>Service-Abhängigkeit mocken</h2>
 
 <ul>
@@ -2671,15 +2757,6 @@ class ServiceCounterComponent {
   <li>Mocking with fake classes</li>
   <li>Mocking by overriding functions</li>
   <li>Mock by using a real instance with Spy</li>
-</ul>
-
-<h2>Anforderungen an Mocks</h2>
-
-<ul>
-  <li>Original darf nie aufgerufen werden (Nebenwirkungen!)</li>
-  <li>⇒ Es darf nicht möglich sein, das Überschreiben einer Methode zu vergessen</li>
-  <li>Mock und Original müssen auf dem gleichen Stand sein</li>
-  <li>⇒ Mock muss eine Typableitung des Originals sein</li>
 </ul>
 
 <h2>Anforderungen erfüllt?</h2>
