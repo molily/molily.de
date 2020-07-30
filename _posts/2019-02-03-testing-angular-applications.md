@@ -631,17 +631,37 @@ These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a
 
 ### Rules for faking dependencies
 
-Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – it is powerful and dangerous at the same time. We need to set up rules to apply the technique safely.
+Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same itme.
+
+Since we will create many fakes throughout this guide, we need to set up rules to apply the technique safely.
+
+#### Equivalence of fake and original
 
 A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same methods and properties.
 
-The fake does not need to be complete, but sufficient enough to act as a replacement. Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
+The fake does not need to be complete, but sufficient enough to act as a replacement. The fake needs to be equivalent to the original, not fully equal.
+
+Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
 
 The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get of sync later when the original is changed.
 
-When the original dependency changes its public API, dependent code needs to be adapted. Also, the fake needs to be aligned to the changed API. Otherwise the corresponding unit test produces a false positive. When a fake is outdated, the unit test is a dreamworld where everything works and all tests are green. In reality, the code under test is broken.
+When the original dependency changes its public API, dependent code needs to be adapted. Also, the fake needs to be aligned. When the fake is outdated, the unit test becomes a fantasy world where everything magically works. In reality, the code under test is broken and the test result is a false positive.
 
-How can we ensure that the fake is up to date with the original? We can use TypeScript to enforce that the fake has a matching type. If the code involved is properly typed, TypeScript reminds us to update the implementation and the fake – the code simply does not compile if we forget to. We will see how to declare matching types in the upcoming examples.
+How can we ensure that the fake is up-to-date with the original? How can we ensure the equivalence of original and fake in the long run and prevent any possible divergence?
+
+We can use TypeScript to enforce that the fake has a matching type. The fake needs to be strictly typed. The fake’s type needs to be derived from the original’s type, forming a subset.
+
+Then, TypeScript assures the equivalence. The compiler reminds us to update the implementation and the fake. The TypeScript code simply does not compile if we forget that. We will learn how to declare matching types in the several upcoming examples.
+
+#### Effective faking
+
+The original dependency code has side effects that need to be suppressed during testing. The fake needs to *effectively* prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
+
+In some faking approaches, the fake inherits from the original. Only those properties and methods are overwritten that are currently used by the code under test.
+
+This is dangerous since we may forget to overwrite methods. When the code under test changes, the test may accidentally call original methods of the dependency.
+
+This guide will present thorough faking techniques that do not allow a slip. They imitate the original code while shielding the original from calls.
 
 ### Faking function dependencies with Jasmine spies
 
@@ -911,103 +931,6 @@ describe('TodoService', () => {
 Not much has changed here. We spy on `fetch` and make it return `okResponse`. Since `window.fetch` is overwritten with a spy, we make the expectation against it to verify that it has been called.
 
 Creating standalone spies and spying on existing methods are not mutually exclusive. Both will be used frequently when testing Angular applications, and both work well with dependencies injected into the constructor.
-
-### Faking object dependencies
-
-We have learned to use spies to fake dependencies on individual functions or methods. But most of the time, dependencies are objects with methods. This includes instances of classes.
-
-In the [counter example](https://9elements.github.io/angular-workshop/), the [`ServiceCounterComponent`](https://github.com/9elements/angular-workshop/blob/master/src/app/service-counter/service-counter.component.ts) depends on the [`CounterService`](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.ts). In  `ServiceCounterComponent`’s unit test, we need to create and provide an appropriate fake `CounterService`. This is the outer shape of `CounterService`:
-
-```typescript
-class CounterService {
-  public getCount(): Observable<number> { /* … */ }
-  public increment(): void { /* … */ }
-  public decrement(): void { /* … */ }
-  public reset(newCount: number): void { /* … */ }
-  private notify(): void { /* … */ }
-}
-```
-
-How do we create a fake instance of `CounterService`? The simplest way is to use an object literal `{…}` with methods:
-
-```typescript
-const fakeCounterService = {
-  getCount() {
-    return of(count);
-  },
-  increment() {},
-  decrement() {},
-  reset() {},
-};
-```
-
-This is far from perfect, but already a viable replacement for a `CounterService` instance. It walks like the original and talks like the original. The methods are empty or return fixed data.
-
-The fake implementation happens to have the same shape as the original. As we have discussed, it is of utter importance that the fake remains up to date with the original. This is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be add a type declaration:
-
-```typescript
-const fakeCounterService: CounterService = {
-  /* … */
-};
-```
-
-Unfortunately, this does not work. TypeScript complains that the private method `notify` is missing.
-That is correct, but we cannot add a private method to the object literal, nor should we. To fix this problem, we use a TypeScript trick. Using [Pick](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktk) and [keyof](https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types), we create a derived type that only contains the public methods:
-
-```typescript
-const fakeCounterService: Pick<CounterService, keyof CounterService> = {
-  /* … */
-};
-```
-
-This type ensures that the fake looks exactly the same as the original. This prevents the fake and therefore the whole test to get out of sync with the original. When the original `CounterService` changes its public API, the dependents `ServiceCounterComponent` needs to be adapted. Likewise, `fakeCounterService`, the fake implementation of `CounterService`, needs to reflect the change. The type declaration reminds you to update the fake.
-
-If the code under test does not use the full API, the fake does not need to provide the full API either. We can declare only those methods and properties that the code under test actually accesses.
-
-For example, if the code under test only calls `getCount`, just provide this method. Make sure to add a type declaration that picks the method from the original type:
-
-```typescript
-const fakeCounterService: Pick<CounterService, 'getCount'> = {
-  getCount() {
-    return of(count);
-  },
-};
-```
-
-TypeScript’s [mapped types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types) allow to bind the fake object to the original type in a way that TypeScript can check whether they are equivalent.
-
-A plain object literal with methods is an easy way to provide a fake instance. We should not forgot that the spec needs to verify that these methods have been called with the right parameters. Jasmine spies are the right tool for this job. We can combine the object literal with Jasmine spies. A first approach could look like this:
-
-```typescript
-const fakeCounterService: Pick<CounterService, keyof CounterService> = {
-  getCount: jasmine.createSpy('getCount').and.returnValue(of(count)),
-  increment: jasmine.createSpy('increment'),
-  decrement: jasmine.createSpy('decrement'),
-  reset: jasmine.createSpy('reset'),
-};
-```
-
-This is fine, but overly verbose. Jasmine provides a helper function to create an object with multiple spy methods, `jasmine.createSpyObj()`. It expects a descriptive name and a list of methods:
-
-```typescript
-const fakeCounterService =
-  jasmine.createSpyObj<CounterService>('CounterService', {
-    getCount: of(count),
-    increment: undefined,
-    decrement: undefined,
-    reset: undefined,
-  });
-```
-
-The code above creates an object with four methods, all of them being spies. They return the values that are given. `getCount` returns an `Observable<number>`. The other methods return `undefined`.
-
-`createSpyObj` accepts a type parameter to declare the type the object adheres to. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
-
-In the *Assert* phase, we can now make an expectation against the spies, for example:
-
-```typescript
-expect(fakeCounterService.getCount).toHaveBeenCalled();
-```
 
 ## Karma
 
@@ -2639,12 +2562,13 @@ Again, there are two fundamental ways to test the Component:
 - A unit test that replaces the `CounterService` dependency with a fake.
 - An integration test that includes a real `CounterService`.
 
-This guide will demonstrate both. For your Components, you need to make a decision on an individual basis. These questions
-may guide you: Which type of test is more beneficial, more meaningful? Which test is easier (less costly) to set up and to maintain in the long run?
+This guide will demonstrate both. For your Components, you need to make a decision on an individual basis. These questions may guide you: Which type of test is more beneficial, more meaningful? Which test is easier (less costly) to set up and to maintain in the long run?
 
-For our trivial `ServiceCounterComponent`, both unit and integration tests are relatively easy to set up. The `CounterService` has little logic and no further dependencies itself. It does not have side effects we wish to suppress in the testing environment, like HTTP requests. It only changes its internal state.
+### Service dependency integration test
 
-Let us start with the **integration test** because it is almost identical to the `CounterComponent` test we have already written.
+For the `ServiceCounterComponent`, the integration test is much easier to set up than the unit test. The trivial `CounterService` has little logic and no further dependencies. It does not have side effects we need to suppress in the testing environment, like HTTP requests. It only changes its internal state.
+
+The integration test looks almost identical to the `CounterComponent` test we have already written.
 
 ```typescript
 describe('ServiceCounterComponent: integration test', () => {
@@ -2706,31 +2630,269 @@ If we want an integration test to verify that the Component stores the count in 
 
 ### Faking Service dependencies
 
-Now comes the **unit test** for the `ServiceCounterComponent`. We need to learn the arts of faking Service dependencies to tackle this challenge.
+Let us move on to the **unit test** for the `ServiceCounterComponent`. To tackle this challenge, we need to learn the art of faking Service dependencies.
 
-There are plenty of effective ways to fake a Service. There is not one best practice, but several practical approaches with pros and cons. There a manual solutions, small testing helpers and powerful libraries that create fakes automatically.
+There are several practical approaches with pros and cons. We have discussed two main [requirements on fake dependencies](#rules-for-faking-dependencies):
 
-This guide will discuss the requirements on fake Services and present one solution that meets these needs.
+1. Equivalence of fake and original
+2. Effective faking
 
-1.
-The [rules for faking dependencies](#rules-for-faking-dependencies) we stated that the fake needs to be equal to the original. This is of utter importance. We need to guarantee this equivalence in the long run and prevent any possible divergency. The test should fail if the fake is not up-to-date instead of producing a false positive.
+This guide will present one solution that implements these requirements. Note that other solutions might meet these requirements as well.
 
-An important tool to  TypeScript type checker
-TypeScript
-The fake needs to be strictly type.
-The fake’s type needs to be derived from the original’s type.
+The dependency we need to fake, `CounterService` is a simple class annotated with `@Injectable()`. This is the outer shape of `CounterService`:
 
-* Mock und Original müssen auf dem gleichen Stand sein
-  ⇒ Mock muss eine Typableitung des Originals sein
+```typescript
+class CounterService {
+  public getCount(): Observable<number> { /* … */ }
+  public increment(): void { /* … */ }
+  public decrement(): void { /* … */ }
+  public reset(newCount: number): void { /* … */ }
+  private notify(): void { /* … */ }
+}
+```
 
-2.
-In addition
-the fake needs to be effective
-hide the original
-shield the original
+We need to build a fake that meets the mentioned needs.
 
-* Original darf nie aufgerufen werden (Nebenwirkungen!)
-* ⇒ Es darf nicht möglich sein, das Überschreiben einer Methode zu vergessen
+The simplest way to create a fake is an object literal `{…}` with methods:
+
+```typescript
+const currentCount = 123;
+const fakeCounterService = {
+  getCount() {
+    return of(currentCount);
+  },
+  increment() {},
+  decrement() {},
+  reset() {},
+};
+```
+
+`getCount` returns a fixed value that saved in a constant named currentCount. We will use the constant later to check whether the Component uses the value correctly.
+
+This fake is far from perfect, but already a viable replacement for a `CounterService` instance. It walks like the original and talks like the original. The methods are empty or return fixed data.
+
+The fake implementation above happens to have the same shape as the original. As discussed, it is of utter importance that the fake remains up to date with the original.
+
+The equivalence is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be add a type declaration:
+
+<div class="erroneous" markdown="1">
+```typescript
+// Error!
+const fakeCounterService: CounterService = {
+  getCount() {
+    return of(currentCount);
+  },
+  increment() {},
+  decrement() {},
+  reset() {},
+};
+```
+</div>
+
+Unfortunately, this does not work. TypeScript complains that private methods and properties are missing:
+
+`Type '{ getCount(): Observable<number>; increment(): void; decrement(): void; reset(): void; }' is missing the following properties from type 'CounterService': count, subject, notify`
+
+That is correct. But we cannot add a private members to an object literal, nor should we.
+
+Luckily, we can use a TypeScript trick to fix this problem. Using [Pick](https://www.typescriptlang.org/docs/handbook/utility-types.html#picktk) and [keyof](https://www.typescriptlang.org/docs/handbook/advanced-types.html#index-types), we create a derived type that only contains the public members:
+
+```typescript
+const fakeCounterService:
+  Pick<CounterService, keyof CounterService> = {
+  getCount() {
+    return of(currentCount);
+  },
+  increment() {},
+  decrement() {},
+  reset() {},
+};
+```
+
+This type declaration ensures that the fake looks like the original. It prevents the fake to get out of sync with the original.
+
+When the original `CounterService` changes its public API, the dependent `ServiceCounterComponent` needs to be adapted. Likewise, `fakeCounterService`, the fake implementation of `CounterService`, needs to reflect the change. The type declaration reminds you to update the fake.
+
+`ServiceCounterComponent` calls all existing public `CounterService` methods, so we have added them to the fake. If the code under test does not use the full API, the fake does not need to replicate the full API either. Only declarer those methods and properties the code under test actually uses.
+
+For example, if the code under test only calls `getCount`, just provide this method. Make sure to add a type declaration that picks the method from the original type:
+
+```typescript
+const fakeCounterService: Pick<CounterService, 'getCount'> = {
+  getCount() {
+    return of(currentCount);
+  },
+};
+```
+
+`Pick` and other [mapped types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types) allow to bind the fake object to the original type in a way that TypeScript can check the equivalence.
+
+A plain object literal with methods is an easy way to provide a fake instance. We should not forgot that the spec needs to verify that the methods have been called with the right parameters.
+
+Jasmine spies are the right tool for this job. We can fill the fake object with Jasmine spies. A first approach could look like this:
+
+```typescript
+const fakeCounterService:
+  Pick<CounterService, keyof CounterService> = {
+  getCount:
+    jasmine.createSpy('getCount').and.returnValue(of(currentCount)),
+  increment: jasmine.createSpy('increment'),
+  decrement: jasmine.createSpy('decrement'),
+  reset: jasmine.createSpy('reset'),
+};
+```
+
+This is fine, but overly verbose. Jasmine provides a handy helper function for creating an object with multiple spy methods, `createSpyObj()`. It expects a descriptive name and a list of methods:
+
+```typescript
+const fakeCounterService =
+  jasmine.createSpyObj<CounterService>('CounterService', {
+    getCount: of(currentCount),
+    increment: undefined,
+    decrement: undefined,
+    reset: undefined,
+  });
+```
+
+The code above creates an object with four methods, all of them being spies. They return the given values: `getCount` returns an `Observable<number>`. The other methods return `undefined`.
+
+`createSpyObj` accepts a [type variable](https://www.typescriptlang.org/docs/handbook/generics.html) to declare the type the object adheres to. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
+
+Let us put our fake to work. In the *Arrange* phase, the fake is created and injected into the testing Module.
+
+```typescript
+const currentCount = 123;
+
+describe('ServiceCounterComponent: unit test', () => {
+  let component: ServiceCounterComponent;
+  let fixture: ComponentFixture<ServiceCounterComponent>;
+  // Declare shared variable
+  let fakeCounterService: CounterService;
+
+  beforeEach(async(() => {
+    // Create fake
+    fakeCounterService =
+      jasmine.createSpyObj<CounterService>('CounterService', {
+        getCount: of(currentCount),
+        increment: undefined,
+        decrement: undefined,
+        reset: undefined,
+      });
+
+    TestBed.configureTestingModule({
+      declarations: [ServiceCounterComponent],
+      // Use fake instead of original
+      providers: [
+        { provide: CounterService, useValue: fakeCounterService }
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ServiceCounterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  /* … */
+});
+```
+
+There is a new pattern in the `providers` sections of the testing Module:
+
+```typescript
+providers: [
+  { provide: CounterService, useValue: fakeCounterService }
+]
+```
+
+This is the crucial moment where we tell Angular: For the `CounterService` dependency, use the value `fakeCounterService` instead. This is how we replace the original with a fake.
+
+In the integration test, we simply wrote `providers: [ CounterService ]`. In this setup, Angular creates and injects a `CounterService` instance whenever a Component, Service etc. asks for the `CounterService`.
+
+Using `{ provide: /* … */, useValue: /* … */ }`, we override the standard instantiation behavior and directly provide the value to inject.
+
+The *Arrange* phase is complete now, let us write the actual specs.
+
+The *Act* phase is the same as in the other counter Component tests: We click on buttons and fill out form fields.
+
+In the *Assert* phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith` etc.
+
+```typescript
+expect(fakeCounterService.getCount).toHaveBeenCalled();
+```
+
+Applied to all specs, the test suite look like this:
+
+```typescript
+const currentCount = 123;
+
+describe('ServiceCounterComponent: unit test', () => {
+  let component: ServiceCounterComponent;
+  let fixture: ComponentFixture<ServiceCounterComponent>;
+  // Declare shared variable
+  let fakeCounterService: CounterService;
+
+  beforeEach(async(() => {
+    // Create fake
+    fakeCounterService =
+      jasmine.createSpyObj<CounterService>('CounterService', {
+        getCount: of(currentCount),
+        increment: undefined,
+        decrement: undefined,
+        reset: undefined,
+      });
+
+    TestBed.configureTestingModule({
+      declarations: [ServiceCounterComponent],
+      // Use fake instead of original
+      providers: [
+        { provide: CounterService, useValue: fakeCounterService }
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ServiceCounterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('shows the count', () => {
+    expectText(fixture, 'count', String(currentCount));
+    expect(fakeCounterService.getCount).toHaveBeenCalled();
+  });
+
+  it('increments the count', () => {
+    click(fixture, 'increment-button');
+    expect(fakeCounterService.increment).toHaveBeenCalled();
+  });
+
+  it('decrements the count', () => {
+    click(fixture, 'decrement-button');
+    expect(fakeCounterService.decrement).toHaveBeenCalled();
+  });
+
+  it('resets the count', () => {
+    const newCount = 456;
+    setFieldValue(fixture, 'reset-input', String(newCount));
+    click(fixture, 'reset-button');
+    expect(fakeCounterService.reset).toHaveBeenCalledWith(newCount);
+  });
+});
+
+</div>
+
+This is a valid test
+CAVEATS
+We do not check whether the Component re-renders the new count after having called the Service.
+
+This is not possible since the fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes a next value.
+
+
+---
+
+
 
 ---
 ---
@@ -2749,35 +2911,6 @@ debugElement.triggerEventHandler("click", {
   pageY: 200,
 });
 ```
-<h2>Service-Abhängigkeit mocken</h2>
-
-<ul>
-  <li><a href="https://codecraft.tv/courses/angular/unit-testing/mocks-and-spies/">Verschiedene Mocking-Strategien</a> 🤷‍♀️</li>
-  <li>Testing with the real service</li>
-  <li>Mocking with fake classes</li>
-  <li>Mocking by overriding functions</li>
-  <li>Mock by using a real instance with Spy</li>
-</ul>
-
-<h2>Anforderungen erfüllt?</h2>
-
-  <ul style="list-style-type: none">
-  <li>⛈ Testing with the real service</li>
-  <li>⛅️ Mocking with fake classes</li>
-  <li>🌧 Mocking by overriding functions</li>
-  <li>🌧 Mock by using a real instance with Spy</li>
-</ul>
-
-  <p style="font-size: 200%">🙍‍♀️🤦‍♀️</p>
-
-<h2>Service-Abhängigkeit mocken</h2>
-
-  <ul style="list-style-type: none">
-  <li>👩‍💻 Basis: Mocking with fake classes</li>
-  <li>👩‍🔬 Entweder eine Klasse oder Instanz</li>
-  <li>👩‍🔧 Typableitung hinzufügen</li>
-  <li>💆‍♀️ 🌈 ☀️</li>
-</ul>
 
 <h2>Typ vorbereiten</h2>
 
