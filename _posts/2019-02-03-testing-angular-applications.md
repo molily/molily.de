@@ -2822,7 +2822,7 @@ In the *Assert* phase, we need to verify that the Service methods have been call
 expect(fakeCounterService.getCount).toHaveBeenCalled();
 ```
 
-Applied to all specs, the test suite look like this:
+Applied to all specs, the test suite looks like this:
 
 ```typescript
 const currentCount = 123;
@@ -2880,19 +2880,158 @@ describe('ServiceCounterComponent: unit test', () => {
     expect(fakeCounterService.reset).toHaveBeenCalledWith(newCount);
   });
 });
+```
 
-</div>
+These specs check whether user interaction calls the Service methods. They do not check whether the Component re-renders the new count after having called the Service.
 
-This is a valid test
-CAVEATS
-We do not check whether the Component re-renders the new count after having called the Service.
+The Component calls `ServiceCounter`’s `getCount` and receives an `Observable<number>`. The original Service pushes new values through the Observable. The spec `it('shows the count', …)` has already proven that the Component obtained the count tfrom the Service and renders it.
 
-This is not possible since the fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes a next value.
+In addition, we will check that the Component correctly subscribes to and processes updates from the Service. This is not strictly necessary in our simple `ServiceCounterComponent` / `CounterService` example. But it is useful in more complex Component / Service interactions.
 
+Our fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes another value. We need to change that behavior in order to demonstrate the Component update.
 
----
+The fake `CounterService`, devoid of logic so far, needs to gain some logic. `getCount` should return a Observable that emits new values when `increment`, `decrement` and `reset` are called.
 
+Instead of a fixed Observable, we use a `BehaviorSubject`, just like in the original `CounterService` implementation. The `BehaviorSubject` has a `next` method for pushing new values.
 
+We declare a variable `fakeCount$` in the scope of the test suite and assign a `BehaviorSubject` it in first `beforeEach` block:
+
+```typescript
+describe('ServiceCounterComponent: unit test', () => {
+  /* … */
+  let fakeCount$: BehaviorSubject<number>;
+
+  beforeEach(async(() => {
+    fakeCount$ = new BehaviorSubject(0);
+    /* … */
+  }));
+
+  /* … */
+});
+```
+
+Then we change the `fakeCounterService` so it pushes new value through `fakeCount$`.
+
+```typescript
+fakeCounterService = {
+  getCount(): Observable<number> {
+    return fakeCount$;
+  },
+  increment(): void {
+    fakeCount$.next(124);
+  },
+  decrement(): void {
+    fakeCount$.next(122);
+  },
+  reset(): void {
+    fakeCount$.next(Number(newCount));
+  },
+};
+```
+
+The fake is an object with plain methods. We are not using `createSpyObj` any longer because it does not allow to fake method implementations.
+
+We have lost the Jasmine spies and need to bring them back. There are several ways to wrap the methods in spies. For simplicity, we install a spies on all methods using `spyOn`:
+
+```typescript
+spyOn(fakeCounterService, 'getCount').and.callThrough();
+spyOn(fakeCounterService, 'increment').and.callThrough();
+spyOn(fakeCounterService, 'decrement').and.callThrough();
+spyOn(fakeCounterService, 'reset').and.callThrough();
+```
+
+Remember to add `.and.callThrough()` so the underlying fake methods are called.
+
+Now our fake Service sends new counts to the Component. We can reintroduce the checks for the Component output:
+
+```typescript
+fixture.detectChanges();
+expectText(fixture, 'count', '…');
+```
+
+Assembling all parts, the final `ServiceCounterComponent` unit test:
+
+```typescript
+const newCount = '123';
+
+describe('ServiceCounterComponent: unit test', () => {
+  let component: ServiceCounterComponent;
+  let fixture: ComponentFixture<ServiceCounterComponent>;
+  let fakeCount$: BehaviorSubject<number>;
+  let fakeCounterService: Pick<CounterService, keyof CounterService>;
+
+  beforeEach(async(() => {
+    fakeCount$ = new BehaviorSubject(0);
+
+    fakeCounterService = {
+      getCount(): Observable<number> {
+        return fakeCount$;
+      },
+      increment(): void {
+        fakeCount$.next(1);
+      },
+      decrement(): void {
+        fakeCount$.next(-1);
+      },
+      reset(): void {
+        fakeCount$.next(Number(newCount));
+      },
+    };
+    spyOn(fakeCounterService, 'getCount').and.callThrough();
+    spyOn(fakeCounterService, 'increment').and.callThrough();
+    spyOn(fakeCounterService, 'decrement').and.callThrough();
+    spyOn(fakeCounterService, 'reset').and.callThrough();
+
+    TestBed.configureTestingModule({
+      declarations: [ServiceCounterComponent],
+      providers: [{ provide: CounterService, useValue: fakeCounterService }],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ServiceCounterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('shows the start count', () => {
+    expectText(fixture, 'count', '0');
+    expect(fakeCounterService.getCount).toHaveBeenCalled();
+  });
+
+  it('increments the count', () => {
+    click(fixture, 'increment-button');
+    fakeCount$.next(1);
+    fixture.detectChanges();
+    expectText(fixture, 'count', '1');
+    expect(fakeCounterService.increment).toHaveBeenCalled();
+  });
+
+  it('decrements the count', () => {
+    click(fixture, 'decrement-button');
+    fakeCount$.next(-1);
+    fixture.detectChanges();
+    expectText(fixture, 'count', '-1');
+    expect(fakeCounterService.decrement).toHaveBeenCalled();
+  });
+
+  it('resets the count', () => {
+    setFieldValue(fixture, 'reset-input', newCount);
+    click(fixture, 'reset-button');
+    fixture.detectChanges();
+    expectText(fixture, 'count', newCount);
+    expect(fakeCounterService.reset).toHaveBeenCalled();
+  });
+});
+```
+
+Again, it makes little sense to create a `CounterService` fake that reimplements a large part of the logic. In reality, Services are much more complex and Components process the data they receive from the Services. Then, the effort of creating a fake that imitates some essential logic is worthwhile compared to an integration test.
+
+### Faking services: Summary
+
+Creating Service fakes and verifying the usage is probably the most challenging problem when testing Angular applications.
+
+accuracy
 
 ---
 ---
@@ -2910,145 +3049,6 @@ debugElement.triggerEventHandler("click", {
   pageX: 100,
   pageY: 200,
 });
-```
-
-<h2>Typ vorbereiten</h2>
-
-<p>Einzelne Methoden</p>
-
-```typescript
-type PartialCounterService = Pick<
-  CounterService,
-  "getCount" | "increment" | "decrement" | "reset"
->;
-```
-
-<h2>Typ vorbereiten (Alternative)</h2>
-
-<p>Alle öffentlichen Methoden</p>
-
-```typescript
-type PartialCounterService = Pick<CounterService, keyof CounterService>;
-```
-
-<h2>☀️ Mock-Service als Klasse</h2>
-
-```typescript
-class MockCounterService implements PartialCounterService {
-  getCount() {
-    return of(count);
-  }
-  increment() {}
-  decrement() {}
-  reset() {}
-}
-```
-
-<h2>☀️ Mock-Service als Objekt</h2>
-
-```typescript
-const mockCounterService: PartialCounterService = {
-  getCount() {
-    return of(count);
-  },
-  increment() {},
-  decrement() {},
-  reset() {},
-};
-```
-
-<h2>Mock anstelle des Originals verwenden</h2>
-
-<p>Im Testing Module:</p>
-
-<h3>useClass</h3>
-
-```typescript
-providers: [{ provide: CounterService, useClass: MockCounterService }];
-```
-
-<h3>useValue</h3>
-
-```typescript
-providers: [{ provide: CounterService, useValue: mockCounterService }];
-```
-
-<h2>Interaktion mit dem Mock testen</h2>
-
-<ul>
-  <li>Mock liefert feste Rückgabewerte</li>
-  <li>Mock erwartet gewisse Parameter</li>
-  <li>Parameter-Übergabe testen mit Jasmine Spies</li>
-</ul>
-
-<h2>Jasmine Spy</h2>
-
-<ul>
-  <li>Funktion, die alle Aufrufe aufzeichnet</li>
-  <li>Später ist Prüfung möglich</li>
-  <li>Wurde der Spy aufgerufen? Wie oft?</li>
-  <li>Wurde der Spy mit gewissen Parametern aufgerufen?</li>
-</ul>
-
-<h2>Unabhängigen Spy erzeugen</h2>
-
-```typescript
-const spy = jasmine.createSpy('name');
-const spy = jasmine.createSpy('name').and.returnValue(…);
-const spy = jasmine.createSpy('name').and.callFake((…) => {…});
-```
-
-<h2>Spy wrappt eine vorhandene Methode</h2>
-
-```typescript
-spyOn(object, "method");
-spyOn(object, "method").and.callThrough();
-spyOn(object, "method").and.returnValue(value);
-```
-
-<h2>Spies verifizieren</h2>
-
-```typescript
-expect(spy).toHaveBeenCalled();
-expect(spy).not.toHaveBeenCalled();
-expect(spy).toHaveBeenCalledTimes(5);
-expect(spy).toHaveBeenCalledWith(param1 /* … */);
-expect(object.method).toHaveBeenCalled();
-expect(object.method).toHaveBeenCalledWith(param1 /* … */);
-```
-
-<h2>Spies am Mock-Service installieren</h2>
-
-```typescript
-spyOn(mockCounterService, "getCount").and.callThrough();
-spyOn(mockCounterService, "increment");
-spyOn(mockCounterService, "decrement");
-spyOn(mockCounterService, "reset");
-```
-
-<h2>Mock-Service als Spy-Objekt</h2>
-
-<p><a href="https://jasmine.github.io/api/edge/jasmine.html#.createSpyObj">jasmine.createSpyObj()</a></p>
-
-```typescript
-const mockCounterService = jasmine.createSpyObj<CounterService>(
-  'CounterService',
-  {
-    getCount: of(count),
-    increment: undefined,
-    decrement: undefined,
-    reset: undefined
-  }
-]);
-```
-
-<h2>Spies verifizieren</h2>
-
-```typescript
-expect(mockCounterService.getCount).toHaveBeenCalled();
-expect(mockCounterService.increment).toHaveBeenCalled();
-expect(mockCounterService.decrement).toHaveBeenCalled();
-expect(mockCounterService.reset).toHaveBeenCalledWith(newCount);
 ```
 
 <h2>Service-Mocking: Fazit</h2>
