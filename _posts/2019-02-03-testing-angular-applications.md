@@ -98,6 +98,10 @@ When referring to core Angular concepts, this guide uses **upper case**: _Module
 
 When using these terms in the common sense, this guide uses **lower case**: _module, component, service, input, output_ etc.
 
+## Target audience
+
+TODO
+
 ## Testing principles
 
 There is a gap between practical introductions – how to test a feature at all – and essential discussions on the core concepts – what does testing achieve, which type of tests are beneficial etc. Before we dive into the practical tutorial, we need to reflect on a few basics about testing.
@@ -357,7 +361,7 @@ In this guide, we will explore the different aspects of testing Angular applicat
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
 
-The counter is a reusable Component that allows to increment, decrement and reset a number using buttons and input fields.
+The counter is a reusable Component that increments, decrements and resets a number using buttons and input fields.
 
 For advanced Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but still struggle testing the ins and outs.
 
@@ -384,7 +388,7 @@ While this example seems trivial to implement, it already offers valuable challe
 <iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
 </p>
 
-This app that allows to search public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
+This app that enables the user to search for public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
 
 This application is straightforward and relatively simple to implement. Still it raises important questions:
 
@@ -434,11 +438,38 @@ So the Angular team already made important decisions for you: [Jasmine](https://
 
 This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
 
-Other testing tools are not simply better or worse, but make different trade-offs. This guide assumes you begin with the recommended setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your specific application easier, faster and more reliable.
+These alternative tools are not simply better or worse than Angular’s standard tools. They simply make different trade-offs. This guide assumes you begin with the standard setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your application easier, faster and more reliable.
 
 ### Running the tests with Angular CLI
 
-TODO
+The Angular CLI allows us to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your shell:
+
+```
+npm install -g @angular/cli
+```
+
+This installs Angular CLI globally so the `ng` command can be used everywhere. `ng` itself does nothing but exposing a couple of Angular-specific commands.
+For example, `ng new` creates a new Angular project diretory with a ready-to-use application scaffold. `ng serve` starts a development server, and `ng build` makes a build.
+
+The command for starting the unit and integration tests is:
+
+```
+ng test
+```
+
+This command does several important things at once.
+
+First, `ng test` uses Webpack to compile your code into a JavaScript bundle. The entry point for the bundle is `src/test.ts`. This file initializes the Angular testing environment (the `TestBed`) and then imports all files in the directory tree with the name pattern `.spec.ts`.
+
+You might be familiar with the entry point for the application, `src/main.ts`. This file also initializes Angular, but then it bootstraps (loads and starts) a Module, typically named `AppModule`. The `AppModule` imports other Modules, Components, Services etc. This way, the bundler finds all parts of the application.
+
+The test bundle works differently. It does not start with a Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
+
+The `.spec.ts` files represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code. In our example application, the `CounterService` is located in `src/app/services/counter.service.ts`. The corresponding test file sits in `src/app/services/counter.service.spec.ts`. This is an Angular convention, not a technical necessity, and we are going to stick to it.
+
+Second, `ng test` starts Karma, the test runner. Karma starts a development server that serves the JavaScript bundles compiled by Webpack. Then, it launches one or more browsers.
+
+The Angular CLI `ng`
 
 ng
 ng create
@@ -549,7 +580,7 @@ This structure makes it easier to come up with a test and also to implement it. 
 - What is the user input or API call that triggers the behavior I would like to test? (Act)
 - What is the expected behavior? How do I prove that the behavior is correct? (Assert)
 
-In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and allow a natural way to think of a test’s structure: “_Given_ these specific conditions, _when_ the user interacts with the application, _then_ it behaves in a certain way.”
+In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and pose a natural way to think of a test’s structure: “_Given_ these specific conditions, _when_ the user interacts with the application, _then_ it behaves in a certain way.”
 
 ### Expectations
 
@@ -573,7 +604,7 @@ if (expectedValue !== actualValue) {
 }
 ```
 
-We could write that code in a Jasmine spec, but Jasmine allows to create expectations in an easier and more concise manner: The `expect` function together with a **Matcher**.
+We could write that code in a Jasmine spec, but Jasmine allows us to create expectations in an easier and more concise manner: The `expect` function together with a **Matcher**.
 
 ```javascript
 const expectedValue = 5;
@@ -598,13 +629,13 @@ expect({ name: 'Linda' }).toEqual({ name: 'Linda' });
 
 Jasmine has numerous useful [matchers](https://jasmine.github.io/api/edge/matchers) built-in, `toBe` and `toEqual` being the most common. You can add [custom matchers](https://jasmine.github.io/tutorials/custom_matcher) to hide a complex check behind a short name.
 
-The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Driven Development (BDD) again. The code forms a human-readable sentence: “Expect the actual value to equal the expected value.” The `expect` function call and the matcher methods starting with `to` allow to form a readable sentence. The goal is to write a specification that is as readable as a plain text but can be verified automatically.
+The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Driven Development (BDD) again. The code forms a human-readable sentence: “Expect the actual value to equal the expected value.” The `expect` function call and the matcher methods starting with `to` form a readable sentence. The goal is to write a specification that is as readable as a plain text but can be verified automatically.
 
 ### Efficient test suites
 
 When writing multiple specs in one suite, you quickly realize that the _Arrange_ phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the _Arrange_ phase always consists of creating an instance of the class and rendering the Component into the document.
 
-This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But Jasmine allows to declare code that is called before and after each spec, or before and after all specs. Fur this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
+This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But using Jasmine, you can declare code that is called before and after each spec, or before and after all specs. Fur this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
 
 ```typescript
 describe('Suite description', () => {
@@ -895,7 +926,7 @@ spyOn(window, 'fetch');
 
 This installs a spy on the global `fetch` method. Under the hood it saves the original `window.fetch` function for later and overwrites `window.fetch` with a spy. Once the spec is completed, Jasmine automatically restores the original function.
 
-`spyOn` returns the created spy, allowing to set a return value, like we have learned above.
+`spyOn` returns the created spy, enabling us to set a return value, like we have learned above.
 
 ```typescript
 spyOn(window, 'fetch');
@@ -983,7 +1014,7 @@ A component deals with several concerns, among others:
 - It emits data to parent components using Outputs.
 - It reacts to user input using event handlers.
 - It renders the content (`ng-content`) and templates (`ng-template`) that are passed.
-- It binds data to form controls and allows to edit the data.
+- It binds data to form controls and allows the user to edit the data.
 - It talks to services or other state managers.
 - It uses routing information like the current URL and its parameters.
 
@@ -1069,7 +1100,7 @@ const fixture = TestBed.createComponent(CounterComponent);
 
 `createComponent()` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{{ count }}` in the example, are not evaluated.
 
-In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows to test asynchronous behavior in a synchronous manner, which is much simpler.
+In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows us to test asynchronous behavior in a synchronous manner, which is much simpler.
 
 So the last thing we need to do is to trigger change detection:
 
@@ -1122,7 +1153,7 @@ Now we have built the scaffold for our test using the `TestBed`, we need to writ
 
 ### ComponentFixture and DebugElement
 
-The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test, connects to electrical contacts and allows to take measurements.
+The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test and connects to electrical contacts so measurements can be taken.
 
 In the context of Angular, the `ComponentFixture` holds the component and provides a convenient interface to both the Component instance and the rendered DOM.
 
@@ -1199,7 +1230,7 @@ Let us learn about finding elements in the DOM first.
 
 Every `DebugElement` features the methdos `query` and `queryAll` for finding descendant elements (children, grandchildren etc.). `query` returns the first decendant element that meets a condition while `queryAll` returns an array of all matching elements. Both methods expect a predicate, that is a function judging every element and returning `true` or `false`.
 
-Angular ships with predefined predicate functions that allow to query the DOM using familiar CSS selectors. For this purpose, pass `By.css('…')` with a CSS selector to `query` and `queryAll`.
+Angular ships with predefined predicate functions query the DOM using familiar CSS selectors. For this purpose, pass `By.css('…')` with a CSS selector to `query` and `queryAll`.
 
 ```typescript
 const { debugElement } = fixture;
@@ -1237,7 +1268,7 @@ const incrementButton = debugElement.query(
 
 There is a nuanced discussion around the best way to find elements during testing. Certainly, there are several valid and elaborate approaches. This guide will only present one possible approach that is simple and approachable.
 
-The Angular testing tools are neutral when it comes to DOM querying: They allow different approaches and do not recommend a specific solution. After consideration, you should opt for way, document it as a [testing convention](#testing-conventions) and apply it consistently across all tests.
+The Angular testing tools are neutral when it comes to DOM querying: They tolerate different approaches and do not recommend a specific solution. After consideration, you should opt for way, document it as a [testing convention](#testing-conventions) and apply it consistently across all tests.
 
 ### Triggering event handlers
 
@@ -1718,7 +1749,7 @@ TODO
 
 ### Testing Outputs
 
-While Inputs pass data from parent to child, Outputs allow to send data from child to parent. In combination, a Component can perform a specific operation just with the required data. For example, a Component may render a form so the user can edit or review the data. Once completed, the Component emits the data as an Output.
+While Inputs pass data from parent to child, Outputs send data from child to parent. In combination, a Component can perform a specific operation just with the required data. For example, a Component may render a form so the user can edit or review the data. Once completed, the Component emits the data as an Output.
 
 Outputs are not a user-facing feature, but a vital part of the public Component API. Technically, Output are a Component instance properties. A unit test must inspect the Outputs thoroughly to proof that the Component plays well with other Components.
 
@@ -2305,8 +2336,7 @@ TestBed.configureTestingModule({
 
 When Angular encounters an `app-counter` element, it instantiates and mounts a `FakeCounterComponent`. The element stays empty since the fake template is empty as well. The `startCount` Input property is set and the parent `HomeComponent` subscribes to the `countChange` Output.
 
-Our test suite needs to change to account for the child Component being rendered. Instead of searching for an `app-counter` element and inspecting its properties, we explicitly
-search for a `FakeCounterComponent` instance.
+Our test suite needs to change to account for the child Component being rendered. Instead of searching for an `app-counter` element and inspecting its properties, we explicitly search for a `FakeCounterComponent` instance.
 
 So far, we have used `DebugElement`’s `query` method to find nested elements. For example:
 
@@ -2565,7 +2595,7 @@ describe('HomeComponent', () => {
 
 We have elimated the manual `FakeCounterComponent`. We are using `MockComponent(CounterComponent)` to create the fake and the original class `CounterComponent`. The specs itself did not change.
 
-This was only a glimpse of ng-mocks. The library not only helps with nested Components, but provides high-level helpers for setting up the Angular test environment. These helpers replace the conventional setup with `TestBed.configureTestingModule` and allow to fake Modules, Components, Directives, Pipes and Services.
+This was only a glimpse of ng-mocks. The library not only helps with nested Components, but provides high-level helpers for setting up the Angular test environment. ng-mocks replaces the conventional setup with `TestBed.configureTestingModule` and helps faking Modules, Components, Directives, Pipes and Services.
 
 ## Testing Components depending on Services
 
@@ -2642,7 +2672,7 @@ providers: [CounterService],
 
 This line adds the `CounterService` to the testing Module. Angular creates an instance of the Service and injects it into the Component under test. The test is shorter because the `ServiceCounterComponent` does not have Inputs or Outputs to test.
 
-As the `CounterService` always starts with the count `0`, the test needs to take that for granted. Neither the Component nor the Service allow to set a different start count.
+As the `CounterService` always starts with the count `0`, the test needs to take that for granted. Neither the Component nor the Service allow a different start count.
 
 The integration test does not examine the Component’s inner workings. It only provides the Service but does not check how the Component and the Service interact. The Component might not talk to the Service at all.
 
@@ -2745,7 +2775,7 @@ const fakeCounterService: Pick<CounterService, 'getCount'> = {
 };
 ```
 
-`Pick` and other [mapped types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types) allow to bind the fake object to the original type in a way that TypeScript can check the equivalence.
+`Pick` and other [mapped types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types) help to bind the fake to the original type in a way that TypeScript can check the equivalence.
 
 A plain object literal with methods is an easy way to provide a fake instance. We should not forgot that the spec needs to verify that the methods have been called with the right parameters.
 
@@ -2953,7 +2983,7 @@ fakeCounterService = {
 };
 ```
 
-The fake above is an object with plain methods. We are not using `createSpyObj` any longer because it does not allow to fake method implementations.
+The fake above is an object with plain methods. We are not using `createSpyObj` any longer because it does not allow fake method implementations.
 
 We have lost the Jasmine spies and need to bring them back. There are several ways to wrap the methods in spies. For simplicity, we install spies on all methods using `spyOn`:
 
