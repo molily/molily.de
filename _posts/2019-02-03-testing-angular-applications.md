@@ -1,6 +1,6 @@
 ---
 layout: book
-title: "Testing Angular Applications – A Developer’s Guide"
+title: "Testing Angular – A Developer’s Guide"
 description: ""
 keywords: JavaScript, Angular, Testing, Automated Tests
 lang: en
@@ -9,13 +9,15 @@ robots: noindex, follow
 ---
 
 <style>
+#toc ol {
+  margin-left: 0;
+}
 #toc li {
   list-style: none;
 }
-#toc .toc-heading-level-2 { margin-left: calc(1 * 1rem); }
-#toc .toc-heading-level-3 { margin-left: calc(2 * 1rem); }
-#toc .toc-heading-level-4 { margin-left: calc(3 * 1rem); }
-#toc .toc-heading-level-5 { margin-left: calc(4 * 1rem); }
+#toc .toc-heading-level-3 { margin-left: calc(1 * 1rem); }
+#toc .toc-heading-level-4 { margin-left: calc(2 * 1rem); }
+#toc .toc-heading-level-5 { margin-left: calc(3 * 1rem); }
 
 .responsive-iframe { position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%; }
 .responsive-iframe__iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white; }
@@ -42,7 +44,7 @@ robots: noindex, follow
         <a href="/" title="Home">molily.de</a>
         <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
       </p>
-      <h1 id="toc-book-title">Testing Angular Applications</h1>
+      <h1 id="toc-book-title">Testing Angular</h1>
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
       <!--
@@ -60,7 +62,7 @@ robots: noindex, follow
 <main id="main" markdown="1">
 
 <h1 id="main-heading">
-  Testing Angular Applications
+  Testing Angular
   <span class="subheading">A Developer’s Guide</span>
 </h1>
 
@@ -169,13 +171,15 @@ Simultaneously, integrate testing into your team’s workflow. Make sure everyon
 
 Writing automated tests should be easy and fun for your team members. Remove any obstacles that make testing difficult or inefficient.
 
-#### The right amount of testing
+### The right amount of testing
 
 A fierce debate revolves around the right amount of testing. Too little testing is a problem: Features are not properly specified, bugs go unnoticed, regressions happen. But too much testing consumes development time, yields no additional profit and slows down development in the long run.
 
 So we need to reach a sweet spot. If your testing practice deteriorates from this spot, you run into problems. If you add more tests, you observe little benefit.
 
 Tests differ in their value and quality. Some tests are more meaningful than others. If they fail, your application is actually unusable. This means the quality of tests is more important than their quantity.
+
+### Code coverage
 
 A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code (file, method/function, block, expression etc.) are executed at all. Code coverage is typically expressed as percent values, e.g. 79% statements, 53% branches, 74% functions, 78% lines.
 
@@ -184,6 +188,8 @@ This metric on testing is useful but also deeply flawed because the value of a t
 It is controversial whether one should strive for 100% code coverage. While it is feasible to cover 100% of certain business-critical code, it requires immense efforts to cover all parts of an application written in Angular and TypeScript. If you write tests for the main features of your app from a user’s perspective, you can easily achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and leads to weird and twisted tests that do not reflect the actual usage of your application.
 
 We are going to discuss the practical use of code coverage tools later.
+
+TODO
 
 ### Levels of testing
 
@@ -256,7 +262,7 @@ On the other hand, unit test are too low-level to check whether a certain featur
 
 Unit tests run the risk of mirroring or even duplicating implementation details. These details change frequently because of new requirements elsewhere or during internal refactorings. If you change a line of code somewhere, some distant unit test suddenly fails. This makes sense if you have touched shared types or shared logic, but it may just be a false alarm. You have to fix this failing test for technical reasons, not because something broke.
 
-Integration tests provide a better tradeoff. These mid-level tests prescind from implementation details, cover a group of code units and provide more confidence. They are less likely to fail if you refactor code inside of the group.
+Integration tests provide a better trade-off. These mid-level tests prescind from implementation details, cover a group of code units and provide more confidence. They are less likely to fail if you refactor code inside of the group.
 
 That is why some experts deem integration tests more valuable and recommend that you spend most of your testing efforts on this level.
 
@@ -422,13 +428,28 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 
 ### Angular’s testing tools
 
-Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
+Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface (CLI), it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
 So the Angular team already made important decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with Webpack. Application parts are typically tested inside Angular’s `TestBed`.
 
 This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
 
 Other testing tools are not simply better or worse, but make different trade-offs. This guide assumes you begin with the recommended setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your specific application easier, faster and more reliable.
+
+### Running the tests with Angular CLI
+
+TODO
+
+ng
+ng create
+ng test
+ng e2e
+
+karma.conf.js
+Karma & Jasmine conf
+
+src/test.ts
+Karma > Browser > Jasmine
 
 ### Testing conventions
 
@@ -1240,8 +1261,9 @@ The `increment` method does not access the event object. The call is simply `inc
 incrementButton.triggerEventHandler('click', null);
 ```
 
+It is worth noting that `triggerEventHandler` does not dispatch a synthetic DOM event. The effect stays on the `DebugElement` abstraction level and does not touch the native DOM.
 
-It is worth noting that `triggerEventHandler` does not dispatch a synthetic DOM event. The effect stays on the `DebugElement` abstraction level and does not touch the native DOM. This is fine as long as the event handler is registered on the element itself. If the event handler is registered on a parent and relies on event bubbling, you need to call `triggerEventHandler` directly on that parent. `triggerEventHandler` does not simulate event bubbling or any other effect a real event might have.
+This is fine as long as the event handler is registered on the element itself. If the event handler is registered on a parent and relies on event bubbling, you need to call `triggerEventHandler` directly on that parent. `triggerEventHandler` does not simulate event bubbling or any other effect a real event might have.
 
 ### Expecting text output
 
@@ -1369,7 +1391,6 @@ describe('CounterComponent', () => {
 
 Congratulations! We have written our first Component test. It is not complete yet, but it already features a typical workflow. We will make small improvements to the existing code with each spec we add.
 
-
 ### Testing helpers
 
 The next `CounterComponent` feature we need to test is the decrement button. It is very similar to the increment button, so the spec looks almost the same.
@@ -1445,18 +1466,18 @@ Second, we write a testing helper that clicks on an element with a given test id
 export function click<T>(
   fixture: ComponentFixture<T>,
   testId: string,
-  event: Partial<MouseEvent>
+  event: Partial<MouseEvent> | null
 ): void {
   const element = findEl(fixture, testId);
   element.triggerEventHandler('click', event);
 }
 ```
 
-This is the simplest possible implementation. We will expand the helper when required.
-
 The `click` helper can be used on every element that has a `(click)="…"` event handler.  For accessibility, make sure the element can be focussed and activated. This is the case for buttons or links.
 
-Historically, the `click` event was specific to mouse input. Today, it is still triggered by a mouse click, but it transformed into a generic “activate” event. It is also triggered by a “tap” (touch input), keyboard input or voice input. So in your Component, you do not need to listen for touch or keyboard events separately. In the test, a generic `click` event usually suffices.
+Historically, the `click` event was specific to mouse input. Today, it is still triggered by a mouse click, but it transformed into a generic “activate” event. It is also triggered by a “tap” (touch input), keyboard input or voice input.
+
+So in your Component, you do not need to listen for touch or keyboard events separately. In the test, a generic `click` event usually suffices.
 
 Third, we write a testing helper that expects a given text content on an element with a given test id.
 
@@ -1958,7 +1979,7 @@ The following table shows which properties and methods of an Angular Component y
 </tr>
 </table>
 
-### Testing Components with children
+## Testing Components with children
 
 So far we have tested an independent Component that renders plain HTML elements, but no child Components. Such low-level Components are the workhorses of an Angular application. They directly render what the user sees and interacts with. They are often highly generic and reusable. They are controlled primarily through Inputs and report back using Outputs. They have little to none dependencies. They are easy to reason about and therefore easy to test. The preferred way of testing them is a unit test.
 
@@ -2546,10 +2567,9 @@ We have elimated the manual `FakeCounterComponent`. We are using `MockComponent(
 
 This was only a glimpse of ng-mocks. The library not only helps with nested Components, but provides high-level helpers for setting up the Angular test environment. These helpers replace the conventional setup with `TestBed.configureTestingModule` and allow to fake Modules, Components, Directives, Pipes and Services.
 
-### Components depending on Services
+## Testing Components depending on Services
 
 We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the `ServiceCounterComponent`.
-
 
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/service-counter-component" class="responsive-iframe__iframe"></iframe>
@@ -2882,21 +2902,23 @@ describe('ServiceCounterComponent: unit test', () => {
 });
 ```
 
+### Fake Service with minimal logic
+
 These specs check whether user interaction calls the Service methods. They do not check whether the Component re-renders the new count after having called the Service.
 
 The Component calls `ServiceCounter`’s `getCount` and receives an `Observable<number>`. The original Service pushes new values through the Observable. The spec `it('shows the count', …)` has already proven that the Component obtained the count tfrom the Service and renders it.
 
-In addition, we will check that the Component correctly subscribes to and processes updates from the Service. This is not strictly necessary in our simple `ServiceCounterComponent` / `CounterService` example. But it is useful in more complex Component / Service interactions.
+In addition, we will check that the Component correctly subscribes to and processes updates from the Service. This is not strictly necessary in our simple `ServiceCounterComponent` / `CounterService` example. But it is useful in more complex interactions between a Component and a Service.
 
-Our fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes another value. We need to change that behavior in order to demonstrate the Component update.
+The fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes another value. We need to change that behavior in order to demonstrate the Component update.
 
 The fake `CounterService`, devoid of logic so far, needs to gain some logic. `getCount` should return a Observable that emits new values when `increment`, `decrement` and `reset` are called.
 
 Instead of a fixed Observable, we use a `BehaviorSubject`, just like in the original `CounterService` implementation. The `BehaviorSubject` has a `next` method for pushing new values.
 
-We declare a variable `fakeCount$` in the scope of the test suite and assign a `BehaviorSubject` it in first `beforeEach` block:
+We declare a variable `fakeCount$` in the scope of the test suite and assign a `BehaviorSubject` in the first `beforeEach` block:
 
-```typescript
+```
 describe('ServiceCounterComponent: unit test', () => {
   /* … */
   let fakeCount$: BehaviorSubject<number>;
@@ -2910,18 +2932,20 @@ describe('ServiceCounterComponent: unit test', () => {
 });
 ```
 
-Then we change the `fakeCounterService` so it pushes new value through `fakeCount$`.
+Then we change the `fakeCounterService` so the methods push new values through `fakeCount$`.
 
 ```typescript
+const newCount = 123;
+/* … */
 fakeCounterService = {
   getCount(): Observable<number> {
     return fakeCount$;
   },
   increment(): void {
-    fakeCount$.next(124);
+    fakeCount$.next(1);
   },
   decrement(): void {
-    fakeCount$.next(122);
+    fakeCount$.next(-1);
   },
   reset(): void {
     fakeCount$.next(Number(newCount));
@@ -2929,9 +2953,9 @@ fakeCounterService = {
 };
 ```
 
-The fake is an object with plain methods. We are not using `createSpyObj` any longer because it does not allow to fake method implementations.
+The fake above is an object with plain methods. We are not using `createSpyObj` any longer because it does not allow to fake method implementations.
 
-We have lost the Jasmine spies and need to bring them back. There are several ways to wrap the methods in spies. For simplicity, we install a spies on all methods using `spyOn`:
+We have lost the Jasmine spies and need to bring them back. There are several ways to wrap the methods in spies. For simplicity, we install spies on all methods using `spyOn`:
 
 ```typescript
 spyOn(fakeCounterService, 'getCount').and.callThrough();
@@ -2949,7 +2973,7 @@ fixture.detectChanges();
 expectText(fixture, 'count', '…');
 ```
 
-Assembling all parts, the final `ServiceCounterComponent` unit test:
+Assembling all parts, the full `ServiceCounterComponent` unit test:
 
 ```typescript
 const newCount = '123';
@@ -2957,6 +2981,7 @@ const newCount = '123';
 describe('ServiceCounterComponent: unit test', () => {
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
+
   let fakeCount$: BehaviorSubject<number>;
   let fakeCounterService: Pick<CounterService, keyof CounterService>;
 
@@ -3003,6 +3028,7 @@ describe('ServiceCounterComponent: unit test', () => {
     click(fixture, 'increment-button');
     fakeCount$.next(1);
     fixture.detectChanges();
+
     expectText(fixture, 'count', '1');
     expect(fakeCounterService.increment).toHaveBeenCalled();
   });
@@ -3011,6 +3037,7 @@ describe('ServiceCounterComponent: unit test', () => {
     click(fixture, 'decrement-button');
     fakeCount$.next(-1);
     fixture.detectChanges();
+
     expectText(fixture, 'count', '-1');
     expect(fakeCounterService.decrement).toHaveBeenCalled();
   });
@@ -3019,167 +3046,36 @@ describe('ServiceCounterComponent: unit test', () => {
     setFieldValue(fixture, 'reset-input', newCount);
     click(fixture, 'reset-button');
     fixture.detectChanges();
+
     expectText(fixture, 'count', newCount);
     expect(fakeCounterService.reset).toHaveBeenCalled();
   });
 });
 ```
 
-Again, it makes little sense to create a `CounterService` fake that reimplements a large part of the logic. In reality, Services are much more complex and Components process the data they receive from the Services. Then, the effort of creating a fake that imitates some essential logic is worthwhile compared to an integration test.
+Again, this example is intentionally verbose. The fake reimplements a large part of the original logic. This is because the original `CounterService` has little logic itself.
 
-### Faking services: Summary
+In reality, Services are more complex and Components process the data they receive from the Services. Then, the effort of faking essential logic is worthwhile.
 
-Creating Service fakes and verifying the usage is probably the most challenging problem when testing Angular applications.
+### Faking Services: Summary
 
-accuracy
+Creating fake Service dependencies and verifying the usage is probably the most challenging problem when testing Angular applications. This guide can only catch a glimpse on the subject.
 
----
----
----
+Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice of faking Services teaches you to write Services that are easy to fake: Services with a clear API and an obvious purpose.
 
-<h2>Synthetisches Event-Objekt</h2>
+Unfortunately, there are no best practices when it comes to faking Services. You will find plenty of approaches online that have their strengths and weaknesses. The associated unit tests have different degrees of accurancy and completeness.
 
-```typescript
-debugElement.triggerEventHandler("click", null);
-debugElement.triggerEventHandler("click", {
-  preventDefault() {},
-  stopPropagation() {},
-  target: debugElement.nativeElement,
-  currentTarget: debugElement.nativeElement,
-  pageX: 100,
-  pageY: 200,
-});
-```
+Arguing about the “right” way of faking a Service is pointless. You need to decide on a faking method that suits the Service on a case-by-case basis.
 
-<h2>Service-Mocking: Fazit</h2>
+There are two takeaways you should remember:
 
-<ul>
-  <li>Mocking ist aufwändig und erfordert Übung</li>
-  <li>Services lassen sich gut mocken …</li>
-  <li>… wenn das Interface übersichtlich und die Funktionalität klar sind</li>
-  <li>Sinnvolle Testdaten (Stubs) sind nötig</li>
-</ul>
+1. Ask yourself, is the test valueable? Does it cover the important interaction between Component and Service? Decide whether to test the interaction superficially or in-depth.
+2. Whichever approach you choose, make sure to meet the [basic requirements](#rules-for-faking-dependencies):
+  1. Equivalence of fake and original: The fake must have a type derived from the original.
+  2. Effective faking: the original stays untouched.
 
-<h2>Komponente mit NgRx-Store-Abhängigkeit</h2>
+## Testing Services
 
-<p><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/ngrx-counter/ngrx-counter.component.ts">NgRxCounterComponent</a></p>
-
-```typescript
-class NgRxCounterComponent {
-  constructor(private store: Store<AppState>) {
-    this.count$ = store.pipe(select("counter"));
-  }
-}
-```
-
-<h2>Mock-Store bereitstellen (1)</h2>
-<p><a href="https://ngrx.io/guide/store/testing">Offizielle Methode</a></p>
-
-```typescript
-provideMockStore({ initialState: {…}, selectors: {…} })
-```
-
-<h2>Mock-Store bereitstellen (2)</h2>
-
-```typescript
-TestBed.configureTestingModule({
-  declarations: [NgRxCounterComponent],
-  providers: [provideMockStore({ initialState: mockState })],
-}).compileComponents();
-```
-
-<h2>Mock-State erzeugen</h2>
-
-```typescript
-const mockState: Partial<AppState> = {
-  counter: 1,
-};
-```
-
-<h2>Store-Abhängigkeit: Was testen?</h2>
-
-<ul>
-  <li>Komponente zieht sich Daten aus dem Store</li>
-  <li>Komponente transformiert ggf. diese Daten</li>
-  <li>Komponente rendert diese Daten</li>
-  <li>Komponente dispatcht Actions</li>
-</ul>
-
-<h2>Dispatch von Actions testen (1)</h2>
-
-<p>In <code>beforeEach</code> einen Spy auf <code>MockStore#dispatch</code> installieren</p>
-
-```typescript
-store = TestBed.get(Store);
-spyOn(store, "dispatch");
-```
-
-<h2>Dispatch von Actions testen (2)</h2>
-
-```typescript
-it("resets the count", () => {
-  const newCount = 15;
-  findEl(fixture, "reset-input").nativeElement.value = newCount;
-  click(fixture, "reset-button");
-  expect(store.dispatch).toHaveBeenCalledWith(reset({ count: newCount }));
-});
-```
-
-<h2>Verschiedene States testen</h2>
-
-<ul>
-  <li>Wenn der State komplex sein kann, müssen alle Fälle getestet werden</li>
-  <li>Pro Spec ein anderer State</li>
-  <li>Flexible <code>setup</code>-Funktion statt fester <code>beforeEach</code>-Logik</li>
-</ul>
-
-<h2>Setup-Funktion</h2>
-
-```typescript
-function setup(mockState: Partial<AppState>) {
-  TestBed.configureTestingModule({
-    declarations: [NgRxCounterComponent],
-    providers: [provideMockStore({ initialState: mockState })],
-  }).compileComponents();
-
-  const store: Store<AppState> = TestBed.get(Store);
-  spyOn(store, "dispatch");
-
-  const fixture = TestBed.createComponent(NgRxCounterComponent);
-  fixture.detectChanges();
-
-  return { fixture, store };
-}
-```
-
-<h2>Verschiedene States testen</h2>
-
-```typescript
-it("renders the data from the store", () => {
-  const mockState: Partia<AppState> = { counter: 1 };
-  const { fixture, store } = setup(mockState);
-  expectText(fixture, "count", String(mockState.counter));
-});
-```
-
-<p>Baut Helferlein, die komplexen Mock-State generieren</p>
-
-<h2>Zusammenfassung Komponenten-Tests</h2>
-
-  <ol>
-  <li>Eigenständige Komponenten:<br>Ausgabe, Interaktivität, Inputs, Outputs</li>
-  <li>Komponenten mit Service-Abhängigkeit:<br>DI, Mocking, Spies, Mock-Daten</li>
-  <li>Komponenten mit Store-Abhängigkeit:<br>DI, Mock State + Store, Action-Dispatch</li>
-  </ol>
-
-<h2>Weitere Teile der Anwendung</h2>
-
-<ul>
-  <li>Services</li>
-  <li>Effects</li>
-  <li>Reducer</li>
-  <li>(Pipes, Directives, Resolver…)</li>
-</ul>
 
 <h2>Services – Was testen?</h2>
 
@@ -3268,275 +3164,40 @@ httpMock.verify();
   <li>Gleicher Aufwand wie beim Service-Mocking für Komponenten-Tests</li>
 </ul>
 
-<h2>NgRx Effects</h2>
 
-<ul>
-  <li>Die Redux-Architektur lässt es offen, wie Nebenwirkungen (Side Effects) umgesetzt werden</li>
-  <li>Effects sind eine hervorragende Lösung</li>
-  <li>Alle anderen Lösungen sind m.E. komplizierter oder schwerer zu testen</li>
-</ul>
+## Testing Directives
+## Testing Pipes
+## Testing Modules
 
-<h2>Grundschema eines Effects</h2>
+## End-to-End testing
+### Protractor
+### Cypress
 
-<ul>
-  <li>WENN eine gewisse Action eintritt</li>
-  <li>DANN Nebenwirkung ausführen</li>
-  <li>DANN Erfolgs-Action ausgeben</li>
-  <li>ODER Fehler-Action ausgeben</li>
-</ul>
+---
+---
+---
 
-<h2><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/effects/counter.effects.ts">CounterEffects saveOnChange$</a></h2>
-
-<ul>
-  <li>WENN Action <code>increment</code> eintritt</li>
-  <li>DANN aktuellen Count aus dem Store auslesen</li>
-  <li>DANN den Count an den Server senden</li>
-  <li>DANN <code>saveSuccess</code> ausgeben</li>
-  <li>ODER <code>saveError</code> ausgeben</li>
-</ul>
-
-<h2>Effects: Umsetzung</h2>
-
-<ul>
-  <li>Ein Effect ist ein Observable</li>
-  <li>Bildet Actions auf Actions ab</li>
-  <li>Input:
-    <ul>
-      <li>Actions: <code>Observable&lt;Action></code></li>
-      <li>ggf. Store: <code>Observable&lt;AppState></code></li>
-    </ul>
-    </li>
-  <li>Output: <code>Observable&lt;Action></code></li>
-</ul>
-
-<h2>Effect schematisch</h2>
-
-  <ol class="flow-blocks">
-    <li class="flow-block">Observable&lt;Action></li>
-    <li class="flow-block">Filter mit <code>ofType()</code></li>
-    <li class="flow-block">State holen mit <code>withLatestFrom(store)</code></li>
-    <li class="flow-block side-effect">Nebenwirkung (Service-Call)</li>
-    <li class="flow-block">Map auf Success-Action</li>
-    <li class="flow-block"><code>catchError</code> mit Error-Action</li>
-  </ol>
-
-<h2>Effects aus Sicht von Angular</h2>
-
-<ul>
-  <li><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/effects/counter.effects.ts"><code>CounterEffects</code></a> ist eine Klasse mit Eigenschaften vom Typ <code>Observable&lt;Action></code></li>
-  <li>Die Klasse nimmt an der Dependency Injection Teil (<code>@Injectable</code>)</li>
-  <li>Abhängigkeiten sind deklariert</li>
-</ul>
-
-<h2>Effects: Abhängigkeiten</h2>
+<h2>Synthetisches Event-Objekt</h2>
 
 ```typescript
-public constructor(
-  private actions$: Actions,
-  private store: Store<AppState>,
-  private counterApiService: CounterApiService
-) {}
-```
-
-<h2>Effects: Abhängigkeiten mocken</h2>
-
-```typescript
-TestBed.configureTestingModule({
-  providers: [
-    { provide: Actions, useValue: ??? },
-    { provide: Store, useValue: ??? },
-    { provide: CounterApiService, useValue: ??? },
-    CounterEffects
-  ]
+debugElement.triggerEventHandler("click", null);
+debugElement.triggerEventHandler("click", {
+  preventDefault() {},
+  stopPropagation() {},
+  target: debugElement.nativeElement,
+  currentTarget: debugElement.nativeElement,
+  pageX: 100,
+  pageY: 200,
 });
 ```
 
-<h2>Effects testen</h2>
-
-  <ol>
-  <li>Input-Observable mit Actions bereitstellen (<code>actions$</code>)</li>
-  <li>ggf. Mock-Store bereitstellen (<code>store</code>)</li>
-  <li>Service-Mock bereitstellen (<code>counterApiService</code>)</li>
-  <li>Output-Observable abonnieren, Werte prüfen</li>
-  <li>Service-Mock verifizieren</li>
-  </ol>
-
-<h2>Input-Observable mit Actions bereitstellen</h2>
-
-```typescript
-import { from, of } from "rxjs";
-import { provideMockActions } from "@ngrx/effects/testing";
-
-const action = reset({ count: 123 });
-provideMockActions(of(action));
-
-const actions = [reset({ count: 123 })];
-provideMockActions(from(actions));
-```
-
-<h2>Mock-State erzeugen</h2>
-
-```typescript
-const mockState: Partial<AppState> = {
-  counter: 1,
-};
-```
-
-<h2>Mock-Store bereitstellen</h2>
+<h2>Weitere Teile der Anwendung</h2>
 
 <ul>
-  <li><a href="#provide-mock-store"><code>provideMockStore()</code></a></li>
-  <li>Es geht noch einfacher, wenn <code>dispatch</code> und <code>select</code> nicht aufgerufen werden</li>
-  <li>Der Store ist ein Observable</li>
-  <li><code>{ provide: Store, useValue: of(mockState) }</code></li>
-</ul>
-
-<h2>Service-Mock bereitstellen</h2>
-
-<ul>
-  <li>Siehe <a href="#service-mock">Service-Abhängigkeit mocken</a></li>
-  <li>Mock-Klasse oder Mock-Objekt erzeugen</li>
-  <li>Jasmine Spies installieren mit <code>spyOn()</code></li>
-</ul>
-
-<h2>Mock für <code>CounterApiService</code></h2>
-
-```typescript
-type PartialCounterApiService = Pick<CounterApiService, "saveCounter">;
-
-const mockCounterApi: PartialCounterApiService = {
-  saveCounter() {
-    return of({});
-  },
-};
-
-spyOn(mockCounterApi, "saveCounter").and.callThrough();
-```
-
-<h2>Mock für <code>CounterApiService</code> (Alternative)</h2>
-
-```typescript
-const mockCounterApi = jasmine.createSpyObj<CounterApiService>(
-  "CounterApiService",
-  ["saveCounter"]
-);
-mockCounterApi.saveCounter.and.returnValue(of({}));
-```
-
-<h2>Output-Observable prüfen</h2>
-
-```typescript
-counterEffects.saveOnChange$.subscribe((outputAction) => {
-  expect(outputAction).toEqual(saveSuccess());
-});
-
-counterEffects.saveOnChange$.pipe(toArray()).subscribe((outputActions) => {
-  expect(outputActions).toEqual([saveSuccess()]);
-});
-```
-
-<h2>Output-Observable prüfen: Helferlein</h2>
-
-```typescript
-function expectActions(effect: Observable<Action>, actions: Action[]) {
-  effect.pipe(toArray()).subscribe((actualActions) => {
-    expect(actualActions).toEqual(actions);
-  }, fail);
-}
-
-expectActions(counterEffects.saveOnChange$, [saveSuccess()]);
-```
-
-<h2>Service-Mock verifizieren</h2>
-
-```typescript
-expect(mockCounterApi.saveCounter).toHaveBeenCalledWith(mockState.counter);
-```
-
-<h2>Fehlerfall testen</h2>
-
-<p>Zweiter Service-Mock, der einen Fehler wirft</p>
-
-```typescript
-const mockCounterApiError: PartialCounterApiService = {
-  saveCounter() {
-    return throwError(apiError);
-  },
-};
-```
-
-<p>Eine Error-Action erwarten</p>
-
-```typescript
-expectActions(counterEffects.saveOnChange$, [saveError({ error: apiError })]);
-```
-
-<h2>Komplexe Effects testen</h2>
-
-<ul>
-  <li>Die meisten Effects haben eine einfache RxJS-Logik</li>
-  <li>Input Actions + Store + Nebenwirkung<br>&rarr; Output Action(s)</li>
-  <li>Komplexen Effect in mehrere einfache zerlegen</li>
-  <li><a href="https://ngrx.io/guide/effects/testing#marble-diagrams">Marble Testing</a></li>
-</ul>
-
-<h2>Effects testen: Zusammenfassung</h2>
-
-<ul>
-  <li>Setup erfordert tieferes Verständnis von RxJS und NgRx</li>
-  <li>Mocking: Input-Actions, Store, Service(s)</li>
-  <li>Helferlein sinnvoll</li>
-  <li>Dann relativ wenig Arbeit</li>
-</ul>
-
-<h2>Reducer testen (1)</h2>
-
-<ul>
-  <li>Reducer sind Pure Functions</li>
-  <li>Daher einfach zu testen</li>
-  <li>Werte rein, Werte raus</li>
-  <li>Nur Stubs, keine Mocks</li>
-</ul>
-
-<h2>Reducer testen (2)</h2>
-
-```typescript
-function partReducer(state: StatePart, action: Action): StatePart {}
-
-const state: StatePart = {
-  /* … */
-};
-const action = someAction();
-const newState: StatePart = {
-  /* … */
-};
-expect(partReducer(state, action)).toEqual(newState);
-```
-
-<h2>Reducer testen (3)</h2>
-
-<ul>
-  <li>Beispiel <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/reducers/counter.reducer.ts">counterReducer</a></li>
-  <li>Initialisierung: <code>state = initialState</code></li>
-  <li>Default-Fall (<code>return state)</code></li>
-  <li>State-Änderung bei den relevanten Actions</li>
-</ul>
-
-<h2>Immutability in Reducern</h2>
-
-<ul>
-  <li>Reducer dürfen den State nicht ändern</li>
-  <li>Müssen einen neues Objekt (Kopie) erzeugen</li>
-  <li><code>{ ...state, property: newValue }</code></li>
-</ul>
-
-<h2>Immutability-Helferlein</h2>
-
-<ul>
-  <li><a href="https://ngrx.io/guide/store/configuration/runtime-checks">strictStateImmutability</a><br>(ehemals <a href="https://github.com/brandonroberts/ngrx-store-freeze">ngrx-store-freeze</a>)</li>
-  <li><a href="https://github.com/mweststrate/immer">immer.js</a></li>
-  <li><a href="https://github.com/kolodny/immutability-helper">immutability helper</a></li>
-  <li><a href="https://github.com/rtfeldman/seamless-immutable">seamless immutable</a></li>
+  <li>Services</li>
+  <li>Effects</li>
+  <li>Reducer</li>
+  <li>(Pipes, Directives, Resolver…)</li>
 </ul>
 
 <h2>Code Coverage</h2>
@@ -3545,21 +3206,6 @@ expect(partReducer(state, action)).toEqual(newState);
   <li>Welche Codezeilen wurden durch die Unit-Tests aufgerufen?</li>
   <li><a href="https://istanbul.js.org/">Istanbul test coverage tool</a></li>
   <li><code>ng test --code-coverage</code></li>
-</ul>
-
-<h2>100% Code Coverage</h2>
-
-<ul>
-  <li>100% Coverage ist möglich und sinnvoll</li>
-  <li>Bei den letzten Prozent wird es erst interessant</li>
-  <li>Edge Cases und schwer zu testbare Fälle</li>
-</ul>
-
-<h2>Wert der Code Coverage</h2>
-
-<ul>
-  <li>Jede Zeile wurde mindestens einmal ausgeführt</li>
-  <li>Bedeutet nicht, dass alle Fälle sinnvoll getestet wurden</li>
 </ul>
 
 <h2>End-to-End Tests in Angular</h2>
@@ -3724,7 +3370,7 @@ findEl(…)
 </div>
 
 <script type="module">
-const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
 const output = document.getElementById('generated-toc');
 const fragment = document.createDocumentFragment();
 Array.from(headings).forEach((heading) => {
