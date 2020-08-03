@@ -82,7 +82,7 @@ In stark contrast, I have met only few web developers with a steady testing prac
 
 Often individual developers are blamed for the lack of tests. The claim that developers are just too ignorant or lazy to write tests is simplistic and downright toxic. If testing has an indisputable value, we need to examine why developers avoid it while being convinced of the benefits. Testing should be easy, straight-forward and commonplace.
 
-If you are struggling with writing tests, it is not your fault or deficit. We are all struggling because testing software automatically is inherently complicated and difficult.
+If you are struggling with writing tests, it is not your fault or deficit. We are all struggling because testing software is inherently complicated and difficult.
 
 Why is testing so difficult? First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over. You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable strategy to improve your code.
 
@@ -90,17 +90,25 @@ Second, testing has a steep learning curve. If testing can be seen as a tool, it
 
 This is meant to encourage you. Getting started with testing is hard, but it gets easier and easier with more practice. The goal of this guide is to empower you to write tests on a daily basis that cover the important features of your Angular application.
 
-## Terminology
-
-Before we dive in, a quick note regarding the technical terms. Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish between these meanings by using a different case.
-
-When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_ etc.
-
-When using these terms in the common sense, this guide uses **lower case**: _module, component, service, input, output_ etc.
-
 ## Target audience
 
 TODO
+Build apps with Angular
+Angular knowledge
+Assuming you came in contact with most concepts: Module, Component, Service, Input, Output, Directive, Pipe
+TypeScript
+everything not testing
+refer to the official documentation
+
+## Terminology
+
+Before we dive in, a quick note regarding the technical terms.
+
+Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish between these meanings by using a different letter case.
+
+When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_ etc.
+
+When using these terms in the general sense, this guide uses **lower case**: _module, component, service, input, output_ etc.
 
 ## Testing principles
 
@@ -137,6 +145,7 @@ Automated testing is a tool with a specific purpose and scope of application. A 
 The International Software Testing Qualifications Board (ISTQB) came up with Seven
 Testing Principles that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
 
+TODO
 https://www.istqb.org/downloads/category/2-foundation-level-documents.html
 https://www.istqb.org/downloads/send/2-foundation-level-documents/281-istqb-ctfl-syllabus-2018-v3-1.html
 
@@ -442,7 +451,7 @@ These alternative tools are not simply better or worse than Angular’s standard
 
 ### Running the tests with Angular CLI
 
-The Angular CLI allows us to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your shell:
+The Angular CLI allows us to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your console:
 
 ```
 npm install -g @angular/cli
@@ -467,13 +476,26 @@ The test bundle works differently. It does not start with a Module and walks thr
 
 The `.spec.ts` files represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code. In our example application, the `CounterService` is located in `src/app/services/counter.service.ts`. The corresponding test file sits in `src/app/services/counter.service.spec.ts`. This is an Angular convention, not a technical necessity, and we are going to stick to it.
 
-Second, `ng test` starts Karma, the test runner. Karma starts a development server that serves the JavaScript bundles compiled by Webpack. Then, it launches one or more browsers.
+Second, `ng test` launches Karma, the test runner. Karma starts a development server at `http://localhost:9876/` that serves the JavaScript bundles compiled by Webpack.
 
-The Angular CLI `ng`
+Karma launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. Per default, Chrome is started. In Karma’s configuration file, `karma.conf.js`, you can add more browser launchers for your target browsers. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari.
 
-ng
-ng create
-ng test
+The launched browser opens `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and reads the results in the browser and on the console.
+
+TODO
+
+46 specs, 0 failures, randomized with seed 72262
+finished in 0.399s
+
+Chrome 84.0.4147.105 (Mac OS 10.15.6): Executed 46 of 46 SUCCESS (0.4 secs / 0.334 secs)
+TOTAL: 46 SUCCESS
+
+Webpack watches for file changes, both on the `.spec.ts` files and file imported by them. When you on the implementation or the test code and save the files in your editor, Webpack automatically recompiles the bundle and pushes it to the open browsers. All tests will be restarted.
+
+This feedback cycle allows us to work on the implementation and test code side-by-side.
+test-driven development
+red-green cycle
+
 ng e2e
 
 karma.conf.js
@@ -494,19 +516,15 @@ This guide values strong conventions and introduces simple helper functions that
 
 ## Test suites with Jasmine
 
-Angular ships with two tools that enable you to write and execute unit and integration tests: Karma and Jasmine.
-
-Jasmine is a testing framework consisting basically of three parts:
+Angular ships with Jasmine, a tool that enables you to write and execute unit and integration tests. In particular, Jasmine is a testing framework consisting basically of three parts:
 
 1. A library with classes and functions for constructing tests.
 2. A test execution engine.
 3. A reporting engine that outputs test results in different formats.
 
-If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite).
+If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite). This guide provides a short introduction to Jasmine, exploring the basic structure and terminology that will be used throughout this guide.
 
-This guide does not provide a full introduction to Jasmine, but let us recap Jasmine’s basic structure and terminology that will be used throughout this guide.
-
-### Creating a Jasmine suite
+### Creating a test suite
 
 In terms of Jasmine, a test consists of one or more _suites_. A suite is declared with a `describe` block:
 
@@ -520,9 +538,12 @@ Each suite _describes_ a piece of code, the _code under test_.
 
 `describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` if the suite is testing the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
+TODO
+organize the suite with describe
+
 ### Specifications
 
-Each suit consists of one of more _specifications_, or shorter, _specs_. A spec is declared with an `it` block:
+Each suit consists of one of more _specifications_, or short, _specs_. A spec is declared with an `it` block:
 
 ```typescript
 describe('Suite description', () => {
@@ -984,7 +1005,7 @@ Not much has changed here. We spy on `fetch` and make it return `okResponse`. Si
 
 Creating standalone spies and spying on existing methods are not mutually exclusive. Both will be used frequently when testing Angular applications, and both work well with dependencies injected into the constructor.
 
-## Karma
+## Debugging tests
 
 TODO
 
@@ -993,8 +1014,6 @@ Browser
 How to read the output
 Console
 “Debug”
-
-<h2>Tests debuggen</h2>
 
 <ul>
   <li>Chrome benutzen, Developer Tools öffnen</li>
@@ -3106,6 +3125,18 @@ There are two takeaways you should remember:
 
 ## Testing Services
 
+Services are a high-level concept
+Different from Components, Directives and Modules
+
+Technically, Services are
+Injectables
+
+Data handling
+Everything that is shared among Components
+Central data storage
+HTTP communication
+
+Everything from a simple data storage class to NgRx Store.
 
 <h2>Services – Was testen?</h2>
 
