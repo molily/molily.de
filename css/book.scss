@@ -53,7 +53,9 @@ $sticky-menu-background-inverted: $dark-background-color-inverted;
 
 html {
   // Slightly larger font size than the default
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.2px;
+  word-spacing: 0.2px;
 
   @include dark-scheme {
     background-color: $medium-background-color-inverted;
