@@ -92,13 +92,15 @@ This is meant to encourage you. Getting started with testing is hard, but it get
 
 ## Target audience
 
-TODO
-Build apps with Angular
-Angular knowledge
-Assuming you came in contact with most concepts: Module, Component, Service, Input, Output, Directive, Pipe
-TypeScript
-everything not testing
-refer to the official documentation
+The target audience of this guide are intermediate Angular developers. You should be familiar with Angular’s core concepts.
+
+This guide teaches you how to test Angular application parts like Modules, Components and Services. It assumes you know how to implement them, but not how to test them properly. If you have questions regarding Angular’s core concepts, please refer to the [official Angular documentation](https://angular.io/docs).
+
+If you have not used individual concepts, like attribute or structural Directives, that is fine. You can simply skip the chapters that deal with testing those, and pick chapters you are interested in.
+
+Furthermore, this guide is not an introduction to JavaScript or TypeScript. It assumes you have enough JavaScript and TypeScript knowledge to write the implementation and test code you need. Of course, this guide will explain special idioms commonly used for testing.
+
+The official Angular documentation offers a comprehensive [guide on testing](https://angular.io/guide/testing). It is a recommended reading, but this guide does not assume you have read it.
 
 ## Terminology
 
