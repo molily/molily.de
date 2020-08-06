@@ -3127,40 +3127,258 @@ There are two takeaways you should remember:
 
 ## Testing Services
 
-Services are a high-level concept
-Different from Components, Directives and Modules
+In an Angular application, Services are responsible for fetching, storing and processing data.
+Services are singletons, meaning there is only one instance of a Service during runtime. They are fit for central data storage, HTTP and WebSocket communication as well as data validation.
 
-Technically, Services are
-Injectables
+The single Service instance is shared among Components and other application parts. Therefore, a Service is used when Components that are not parent and child need to communicate with each otther and share data.
 
-Data handling
-Everything that is shared among Components
-Central data storage
-HTTP communication
+“Service” is an umbrella term for any object that serves a specific purpose and is injected as a dependency. Technically, Services have little in common. There a no rules regarding the structure or behavior of a Service.
 
-Everything from a simple data storage class to NgRx Store.
+Typically, Services are classes, but not necessarily. While Modules, Components and Directives are marked with respectice decorators – `@Module`, `@Component`, `@Directive` –, Services are marked with the generic `@Injectable`.
 
-<h2>Services – Was testen?</h2>
+So how do we test a Service? What needs to be tested? Services are diverse, but some patterns are widespread.
 
-<ul>
-  <li>Methoden liefern Werte zurück</li>
-  <li>
-      Methodenaufrufe ändern privaten State<br>
-      &rarr; Indirekt testen
-    </li>
-  <li>Interaktion mit Abhängigkeiten (z.B. <code>HttpClient</code>)</li>
-</ul>
+- Services have public methods that return values.
 
-<h2>Services testen: <a href="https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.ts"><code>CounterService</code></a></h2>
+  In the test, we check whether a method returns correct data.
+- Services store data. That is, they have an internal state. We can get or set the state.
 
-<ul>
-  <li>Standard-<code>TestBed</code></li>
-  <li>
-      Eine Spec für jede öffentliche Methode:<br>
-      <code>getCount</code>, <code>increment</code>, <code>decrement</code>, <code>reset</code>
-    </li>
-  <li>Auswirkung testen durch <code>getCount</code>-Aufruf</li>
-</ul>
+  In the test, we check whether the state is changed correctly. Since the state should be held in private properties, we cannot access the state directly. We test the state change by calling public methods. We should not peek into the [black box](#black-box-vs-white-box-testing).
+- Service interact with dependencies. For example, Services usually make HTTP requests via Angular’s `HttpClient`.
+
+### Testing a simple Service
+
+Let us start with testing the [`CounterService`](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.ts). By now, you should be familiar with the Service. As a reminder, here is the shape including private members:
+
+```typescript
+class CounterService {
+  private count: number;
+  private subject: BehaviorSubject<number>;
+  public getCount(): Observable<number> { /* … */ }
+  public increment(): void { /* … */ }
+  public decrement(): void { /* … */ }
+  public reset(newCount: number): void { /* … */ }
+  private notify(): void { /* … */ }
+}
+```
+
+We need to identify what the Service does, what we need test and how we test it.
+
+- The Service holds an internal state, namely in the private `count` and `subject` properties. We cannot and should not access these properties in the test.
+- The Service has a public method, `getCount`, for reading the state. It does not return a synchronous value, but an RxJS Observable. We will use `getCount` to get the current count and also to subscribe to changes.
+- Last but not least, the Service has three public methods for changing the state: `increment`, `decrement` and `reset`. We will call these methods and then check whether the state has changed appropriately.
+
+Let us write the test code! We create a file called `counter.service.spec.ts` and fill it with test suite boilerplate code:
+
+```typescript
+describe('CounterService', () => {
+  /* … */
+});
+```
+
+We already know what the Service does and what needs to be tested. So we add specs for all features:
+
+```typescript
+describe('CounterService', () => {
+  it('returns the count', () => { /* … */ });
+  it('increments the count', () => { /* … */ });
+  it('decrements the count', () => { /* … */ });
+  it('resets the count', () => { /* … */ });
+});
+```
+
+In the *Arrange* phase, each spec needs to create an instance of `CounterService`. The simplest way to do that is:
+
+```typescript
+const counterService = new CounterService();
+```
+
+This is fine for simple Services without dependencies. For testing Services with dependencies, we will use the `TestBed` later.
+
+We create the fresh instance in a `beforeEach` block since every spec needs it:
+
+```typescript
+describe('CounterService', () => {
+  let counterService: CounterService;
+
+  beforeEach(() => {
+    counterService = new CounterService();
+  });
+
+  it('returns the count', () => { /* … */ });
+  it('increments the count', () => { /* … */ });
+  it('decrements the count', () => { /* … */ });
+  it('resets the count', () => { /* … */ });
+});
+```
+
+Let us start with writing the spec `it('returns the count', /* … */)`. It tests tests the `getCount` method which returns an Observable.
+
+For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs). We declare a variable `actualCount` that is initially undefined. Then we subscribe and assign the value emitted by the Observable to the variable. Finally, outside of the subscriber function, we compare the actual to the expected value.
+
+```typescript
+it('returns the count', () => {
+  let actualCount: number | undefined;
+  counterService.getCount().subscribe((count) => {
+    actualCount = count;
+  });
+  expect(actualCount).toBe(0);
+});
+```
+
+This works because the Observable is backed by a BehaviorSubject that stores the latest value and sends it to new subscribers immediately.
+
+The next spec, `it('increments the count', /* … */)`, tests the `increment` method. The spec calls the method and then verifies that the count state has changed. As mentioned before, we cannot access the private properties for this purpose. Just like in the spec above, we need to use the public `getCount` method to read the count.
+
+```typescript
+it('increments the count', () => {
+  counterService.increment();
+
+  let actualCount: number | undefined;
+  counterService.getCount().subscribe((count) => {
+    actualCount = count;
+  });
+  expect(actualCount).toBe(1);
+});
+```
+
+The order here is important: First, we call `increment`, then we subscribe to the Observable to read and verify the changed value. Again, the BehaviorSubject emits the current value to new subscribers synchronously.
+
+The two remaining specs work almost the same. We just call the respective methods.
+
+```typescript
+it('decrements the count', () => {
+  counterService.increment();
+
+  let actualCount: number | undefined;
+  counterService.getCount().subscribe((count) => {
+    actualCount = count;
+  });
+  expect(actualCount).toBe(-1);
+});
+
+it('resets the count',, () => {
+  const newCount = 123;
+  counterService.reset(newCount);
+
+  let actualCount: number | undefined;
+  counterService.getCount().subscribe((count) => {
+    actualCount = count;
+  });
+  expect(actualCount).toBe(newCount);
+});
+```
+
+We quickly notice that the specs are highly repetitive and noisy. In every spec’s *Assert* phase, we are using this pattern to inspect the Service state:
+
+```typescript
+let actualCount: number | undefined;
+counterService.getCount().subscribe((count) => {
+  actualCount = count;
+});
+expect(actualCount).toBe(/* … */);
+```
+
+This is a good candidate for a helper function. Let us call it `expectCount`.
+
+```typescript
+function expectCount(count: number): void {
+  let actualCount: number | undefined;
+  counterService.getCount().subscribe((actualCount2) => {
+    actualCount = actualCount2;
+  });
+  expect(actualCount).toBe(count);
+}
+```
+
+The pattern has one variable bit, the expected count. That is why the helper function has one parameter.
+
+Now that we have pulled out the code into a central helper function, there is one optimization we should add. The First Rule of RxJS Observables states: “Anyone who subscribes, must unsubscribe as well”.
+
+In `expectCount`, we need to get the current count only once. We do not want to create a long-lasting subscription. We are not interested in future changes. If we call `expectCount` only once per spec, this is not a huge problem. If we wrote a more complex spec with several `expectCount` calls, we would create pointless subscriptions. This is likely to cause confusion for example when debugging the subscriber function.
+
+In short, we want to fetch the count and than unsubscribe to reduce unwanted subscriptions.
+
+One possible solution is to unsubscribe immediately after subscribing. The `subscribe` method returns a `Subscription` with the useful `unsubscribe` method.
+
+```typescript
+function expectCount(count: number): void {
+  let actualCount: number | undefined;
+  counterService
+    .getCount()
+    .subscribe((actualCount2) => {
+      actualCount = actualCount2;
+    })
+    .unsubscribe();
+  expect(actualCount).toBe(count);
+}
+```
+
+A more idiomatic way is to use an RxJS operator that completes the Observable after the first value: [`first`](https://rxjs-dev.firebaseapp.com/api/operators/first).
+
+```typescript
+import { first } from 'rxjs/operators';
+
+function expectCount(count: number): void {
+  let actualCount: number | undefined;
+  counterService
+    .getCount()
+    .pipe(first())
+    .subscribe((actualCount2) => {
+      actualCount = actualCount2;
+    });
+  expect(actualCount).toBe(count);
+}
+```
+
+If you are not familiar with this arcane RxJS magic, do not worry. In the simple `CounterService` test, unsubscribing is not strictly necessary. But it is a good practice that avoids weird errors when testing more complex Services that make use of Observables.
+
+The complete test suite now looks like this:
+
+```typescript
+describe('CounterService', () => {
+  let counterService: CounterService;
+
+  function expectCount(count: number): void {
+    let actualCount: number | undefined;
+    counterService
+      .getCount()
+      .pipe(first())
+      .subscribe((actualCount2) => {
+        actualCount = actualCount2;
+      });
+    expect(actualCount).toBe(count);
+  }
+
+  beforeEach(() => {
+    counterService = new CounterService();
+  });
+
+  it('returns the count', () => {
+    expectCount(0);
+  });
+
+  it('increments the count', () => {
+    counterService.increment();
+    expectCount(1);
+  });
+
+  it('decrements the count', () => {
+    counterService.decrement();
+    expectCount(-1);
+  });
+
+  it('resets the count', () => {
+    const newCount = 123;
+    counterService.reset(newCount);
+    expectCount(newCount);
+  });
+});
+```
+
+### Testing a Service with dependency
+
+Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with dependencies.
 
 <h2>Services mit Abhängigkeit testen:<br><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter-api.service.ts"><code>CounterApiService</code></a></h2>
 
