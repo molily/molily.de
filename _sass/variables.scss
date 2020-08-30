@@ -52,7 +52,7 @@ $link-border-color-inverted: #118db9;
 $link-visited-color-inverted: #0f8e9a;
 $link-visited-border-color-inverted: $link-visited-color-inverted;
 
-$link-hover-border-color-inverted: $link-border-color-inverted;
+$link-hover-border-color-inverted: lighten($link-border-color-inverted, 5%);
 
 /**
  * @section Typography

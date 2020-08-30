@@ -21,7 +21,7 @@
 
 $breakpoint-large: 55rem;
 $toc-width: 25rem;
-$main-max-width: 40rem;
+$main-max-width: 42rem;
 
 $toc-background: #fafafa;
 $sticky-menu-background: #f0f0f0;
@@ -52,11 +52,6 @@ $sticky-menu-background-inverted: $dark-background-color-inverted;
  */
 
 html {
-  // Slightly larger font size than the default
-  font-size: 1.15rem;
-  letter-spacing: 0.2px;
-  word-spacing: 0.2px;
-
   @include dark-scheme {
     background-color: $medium-background-color-inverted;
   }
@@ -77,7 +72,8 @@ body {
  */
 
 table {
-  font-size: 0.9rem;
+  // Do not use rem, use unit relative to parent font-size
+  font-size: 90%;
 }
 
 caption {
@@ -91,6 +87,25 @@ td {
 
 th {
   font-weight: bold;
+}
+
+/**
+ * @section Code
+ *
+ */
+
+pre {
+  border-radius: 0.5px;
+
+  margin-left: -1rem;
+  margin-right: -1rem;
+
+  @include large {
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 /**
@@ -243,14 +258,13 @@ th {
   margin: 0;
 }
 
-#toc .link-type {
-  display: none;
+#toc a {
+  display: block;
+  text-decoration: none;
 }
 
-@include high-dpi {
-  #toc a {
-    border-bottom-width: 0.5px;
-  }
+#toc .link-type {
+  display: none;
 }
 
 /**
@@ -259,9 +273,17 @@ th {
  */
 
 #main {
+  // Slightly larger font size than the default
+  font-size: 1.15rem;
+  letter-spacing: 0.2px;
+  word-spacing: 0.2px;
 
-  h2, h3, h4, h5, h6 {
-    margin-top: 3rem;
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 3rem 0 2rem;
 
     @include dark-scheme {
       margin-left: -1rem;
@@ -273,12 +295,15 @@ th {
       @include large {
         margin-left: -2rem;
         margin-right: -2rem;
-        padding: 2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
       }
     }
   }
 
   h2 {
+    // Do not use rem but inherit font-size
+    font-size: 160%;
     counter-reset: h3 h4;
   }
 
@@ -288,12 +313,17 @@ th {
   }
 
   h3 {
+    font-size: 150%;
     counter-reset: h4;
   }
 
   h3::before {
     counter-increment: h3;
     content: counter(h2) "." counter(h3);
+  }
+
+  h4 {
+    font-size: 140%;
   }
 
   h4::before {
@@ -414,4 +444,38 @@ th {
   width: 3rem;
   height: 3rem;
   color: #e0e0e0;
+}
+
+/**
+ * @section List of source links
+ */
+
+.book-sources {
+  margin-bottom: 1rem;
+  font-size: 90%;
+
+  ul {
+    margin: 0;
+    list-style-type: none;
+  }
+
+  li {
+    margin: 0;
+    background-color: $highlight-background-color-inverted;
+  }
+
+  li + li {
+    margin-top: 1px;
+  }
+
+  a {
+    display: block;
+    padding: 1rem;
+    text-decoration: none;
+
+    &::before {
+      content: "🔗";
+      margin-right: 0.5rem;
+    }
+  }
 }

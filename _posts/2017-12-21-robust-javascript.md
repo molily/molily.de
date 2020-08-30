@@ -29,9 +29,11 @@ lang: en
         <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
       </p>
       <h1 id="toc-book-title">Robust Client-Side JavaScript</h1>
-      <p id="toc-epub-link"><strong><a href="/assets/robust-javascript.epub" download>Download this book as EPUB (724 KB)</a></strong></p>
+      <p id="toc-epub-link">
+        <strong><a href="/assets/robust-javascript.epub" download>Download this book as EPUB (724 KB)</a></strong>
+      </p>
       <h2 id="toc-heading">Table of Contents</h2>
-      <ol>
+      <ol id="toc-tree">
         <li>
           <a href="#introduction">Introduction</a>
           <ol>

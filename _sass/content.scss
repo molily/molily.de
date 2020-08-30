@@ -240,6 +240,10 @@ pre {
   overflow: auto;
   font-size: 90%;
   line-height: 1.8;
+
+  @include dark-scheme {
+    scrollbar-color: $text-color-inverted $background-color-inverted;
+  }
 }
 
 pre code {

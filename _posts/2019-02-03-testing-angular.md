@@ -48,13 +48,13 @@ robots: noindex, follow
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
       <!--
-      <ol>
+      <ol id="toc-tree">
         <li>
           <a href="#introduction">Introduction</a>
         </li>
       </ol>
       -->
-      <ol id="generated-toc"></ol>
+      <ol id="toc-tree"></ol>
     </nav>
   </div>
 
@@ -96,7 +96,7 @@ The target audience of this guide are intermediate Angular developers. You shoul
 
 This guide teaches you how to test Angular application parts like Modules, Components and Services. It assumes you know how to implement them, but not how to test them properly. If you have questions regarding Angular’s core concepts, please refer to the [official Angular documentation](https://angular.io/docs).
 
-If you have not used individual concepts, like attribute or structural Directives, that is fine. You can simply skip the chapters that deal with testing those, and pick chapters you are interested in.
+If you have not used individual concepts yet, like Directives, that is fine. You can simply skip the chapters that deal with testing those, and pick chapters you are interested in.
 
 Furthermore, this guide is not an introduction to JavaScript or TypeScript. It assumes you have enough JavaScript and TypeScript knowledge to write the implementation and test code you need. Of course, this guide will explain special idioms commonly used for testing.
 
@@ -122,21 +122,21 @@ When you are writing tests, you need to keep in mind what the goals of testing a
 
 Automated testing has several technical, economical and organizational benefits. Let us look pick a few that are useful to judge a test:
 
-- **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
+1. **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 
   Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyse and fix the bug in order to regain the user’s trust.
 
   **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
 
-- **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the challenges they had to deal with.
+2. **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the challenges they had to deal with.
 
   **A valuable test clearly describes how the implementation code should behave.** The test uses a proper language to talk to developers and convey the requirements. The test lists known cases the implementation has to deal with.
 
-- **Testing ensures that the code implements the requirements and does not exhibit bugs.** Testing taps every part of the code in order to find flaws.
+3. **Testing ensures that the code implements the requirements and does not exhibit bugs.** Testing taps every part of the code in order to find flaws.
 
   **A valuable test covers the important scenarios** – both correct and incorrect input, expected cases as well as exceptional cases.
 
-- **Testing makes change safe by preventing regressions.** Tests not only verify that the current implementation meets the requirements. They also verify that the code still works as expected after changes. With proper automated tests in place, accidentally breakage is less likely. Implementing new features and code refactoring is safer.
+4. **Testing makes change safe by preventing regressions.** Tests not only verify that the current implementation meets the requirements. They also verify that the code still works as expected after changes. With proper automated tests in place, accidentally breakage is less likely. Implementing new features and code refactoring is safer.
 
   **A valuable test fails when essential code is changed or deleted.** Design the test to fail if dependent behavior is changed. It should still pass if unrelated code is changed.
 
@@ -144,12 +144,8 @@ Automated testing has several technical, economical and organizational benefits.
 
 Automated testing is a tool with a specific purpose and scope of application. A basic concept is that testing helps you to ship an application that functions according to its requirements. That is true, but there are certain subtleties.
 
-The International Software Testing Qualifications Board (ISTQB) came up with Seven
-Testing Principles that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
-
-TODO
-https://www.istqb.org/downloads/category/2-foundation-level-documents.html
-https://www.istqb.org/downloads/send/2-foundation-level-documents/281-istqb-ctfl-syllabus-2018-v3-1.html
+The [International Software Testing Qualifications Board (ISTQB)](https://www.istqb.org) came up with **Seven
+Testing Principles** (CTFL Syllabus 2018 V3.1) that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
 
 The purpose of a test is to discover bugs. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that _this particular test setup_ did not trigger a bug. It does not prove that the code is correct and free of bugs.
 
@@ -159,7 +155,11 @@ Even if it was viable to cover all cases, it would give you a false sense of sec
 
 Another core idea is that testing depends on its context and that it needs to be adapted again and again to provide meaning. The specific context in this guide are single-page web applications written in JavaScript, made with Angular. Such applications need specific testing methods and tools we will get to know.
 
-Once you have learned and applied these tools, you should not stop. A fixed toolchain will only discover certain types of bugs. You need to try out different approaches to find new classes of bugs. Likewise, an existing test suite needs to be updated regularly so that it still finds regressions.
+Once you have learned and applied these tools, you should not stop. A fixed tool chain will only discover certain types of bugs. You need to try out different approaches to find new classes of bugs. Likewise, an existing test suite needs to be updated regularly so that it still finds regressions.
+
+<div class="book-sources" markdown="1">
+- [International Software Testing Qualifications Board: Certified Tester Foundation Level Syllabus, Version 2018 V3.1, Page 16: Seven Testing Principles](https://www.istqb.org/downloads/category/2-foundation-level-documents.html)
+</div>
 
 ### Tailoring your testing approach
 
@@ -178,7 +178,7 @@ This technical assessment is as important as an inquiry of your development team
 - What is the current testing practice? For example, developers sometimes write tests, but not as a daily routine.
 - What is the experience on writing tests? For example, some developers have written tests for several environments, while others understand the basic concepts but have not yet gotten into practice.
 - What are the obstacles that impede a good testing routing? For example, developers have not been trained on the existing testing tools.
-- Are tests well-integrated into your development workflow? For example, a continous integration server automatically runs the test suite on every change set.
+- Are tests well-integrated into your development workflow? For example, a continuous integration server automatically runs the test suite on every change set.
 
 Once you have answered these questions, you should set up a testing goal and implements steps to achieve it. A good start is to think economically. What is the return on investment of writing a test? Pick the low-hanging fruits. Find business-critical features and make sure they are covered by tests. Write tests that are easy to write but cover large parts of the code.
 
@@ -205,6 +205,10 @@ It is controversial whether one should strive for 100% code coverage. While it i
 We are going to discuss the practical use of code coverage tools later.
 
 TODO
+
+<div class="book-sources" markdown="1">
+- [Angular guide: Code Coverage](https://angular.io/guide/testing-code-coverage)
+</div>
 
 ### Levels of testing
 
@@ -254,7 +258,7 @@ For this reason, some experts argue you should write few end-to-end test, a fair
 
 <p>
 <svg style="display: block; margin: auto; width: 100%; max-width: 25rem" viewbox="0 0 500 350">
-  <path d="M 250 10 L 490 340 H 10 Z" stroke="gray" stroke-width="2" fill="white" />
+  <path d="M 250 10 L 490 340 H 10 Z" stroke="gray" stroke-width="2" fill="#d0d0d0" />
   <text x="250" y="65" style="font-size: 20px; text-anchor: middle; dominant-baseline: middle">
     <tspan>End</tspan>
     <tspan x="250" dy="30">to</tspan>
@@ -275,7 +279,7 @@ On the one hand, unit tests are precise and cheap. They are ideal to specify all
 
 On the other hand, unit test are too low-level to check whether a certain feature works for the user. They give you little confidence that your application works. In addition, unit tests might increase the cost of every code change.
 
-Unit tests run the risk of mirroring or even duplicating implementation details. These details change frequently because of new requirements elsewhere or during internal refactorings. If you change a line of code somewhere, some distant unit test suddenly fails. This makes sense if you have touched shared types or shared logic, but it may just be a false alarm. You have to fix this failing test for technical reasons, not because something broke.
+Unit tests run the risk of mirroring or even duplicating implementation details. These details change frequently because of new requirements elsewhere or during internal refactoring. If you change a line of code somewhere, some distant unit test suddenly fails. This makes sense if you have touched shared types or shared logic, but it may just be a false alarm. You have to fix this failing test for technical reasons, not because something broke.
 
 Integration tests provide a better trade-off. These mid-level tests prescind from implementation details, cover a group of code units and provide more confidence. They are less likely to fail if you refactor code inside of the group.
 
@@ -319,7 +323,11 @@ In Angular, the difference between unit and integration tests is sometimes subtl
 </tr>
 </table>
 
-<p><small>(Table adapted from <a href="https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html">Just Say No to More End-to-End Tests</a> by Mike Wacker.)</small></p>
+<p><small>(Table adapted from a <a href="https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html">Google Testing Blog article</a> by Mike Wacker.)</small></p>
+
+<div class="book-sources" markdown="1">
+- [Google Testing Blog: Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
+</div>
 
 ### Black box vs. white box testing
 
@@ -345,6 +353,7 @@ Once you have identified a piece of code you would like to test, you have to dec
   h -150
   Z"
   fill="#444"
+  stroke="#888"
   />
   <text x="200" y="225" fill="white" style="font-size: 40px; text-anchor: middle; dominant-baseline: middle; text-shadow: 0 1px 2px black">Black box</text>
   <text x="200" y="427" fill="currentColor" transform="rotate(-15, 200, 427)" style="font-size: 30px; text-anchor: middle; dominant-baseline: middle">Output</text>
@@ -363,10 +372,14 @@ For an Angular Component, Directive, Service, Pipe etc., a black box test passes
 
 In this guide, we will explore the different aspects of testing Angular applications by looking at two examples.
 
-### The Counter Component
+### The counter Component
 
+<div class="book-sources" markdown="1">
 - [Counter Component: Source code](https://github.com/9elements/angular-workshop)
 - [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
+</div>
+
+The counter Component app in action:
 
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
@@ -392,8 +405,12 @@ While this example seems trivial to implement, it already offers valuable challe
 
 ### The Flickr photo search
 
-- [Flickr search: Source code](https://github.com/9elements/angular-flickr-search)
-- [Flickr search: Run the app](https://9elements.github.io/angular-flickr-search/)
+<div class="book-sources" markdown="1">
+- [Flickr photo search: Source code](https://github.com/9elements/angular-flickr-search)
+- [Flickr photo search: Run the app](https://9elements.github.io/angular-flickr-search/)
+</div>
+
+The Flickr photo search in action:
 
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
@@ -441,17 +458,21 @@ This is of immense importance for automated testing. In our test, we can decide 
 
 A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and reconnect it with equivalent fake objects.
 
+<div class="book-sources" markdown="1">
+- [Angular guide: Dependency injection](https://angular.io/guide/dependency-injection)
+</div>
+
 ### Angular’s testing tools
 
 Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface (CLI), it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
-So the Angular team already made important decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with Webpack. Application parts are typically tested inside Angular’s `TestBed`.
+So the Angular team already made important decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
 
-This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing toolchain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
+This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing tool chain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
 
 These alternative tools are not simply better or worse than Angular’s standard tools. They simply make different trade-offs. This guide assumes you begin with the standard setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your application easier, faster and more reliable.
 
-### Running the tests with Angular CLI
+### Running the unit and integration tests
 
 The Angular CLI allows us to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your console:
 
@@ -460,7 +481,8 @@ npm install -g @angular/cli
 ```
 
 This installs Angular CLI globally so the `ng` command can be used everywhere. `ng` itself does nothing but exposing a couple of Angular-specific commands.
-For example, `ng new` creates a new Angular project diretory with a ready-to-use application scaffold. `ng serve` starts a development server, and `ng build` makes a build.
+
+For example, `ng new` creates a new Angular project directory with a ready-to-use application scaffold. `ng serve` starts a development server, and `ng build` makes a build.
 
 The command for starting the unit and integration tests is:
 
@@ -476,29 +498,35 @@ You might be familiar with the entry point for the application, `src/main.ts`. T
 
 The test bundle works differently. It does not start with a Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
 
-The `.spec.ts` files represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code. In our example application, the `CounterService` is located in `src/app/services/counter.service.ts`. The corresponding test file sits in `src/app/services/counter.service.spec.ts`. This is an Angular convention, not a technical necessity, and we are going to stick to it.
+The **`.spec.ts` files** represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code. In our example application, the `CounterService` is located in [src/app/components/counter/counter.component.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.ts). The corresponding test file sits in [src/app/components/counter/counter.component.spec.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts). This is an Angular convention, not a technical necessity, and we are going to stick to it.
 
-Second, `ng test` launches Karma, the test runner. Karma starts a development server at `http://localhost:9876/` that serves the JavaScript bundles compiled by Webpack.
+Second, `ng test` launches Karma, the test runner. Karma starts a development server at [http://localhost:9876/](http://localhost:9876/) that serves the JavaScript bundles compiled by Webpack.
 
-Karma launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. Per default, Chrome is started. In Karma’s configuration file, `karma.conf.js`, you can add more browser launchers for your target browsers. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari.
+Karma in turn launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. Per default, Chrome is started. In Karma’s configuration file, `karma.conf.js`, you can add more browser launchers for your target browsers. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari.
 
 The launched browser opens `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and reads the results in the browser and on the console.
 
-TODO
+When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
-46 specs, 0 failures, randomized with seed 72262
-finished in 0.399s
+<img src="/assets/testing-angular/karma-success.png" width="100%">
 
-Chrome 84.0.4147.105 (Mac OS 10.15.6): Executed 46 of 46 SUCCESS (0.4 secs / 0.334 secs)
+This is the console output:
+
+```
+INFO [karma-server]: Karma v5.0.7 server started at http://0.0.0.0:9876/
+INFO [launcher]: Launching browsers Chrome with concurrency unlimited
+INFO [launcher]: Starting browser Chrome
+WARN [karma]: No captured browser, open http://localhost:9876/
+INFO [Chrome 84.0.4147.135 (Mac OS 10.15.6)]: Connected on socket yH0-wtoVtflRWMoWAAAA with id 76614320
+Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 46 of 46 SUCCESS (0.394 secs / 0.329 secs)
 TOTAL: 46 SUCCESS
+```
 
-Webpack watches for file changes, both on the `.spec.ts` files and file imported by them. When you on the implementation or the test code and save the files in your editor, Webpack automatically recompiles the bundle and pushes it to the open browsers. All tests will be restarted.
+Webpack watches changes on the `.spec.ts` files and files imported by them. When you change the implementation code, `counter.component.ts` for example, or the test code, `counter.component.spec.ts` for example, Webpack automatically re-compiles the bundle and pushes it to the open browsers. All tests will be restarted.
 
-This feedback cycle allows us to work on the implementation and test code side-by-side.
-test-driven development
-red-green cycle
+This feedback cycle allows you to work on the implementation and test code side-by-side. This is important for test-driven development. You change the implementation and expect the test to fail (the test is “red”). You adapt the test so it passes again (the test is “green”). Or you write a failing test first, then adapt the implementation until the test passes. Test-driven development means letting the red-green cycle guide your development.
 
-ng e2e
+### TODO Configuring Karma and Jasmine
 
 karma.conf.js
 Karma & Jasmine conf
@@ -576,6 +604,10 @@ it('resets the count', () => {
 After `it`, typically a verb follows, like `increments` and `resets` in the example.
 
 Some people prefer to write `it('should increment the count', /* … */)`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test _should_ do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
+
+<div class="book-sources" markdown="1">
+- [Jasmine tutorial: Your first suite](https://jasmine.github.io/tutorials/your_first_suite)
+</div>
 
 ### Structure of a test
 
@@ -658,7 +690,9 @@ The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Dri
 
 When writing multiple specs in one suite, you quickly realize that the _Arrange_ phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the _Arrange_ phase always consists of creating an instance of the class and rendering the Component into the document.
 
-This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But using Jasmine, you can declare code that is called before and after each spec, or before and after all specs. Fur this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
+This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But using Jasmine, you can declare code that is called before and after each spec, or before and after all specs.
+
+For this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
 
 ```typescript
 describe('Suite description', () => {
@@ -702,11 +736,11 @@ Called after all specs are run
 
 When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
 
-These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, this guide uses the umbrella term “fake” and “faking” for any dependency substitution.
+These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, **this guide uses the umbrella term “fake” and “faking”** for any dependency substitution.
 
 ### Rules for faking dependencies
 
-Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same itme.
+Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same time.
 
 Since we will create many fakes throughout this guide, we need to set up rules to apply the technique safely.
 
@@ -878,7 +912,7 @@ Second, we verify that the `fetch` spy has been called with the correct paramete
 
 Both expectations are necessary to guarantee that `getTodos` works correctly.
 
-After having written the first spec for `getTodos`, we need to ask ourselves: Did the test fully cover its behavior? We did test the success case, also called *happy path*, but the error case, also called `unhappy path`, is yet to be tested. In particular, this error handling code:
+After having written the first spec for `getTodos`, we need to ask ourselves: Does the test fully cover its behavior? We have tested the success case, also called *happy path*, but the error case, also called *unhappy path*, is yet to be tested. In particular, this error handling code:
 
 ```typescript
 if (!response.ok) {
@@ -888,7 +922,7 @@ if (!response.ok) {
 }
 ```
 
-When the server response is not “ok”, we throw an error. “Ok” means the HTTP response status code is 200-299. Examples of “not ok” are 403 Forbidden, 404 Not Found and 500 Internal Server Error. Throwing an error rejects the Promise so the caller of `getTodos` knows that fetching the to-dos failed.
+When the server response is not “ok”, we throw an error. “Ok” means the HTTP response status code is 200-299. Examples of “not ok” are “403 Forbidden”, “404 Not Found” and “500 Internal Server Error”. Throwing an error rejects the Promise so the caller of `getTodos` knows that fetching the to-dos failed.
 
 The fake `okResponse` mimics the success case. For the error case, we need to define another fake `Response`. Let us call it `errorResponse` with the notorious HTTP status 404 Not Found:
 
@@ -933,7 +967,11 @@ In the *Act* phase, we call the method under test but anticipate that it throws 
 
 In the *Assert* phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
-Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses [`HttpClient`](https://angular.io/guide/http) instead. The test typically uses [`HttpTestingController`](https://angular.io/guide/http#testing-http-requests). We will get to know this way of testing later.
+Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this [later](#testing-a-service-that-makes-http-requests).
+
+<div class="book-sources" markdown="1">
+- [Jasmine reference: Spies](https://jasmine.github.io/api/edge/Spy.html)
+</div>
 
 ### Spying on existing object methods
 
@@ -1007,7 +1045,11 @@ Not much has changed here. We spy on `fetch` and make it return `okResponse`. Si
 
 Creating standalone spies and spying on existing methods are not mutually exclusive. Both will be used frequently when testing Angular applications, and both work well with dependencies injected into the constructor.
 
-## Debugging tests
+<div class="book-sources" markdown="1">
+- [Jasmine reference: spyOn](https://jasmine.github.io/api/edge/global.html#spyOn)
+</div>
+
+## TODO Debugging tests
 
 TODO
 
@@ -1041,9 +1083,9 @@ A component deals with several concerns, among others:
 
 All these tasks need to be tested properly.
 
-### Unit test for the Counter Component
+### Unit test for the counter Component
 
-As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/counter). This is how it looks in action:
+As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/counter). This is how it looks in action:
 
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
@@ -1061,13 +1103,22 @@ We will test the following features of the `CounterComponent`:
 
 Writing down what the Component does already helps to structure the unit test. The features above roughly translate into specs in a test suite.
 
+<div class="book-sources" markdown="1">
+- [Code for the CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/counter)
+</div>
+
 ### TestBed
 
-Several chores are necessary to render a Component in Angular, even the simple Counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
+Several chores are necessary to render a Component in Angular, even the simple counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
 
 The Angular compiler translates the templates into JavaScript code. To prepare the rendering, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. For testing, you could do all that manually, but you would need to dive deeply into Angular internals.
 
 Instead, the Angular team provides the `TestBed` to ease unit testing. The `TestBed` creates and configures an Angular environment so you can test particular application parts like Components and Services safely and easily.
+
+<div class="book-sources" markdown="1">
+- [Angular reference: TestBed](https://angular.io/api/core/testing/TestBed)
+- [Testing Utility APIs: TestBed](https://angular.io/guide/testing-utility-apis#testbed-class-summary)
+</div>
 
 ### Configuring the testing Module
 
@@ -1164,6 +1215,8 @@ Per default, Jasmine expects that your testing code is synchronous. The function
 
 `async()` returns a function that calls the wrapped function. In addition, it waits for all asynchronous tasks to finish and then gets back to Jasmine. Internally, it uses Zone.js to determine whether all tasks have finished.
 
+TODO!
+
 We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet.
 
 If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
@@ -1219,6 +1272,11 @@ console.log(nativeElement.innerHTML);
 
 `nativeElement` is typed as `any` because Angular does not know the exact type of the wrapped DOM element. Most of the time, it is a subclass of [`HTMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement). For example, a `button` element is represented as [`HTMLButtonElement`](https://developer.mozilla.org/en-US/docs/Web/API/) in the DOM. When you use `nativeElement`, you need to learn about the DOM interface of the specific element.
 
+<div class="book-sources" markdown="1">
+- [Angular reference: ComponentFixture](https://angular.io/api/core/testing/ComponentFixture)
+- [Angular reference: DebugElement](https://angular.io/api/core/DebugElement)
+</div>
+
 ### Writing the first Component spec
 
 We have compiled a test suite that renders the `CounterComponent`. We have met Angular’s primary testing abstractions: `TestBed`, `ComponentFixture` and `DebugElement`.
@@ -1249,7 +1307,7 @@ Let us learn about finding elements in the DOM first.
 
 ### Querying the DOM with test ids
 
-Every `DebugElement` features the methdos `query` and `queryAll` for finding descendant elements (children, grandchildren etc.). `query` returns the first decendant element that meets a condition while `queryAll` returns an array of all matching elements. Both methods expect a predicate, that is a function judging every element and returning `true` or `false`.
+Every `DebugElement` features the methods `query` and `queryAll` for finding descendant elements (children, grandchildren etc.). `query` returns the first descendant element that meets a condition while `queryAll` returns an array of all matching elements. Both methods expect a predicate, that is a function judging every element and returning `true` or `false`.
 
 Angular ships with predefined predicate functions query the DOM using familiar CSS selectors. For this purpose, pass `By.css('…')` with a CSS selector to `query` and `queryAll`.
 
@@ -1265,7 +1323,7 @@ The return value of `query` is a `DebugElement` again, those of `queryAll` is an
 
 In the example above, we have used a type selector (`h1`) and a class selector (`.user`) to find elements in the DOM. For everyone familiar with CSS, this is familiar as well. While these selectors are fine when styling Components, using them in a test needs to be challenged.
 
-Type and class selectors introduce a tight couling between the test and the template. HTML elements are picked for semantic reasons and classes are picked mostly for visual styling. Both change frequently when the Component template is refactored. Should the test fail if the element type or class changes?
+Type and class selectors introduce a tight coupling between the test and the template. HTML elements are picked for semantic reasons and classes are picked mostly for visual styling. Both change frequently when the Component template is refactored. Should the test fail if the element type or class changes?
 
 Sometimes the element type or the class are crucial for the feature under test. But most of the time, they are not relevant for the feature. Then, the test should better find the element by a feature that never changes and that bears no additional meaning: test ids.
 
@@ -1290,6 +1348,10 @@ const incrementButton = debugElement.query(
 There is a nuanced discussion around the best way to find elements during testing. Certainly, there are several valid and elaborate approaches. This guide will only present one possible approach that is simple and approachable.
 
 The Angular testing tools are neutral when it comes to DOM querying: They tolerate different approaches and do not recommend a specific solution. After consideration, you should opt for way, document it as a [testing convention](#testing-conventions) and apply it consistently across all tests.
+
+<div class="book-sources" markdown="1">
+- [Angular reference: By.css](https://angular.io/api/platform-browser/By)
+</div>
 
 ### Triggering event handlers
 
@@ -1510,7 +1572,7 @@ function findEl<T>(
 }
 ```
 
-This function is self-contained. The Component fixture needs to be passed in explictly. Since `ComponentFixture<T>` requires a type parameter – the wrapped Component type –, `findEl` also has a type parameter called `T`. TypeScript will infer the Component type automatically when you pass a `ComponentFixture`.
+This function is self-contained. The Component fixture needs to be passed in explicitly. Since `ComponentFixture<T>` requires a type parameter – the wrapped Component type –, `findEl` also has a type parameter called `T`. TypeScript will infer the Component type automatically when you pass a `ComponentFixture`.
 
 Second, we write a testing helper that clicks on an element with a given test id. This helper can build on `findEl`.
 
@@ -1612,7 +1674,7 @@ resetInputEl.value = '123';
 resetInputEl.dispatchEvent(new Event('input'));
 ```
 
-If you need to run your tests in legac Internet Explorer, a bit more code is necessary. Internet Explorer does not support `new Event('…')`, but the `document.createEvent` method:
+If you need to run your tests in legacy Internet Explorer, a bit more code is necessary. Internet Explorer does not support `new Event('…')`, but the `document.createEvent` method:
 
 ```typescript
 const event = document.createEvent('Event');
@@ -1856,7 +1918,7 @@ it('emits countChange events on increment', () => {
 });
 ```
 
-This works as well, but it is might produce false positives. If the feature under test is broken and the Output does not emit, `expect` is never called. Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful. We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
+This works as well, but it might produce false positives. If the feature under test is broken and the Output does not emit, `expect` is never called. Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful. We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
 
 Now we have verified that `countChange` emits when the increment button is clicked. We also need to proof that the Output emits when using the decrement or reset features. We could do that by copying the code and adding two more specs:
 
@@ -1939,6 +2001,10 @@ it('emits countChange events', () => {
 ```
 
 This example requires some RxJS knowledge. We are going to encounter RxJS Observables again and again when testing Angular applications. If you do not understand the example above, that is totally fine. It is just optional way to merge three specs into one.
+
+<div class="book-sources" markdown="1">
+- [Final CounterComponent spec](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts)
+</div>
 
 ### Black vs. white box Component testing
 
@@ -2166,7 +2232,7 @@ it('renders an independent counter', () => {
 });
 ```
 
-Finding a child Component is a common task. Such repeting patterns are good candidates for testing helpers. Not because they consist of much code, but because the code has a specific meaning we would like to convey. `debugElement.query(By.css('app-counter'))` is not particularly descriptive. The reader has to think for a moment to realize that the code tries to find a nested Component.
+Finding a child Component is a common task. Such repeating patterns are good candidates for testing helpers. Not because they consist of much code, but because the code has a specific meaning we would like to convey. `debugElement.query(By.css('app-counter'))` is not particularly descriptive. The reader has to think for a moment to realize that the code tries to find a nested Component.
 
 So let us introduce a helper function named `findComponent`.
 
@@ -2322,6 +2388,10 @@ Note that this is one possible testing method. As always, it has pros and cons. 
 
 However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular not to find matching Components for the custom elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `HomeComponent` uses a wrong element name and the test copies that error? We will not notice the false positive unless the involved Components are rendered together.
 
+<div class="book-sources" markdown="1">
+- [Final HomeComponent spec](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.spec.ts)
+</div>
+
 ### Faking a child Component
 
 There is a middle ground between a naive unit test and an integration test. Instead of working with empty custom elements, we can render *fake* child Components. These Components have the same selectors, Inputs and Outputs, but have zero dependencies and do not have to render anything. They are ideal for testing communication between parent and child Components.
@@ -2422,8 +2492,6 @@ The third spec checks the Output handling: If the counter emits a value, the `Ho
 
 As mentioned earlier, an Output is an `EventEmitter` that is also a property of the Component instance. Previously, we have simulated an Output event using the `triggerEventHandler` abstraction. Now we can access the Output directly and call its `emit` method, just like the code in the child Component does.
 
-`emit`
-
 ```typescript
 it('listens for count changes', () => {
   const counterEl = fixture.debugElement.query(
@@ -2501,7 +2569,7 @@ describe('HomeComponent', () => {
 
 TODO: findComponentInstance helper
 
-Let us discuss what we have gained with this type of testing the `HomeComponent`.
+Let us recap what we have gained with this type of testing the `HomeComponent`.
 
 We have replaced a Component dependency with a fake that behaves the same, as far as `HomeComponent` is concerned. The fake child is rendered, but the template may be empty.
 
@@ -2614,13 +2682,17 @@ describe('HomeComponent', () => {
 });
 ```
 
-We have elimated the manual `FakeCounterComponent`. We are using `MockComponent(CounterComponent)` to create the fake and the original class `CounterComponent`. The specs itself did not change.
+We have eliminated the manual `FakeCounterComponent`. We are using `MockComponent(CounterComponent)` to create the fake and the original class `CounterComponent`. The specs itself did not change.
 
 This was only a glimpse of ng-mocks. The library not only helps with nested Components, but provides high-level helpers for setting up the Angular test environment. ng-mocks replaces the conventional setup with `TestBed.configureTestingModule` and helps faking Modules, Components, Directives, Pipes and Services.
 
+<div class="book-sources" markdown="1">
+- [ng-mocks](https://github.com/ike18t/ng-mocks)
+</div>
+
 ## Testing Components depending on Services
 
-We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the `ServiceCounterComponent`.
+We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the [ServiceCounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/service-counter).
 
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/service-counter-component" class="responsive-iframe__iframe"></iframe>
@@ -2699,6 +2771,10 @@ The integration test does not examine the Component’s inner workings. It only 
 
 If we want an integration test to verify that the Component stores the count in the Service, we would need a test with two `ServiceCounterComponent`s: When increasing the count using one Component, the displayed count in the other should change accordingly.
 
+<div class="book-sources" markdown="1">
+- [ServiceCounterComponent: integration test](https://github.com/9elements/angular-workshop/blob/master/src/app/components/service-counter/service-counter.component.spec.ts)
+</div>
+
 ### Faking Service dependencies
 
 Let us move on to the **unit test** for the `ServiceCounterComponent`. To tackle this challenge, we need to learn the art of faking Service dependencies.
@@ -2710,7 +2786,7 @@ There are several practical approaches with pros and cons. We have discussed two
 
 This guide will present one solution that implements these requirements. Note that other solutions might meet these requirements as well.
 
-The dependency we need to fake, `CounterService` is a simple class annotated with `@Injectable()`. This is the outer shape of `CounterService`:
+The dependency we need to fake, `CounterService`,  is a simple class annotated with `@Injectable()`. This is the outer shape of `CounterService`:
 
 ```typescript
 class CounterService {
@@ -2953,13 +3029,17 @@ describe('ServiceCounterComponent: unit test', () => {
 });
 ```
 
+<div class="book-sources" markdown="1">
+- [ServiceCounterComponent: Implementation and test code](https://github.com/9elements/angular-workshop/tree/master/src/app/components/service-counter)
+</div>
+
 ### Fake Service with minimal logic
 
-These specs check whether user interaction calls the Service methods. They do not check whether the Component re-renders the new count after having called the Service.
+The specs above check whether user interaction calls the Service methods. They do not check whether the Component re-renders the new count after having called the Service.
 
-The Component calls `ServiceCounter`’s `getCount` and receives an `Observable<number>`. The original Service pushes new values through the Observable. The spec `it('shows the count', …)` has already proven that the Component obtained the count tfrom the Service and renders it.
+The Component calls `ServiceCounter`’s `getCount` and receives an `Observable<number>`. The original Service pushes new values through the Observable. The spec `it('shows the count', …)` has already proven that the Component obtained the count from the Service and renders it.
 
-In addition, we will check that the Component correctly subscribes to and processes updates from the Service. This is not strictly necessary in our simple `ServiceCounterComponent` / `CounterService` example. But it is useful in more complex interactions between a Component and a Service.
+In addition, we will check that the Component correctly subscribes to and processes updates from the Service. This is not strictly necessary in our simple `ServiceCounterComponent` and `CounterService` example. But it is useful in more complex interactions between a Component and a Service.
 
 The fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes another value. We need to change that behavior in order to demonstrate the Component update.
 
@@ -3104,37 +3184,40 @@ describe('ServiceCounterComponent: unit test', () => {
 });
 ```
 
-Again, this example is intentionally verbose. The fake reimplements a large part of the original logic. This is because the original `CounterService` has little logic itself.
+Again, this example is intentionally verbose. The fake re-implements a large part of the original logic. This is because the original `CounterService` has little logic itself.
 
 In reality, Services are more complex and Components process the data they receive from the Services. Then, the effort of faking essential logic is worthwhile.
 
+<div class="book-sources" markdown="1">
+- [ServiceCounterComponent: unit test](https://github.com/9elements/angular-workshop/blob/master/src/app/components/service-counter/service-counter.component.spec.ts)
+</div>
+
 ### Faking Services: Summary
 
-Creating fake Service dependencies and verifying the usage is probably the most challenging problem when testing Angular applications. This guide can only catch a glimpse on the subject.
+Creating fake Service dependencies and verifying their usage is probably the most challenging problem when testing Angular applications. This guide can only catch a glimpse on the subject.
 
-Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice of faking Services teaches you to write Services that are easy to fake: Services with a clear API and an obvious purpose.
+Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice teaches you to write *simple Services that are easy to fake*: Services with a clear API and an obvious purpose.
 
-Unfortunately, there are no best practices when it comes to faking Services. You will find plenty of approaches online that have their strengths and weaknesses. The associated unit tests have different degrees of accurancy and completeness.
+Unfortunately, there are no best practices when it comes to faking Services. You will find plenty of approaches online that have their strengths and weaknesses. The associated unit tests have different degrees of accuracy and completeness.
 
 Arguing about the “right” way of faking a Service is pointless. You need to decide on a faking method that suits the Service on a case-by-case basis.
 
 There are two takeaways you should remember:
 
-1. Ask yourself, is the test valueable? Does it cover the important interaction between Component and Service? Decide whether to test the interaction superficially or in-depth.
+1. Ask yourself, is the test valuable? Does it cover the important interaction between Component and Service? Decide whether to test the interaction superficially or in-depth.
 2. Whichever approach you choose, make sure to meet the [basic requirements](#rules-for-faking-dependencies):
   1. Equivalence of fake and original: The fake must have a type derived from the original.
   2. Effective faking: the original stays untouched.
 
 ## Testing Services
 
-In an Angular application, Services are responsible for fetching, storing and processing data.
-Services are singletons, meaning there is only one instance of a Service during runtime. They are fit for central data storage, HTTP and WebSocket communication as well as data validation.
+In an Angular application, Services are responsible for fetching, storing and processing data. Services are singletons, meaning there is only one instance of a Service during runtime. They are fit for central data storage, HTTP and WebSocket communication as well as data validation.
 
-The single Service instance is shared among Components and other application parts. Therefore, a Service is used when Components that are not parent and child need to communicate with each otther and share data.
+The single Service instance is shared among Components and other application parts. Therefore, a Service is used when Components that are not parent and child need to communicate with each other and exchange data.
 
 “Service” is an umbrella term for any object that serves a specific purpose and is injected as a dependency. Technically, Services have little in common. There a no rules regarding the structure or behavior of a Service.
 
-Typically, Services are classes, but not necessarily. While Modules, Components and Directives are marked with respectice decorators – `@Module`, `@Component`, `@Directive` –, Services are marked with the generic `@Injectable`.
+Typically, Services are classes, but not necessarily. While Modules, Components and Directives are marked with respective decorators – `@Module`, `@Component`, `@Directive` –, Services are marked with the generic `@Injectable`.
 
 So how do we test a Service? What needs to be tested? Services are diverse, but some patterns are widespread.
 
@@ -3144,9 +3227,11 @@ So how do we test a Service? What needs to be tested? Services are diverse, but 
 - Services store data. That is, they have an internal state. We can get or set the state.
 
   In the test, we check whether the state is changed correctly. Since the state should be held in private properties, we cannot access the state directly. We test the state change by calling public methods. We should not peek into the [black box](#black-box-vs-white-box-testing).
-- Service interact with dependencies. For example, Services usually make HTTP requests via Angular’s `HttpClient`.
+- Services interact with dependencies. These are often other Services. For example, a Service might send HTTP requests via Angular’s `HttpClient`.
 
-### Testing a simple Service
+  In the unit test, we replace the dependency with a fake that returns canned responses. To fake the `HttpClient` dependency, we may use Angular’s `HttpClientTestingModule`.
+
+### Testing a Service with internal state
 
 Let us start with testing the [`CounterService`](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.ts). By now, you should be familiar with the Service. As a reminder, here is the shape including private members:
 
@@ -3376,77 +3461,929 @@ describe('CounterService', () => {
 });
 ```
 
-### Testing a Service with dependency
+<div class="book-sources" markdown="1">
+- [CounterService spec](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
+</div>
 
-Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with dependencies.
+### Testing a Service that makes HTTP requests
 
-<h2>Services mit Abhängigkeit testen:<br><a href="https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter-api.service.ts"><code>CounterApiService</code></a></h2>
+Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with a dependency.
 
-<ul>
-  <li>Unit Test – in Isolation testen</li>
-  <li>Abhängigkeit auf <a href="https://angular.io/guide/http">HttpClient</a></li>
-  <li>Einfach testbar mit dem <a href="https://angular.io/guide/http#testing-http-requests"><code>HttpClientTestingModule</code></a></li>
-</ul>
+In the [Flickr search example application](https://github.com/9elements/angular-flickr-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
+
+```typescript
+@Injectable()
+export class FlickrService {
+  constructor(private http: HttpClient) {}
+
+  public searchPublicPhotos(searchTerm: string): Observable<Photo[]> {
+    return this.http
+      .get<FlickrAPIResponse>('https://www.flickr.com/services/rest/', {
+        params: {
+          method: 'flickr.photos.search',
+          format: 'json',
+          nojsoncallback: '1',
+          api_key: 'API key',
+          tags: searchTerm,
+          tag_mode: 'all',
+          media: 'photos',
+          per_page: '15',
+          extras: 'tags,date_taken,owner_name,url_q,url_m',
+        },
+      })
+      .pipe(map((response) => response.photos.photo));
+  }
+}
+```
+
+The Service is marked with `@Injectable()` so it takes part in Angular’s Dependency Injection. It depends on Angular’s standard HTTP library, *`HttpClient`* from the `@angular/common/http` package. Most Angular applications use `HttpClient` to communicate with HTTP APIs.
+
+There are two ways to test the `FlickrService`: an integration test or a unit test.
+
+An integration test provides the real `HttpClient`. This will lead to HTTP requests to the Flickr API when the running the tests. These HTTP requests to the real API the whole test brittle and unreliable.
+
+The network or the web service might be slow or unavailable. Also the Flickr API endpoint returns a different response for each request. It is hard to expect a certain `FlickrService` behavior if the input is unknown.
+
+Requests to third-party production APIs make little sense in a testing environment. If you want to write an integration test for a Service that makes HTTP request, better use a dedicated testing API that returns fixed data. This API can run on the same machine or in the local network.
+
+In the case of `FlickrService`, we better write a unit test. Angular has a powerful helper for testing code that depends on `HttpClient`: the [`HttpClientTestingModule`](https://angular.io/guide/http#testing-http-requests).
+
+For testing a Service with dependencies, it would be tedious to instantiate the Service with `new`. Instead, we are using the `TestBed` to set up a testing Module. Instead of providing the `HttpClient`, we import the `HttpClientTestingModule`.
 
 ```typescript
 TestBed.configureTestingModule({
   imports: [HttpClientTestingModule],
-  providers: [CounterApiService],
+  providers: [FlickrService],
 });
 ```
 
-<h2>HttpClientTestingModule (1)</h2>
+The `HttpClientTestingModule` provides a fake implementation of `HttpClient`. It does not actually send out HTTP requests. It merely intercepts them and records them internally. In the test, we inspect that log of HTTP requests. We respond to pending requests manually with fake data.
 
-<p>HTTP-Requests finden</p>
+Our test will consist of the following steps:
+
+1. Call the method under test that sends HTTP requests
+2. Find pending requests
+3. Respond to these requests with fake data
+4. Check the result of the method call
+5. Verify that all requests have been found and answered
+
+<div class="book-sources" markdown="1">
+- [Angular guide:  Communicating with backend services using HTTP ](https://angular.io/guide/http)
+- [Angular reference: HttpClient](https://angular.io/api/common/http/HttpClient)
+- [Angular guide: Testing HTTP requests](https://angular.io/guide/http#testing-http-requests)
+- [Angular reference: HttpClientTestingModule](https://angular.io/api/common/http/testing/HttpClientTestingModule)
+</div>
+
+#### Call the method under test
+
+In the first step, we call the method under test, `searchPublicPhotos`. The search term is simply a fixed string.
 
 ```typescript
-const httpMock: HttpTestingController = TestBed.get(HttpTestingController);
+const searchTerm = 'dragonfly';
 
-const request = httpMock.expectOne({
-  method: "GET",
-  url: expectedURL,
+describe('FlickrService', () => {
+  let flickrService: FlickrService;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [FlickrService],
+    });
+    flickrService = TestBed.inject(FlickrService);
+  });
+
+  it('searches for public photos', () => {
+    flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
+      /* … */
+    });
+    /* … */
+  });
+});
+```
+
+By subscribing to the Observable returned by `searchPublicPhotos`, the (fake) HTTP request is sent. We will investigate the response, `actualPhotos`, later in step four.
+
+#### Find pending requests
+
+In the second step, we find the pending request using the [`HttpTestingController`](https://angular.io/api/common/http/testing/HttpTestingController). This class is part of the `HttpClientTestingModule`. We get hold of the instance by calling `TestBed.inject(HttpTestingController)`.
+
+The controller has several methods to find requests by different criteria. The simplest is `expectOne` which finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
+
+```typescript
+const searchTerm = 'dragonfly';
+const expectedUrl = `https://www.flickr.com/services/rest/?method=flickr.photos.search&format=json&nojsoncallback=1&api_key=XYZ&tags=${searchTerm}&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m`;
+
+describe('FlickrService', () => {
+  let flickrService: FlickrService;
+  let controller: HttpTestingController;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [FlickrService],
+    });
+    flickrService = TestBed.inject(FlickrService);
+    controller = TestBed.inject(HttpTestingController);
+  });
+
+  it('searches for public photos', () => {
+    flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
+      /* … */
+    });
+
+    const request = controller.expectOne(expectedUrl);
+    /* … */
+  });
+});
+```
+
+`expectOne` returns the found request, that is an instance of TestRequest. If there is no pending request that matches the URL, `expectOne` throws an exception, failing the spec.
+
+<div class="book-sources" markdown="1">
+- [Angular reference: HttpTestingController](https://angular.io/api/common/http/testing/HttpTestingController)
+- [Angular reference: TestRequest](https://angular.io/api/common/http/testing/TestRequest)
+</div>
+
+#### Respond with fake data
+
+Now that we have the pending request, we respond to it with an object that mimics the original API response. The Flickr API returns a complex object with an array of photos objects deep within. In the `FlickrService` test, we only care about the payload, the photos array.
+
+The Flickr Search repository contains [fake photo objects](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts) that are used throughout the tests. For the `FlickrService` test, we import the `photos` array with two fake photo objects.
+
+We use the request’s `flush` method to respond with fake data. This simulates a successful “200 OK” server response.
+
+```typescript
+request.flush({ photos: { photo: photos } });
+```
+
+#### Check the result of the method call
+
+The spec has proven that the method under test makes a request to the expected URL. It still needs to prove that the method passes through the desired part of the API response. In particular, it needs to prove that the Observable emits the `photos` array.
+
+We have already subscribed to the Observable:
+
+```typescript
+flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
+  /* … */
+});
+```
+
+We expect that the Observable emits a photos array that equals to the one from the API response:
+
+```typescript
+flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
+  expect(actualPhotos).toEqual(photos);
+});
+```
+
+This leads to a problem that is known from [testing Outputs](#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. This leads to a false positive result because Jasmine thinks that all is fine.
+
+There are several ways to solve this problem. We have opted for a variable that is `undefined` initially and is assigned a value.
+
+```typescript
+let actualPhotos: Photo[] | undefined;
+flickrService.searchPublicPhotos(searchTerm).subscribe((_actualPhotos) => {
+  actualPhotos = _actualPhotos;
 });
 
-const predicate = (candidateRequest) => candidateRequest.method === "GET";
-const request = httpMock.expectOne(predicate);
-const requests = httpMock.match(predicate);
+const request = controller.expectOne(expectedUrl);
+// Answer the request so the Observable emits a value.
+request.flush({ photos: { photo: photos } });
+
+// Now verify emitted valued.
+expect(actualPhotos).toEqual(photos);
 ```
 
-<h2>HttpClientTestingModule (2)</h2>
+The `expect` call is outside of the `next` callback function to ensure it is definitely called. If the Observable emits no value or a wrong value, the spec fails.
 
-<p>Gefundene Requests beantworten</p>
+#### Verify that all requests have been found and answered
+
+In the fifth and last step, we ensure that there are no pending requests left. We expect the method under test to make one request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
+
+Finally, we call:
 
 ```typescript
-request.flush(serverResponse);
+controller.verify();
 ```
 
-<p>Fehler simulieren</p>
+This fails the test if there are any outstanding requests.
+
+`verify` guarantees that the code under test is not making excess requests. But it also guarantees that your spec checks all requests, for example by inspecting their URLs.
+
+Putting the parts together, the full test suite:
 
 ```typescript
-request.error(new ErrorEvent("API error"), {
-  status: 404,
-  statusText: "Not Found",
+const searchTerm = 'dragonfly';
+const expectedUrl = `https://www.flickr.com/services/rest/?method=flickr.photos.search&format=json&nojsoncallback=1&api_key=XYZ&tags=${searchTerm}&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m`;
+
+describe('FlickrService', () => {
+  let flickrService: FlickrService;
+  let controller: HttpTestingController;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [FlickrService],
+    });
+    flickrService = TestBed.inject(FlickrService);
+    controller = TestBed.inject(HttpTestingController);
+  });
+
+  it('searches for public photos', () => {
+    let actualPhotos: Photo[] | undefined;
+    flickrService.searchPublicPhotos(searchTerm).subscribe((_actualPhotos) => {
+      actualPhotos = _actualPhotos;
+    });
+
+    const request = controller.expectOne(expectedUrl);
+    request.flush({ photos: { photo: photos } });
+    controller.verify();
+
+    expect(actualPhotos).toEqual(photos);
+  });
 });
 ```
 
-<h2>HttpClientTestingModule (3)</h2>
+<div class="book-sources" markdown="1">
+- [FlickrService: Full test code](
+https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.spec.ts)
+</div>
 
-<p>Verfizieren, dass alle Requests gefunden und beantwortet wurden</p>
+#### Testing the error case
+
+Are we done with testing `searchPublicPhotos`? We have tested the success case in which the server returns a `200 OK`. But we have not tested the error case yet!
+
+`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get()` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the *unhappy path* should be tested.
+
+Let us simulate a “500 Internal Server Error”. Instead of responding to the request with `flush`, we let it fail by calling `error`.
 
 ```typescript
-httpMock.verify();
+const status = 500;
+const statusText = 'Internal Server Error';
+const errorEvent = new ErrorEvent('API error');
+/* … */
+const request = controller.expectOne(expectedUrl);
+request.error(
+  errorEvent,
+  { status, statusText }
+);
 ```
 
-<h2>Fazit: Services testen</h2>
+The `TestRequest`’s `error` method expects an `ErrorEvent`, and an optional options object.
 
-<ul>
-  <li>Relativ einfach</li>
-  <li>Nichts fundamental Neues</li>
-  <li>Gleicher Aufwand wie beim Service-Mocking für Komponenten-Tests</li>
-</ul>
+[`ErrorEvent`](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent) is a special `Error` that is provided by the browser. For testing purposes, we create an instance using `new ErrorEvent('…')`. The constructor parameter is an arbitrary message string. We can use any message that describes or error case well.
 
+The second parameter, the options object, allows you to set the HTTP `status` (like `500`), the `statusText` (like `'Internal Server Error'`) and response headers. In the example above, we set `status` and `statusText`.
+
+Now we check that the returned Observable behaves correctly. It must not emit a next value and must not complete. It must fail with an error.
+
+We achieve that by subscribing to `next`, `error` and `complete` events:
+
+```typescript
+flickrService.searchPublicPhotos(searchTerm).subscribe(
+  () => { /* next handler must not be called! */ },
+  (error) => { /* error handler must be called! Also, we need to inspect the error. */ },
+  () => { /* complete handler must not be called! */ },
+);
+```
+
+When the `next` or `complete` handlers are called, the spec must fail immediately. There is a handy global Jasmine function for this purpose: `fail`. We directly pass `fail` as `next` and `complete` handler.
+
+For inspecting the error, we use the same pattern as above, saving the error in a variable in the outer scope.
+
+```typescript
+let actualError: HttpErrorResponse | undefined;
+
+flickrService.searchPublicPhotos(searchTerm).subscribe(
+  () => {
+    fail('next handler must not be called');
+  },
+  (error) => {
+    actualError = error;
+  },
+  () => {
+    fail('complete handler must not be called');
+  },
+);
+```
+
+After answering the request with a fake server error, we check that the error information is passed through. The `error` handler receives a `HttpErrorResponse` object that reflects the `ErrorEvent` as well es the status information.
+
+```typescript
+if (!actualError) {
+  throw new Error('Error needs to be defined');
+}
+expect(actualError.error).toBe(errorEvent);
+expect(actualError.status).toBe(status);
+expect(actualError.statusText).toBe(statusText);
+```
+
+Since `actualError` is defined as `HttpErrorResponse | undefined`, we need to rule out the `undefined` case first before accessing the properties. `expect(actualError).toBeDefined()` would accomplish that. But the TypeScript compiler does not understand that `expect(…).toBeDefined()` rules out the `undefined` case. So we need to throw an exception manually.
+
+This is the full spec for the error case:
+
+```typescript
+it('passes through search errors', () => {
+  const status = 500;
+  const statusText = 'Server error';
+  const errorEvent = new ErrorEvent('API error');
+
+  let actualError: HttpErrorResponse | undefined;
+
+  flickrService.searchPublicPhotos(searchTerm).subscribe(
+    () => {
+      fail('next handler must not be called');
+    },
+    (error) => {
+      actualError = error;
+    },
+    () => {
+      fail('complete handler must not be called');
+    },
+  );
+
+  controller.expectOne(expectedUrl).error(
+    errorEvent,
+    { status, statusText }
+  );
+
+  if (!actualError) {
+    throw new Error('Error needs to be defined');
+  }
+  expect(actualError.error).toBe(errorEvent);
+  expect(actualError.status).toBe(status);
+  expect(actualError.statusText).toBe(statusText);
+});
+```
+
+This example is deliberately verbose. It shows you how to test all details. It fails fast and provides helpful error messages.
+
+This approach is recommended for Service methods that have a dedicated error handling. For example, a Service might distinguish between successful responses (like “200 OK”), client errors (like “404 Not Found”) and server errors (like “500 Server error”).
+
+<div class="book-sources" markdown="1">
+- [FlickrService: implementation and test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/)
+- [Angular reference: HttpErrorResponse](https://angular.io/api/common/http/HttpErrorResponse)
+- [MDN reference: ErrorEvent](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent)
+</div>
+
+#### Alternative ways to find pending requests
+
+We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST` etc.), query parameters (`?tags=dragonfly`), headers or the request body.
+
+`expectOne` has several signatures. We used the simplest, a string which is interpreted as URL:
+
+```typescript
+controller.expectOne('https://www.example.org')
+```
+
+To search for a request with a given method and url, pass an object with these properties:
+
+```typescript
+controller.expectOne({ method: 'GET', url: 'https://www.example.org' })
+```
+
+If you need to find one request by looking at its details, you can pass a function:
+
+```typescript
+controller.expectOne(
+  (requestCandidate) =>
+    requestCandidate.method === 'GET' &&
+    requestCandidate.url === 'https://www.example.org' &&
+    requestCandidate.headers.get('Accept') === 'application/json',
+);
+```
+
+The function is a predicate. This means the function is called for each request, decides whether the candidate is a match and returns a boolean.
+
+This lets you sift through all requests programmatically and check all criteria. The candidate is an [HttpRequest](https://angular.io/api/common/http/HttpRequest) instance with properties like `method`, `url`, `headers`, `body`, `params` etc.
+
+There are two possible approaches: Either you use `expectOne` with many criteria, like in the predicate example. If some request detail does not match, `expectOne` throws an exception and fails the test.
+
+Or you use `expectOne` with few criteria, passing `{ method: '…', url: '…' }`. To check the request details, you can still use Jasmine expectations.
+
+`expectOne` returns a `TestRequest` instance. This object only has methods to answer the request, but no direct information about the request. Use the `request` property to access the underlying `HttpRequest`.
+
+```typescript
+// Get the TestRequest.
+const request = controller.expectOne({
+  method: 'GET',
+  url: 'https://www.example.org'
+});
+// Get the underlying HttpRequest. Yes, this is confusing.
+const httpRequest = request.request;
+expect(httpRequest.headers.get('Accept')).toBe('application/json');
+request.flush({ success: true });
+```
+
+This is equivalent to the predicate example, but gives a more specific error message if the header is incorrect.
+
+In addition to `expectOne`, there is the `match` method for finding multiple requests that match certain criteria. It returns an array of requests. If there are no matches, the array is empty, but the spec does not fail. Hence, you need to add Jasmine expectations to check the array and the requests therein.
+
+Assume there is a `CommentService` with a method `postTwoComments`. The code under test makes two requests to the same URL, but with a different body.
+
+```typescript
+@Injectable
+class CommentService() {
+  constructor(private http: HttpClient) {}
+  public postTwoComments(firstComment: string, secondComment: string) {
+    return combineLatest([
+      this.http.post('/comments/new', { comment: firstComment }),
+      this.http.post('/comments/new', { comment: secondComment }),
+    ]);
+  }
+}
+```
+
+The spec could contain:
+
+```typescript
+const firstComment = 'First comment!';
+const secondComment = 'Second comment!';
+commentService
+  .postTwoComments(firstComment, secondComment)
+  .subscribe();
+
+const requests = controller.match({
+  method: 'POST',
+  url: '/comments/new',
+});
+expect(requests.length).toBe(2);
+expect(requests[0].request.body).toEqual({ comment: firstComment });
+expect(requests[1].request.body).toEqual({ comment: secondComment });
+requests[0].flush({ success: true });
+requests[1].flush({ success: true });
+```
+
+We verify the number of requests and also the body of each request. If these checks pass, we answer each request.
+
+<div class="book-sources" markdown="1">
+- [Angular reference: HttpRequest](https://angular.io/api/common/http/HttpRequest)
+- [Angular reference: TestRequest](https://angular.io/api/common/http/testing/TestRequest)
+</div>
+
+### Testing Services: Summary
+
+In a nutshell, testing Services is easier than testing other Angular application parts. Most Services have a clear purpose and a well-defined public API.
+
+If the Service under test depends on another Service, a unit test needs to the fake the dependency. This is probably the hardest part, but takes the same effort as faking Services that are Component dependencies.
+
+Angular ships with numerous Services like `HttpClient` that are commonly used in your own Services. These can be replaced with fakes quite easily. For some central Services, Angular offers tools for intercepting and verifying calls. We have used the `HttpClientTestingModule` for testing a Service that depends on `HttpClient`. Similarly, there is the [`RouterTestingModule`](https://angular.io/api/router/testing/RouterTestingModule) for testing Services that depend on `Router` and `Location`, for example.
 
 ## Testing Directives
+
+Angular beginners quickly encounter three core concepts: Modules, Components and Services. A less known core concept are Directives. Without knowing, even beginners are using Directives, because Directives are everywhere.
+
+In Angular, there are three types of Directives:
+
+1. A *Component* is a Directive with a template. A Component typically uses an element type selector, like `app-counter`. Angular then looks for `app-counter` elements and renders the Component template into these host elements.
+2. An *Attribute Directive* adds logic to an existing host element in the DOM. Examples for built-in Attribute Directives are `NgClass` and `NgStyle`.
+3. A *Structural Directive* alters the structure of the DOM, meaning it adds and removes elements programmatically. Examples for built-in Structural Directives are `NgIf`, `NgFor` and `NgSwitch`.
+
+We have already tested Components. We have yet to test the two other types of Directives.
+
+### Testing Attribute Directives
+
+The name Attribute Directive comes from the its attribute selector, for example `[ngModel]`. An Attribute Directive does not have a template and cannot alter the DOM structure.
+
+We have already mentioned the built-in Attribute Directives `NgClass` and `NgStyle`. In addition, both Template-driven and Reactive Forms rely heavily on Attribute Directives: `NgForm`, `NgModel`, `FormGroupDirective`, `FormControlName` etc.
+
+Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes. Most styling logic can be implemented using CSS rules alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
+
+Neither of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing the **`ThresholdWarningDirective`**. This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
+
+Note that numbers over the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
+
+Here is the `ThresholdWarningDirective` in action. Enter a number greater than 10 to see the effect.
+
+<p class="responsive-iframe">
+<iframe src="https://stackblitz.com/edit/threshold-warning-directive?ctl=1&embed=1&file=src/app/threshold-warning.directive.ts&hideExplorer=1&hideNavigation=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
+</p>
+
+This is the Directive’s code:
+
+```typescript
+import {
+  Directive, ElementRef, HostBinding, HostListener, Input
+} from '@angular/core';
+
+@Directive({
+  selector: '[appThresholdWarning]',
+})
+export class ThresholdWarningDirective {
+  @Input()
+  public appThresholdWarning: number | null = null;
+
+  @HostBinding('class.overThreshold')
+  public overThreshold = false;
+
+  @HostListener('input')
+  public inputHandler(): void {
+    this.overThreshold =
+      this.appThresholdWarning !== null &&
+      this.elementRef.nativeElement.valueAsNumber > this.appThresholdWarning;
+  }
+
+  constructor(private elementRef: ElementRef<HTMLInputElement>) {}
+}
+```
+
+This is how we apply the Directive to an element:
+
+```typescript
+<input type="number" [appThresholdWarning]="10" />
+```
+
+This means: If the user enters a number that is greater than 10, mark the field with a visual warning.
+
+One bit is missing: the styles for the visual warning.
+
+```css
+input[type='number'].overThreshold {
+  background-color: #fe9;
+}
+```
+
+Before we write the test for the Directive, let us walk through the implementation parts quickly.
+
+The `ThresholdWarningDirective` is applied with an attribute binding `[appThresholdWarning]="…"`. It receives the attribute value as an Input of the same name. This is how the threshold is configured.
+
+```typescript
+@Input()
+public appThresholdWarning: number | null = null;
+```
+
+Using `HostListener`, the Directive lists for `input` event on the host element. When the user changes the field value, the `inputHandler` method is called. This method gets the field value and checks whether it is over the threshold. The result is stored in the `overThreshold` boolean property.
+
+```typescript
+@HostListener('input')
+public inputHandler(): void {
+  this.overThreshold =
+    this.appThresholdWarning !== null &&
+    this.elementRef.nativeElement.valueAsNumber > this.appThresholdWarning;
+}
+```
+
+To access the host element, we use the `ElementRef` dependency. `ElementRef` is a wrapper around the host element’s DOM node. `this.elementRef.nativeElement` yields the DOM node, and `this.elementRef.nativeElement.valueAsNumber` the actual value.
+
+Last but not least, the `overThreshold` property is bound to a class of the same name using `HostBinding`. This is how the class is toggled.
+
+```typescript
+@HostBinding('class.overThreshold')
+public overThreshold = false;
+```
+
+Now that we understand what is going on, we need to replicate the workflow in our test.
+
+First of all, Attribute and Structural Directives need an existing host element they can be applied to. When testing these Directives, we use a **host Component** that renders the host element. For example, the `ThresholdWarningDirective` needs an `<input type="number">` host element.
+
+```typescript
+@Component({
+  template: `
+    <input type="number"
+      [appThresholdWarning]="10" />
+  `
+})
+class HostComponent {}
+```
+
+We are going to render this Component. We need a standard [Component test setup](#testing-components) using the `TestBed`.
+
+```typescript
+describe('ThresholdWarningDirective', () => {
+  let fixture: ComponentFixture<HostComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ThresholdWarningDirective, HostComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+  });
+
+  /* … */
+});
+```
+
+When configuring the testing Module, we declare both the Directive under test and the host Component. Just like in a Component test, we render the Component and obtain a `ComponentFixture`.
+
+In the following specs, we need to access the input element. Again, we use the standard approach of setting a `data-testid` attribute. Then, we use the [testing helpers](#testing-helpers) to find the element (`findEl`).
+
+For convenience, we pick the input element in the `beforeEach` block after rendering. We save it in a shared variable named `input`.
+
+```typescript
+@Component({
+  template: `
+    <input type="number"
+      [appThresholdWarning]="10"
+      data-testid="input" />
+  `
+})
+class HostComponent {}
+
+describe('ThresholdWarningDirective', () => {
+  let fixture: ComponentFixture<HostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ThresholdWarningDirective, HostComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+
+    input = findEl(fixture, 'input').nativeElement;
+  });
+
+  /* … */
+});
+```
+
+The first spec ensures that the Directive does nothing when the user has not touched the input. Using the element’s [classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList), we expect the class `overThreshold` to be absent.
+
+```typescript
+it('does not set the class initially', () => {
+  expect(input.classList.contains('overThreshold')).toBe(false);
+});
+```
+
+The next spec expects the class to be present when the user enters a number over the threshold. To simulate the user input, we use our handy testing helper `setFieldValue`.
+
+```typescript
+it('adds the class if the number is over the threshold', () => {
+  setFieldValue(fixture, 'input', '11');
+  fixture.detectChanges();
+  expect(input.classList.contains('overThreshold')).toBe(true);
+});
+```
+
+`setFieldValue` triggers a fake `input` event. This triggers the Directive’s event handler. `11` is greater than the threshold `10`, so the class should be added. We still need to call `detectChanges` so the DOM is updated.
+
+The last spec makes sure that the threshold is still considered as a safe value. No warning should be shown.
+
+```typescript
+it('removes the class if the number is at the threshold', () => {
+    setFieldValue(fixture, 'input', '10');
+    fixture.detectChanges();
+    expect(input.classList.contains('overThreshold')).toBe(false);
+  });
+```
+
+This is it! Testing the `ThresholdWarningDirective` is like testing a Component. The difference is that the Component only exists in our test as a host for the Directive.
+
+The full spec for the `ThresholdWarningDirective` looks like this:
+
+```typescript
+import { Component } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { findEl, setFieldValue } from '../spec-helpers/element.spec-helper';
+import { ThresholdWarningDirective } from './threshold-warning.directive';
+
+@Component({
+  template: `
+    <input type="number"
+      [appThresholdWarning]="10"
+      data-testid="input" />
+  `
+})
+class HostComponent {}
+
+describe('ThresholdWarningDirective', () => {
+  let fixture: ComponentFixture<HostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ThresholdWarningDirective, HostComponent],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    input = findEl(fixture, 'input').nativeElement;
+  });
+
+  it('does not set the class initially', () => {
+    expect(input.classList.contains('overThreshold')).toBe(false);
+  });
+
+  it('adds the class if the number is over the threshold', () => {
+    setFieldValue(fixture, 'input', '11');
+    fixture.detectChanges();
+    console.log('input', input);
+    expect(input.classList.contains('overThreshold')).toBe(true);
+  });
+
+  it('removes the class if the number is at the threshold', () => {
+    setFieldValue(fixture, 'input', '10');
+    fixture.detectChanges();
+    expect(input.classList.contains('overThreshold')).toBe(false);
+  });
+});
+```
+
+<div class="book-sources" markdown="1">
+- [ThresholdWarningDirective: source code](https://stackblitz.com/edit/threshold-warning-directive?file=src%2Fapp%2Fthreshold-warning.directive.ts)
+</div>
+
+### Testing Structural Directives
+
+A Structural Directive does not have a template like a Component, but operates on an internal `ng-template`. The Directive renders the template into the DOM programmatically, passing context data to the template.
+
+The prime examples `NgIf` demonstrate what Structural Directives are capable of: The `NgIf` Directive decides whether the template is rendered or not. The `NgFor` Directive walks over a list of items and renders the template repeatedly for each item.
+
+A Structural Directive uses an attribute selector, like `[ngIf]`. The attribute is applied to a host element with the special asterisk syntax, for example `*ngIf`. Internally, this is translated to `<ng-template [ngIf]="…">…</ng-template>`.
+
+This guide assumes that you roughly understand how Structural Directives work and how the microsyntax translates to Directive Inputs. Please refer to the [comprehensive official guide on Structural Directives](https://angular.io/guide/structural-directives).
+
+We are going to introduce a complex Structural Directive in order to test it: The `PaginateDirective`.
+
+`PaginateDirective` works similar to `NgFor`, but does not render all items at once. It spreads the items over pages, usually called *pagination*. Per default, only 10 items are rendered. The user can jump between the pages by clicking a “next” or “previous” button.
+
+Here is the `PaginateDirective` in action:
+
+<p class="responsive-iframe">
+<iframe src="https://stackblitz.com/edit/paginate-directive?ctl=1&embed=1&file=src/app/app.component.ts&hideExplorer=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
+</p>
+
+Before writing the spec, we need to understand the overall structure of `PaginateDirective` first.
+
+The simplest use of the Directive looks like this:
+
+```html
+<ul>
+  <li *appPaginate="let item of items">
+    {{ item }}
+  </li>
+</ul>
+```
+
+This notation looks similar to the `NgFor` directive. Assuming that `items` is an array of numbers (`[1, 2, 3, …]`), the example above renders the first 10 numbers in the array.
+
+The asterisk syntax `*appPaginate` and the attribute microsyntax `let item of items` is *syntactic sugar* – a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
+
+```html
+<ng-template appPaginate let-item [appPaginateOf]="items">
+  <li>
+    {{ item }}
+  </li>
+</ng-template>
+```
+
+There is an `ng-template` with an attribute `appPaginate` and an attribute binding `appPaginateOf`. Also there is a template input variable called `item`.
+
+As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Above you see the template our `PaginateDirective` works with. The Directive renders the template for each item on the current page.
+
+Now that we have seen Angular’s internal representation, we can understand the basic structure of the `PaginateDirective`:
+
+```typescript
+@Directive({
+  selector: '[appPaginate]',
+})
+export class PaginateDirective<T> implements OnChanges {
+  @Input()
+  public appPaginateOf: T[] = [];
+
+  /* … */
+}
+```
+
+The Directive uses the `[appPaginate]` attribute selector and has an Input called `appPaginateOf`. By writing the microsyntax `of items`, we actually set the `appPaginateOf` Input to the value `items`.
+
+The `PaginateDirective` has a configuration option named `perPage`. It specifies how many items are visible per page. Per default, it is 10. To change it, we set `perPage: …` in the microsyntax:
+
+```html
+<ul>
+  <li *appPaginate="let item of items; perPage: 5">
+    {{ item }}
+  </li>
+</ul>
+```
+
+This translates to:
+
+```html
+<ng-template
+  appPaginate
+  let-item
+  [appPaginateOf]="items"
+  [appPaginatePerPage]="5">
+  <li>
+    {{ item }}
+  </li>
+</ng-template>
+```
+
+`perPage` translates to an Input named `appPaginatePerPage` in the Directive’s code:
+
+```typescript
+@Directive({
+  selector: '[appPaginate]',
+})
+export class PaginateDirective<T> implements OnChanges {
+  @Input()
+  public appPaginateOf: T[] = [];
+
+  @Input()
+  public appPaginatePerPage = 10;
+
+  /* … */
+}
+```
+
+This is how built-in Structural Directives like `NgIf` and `NgFor` work as well. Now it gets more complicated. Since we want to paginate the items, we need user controls to turn the pages – in addition to rendering the items.
+
+Again, a Structural Directive lacks a template. `PaginateDirective` cannot render the “next” and “previous” buttons itself. And to remain flexible, it should not render a specific markup. The Component that uses the Directive should decide how the controls look.
+
+Therefore we pass the controls as a template to the Directive. This will be the second template the Directive operates on.
+
+In particular, we pass a reference to a separate `ng-template`. The Directive renders the template with a *context* object. The template may pull values from the context and use them.
+
+This is how the controls template could look like:
+
+```html
+<ng-template
+  #controls
+  let-previousPage="previousPage"
+  let-page="page"
+  let-pages="pages"
+  let-nextPage="nextPage"
+>
+  <button (click)="previousPage()">
+    Previous page
+  </button>
+  {{ page }} / {{ pages }}
+  <button (click)="nextPage()">
+    Next page
+  </button>
+</ng-template>
+```
+
+`#controls` sets a [template reference variable](https://angular.io/guide/template-reference-variables). This means we can further reference the template by the name `controls`.
+
+The template receives a context with variables: `previousPage`, `nextPage`, `page` and `pages`. We can describe the context with a TypeScript interface that is also part of the Directive’s code:
+
+```typescript
+interface ControlsContext {
+  page: number;
+  pages: number;
+  previousPage(): void;
+  nextPage(): void;
+}
+```
+
+`page` is the current page the user seems, `pages` is the total number of pages. `previousPage` and `nextPage` are functions for turning the pages.
+
+The `ng-template` takes these properties from the context and saves them in local variables of the same name:
+
+```
+let-previousPage="previousPage"
+let-page="page"
+let-pages="pages"
+let-nextPage="nextPage"
+```
+
+This means: Take the context property `previousPage` and make it available in the template under the name `previousPage`. And so on.
+
+The content of the controls template is rather simple. It renders two buttons for the page turning, using the functions as click handlers. It outputs the current page number and the number of total pages.
+
+```html
+<button (click)="previousPage()">
+  Previous page
+</button>
+{{ page }} / {{ pages }}
+<button (click)="nextPage()">
+  Next page
+</button>
+```
+
+After adding the controls template, we need to pass it to the `PaginateDirective` using the microsyntax:
+
+
+```html
+<ul>
+  <li *appPaginate="let item of items; controls: controls">
+    {{ item }}
+  </li>
+</ul>
+```
+
+This means: As controls template, use the variable reference `controls`.
+
+The asterisk syntax `*appPaginate` and the attribute microsyntax `let item of items; controls: controls` is syntactic sugar
+
+<div class="book-sources" markdown="1">
+- [PaginateDirective: source code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
+</div>
+
+
 ## Testing Pipes
 ## Testing Modules
 
@@ -3652,7 +4589,7 @@ findEl(…)
 
 <script type="module">
 const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
-const output = document.getElementById('generated-toc');
+const output = document.getElementById('toc-tree');
 const fragment = document.createDocumentFragment();
 Array.from(headings).forEach((heading) => {
   const li = document.createElement('li');
