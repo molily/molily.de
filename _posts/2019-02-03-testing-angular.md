@@ -379,11 +379,15 @@ In this guide, we will explore the different aspects of testing Angular applicat
 - [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
 </div>
 
-The counter Component app in action:
+<button class="load-iframe">
+See the counter Component app in action
+</button>
 
+<script type="template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
+</script>
 
 The counter is a reusable Component that increments, decrements and resets a number using buttons and input fields.
 
@@ -410,11 +414,15 @@ While this example seems trivial to implement, it already offers valuable challe
 - [Flickr photo search: Run the app](https://9elements.github.io/angular-flickr-search/)
 </div>
 
-The Flickr photo search in action:
+<button class="load-iframe">
+See the Flickr photo search in action
+</button>
 
+<script type="template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
 </p>
+</script>
 
 This app that enables the user to search for public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
 
@@ -1085,11 +1093,17 @@ All these tasks need to be tested properly.
 
 ### Unit test for the counter Component
 
-As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/counter). This is how it looks in action:
+As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/counter).
 
+<button class="load-iframe">
+See the CounterComponent in action
+</button>
+
+<script type="template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
+</script>
 
 When designing a Component test, the guiding questions are: What does the Component do, what needs to be tested? How do I test this behavior?
 
@@ -1170,7 +1184,7 @@ const fixture = TestBed.createComponent(CounterComponent);
 
 `createComponent()` returns a `ComponentFixture`, essentially a wrapper around the Component with useful testing tools. We will learn more about the `ComponentFixture` later.
 
-`createComponent()` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{{ count }}` in the example, are not evaluated.
+`createComponent()` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{% raw %}{{ count }}{% endraw %}` in the example, are not evaluated.
 
 In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows us to test asynchronous behavior in a synchronous manner, which is much simpler.
 
@@ -1386,13 +1400,13 @@ We have completed the *Act* phase in which the test clicks on the increment butt
 In the template, the count is rendered into a `strong` element:
 
 ```html
-<strong>{{ count }}</strong>
+{% raw %}<strong>{{ count }}</strong>{% endraw %}
 ```
 
 In our test, we need to find this element and read its text content. For this purpose, we add a test id:
 
 ```html
-<strong data-testid="count">{{ count }}</strong>
+{% raw %}<strong data-testid="count">{{ count }}</strong>{% endraw %}
 ```
 
 We can now find the element easily:
@@ -1574,22 +1588,38 @@ function findEl<T>(
 
 This function is self-contained. The Component fixture needs to be passed in explicitly. Since `ComponentFixture<T>` requires a type parameter – the wrapped Component type –, `findEl` also has a type parameter called `T`. TypeScript will infer the Component type automatically when you pass a `ComponentFixture`.
 
-Second, we write a testing helper that clicks on an element with a given test id. This helper can build on `findEl`.
+Second, we write a testing helper that clicks on an element with a given test id. This helper builds on `findEl`.
 
 ```typescript
-export function click<T>(
-  fixture: ComponentFixture<T>,
-  testId: string,
-  event: Partial<MouseEvent> | null
-): void {
+export function click<T>(fixture: ComponentFixture<T>, testId: string): void {
   const element = findEl(fixture, testId);
+  const event = makeClickEvent(element.nativeElement);
   element.triggerEventHandler('click', event);
 }
 ```
 
-The `click` helper can be used on every element that has a `(click)="…"` event handler.  For accessibility, make sure the element can be focussed and activated. This is the case for buttons or links.
+To create a fake click event object, `click` calls another function, `makeClickEvent`.
 
-Historically, the `click` event was specific to mouse input. Today, it is still triggered by a mouse click, but it transformed into a generic “activate” event. It is also triggered by a “tap” (touch input), keyboard input or voice input.
+```typescript
+export function makeClickEvent(target: EventTarget): Partial<MouseEvent> {
+  return {
+    preventDefault(): void {},
+    stopPropagation(): void {},
+    stopImmediatePropagation(): void {},
+    type: 'click',
+    target,
+    currentTarget: target,
+    bubbles: true,
+    cancelable: true,
+  };
+}
+```
+
+This function returns on partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods of properties of real click events. It is suitable for clicks on buttons, links etc. where the pointer position, the pressed mouse button and modifier keys do not matter.
+
+The `click` testing helper can be used on every element that has a `(click)="…"` event handler. For accessibility, make sure the element can be focussed and activated. This is already the case for buttons (`button` element) and links (`a` elements).
+
+Historically, the `click` event was specific to mouse input. Today, it is still triggered by a mouse click, but it transformed into a generic “activate” event. It is also triggered by touch input (“tap”), keyboard input or voice input.
 
 So in your Component, you do not need to listen for touch or keyboard events separately. In the test, a generic `click` event usually suffices.
 
@@ -1614,7 +1644,7 @@ Using these helpers, we are going to rewrite our spec:
 ```typescript
 it('increments the count', () => {
   // Act
-  click(fixture, 'decrement-button', null);
+  click(fixture, 'decrement-button');
   // Re-render the Component
   fixture.detectChanges();
 
@@ -1878,7 +1908,7 @@ it('emits countChange events on increment', () => {
   });
 
   // Act
-  click(fixture, 'increment-button', null);
+  click(fixture, 'increment-button');
 });
 ```
 
@@ -1893,7 +1923,7 @@ it('emits countChange events on increment', () => {
   });
 
   // Act
-  click(fixture, 'increment-button', null);
+  click(fixture, 'increment-button');
 
   // Assert
   expect(actualCount).toBe(1);
@@ -1914,7 +1944,7 @@ it('emits countChange events on increment', () => {
   });
 
   // Act
-  click(fixture, 'increment-button', null);
+  click(fixture, 'increment-button');
 });
 ```
 
@@ -1931,7 +1961,7 @@ it('emits countChange events on decrement', () => {
   });
 
   // Act
-  click(fixture, 'decrement-button', null);
+  click(fixture, 'decrement-button');
 
   // Assert
   expect(actualCount).toBe(-1);
@@ -1990,10 +2020,10 @@ it('emits countChange events', () => {
   });
 
   // Act
-  click(fixture, 'increment-button', null);
-  click(fixture, 'decrement-button', null);
+  click(fixture, 'increment-button');
+  click(fixture, 'decrement-button');
   setFieldValue(fixture, 'reset-input', String(newCount));
-  click(fixture, 'reset-button', null);
+  click(fixture, 'reset-button');
 
   // Assert
   expect(actualCounts).toEqual([1, 0, newCount]);
@@ -2694,9 +2724,15 @@ This was only a glimpse of ng-mocks. The library not only helps with nested Comp
 
 We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the [ServiceCounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/service-counter).
 
+<button class="load-iframe">
+See the ServiceCounterComponent in action
+</button>
+
+<script type="template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/service-counter-component" class="responsive-iframe__iframe"></iframe>
 </p>
+</script>
 
 As the name suggests, this Component depends on the `CounterService`. The counter state is not stored in the Component itself, but in the central Service. Angular’s dependency injection maintains only one app-wide instance of the Service, a so-called singleton. Therefore, multiple instances of `ServiceCounterComponent` share the same counter state. If the user increments the count with one instance, the count also changes in the other instance.
 
@@ -3953,11 +3989,17 @@ Neither of our [example applications](#example-applications) contain an Attribut
 
 Note that numbers over the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
 
-Here is the `ThresholdWarningDirective` in action. Enter a number greater than 10 to see the effect.
+<button class="load-iframe">
+See the ThresholdWarningDirective in action
+</button>
 
+<script type="template">
 <p class="responsive-iframe">
 <iframe src="https://stackblitz.com/edit/threshold-warning-directive?ctl=1&embed=1&file=src/app/threshold-warning.directive.ts&hideExplorer=1&hideNavigation=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
 </p>
+</script>
+
+Enter a number greater than 10 to see the effect.
 
 This is the Directive’s code:
 
@@ -4142,7 +4184,7 @@ The full spec for the `ThresholdWarningDirective` looks like this:
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { findEl, setFieldValue } from '../spec-helpers/element.spec-helper';
+import { findEl, setFieldValue } from './spec-helpers/element.spec-helper';
 import { ThresholdWarningDirective } from './threshold-warning.directive';
 
 @Component({
@@ -4190,7 +4232,8 @@ describe('ThresholdWarningDirective', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [ThresholdWarningDirective: source code](https://stackblitz.com/edit/threshold-warning-directive?file=src%2Fapp%2Fthreshold-warning.directive.ts)
+- [ThresholdWarningDirective: implementation code](https://stackblitz.com/edit/threshold-warning-directive?file=src%2Fapp%2Fthreshold-warning.directive.ts)
+- [ThresholdWarningDirective: test code](https://stackblitz.com/edit/threshold-warning-directive?file=src%2Fapp%2Fthreshold-warning.directive.spec.ts)
 </div>
 
 ### Testing Structural Directives
@@ -4203,36 +4246,42 @@ A Structural Directive uses an attribute selector, like `[ngIf]`. The attribute 
 
 This guide assumes that you roughly understand how Structural Directives work and how the microsyntax translates to Directive Inputs. Please refer to the [comprehensive official guide on Structural Directives](https://angular.io/guide/structural-directives).
 
-We are going to introduce a complex Structural Directive in order to test it: The `PaginateDirective`.
+#### PaginateDirective
 
-`PaginateDirective` works similar to `NgFor`, but does not render all items at once. It spreads the items over pages, usually called *pagination*. Per default, only 10 items are rendered. The user can jump between the pages by clicking a “next” or “previous” button.
+We are going to introduce and test the `PaginateDirective`, a complex Structural Directive.
 
-Here is the `PaginateDirective` in action:
+`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called *pagination*. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
+<button class="load-iframe">
+See the PaginateDirective in action
+</button>
+
+<script type="template">
 <p class="responsive-iframe">
 <iframe src="https://stackblitz.com/edit/paginate-directive?ctl=1&embed=1&file=src/app/app.component.ts&hideExplorer=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
 </p>
+</script>
 
-Before writing the spec, we need to understand the overall structure of `PaginateDirective` first.
+Before writing the test, we need to understand the outer structure of `PaginateDirective` first.
 
 The simplest use of the Directive looks like this:
 
 ```html
 <ul>
   <li *appPaginate="let item of items">
-    {{ item }}
+    {% raw %}{{ item }}{% endraw %}
   </li>
 </ul>
 ```
 
-This notation looks similar to the `NgFor` directive. Assuming that `items` is an array of numbers (`[1, 2, 3, …]`), the example above renders the first 10 numbers in the array.
+This is similar to the `NgFor` directive. Assuming that `items` is an array of numbers (`[1, 2, 3, …]`), the example above renders the first 10 numbers in the array.
 
-The asterisk syntax `*appPaginate` and the attribute microsyntax `let item of items` is *syntactic sugar* – a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
+The asterisk syntax `*appPaginate` and the so-called microsyntax `let item of items` is *syntactic sugar*. That is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
 
 ```html
 <ng-template appPaginate let-item [appPaginateOf]="items">
   <li>
-    {{ item }}
+    {% raw %}{{ item }}{% endraw %}
   </li>
 </ng-template>
 ```
@@ -4241,7 +4290,7 @@ There is an `ng-template` with an attribute `appPaginate` and an attribute bindi
 
 As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Above you see the template our `PaginateDirective` works with. The Directive renders the template for each item on the current page.
 
-Now that we have seen Angular’s internal representation, we can understand the basic structure of the `PaginateDirective`:
+Now that we have seen Angular’s internal representation, we can understand the structure of the `PaginateDirective` class:
 
 ```typescript
 @Directive({
@@ -4255,14 +4304,14 @@ export class PaginateDirective<T> implements OnChanges {
 }
 ```
 
-The Directive uses the `[appPaginate]` attribute selector and has an Input called `appPaginateOf`. By writing the microsyntax `of items`, we actually set the `appPaginateOf` Input to the value `items`.
+The Directive uses the `[appPaginate]` attribute selector and has an Input called `appPaginateOf`. By writing the microsyntax `*appPaginate="let item **of items**"`, we actually set the `appPaginateOf` Input to the value `items`.
 
 The `PaginateDirective` has a configuration option named `perPage`. It specifies how many items are visible per page. Per default, it is 10. To change it, we set `perPage: …` in the microsyntax:
 
 ```html
 <ul>
   <li *appPaginate="let item of items; perPage: 5">
-    {{ item }}
+    {% raw %}{{ item }}{% endraw %}
   </li>
 </ul>
 ```
@@ -4276,7 +4325,7 @@ This translates to:
   [appPaginateOf]="items"
   [appPaginatePerPage]="5">
   <li>
-    {{ item }}
+    {% raw %}{{ item }}{% endraw %}
   </li>
 </ng-template>
 ```
@@ -4300,11 +4349,9 @@ export class PaginateDirective<T> implements OnChanges {
 
 This is how built-in Structural Directives like `NgIf` and `NgFor` work as well. Now it gets more complicated. Since we want to paginate the items, we need user controls to turn the pages – in addition to rendering the items.
 
-Again, a Structural Directive lacks a template. `PaginateDirective` cannot render the “next” and “previous” buttons itself. And to remain flexible, it should not render a specific markup. The Component that uses the Directive should decide how the controls look.
+Again, a Structural Directive lacks a template. `PaginateDirective` cannot render the “next” and “previous” buttons itself. And to remain flexible, it should not render specific markup. The Component that uses the Directive should decide how the controls look.
 
-Therefore we pass the controls as a template to the Directive. This will be the second template the Directive operates on.
-
-In particular, we pass a reference to a separate `ng-template`. The Directive renders the template with a *context* object. The template may pull values from the context and use them.
+Therefore we pass the controls as a template to the Directive. In particular, we pass a reference to a separate `ng-template`. This will be the second template the Directive operates on.
 
 This is how the controls template could look like:
 
@@ -4319,7 +4366,7 @@ This is how the controls template could look like:
   <button (click)="previousPage()">
     Previous page
   </button>
-  {{ page }} / {{ pages }}
+  {% raw %}{{ page }} / {{ pages }}{% endraw %}
   <button (click)="nextPage()">
     Next page
   </button>
@@ -4328,7 +4375,7 @@ This is how the controls template could look like:
 
 `#controls` sets a [template reference variable](https://angular.io/guide/template-reference-variables). This means we can further reference the template by the name `controls`.
 
-The template receives a context with variables: `previousPage`, `nextPage`, `page` and `pages`. We can describe the context with a TypeScript interface that is also part of the Directive’s code:
+The Directive renders the template with a *context* object consisting of these properties: `previousPage`, `nextPage`, `page` and `pages`. We can describe the context object with a TypeScript interface that is also part of the Directive’s code:
 
 ```typescript
 interface ControlsContext {
@@ -4352,39 +4399,398 @@ let-nextPage="nextPage"
 
 This means: Take the context property `previousPage` and make it available in the template under the name `previousPage`. And so on.
 
-The content of the controls template is rather simple. It renders two buttons for the page turning, using the functions as click handlers. It outputs the current page number and the number of total pages.
+The content of the template is rather simple. It renders two buttons for the page turning, using the functions as click handlers. It outputs the current page number and the number of total pages.
 
 ```html
 <button (click)="previousPage()">
   Previous page
 </button>
-{{ page }} / {{ pages }}
+{% raw %}{{ page }} / {{ pages }}{% endraw %}
 <button (click)="nextPage()">
   Next page
 </button>
 ```
 
-After adding the controls template, we need to pass it to the `PaginateDirective` using the microsyntax:
+Last but not least, we pass the template to the `PaginateDirective` using the microsyntax:
 
 
 ```html
 <ul>
-  <li *appPaginate="let item of items; controls: controls">
-    {{ item }}
+  <li *appPaginate="let item of items; perPage: 5; controls: controls">
+    {% raw %}{{ item }}{% endraw %}
   </li>
 </ul>
 ```
 
-This means: As controls template, use the variable reference `controls`.
+This translates to:
 
-The asterisk syntax `*appPaginate` and the attribute microsyntax `let item of items; controls: controls` is syntactic sugar
+```html
+<ng-template
+  appPaginate
+  let-item
+  [appPaginateOf]="items"
+  [appPaginatePerPage]="5"
+  [appPaginateControls]="controls">
+  <li>
+    {% raw %}{{ item }}{% endraw %}
+  </li>
+</ng-template>
+```
+
+`controls: …` in the microsyntax translates to an Input named `appPaginateControls`. This concludes the outer structure:
+
+```typescript
+@Directive({
+  selector: '[appPaginate]',
+})
+export class PaginateDirective<T> implements OnChanges {
+  @Input()
+  public appPaginateOf: T[] = [];
+
+  @Input()
+  public appPaginatePerPage = 10;
+
+  @Input()
+  public appPaginateControls?: TemplateRef<ControlsContext>;
+
+  /* … */
+}
+```
+
+The inner workings of the `PaginateDirective` are not relevant for testing, so we will not discuss them in detail here. Please refer to the Angular guide [Write a structural directive](https://angular.io/guide/structural-directives#write-a-structural-directive) for a general explanation.
 
 <div class="book-sources" markdown="1">
-- [PaginateDirective: source code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
+- [PaginateDirective: implementation code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
 </div>
 
+#### PaginateDirective test
+
+We have explored all features of `PaginateDirective` and are now ready to test them!
+
+First, we need a host Component that applies the Structural Directive under test. We let it render a list of 10 numbers, 3 numbers on each page.
+
+```typescript
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+@Component({
+  template: `
+    <ul>
+      <li
+        *appPaginate="let item of items; perPage: 3"
+        data-testid="item"
+      >
+        {% raw %}{{ item }}{% endraw %}
+      </li>
+    </ul>
+  `,
+})
+class HostComponent {
+  public items = items;
+}
+```
+
+Since we also want to test the custom controls feature, we need to pass a controls template:
+
+```typescript
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+@Component({
+  template: `
+    <ul>
+      <li
+        *appPaginate="let item of items; perPage: 3; controls: controls"
+        data-testid="item"
+      >
+        {% raw %}{{ item }}{% endraw %}
+      </li>
+    </ul>
+    <ng-template
+      #controls
+      let-previousPage="previousPage"
+      let-page="page"
+      let-pages="pages"
+      let-nextPage="nextPage"
+    >
+      <button
+        (click)="previousPage()"
+        data-testid="previousPage">
+        Previous page
+      </button>
+      <span data-testid="page">{% raw %}{{ page }}{% endraw %}</span>
+      /
+      <span data-testid="pages">{% raw %}{{ pages }}{% endraw %}</span>
+      <button
+        (click)="nextPage()"
+        data-testid="nextPage">
+        Next page
+      </button>
+    </ng-template>
+  `,
+})
+class HostComponent {
+  public items = items;
+}
+```
+
+The template code already contains `data-testid` attributes. This is how we find and examine the elements in the test (see [Querying the DOM with test ids](#querying-the-dom-with-test-ids)).
+
+This is quite a setup, but after all, we want to test the `PaginateDirective` under realistic conditions.
+
+The test suite configures a testing Module, declares both the `HostComponent` and the `PaginateDirective` and renders the `HostComponent`:
+
+```typescript
+describe('PaginateDirective', () => {
+  let fixture: ComponentFixture<HostComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [HostComponent, PaginateDirective],
+    });
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+  });
+
+  /* … */
+});
+```
+
+This is a standard Component test setup – nothing special yet.
+
+The first spec verifies that the Directive renders the items on the first page, in our case the numbers 1, 2 and 3.
+
+We have marked the item element with `data-testid="item"`. We use our [Component test helper `findEls`](https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts) to find all elements with the said test id.
+
+We expect to find three items. Then we examine the text content of each item and expect that it matches the item in the number list, respectively.
+
+```typescript
+it('renders the items of the first page', () => {
+  const els = findEls(fixture, 'item');
+  expect(els.length).toBe(3);
+
+  expect(els[0].nativeElement.textContent.trim()).toBe('1');
+  expect(els[1].nativeElement.textContent.trim()).toBe('2');
+  expect(els[2].nativeElement.textContent.trim()).toBe('3');
+});
+```
+
+Already, the expectations are repetitive and hard to read. So we introduce a little helper function.
+
+```typescript
+function expectItems(
+  elements: DebugElement[],
+  expectedItems: number[],
+): void {
+  elements.forEach((element, index) => {
+    const actualText = element.nativeElement.textContent.trim();
+    expect(actualText).toBe(String(expectedItems[index]));
+  });
+}
+```
+
+This lets us rewrite the spec so it is easier to grasp:
+
+```typescript
+it('renders the items of the first page', () => {
+  const els = findEls(fixture, 'item');
+  expect(els.length).toBe(3);
+  expectItems(els, [1, 2, 3]);
+});
+```
+
+The next spec proves that the controls template is rendered passing the current page and the total number of pages.
+
+The elements have have a `data-testid="page"` and `data-testid="pages"`, respectively. We use the [`expectText` testing helper](#testing-helpers) to check their text content.
+
+```typescript
+it('renders the current page and total pages', () => {
+  expectText(fixture, 'page', '1');
+  expectText(fixture, 'pages', '4');
+});
+```
+
+Three more specs deal with the controls for turning pages. Let us start with the “next” button.
+
+```typescript
+it('shows the next page', () => {
+  click(fixture, 'nextPage');
+  fixture.detectChanges();
+
+  const els = findEls(fixture, 'item');
+  expect(els.length).toBe(3);
+  expectItems(els, [4, 5, 6]);
+});
+```
+
+We simulate a click on the “next” button using the `click` testing helper. Then we start Angular’s change detection so the Component together with the Directive are re-rendered. Finally, we verify that the Directive has rendered the next three items, the numbers 4, 5 and 6.
+
+The spec for the “previous” button looks similar. First, we jump to the second page, then back to the first page.
+
+```typescript
+it('shows the previous page', () => {
+  click(fixture, 'nextPage');
+  click(fixture, 'previousPage');
+  fixture.detectChanges();
+
+  const els = findEls(fixture, 'item');
+  expect(els.length).toBe(3);
+  expectItems(els, [1, 2, 3]);
+});
+```
+
+We have now covered the Directive’s important behavior. Time for testing edge cases! Does the Directive behave correctly if we click on the “previous” button on the first page and the “next” button on the last page?
+
+it('checks the pages bounds', () => {
+  click(fixture, 'nextPage'); // -> 2
+  click(fixture, 'nextPage'); // -> 3
+  click(fixture, 'nextPage'); // -> 4
+  click(fixture, 'nextPage'); // -> 4
+  click(fixture, 'previousPage'); // -> 3
+  click(fixture, 'previousPage'); // -> 2
+  click(fixture, 'previousPage'); // -> 1
+  click(fixture, 'previousPage'); // -> 1
+  fixture.detectChanges();
+
+  // Expect that the first page is visible again
+  const els = findEls(fixture, 'item');
+  expect(els.length).toBe(3);
+  expectItems(els, [1, 2, 3]);
+});
+```
+
+We jump through all pages just to end up on the first page again.
+
+This is it! Here is the full test code:
+
+```typescript
+import { Component, DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import {
+  findEls,
+  expectText,
+  click,
+} from './spec-helpers/element.spec-helper';
+import { PaginateDirective } from './paginate.directive';
+
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+@Component({
+  template: `
+    <ul>
+      <li
+        *appPaginate="let item of items; perPage: 3; controls: controls"
+        data-testid="item"
+      >
+        {% raw %}{{ item }}{% endraw %}
+      </li>
+    </ul>
+    <ng-template
+      #controls
+      let-previousPage="previousPage"
+      let-page="page"
+      let-pages="pages"
+      let-nextPage="nextPage"
+    >
+      <button (click)="previousPage()" data-testid="previousPage">
+        Previous page
+      </button>
+      <span data-testid="page">{% raw %}{{ page }}{% endraw %}</span>
+      /
+      <span data-testid="pages">{% raw %}{{ pages }}{% end  raw %}</span>
+      <button (click)="nextPage()" data-testid="nextPage">
+        Next page
+      </button>
+    </ng-template>
+  `,
+})
+class HostComponent {
+  public items = items;
+}
+
+function expectItems(
+  elements: DebugElement[],
+  expectedItems: number[],
+): void {
+  elements.forEach((element, index) => {
+    const actualText = element.nativeElement.textContent.trim();
+    expect(actualText).toBe(String(expectedItems[index]));
+  });
+}
+
+describe('PaginateDirective', () => {
+  let fixture: ComponentFixture<HostComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [HostComponent, PaginateDirective],
+    });
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+  });
+
+  it('renders the items of the first page', () => {
+    const els = findEls(fixture, 'item');
+    expect(els.length).toBe(3);
+    expectItems(els, [1, 2, 3]);
+  });
+
+  it('renders the current page and total pages', () => {
+    expectText(fixture, 'page', '1');
+    expectText(fixture, 'pages', '4');
+  });
+
+  it('shows the next page', () => {
+    click(fixture, 'nextPage');
+    fixture.detectChanges();
+
+    const els = findEls(fixture, 'item');
+    expect(els.length).toBe(3);
+    expectItems(els, [4, 5, 6]);
+  });
+
+  it('shows the previous page', () => {
+    click(fixture, 'nextPage');
+    click(fixture, 'previousPage');
+    fixture.detectChanges();
+
+    const els = findEls(fixture, 'item');
+    expect(els.length).toBe(3);
+    expectItems(els, [1, 2, 3]);
+  });
+
+  it('checks the pages bounds', () => {
+    click(fixture, 'nextPage'); // -> 2
+    click(fixture, 'nextPage'); // -> 3
+    click(fixture, 'nextPage'); // -> 4
+    click(fixture, 'previousPage'); // -> 3
+    click(fixture, 'previousPage'); // -> 2
+    click(fixture, 'previousPage'); // -> 1
+    fixture.detectChanges();
+
+    // Expect that the first page is visible again
+    const els = findEls(fixture, 'item');
+    expect(els.length).toBe(3);
+    expectItems(els, [1, 2, 3]);
+  });
+});
+```
+
+`PaginateDirective` is a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
+
+<div class="book-sources" markdown="1">
+- [PaginateDirective: implementation code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
+- [PaginateDirective: test code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.spec.ts)
+</div>
 
 ## Testing Pipes
+
+
 ## Testing Modules
 
 ## End-to-End testing
@@ -4587,7 +4993,7 @@ findEl(…)
 </main>
 </div>
 
-<script type="module">
+<script>
 const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
 const output = document.getElementById('toc-tree');
 const fragment = document.createDocumentFragment();
@@ -4603,4 +5009,16 @@ Array.from(headings).forEach((heading) => {
   fragment.appendChild(li);
 });
 output.appendChild(fragment);
+
+const loadIframeButtons = document.querySelectorAll('.load-iframe');
+Array.from(loadIframeButtons).forEach((button) => {
+  button.addEventListener('click', () => {
+    const scriptTemplate = event.target.nextElementSibling;
+    console.log('scriptTemplate', scriptTemplate);
+    const iframeHTML = scriptTemplate.textContent;
+    const container = document.createElement('div');
+    container.innerHTML = iframeHTML;
+    scriptTemplate.replaceWith(container);
+  });
+});
 </script>
