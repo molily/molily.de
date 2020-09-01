@@ -15,12 +15,42 @@ robots: noindex, follow
 #toc li {
   list-style: none;
 }
-#toc .toc-heading-level-3 { margin-left: calc(1 * 1rem); }
-#toc .toc-heading-level-4 { margin-left: calc(2 * 1rem); }
-#toc .toc-heading-level-5 { margin-left: calc(3 * 1rem); }
+#toc .toc-heading-level-3 {
+  margin-left: calc(1 * 1rem);
+}
+#toc .toc-heading-level-4 {
+  margin-left: calc(2 * 1rem);
+}
+#toc .toc-heading-level-5 {
+  margin-left: calc(3 * 1rem);
+}
 
-.responsive-iframe { position: relative; margin-left: auto; margin-right: auto; max-width: 1000px; height: 0; padding-top: 56.25%; }
-.responsive-iframe__iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid white; }
+.responsive-iframe {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+  height: 0;
+  padding-top: 56.25%;
+}
+.responsive-iframe__iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid white;
+}
+
+.load-iframe {
+  border: 2px solid #140a32;
+  padding: 0 1rem;
+  background-color: #22233d;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
 </style>
 
 <svg style="display: none">
@@ -3995,7 +4025,7 @@ See the ThresholdWarningDirective in action
 
 <script type="template">
 <p class="responsive-iframe">
-<iframe src="https://stackblitz.com/edit/threshold-warning-directive?ctl=1&embed=1&file=src/app/threshold-warning.directive.ts&hideExplorer=1&hideNavigation=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
+<iframe src="https://stackblitz.com/edit/threshold-warning-directive? embed=1&file=src/app/threshold-warning.directive.ts&hideExplorer=1&hideNavigation=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
 
@@ -4258,7 +4288,7 @@ See the PaginateDirective in action
 
 <script type="template">
 <p class="responsive-iframe">
-<iframe src="https://stackblitz.com/edit/paginate-directive?ctl=1&embed=1&file=src/app/app.component.ts&hideExplorer=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
+<iframe src="https://stackblitz.com/edit/paginate-directive?  embed=1&file=src/app/app.component.ts&hideExplorer=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
 
@@ -4489,7 +4519,7 @@ class HostComponent {
 }
 ```
 
-Since we also want to test the custom controls feature, we need to pass a controls template:
+Since we also want to test the custom controls feature, we need to pass a controls template. We will use the simple controls discussed above.
 
 ```typescript
 const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -4642,6 +4672,7 @@ it('shows the previous page', () => {
 
 We have now covered the Directive’s important behavior. Time for testing edge cases! Does the Directive behave correctly if we click on the “previous” button on the first page and the “next” button on the last page?
 
+```typescript
 it('checks the pages bounds', () => {
   click(fixture, 'nextPage'); // -> 2
   click(fixture, 'nextPage'); // -> 3
@@ -4699,7 +4730,7 @@ const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       </button>
       <span data-testid="page">{% raw %}{{ page }}{% endraw %}</span>
       /
-      <span data-testid="pages">{% raw %}{{ pages }}{% end  raw %}</span>
+      <span data-testid="pages">{% raw %}{{ pages }}{% endraw %}</span>
       <button (click)="nextPage()" data-testid="nextPage">
         Next page
       </button>
@@ -4781,7 +4812,7 @@ describe('PaginateDirective', () => {
 });
 ```
 
-`PaginateDirective` is a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
+`PaginateDirective` is   a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
 
 <div class="book-sources" markdown="1">
 - [PaginateDirective: implementation code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
@@ -4800,29 +4831,6 @@ describe('PaginateDirective', () => {
 ---
 ---
 ---
-
-<h2>Synthetisches Event-Objekt</h2>
-
-```typescript
-debugElement.triggerEventHandler("click", null);
-debugElement.triggerEventHandler("click", {
-  preventDefault() {},
-  stopPropagation() {},
-  target: debugElement.nativeElement,
-  currentTarget: debugElement.nativeElement,
-  pageX: 100,
-  pageY: 200,
-});
-```
-
-<h2>Weitere Teile der Anwendung</h2>
-
-<ul>
-  <li>Services</li>
-  <li>Effects</li>
-  <li>Reducer</li>
-  <li>(Pipes, Directives, Resolver…)</li>
-</ul>
 
 <h2>Code Coverage</h2>
 
@@ -5013,12 +5021,13 @@ output.appendChild(fragment);
 const loadIframeButtons = document.querySelectorAll('.load-iframe');
 Array.from(loadIframeButtons).forEach((button) => {
   button.addEventListener('click', () => {
-    const scriptTemplate = event.target.nextElementSibling;
-    console.log('scriptTemplate', scriptTemplate);
+    const button = event.target;
+    const scriptTemplate = button.parentNode.nextElementSibling;
     const iframeHTML = scriptTemplate.textContent;
     const container = document.createElement('div');
     container.innerHTML = iframeHTML;
     scriptTemplate.replaceWith(container);
+    button.remove();
   });
 });
 </script>
