@@ -776,17 +776,13 @@ When testing a piece of code, you need to decide between an [integration test](#
 
 These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, **this guide uses the umbrella term “fake” and “faking”** for any dependency substitution.
 
-### Rules for faking dependencies
+Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same time. Since we will create many fakes throughout this guide, we need to set up **rules for faking dependencies** to apply the technique safely.
 
-Unit tests isolates a piece of code to scrutinize all its details. Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same time.
-
-Since we will create many fakes throughout this guide, we need to set up rules to apply the technique safely.
-
-#### Equivalence of fake and original
+### Equivalence of fake and original
 
 A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same methods and properties.
 
-The fake does not need to be complete, but sufficient enough to act as a replacement. The fake needs to be equivalent to the original, not fully equal.
+The fake does not need to be complete, but sufficient enough to act as a replacement. The fake needs to be equivalent to the original as far as the code under test is concerned, not fully equal to the original.
 
 Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
 
@@ -800,7 +796,7 @@ We can use TypeScript to enforce that the fake has a matching type. The fake nee
 
 Then, TypeScript assures the equivalence. The compiler reminds us to update the implementation and the fake. The TypeScript code simply does not compile if we forget that. We will learn how to declare matching types in the several upcoming examples.
 
-#### Effective faking
+### Effective faking
 
 The original dependency code has side effects that need to be suppressed during testing. The fake needs to *effectively* prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
 
@@ -2474,7 +2470,7 @@ class FakeCounterComponent implements Partial<CounterComponent> {
 
 This fake Component lacks a template and any logic, but has the same selector, Input and Output.
 
-Remember the [rules for faking dependencies](#rules-for-faking-dependencies)? We need to make sure the fake resembles the original. `FakeCounterComponent implements Partial<CounterComponent>` requires the class to implement a subset of `CounterComponent`. TypeScript enforces that the given properties and methods have the same types as in the original class.
+Remember the [rules for faking dependencies](#faking-dependencies)? We need to make sure the fake resembles the original. `FakeCounterComponent implements Partial<CounterComponent>` requires the class to implement a subset of `CounterComponent`. TypeScript enforces that the given properties and methods have the same types as in the original class.
 
 In our test suite, we may put the `FakeCounterComponent` before the `describe` block. The next step is to add the Component to the testing Module:
 
@@ -2845,7 +2841,7 @@ If we want an integration test to verify that the Component stores the count in 
 
 Let us move on to the **unit test** for the `ServiceCounterComponent`. To tackle this challenge, we need to learn the art of faking Service dependencies.
 
-There are several practical approaches with pros and cons. We have discussed two main [requirements on fake dependencies](#rules-for-faking-dependencies):
+There are several practical approaches with pros and cons. We have discussed two main [requirements on fake dependencies](#faking-dependencies):
 
 1. Equivalence of fake and original
 2. Effective faking
@@ -4009,15 +4005,15 @@ We have already tested Components. We have yet to test the two other types of Di
 
 ### Testing Attribute Directives
 
-The name Attribute Directive comes from the its attribute selector, for example `[ngModel]`. An Attribute Directive does not have a template and cannot alter the DOM structure.
+The name Attribute Directive comes from the attribute selector, for example `[ngModel]`. An Attribute Directive does not have a template and cannot alter the DOM structure.
 
 We have already mentioned the built-in Attribute Directives `NgClass` and `NgStyle`. In addition, both Template-driven and Reactive Forms rely heavily on Attribute Directives: `NgForm`, `NgModel`, `FormGroupDirective`, `FormControlName` etc.
 
-Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes. Most styling logic can be implemented using CSS rules alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
+Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes. Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
 
 Neither of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing the **`ThresholdWarningDirective`**. This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
 
-Note that numbers over the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
+Note that numbers above the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
 
 <button class="load-iframe">
 See the ThresholdWarningDirective in action
@@ -4025,7 +4021,7 @@ See the ThresholdWarningDirective in action
 
 <script type="template">
 <p class="responsive-iframe">
-<iframe src="https://stackblitz.com/edit/threshold-warning-directive? embed=1&file=src/app/threshold-warning.directive.ts&hideExplorer=1&hideNavigation=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
+<iframe src="https://molily.github.io/threshold-warning-directive/" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
 
@@ -4249,7 +4245,6 @@ describe('ThresholdWarningDirective', () => {
   it('adds the class if the number is over the threshold', () => {
     setFieldValue(fixture, 'input', '11');
     fixture.detectChanges();
-    console.log('input', input);
     expect(input.classList.contains('overThreshold')).toBe(true);
   });
 
@@ -4262,8 +4257,8 @@ describe('ThresholdWarningDirective', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [ThresholdWarningDirective: implementation code](https://stackblitz.com/edit/threshold-warning-directive?file=src%2Fapp%2Fthreshold-warning.directive.ts)
-- [ThresholdWarningDirective: test code](https://stackblitz.com/edit/threshold-warning-directive?file=src%2Fapp%2Fthreshold-warning.directive.spec.ts)
+- [ThresholdWarningDirective: implementation code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.ts )
+- [ThresholdWarningDirective: test code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.spec.ts)
 </div>
 
 ### Testing Structural Directives
@@ -4288,7 +4283,7 @@ See the PaginateDirective in action
 
 <script type="template">
 <p class="responsive-iframe">
-<iframe src="https://stackblitz.com/edit/paginate-directive?  embed=1&file=src/app/app.component.ts&hideExplorer=1&theme=dark&view=preview" class="responsive-iframe__iframe"></iframe>
+<iframe src="https://molily.github.io/paginate-directive/" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
 
@@ -4490,7 +4485,7 @@ export class PaginateDirective<T> implements OnChanges {
 The inner workings of the `PaginateDirective` are not relevant for testing, so we will not discuss them in detail here. Please refer to the Angular guide [Write a structural directive](https://angular.io/guide/structural-directives#write-a-structural-directive) for a general explanation.
 
 <div class="book-sources" markdown="1">
-- [PaginateDirective: implementation code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
+- [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
 </div>
 
 #### PaginateDirective test
@@ -4815,8 +4810,8 @@ describe('PaginateDirective', () => {
 `PaginateDirective` is   a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
 
 <div class="book-sources" markdown="1">
-- [PaginateDirective: implementation code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.ts)
-- [PaginateDirective: test code](https://stackblitz.com/edit/paginate-directive?file=src%2Fapp%2Fpaginate.directive.spec.ts)
+- [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
+- [PaginateDirective: test code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.spec.ts)
 </div>
 
 ## Testing Pipes
