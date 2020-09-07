@@ -4027,6 +4027,11 @@ See the ThresholdWarningDirective in action
 
 Enter a number greater than 10 to see the effect.
 
+<div class="book-sources" markdown="1">
+- [ThresholdWarningDirective: Source code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.ts)
+- [ThresholdWarningDirective: Run the app](https://molily.github.io/threshold-warning-directive/)
+</div>
+
 This is the Directive’s code:
 
 ```typescript
@@ -4286,6 +4291,11 @@ See the PaginateDirective in action
 <iframe src="https://molily.github.io/paginate-directive/" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
+
+<div class="book-sources" markdown="1">
+- [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
+- [PaginateDirective: Run the app](https://molily.github.io/paginate-directive/)
+</div>
 
 Before writing the test, we need to understand the outer structure of `PaginateDirective` first.
 
@@ -4586,7 +4596,7 @@ This is a standard Component test setup – nothing special yet.
 
 The first spec verifies that the Directive renders the items on the first page, in our case the numbers 1, 2 and 3.
 
-We have marked the item element with `data-testid="item"`. We use our [Component test helper `findEls`](https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts) to find all elements with the said test id.
+We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts) to find all elements with the said test id.
 
 We expect to find three items. Then we examine the text content of each item and expect that it matches the item in the number list, respectively.
 
@@ -4807,7 +4817,7 @@ describe('PaginateDirective', () => {
 });
 ```
 
-`PaginateDirective` is   a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
+`PaginateDirective` is a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
 
 <div class="book-sources" markdown="1">
 - [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
