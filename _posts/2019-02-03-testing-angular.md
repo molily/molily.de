@@ -226,7 +226,7 @@ Tests differ in their value and quality. Some tests are more meaningful than oth
 
 ### Code coverage
 
-A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code (file, method/function, block, expression etc.) are executed at all. Code coverage is typically expressed as percent values, e.g. 79% statements, 53% branches, 74% functions, 78% lines.
+A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code (file, method/function, block, expression etc.) are executed at all. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
 
 This metric on testing is useful but also deeply flawed because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance. The coverage report may point to important behavior that is not yet covered by tests, but should be. It does not tell whether the existing tests are meaningful and make the right expectations. You can merely infer that the code does not throw exceptions under test conditions.
 
@@ -4825,6 +4825,102 @@ describe('PaginateDirective', () => {
 </div>
 
 ## Testing Pipes
+
+An Angular Pipe is a special function that is called from a Component template. The purpose is to transform a value. That is, you pass a value to the Pipe, the Pipe computes a new value and returns it. When a Pipe is declared in a Module, it is available to all Component templates in the Module.
+
+The name originates from the “|” symbol that sits between the value and the Pipe name. In this example, the value from `user.birthday` is transformed by the `date` Pipe:
+
+```
+{{ user.birthday | date }}
+```
+
+Pipes are often used for internationalization, including translation of UI labels and message, formatting of dates, times and various numbers. In these cases, the Pipe input value is a raw value that should not be shown to the user. The output value is user-readable.
+
+Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. They format dates, amounts of money and numbers, respectively, according to the system settings. Another well-known Pipe is the `AsyncPipe` which unwraps an Observable or Promise.
+
+Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
+
+Let us study the structure of a Pipe first to find ways to test it. In essence, a Pipe is class with a public `transform` method. Here is a simple Pipe that expects a name and greets the user with “Hello”.
+
+```typescript
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({ name: 'hello' })
+export class HelloPipe implements PipeTransform {
+  transform(name: string): string {
+    return `Hello, ${name}!`;
+  }
+}
+```
+
+In a Component template, we transform a value using the Pipe:
+
+```
+{{ 'Julie' | hello }}
+```
+
+The `HelloPipe` take the string `'Julie'` and computes a new string, `'Hello, Julie!'`.
+
+There are three ways to test a Pipe, from simple to complex:
+
+1. Create an instance of the class, then call the `transform` method.
+
+  This way is useful for testing Pipes without dependencies.
+2. Set up a `TestBed`, obtain the pipe instance, then call the `transform` method.
+
+  This way is useful for testing Pipes with Service dependencies. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
+3. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content.
+
+  This testing setup closely mimics how the Pipe is used eventually. It is suitable for Pipes with Service dependencies.
+
+### Testing simple Pipes
+
+The `HelloPipe` does not have any dependencies. We opt for the first way, a unit test which examines the single instance.
+
+We create a Jasmine test suite. In a `beforeEach` block, we create an instance of the `HelloPipe`. In the specs, we scrutinize the `transform` method.
+
+```typescript
+describe('HelloPipe', () => {
+  let helloPipe: HelloPipe;
+
+  beforeEach(() => {
+    helloPipe = new HelloPipe();
+  });
+
+  it('says Hello', () => {
+    expect(helloPipe.transform('Julie')).toBe('Hello, Julie!');
+  });
+});
+```
+
+We call the `transform` method with the string `'Julie'` and expect the output `'Hello, Julie!'`. This is everything that needs to be tested in the `HelloPipe` example.
+
+### Testing complex Pipes
+
+TODO: with dependencies?!
+
+Many Pipes depend on the current “[locale](https://en.wikipedia.org/wiki/Locale_(computer_software)”), including the user interface language, date and number formatting rules, as well as the selected country or region. Other Pipes depend on the current user, its role and permissions.
+
+Imagine an Angular application that lets you change the user interface language during runtime. A popular solution for this is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s approach but implement the code ourselves.
+
+Let us assume that the current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `pagination.next` translates to the user-facing label “Next page”.
+
+TODO: TranslateService code
+
+To show a translated label, a Component could depend on the `TranslateService` and call it manually for each translation key. Instead, we introduce the `TranslatePipe` for simplicity:
+
+```
+{{ 'pagination.next' | translate }}
+```
+
+Right in the template, we translate the key `'pagination.next'`.
+
+TODO: TranslateService code
+
+The `TranslatePipe` depends on the `TranslateService`. Again, we can either write an integration test that covers the dependency as well. Or we write a unit test that replaces the dependency with a fake.
+
+`TranslateService` performs HTTP requests to load the translations. We should avoid these side effects when testing `TranslatePipe`. So let us fake the Service to write a unit test!
+
 
 
 ## Testing Modules
