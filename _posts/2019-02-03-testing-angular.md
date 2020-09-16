@@ -4831,7 +4831,7 @@ An Angular Pipe is a special function that is called from a Component template. 
 The name originates from the “|” symbol that sits between the value and the Pipe name. In this example, the value from `user.birthday` is transformed by the `date` Pipe:
 
 ```
-{{ user.birthday | date }}
+{% raw %}{{ user.birthday | date }}{% endraw %}
 ```
 
 Pipes are often used for internationalization, including translation of UI labels and message, formatting of dates, times and various numbers. In these cases, the Pipe input value is a raw value that should not be shown to the user. The output value is user-readable.
