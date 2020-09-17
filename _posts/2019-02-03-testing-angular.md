@@ -3527,7 +3527,7 @@ describe('CounterService', () => {
 - [CounterService spec](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
 </div>
 
-### Testing a Service that makes HTTP requests
+### Testing a Service that sends HTTP requests
 
 Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with a dependency.
 
@@ -4826,21 +4826,23 @@ describe('PaginateDirective', () => {
 
 ## Testing Pipes
 
-An Angular Pipe is a special function that is called from a Component template. The purpose is to transform a value. That is, you pass a value to the Pipe, the Pipe computes a new value and returns it. When a Pipe is declared in a Module, it is available to all Component templates in the Module.
+An Angular Pipe is a special function that is called from a Component template. Its purpose is to transform a value: You pass a value to the Pipe, the Pipe computes a new value and returns it.
 
-The name originates from the “|” symbol that sits between the value and the Pipe name. In this example, the value from `user.birthday` is transformed by the `date` Pipe:
+The name Pipe originates from the vertical bar “|” that sits between the value and the Pipe name. The concept as well as the “|” syntax originates from Unix pipes and Unix shells.
+
+In this example, the value from `user.birthday` is transformed by the `date` Pipe:
 
 ```
 {% raw %}{{ user.birthday | date }}{% endraw %}
 ```
 
-Pipes are often used for internationalization, including translation of UI labels and message, formatting of dates, times and various numbers. In these cases, the Pipe input value is a raw value that should not be shown to the user. The output value is user-readable.
+Pipes are often used for internationalization, including translation of labels and messages, formatting of dates, times and various numbers. In these cases, the Pipe input value should not be shown to the user. The output value is user-readable.
 
-Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. They format dates, amounts of money and numbers, respectively, according to the system settings. Another well-known Pipe is the `AsyncPipe` which unwraps an Observable or Promise.
+Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. They format dates, amounts of money and numbers, respectively, according to the localization settings. Another well-known Pipe is the `AsyncPipe` which unwraps an Observable or Promise.
 
 Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
-Let us study the structure of a Pipe first to find ways to test it. In essence, a Pipe is class with a public `transform` method. Here is a simple Pipe that expects a name and greets the user with “Hello”.
+Let us study the structure of a Pipe first to find ways to test it. In essence, a Pipe is class with a public `transform` method. Here is a simple Pipe that expects a name and greets the user.
 
 ```typescript
 import { Pipe, PipeTransform } from '@angular/core';
@@ -4856,7 +4858,7 @@ export class HelloPipe implements PipeTransform {
 In a Component template, we transform a value using the Pipe:
 
 ```
-{{ 'Julie' | hello }}
+{% raw %}{{ 'Julie' | hello }}{% endraw %}
 ```
 
 The `HelloPipe` take the string `'Julie'` and computes a new string, `'Hello, Julie!'`.
@@ -4865,19 +4867,19 @@ There are three ways to test a Pipe, from simple to complex:
 
 1. Create an instance of the class, then call the `transform` method.
 
-  This way is useful for testing Pipes without dependencies.
+  This way is suitable for testing Pipes without dependencies.
 2. Set up a `TestBed`, obtain the pipe instance, then call the `transform` method.
 
-  This way is useful for testing Pipes with Service dependencies. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
-3. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content.
+  This way allows to test Pipes with Service dependencies. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
+3. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content in the DOM.
 
-  This testing setup closely mimics how the Pipe is used eventually. It is suitable for Pipes with Service dependencies.
+  This testing setup closely mimics how the Pipe is used in practice. It is suitable for Pipes with Service dependencies.
 
 ### Testing simple Pipes
 
 The `HelloPipe` does not have any dependencies. We opt for the first way, a unit test which examines the single instance.
 
-We create a Jasmine test suite. In a `beforeEach` block, we create an instance of the `HelloPipe`. In the specs, we scrutinize the `transform` method.
+First, we create a Jasmine test suite. In a `beforeEach` block, we create an instance of `HelloPipe`. In the specs, we scrutinize the `transform` method.
 
 ```typescript
 describe('HelloPipe', () => {
@@ -4893,34 +4895,58 @@ describe('HelloPipe', () => {
 });
 ```
 
-We call the `transform` method with the string `'Julie'` and expect the output `'Hello, Julie!'`. This is everything that needs to be tested in the `HelloPipe` example.
+We call the `transform` method with the string `'Julie'` and expect the output `'Hello, Julie!'`.
 
-### Testing complex Pipes
+This is everything that needs to be tested in the `HelloPipe` example. If the `transform` method contains more logic that needs to be tested, we add more specs that call the method with different input.
 
-TODO: with dependencies?!
+### Testing Pipes with dependencies
 
-Many Pipes depend on the current “[locale](https://en.wikipedia.org/wiki/Locale_(computer_software)”), including the user interface language, date and number formatting rules, as well as the selected country or region. Other Pipes depend on the current user, its role and permissions.
+Many Pipes depend on local settings, the so-called [locale](https://en.wikipedia.org/wiki/Locale_(computer_software)). These settings include the user interface language, date and number formatting rules, as well as the selected country, region or currency. Other Pipes depend on the current user, its role and permissions.
 
-Imagine an Angular application that lets you change the user interface language during runtime. A popular solution for this is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s approach but implement the code ourselves.
+Imagine an Angular application that lets you change the user interface language during runtime. A popular solution is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
 
-Let us assume that the current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `pagination.next` translates to the user-facing label “Next page”.
+https://molily.github.io/translate-pipe/
+
+Let us assume that the current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “Hello”.
 
 TODO: TranslateService code
 
 To show a translated label, a Component could depend on the `TranslateService` and call it manually for each translation key. Instead, we introduce the `TranslatePipe` for simplicity:
 
 ```
-{{ 'pagination.next' | translate }}
+{{ 'greeting' | translate }}
 ```
 
-Right in the template, we translate the key `'pagination.next'`.
+Right in the template, we translate the key `'greeting'`.
 
-TODO: TranslateService code
+<button class="load-iframe">
+See the TranslatePipe in action
+</button>
+
+<script type="template">
+<p class="responsive-iframe">
+<iframe src="https://molily.github.io/translate-pipe/" class="responsive-iframe__iframe"></iframe>
+</p>
+</script>
+
+<div class="book-sources" markdown="1">
+- [TranslatePipe: Run the app](https://molily.github.io/translate-pipe/)
+- [TranslatePipe: Source code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.ts)
+- [TranslateService: Source code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.ts)
+</div>
+
+The `TranslatePipe` is a complex *impure* Pipe because the translations are loaded asynchronously. Initially, the `transform` method cannot return the correct translation at once. It calls the `TranslateService`’s `get` method which returns an Observable. Once the translation is loaded, the
+
+TODO
+markForCheck
+
+transform method is called again and returns the synchronously.
 
 The `TranslatePipe` depends on the `TranslateService`. Again, we can either write an integration test that covers the dependency as well. Or we write a unit test that replaces the dependency with a fake.
 
 `TranslateService` performs HTTP requests to load the translations. We should avoid these side effects when testing `TranslatePipe`. So let us fake the Service to write a unit test!
 
+class TranslateService {}
 
 
 ## Testing Modules
