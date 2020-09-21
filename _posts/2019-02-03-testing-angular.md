@@ -456,7 +456,7 @@ See the Flickr photo search in action
 
 This app that enables the user to search for public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
 
-This application is straightforward and relatively simple to implement. Still it raises important questions:
+This application is straight-forward and relatively simple to implement. Still it raises important questions:
 
 - **App structure**: How to split responsibilities into Components and how to model dependencies.
 - **API communication**: How to fetch data by making HTTP requests and update the user interface.
@@ -1009,7 +1009,7 @@ Again, this is a plain JavaScript example to illustrate the usage of spies. Usua
 
 ### Spying on existing object methods
 
-We have used `jasmine.createSpy('name')` to create a standalone spy and have injected it into the constructor. Explicit constructor injection is a straightforward and recommended way to provide a dependency. It is also the predominant dependency injection strategy in Angular.
+We have used `jasmine.createSpy('name')` to create a standalone spy and have injected it into the constructor. Explicit constructor injection is a straight-forward and recommended way to provide a dependency. It is also the predominant dependency injection strategy in Angular.
 
 Sometimes, there is already an object whose method we need to spy on. This is especially helpful if the code uses global methods from the browser environment, like `window.fetch` in the example above.
 
@@ -1863,7 +1863,7 @@ describe('CounterComponent', () => {
 
 The `CounterComponent` expects a `number` Input and renders it into the DOM. When reading text from the DOM, we always deal with strings. What is why we pass in a number `123` but expect to find the string `'123'`.
 
-In addition to primitive values, Components usually expect complex objects, arrays or even Observables. Sometimes they process the Input values before displaying them. Testing this behavior takes more effort. The test needs to define meaningful fake data first. Setting the Input properties is straightforward. The Assert phase get more complex because the Input values are not directly rendered.
+In addition to primitive values, Components usually expect complex objects, arrays or even Observables. Sometimes they process the Input values before displaying them. Testing this behavior takes more effort. The test needs to define meaningful fake data first. Setting the Input properties is straight-forward. The Assert phase get more complex because the Input values are not directly rendered.
 
 TODO
 
@@ -2040,7 +2040,7 @@ it('emits countChange events', () => {
 This example requires some RxJS knowledge. We are going to encounter RxJS Observables again and again when testing Angular applications. If you do not understand the example above, that is totally fine. It is just optional way to merge three specs into one.
 
 <div class="book-sources" markdown="1">
-- [Final CounterComponent spec](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts)
+- [CounterComponent: test code](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts)
 </div>
 
 ### Black vs. white box Component testing
@@ -2424,7 +2424,7 @@ Note that this is one possible testing method. As always, it has pros and cons. 
 However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular not to find matching Components for the custom elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `HomeComponent` uses a wrong element name and the test copies that error? We will not notice the false positive unless the involved Components are rendered together.
 
 <div class="book-sources" markdown="1">
-- [Final HomeComponent spec](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.spec.ts)
+- [HomeComponent: test code](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.spec.ts)
 </div>
 
 ### Faking a child Component
@@ -3489,7 +3489,7 @@ describe('CounterService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [CounterService spec](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
+- [CounterService: test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
 </div>
 
 ### Testing a Service that sends HTTP requests
@@ -3732,7 +3732,7 @@ describe('FlickrService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [FlickrService: Full test code](
+- [FlickrService: test code](
 https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.spec.ts)
 </div>
 
@@ -4819,22 +4819,18 @@ In a Component template, we transform a value using the Pipe:
 
 The `HelloPipe` take the string `'Julie'` and computes a new string, `'Hello, Julie!'`.
 
-There are three ways to test a Pipe, from simple to complex:
+There are two important ways to test a Pipe:
 
-1. Create an instance of the class, then call the `transform` method.
+1. Create an instance of the Pipe class manually without the `TestBed`. Then call the `transform` method.
+2. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content in the DOM.
 
-  This way is suitable for testing Pipes without dependencies.
-2. Set up a `TestBed`, obtain the pipe instance, then call the `transform` method.
-  TODO: Possible???
+The first way requires minimal setup, is fast and straight-forward. The second closely mimics how the Pipe is used in practice. It also tests the name of the Pipe, declared in the `@Pipe()` decorator.
 
-  This way allows to test Pipes with Service dependencies. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
-3. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content in the DOM.
-
-  This testing setup closely mimics how the Pipe is used in practice. It is suitable for Pipes with Service dependencies.
+Both ways allow to test Pipes that depend on Services. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
 
 ### HelloPipe test
 
-The `HelloPipe` does not have any dependencies. We opt for the first way, a unit test which examines the single instance.
+The `HelloPipe` does not have any dependencies. We opt for the first way and write a unit test which examines the single instance.
 
 First, we create a Jasmine test suite. In a `beforeEach` block, we create an instance of `HelloPipe`. In the specs, we scrutinize the `transform` method.
 
@@ -4874,15 +4870,14 @@ See the TranslatePipe in action
 
 <div class="book-sources" markdown="1">
 - [TranslatePipe: Run the app](https://molily.github.io/translate-pipe/)
-- [TranslatePipe: Source code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.ts)
-- [TranslateService: Source code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.ts)
+- [TranslatePipe: Source code](https://github.com/molily/translate-pipe)
 </div>
 
-Imagine an Angular application that lets you change the user interface language during runtime. A popular solution is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
+The example application lets you change the user interface language during runtime. A popular solution for this task is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
 
 #### TranslateService
 
-Let us assume that the current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “Hello”.
+The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “Hello”.
 
 The `TranslateService` looks like this:
 
@@ -4949,12 +4944,17 @@ This is what the Service provides:
 
 In the example project, the `AppComponent` depends on the `TranslateService`. On creation, the Service loads the English translations. The `AppComponent` renders a select field allowing the user to change the language.
 
+<div class="book-sources" markdown="1">
+- [TranslateService: implementation code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.ts)
+- [TranslateService: test code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.spec.ts)
+</div>
+
 #### TranslatePipe
 
 To show a translated label, a Component could call the Service’s `get` method manually for each translation key. Instead, we introduce the `TranslatePipe` to do the heavy lifting. It lets us write:
 
 ```
-{{ 'greeting' | translate }}
+{% raw %}{{ 'greeting' | translate }}{% endraw %}
 ```
 
 This translates the key `'greeting'`.
@@ -5032,11 +5032,14 @@ In turn, Angular re-evaluates the expression that uses the Pipe, for example `'g
 
 The same process happens when the user changes the language and new translations are loaded. The Pipe subscribes to `TranslateService`’s `onTranslationChange` and calls the `TranslateService` again to get the new translation.
 
-Now let us test the `TranslatePipe`!
+<div class="book-sources" markdown="1">
+- [TranslatePipe: implementation code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.ts)
+- [Angular reference: ChangeDetectorRef ](https://angular.io/api/core/ChangeDetectorRef)
+</div>
 
 #### TranslatePipe test
 
-We can either write a test that integrates the `TranslateService` dependency. Or we write a unit test that replaces the dependency with a fake.
+Now let us test the `TranslatePipe`! We can either write a test that integrates the `TranslateService` dependency. Or we write a unit test that replaces the dependency with a fake.
 
 `TranslateService` performs HTTP requests to load the translations. We should avoid these side effects when testing `TranslatePipe`. So let us fake the Service to write a unit test.
 
@@ -5055,12 +5058,12 @@ Now we need to decide whether to test the Pipe directly or within a host Compone
 
 Let us start with the host Component:
 
-```
+```typescript
 const key1 = 'key1';
 const key2 = 'key2';
 
 @Component({
-  template: '{{ key | translate }}',
+  template: '{% raw %}{{ key | translate }}{% endraw %}',
 })
 class HostComponent {
   public key = key1;
@@ -5094,11 +5097,11 @@ describe('TranslatePipe: with TestBed and HostComponent', () => {
 
 In the testing module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide the `FakeTranslateService` instead. Just like in a Component test, we create the Component and examine the rendered DOM.
 
-What needs to be tested? Obviously, we need to check that `{{ key | translate }}` evaluates to `key1`. There are two cases that needs to be tested though:
+What needs to be tested? Obviously, we need to check that `{% raw %}{{ key | translate }}{% endraw %}` evaluates to `key1`. There are two cases that needs to be tested though:
 
 As described above, `TranslatePipe`’s `transform` calls `TranslateService`’s `get`, which returns an Observable. If the translations are already loaded, the Observable completes immediately and `transform` is able to return the correct translation synchronously.
 
-If the translations are pending, the Pipe returns `null` and the Observable completes afterwards. A change detection cycle with a second call to `transform` is necessary to render to correct translation.
+If the translations are pending, the Pipe returns `null` (or an outdated translation) and the Observable completes afterwards. A change detection cycle with a second call to `transform` is necessary to render to correct translation.
 
 In the test, we write specs for both scenarios:
 
@@ -5116,15 +5119,19 @@ it('translates the key, sync service response', () => {
 });
 ```
 
-Remember, the provided `FakeTranslateService` returns an Observable created with RxJS’ `of`. This Observable emits one “next” value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
+Remember, the provided `FakeTranslateService` returns an Observable created with RxJS’ `of`.
+
+```typescript
+return of(`Translation for ${key}`);
+```
+
+  This Observable emits one “next” value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
 
 We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
 
 Then we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
 
----
-
-To test the second case is more challenging because we need to simulate that the Observable emits asychronously. There are numerous ways to do this. We are using [RxJS’ `delay` operator](https://rxjs-dev.firebaseapp.com/api/operators/delay) for simplicity.
+To test the second case is trickier because we need to simulate that the Observable emits asynchronously. There are numerous ways to do this. We are using [RxJS’ `delay` operator](https://rxjs-dev.firebaseapp.com/api/operators/delay) for simplicity.
 
 At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
 
@@ -5132,7 +5139,7 @@ Again, there are several ways how to accomplish this. We opt for Angular’s `fa
 
 `fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
 
-The great thing about `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still run for a few milliseconds.
+The great thing about `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still complete in a few milliseconds.
 
 `fakeAsync` wraps the function passed to `it`:
 
@@ -5152,7 +5159,7 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is *some* delay. The delay can be anything greater or equal 1.
+We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is *some* delay greater or equal 1.
 
 Now, we can call `detectChanges` for the first time.
 
@@ -5165,7 +5172,7 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-`TranslatePipe`’s `transform` is called and returns `null` since the Observable did not emit a value immediately. So we expect that the output is empty:
+`TranslatePipe`’s `transform` is called for the first time and returns `null` since the Observable does not emit a value immediately. So we expect that the output is empty:
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -5193,7 +5200,7 @@ it('translates the key, async service response', fakeAsync(() => {
 
 This causes the Observable to emit the translation and complete. The `TranslatePipe` receives the translation and saves it.
 
-To see it in effect, we need to start a change detection cycle. Then, the translation is visible in the DOM.
+To see a change in the DOM, we need to start a change detection cycle. `transform` is called for the second time and returns the correct translation.
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -5246,12 +5253,16 @@ it('updates on translation change', () => {
 });
 ```
 
-We made it! Writing these specs is challenging without doubt. `TranslateService` and `TranslatePipe` are real-world examples with proven API.
+We made it! Writing these specs is challenging without doubt.
 
-https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.spec.ts
-https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts
-https://rxjs-dev.firebaseapp.com/api/operators/delay
-fakeAsync! tick!
+`TranslateService` and `TranslatePipe` are non-trivial examples with a proven API. The original classes from ngx-translate are more powerful. If you look for a robust and flexible solution, it is recommended to use the ngx-translate library directly.
+
+<div class="book-sources" markdown="1">
+- [TranslatePipe: test code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.spec.ts)
+- [Angular reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
+- [Angular reference: tick](https://angular.io/api/core/testing/tick)
+- [RxJS: delay operator](https://rxjs-dev.firebaseapp.com/api/operators/delay)
+</div>
 
 ## Testing Modules
 
