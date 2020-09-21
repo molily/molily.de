@@ -1228,13 +1228,11 @@ Now the code for rendering a component using the `TestBed` is complete. Let us w
 describe('CounterComponent', () => {
   let fixture: ComponentFixture<CounterComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CounterComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CounterComponent);
     fixture.detectChanges();
   });
@@ -1247,21 +1245,11 @@ describe('CounterComponent', () => {
 
 Using `describe`, we define a test suite for the `CounterComponent`. Inside, there are two `beforeEach` blocks. The first `beforeEach` block configures the `TestBed`. The second renders the component.
 
-<aside markdown="1">
+You might wonder why the function in the `beforeEach` block is marked as an `async` function. It is because `compileComponents` is an asynchronous operation. To compile the Components, Angular needs to fetch external the template files referenced by `templateUrl`.
 
-You might wonder why there are two `beforeEach` blocks. The slight difference is that the first is wrapped in a call to `async()` from `@angular/core/testing`. This function is a helper for dealing with asynchronous test code. (Do not confuse the `async()` testing helper with async functions, a ECMAScript language feature.)
+If you are using the Angular CLI, which is most likely, the template files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. This is an implementation detail that might change in the future. The safe way is wait for `compileComponents` to complete.
 
-Per default, Jasmine expects that your testing code is synchronous. The functions you pass to `it` but also `beforeEach`, `beforeAll`, `afterEach`, `afterAll` need to finish in a certain amount of time, also known as timeout. Jasmine also supports asynchronous specs, and `async()` helps to declare such specs.
-
-`async()` returns a function that calls the wrapped function. In addition, it waits for all asynchronous tasks to finish and then gets back to Jasmine. Internally, it uses Zone.js to determine whether all tasks have finished.
-
-TODO!
-
-We learn more about `async()` later. For now, the question is why we need to wrap the calls to `configureTestingModule` and `compileComponents`. The reason is that `compileComponents` is an asynchronous operation. For compiling the Component, Angular needs to read external files, namely the template and the stylesheet.
-
-If you are using the Angular CLI, which is most likely, these files are already included in the test bundle. So they are available instantly. If you are not using the CLI, the files have to be loaded asynchronously. Since this is an Angular implementation detail that might change in the future, the safe way is to assume that `compileComponents` is asynchronous.
-
-</aside>
+Per default, Jasmine expects that your testing code is synchronous. The functions you pass to `it` but also `beforeEach`, `beforeAll`, `afterEach`, `afterAll` need to finish in a certain amount of time, also known as timeout. Jasmine also supports asynchronous specs. If you pass an `async` function, Jasmine waits for it to finish.
 
 Now we have built the scaffold for our test using the `TestBed`, we need to write the first spec. `createComponent` returns a fixture, an instance of `ComponentFixture`. What is the fixture and what does it provide?
 
@@ -1464,13 +1452,11 @@ describe('CounterComponent', () => {
   let debugElement: DebugElement;
 
   // Arrange
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CounterComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CounterComponent);
     fixture.detectChanges();
     debugElement = fixture.debugElement;
@@ -1513,13 +1499,11 @@ describe('CounterComponent', () => {
   let debugElement: DebugElement;
 
   // Arrange
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CounterComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CounterComponent);
     fixture.detectChanges();
     debugElement = fixture.debugElement;
@@ -1822,13 +1806,12 @@ public ngOnChanges(): void {
 
 `ngOnChanges` is called whenever a “data-bound property” changes, including Inputs and Outputs.
 
-Let us write a test for the `startCount` Input. We set the Input in the `beforeEach` block that creates the component, before calling `detectChanges`. The spec `it`self checks that the correct count is rendered.
+Let us write a test for the `startCount` Input. We set the Input in the `beforeEach` block, before calling `detectChanges`. The spec `it`self checks that the correct count is rendered.
 
 ```typescript
 /* Incomplete! */
 beforeEach(() => {
-  fixture = TestBed.createComponent(CounterComponent);
-  component = fixture.componentInstance;
+  /* … */
   // Set the Input
   component.startCount = startCount;
   fixture.detectChanges();
@@ -1857,13 +1840,11 @@ describe('CounterComponent', () => {
 
   const startCount = 123;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CounterComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(CounterComponent);
     component = fixture.componentInstance;
     component.startCount = startCount;
@@ -2197,13 +2178,11 @@ describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HomeComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -2216,9 +2195,9 @@ describe('HomeComponent', () => {
 });
 ```
 
-This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance.  It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
+This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
 
-In Angular 9 with Ivy, the spec passes but produces a bunch of warnings on the console:
+From Angular 9 on, the spec passes but produces a bunch of warnings on the console:
 
 <p>
   <code>
@@ -2585,14 +2564,12 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let counter: FakeCounterComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HomeComponent, FakeCounterComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -2649,12 +2626,12 @@ testing Components with fake dependencies. (Remember, this guide uses the umbrel
 Among other things, ng-mocks helps creating fake Components to substitute children. ng-mocks’s `MockComponent` function expects the original Component and returns a fake that resembles the original. Instead of creating a `FakeCounterComponent`, we call `MockComponent(CounterComponent)` and add the fake to the testing Module.
 
 ```typescript
-beforeEach(async(() => {
-  TestBed.configureTestingModule({
+beforeEach(async () => {
+  await TestBed.configureTestingModule({
     declarations: [HomeComponent, MockComponent(CounterComponent)],
     schemas: [NO_ERRORS_SCHEMA],
   }).compileComponents();
-}));
+});
 ```
 
 We can then query the rendered DOM for an instance of `CounterComponent`. The found instance is in fact a fake created by ng-mocks.
@@ -2667,14 +2644,12 @@ describe('HomeComponent', () => {
   // Original type!
   let counter: CounterComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HomeComponent, MockComponent(CounterComponent)],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -2700,14 +2675,12 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let counter: CounterComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HomeComponent, Mock(CounterComponent)],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -2780,14 +2753,12 @@ describe('ServiceCounterComponent: integration test', () => {
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
       providers: [CounterService],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ServiceCounterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -2978,7 +2949,7 @@ describe('ServiceCounterComponent: unit test', () => {
   // Declare shared variable
   let fakeCounterService: CounterService;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     // Create fake
     fakeCounterService =
       jasmine.createSpyObj<CounterService>('CounterService', {
@@ -2988,16 +2959,14 @@ describe('ServiceCounterComponent: unit test', () => {
         reset: undefined,
       });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
       // Use fake instead of original
       providers: [
         { provide: CounterService, useValue: fakeCounterService }
       ],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ServiceCounterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -3042,7 +3011,7 @@ describe('ServiceCounterComponent: unit test', () => {
   // Declare shared variable
   let fakeCounterService: CounterService;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     // Create fake
     fakeCounterService =
       jasmine.createSpyObj<CounterService>('CounterService', {
@@ -3052,16 +3021,14 @@ describe('ServiceCounterComponent: unit test', () => {
         reset: undefined,
       });
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
       // Use fake instead of original
       providers: [
         { provide: CounterService, useValue: fakeCounterService }
       ],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ServiceCounterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -3111,15 +3078,15 @@ Instead of a fixed Observable, we use a `BehaviorSubject`, just like in the orig
 
 We declare a variable `fakeCount$` in the scope of the test suite and assign a `BehaviorSubject` in the first `beforeEach` block:
 
-```
+```typescript
 describe('ServiceCounterComponent: unit test', () => {
   /* … */
   let fakeCount$: BehaviorSubject<number>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     fakeCount$ = new BehaviorSubject(0);
     /* … */
-  }));
+  });
 
   /* … */
 });
@@ -3178,7 +3145,7 @@ describe('ServiceCounterComponent: unit test', () => {
   let fakeCount$: BehaviorSubject<number>;
   let fakeCounterService: Pick<CounterService, keyof CounterService>;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     fakeCount$ = new BehaviorSubject(0);
 
     fakeCounterService = {
@@ -3200,13 +3167,11 @@ describe('ServiceCounterComponent: unit test', () => {
     spyOn(fakeCounterService, 'decrement').and.callThrough();
     spyOn(fakeCounterService, 'reset').and.callThrough();
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
       providers: [{ provide: CounterService, useValue: fakeCounterService }],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ServiceCounterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -3606,7 +3571,7 @@ const searchTerm = 'dragonfly';
 describe('FlickrService', () => {
   let flickrService: FlickrService;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [FlickrService],
@@ -3639,7 +3604,7 @@ describe('FlickrService', () => {
   let flickrService: FlickrService;
   let controller: HttpTestingController;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [FlickrService],
@@ -3742,7 +3707,7 @@ describe('FlickrService', () => {
   let flickrService: FlickrService;
   let controller: HttpTestingController;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [FlickrService],
@@ -4125,13 +4090,11 @@ We are going to render this Component. We need a standard [Component test setup]
 describe('ThresholdWarningDirective', () => {
   let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ThresholdWarningDirective, HostComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
   });
@@ -4160,13 +4123,11 @@ describe('ThresholdWarningDirective', () => {
   let fixture: ComponentFixture<HostComponent>;
   let input: HTMLInputElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ThresholdWarningDirective, HostComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
 
@@ -4231,13 +4192,11 @@ describe('ThresholdWarningDirective', () => {
   let fixture: ComponentFixture<HostComponent>;
   let input: HTMLInputElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [ThresholdWarningDirective, HostComponent],
     }).compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
     input = findEl(fixture, 'input').nativeElement;
@@ -4278,7 +4237,7 @@ This guide assumes that you roughly understand how Structural Directives work an
 
 #### PaginateDirective
 
-We are going to introduce and test the `PaginateDirective`, a complex Structural Directive.
+We are introducing and testing the `PaginateDirective`, a complex Structural Directive.
 
 `PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called *pagination*. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
@@ -4448,7 +4407,6 @@ The content of the template is rather simple. It renders two buttons for the pag
 
 Last but not least, we pass the template to the `PaginateDirective` using the microsyntax:
 
-
 ```html
 <ul>
   <li *appPaginate="let item of items; perPage: 5; controls: controls">
@@ -4577,13 +4535,11 @@ The test suite configures a testing Module, declares both the `HostComponent` an
 describe('PaginateDirective', () => {
   let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HostComponent, PaginateDirective],
-    });
-  }));
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
   });
@@ -4759,13 +4715,11 @@ function expectItems(
 describe('PaginateDirective', () => {
   let fixture: ComponentFixture<HostComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [HostComponent, PaginateDirective],
-    });
-  }));
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
   });
@@ -4842,6 +4796,8 @@ Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. Th
 
 Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
+### HelloPipe
+
 Let us study the structure of a Pipe first to find ways to test it. In essence, a Pipe is class with a public `transform` method. Here is a simple Pipe that expects a name and greets the user.
 
 ```typescript
@@ -4869,13 +4825,14 @@ There are three ways to test a Pipe, from simple to complex:
 
   This way is suitable for testing Pipes without dependencies.
 2. Set up a `TestBed`, obtain the pipe instance, then call the `transform` method.
+  TODO: Possible???
 
   This way allows to test Pipes with Service dependencies. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
 3. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content in the DOM.
 
   This testing setup closely mimics how the Pipe is used in practice. It is suitable for Pipes with Service dependencies.
 
-### Testing simple Pipes
+### HelloPipe test
 
 The `HelloPipe` does not have any dependencies. We opt for the first way, a unit test which examines the single instance.
 
@@ -4901,23 +4858,9 @@ This is everything that needs to be tested in the `HelloPipe` example. If the `t
 
 ### Testing Pipes with dependencies
 
-Many Pipes depend on local settings, the so-called [locale](https://en.wikipedia.org/wiki/Locale_(computer_software)). These settings include the user interface language, date and number formatting rules, as well as the selected country, region or currency. Other Pipes depend on the current user, its role and permissions.
+Many Pipes depend on local settings, including the user interface language, date and number formatting rules, as well as the selected country, region or currency.
 
-Imagine an Angular application that lets you change the user interface language during runtime. A popular solution is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
-
-https://molily.github.io/translate-pipe/
-
-Let us assume that the current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “Hello”.
-
-TODO: TranslateService code
-
-To show a translated label, a Component could depend on the `TranslateService` and call it manually for each translation key. Instead, we introduce the `TranslatePipe` for simplicity:
-
-```
-{{ 'greeting' | translate }}
-```
-
-Right in the template, we translate the key `'greeting'`.
+We are introducing and testing the `TranslatePipe`, a complex Pipe with a Service dependency.
 
 <button class="load-iframe">
 See the TranslatePipe in action
@@ -4935,19 +4878,380 @@ See the TranslatePipe in action
 - [TranslateService: Source code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.ts)
 </div>
 
-The `TranslatePipe` is a complex *impure* Pipe because the translations are loaded asynchronously. Initially, the `transform` method cannot return the correct translation at once. It calls the `TranslateService`’s `get` method which returns an Observable. Once the translation is loaded, the
+Imagine an Angular application that lets you change the user interface language during runtime. A popular solution is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
 
-TODO
-markForCheck
+#### TranslateService
 
-transform method is called again and returns the synchronously.
+Let us assume that the current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “Hello”.
 
-The `TranslatePipe` depends on the `TranslateService`. Again, we can either write an integration test that covers the dependency as well. Or we write a unit test that replaces the dependency with a fake.
+The `TranslateService` looks like this:
 
-`TranslateService` performs HTTP requests to load the translations. We should avoid these side effects when testing `TranslatePipe`. So let us fake the Service to write a unit test!
+```typescript
+import { HttpClient } from '@angular/common/http';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
-class TranslateService {}
+export interface Translations {
+  [key: string]: string;
+}
 
+@Injectable()
+export class TranslateService {
+  /** The current langage */
+  private currentLang = 'en';
+
+  /** Translations for the current language */
+  private translations: Translations | null = null;
+
+  /** Emits when the language change */
+  public onTranslationChange = new EventEmitter<Translations>();
+
+  constructor(private http: HttpClient) {
+    this.loadTranslations(this.currentLang);
+  }
+
+  /** Changes the language */
+  public use(language: string): void {
+    this.currentLang = language;
+    this.loadTranslations(language);
+  }
+
+  /** Translates a key asynchronously */
+  public get(key: string): Observable<string> {
+    if (this.translations) {
+      return of(this.translations[key]);
+    }
+    return this.onTranslationChange.pipe(
+      take(1),
+      map((translations) => translations[key])
+    );
+  }
+
+  /** Loads the translations for the given language */
+  private loadTranslations(language: string): void {
+    this.translations = null;
+    this.http
+      .get<Translations>(`assets/${language}.json`)
+      .subscribe((translations) => {
+        this.translations = translations;
+        this.onTranslationChange.emit(translations);
+      });
+  }
+}
+```
+
+This is what the Service provides:
+
+1. `use` method: Set the current language and load the translations as JSON via HTTP.
+2. `get` method: Get the translation for a key.
+3. `onTranslationChange` `EventEmitter`: Observing changes on the translations as a result of `use`.
+
+In the example project, the `AppComponent` depends on the `TranslateService`. On creation, the Service loads the English translations. The `AppComponent` renders a select field allowing the user to change the language.
+
+#### TranslatePipe
+
+To show a translated label, a Component could call the Service’s `get` method manually for each translation key. Instead, we introduce the `TranslatePipe` to do the heavy lifting. It lets us write:
+
+```
+{{ 'greeting' | translate }}
+```
+
+This translates the key `'greeting'`.
+
+Here is the code:
+
+```typescript
+import {
+  ChangeDetectorRef,
+  OnDestroy,
+  Pipe,
+  PipeTransform,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { TranslateService } from './translate.service';
+
+@Pipe({
+  name: 'translate',
+  pure: false,
+})
+export class TranslatePipe implements PipeTransform, OnDestroy {
+  private lastKey: string | null = null;
+  private translation: string | null = null;
+
+  private onTranslationChangeSubscription: Subscription;
+  private getSubscription: Subscription | null = null;
+
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private translateService: TranslateService
+  ) {
+    this.onTranslationChangeSubscription = this.translateService.onTranslationChange.subscribe(
+      () => {
+        if (this.lastKey) {
+          this.getTranslation(this.lastKey);
+        }
+      }
+    );
+  }
+
+  public transform(key: string): string | null {
+    if (key !== this.lastKey) {
+      this.lastKey = key;
+      this.getTranslation(key);
+    }
+    return this.translation;
+  }
+
+  private getTranslation(key: string): void {
+    this.getSubscription?.unsubscribe();
+    this.getSubscription = this.translateService
+      .get(key)
+      .subscribe((translation) => {
+        this.translation = translation;
+        this.changeDetectorRef.markForCheck();
+        this.getSubscription = null;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.onTranslationChangeSubscription.unsubscribe();
+    if (this.getSubscription) {
+      this.getSubscription.unsubscribe();
+    }
+  }
+}
+```
+
+The `TranslatePipe` is *impure* because the translations are loaded asynchronously. When called the first time, the `transform` method cannot return the correct translation synchronously. It calls the `TranslateService`’s `get` method which returns an Observable.
+
+Once the translation is loaded, the `TranslatePipe` saves it and notifies the Angular change detector. In particular, it marks the corresponding view as changed by calling [`ChangeDetectorRef`’s `markForCheck`](https://angular.io/api/core/ChangeDetectorRef#markForCheck) method.
+
+In turn, Angular re-evaluates the expression that uses the Pipe, for example `'greeting' | translate`, and calls the `transform` method again. Finally, `transform` returns the right translation synchronously.
+
+The same process happens when the user changes the language and new translations are loaded. The Pipe subscribes to `TranslateService`’s `onTranslationChange` and calls the `TranslateService` again to get the new translation.
+
+Now let us test the `TranslatePipe`!
+
+#### TranslatePipe test
+
+We can either write a test that integrates the `TranslateService` dependency. Or we write a unit test that replaces the dependency with a fake.
+
+`TranslateService` performs HTTP requests to load the translations. We should avoid these side effects when testing `TranslatePipe`. So let us fake the Service to write a unit test.
+
+```typescript
+class FakeTranslateService implements Partial<TranslateService> {
+  public onTranslationChange = new EventEmitter<Translations>();
+  public get(key: string): Observable<string> {
+    return of(`Translation for ${key}`);
+  }
+}
+```
+
+The fake is a partial implementation of the original. The `TranslatePipe` under test only needs the `onTranslationChange` property and the `get` method. The latter returns a fake translation including the key so we can test that the key was passed correctly.
+
+Now we need to decide whether to test the Pipe directly or within a host Component. Both ways are possible and no solution is signficantly easier or more robust. You will find both solutions in the example project. In this guide, we will discuss the solution with `TestBed` and host Component.
+
+Let us start with the host Component:
+
+```
+const key1 = 'key1';
+const key2 = 'key2';
+
+@Component({
+  template: '{{ key | translate }}',
+})
+class HostComponent {
+  public key = key1;
+}
+```
+
+This component uses the `TranslatePipe` to translate its `key` property. Per default, it is set to `key1`. There is also a second constant `key2` for testing the key change later.
+
+Let us set up the test suite:
+
+```typescript
+describe('TranslatePipe: with TestBed and HostComponent', () => {
+  let fixture: ComponentFixture<HostComponent>;
+  let translateService: TranslateService;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [TranslatePipe, HostComponent],
+      providers: [
+        { provide: TranslateService, useClass: FakeTranslateService },
+      ],
+    }).compileComponents();
+
+    translateService = TestBed.inject(TranslateService);
+    fixture = TestBed.createComponent(HostComponent);
+  });
+
+  /* … */
+});
+```
+
+In the testing module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide the `FakeTranslateService` instead. Just like in a Component test, we create the Component and examine the rendered DOM.
+
+What needs to be tested? Obviously, we need to check that `{{ key | translate }}` evaluates to `key1`. There are two cases that needs to be tested though:
+
+As described above, `TranslatePipe`’s `transform` calls `TranslateService`’s `get`, which returns an Observable. If the translations are already loaded, the Observable completes immediately and `transform` is able to return the correct translation synchronously.
+
+If the translations are pending, the Pipe returns `null` and the Observable completes afterwards. A change detection cycle with a second call to `transform` is necessary to render to correct translation.
+
+In the test, we write specs for both scenarios:
+
+```typescript
+it('translates the key, sync service response', /* … */);
+it('translates the key, async service response', /* … */);
+```
+
+Let us start with the first case. The spec is straight-forward.
+
+```typescript
+it('translates the key, sync service response', () => {
+  fixture.detectChanges();
+  expectContent(fixture, 'Translation for key1');
+});
+```
+
+Remember, the provided `FakeTranslateService` returns an Observable created with RxJS’ `of`. This Observable emits one “next” value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
+
+We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
+
+Then we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
+
+---
+
+To test the second case is more challenging because we need to simulate that the Observable emits asychronously. There are numerous ways to do this. We are using [RxJS’ `delay` operator](https://rxjs-dev.firebaseapp.com/api/operators/delay) for simplicity.
+
+At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
+
+Again, there are several ways how to accomplish this. We opt for Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
+
+`fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
+
+The great thing about `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still run for a few milliseconds.
+
+`fakeAsync` wraps the function passed to `it`:
+
+```typescript
+it('translates the key, async service response', fakeAsync(() => {
+  /* … */
+});
+```
+
+Next, we need to change the behavior of `FakeTranslateService`’s `get` to make it asynchronous.
+
+```typescript
+it('translates the key, async service response', fakeAsync(() => {
+  translateService.get = (key) =>
+    of(`Async translation for ${key}`).pipe(delay(100));
+  /* … */
+});
+```
+
+We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is *some* delay. The delay can be anything greater or equal 1.
+
+Now, we can call `detectChanges` for the first time.
+
+```typescript
+it('translates the key, async service response', fakeAsync(() => {
+  translateService.get = (key) =>
+    of(`Async translation for ${key}`).pipe(delay(100));
+  fixture.detectChanges();
+  /* … */
+});
+```
+
+`TranslatePipe`’s `transform` is called and returns `null` since the Observable did not emit a value immediately. So we expect that the output is empty:
+
+```typescript
+it('translates the key, async service response', fakeAsync(() => {
+  translateService.get = (key) =>
+    of(`Async translation for ${key}`).pipe(delay(100));
+  fixture.detectChanges();
+  expectContent(fixture, '');
+  /* … */
+});
+```
+
+Here comes the interesting part. We want the Observable to emit the value now. We simulate the passage of 100 milliseconds with `tick(100)`.
+
+```typescript
+it('translates the key, async service response', fakeAsync(() => {
+  translateService.get = (key) =>
+    of(`Async translation for ${key}`).pipe(delay(100));
+  fixture.detectChanges();
+  expectContent(fixture, '');
+
+  tick(100);
+  /* … */
+});
+```
+
+This causes the Observable to emit the translation and complete. The `TranslatePipe` receives the translation and saves it.
+
+To see it in effect, we need to start a change detection cycle. Then, the translation is visible in the DOM.
+
+```typescript
+it('translates the key, async service response', fakeAsync(() => {
+  translateService.get = (key) =>
+    of(`Async translation for ${key}`).pipe(delay(100));
+  fixture.detectChanges();
+  expectContent(fixture, '');
+
+  tick(100);
+  fixture.detectChanges();
+  expectContent(fixture, 'Async translation for key1');
+}));
+```
+
+Testing these details may seem pedantic at first. But the logic in `TranslatePipe` exists for a reason. Therefore we should test both cases.
+
+There are two specs left to write:
+
+```typescript
+it('translates a changed key', /* … */);
+it('updates on translation change', /* … */);
+```
+
+The `TranslatePipe` stores the last key and the last translation. This necessary because it receives the translation asynchronously. Also, Angular calls `transform` several times with the same key. Since `TranslatePipe` is *impure*, Angular cannot simply cache the result.
+
+When `translate` is called with a different key, the `TranslatePipe` needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
+
+```typescript
+it('translates a changed key', () => {
+  fixture.detectChanges();
+  fixture.componentInstance.key = key2;
+  fixture.detectChanges();
+  expectContent(fixture, 'Translation for key2');
+});
+```
+
+After another change detection cycle, the DOM contains the updated translation for `key2`.
+
+Last but no least, the Pipe needs to fetch a new translation when the user has changed the language and new translations have been loaded. For this purpose, the Pipe subscribes to the Service’s `onTranslationChange` emitter.
+
+Our `FakeTranslateService` supports this `EventEmitter` as well, hence we call the `emit` method to simulate a translation change. Before, we let the Service return a different translation in order to see a change in the DOM.
+
+```typescript
+it('updates on translation change', () => {
+  fixture.detectChanges();
+  translateService.get = (key) => of(`New translation for ${key}`);
+  translateService.onTranslationChange.emit({});
+  fixture.detectChanges();
+  expectContent(fixture, 'New translation for key1');
+});
+```
+
+We made it! Writing these specs is challenging without doubt. `TranslateService` and `TranslatePipe` are real-world examples with proven API.
+
+https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.spec.ts
+https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts
+https://rxjs-dev.firebaseapp.com/api/operators/delay
+fakeAsync! tick!
 
 ## Testing Modules
 
