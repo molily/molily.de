@@ -57,7 +57,7 @@ Since there is no recycling, you cannot set up a circular economy. Therefore, ex
 
 Challenging the game for its focus on war means putting the cart before the horse. Rather, the question is why the alien creatures are designed like they are: lacking intelligence, always hostile, no intelligible motives or needs. This is a particular cheap way of conceiving adversaries.
 
-How do these creatures sustain their life? Like every organism, they must exchange matter with nature. They need a habitat. They are interconnected with other organisms. The fact that the aliens look like insects and live in huge groups suggests they have a [eusocial structure](https://en.wikipedia.org/wiki/Eusociality), like ants, bees and humans.
+How do these creatures sustain their life? Like every organism, they must exchange matter with nature. They need a habitat. They are interconnected with other organisms. The fact that the aliens look like insects and live in huge groups suggests they have a [eusocial structure](https://en.wikipedia.org/wiki/Eusociality), like ants and bees.
 
 If the game had explored how these organisms live and survive, coexistence would be possible. Both species could interact, exchange and support each other. This could be as complex and manifold as building a sophisticated war industry, without denying that there are different interests and that the player is an intruder.
 
