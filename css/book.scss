@@ -263,6 +263,10 @@ pre {
   text-decoration: none;
 }
 
+#toc .active {
+  outline: 1px solid currentColor;
+}
+
 #toc .link-type {
   display: none;
 }
@@ -351,11 +355,18 @@ pre {
   font-size: 0.6rem;
 }
 
-#cover-image {
+#cover-image-tokio-tower {
   display: block;
   margin: auto;
   max-width: 70vw;
   max-height: 48vh;
+}
+
+#cover-image-flying-probe {
+  display: block;
+  margin: auto;
+  width: 800px;
+  max-width: 100%;
 }
 
 #cover-credits-link {

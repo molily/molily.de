@@ -215,7 +215,7 @@ lang: en
 <picture>
   <source type="image/webp" srcset="/img/robust-js-500-q80-sharp_yuv.webp, /img/robust-js-1000-q40-sharp-yuv.webp 2x" >
   <source type="image/jpeg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x">
-  <img id="cover-image" src="/img/robust-js-500-q75.jpg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x" alt="Photo of the Tokyo Tower, a 332 meter lattice tower in Tokyo, Japan." loading="lazy">
+  <img id="cover-image-tokio-tower" src="/img/robust-js-500-q75.jpg" srcset="/img/robust-js-500-q75.jpg, /img/robust-js-1000-q40.jpg 2x" alt="Photo of the Tokyo Tower, a 332 meter lattice tower in Tokyo, Japan." loading="lazy">
 </picture>
 
 <a href="#cover-credits" id="cover-credits-link" class="no-link-type" title="Cover credits">Tokyo Tower by Martin Abegglen – CC-BY-SA</a>

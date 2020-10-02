@@ -15,14 +15,14 @@ robots: noindex, follow
 #toc li {
   list-style: none;
 }
-#toc .toc-heading-level-3 {
-  margin-left: calc(1 * 1rem);
+#toc .toc-heading-level-3 a {
+  padding-left: calc(1 * 1rem);
 }
-#toc .toc-heading-level-4 {
-  margin-left: calc(2 * 1rem);
+#toc .toc-heading-level-4 a {
+  padding-left: calc(2 * 1rem);
 }
-#toc .toc-heading-level-5 {
-  margin-left: calc(3 * 1rem);
+#toc .toc-heading-level-5 a {
+  padding-left: calc(3 * 1rem);
 }
 
 .responsive-iframe {
@@ -74,7 +74,10 @@ robots: noindex, follow
         <a href="/" title="Home">molily.de</a>
         <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
       </p>
-      <h1 id="toc-book-title">Testing Angular</h1>
+      <h1 id="toc-book-title">
+        Testing Angular<br>
+        A Developer’s Guide
+      </h1>
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
       <!--
@@ -91,8 +94,20 @@ robots: noindex, follow
 <div id="main-container">
 <main id="main" markdown="1">
 
+<p id="cover">
+<picture>
+  <source type="image/avif" srcset="/img/robust-angular/robust-angular-800-30.avif, /img/robust-angular/robust-angular-1600-30.avif 2x">
+  <source type="image/webp" srcset="/img/robust-angular/rob ust-angular-800.webp, /img/robust-angular/robust-angular-1600.webp 2x">
+  <source type="image/jpeg" srcset="/img/robust-angular/robust-angular-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
+  <img id="cover-image-flying-probe" src="/img/robust-angular/robust-angular-800-85.jpg" srcset="/img/robust-angular/robust-angular-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of a flying probe testing a printed circuit board.">
+</picture>
+
+<span id="cover-credits">Photo by genkur from iStock</span>
+
+</p>
+
 <h1 id="main-heading">
-  Testing Angular
+  Testing Angular<br>
   <span class="subheading">A Developer’s Guide</span>
 </h1>
 
@@ -546,7 +561,7 @@ The launched browser opens `http://localhost:9876/`. As mentioned, this site ser
 
 When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
-<img src="/assets/testing-angular/karma-success.png" width="100%">
+<img src="/img/robust-angular/karma-success.png" width="100%">
 
 This is the console output:
 
@@ -5266,6 +5281,50 @@ We made it! Writing these specs is challenging without doubt.
 
 ## Testing Modules
 
+Modules are central parts of Angular applications. Often they contain important setup code. Yet they are hard to test since there is no typical logic, only sophisticated configuration.
+
+Angular Modules are classes, but most of the time, the class itself is empty. The essence lies in the metadata set with `@NgModule({ … })`.
+
+We could sneak into the metadata and check whether certain Services are provided, third-party Modules are imported, and Components are exported. Such a test would simply mirror the implementation. This does not give you more confidence, it only increases the cost of change.
+
+Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
+
+There are certain Module errors that surface not before runtime. These can be caught with a *smoke test*. Given this module:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ExampleComponent } from './example.component';
+
+@NgModule({
+  declarations: [ExampleComponent],
+  imports: [CommonModule],
+})
+export class FeatureModule {}
+```
+
+We write this smoke test:
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import { FeatureModule } from './example.module';
+
+describe('FeatureModule', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [FeatureModule],
+    });
+  });
+
+  it('initializes', () => {
+    const module = TestBed.inject(FeatureModule);
+    expect(module).toBeTruthy();
+  });
+});
+```
+
+The integration test uses the `TestBed` to import the Module under test. It verifies that no error occurs when importing the Module.
+
 ## End-to-End testing
 ### Protractor
 ### Cypress
@@ -5443,33 +5502,4 @@ findEl(…)
 </main>
 </div>
 
-<script>
-const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
-const output = document.getElementById('toc-tree');
-const fragment = document.createDocumentFragment();
-Array.from(headings).forEach((heading) => {
-  const li = document.createElement('li');
-  const a = document.createElement('a');
-  a.href = `#${heading.id}`;
-  const tag = heading.tagName.toLowerCase();
-  const level = parseInt(tag[1], 10);
-  a.textContent = heading.textContent;
-  li.classList.add(`toc-heading-level-${level}`);
-  li.appendChild(a);
-  fragment.appendChild(li);
-});
-output.appendChild(fragment);
-
-const loadIframeButtons = document.querySelectorAll('.load-iframe');
-Array.from(loadIframeButtons).forEach((button) => {
-  button.addEventListener('click', () => {
-    const button = event.target;
-    const scriptTemplate = button.parentNode.nextElementSibling;
-    const iframeHTML = scriptTemplate.textContent;
-    const container = document.createElement('div');
-    container.innerHTML = iframeHTML;
-    scriptTemplate.replaceWith(container);
-    button.remove();
-  });
-});
-</script>
+<script src="/assets/testing-angular.js"></script>
