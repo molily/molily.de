@@ -169,21 +169,21 @@ Automated testing has several technical, economical and organizational benefits.
 
 1. **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 
-  Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyse and fix the bug in order to regain the user’s trust.
+Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyse and fix the bug in order to regain the user’s trust.
 
-  **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
+**A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
 
 2. **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the challenges they had to deal with.
 
-  **A valuable test clearly describes how the implementation code should behave.** The test uses a proper language to talk to developers and convey the requirements. The test lists known cases the implementation has to deal with.
+   **A valuable test clearly describes how the implementation code should behave.** The test uses a proper language to talk to developers and convey the requirements. The test lists known cases the implementation has to deal with.
 
 3. **Testing ensures that the code implements the requirements and does not exhibit bugs.** Testing taps every part of the code in order to find flaws.
 
-  **A valuable test covers the important scenarios** – both correct and incorrect input, expected cases as well as exceptional cases.
+   **A valuable test covers the important scenarios** – both correct and incorrect input, expected cases as well as exceptional cases.
 
 4. **Testing makes change safe by preventing regressions.** Tests not only verify that the current implementation meets the requirements. They also verify that the code still works as expected after changes. With proper automated tests in place, accidentally breakage is less likely. Implementing new features and code refactoring is safer.
 
-  **A valuable test fails when essential code is changed or deleted.** Design the test to fail if dependent behavior is changed. It should still pass if unrelated code is changed.
+   **A valuable test fails when essential code is changed or deleted.** Design the test to fail if dependent behavior is changed. It should still pass if unrelated code is changed.
 
 ### What testing can achieve
 
@@ -287,7 +287,7 @@ All levels of testing are necessary and valuable. Different types of tests need 
 
 What is indisputable is that high-level tests like end-to-end tests are expensive and slow, while lower-level tests like integration and unit tests are cheaper and faster.
 
-End-to-end tests are brittle, meaning they often produce false negatives. Sometimes they fail for now apparent reason – when you run the same tests again, they suddenly pass. Even if the test failure is a true negative, it is hard to find the root cause of the problem. You need to wander through the full stack to locate the bug.
+End-to-end tests are brittle, meaning they often fail even though the software is without fault. Sometimes they fail for now apparent reason – when you run the same tests again, they suddenly pass. Even if the test correctly fails, it is hard to find the root cause of the problem. You need to wander through the full stack to locate the bug.
 
 End-to-end test are computationally expensive and run slow. Since they use a real, sometimes “headless” browser and run against the full software stack, the testing setup is immense. You need to deploy front-end, back-end, databases, caches etc. to testing machines and then have machines to run the end-to-end tests.
 
@@ -507,7 +507,7 @@ Dependency injection turns tight coupling into loose coupling. A certain applica
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
 - We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](#integration-tests) that includes direct and indirect dependencies.
-- Or we provide a **fake** implementation, also called *mock*, that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in _isolation_.
+- Or we provide a **fake** implementation, also called _mock_, that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in _isolation_.
 
 A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and reconnect it with equivalent fake objects.
 
@@ -621,8 +621,7 @@ Each suite _describes_ a piece of code, the _code under test_.
 
 `describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` if the suite is testing the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
-TODO
-organize the suite with describe
+TODO: organize the suite with describe
 
 ### Specifications
 
@@ -673,14 +672,19 @@ Inside the `it` block lies the actual testing code. Irrespective of the testing 
 How could the structure of the spec `it('resets the count', /* … */)` for the `CounterComponent` look like?
 
 1. <p><strong>Arrange:</strong></p>
-  - Create an instance of `CounterComponent`.
-  - Render the Component into the document.
+
+- Create an instance of `CounterComponent`.
+- Render the Component into the document.
+
 2. <p><strong>Act:</strong></p>
-  - Find and focus the reset input field.
-  - Enter the text “5”.
-  - Find and click the “Reset” button.
+
+- Find and focus the reset input field.
+- Enter the text “5”.
+- Find and click the “Reset” button.
+
 3. <p><strong>Assert:</strong></p>
-  - Expect that the displayed count now reads “5”.
+
+- Expect that the displayed count now reads “5”.
 
 This structure makes it easier to come up with a test and also to implement it. Ask yourself:
 
@@ -803,7 +807,7 @@ Like a fake building on a movie set, the outer shape needs to be indistinguishab
 
 The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get of sync later when the original is changed.
 
-When the original dependency changes its public API, dependent code needs to be adapted. Also, the fake needs to be aligned. When the fake is outdated, the unit test becomes a fantasy world where everything magically works. In reality, the code under test is broken and the test result is a false positive.
+When the original dependency changes its public API, dependent code needs to be adapted. Also, the fake needs to be aligned. When the fake is outdated, the unit test becomes a fantasy world where everything magically works. The test passes but in fact the code under test is broken.
 
 How can we ensure that the fake is up-to-date with the original? How can we ensure the equivalence of original and fake in the long run and prevent any possible divergence?
 
@@ -813,7 +817,7 @@ Then, TypeScript assures the equivalence. The compiler reminds us to update the 
 
 ### Effective faking
 
-The original dependency code has side effects that need to be suppressed during testing. The fake needs to *effectively* prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
+The original dependency code has side effects that need to be suppressed during testing. The fake needs to _effectively_ prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
 
 In some faking approaches, the fake inherits from the original. Only those properties and methods are overwritten that are currently used by the code under test.
 
@@ -921,7 +925,7 @@ The suite contains one spec that tests the `getTodos` method:
 
 ```typescript
 it('gets the to-dos', async () => {
-    /* … */
+  /* … */
 });
 ```
 
@@ -961,7 +965,7 @@ Second, we verify that the `fetch` spy has been called with the correct paramete
 
 Both expectations are necessary to guarantee that `getTodos` works correctly.
 
-After having written the first spec for `getTodos`, we need to ask ourselves: Does the test fully cover its behavior? We have tested the success case, also called *happy path*, but the error case, also called *unhappy path*, is yet to be tested. In particular, this error handling code:
+After having written the first spec for `getTodos`, we need to ask ourselves: Does the test fully cover its behavior? We have tested the success case, also called _happy path_, but the error case, also called _unhappy path_, is yet to be tested. In particular, this error handling code:
 
 ```typescript
 if (!response.ok) {
@@ -990,31 +994,31 @@ Now we add a second spec for the error case:
 describe('TodoService', () => {
   /* … */
   it('handles an HTTP error when getting the to-dos', async () => {
-      // Arrange
+    // Arrange
       const fetchSpy = jasmine.createSpy('fetch')
         .and.returnValue(errorResponse);
-      const todoService = new TodoService(fetchSpy);
+    const todoService = new TodoService(fetchSpy);
 
-      // Act
-      let error;
-      try {
-        await todoService.getTodos();
-      } catch (e) {
-        error = e;
-      }
+    // Act
+    let error;
+    try {
+      await todoService.getTodos();
+    } catch (e) {
+      error = e;
+    }
 
-      // Assert
+    // Assert
       expect(error).toEqual(new Error('HTTP error: 404 Not Found'));
       expect(fetchSpy).toHaveBeenCalledWith('/todos');
-    });
+  });
 });
 ```
 
-In the *Arrange* phase, we inject a spy that returns the new error response.
+In the _Arrange_ phase, we inject a spy that returns the new error response.
 
-In the *Act* phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the error. Most likely, this is how implementation code would handle the error.
+In the _Act_ phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the error. Most likely, this is how implementation code would handle the error.
 
-In the *Assert* phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
+In the _Assert_ phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
 Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this [later](#testing-a-service-that-makes-http-requests).
 
@@ -1191,7 +1195,7 @@ In a unit test, add those parts to the Module that are strictly necessary: the c
 
 ```typescript
 TestBed.configureTestingModule({
-  declarations: [ CounterComponent ],
+  declarations: [CounterComponent],
 });
 ```
 
@@ -1208,7 +1212,7 @@ Since `configureTestingModule()` returns the `TestBed` class again, we can chain
 ```typescript
 TestBed
   .configureTestingModule({
-    declarations: [ CounterComponent ],
+  declarations: [CounterComponent],
   })
   .compileComponents();
 ```
@@ -1332,7 +1336,7 @@ it('increments the count', () => {
 });
 ```
 
-The **Arrange, Act and Assert** structure helps us to structure the spec. We have already covered the *Arrange* phase in the `beforeEach` blocks that render the Component. In the *Act* phase, we click on the increment button. In the *Assert* phase, we check that the displayed count has incremented.
+The **Arrange, Act and Assert** structure helps us to structure the spec. We have already covered the _Arrange_ phase in the `beforeEach` blocks that render the Component. In the _Act_ phase, we click on the increment button. In the _Assert_ phase, we check that the displayed count has incremented.
 
 ```typescript
 it('increments the count', () => {
@@ -1424,7 +1428,7 @@ This is fine as long as the event handler is registered on the element itself. I
 
 ### Expecting text output
 
-We have completed the *Act* phase in which the test clicks on the increment button. In the *Assert* phase, we need to expect that the displayed count changes from “0” to “1”.
+We have completed the _Act_ phase in which the test clicks on the increment button. In the _Assert_ phase, we need to expect that the displayed count changes from “0” to “1”.
 
 In the template, the count is rendered into a `strong` element:
 
@@ -1500,7 +1504,7 @@ CounterComponent increments the count FAILED
   Error: Expected '0' to be '1'.
 ```
 
-What is wrong here? Is the implementation faulty? No, the test just missed something important. We have mentioned that in the testing environment, Angular does not automatically detect changes and does not update the DOM. Clicking the increment button changes the `count` property of the Component instance. To update the template binding `{% raw %}{{ count }}{% endraw %}`, we need to trigger the change detection manually.
+What is wrong here? Is the implementation faulty? No, the test just missed something important. We have mentioned that in the testing environment, Angular does not automatically detect changes and does not update the DOM. Clicking the increment button changes the `count` property of the Component instance. To update the template binding `{% raw %}{{ count }}{% endraw %}`, we need to trigger the change detection manually.
 
 ```typescript
 fixture.detectChanges();
@@ -1706,7 +1710,7 @@ resetInputEl.value = '123';
 
 This fills in the value programmatically.
 
-In `CounterComponent`’s template, the reset input has a *template reference variable*, `#resetInput`:
+In `CounterComponent`’s template, the reset input has a _template reference variable_, `#resetInput`:
 
 ```html
 <input type="number" #resetInput data-testid="reset-input" />
@@ -1717,7 +1721,7 @@ In `CounterComponent`’s template, the reset input has a *template reference va
 
 The click handler uses `resetInput` to access the `input` element, reads the `value` and passes it to the `reset` method.
 
-The example already works because the form is very simple. Setting a field’s `value`  is not a full simulation of user input and will not work with Template-driven or Reactive Forms yet.
+The example already works because the form is very simple. Setting a field’s `value` is not a full simulation of user input and will not work with Template-driven or Reactive Forms yet.
 
 Angular forms cannot observe `value` changes directly. Instead Angular listens for an `input` event that the browser fires when a field value changes. For compatibility with Template-driven and Reactive Forms, we need to dispatch a fake `input` event.
 
@@ -1802,7 +1806,7 @@ That is it! While the reset feature is simple, this is how to test most form log
 
 `CounterComponent` has an Input `startCount` that sets the initial count. We need to test that the counter reacts to the Input properly. For example, if we set `startCount` to `123`, the rendered count should be `123` as well. If the Input is empty, the rendered count should be `0`, the default value.
 
-Setting an Input during testing is rather easy: An Input is a special property of the Component instance. We can set this property in the *Arrange* phase.
+Setting an Input during testing is rather easy: An Input is a special property of the Component instance. We can set this property in the _Arrange_ phase.
 
 ```typescript
 const component = fixture.componentInstance;
@@ -1905,11 +1909,11 @@ Let us write a spec for the `countChange` Output!
 
 ```typescript
 it('emits countChange events', () => {
-    /* … */
+  /* … */
 });
 ```
 
-Within the spec, we access the Output via `fixture.componentInstance.countChange`. In the *Arrange*. phase, we subscribe to the `EventEmitter`.
+Within the spec, we access the Output via `fixture.componentInstance.countChange`. In the _Arrange_. phase, we subscribe to the `EventEmitter`.
 
 ```typescript
 it('emits countChange events on increment', () => {
@@ -1920,7 +1924,7 @@ it('emits countChange events on increment', () => {
 });
 ```
 
-We need to verify that the observer function is called with the right value when the increment button is clicked. In the *Act* phase, we click on the button using our helper function:
+We need to verify that the observer function is called with the right value when the increment button is clicked. In the _Act_ phase, we click on the button using our helper function:
 
 ```typescript
 it('emits countChange events on increment', () => {
@@ -1934,7 +1938,7 @@ it('emits countChange events on increment', () => {
 });
 ```
 
-In the *Assert* phase, we expect that `count` has the correct value.  The easiest way is to declare a variable in the spec scope. Let us name it `actualCount`. Initially, it is `undefined`. The observer function sets a value – or not, if it is never called.
+In the _Assert_ phase, we expect that `count` has the correct value. The easiest way is to declare a variable in the spec scope. Let us name it `actualCount`. Initially, it is `undefined`. The observer function sets a value – or not, if it is never called.
 
 ```typescript
 it('emits countChange events on increment', () => {
@@ -1970,7 +1974,7 @@ it('emits countChange events on increment', () => {
 });
 ```
 
-This works as well, but it might produce false positives. If the feature under test is broken and the Output does not emit, `expect` is never called. Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful. We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
+This works as well. But if the feature under test is broken and the Output does not emit, `expect` is never called. Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful. We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
 
 Now we have verified that `countChange` emits when the increment button is clicked. We also need to proof that the Output emits when using the decrement or reset features. We could do that by copying the code and adding two more specs:
 
@@ -2033,13 +2037,13 @@ it('emits countChange events', () => {
 
   // Transform the Observable, then subscribe
   component.countChange.pipe(
-    // Close the Observable after three values
-    take(3),
-    // Collect all values in an array
-    toArray()
+      // Close the Observable after three values
+      take(3),
+      // Collect all values in an array
+      toArray()
   ).subscribe((counts) => {
-    actualCounts = counts;
-  });
+      actualCounts = counts;
+    });
 
   // Act
   click(fixture, 'increment-button');
@@ -2111,7 +2115,7 @@ The spec above deals with the increment feature. It calls the `increment` method
 <button (click)="increment()" data-testid="increment-button">+</button>
 ```
 
-If we remove the increment button from the template entirely, the feature is obviously broken. But the white box test does not fail, it produces a false positive.
+If we remove the increment button from the template entirely, the feature is obviously broken. But the white box test does not fail.
 
 When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Components. Then imitate the real usage in your test.
 
@@ -2153,14 +2157,14 @@ The following table shows which properties and methods of an Angular Component y
 
 So far we have tested an independent Component that renders plain HTML elements, but no child Components. Such low-level Components are the workhorses of an Angular application. They directly render what the user sees and interacts with. They are often highly generic and reusable. They are controlled primarily through Inputs and report back using Outputs. They have little to none dependencies. They are easy to reason about and therefore easy to test. The preferred way of testing them is a unit test.
 
-These Components are called *presentational* Components since they directly present a part of the user interface using HTML and CSS. Presentational Components need to be combined and wired to form a working user interface. This is the duty of *container* Components. These high-level Components bring multiple low-level Components together. They pull data from different sources, like Services and state managers, and distribute it to their children.
+These Components are called _presentational_ Components since they directly present a part of the user interface using HTML and CSS. Presentational Components need to be combined and wired to form a working user interface. This is the duty of _container_ Components. These high-level Components bring multiple low-level Components together. They pull data from different sources, like Services and state managers, and distribute it to their children.
 
 Container Components have several types of dependencies. They depend on the nested child Components, but also injectables. These are classes, functions, objects etc. provided via dependency injection, like Services for example. These dependencies make testing container Components complicated.
 
 There are two fundamental ways to test Components with children:
 
-* A unit test using **shallow rendering**. The child Components are not rendered.
-* An integration test using **deep rendering**. The child Components are rendered.
+- A unit test using **shallow rendering**. The child Components are not rendered.
+- An integration test using **deep rendering**. The child Components are rendered.
 
 Again, both are valid approaches we are going to discuss.
 
@@ -2169,7 +2173,10 @@ Again, both are valid approaches we are going to discuss.
 In the counter example application, the [`HomeComponent`](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.ts) contains `CounterComponent`s, `ServiceCounterComponent`s and `NgRxCounterComponent`s. From the [template](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.html):
 
 ```html
-<app-counter [startCount]="5" (countChange)="handleCountChange($event)"></app-counter>
+<app-counter
+  [startCount]="5"
+  (countChange)="handleCountChange($event)"
+></app-counter>
 <!-- … -->
 <app-service-counter></app-service-counter>
 <!-- … -->
@@ -2210,7 +2217,7 @@ describe('HomeComponent', () => {
 });
 ```
 
-This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
+This suite has one spec that acts as a _smoke test_. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
 
 From Angular 9 on, the spec passes but produces a bunch of warnings on the console:
 
@@ -2356,8 +2363,8 @@ it('listens for count changes', () => {
 
 The spec needs to do two things:
 
-1. *Act:* Find the child Component and let the `countChange` Output emit a value.
-2. *Assert:* Check that `console.log` has been called.
+1. _Act:_ Find the child Component and let the `countChange` Output emit a value.
+2. _Assert:_ Check that `console.log` has been called.
 
 As mentioned, from the parent’s viewpoint, `countChange` is simply an event. Shallow rendering means there is no `CounterComponent` instance and no `EventEmitter` named `countChange`. Angular only sees an element, `app-counter`, with an event handler, `(countChange)="handleCountChange($event)"`.
 
@@ -2383,7 +2390,7 @@ How do we verify that `console.log` has been called? We can [spy on existing obj
 spyOn(console, 'log');
 ```
 
-This overwrites `console.log` with a spy for the duration of the test run. We need to set up the spy in the *Arrange* phase, at the beginning of our spec.
+This overwrites `console.log` with a spy for the duration of the test run. We need to set up the spy in the _Arrange_ phase, at the beginning of our spec.
 
 ```typescript
 it('listens for count changes', () => {
@@ -2395,7 +2402,7 @@ it('listens for count changes', () => {
 });
 ```
 
-In the *Assert*  phase, we expect that the spy has been called with a certain text and the number the Output has emitted.
+In the _Assert_ phase, we expect that the spy has been called with a certain text and the number the Output has emitted.
 
 ```typescript
 it('listens for count changes', () => {
@@ -2436,7 +2443,7 @@ This is it! We have written a unit test with shallow rendering that proves that 
 
 Note that this is one possible testing method. As always, it has pros and cons. Compared with a full integration test, there is little setup. The specs can use Angular’s `DebugElement` abstraction to test presence as well as Inputs and Outputs.
 
-However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular not to find matching Components for the custom elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `HomeComponent` uses a wrong element name and the test copies that error? We will not notice the false positive unless the involved Components are rendered together.
+However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular to ignore the elements `app-counter`, `app-service-counter` and `app-ngrx-counter` instead. What if `HomeComponent` uses a wrong element name and the test copies that error? The test would pass incorrectly. We need to render the involved Components together to spot the error.
 
 <div class="book-sources" markdown="1">
 - [HomeComponent: test code](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.spec.ts)
@@ -2444,7 +2451,7 @@ However, the unit test gives little confidence that `HomeComponent` works in pro
 
 ### Faking a child Component
 
-There is a middle ground between a naive unit test and an integration test. Instead of working with empty custom elements, we can render *fake* child Components. These Components have the same selectors, Inputs and Outputs, but have zero dependencies and do not have to render anything. They are ideal for testing communication between parent and child Components.
+There is a middle ground between a naive unit test and an integration test. Instead of working with empty custom elements, we can render _fake_ child Components. These Components have the same selectors, Inputs and Outputs, but have zero dependencies and do not have to render anything. They are ideal for testing communication between parent and child Components.
 
 Let us reduce the `CounterComponent` to an empty shell that offers the same public API:
 
@@ -2627,7 +2634,9 @@ Instead of searching for an element named `app-counter`, we search for a Compone
 
 Working with the Component instance is more intuitive than working with the `DebugElement` abstraction. We can read the Component class to learn about Inputs and Outputs. Basic JavaScript and Angular knowledge suffice to write specs against such an instance.
 
-Our simple approach to faking a child Component has its flaws. We have created the fake manually. This is tedious and time-consuming, but also risky. The fake is only partly tied to the original. For example, if the original changes its selector `app-counter`, the test should fail and remind us to adapt the template. Instead, it produces a false positive since the Component metadata, `{ selector: 'app-counter', … }`, cannot be inherited and is therefore duplicated in the test.
+Our simple approach to faking a child Component has its flaws. We have created the fake manually. This is tedious and time-consuming, but also risky. The fake is only partly tied to the original.
+
+For example, if the original changes its selector `app-counter`, the test should fail and remind us to adapt the template. Instead, it passes incorrectly since the Component metadata, `{ selector: 'app-counter', … }`, cannot be inherited and is therefore duplicated in the test.
 
 We are going to address these shortcomings in the next chapter.
 
@@ -2834,7 +2843,7 @@ There are several practical approaches with pros and cons. We have discussed two
 
 This guide will present one solution that implements these requirements. Note that other solutions might meet these requirements as well.
 
-The dependency we need to fake, `CounterService`,  is a simple class annotated with `@Injectable()`. This is the outer shape of `CounterService`:
+The dependency we need to fake, `CounterService`, is a simple class annotated with `@Injectable()`. This is the outer shape of `CounterService`:
 
 ```typescript
 class CounterService {
@@ -2953,7 +2962,7 @@ The code above creates an object with four methods, all of them being spies. The
 
 `createSpyObj` accepts a [type variable](https://www.typescriptlang.org/docs/handbook/generics.html) to declare the type the object adheres to. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
 
-Let us put our fake to work. In the *Arrange* phase, the fake is created and injected into the testing Module.
+Let us put our fake to work. In the _Arrange_ phase, the fake is created and injected into the testing Module.
 
 ```typescript
 const currentCount = 123;
@@ -3005,11 +3014,11 @@ In the integration test, we simply wrote `providers: [ CounterService ]`. In thi
 
 Using `{ provide: /* … */, useValue: /* … */ }`, we override the standard instantiation behavior and directly provide the value to inject.
 
-The *Arrange* phase is complete now, let us write the actual specs.
+The _Arrange_ phase is complete now, let us write the actual specs.
 
-The *Act* phase is the same as in the other counter Component tests: We click on buttons and fill out form fields.
+The _Act_ phase is the same as in the other counter Component tests: We click on buttons and fill out form fields.
 
-In the *Assert* phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith` etc.
+In the _Assert_ phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith` etc.
 
 ```typescript
 expect(fakeCounterService.getCount).toHaveBeenCalled();
@@ -3238,7 +3247,7 @@ In reality, Services are more complex and Components process the data they recei
 
 Creating fake Service dependencies and verifying their usage is probably the most challenging problem when testing Angular applications. This guide can only catch a glimpse on the subject.
 
-Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice teaches you to write *simple Services that are easy to fake*: Services with a clear API and an obvious purpose.
+Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice teaches you to write _simple Services that are easy to fake_: Services with a clear API and an obvious purpose.
 
 Unfortunately, there are no best practices when it comes to faking Services. You will find plenty of approaches online that have their strengths and weaknesses. The associated unit tests have different degrees of accuracy and completeness.
 
@@ -3248,8 +3257,8 @@ There are two takeaways you should remember:
 
 1. Ask yourself, is the test valuable? Does it cover the important interaction between Component and Service? Decide whether to test the interaction superficially or in-depth.
 2. Whichever approach you choose, make sure to meet the [basic requirements](#rules-for-faking-dependencies):
-  1. Equivalence of fake and original: The fake must have a type derived from the original.
-  2. Effective faking: the original stays untouched.
+   1. Equivalence of fake and original: The fake must have a type derived from the original.
+   2. Effective faking: the original stays untouched.
 
 ## Testing Services
 
@@ -3266,9 +3275,11 @@ So how do we test a Service? What needs to be tested? Services are diverse, but 
 - Services have public methods that return values.
 
   In the test, we check whether a method returns correct data.
+
 - Services store data. That is, they have an internal state. We can get or set the state.
 
   In the test, we check whether the state is changed correctly. Since the state should be held in private properties, we cannot access the state directly. We test the state change by calling public methods. We should not peek into the [black box](#black-box-vs-white-box-testing).
+
 - Services interact with dependencies. These are often other Services. For example, a Service might send HTTP requests via Angular’s `HttpClient`.
 
   In the unit test, we replace the dependency with a fake that returns canned responses. To fake the `HttpClient` dependency, we may use Angular’s `HttpClientTestingModule`.
@@ -3314,7 +3325,7 @@ describe('CounterService', () => {
 });
 ```
 
-In the *Arrange* phase, each spec needs to create an instance of `CounterService`. The simplest way to do that is:
+In the _Arrange_ phase, each spec needs to create an instance of `CounterService`. The simplest way to do that is:
 
 ```typescript
 const counterService = new CounterService();
@@ -3396,7 +3407,7 @@ it('resets the count',, () => {
 });
 ```
 
-We quickly notice that the specs are highly repetitive and noisy. In every spec’s *Assert* phase, we are using this pattern to inspect the Service state:
+We quickly notice that the specs are highly repetitive and noisy. In every spec’s _Assert_ phase, we are using this pattern to inspect the Service state:
 
 ```typescript
 let actualCount: number | undefined;
@@ -3538,7 +3549,7 @@ export class FlickrService {
 }
 ```
 
-The Service is marked with `@Injectable()` so it takes part in Angular’s Dependency Injection. It depends on Angular’s standard HTTP library, *`HttpClient`* from the `@angular/common/http` package. Most Angular applications use `HttpClient` to communicate with HTTP APIs.
+The Service is marked with `@Injectable()` so it takes part in Angular’s Dependency Injection. It depends on Angular’s standard HTTP library, _`HttpClient`_ from the `@angular/common/http` package. Most Angular applications use `HttpClient` to communicate with HTTP APIs.
 
 There are two ways to test the `FlickrService`: an integration test or a unit test.
 
@@ -3678,14 +3689,14 @@ flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
 });
 ```
 
-This leads to a problem that is known from [testing Outputs](#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. This leads to a false positive result because Jasmine thinks that all is fine.
+This leads to a problem that is known from [testing Outputs](#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. Despite the defect, Jasmine thinks that all is fine.
 
 There are several ways to solve this problem. We have opted for a variable that is `undefined` initially and is assigned a value.
 
 ```typescript
 let actualPhotos: Photo[] | undefined;
-flickrService.searchPublicPhotos(searchTerm).subscribe((_actualPhotos) => {
-  actualPhotos = _actualPhotos;
+flickrService.searchPublicPhotos(searchTerm).subscribe((otherPhotos) => {
+  actualPhotos = otherPhotos;
 });
 
 const request = controller.expectOne(expectedUrl);
@@ -3733,8 +3744,8 @@ describe('FlickrService', () => {
 
   it('searches for public photos', () => {
     let actualPhotos: Photo[] | undefined;
-    flickrService.searchPublicPhotos(searchTerm).subscribe((_actualPhotos) => {
-      actualPhotos = _actualPhotos;
+    flickrService.searchPublicPhotos(searchTerm).subscribe((otherPhotos) => {
+      actualPhotos = otherPhotos;
     });
 
     const request = controller.expectOne(expectedUrl);
@@ -3755,7 +3766,7 @@ https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/
 
 Are we done with testing `searchPublicPhotos`? We have tested the success case in which the server returns a `200 OK`. But we have not tested the error case yet!
 
-`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get()` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the *unhappy path* should be tested.
+`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get()` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the _unhappy path_ should be tested.
 
 Let us simulate a “500 Internal Server Error”. Instead of responding to the request with `flush`, we let it fail by calling `error`.
 
@@ -3977,9 +3988,9 @@ Angular beginners quickly encounter three core concepts: Modules, Components and
 
 In Angular, there are three types of Directives:
 
-1. A *Component* is a Directive with a template. A Component typically uses an element type selector, like `app-counter`. Angular then looks for `app-counter` elements and renders the Component template into these host elements.
-2. An *Attribute Directive* adds logic to an existing host element in the DOM. Examples for built-in Attribute Directives are `NgClass` and `NgStyle`.
-3. A *Structural Directive* alters the structure of the DOM, meaning it adds and removes elements programmatically. Examples for built-in Structural Directives are `NgIf`, `NgFor` and `NgSwitch`.
+1. A _Component_ is a Directive with a template. A Component typically uses an element type selector, like `app-counter`. Angular then looks for `app-counter` elements and renders the Component template into these host elements.
+2. An _Attribute Directive_ adds logic to an existing host element in the DOM. Examples for built-in Attribute Directives are `NgClass` and `NgStyle`.
+3. A _Structural Directive_ alters the structure of the DOM, meaning it adds and removes elements programmatically. Examples for built-in Structural Directives are `NgIf`, `NgFor` and `NgSwitch`.
 
 We have already tested Components. We have yet to test the two other types of Directives.
 
@@ -4178,9 +4189,9 @@ The last spec makes sure that the threshold is still considered as a safe value.
 ```typescript
 it('removes the class if the number is at the threshold', () => {
     setFieldValue(fixture, 'input', '10');
-    fixture.detectChanges();
+  fixture.detectChanges();
     expect(input.classList.contains('overThreshold')).toBe(false);
-  });
+});
 ```
 
 This is it! Testing the `ThresholdWarningDirective` is like testing a Component. The difference is that the Component only exists in our test as a host for the Directive.
@@ -4254,7 +4265,7 @@ This guide assumes that you roughly understand how Structural Directives work an
 
 We are introducing and testing the `PaginateDirective`, a complex Structural Directive.
 
-`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called *pagination*. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
+`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called _pagination_. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
 <button class="load-iframe">
 See the PaginateDirective in action
@@ -4285,7 +4296,7 @@ The simplest use of the Directive looks like this:
 
 This is similar to the `NgFor` directive. Assuming that `items` is an array of numbers (`[1, 2, 3, …]`), the example above renders the first 10 numbers in the array.
 
-The asterisk syntax `*appPaginate` and the so-called microsyntax `let item of items` is *syntactic sugar*. That is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
+The asterisk syntax `*appPaginate` and the so-called microsyntax `let item of items` is _syntactic sugar_. That is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
 
 ```html
 <ng-template appPaginate let-item [appPaginateOf]="items">
@@ -4384,7 +4395,7 @@ This is how the controls template could look like:
 
 `#controls` sets a [template reference variable](https://angular.io/guide/template-reference-variables). This means we can further reference the template by the name `controls`.
 
-The Directive renders the template with a *context* object consisting of these properties: `previousPage`, `nextPage`, `page` and `pages`. We can describe the context object with a TypeScript interface that is also part of the Directive’s code:
+The Directive renders the template with a _context_ object consisting of these properties: `previousPage`, `nextPage`, `page` and `pages`. We can describe the context object with a TypeScript interface that is also part of the Directive’s code:
 
 ```typescript
 interface ControlsContext {
@@ -4809,17 +4820,17 @@ Pipes are often used for internationalization, including translation of labels a
 
 Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. They format dates, amounts of money and numbers, respectively, according to the localization settings. Another well-known Pipe is the `AsyncPipe` which unwraps an Observable or Promise.
 
-Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
+Most Pipes are _pure_, meaning they merely take a value and compute a new value. They do not have _side effects_: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
-### HelloPipe
+### GreetPipe
 
 Let us study the structure of a Pipe first to find ways to test it. In essence, a Pipe is class with a public `transform` method. Here is a simple Pipe that expects a name and greets the user.
 
 ```typescript
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'hello' })
-export class HelloPipe implements PipeTransform {
+@Pipe({ name: 'greet' })
+export class GreetPipe implements PipeTransform {
   transform(name: string): string {
     return `Hello, ${name}!`;
   }
@@ -4829,10 +4840,10 @@ export class HelloPipe implements PipeTransform {
 In a Component template, we transform a value using the Pipe:
 
 ```
-{% raw %}{{ 'Julie' | hello }}{% endraw %}
+{% raw %}{{ 'Julie' | greet }}{% endraw %}
 ```
 
-The `HelloPipe` take the string `'Julie'` and computes a new string, `'Hello, Julie!'`.
+The `GreetPipe` take the string `'Julie'` and computes a new string, `'Hello , Julie!'`.
 
 There are two important ways to test a Pipe:
 
@@ -4843,29 +4854,29 @@ The first way requires minimal setup, is fast and straight-forward. The second c
 
 Both ways allow to test Pipes that depend on Services. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
 
-### HelloPipe test
+### GreetPipe test
 
-The `HelloPipe` does not have any dependencies. We opt for the first way and write a unit test which examines the single instance.
+The `GreetPipe` does not have any dependencies. We opt for the first way and write a unit test which examines the single instance.
 
-First, we create a Jasmine test suite. In a `beforeEach` block, we create an instance of `HelloPipe`. In the specs, we scrutinize the `transform` method.
+First, we create a Jasmine test suite. In a `beforeEach` block, we create an instance of `GreetPipe`. In the specs, we scrutinize the `transform` method.
 
 ```typescript
-describe('HelloPipe', () => {
-  let helloPipe: HelloPipe;
+describe('GreetPipe', () => {
+  let greetPipe: GreetPipe;
 
   beforeEach(() => {
-    helloPipe = new HelloPipe();
+    greetPipe = new GreetPipe();
   });
 
   it('says Hello', () => {
-    expect(helloPipe.transform('Julie')).toBe('Hello, Julie!');
+    expect(greetPipe.transform('Julie')).toBe('Hello , Julie!');
   });
 });
 ```
 
 We call the `transform` method with the string `'Julie'` and expect the output `'Hello, Julie!'`.
 
-This is everything that needs to be tested in the `HelloPipe` example. If the `transform` method contains more logic that needs to be tested, we add more specs that call the method with different input.
+This is everything that needs to be tested in the `GreetPipe` example. If the `transform` method contains more logic that needs to be tested, we add more specs that call the method with different input.
 
 ### Testing Pipes with dependencies
 
@@ -4892,7 +4903,7 @@ The example application lets you change the user interface language during runti
 
 #### TranslateService
 
-The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “Hello”.
+The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “s ”.
 
 The `TranslateService` looks like this:
 
@@ -5039,7 +5050,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 }
 ```
 
-The `TranslatePipe` is *impure* because the translations are loaded asynchronously. When called the first time, the `transform` method cannot return the correct translation synchronously. It calls the `TranslateService`’s `get` method which returns an Observable.
+The `TranslatePipe` is _impure_ because the translations are loaded asynchronously. When called the first time, the `transform` method cannot return the correct translation synchronously. It calls the `TranslateService`’s `get` method which returns an Observable.
 
 Once the translation is loaded, the `TranslatePipe` saves it and notifies the Angular change detector. In particular, it marks the corresponding view as changed by calling [`ChangeDetectorRef`’s `markForCheck`](https://angular.io/api/core/ChangeDetectorRef#markForCheck) method.
 
@@ -5140,7 +5151,7 @@ Remember, the provided `FakeTranslateService` returns an Observable created with
 return of(`Translation for ${key}`);
 ```
 
-  This Observable emits one “next” value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
+This Observable emits one “next” value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
 
 We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
 
@@ -5174,7 +5185,7 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is *some* delay greater or equal 1.
+We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is _some_ delay greater or equal 1.
 
 Now, we can call `detectChanges` for the first time.
 
@@ -5239,7 +5250,7 @@ it('translates a changed key', /* … */);
 it('updates on translation change', /* … */);
 ```
 
-The `TranslatePipe` stores the last key and the last translation. This necessary because it receives the translation asynchronously. Also, Angular calls `transform` several times with the same key. Since `TranslatePipe` is *impure*, Angular cannot simply cache the result.
+The `TranslatePipe` stores the last key and the last translation. This necessary because it receives the translation asynchronously. Also, Angular calls `transform` several times with the same key. Since `TranslatePipe` is _impure_, Angular cannot simply cache the result.
 
 When `translate` is called with a different key, the `TranslatePipe` needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
 
@@ -5289,7 +5300,7 @@ We could sneak into the metadata and check whether certain Services are provided
 
 Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
 
-There are certain Module errors that surface not before runtime. These can be caught with a *smoke test*. Given this module:
+There are certain Module errors that surface not before runtime. These can be caught with a _smoke test_. Given this module:
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -5325,39 +5336,597 @@ describe('FeatureModule', () => {
 
 The integration test uses the `TestBed` to import the Module under test. It verifies that no error occurs when importing the Module.
 
-## End-to-End testing
-### Protractor
-### Cypress
+## End-to-end testing
 
----
----
----
+We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a connection of parts works as intended.
 
-<h2>Code Coverage</h2>
+Karma and Jamine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in an controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
 
-<ul>
-  <li>Welche Codezeilen wurden durch die Unit-Tests aufgerufen?</li>
-  <li><a href="https://istanbul.js.org/">Istanbul test coverage tool</a></li>
-  <li><code>ng test --code-coverage</code></li>
-</ul>
+The most effective and reliable way to ensure a working application is _manual testing_: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
 
-<h2>End-to-End Tests in Angular</h2>
+Manual tests are slow, labor-intensive and cannot be repeated often. They are unspecific from a developer perspective: If the test fails, we cannot easily pin down what part of the application is responsible or what code change causes the regression.
 
-<ul>
-  <li><a href="https://www.w3.org/TR/webdriver1/">WebDriver-Protokoll</a>, Selenium</li>
-  <li>Fernsteuern eines Browsers</li>
-  <li>Auslesen von Inhalten</li>
-  <li><a href="https://www.protractortest.org/">Protractor</a>, Jasmine</li>
-</ul>
+We need automated tests that take the user’s perspective. This is what **end-to-end (E2E) tests** do.
 
-<h2>End-to-End Test</h2>
+### Strengths of end-to-end tests
 
-<ul>
-  <li>Navigiert zu einer URL</li>
-  <li>Sucht Elemente heraus</li>
-  <li>Simuliert Maus- und Tastatur-Eingaben</li>
-  <li>Testet Elementinhalte</li>
-</ul>
+As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but assess the fitness of the application as a whole.
+
+There is a new type of bugs that arise when all parts of the application come together. Often these bugs have to do with timing and order of events, like network latency and race conditions.
+
+The unit and integration tests we wrote worked with a fake back-end. We send fake HTTP requests and respond with fake data. We made an effort to keep the originals and fakes on par.
+
+It is much harder to keep the front-end code as well as the fakes in sync with the actual API endpoints and responses from the back-end. Even if the front-end and the back-end share type information about the transferred data, there will be mismatches.
+
+It is the goal of end-to-end tests to catch these bugs that cannot be caught by other automated tests.
+
+# Deploying the app for end-to-end test
+
+Back-end frameworks typically support environment configurations for development, testing and production. End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and all relevant back-end parts.
+
+The database needs to be filled with pre-fabricated fake data. The back-end services need to answer requests with deterministic, canned responses. Third-party dependencies need to be set up so they return realistic data but do not compromise production data.
+
+With each run of the end-to-end tests, you need to reset the environment to a defined initial state.
+
+Since this guide is not about DevOps, we are going to focus on writing end-to-end tests.
+
+### How an end-to-end test work
+
+An end-to-end test tries to mimic how a user interacts with the application. Typically, the test engine launches an ordinary browser and controls it remotely.
+
+Once the browser is started, the end-to-end test navigates to the application’s URL, reads the page content and makes pointer and keyboard input. For example, the test fills out a form and clicks on the submit button.
+
+Just like unit and integration tests, the end-to-end test then makes expectations: Does the page include a the right content? Did the URL change? This way, whole features and user interfaces are examined.
+
+### Browser automation with WebDriver
+
+Frameworks for end-to-end tests allow navigating to URLs, simulating user input and inspecting the page content. Apart from that, they have little in common. The test syntax and the way the tests are run differ widely.
+
+There are two categories of end-to-end testing frameworks: Those that use WebDriver and those that do not.
+
+The [WebDriver protocol](https://www.w3.org/TR/webdriver/) defines a way to control a browser remotely with a set of commands. It originates from the Selenium browser automation project and is now developed at the World Wide Web Consortium (W3C).
+
+All common browsers support the WebDriver protocol and can be controlled remotely. The most important WebDriver commands are:
+
+- Navigate to a given URL
+- Find one or more elements in the DOM
+- Get information about a found element:
+  - Get an element attribute or property
+  - Get the element textcontent
+- Click on an element
+- Send keyboard input to a form field
+- Execute arbitrary JavaScript code
+
+WebDriver is a key technology most end-to-end testing frameworks depend on. The main benefit of WebDriver is that tests can be run in different browsers, even simulataneously.
+
+WebDriver is a high-level, generic, HTTP-based protocol. It connects the test running on one machine with a browser possibly running on another machine. The level of control over the browser is limited.
+
+Not all frameworks build on WebDriver. Some frameworks integrate more directly into the browser. This makes them more reliable, less complex, but also less flexible since they only support few browsers.
+
+In this guide, we will look at two frameworks, one of each category: _Protractor_, which is based on WebDriver, and _Cypress_, which does not use WebDriver.
+
+<div class="book-sources" markdown="1">
+- [Protractor: Official web site](http://www.protractortest.org/)
+- [Cypress: Official web site](https://www.cypress.io/)
+</div>
+
+### WebDriver architecture
+
+Before we start writing tests with Protractor, we need to understand the architecture of WebDriver-based end-to-end tests.
+
+Everything starts with an test. This is a program may be written in any programming language. We are going to use JavaScript (TypeScript) run by Node.js. The test uses a suitable library for declaring suites, expectations, fakes and so on. We are going to use Jasmine again.
+
+The test uses an end-to-end testing framework to send WebDriver commands. In our case, this will be Protractor based on selenium-webdriver. The framework acts as a WebDriver client that connects to a WebDriver server.
+
+The WebDriver server is either running locally or remotely. In both cases, the server launches and orchestrates the desired browsers. To control a specific browser, a driver is necessary: ChromeDriver for Chrome, FirefoxDriver for Firefox etc.
+
+Finally, the browsers execute the commands and send back a success or error response.
+
+As you see, this generic architecture is language-agnostic, framework-agnostic and browser-agnostic. Also an end-to-end test does not care how the site under test is implemented, whether it is build with Angular or not. Just like the user, it interacts with an HTML document rendered in the browser.
+
+### Protractor: Waiting and timeouts
+
+Protractor is a an end-to-end testing framework based on WebDriver made for Angular applications. You might wonder, what makes it suitable for testing Angular applications? It is a feature called `waitForAngular`.
+
+All web applications have an asynchronous behavior: The user navigates to an address. It takes some time for the page to fully load so the user can . The user clicks on a link or button and it takes a certain amount of time to update the page or load a new page.
+
+End-to-end tests need to take this behavior into account. Yet they often fail because a page update did not happen in a given time period. Often this is a false alarm and does not mean the feature under test is broken. Frameworks therefore use lengthy timeout durations or test writers need to add manual waiting times. This makes the tests slow.
+
+Instead of just waiting for a fixed time period, Protractor waits for the Angular application to be stable before sending a WebDriver command. When Protractor detects an Angular application, it injects a script into the page that registers a `whenStable` callback.
+
+In an Angular application, all page changes are caused by asynchronous JavaScript tasks. Asynchronous tasks include HTTP requests, Promises as well as Angular’s change detection and rendering.
+
+Angular calls Protractor back when all pending asynchronous tasks have been completed. This enables Protractor to specifically wait for Angular to update the DOM before continuing with the test. This makes Protractor tests faster and more reliable.
+
+The `waitForAngular` feature has some pitfalls. For example, if your application is constantly polling data from the server, it will never get stable. There are always pending asynchronous tasks. Per default, Protractor waits for 11 seconds for Angular to become stable. Then it fails with a timeout error.
+
+If you test an application or page where Angular never comes to rest, you need to disable `waitForAngular` and wait manually for certain events – we will come to that later.
+
+<div class="book-sources" markdown="1">
+- [Protractor: How to disable waiting for Angular](https://www.protractortest.org/#/timeouts)
+</div>
+
+### Writing an end-to-end test with Protractor
+
+Protractor is Angular’s default default end-to-end testing framework. When you create a new project using the Angular CLI, Protractor is installed automatically.
+
+In the project directory, you will find a subdirectory called `e2e`. It contains the Protractor configuration (`e2e/protractor.conf.js`), a TypeScript configuration (`e2e/tsconfig.json`) as well as the actual end-to-end tests. The test files are placed in `e2e/src/` and have the extension `.e2e-spec.ts`.
+
+While the Protractor allows to control the browser remotely, the test itself is structured using Jasmine. If you have written unit tests with Jasmine before, the structure will be familiar – see [test suites with Jasmine](#test-suites-with-jasmine).
+
+A test file contains one or more suites declared with `describe('…', () => { /* … */})`. Typically, one file contains one `describe` block, possible with nested `describe` blocks.
+
+Inside `describe`, the blocks `beforeEach`, `afterEach`, `it` and `expect` are used just like in unit tests. This brings us to the following end-to-end test structure:
+
+```typescript
+describe('… Feature description …', () => {
+  beforeEach(() => {
+    // Navigate to the page using Protractor
+  });
+
+  it('… User interaction description …', () => {
+    // Interact with the page using Protractor
+    // Make expectation about the page content
+    expect(/* … */).toBe(/* … */);
+  });
+});
+```
+
+As a start, let us write a simple test that navigates to a remote web site and checks the content. This test visits the familiar site angular.io and expects the title to contain “Angular".
+
+```typescript
+import { browser } from 'protractor';
+
+describe('Angular web site', () => {
+  beforeEach(() => {
+    browser.get('https://angular.io/');
+  });
+
+  it('contains information on Angular', () => {
+    expect(browser.getTitle()).toContain('Angular');
+  });
+});
+```
+
+Protractor’s `browser` object provides methods for basic WebDriver commands.
+
+- In the `beforeEach` block, we call `browser.get()` to navigate to the URL `'https://angular.io/'`.
+- In the spec (`it` block), we use `browser.getTitle()` to retrieve the page title.
+
+The spec contains one expectation declared with `expect(…).toContain(…)`. Since the title is a string, we use Jasmine’s `toContain` matcher to compare the actual title with the expected title.
+
+<div class="book-sources" markdown="1">
+- [Protractor API reference: browser.get()](https://www.protractortest.org/#/api?view=ProtractorBrowser.prototype.get)
+- [Protractor API reference: browser.getTitle()](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.getTitle)
+</div>
+
+### Running the Protractors tests
+
+Save a file with the example code above as `angular-io.e2e-spec.ts` into the `e2e/src/` directory. On the console, run this command:
+
+```
+ng e2e
+```
+
+This command compiles the Angular application and starts a local server at `http://localhost:4200`, just like `ng serve` does. Then it starts Protractor.
+
+Protractor first downloads and runs the necessary driver to control the configured browsers. Per default, it starts an instance of Chrome using ChromeDriver. You will see a Chrome window popping up and you can watch how the browser is controlled by your tests.
+
+One after another, the Jasmine specs are executed. When all tests are run, the browser instance is terminated again.
+
+The relevant `ng e2e` output may look like this:
+
+<pre><code>
+I/launcher - Running 1 instances of WebDriver
+I/direct - Using ChromeDriver directly...
+Jasmine started
+
+  Angular web site
+    <span style="color: #00bf01">✓ contains information on Angular</span>
+
+Executed 1 of 2 specs INCOMPLETE (1 SKIPPED) in 3 secs.
+I/launcher - 0 instance(s) of WebDriver still running
+I/launcher - chrome #01 passe
+</code></pre>
+
+This means the test suite “Angular web site” ran and the spec “contains information on Angular” passed.
+
+Starting up the tests with `ng e2e` is quite slow. During development, you typically have `ng serve` running anyway. There is no need for `ng e2e` to start a development server. Also it is not necessary to update the browser driver with every test run.
+
+To speed up the boot process in this case, you can pass these command line arguments:
+
+```
+ng e2e --dev-server-target= --no-webdriver-update
+```
+
+`--dev-server-target=` instructs Protractor not to start a development server. `--no-webdriver-update` tells Protractor not to perform a driver update.
+
+### Testing the Counter Component
+
+Let us write our first realistic end-to-end test that examine our own Angular application: The counter example.
+
+<div class="book-sources" markdown="1">
+- [Counter Component: Source code](https://github.com/9elements/angular-workshop)
+- [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
+</div>
+
+<button class="load-iframe">
+See the counter Component app in action
+</button>
+
+<script type="template">
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
+</p>
+</script>
+
+First we test the counter’s increament feature. The test needs to perform the following steps:
+
+1. Navigate to /
+2. Find the element with the current count and read its text content
+3. Expect that the text is “5”, since this is the start count for the first counter
+4. Find the increment button and click it
+5. Find the element with the current count and read its text content (again)
+6. Expect that the text now reads “6”
+
+We already now how to navigate to an address: `browser.get('/')`. Protractor will expand the / to a full URL using the `baseUrl` from its configuration file or command line option. (`baseUrl` is set to `'http://localhost:4200'` per default.)
+
+### Finding elements
+
+The next step is to find an element in the current page. Protractor provides several ways to find elements. Among others, you can find an element by id, name attribute, class name or CSS selector.
+
+The structure is always the same: You call Protractor’s `element` function and pass a _locator_, which is a result of a call to a `by` method. `element` returns an _element finder_ that can be used for later commands.
+
+```typescript
+import { by, element } from 'protractor';
+
+element(by.id('some-id'));
+element(by.name('some-name'));
+element(by.className('some-class-name'));
+element(by.css('.some-css-selector'));
+```
+
+A shortcut for `element(by.css('…'))` is `$('…')` in the style of the iconic jQuery function.
+
+`element` finds a single element or element. To find multiple elements by the same feature, use the `element.all` function.
+
+```typescript
+element.all(by.id('some-id'));
+element.all(by.name('some-name'));
+element.all(by.className('some-class-name'));
+element.all(by.css('.some-css-selector'));
+```
+
+A shortcut for `element.all(by.css('…'))` is `$$('…')`.
+
+`element.all` finds a list of elements. If not matching element was found, that list is empty.
+
+Just like with unit and integration test, the immediate question is: Which way to find an element should we use? By id, name, class, CSS selector?
+
+As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids), this guide recommends to mark elements with a **test ids**. These are data attributes like `data-testid="example"`. In the test, we use a corresponding attribute selector like `[data-testid="example"]` to find the elements.
+
+```typescript
+element(by.css('[data-testid="example"]'));
+element.all(by.css('[data-testid="example"]'));
+```
+
+This recommendation does not mean that other ways to find elements are forbidden. They are still useful in some cases. For example, you might want to check the presence and the content of an `h1` element. This element has a special meaning and you should not find it with by test id.
+
+The benefit of a test id is that it can be used on any element. Using a test id means ignoring the element type and other attributes. The test does not fail if those change. But if there is an important reason for this particular element type or attribute, your test should verify the usage.
+
+<div class="book-sources" markdown="1">
+- [Protractor documentation: Using Locators](https://www.protractortest.org/#/locators)
+- [Protractor API reference: Locators](http://www.protractortest.org/#/api?view=ProtractorBy)
+- [Protractor API reference: element](http://www.protractortest.org/#/api?view=ElementFinder)
+- [Protractor API reference: element.all](http://www.protractortest.org/#/api?view=ElementArrayFinder)
+</div>
+
+### Interacting with elements
+
+To test the counter component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`”`. So the element finder would be:
+
+```typescript
+element(by.css('[data-testid="count"]'));
+```
+
+In short:
+
+```typescript
+$('[data-testid="count"]');
+```
+
+The `element` and `element.all` functions return element finders. On their own, they do nothing but describing a way to find elements on the page. They do not send a WebDriver command yet.
+
+The command that we need to perform on the element is to get its text content. We use the element finder’s `getText` method:
+
+```typescript
+$('[data-testid="count"]').getText();
+```
+
+Protractor instructs the browser to find the element and report its text content back.
+
+We can now write our first expectation to verify that the start count is 5:
+
+```typescript
+expect($('[data-testid="count"]')).getText()).toBe('5');
+```
+
+Great! We have found an element, performed an action on it and checked the result.
+
+Now let us increment the count. We find the increment button and instruct the browser to click. The button has the test id `increment-button`. Protractor offers the `click` method for this purpose.
+
+```typescript
+$('[data-testid="increment-button"]')).click();
+```
+
+The Angular code under test handles the click event. Finally, we verify that the visible count has increased by one. We repeat the `getText` command, but expect a higher number.
+
+The test suite now looks like this:
+
+```typescript
+import { browser, by, element } from 'protractor';
+
+describe('Counter', () => {
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it('increments the count', () => {
+    expect($('[data-testid="count"]').getText()).toBe('5');
+    $('[data-testid="increment-button"]').click();
+    expect($('[data-testid="count"]').getText()).toBe('6');
+  });
+});
+```
+
+The next feature we need to test is the decrement button. The spec works similar to the increment spec. It clicks on the decrement button and checks that the count has decreased.
+
+```typescript
+it('decrements the count', () => {
+  $('[data-testid="decrement-button"]').click();
+  expect($('[data-testid="count"]').getText()).toBe('4');
+});
+```
+
+Last but not least, we test the reset feature. The user can enter a new count into a form field (test id `reset-input`) and click on the reset button (test id `reset-button`) to set the new count.
+
+Protractor and the underlying WebDriver protocol do not have a dedicated method to fill out a form field. There is a generic method though for sending keys to an element that is keyboard-interactable: `sendKeys`.
+
+To enter text into the form field, we “send keys” to the respective element. We simply pass a string to `sendKeys`.
+
+```typescript
+$('[data-testid="reset-input"]').sendKeys('123');
+```
+
+Next, we click on the reset button and finally expect the change.
+
+```typescript
+it('resets the count', () => {
+  $('[data-testid="reset-input"]').sendKeys('123');
+  $('[data-testid="reset-button"]').click();
+  expect($('[data-testid="count"]').getText()).toBe('123');
+});
+```
+
+This is full test suite:
+
+```typescript
+import { $, browser } from 'protractor';
+
+describe('Counter', () => {
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it("increments the count", () => {
+    expect($('[data-testid="count"]').getText()).toBe('5');
+    $('[data-testid="increment-button"]').click();
+    expect($('[data-testid="count"]').getText()).toBe('6');
+  });
+
+  it("decrements the count", () => {
+    $('[data-testid="decrement-button"]').click();
+    expect($('[data-testid="count"]').getText()).toBe('4');
+  });
+
+  it("resets the count", () => {
+    $('[data-testid="reset-input"]').sendKeys('123');
+    $('[data-testid="reset-button"]').click();
+    expect($('[data-testid="count"]').getText()).toBe('123');
+  });
+});
+```
+
+All counter features are now tested. In the next chapters, we will refactor the code to improve its readability and maintainability.
+
+<div class="book-sources" markdown="1">
+- [Protractor API reference: getText](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.getText)
+- [Protractor API reference: click](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.click]
+- [Protractor API reference: sendKeys](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.sendKeys)
+</div>
+
+### Refactoring: Testing helpers
+
+The test we wrote is quite repetitive. The pattern `$('[data-testid="…"]')` is repeated over and over. Since we mostly find elements by test id, the first improvement is to write helper functions that hide this detail.
+
+- For the pattern `element(by.css('[data-testid="…"]'))`, we write a helper function called `findEl`.
+- For the pattern `element.all(by.css('[data-testid="…"]'))`, we write a helper function called `findEls`.
+
+We have already written similar functions as [unit testing helpers](#testing-helpers).
+
+Next, we create the file `e2e/e2e.spec-helper.ts`. The extension `.spec-helper.ts` is simply a convention. You can name the helper files as you wish. But they should not be called `.e2e-spec.ts`, since Protractor treats these files as end-to-end tests.
+
+`e2e/e2e.spec-helper.ts` declares and exports three functions:
+
+```typescript
+import {
+  ElementArrayFinder,
+  ElementFinder,
+  Locator,
+  by,
+  element,
+} from "protractor";
+
+export function queryAttributeLocator(testId: string): Locator {
+  return by.css(`[data-testid="${testId}"]`);
+}
+
+export function findEl(testId: string): ElementFinder {
+  return element(queryAttributeLocator(testId));
+}
+
+export function findEls(testId: string): ElementArrayFinder {
+  return element.all(queryAttributeLocator(testId));
+}
+```
+
+`queryAttributeLocator` returns a locator. It is used both by `findEl` and `findEls`.
+
+Using these helpers, we can declutter the test.
+
+```typescript
+import { browser } from 'protractor';
+import { findEl } from '../e2e.spec-helper';
+
+describe('Counter', () => {
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it('increments the count', () => {
+    expect(findEl('count').getText()).toBe('5');
+    findEl('increment-button').click();
+    expect(findEl('count').getText()).toBe('6');
+  });
+
+  it('decrements the count', () => {
+    findEl('decrement-button').click();
+    expect(findEl('count').getText()).toBe('4');
+  });
+
+  it('resets the count', () => {
+    findEl('reset-input').sendKeys('123');
+    findEl('reset-button').click();
+    expect(findEl('count').getText()).toBe('123');
+  });
+});
+```
+
+The next optimization is to reuse the element finders. As described, an element finder itself does nothing. It merely describes how to find an element. This is why we do not have to repeat the calls to `findEl` over and over. We can declare the element finders once and reuse them throughout the test suite.
+
+There are six element finders in our suite:
+
+```typescript
+findEl('count');
+findEl('increment-button');
+findEl('decrement-button');
+findEl('reset-input');
+findEl('reset-button');
+```
+
+We save them in constants:
+
+```typescript
+const count = findEl('count');
+const incrementButton = findEl('increment-button');
+const decrementButton = findEl('decrement-button');
+const resetInput = findEl('reset-input');
+const resetButton = findEl('reset-button');
+```
+
+And declare them in the `describe` block:
+
+```typescript
+describe('Counter', () => {
+  const count = findEl('count');
+  const incrementButton = findEl('increment-button');
+  const decrementButton = findEl('decrement-button');
+  const resetInput = findEl('reset-input');
+  const resetButton = findEl('reset-button');
+
+  /* … */
+});
+```
+
+In the specs, we can now use the constants:
+
+```typescript
+import { browser } from 'protractor';
+import { findEl } from '../e2e.spec-helper';
+
+describe('Counter', () => {
+  const count = findEl('count');
+  const incrementButton = findEl('increment-button');
+  const decrementButton = findEl('decrement-button');
+  const resetInput = findEl('reset-input');
+  const resetButton = findEl('reset-button');
+
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it('increments the count', () => {
+    expect(count.getText()).toBe('5');
+    incrementButton.click();
+    expect(count.getText()).toBe('6');
+  });
+
+  it('decrements the count', () => {
+    decrementButton.click();
+    expect(count.getText()).toBe('4');
+  });
+
+  it('resets the count', () => {
+    resetInput.sendKeys('123');
+    resetButton.click();
+    expect(count.getText()).toBe('123');
+  });
+});
+```
+
+The goal of this refactoring is not brevity. Moving the element finders to a central place does not necessarily lead to less code. In the test suite above, only `count` is reused across the specs, so the potential savings are small.
+
+Gathering all finders in a central place separates low-level details – finding elements via test ids – from the high-level code – simulating the user interaction with the page and expectations. This makes the specs easier to read and the easier to maintain.
+
+### Testing the Flickr search
+
+We have learned the basics of Protractor by testing the counter app. Let us delve into end-to-end testing with Protractor by testing a more complex app, the Flickr search.
+
+<div class="book-sources" markdown="1">
+- [Flickr photo search: Source code](https://github.com/9elements/angular-flickr-search)
+- [Flickr photo search: Run the app](https://9elements.github.io/angular-flickr-search/)
+</div>
+
+<button class="load-iframe">
+See the Flickr photo search in action
+</button>
+
+<script type="template">
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
+</p>
+</script>
+
+Before writing any code, let us make a plan what the end-to-end test needs to do:
+
+1. Navigate to /
+2. Find the search input field and enter a search term, e.g. “flower”
+3. Find the submit button and click on it
+4. Expect photo item links to appear
+4. Expect photo item links to link to flickr.com
+4. Expect photo item images (thumbnails) to appear
+
+TODO
+
+### The WebDriver control flow
+
+WebDriver commands are asynchronous
+Promises
+asynchronous, but hidden
+
+https://www.protractortest.org/#/control-flow
+
+###
 
 <h2>End-to-End Tests starten</h2>
 
@@ -5366,25 +5935,16 @@ The integration test uses the `TestBed` to import the Module under test. It veri
   <li><code>e2e/app.e2e-spec.ts</code></li>
 </ul>
 
-<h2>Protractor: Browser steuern</h2>
-
-<ul>
-  <li><a href="https://www.protractortest.org/#/api">Protractor-API</a></li>
-  <li><code>browser.get('/')</code></li>
-  <li><code>browser.refresh()</code></li>
-  <li><code>browser.reset()</code></li>
-</ul>
-
-<h2>Protractor: Einzelne Elemente finden</h2>
+<h2>Protractor: Einzelne Elemente finden (Locators)</h2>
 
 ```typescript
-element(by.id("…"));
-element(by.name("…"));
-element(by.className("…"));
-element(by.css("…"));
-$("…");
+element(by.id('…'));
+element(by.name('…'));
+element(by.className('…'));
+element(by.css('…'));
+$('…');
 element(by.css('[data-testid="count"]'));
-findEl("count");
+findEl('count');
 ```
 
 <p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEl</code></a></p>
@@ -5392,13 +5952,14 @@ findEl("count");
 <h2>Protractor: Viele Elemente finden</h2>
 
 ```typescript
-element.all(by.id("…"));
-element.all(by.name("…"));
-element.all(by.className("…"));
-element.all(by.css("…"));
-$$("…");
+element.all(by.id('…'));
+element.all(by.name('…'));
+element.all(by.className('…'));
+element.all(by.css('…'));
+$$;
+
 element.all(by.css('[data-testid="count"]'));
-findEls("count");
+findEls('count');
 ```
 
 <p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEls</code></a></p>
@@ -5447,8 +6008,9 @@ findEl("reset-input").sendKeys("123");
 <h2>Counter-App</h2>
 
 <ul>
-  <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/app.e2e-spec.ts"><code>e2e/app.e2e-spec.ts</code></a></li>
-  <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/app.po.ts"><code>e2e/app.po.ts</code></a></li>
+  <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/src/app.e2e-spec.ts"><code>e2e/app.e2e-spec.ts</code></a></li>
+  <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/src/app.po.ts"><code>e2e/app.po.ts</code></a></li>
+
   <li><code>ng e2e</code> oder separat:</li>
   <li><code>ng serve</code></li>
   <li><code>ng e2e --configuration=noserve</code></li>
@@ -5487,6 +6049,22 @@ findEl(…)
   <li>Konventionen nötig</li>
   <li>Protractor stammt aus Angular-1-Zeiten</li>
   <li>Simulierte Synchronität ist schwarze Magie</li>
+</ul>
+
+### Cypress
+
+---
+
+---
+
+---
+
+<h2>Code Coverage</h2>
+
+<ul>
+  <li>Welche Codezeilen wurden durch die Unit-Tests aufgerufen?</li>
+  <li><a href="https://istanbul.js.org/">Istanbul test coverage tool</a></li>
+  <li><code>ng test --code-coverage</code></li>
 </ul>
 
 <h2>Testen und Testbarkeit</h2>
