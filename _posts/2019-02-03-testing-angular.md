@@ -5424,19 +5424,19 @@ Finally, the browsers execute the commands and send back a success or error resp
 
 As you see, this generic architecture is language-agnostic, framework-agnostic and browser-agnostic. Also an end-to-end test does not care how the site under test is implemented, whether it is build with Angular or not. Just like the user, it interacts with an HTML document rendered in the browser.
 
-### Protractor: Waiting and timeouts
+### Waiting for Angular
 
 Protractor is a an end-to-end testing framework based on WebDriver made for Angular applications. You might wonder, what makes it suitable for testing Angular applications? It is a feature called `waitForAngular`.
 
-All web applications have an asynchronous behavior: The user navigates to an address. It takes some time for the page to fully load so the user can . The user clicks on a link or button and it takes a certain amount of time to update the page or load a new page.
+All web applications have an asynchronous behavior: The user navigates to an address. It takes some time for the page to fully load. Then, the user clicks on a link or button and it takes a certain amount of time to update the page or load a new page.
 
-End-to-end tests need to take this behavior into account. Yet they often fail because a page update did not happen in a given time period. Often this is a false alarm and does not mean the feature under test is broken. Frameworks therefore use lengthy timeout durations or test writers need to add manual waiting times. This makes the tests slow.
+End-to-end tests need to take this behavior into account. Yet they often fail because a page update did not happen in a given time period. Often this is a false alarm and does not mean the feature under test is broken. Some frameworks therefore use lengthy timeout durations. Or test writers are forced to add arbitrary waiting times. This makes the tests slow.
 
 Instead of just waiting for a fixed time period, Protractor waits for the Angular application to be stable before sending a WebDriver command. When Protractor detects an Angular application, it injects a script into the page that registers a `whenStable` callback.
 
 In an Angular application, all page changes are caused by asynchronous JavaScript tasks. Asynchronous tasks include HTTP requests, Promises as well as Angular’s change detection and rendering.
 
-Angular calls Protractor back when all pending asynchronous tasks have been completed. This enables Protractor to specifically wait for Angular to update the DOM before continuing with the test. This makes Protractor tests faster and more reliable.
+When all pending asynchronous tasks have been completed, Angular (or Zone.js, to be specific) calls Protractor back. This enables Protractor to specifically wait for Angular to update the DOM before continuing with the test. This makes Protractor tests faster and more reliable.
 
 The `waitForAngular` feature has some pitfalls. For example, if your application is constantly polling data from the server, it will never get stable. There are always pending asynchronous tasks. Per default, Protractor waits for 11 seconds for Angular to become stable. Then it fails with a timeout error.
 
@@ -5745,7 +5745,7 @@ All counter features are now tested. In the next chapters, we will refactor the 
 - [Protractor API reference: sendKeys](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.sendKeys)
 </div>
 
-### Refactoring: Testing helpers
+### End-to-end testing helpers
 
 The test we wrote is quite repetitive. The pattern `$('[data-testid="…"]')` is repeated over and over. Since we mostly find elements by test id, the first improvement is to write helper functions that hide this detail.
 
@@ -5912,13 +5912,286 @@ Before writing any code, let us make a plan what the end-to-end test needs to do
 1. Navigate to /
 2. Find the search input field and enter a search term, e.g. “flower”
 3. Find the submit button and click on it
-4. Expect photo item links to appear
-4. Expect photo item links to link to flickr.com
-4. Expect photo item images (thumbnails) to appear
+4. Expect photo item links to flickr.com to appear
+5. Click on a photo item
+6. Expect the full photo details to appear
 
-TODO
+The application under test queries a third-party API with production data. The test searches for “flower” and Flickr returns different results with each test run.
+
+Due to changing search results, we cannot be specific in our expectations. We can only test the search results and the full photo superfically. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
+
+This has pros and cons. Testing against the live third-party API makes the test realistic, but less reliable. But if the Flickr API has a short hiccup, the test fails although there is no bug in our code.
+
+We could run the test against a fake API that returns predefined responses. This would allow us to inspect the application deeply. Did the application render the images the API returned? Are the image title and the image tags shown correctly?
+
+For a start, we will test against the real Flickr API and we will look into faking the API later.
+
+#### Testing the search
+
+We create a file `e2e/src/flickr-search.e2e-spec.ts` and begin with a test suite:
+
+```typescript
+import { browser } from 'protractor';
+import { findEl, findEls } from '../e2e.spec-helper';
+
+describe('Flickr Search', () => {
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it('searches for a term', () => {
+    /* … */
+  });
+});
+```
+
+We instruct the browser to enter “flower” into the search field (test id `searchTermInput`). Then we click on the submit button (test id `submitSearch`).
+
+```typescript
+it('searches for a term', () => {
+  const input = findEl('searchTermInput');
+  input.clear();
+  input.sendKeys('flower');
+  findEl('submitSearch').click();
+  /* … */
+});
+```
+
+As described, `sendKeys` does not overwrite the form value with a new value, but sends keyboard input, key by key.
+
+Before entering “flower”, we need to clear the field since it already has a pre-filled value. Otherwise we would append “flower” to the existing value. We use Protractor’s `clear` method for that purpose.
+
+Clicking on the submit button starts the search. When the Flickr API has responded, we expect the search results to be appear.
+
+A search result consists of a link (`a` element, test id `photo-item-link`) and an image (`img` element, test id `photo-item-image`).
+
+We expect 15 links to appear since this is amount requested from Flickr. Each link needs to have an `href` which contains `https://www.flickr.com/photos/`. We cannot check an exact URL since results are the dynamic, but we know that all Flickr photo links start with `https://www.flickr.com/photos/`.
+
+```typescript
+const photoItemLinks = findEls('photo-item-link');
+expect(photoItemLinks.count()).toBe(15);
+photoItemLinks.each((link) => {
+  if (!link) {
+    throw new Error('link is not defined');
+  }
+  expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
+});
+```
+
+Using Protractor’s `count` method, we retrieve the amount of elements with the `photo-item-link` test id. We expect it to be 15.
+
+Then we need to check each link in the list individually. The list has an `each` method to call a function for each element. This works similar to JavaScript’s `forEach` array method.
+
+Inside the function, we need to check first whether the `link` parameter is defined. This is just a necessary TypeScript guard because `link` is typed with `ElementFinder | undefined`. Using Protractor’s `getAttribute` method, we obtain the `href` attribute, that is the link URL. We expect it to contain `https://www.flickr.com/photos/`.
+
+`flickr-search.e2e-spec.ts` now looks like this:
+
+```typescript
+import { browser } from 'protractor';
+import { findEl, findEls } from '../e2e.spec-helper';
+
+describe('Flickr Search (starter)', () => {
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it('searches for a term', () => {
+    const input = findEl('searchTermInput');
+    input.clear();
+    input.sendKeys('flower');
+    findEl('submitSearch').click();
+
+    const photoItemLinks = findEls('photo-item-link');
+    expect(photoItemLinks.count()).toBe(15);
+    photoItemLinks.each((link) => {
+      if (!link) {
+        throw new Error('link is not defined');
+      }
+      expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
+    });
+
+    expect(findEls('photo-item-image').count()).toBe(15);
+  });
+});
+```
+
+If we run `ng e2e` now, the spec should be executed and pass.
+
+<div class="book-sources" markdown="1">
+- [Protractor API reference: clear](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.clear
+- [Protractor API reference: each](https://www.protractortest.org/#/api?view=ElementArrayFinder.prototype.each)
+- [Protractor API reference: getAttribute](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.getAttribute)
+</div>
+
+#### Testing the full photo
+
+When the user clicks on a link in the result list, the click event is caught and the full photo details are shown next to the list. (If the user clicks with the control/command key pressed or right-clicks, they can follow the link to flickr.com.)
+
+In the end-to-end test, we add a spec to verify this behavior.
+
+```typescript
+it('shows the full photo', () => {
+  /* … */
+});
+```
+
+First, it searches for “flower”, just like the spec before.
+
+```typescript
+  const input = findEl('searchTermInput');
+  input.clear();
+  input.sendKeys('flower');
+  findEl('submitSearch').click();
+```
+
+Then we find all photo item links, but not to inspect them, but to click on the first on:
+
+```typescript
+findEls('photo-item-link').first().click();
+```
+
+The click lets the photo details appear. As mentioned above, we cannot check for a specific title, a specific photo URL or specific tags. The clicked photo might be a different one with each test run.
+
+Since we searched for “flower”, we assert that the term is either in the photo title or tags. We check the text content of the wrapper element with the test id `full-photo`.
+
+```typescript
+expect(findEl('full-photo').getText()).toContain('flower');
+```
+
+Next, we check that a title and tags are present and not empty.
+
+```typescript
+expect(findEl('full-photo-title').getText()).not.toBe('');
+expect(findEl('full-photo-tags').getText()).not.toBe('');
+```
+
+The spec now looks like this:
+
+```typescript
+it('shows the full photo', async () => {
+  const input = findEl('searchTermInput');
+  input.clear();
+  input.sendKeys('flower');
+  findEl('submitSearch').click();
+
+  findEls('photo-item-link').first().click();
+
+  expect(findEl('full-photo').getText()).toContain('flower');
+  expect(findEl('full-photo-title').getText()).not.toBe('');
+  expect(findEl('full-photo-tags').getText()).not.toBe('');
+});
+```
+
+If you run the tests with `ng e2e`, you will find that the spec fails!
+
+The error message reads: `Failed: element not interactable`. The error occurs when executing the `click` command.
+
+<pre><code>
+findEl('photo-item-link').first().<strong>click()</strong>;
+</code></pre>
+
+What is happening here? The code under test is correct, but we have encountered a Protractor quirk.
+
+The first element with the test id `photo-item-link` does exist. But we cannot interact with it by clicking yet – hence “not interactable”.
+
+According to the WebDriver specification, this error may happen when the clicked element is outside the viewport. This is only temporary since the click is supposed to scroll the element into view automatically.
+
+The solution is pretty dull. We need to instruct the browser to wait until the element is clickable.
+
+Protractor has a `wait` method that requires a condition. A condition can be expressed using methods of Protractor’s `ExpectedConditions`. In our case, we use `elementToBeClickable` and pass the element finder referencing the first link.
+
+```typescript
+const link = findEls('photo-item-link').first();
+browser.wait(ExpectedConditions.elementToBeClickable(link));
+link.click();
+```
+
+Protractor pauses the test and periodically checks whether the link is clickable. When it is, it continues with the `click` command. When the link is not clickable after 30 seconds, the test will fail. (This timeout can be changed in the Protractor configuration.)
+
+The full suite:
+
+```typescript
+import { browser, ExpectedConditions } from 'protractor';
+import { findEl, findEls } from '../e2e.spec-helper';
+
+describe('Flickr Search', () => {
+  beforeEach(() => {
+    browser.get('/');
+  });
+
+  it('searches for a term', () => {
+    const input = findEl('searchTermInput');
+    input.clear();
+    input.sendKeys('flower');
+    findEl('submitSearch').click();
+
+    const photoItemLinks = findEls('photo-item-link');
+    expect(photoItemLinks.count()).toBe(15);
+    photoItemLinks.each((link) => {
+      if (!link) {
+        throw new Error('link is not defined');
+      }
+      expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
+    });
+
+    expect(findEls('photo-item-image').count()).toBe(15);
+  });
+
+  it('shows the full photo', async () => {
+    const input = findEl('searchTermInput');
+    input.clear();
+    input.sendKeys('flower');
+    findEl('submitSearch').click();
+
+    const link = findEls('photo-item-link').first();
+    browser.wait(ExpectedConditions.elementToBeClickable(link));
+    link.click();
+
+    expect(findEl('full-photo').getText()).toContain('flower');
+    expect(findEl('full-photo-title').getText()).not.toBe('');
+    expect(findEl('full-photo-tags').getText()).not.toBe('');
+  });
+});
+```
+
+We have successfully tested the Flickr search! This example demonstrates several Protractor commands. We also caught a glimpse of end-to-end testing quirks.
+
+You will find that end-to-end tests with Protractor often require a manual wait. Protractor waits for Angular automatically, but this is not a silver bullet. In addition to `waitForAngular` or as a replacement, you need to use `browser.wait` with a specific condition.
+
+<div class="book-sources" markdown="1">
+- [Protractor API reference: wait](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.wait
+- [Protractor API reference: ExpectedConditions](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions
+- [Protractor API reference: elementToBeClickable](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions.prototype.elementToBeClickable
+- [Protractor documentation: Timeouts](https://www.protractortest.org/#/timeouts)
+</div>
+
+### Page objects
+
+The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
+
+This time, we use a design pattern called *page object*. A design pattern is a way to your structure code, a best practice to solve a common problem.
+
+A page object represents a web page that is scrutinized by end-to-end tests. The purpose of the page object is to provide a high-level interface for interacting with the page.
+
+So far, we have written fairly low-level end-to-end tests. They find individual elements by hard-coded test id, check their content and click on them. This is fine for small tests.
+
+But if the page logic is complex and there are diverse cases to test, the test becomes a unmanageable pile of low-level instructions. It is hard to find the gist of these tests, and they are hard to change.
+
+A page object organizes numerous low-level instructions into a few high-level interactions.
+
+What are the high-level interactions in the Flickr search app?
+
+- Search photos using a search term
+- Read the photo list and interact with the items
+- Read the photo details
+
+
 
 ### The WebDriver control flow
+
+taken for granted, but why does this work at all?
+
+Every command returns a Promise
 
 WebDriver commands are asynchronous
 Promises
