@@ -477,7 +477,7 @@ This application is straight-forward and relatively simple to implement. Still i
 - **API communication**: How to fetch data by making HTTP requests and update the user interface.
 - **State management**: Where to hold the state, how to pass it down in the Component tree, how to alter it.
 
-The Flickr Search comes in two flavors using different state management solutions:
+The Flickr search comes in two flavors using different state management solutions:
 
 1. The state is managed in the top-level Component, passed down in the Component tree and changed using Outputs.
 2. The state is managed by an NgRx Store. Components are connected to the store to pull state and dispatch Actions. The state is changed in a Reducer. The side effects of an Action are handled by NgRx Effects.
@@ -3661,7 +3661,7 @@ describe('FlickrService', () => {
 
 Now that we have the pending request, we respond to it with an object that mimics the original API response. The Flickr API returns a complex object with an array of photos objects deep within. In the `FlickrService` test, we only care about the payload, the photos array.
 
-The Flickr Search repository contains [fake photo objects](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts) that are used throughout the tests. For the `FlickrService` test, we import the `photos` array with two fake photo objects.
+The Flickr search repository contains [fake photo objects](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts) that are used throughout the tests. For the `FlickrService` test, we import the `photos` array with two fake photo objects.
 
 We use the request’s `flush` method to respond with fake data. This simulates a successful “200 OK” server response.
 
@@ -5338,7 +5338,7 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 
 ## End-to-end testing
 
-We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a connection of parts works as intended.
+We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group pf connected parts work as intended.
 
 Karma and Jamine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in an controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
 
@@ -5350,7 +5350,7 @@ We need automated tests that take the user’s perspective. This is what **end-t
 
 ### Strengths of end-to-end tests
 
-As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but assess the fitness of the application as a whole.
+As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
 There is a new type of bugs that arise when all parts of the application come together. Often these bugs have to do with timing and order of events, like network latency and race conditions.
 
@@ -5360,17 +5360,17 @@ It is much harder to keep the front-end code as well as the fakes in sync with t
 
 It is the goal of end-to-end tests to catch these bugs that cannot be caught by other automated tests.
 
-# Deploying the app for end-to-end test
+### Deploying the app for end-to-end test
 
-Back-end frameworks typically support environment configurations for development, testing and production. End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and all relevant back-end parts.
+Back-end frameworks typically support environment configurations for development, testing and production. End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
 
-The database needs to be filled with pre-fabricated fake data. The back-end services need to answer requests with deterministic, canned responses. Third-party dependencies need to be set up so they return realistic data but do not compromise production data.
+The database needs to be filled with pre-fabricated fake data. With each run of the end-to-end tests, you need to reset the database to a defined initial state.
 
-With each run of the end-to-end tests, you need to reset the environment to a defined initial state.
+The back-end services need to answer requests with deterministic, canned responses. Third-party dependencies need to be set up so they return realistic data but do not compromise production data.
 
-Since this guide is not about DevOps, we are going to focus on writing end-to-end tests.
+Since this guide is not about DevOps, we will not go into details here and focus on writing end-to-end tests.
 
-### How an end-to-end test work
+### How end-to-end tests work
 
 An end-to-end test tries to mimic how a user interacts with the application. Typically, the test engine launches an ordinary browser and controls it remotely.
 
@@ -5406,6 +5406,7 @@ Not all frameworks build on WebDriver. Some frameworks integrate more directly i
 In this guide, we will look at two frameworks, one of each category: _Protractor_, which is based on WebDriver, and _Cypress_, which does not use WebDriver.
 
 <div class="book-sources" markdown="1">
+- [WebDriver protocol](https://www.w3.org/TR/webdriver/)
 - [Protractor: Official web site](http://www.protractortest.org/)
 - [Cypress: Official web site](https://www.cypress.io/)
 </div>
@@ -5540,6 +5541,8 @@ ng e2e --dev-server-target= --no-webdriver-update
 ```
 
 `--dev-server-target=` instructs Protractor not to start a development server. `--no-webdriver-update` tells Protractor not to perform a driver update.
+
+TODO: Watching
 
 ### Testing the Counter Component
 
@@ -5740,6 +5743,7 @@ describe('Counter', () => {
 All counter features are now tested. In the next chapters, we will refactor the code to improve its readability and maintainability.
 
 <div class="book-sources" markdown="1">
+- [Full code: app-starter.e2e-spec.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/src/app-starter.e2e-spec.ts)
 - [Protractor API reference: getText](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.getText)
 - [Protractor API reference: click](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.click]
 - [Protractor API reference: sendKeys](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.sendKeys)
@@ -5812,16 +5816,21 @@ describe('Counter', () => {
 });
 ```
 
+<div class="book-sources" markdown="1">
+- [Full code: e2e.spec-helper.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts)
+- [Full code: app-helpers.e2e-spec.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/src/app-helpers.e2e-spec.ts)
+</div>
+
 The next optimization is to reuse the element finders. As described, an element finder itself does nothing. It merely describes how to find an element. This is why we do not have to repeat the calls to `findEl` over and over. We can declare the element finders once and reuse them throughout the test suite.
 
 There are six element finders in our suite:
 
 ```typescript
-findEl('count');
-findEl('increment-button');
-findEl('decrement-button');
-findEl('reset-input');
-findEl('reset-button');
+findEl('count')
+findEl('increment-button')
+findEl('decrement-button')
+findEl('reset-input')
+findEl('reset-button')
 ```
 
 We save them in constants:
@@ -5888,6 +5897,10 @@ The goal of this refactoring is not brevity. Moving the element finders to a cen
 
 Gathering all finders in a central place separates low-level details – finding elements via test ids – from the high-level code – simulating the user interaction with the page and expectations. This makes the specs easier to read and the easier to maintain.
 
+<div class="book-sources" markdown="1">
+- [Full code: app-finder-reuse.e2e-spec.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/src/app-finder-reuse.e2e-spec.ts)
+</div>
+
 ### Testing the Flickr search
 
 We have learned the basics of Protractor by testing the counter app. Let us delve into end-to-end testing with Protractor by testing a more complex app, the Flickr search.
@@ -5922,19 +5935,21 @@ Due to changing search results, we cannot be specific in our expectations. We ca
 
 This has pros and cons. Testing against the live third-party API makes the test realistic, but less reliable. But if the Flickr API has a short hiccup, the test fails although there is no bug in our code.
 
-We could run the test against a fake API that returns predefined responses. This would allow us to inspect the application deeply. Did the application render the images the API returned? Are the image title and the image tags shown correctly?
+We could run the test against a fake API that returns predefined responses. This would allow us to inspect the application deeply. Did the application render the photos the API returned? Are the photo details shown correctly?
+
+Keep in mind that unit, integration and end-to-end tests complement each other. The Flickr search is also tested extensively using unit and integration tests. Each type of test should do what it does best. The unit tests already put the different photo Components through their paces. The end-to-end test should not try to achieve that level of detail.
 
 For a start, we will test against the real Flickr API and we will look into faking the API later.
 
 #### Testing the search
 
-We create a file `e2e/src/flickr-search.e2e-spec.ts` and begin with a test suite:
+We create a file called `e2e/src/flickr-search-starter.e2e-spec.ts`. (It is called `starter` because we will refactor it later.) We start with a test suite.
 
 ```typescript
 import { browser } from 'protractor';
 import { findEl, findEls } from '../e2e.spec-helper';
 
-describe('Flickr Search', () => {
+describe('Flickr search', () => {
   beforeEach(() => {
     browser.get('/');
   });
@@ -5968,9 +5983,9 @@ A search result consists of a link (`a` element, test id `photo-item-link`) and 
 We expect 15 links to appear since this is amount requested from Flickr. Each link needs to have an `href` which contains `https://www.flickr.com/photos/`. We cannot check an exact URL since results are the dynamic, but we know that all Flickr photo links start with `https://www.flickr.com/photos/`.
 
 ```typescript
-const photoItemLinks = findEls('photo-item-link');
-expect(photoItemLinks.count()).toBe(15);
-photoItemLinks.each((link) => {
+const links = findEls('photo-item-link');
+expect(links.count()).toBe(15);
+links.each((link) => {
   if (!link) {
     throw new Error('link is not defined');
   }
@@ -5984,13 +5999,13 @@ Then we need to check each link in the list individually. The list has an `each`
 
 Inside the function, we need to check first whether the `link` parameter is defined. This is just a necessary TypeScript guard because `link` is typed with `ElementFinder | undefined`. Using Protractor’s `getAttribute` method, we obtain the `href` attribute, that is the link URL. We expect it to contain `https://www.flickr.com/photos/`.
 
-`flickr-search.e2e-spec.ts` now looks like this:
+The full test now looks like this:
 
 ```typescript
 import { browser } from 'protractor';
 import { findEl, findEls } from '../e2e.spec-helper';
 
-describe('Flickr Search (starter)', () => {
+describe('Flickr search (starter)', () => {
   beforeEach(() => {
     browser.get('/');
   });
@@ -6001,9 +6016,9 @@ describe('Flickr Search (starter)', () => {
     input.sendKeys('flower');
     findEl('submitSearch').click();
 
-    const photoItemLinks = findEls('photo-item-link');
-    expect(photoItemLinks.count()).toBe(15);
-    photoItemLinks.each((link) => {
+    const links = findEls('photo-item-link');
+    expect(links.count()).toBe(15);
+    links.each((link) => {
       if (!link) {
         throw new Error('link is not defined');
       }
@@ -6018,6 +6033,7 @@ describe('Flickr Search (starter)', () => {
 If we run `ng e2e` now, the spec should be executed and pass.
 
 <div class="book-sources" markdown="1">
+- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
 - [Protractor API reference: clear](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.clear
 - [Protractor API reference: each](https://www.protractortest.org/#/api?view=ElementArrayFinder.prototype.each)
 - [Protractor API reference: getAttribute](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.getAttribute)
@@ -6038,10 +6054,10 @@ it('shows the full photo', () => {
 First, it searches for “flower”, just like the spec before.
 
 ```typescript
-  const input = findEl('searchTermInput');
-  input.clear();
-  input.sendKeys('flower');
-  findEl('submitSearch').click();
+const input = findEl('searchTermInput');
+input.clear();
+input.sendKeys('flower');
+findEl('submitSearch').click();
 ```
 
 Then we find all photo item links, but not to inspect them, but to click on the first on:
@@ -6065,6 +6081,12 @@ expect(findEl('full-photo-title').getText()).not.toBe('');
 expect(findEl('full-photo-tags').getText()).not.toBe('');
 ```
 
+The image itself needs to be present, checked with Protractor’s `isPresent`.
+
+```typescript
+expect(findEl('full-photo-image').isPresent()).toBe(true);
+```
+
 The spec now looks like this:
 
 ```typescript
@@ -6079,10 +6101,18 @@ it('shows the full photo', async () => {
   expect(findEl('full-photo').getText()).toContain('flower');
   expect(findEl('full-photo-title').getText()).not.toBe('');
   expect(findEl('full-photo-tags').getText()).not.toBe('');
+  expect(findEl('full-photo-image').isPresent()).toBe(true);
 });
 ```
 
-If you run the tests with `ng e2e`, you will find that the spec fails!
+<div class="book-sources" markdown="1">
+- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
+- [Protractor API reference: isPresent](https://www.protractortest.org/#/api?view=ElementFinder.prototype.isPresent)
+</div>
+
+#### Manual waiting
+
+If you run the tests above with `ng e2e`, you will find that the spec *fails*!
 
 The error message reads: `Failed: element not interactable`. The error occurs when executing the `click` command.
 
@@ -6114,7 +6144,7 @@ The full suite:
 import { browser, ExpectedConditions } from 'protractor';
 import { findEl, findEls } from '../e2e.spec-helper';
 
-describe('Flickr Search', () => {
+describe('Flickr search', () => {
   beforeEach(() => {
     browser.get('/');
   });
@@ -6125,9 +6155,10 @@ describe('Flickr Search', () => {
     input.sendKeys('flower');
     findEl('submitSearch').click();
 
-    const photoItemLinks = findEls('photo-item-link');
-    expect(photoItemLinks.count()).toBe(15);
-    photoItemLinks.each((link) => {
+    const links = findEls('photo-item-link');
+    browser.wait(ExpectedConditions.elementToBeClickable(links.first()));
+    expect(links.count()).toBe(15);
+    links.each((link) => {
       if (!link) {
         throw new Error('link is not defined');
       }
@@ -6150,19 +6181,24 @@ describe('Flickr Search', () => {
     expect(findEl('full-photo').getText()).toContain('flower');
     expect(findEl('full-photo-title').getText()).not.toBe('');
     expect(findEl('full-photo-tags').getText()).not.toBe('');
+    expect(findEl('full-photo-image').isPresent()).toBe(true);
   });
 });
 ```
 
-We have successfully tested the Flickr search! This example demonstrates several Protractor commands. We also caught a glimpse of end-to-end testing quirks.
+In both specs, we wait for the photo items to be clickable we proceed.
+
+Congratulations, we have successfully tested the Flickr search! This example demonstrates several Protractor commands. We also caught a glimpse of end-to-end testing quirks.
 
 You will find that end-to-end tests with Protractor often require a manual wait. Protractor waits for Angular automatically, but this is not a silver bullet. In addition to `waitForAngular` or as a replacement, you need to use `browser.wait` with a specific condition.
 
 <div class="book-sources" markdown="1">
+- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
 - [Protractor API reference: wait](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.wait
 - [Protractor API reference: ExpectedConditions](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions
 - [Protractor API reference: elementToBeClickable](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions.prototype.elementToBeClickable
 - [Protractor documentation: Timeouts](https://www.protractortest.org/#/timeouts)
+- [Full code: flickr-search.po.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.po.ts)
 </div>
 
 ### Page objects
@@ -6177,18 +6213,146 @@ So far, we have written fairly low-level end-to-end tests. They find individual 
 
 But if the page logic is complex and there are diverse cases to test, the test becomes a unmanageable pile of low-level instructions. It is hard to find the gist of these tests, and they are hard to change.
 
-A page object organizes numerous low-level instructions into a few high-level interactions.
+A page object organizes numerous low-level instructions into a few high-level interactions. What are the high-level interactions in the Flickr search app?
 
-What are the high-level interactions in the Flickr search app?
+1. Search photos using a search term
+2. Read the photo list and interact with the items
+3. Read the photo details
 
-- Search photos using a search term
-- Read the photo list and interact with the items
-- Read the photo details
+As far as possible, we group these interactions into methods of the page object.
 
+A page object is an abstract pattern and the exact implementation is up to you. Typically, the page object is declared as a class which is instantiated when the test starts.
 
+Let us call the class `FlickrSearch` and save it in a separate file, `flickr-search.po.ts`. The extension `.po` is short for page object.
+
+```typescript
+export class FlickrSearch {
+  public navigateTo(): void {
+    browser.get('/');
+  }
+}
+```
+
+The class has a `navigateTo` method that opens the page that the page object represents.
+
+In the test, we import the class and create an instance in a `beforeEach` block.
+
+```typescript
+describe('Flickr search', () => {
+  let page: FlickrSearch;
+
+  beforeEach(() => {
+    page = new FlickrSearch();
+    page.navigateTo();
+  });
+
+  /* … */
+});
+```
+
+The instance is stored in a variable declared in the `describe` scope. This way, all specs can access the page object.
+
+Let us implement the first high-level interaction on the page object: searching for photos. We move the relevant code from the test into a method of the page object.
+
+```typescript
+public searchFor(term: string): void {
+  const input = findEls('searchTermInput').first();
+  input.clear();
+  input.sendKeys(term);
+  findEls('submitSearch').first().click();
+  browser.wait(
+    ExpectedConditions.elementToBeClickable(
+      this.photoItemLinks().first()
+    )
+  );
+}
+```
+
+The `searchFor` method expects a search term and performs all necessary steps.
+
+The other mentioned high-level interactions, reading the photo list and the photo details, cannot be translated into page object methods. But we can relocate all element finders together with some commands. The page object now becomes the central place where all test ids and finders are located.
+
+```typescript
+public photoItemLinks(): ElementArrayFinder {
+  return findEls('photo-item-link');
+}
+
+public photoItemImages(): ElementArrayFinder {
+  return findEls('photo-item-image');
+}
+
+public fullPhotoText(): promise.Promise<string> {
+  return findEl('full-photo').getText();
+}
+
+public fullPhotoTitle(): promise.Promise<string> {
+  return findEl('full-photo-title').getText();
+}
+
+public fullPhotoTags(): promise.Promise<string> {
+  return findEl('full-photo-tags').getText();
+}
+
+public fullPhotoImage(): ElementFinder {
+  return findEl('full-photo-image');
+}
+```
+
+These methods return element finders or the element’s text content, where applicable.
+
+We can now rewrite the end-to-end test to use the page object methods.
+
+```typescript
+describe('Flickr search', () => {
+  let page: FlickrSearch;
+
+  beforeEach(() => {
+    page = new FlickrSearch();
+    page.navigateTo();
+  });
+
+  it('searches for a term', () => {
+    page.searchFor(SEARCH_TERM);
+    const links = page.photoItemLinks();
+    expect(links.count()).toBe(15);
+    links.each((link) => {
+      if (!link) {
+        throw new Error('link is not defined');
+      }
+      expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
+    });
+    expect(page.photoItemImages().count()).toBe(15);
+  });
+
+  it('shows the full photo', () => {
+    page.searchFor(SEARCH_TERM);
+    page.photoItemLinks().first().click();
+    expect(page.fullPhotoText()).toContain(SEARCH_TERM);
+    expect(page.fullPhotoTitle()).not.toBe('');
+    expect(page.fullPhotoTags()).not.toBe('');
+    expect(page.fullPhotoImage().isPresent()).toBe(true);
+  });
+});
+```
+
+For the Flickr search above, a page object is probably too much of a good thing. Still the example demonstrates the key ideas of page objects:
+
+- Identify repetitive high-level interactions and map them to methods of the page object.
+- Move the finding of elements into the page object. The test ids, tag names etc. you use for finding should live in a central place.
+- Place all expectations in the specs, not the page object code.
+
+When you write end-to-end tests with Protractor, you get lost in technical details quickly: finding elements, clicking elements, waiting for conditions, filling out dozens of form fields. But end-to-end tests should describe a user journey on a high level.
+
+You can use the page object pattern when you feel the need to tidy up complex, repetitive tests. Once you are familiar with the pattern, it also helps you to avoid writing such tests in the first place.
+
+<div class="book-sources" markdown="1">
+- [Full code: flickr-search.po.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.po.ts)
+- [Full code: flickr-search.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
+</div>
 
 ### The WebDriver control flow
 
+After having written a few end-to-end tests, we
 taken for granted, but why does this work at all?
 
 Every command returns a Promise
