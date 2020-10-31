@@ -4578,7 +4578,7 @@ This is a standard Component test setup – nothing special yet.
 
 The first spec verifies that the Directive renders the items on the first page, in our case the numbers 1, 2 and 3.
 
-We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts) to find all elements with the said test id.
+We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts) to find all elements with the said test id.
 
 We expect to find three items. Then we examine the text content of each item and expect that it matches the item in the number list, respectively.
 
@@ -6338,7 +6338,7 @@ describe('Flickr search', () => {
 For the Flickr search above, a page object is probably too much of a good thing. Still the example demonstrates the key ideas of page objects:
 
 - Identify repetitive high-level interactions and map them to methods of the page object.
-- Move the finding of elements into the page object. The test ids, tag names etc. you use for finding should live in a central place.
+- Move the finding of elements into the page object. The test ids, tag names etc. you use for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
 - Place all expectations in the specs, not the page object code.
 
 When you write end-to-end tests with Protractor, you get lost in technical details quickly: finding elements, clicking elements, waiting for conditions, filling out dozens of form fields. But end-to-end tests should describe a user journey on a high level.
@@ -6352,106 +6352,57 @@ You can use the page object pattern when you feel the need to tidy up complex, r
 
 ### The WebDriver control flow
 
-After having written a few end-to-end tests, we
-taken for granted, but why does this work at all?
+After having written a few end-to-end tests, let us dive deeper into how Protractor works. Back to our first command and expectation:
 
-Every command returns a Promise
+```typescript
+expect($('[data-testid="count"]').getText()).toBe('5');
+```
 
-WebDriver commands are asynchronous
-Promises
-asynchronous, but hidden
+So far, we have taken this code for granted. But there is more to it than meets the eye.
+
+While this code looks synchronous, it is indeed asynchronous. Every WebDriver command is sent to the remotely-controlled browser. It takes some time for the browser to answer.
+
+That is why all Protractor commands return Promises. `getText` for example does not return a string, but a Promise that is resolved with a string. The expectations `expect(…).toBe('5');` waits for the string result, then runs the comparison.
+
+Protractor _hides_ the asynchronous nature of the code. The spec code is executed synchronously within milliseconds. This is possible because the code merely declares the commands and expectations. They are added to a queue and processed later.
+
+The commands and expectations in the queue are processes one after another. Each command takes its time, only limited by a timeout. Once a command is executed, the next in the queue is processed, and so on.
+
+This Protractor feature is called _WebDriver control flow_. It is based on the _Promise Manager_ of the underlying Selenium WebDriverJS library.
+
+Under the hood, the code
+
+```typescript
+expect($('[data-testid="count"]').getText()).toBe('5');
+```
+is translated to
+
+```typescript
+$('[data-testid="count"]').getText().then((text) => {
+  expect(text).toBe('5');
+});
+```
+
+The benefit of the control flow is that tests are much easier to write. You do not have to think about Promises and waiting for a command result.
+
+The downside is that the code is not working as you might expect. The code is in fact declarative, it adds commands to a queue. Consequently, you cannot use imperative programming idioms like `if`.
+
+Since the WebDriver commands return Promises, you cannot work with them directly. You need to unwrap them manually using `promise.then((result) => { /* … */ })`.
+
+The best is to avoid logic that works with raw values. Use Jasmine matchers to check the result of a command. As described, Protractor overwrites `expect` so that it accepts a Promise and waits for the result.
+
+The main issue of the Promise Manager is that the underlying WebDriverJS library has deprecated the feature. It was created before `async`/`await` was standardized in ECMAScript 2017 and supported with Node.js 7.6.0. Today, both the Protractor and the WebDriverJS teams recommend to use deactivate the control flow and use `async` / `await` instead.
+
+With `async` / `await`, the Flickr search example
+
+The control flow implementation is complex and has lead to pitfalls, inconsistencies and bugs.
+
+
 
 https://www.protractortest.org/#/control-flow
+https://github.com/SeleniumHQ/selenium/wiki/WebDriverJs
 
 ###
-
-<h2>End-to-End Tests starten</h2>
-
-<ul>
-  <li><code>ng e2e</code></li>
-  <li><code>e2e/app.e2e-spec.ts</code></li>
-</ul>
-
-<h2>Protractor: Einzelne Elemente finden (Locators)</h2>
-
-```typescript
-element(by.id('…'));
-element(by.name('…'));
-element(by.className('…'));
-element(by.css('…'));
-$('…');
-element(by.css('[data-testid="count"]'));
-findEl('count');
-```
-
-<p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEl</code></a></p>
-
-<h2>Protractor: Viele Elemente finden</h2>
-
-```typescript
-element.all(by.id('…'));
-element.all(by.name('…'));
-element.all(by.className('…'));
-element.all(by.css('…'));
-$$;
-
-element.all(by.css('[data-testid="count"]'));
-findEls('count');
-```
-
-<p><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts">Helferlein: <code>findEls</code></a></p>
-
-<h2>Protractor: Textinhalt lesen</h2>
-
-```typescript
-// <h1 data-testid="count">Hello</h1>
-const el = findEl("heading");
-expect(heading.getText()).toBe("Hello");
-```
-
-<h2>Protractor: Klicks</h2>
-
-```typescript
-// <button data-testid="increment-button">+</button>
-findEl("increment-button").click();
-```
-
-<h2>Protractor: Tastatureingaben</h2>
-
-```typescript
-// <input data-testid="reset-input">
-findEl("reset-input").sendKeys("123");
-```
-
-<h2>Protractor: Page Objects</h2>
-
-<ul>
-  <li>Page Object ist eine einfache Klasse, die eine Seite repräsentiert</li>
-  <li>Page Object: Low-level, Test: High-Level</li>
-  <li>Ziel: Prägnanz und Lesbarkeit des Tests erhöhen</li>
-  <li>Wenn sich das Markup ändert:<br>Page Object ändern, Test nicht</li>
-</ul>
-
-<h2>Protractor: Page Objects</h2>
-
-<ul>
-  <li><code>*.po.ts</code></li>
-  <li>Einfache Klasse mit Methoden, meist Element-Getter</li>
-  <li>Selektoren (<code>data-testid</code>-Namen)</li>
-  <li><code>findEl</code>- und <code>findEls</code>-Aufrufe</li>
-  <li>Komplexere Eingabesequenzen</li>
-</ul>
-
-<h2>Counter-App</h2>
-
-<ul>
-  <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/src/app.e2e-spec.ts"><code>e2e/app.e2e-spec.ts</code></a></li>
-  <li><a href="https://github.com/9elements/angular-workshop/blob/master/e2e/src/app.po.ts"><code>e2e/app.po.ts</code></a></li>
-
-  <li><code>ng e2e</code> oder separat:</li>
-  <li><code>ng serve</code></li>
-  <li><code>ng e2e --configuration=noserve</code></li>
-</ul>
 
 <h2>End-to-End Tests: Fallstricke</h2>
 
@@ -6489,10 +6440,6 @@ findEl(…)
 </ul>
 
 ### Cypress
-
----
-
----
 
 ---
 
