@@ -5378,7 +5378,7 @@ Once the browser is started, the end-to-end test navigates to the application’
 
 Just like unit and integration tests, the end-to-end test then makes expectations: Does the page include a the right content? Did the URL change? This way, whole features and user interfaces are examined.
 
-### Browser automation with WebDriver
+### End-to-end testing frameworks
 
 Frameworks for end-to-end tests allow navigating to URLs, simulating user input and inspecting the page content. Apart from that, they have little in common. The test syntax and the way the tests are run differ widely.
 
@@ -5403,12 +5403,45 @@ WebDriver is a high-level, generic, HTTP-based protocol. It connects the test ru
 
 Not all frameworks build on WebDriver. Some frameworks integrate more directly into the browser. This makes them more reliable, less complex, but also less flexible since they only support few browsers.
 
-In this guide, we will look at two frameworks, one of each category: _Protractor_, which is based on WebDriver, and _Cypress_, which does not use WebDriver.
+In this guide, we will discuss two frameworks, one of each category: _Protractor_, which is based on WebDriver, and _Cypress_, which does not use WebDriver.
 
 <div class="book-sources" markdown="1">
 - [WebDriver protocol](https://www.w3.org/TR/webdriver/)
 - [Protractor: Official web site](http://www.protractortest.org/)
 - [Cypress: Official web site](https://www.cypress.io/)
+</div>
+
+### Protractor
+
+Protractor is a an end-to-end testing framework based on WebDriver, made for Angular applications.
+
+Protractor is an official Angular project and also originates from Google. In a new Angular project created with the Angular CLI, Protractor is the default end-to-end testing framework. It is already up and running.
+
+Just like the unit and integration test we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
+
+Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next  WebDriver command. The behavior seeks to make testing Angular applications more robust.
+
+Despite all these benefits, **this guide does not recommend using Protractor** for new projects. Why so?
+
+First of all, Protractor is practically unmaintained. The future of the project is unclear. It seems to have lost the Google backing.
+
+Second, the project underwent fundamental changes that curtail its usability. The conventional way to write Protractor tests is deprecated today.
+
+Protractor has a feature called _WebDriver control flow_. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if the code was synchronous. When the underlying WebDriverJS library removed the feature, Protractor deprecated it as well.
+
+Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests instead of hiding it. All Protractor commands return Promises and you are advised to use `async` / `await` to wait for a command to finish. But a lot of examples, tutorials and the standard configuration still propagate the control flow.
+
+The control flow implementation has lead to pitfalls, inconsistencies and bugs. Declaring this feature obsolete was inevitable, but also eliminated a useful core feature. Protractor’s contenders, namely Cypress and Webdriver.io, still have such a feature.
+
+If you disable to control flow as recommended, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
+
+Protractor is a great project, but today there is no compelling reason to choose Protractor over its competitors.
+
+If you are looking for Protractor examples, you will find extensive Protractor tests in the repositories for the Counter and Flickr search. They are not explained in this guide though.
+
+<div class="book-sources" markdown="1">
+- [Counter: End-to-end tests with Protractor](https://github.com/9elements/angular-workshop/tree/master/e2e)
+- [Flickr search: End-to-end tests with Protractor](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
 </div>
 
 ### WebDriver architecture
