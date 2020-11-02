@@ -2118,65 +2118,6 @@ Published on <time datetime="2017-12-21">December 21, 2017</time>.
 </div><!-- #main-container -->
 </div><!-- #toc-and-main -->
 
-<script>
-(function() {
-'use strict';
-
-var LinkTypes = {
-
-  supported: Boolean(
-    document.links &&
-    document.body.getAttribute &&
-    document.body.appendChild &&
-    document.getElementById &&
-    document.createElement &&
-    document.createTextNode &&
-    document.compareDocumentPosition &&
-    window.Node &&
-    Node.DOCUMENT_POSITION_PRECEDING &&
-    Node.DOCUMENT_POSITION_FOLLOWING
-  ),
-
-  install: function() {
-    var links = document.links;
-    for (var i = 0, l = links.length; i < l; i++) {
-      var link = links[i];
-      var href = link.getAttribute('href');
-      if (!(href && href[0] === '#')) continue;
-      if (link.className.match(/(^|\s)no-link-type($|\s)/)) continue;
-      var text = '\u00A0↕';
-      var title = 'Link to another chapter';
-      var target = document.getElementById(href.substring(1));
-      if (target) {
-        var position = link.compareDocumentPosition(target);
-        if (position & Node.DOCUMENT_POSITION_PRECEDING) {
-          text = '\u00A0↑';
-          title = 'see above';
-        } else if (position & Node.DOCUMENT_POSITION_FOLLOWING) {
-          text = '\u00A0↓ ';
-          title = 'see below';
-        }
-      }
-      var span = document.createElement('span');
-      span.appendChild(
-        document.createTextNode(text)
-      );
-      span.className = 'link-type';
-      span.title = 'Link to another chapter';
-      link.appendChild(span);
-    }
-  },
-
-  init: function() {
-    if (LinkTypes.supported) {
-      LinkTypes.install();
-    }
-  }
-};
-
-LinkTypes.init();
-
-})();
-</script>
+<script src="/assets/link-types.js"></script>
 
 {% include register-service-worker.html %}

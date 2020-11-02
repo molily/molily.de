@@ -264,7 +264,13 @@ pre {
 }
 
 #toc .active {
-  outline: 1px solid currentColor;
+  color: $toc-background;
+  background-color: $link-color;
+
+  @include dark-scheme {
+    color: $toc-background-inverted;
+    background-color: $link-color-inverted;
+  }
 }
 
 #toc .link-type {

@@ -15,14 +15,18 @@ robots: noindex, follow
 #toc li {
   list-style: none;
 }
+#toc-tree a {
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
 #toc .toc-heading-level-3 a {
-  padding-left: calc(1 * 1rem);
+  margin-left: calc(1 * 1rem);
 }
 #toc .toc-heading-level-4 a {
-  padding-left: calc(2 * 1rem);
+  margin-left: calc(2 * 1rem);
 }
 #toc .toc-heading-level-5 a {
-  padding-left: calc(3 * 1rem);
+  margin-left: calc(3 * 1rem);
 }
 
 .responsive-iframe {
@@ -169,7 +173,7 @@ Automated testing has several technical, economical and organizational benefits.
 
 1. **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 
-Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyse and fix the bug in order to regain the user’s trust.
+Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyze and fix the bug in order to regain the user’s trust.
 
 **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
 
@@ -591,7 +595,7 @@ Karma > Browser > Jasmine
 
 Angular offers some tools and conventions on testing, but you need to decide how to apply them. Because there are opposing testing methodologies, the tools are flexible enough to support different ways of testing.
 
-This freedom of choice benefits experts, but confuses and paralyses beginners. In your project, there should be one preferrable way how to test a specific application part. You need to make choices and set up project-wide conventions and patterns.
+This freedom of choice benefits experts, but confuses and paralyses beginners. In your project, there should be one preferable way how to test a specific application part. You need to make choices and set up project-wide conventions and patterns.
 
 The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You need to create high-level testing tools that cast your conventions into code in order to write short, readable and understandable tests.
 
@@ -1112,12 +1116,14 @@ How to read the output
 Console
 “Debug”
 
+<!--
 <ul>
   <li>Chrome benutzen, Developer Tools öffnen</li>
   <li>Test-Focus setzen mit <code>fdescribe()</code> und <code>fit()</code></li>
   <li><code>console.log(…)</code> ist Gold wert</li>
   <li>Debug-Ausgaben in Lifecycle-Methoden, Handlern und im Template</li>
 </ul>
+-->
 
 ## Testing Components
 
@@ -4808,7 +4814,7 @@ describe('PaginateDirective', () => {
 
 An Angular Pipe is a special function that is called from a Component template. Its purpose is to transform a value: You pass a value to the Pipe, the Pipe computes a new value and returns it.
 
-The name Pipe originates from the vertical bar “|” that sits between the value and the Pipe name. The concept as well as the “|” syntax originates from Unix pipes and Unix shells.
+The name Pipe originates from the vertical bar “\|” that sits between the value and the Pipe name. The concept as well as the “\|” syntax originates from Unix pipes and Unix shells.
 
 In this example, the value from `user.birthday` is transformed by the `date` Pipe:
 
@@ -5338,9 +5344,9 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 
 ## End-to-end testing
 
-We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group pf connected parts work as intended.
+We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group of connected parts work as intended.
 
-Karma and Jamine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in an controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
+Karma and Jamine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in a controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
 
 The most effective and reliable way to ensure a working application is _manual testing_: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
 
@@ -5352,7 +5358,7 @@ We need automated tests that take the user’s perspective. This is what **end-t
 
 As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
-There is a new type of bugs that arise when all parts of the application come together. Often these bugs have to do with timing and order of events, like network latency and race conditions.
+When all parts of the application come together, an new type of bugs arise. Often these bugs have to do with timing and order of events, like network latency and race conditions.
 
 The unit and integration tests we wrote worked with a fake back-end. We send fake HTTP requests and respond with fake data. We made an effort to keep the originals and fakes on par.
 
@@ -5392,12 +5398,12 @@ All common browsers support the WebDriver protocol and can be controlled remotel
 - Find one or more elements in the DOM
 - Get information about a found element:
   - Get an element attribute or property
-  - Get the element textcontent
+  - Get the element’s text content
 - Click on an element
 - Send keyboard input to a form field
 - Execute arbitrary JavaScript code
 
-WebDriver is a key technology most end-to-end testing frameworks depend on. The main benefit of WebDriver is that tests can be run in different browsers, even simulataneously.
+WebDriver is a key technology most end-to-end testing frameworks depend on. The main benefit of WebDriver is that tests can be run in different browsers, even simultaneously.
 
 WebDriver is a high-level, generic, HTTP-based protocol. It connects the test running on one machine with a browser possibly running on another machine. The level of control over the browser is limited.
 
@@ -5413,36 +5419,61 @@ In this guide, we will discuss two frameworks, one of each category: _Protractor
 
 ### Protractor
 
-Protractor is a an end-to-end testing framework based on WebDriver, made for Angular applications.
+Protractor is an end-to-end testing framework based on WebDriver, made for Angular applications.
 
-Protractor is an official Angular project and also originates from Google. In a new Angular project created with the Angular CLI, Protractor is the default end-to-end testing framework. It is already up and running.
+Protractor is an official Angular project and also originates from Google. In a new project created with the Angular CLI, Protractor is already installed as the default end-to-end testing framework.
 
 Just like the unit and integration test we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
 
-Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next  WebDriver command. The behavior seeks to make testing Angular applications more robust.
+Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next  WebDriver command. This feature seeks to make testing Angular applications more robust.
 
-Despite all these benefits, **this guide does not recommend using Protractor** for new projects. Why so?
+Despite all these benefits, **this guide does not recommend using Protractor for new projects**. Why so?
 
 First of all, Protractor is practically unmaintained. The future of the project is unclear. It seems to have lost the Google backing.
 
-Second, the project underwent fundamental changes that curtail its usability. The conventional way to write Protractor tests is deprecated today.
+Second, the project underwent fundamental changes that curtail its usability.
 
-Protractor has a feature called _WebDriver control flow_. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if the code was synchronous. When the underlying WebDriverJS library removed the feature, Protractor deprecated it as well.
+Protractor has a feature called _WebDriver control flow_. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if the code was synchronous.
 
-Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests instead of hiding it. All Protractor commands return Promises and you are advised to use `async` / `await` to wait for a command to finish. But a lot of examples, tutorials and the standard configuration still propagate the control flow.
+The control flow implementation has lead to inconsistencies and bugs. The underlying WebDriverJS library removed the feature, so Protractor deprecated it as well. Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests.
 
-The control flow implementation has lead to pitfalls, inconsistencies and bugs. Declaring this feature obsolete was inevitable, but also eliminated a useful core feature. Protractor’s contenders, namely Cypress and Webdriver.io, still have such a feature.
+All Protractor commands return Promises. You are advised to use `async` / `await` to wait for a command to finish. But a lot of Protractor examples, tutorials and the default configuration still propagate the control flow.
 
-If you disable to control flow as recommended, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
+Declaring this feature obsolete was inevitable, but also eliminated a useful feature. Protractor’s contenders, namely Cypress and Webdriver.io, still have such a feature.
+
+If you disable the control flow as recommended, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
 
 Protractor is a great project, but today there is no compelling reason to choose Protractor over its competitors.
 
-If you are looking for Protractor examples, you will find extensive Protractor tests in the repositories for the Counter and Flickr search. They are not explained in this guide though.
+If you are looking for Protractor examples, you will find tests in different flavors for the Counter and Flickr search. They are not explained in this guide though.
 
 <div class="book-sources" markdown="1">
 - [Counter: End-to-end tests with Protractor](https://github.com/9elements/angular-workshop/tree/master/e2e)
 - [Flickr search: End-to-end tests with Protractor](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
 </div>
+
+### Cypress
+
+Cypress is an end-to-end testing framework that is not based on WebDriver and that is not Angular-specific. Any web site can be tested with Cypress.
+
+WebDriver-based testing solutions are flexible and powerful but turned out to be slow and unreliable. Cypress aims to improve both the developing experience and the reliability of end-to-end tests.
+
+Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not remotely-controlled, but the tests run directly in the browser, supported by a browser plugin. The test runner provides a powerful user interface for inspecting an debugging tests right in the browser.
+
+Cypress is the product of one company, Cypress.io, Inc. While the test runner is open source and free of charge, the company generates revenue with an additional paid service: The Cypress dashboard manages test runs recorded in a continuous integration environment. You do not have to subscribe to this service to write and run Cypress tests.
+
+From our perspective, Cypress has several drawbacks.
+
+First, while Cypress works well with Angular applications, it requires some initial setup. Un
+
+Second, Cypress uses Mocha and Chai as libraries for writing tests, not Jasmine. While both approaches roughly work the same, this means you have to learn the subtle differences. And you have to live with the inconsistency that unit and integration tests use Jasmine, while end-to-end tests use Mocha and Chai.
+
+Third, at the time of writing, Cypress only supports Firefox and Chromium-based browsers (Chrome, Microsoft Edge etc.). It does not support Safari, legacy Edge or even Internet Explorer.
+
+Cypress is not simply better than WebDriver-based frameworks. It tries to solve their problems by narrowing the scope and making trade-offs. That being said, Cypress is
+
+Cypress is well-maintained and well-documented.
+
 
 ### WebDriver architecture
 
@@ -5560,7 +5591,7 @@ Jasmine started
 
 Executed 1 of 2 specs INCOMPLETE (1 SKIPPED) in 3 secs.
 I/launcher - 0 instance(s) of WebDriver still running
-I/launcher - chrome #01 passe
+I/launcher - chrome #01 passed
 </code></pre>
 
 This means the test suite “Angular web site” ran and the spec “contains information on Angular” passed.
@@ -6227,9 +6258,9 @@ You will find that end-to-end tests with Protractor often require a manual wait.
 
 <div class="book-sources" markdown="1">
 - [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
-- [Protractor API reference: wait](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.wait
-- [Protractor API reference: ExpectedConditions](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions
-- [Protractor API reference: elementToBeClickable](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions.prototype.elementToBeClickable
+- [Protractor API reference: wait](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.wait)
+- [Protractor API reference: ExpectedConditions](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions)
+- [Protractor API reference: elementToBeClickable](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions.prototype.elementToBeClickable)
 - [Protractor documentation: Timeouts](https://www.protractortest.org/#/timeouts)
 - [Full code: flickr-search.po.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.po.ts)
 </div>
@@ -6471,8 +6502,6 @@ findEl(…)
   <li>Protractor stammt aus Angular-1-Zeiten</li>
   <li>Simulierte Synchronität ist schwarze Magie</li>
 </ul>
-
-### Cypress
 
 ---
 
