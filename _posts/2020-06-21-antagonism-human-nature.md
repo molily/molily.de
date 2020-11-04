@@ -35,7 +35,7 @@ The factory simulation is a mathematical model, a function over time. Goods are 
 
 There is the distant goal of building a rocket. But instead, a near goal drives the gameplay forward: the alien threat. The aliens are insect-like swarm creatures. They live in nests and occasionally expand by building new nests. They attack everything that comes near them. They run straight into the player’s defenses. These enemies are an important outer limiting factor, an additional challenge the player needs to tackle when planning and expanding the factory.
 
-As a game device, the aliens force the player to build a machinery of war. If one would take out the products, the buildings, the technology research etc. directly or indirectly connected to military, there is only a fraction left. (To be specific here, I have counted 129 civil [items](https://wiki.factorio.com/Items), 10 dual use items and 44 military items. That means almost a third of the items are clearly military.) So for a great deal, this game is a war game, with little strategic value I might add.
+As a game device, the aliens force the player to build a machinery of war. If one would take out the products, the buildings, the technology research etc. directly or indirectly connected to military, there is only a fraction left. (To be specific here, I have counted 129 civil [items](https://wiki.factorio.com/Items), 10 dual use items and 44 military items. That means almost a quarter of the items are clearly military.) So for a great deal, this game is a war game, with little strategic value I might add.
 
 Defending your civilization against the natives is a notorious colonial narrative. To expand your factory, you constantly need to push the “frontier” forward, eliminating the native population.
 
