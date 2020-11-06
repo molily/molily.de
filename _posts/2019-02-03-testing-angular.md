@@ -100,10 +100,10 @@ robots: noindex, follow
 
 <p id="cover">
 <picture>
-  <source type="image/avif" srcset="/img/robust-angular/robust-angular-800-30.avif, /img/robust-angular/robust-angular-1600-30.avif 2x">
-  <source type="image/webp" srcset="/img/robust-angular/rob ust-angular-800.webp, /img/robust-angular/robust-angular-1600.webp 2x">
-  <source type="image/jpeg" srcset="/img/robust-angular/robust-angular-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
-  <img id="cover-image-flying-probe" src="/img/robust-angular/robust-angular-800-85.jpg" srcset="/img/robust-angular/robust-angular-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of a flying probe testing a printed circuit board.">
+  <source type="image/avif" srcset="/img/robust-angular/flying-probe-800-30.avif, /img/robust-angular/flying-probe-1600-30.avif 2x">
+  <source type="image/webp" srcset="/img/robust-angular/flying-probe-800.webp, /img/robust-angular/flying-probe-1600.webp 2x">
+  <source type="image/jpeg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
+  <img id="cover-image-flying-probe" src="/img/robust-angular/flying-probe-800-85.jpg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of a flying probe testing a printed circuit board.">
 </picture>
 
 <span id="cover-credits">Photo by genkur from iStock</span>
@@ -5497,9 +5497,9 @@ ng add @briebug/cypress-schematic
 
 This command does three important things:
 
-- Add Cypress and auxiliary npm packages to package.json.
-- Create a sub-directory named `cypress` with a scaffold for your tests.
-- Change the angular.json configuration file to add `ng run` commands.
+1. Add Cypress and auxiliary npm packages to package.json.
+2. Create a sub-directory named `cypress` with a scaffold for your tests.
+3. Change the `angular.json` configuration file to add `ng run` commands.
 
 The output looks like this:
 
@@ -5519,63 +5519,140 @@ UPDATE angular.json (4378 bytes)
 ✔ Packages installed successfully.
 ```
 
-The schematic asks if you would like to remove Protractor from the project.
+The schematic asks if you would like to remove Protractor from the project. If you opt for “Yes”, the Protractor directory `e2e` is removed and the `ng e2e` command will start Cypress instead. If you opt for “No”, the `e2e` directory will remain untouched.
 
-
+If you are unsure, just answer “No” so you can revive the Protractor tests at any time if you feel the need.
 
 ### Writing an end-to-end test with Cypress
 
-Protractor is Angular’s default default end-to-end testing framework. When you create a new project using the Angular CLI, Protractor is installed automatically.
+In the project directory, you will find a sub-directory called `cypress`. It contains:
 
-In the project directory, you will find a subdirectory called `e2e`. It contains the Protractor configuration (`e2e/protractor.conf.js`), a TypeScript configuration (`e2e/tsconfig.json`) as well as the actual end-to-end tests. The test files are placed in `e2e/src/` and have the extension `.e2e-spec.ts`.
+- A `tsconfig.json` TypeScript configuration file for all `.ts` files in the directory,
+- a `support` directory for custom commands,
+- a `plugin` directory for Cypress plugins and
+- an `integration` directory for the actual end-to-end tests.
 
-While the Protractor allows to control the browser remotely, the test itself is structured using Jasmine. If you have written unit tests with Jasmine before, the structure will be familiar – see [test suites with Jasmine](#test-suites-with-jasmine).
+The test files in `integration` are TypeScript files with the extension `.ts`.
 
-A test file contains one or more suites declared with `describe('…', () => { /* … */})`. Typically, one file contains one `describe` block, possible with nested `describe` blocks.
+The tests itself are structured with the test framework Mocha. The assertions (also called expectations) are written using Chai. Mocha and Chai is a popular combination. They roughly do the same as Jasmine, but are much more flexible and rich in features.
 
-Inside `describe`, the blocks `beforeEach`, `afterEach`, `it` and `expect` are used just like in unit tests. This brings us to the following end-to-end test structure:
+If you have written unit tests with Jasmine before, the Mocha structure will be familiar to you. A test file contains one or more suites declared with `describe('…', () => { /* … */})`. Typically, one file contains one `describe` block, possible with nested `describe` blocks.
+
+Inside `describe`, the blocks `beforeEach`, `afterEach`, `beforeAll`, `afterAll` and `it` can be used similar to Jasmine tests.
+
+This brings us to the following end-to-end test structure:
 
 ```typescript
 describe('… Feature description …', () => {
   beforeEach(() => {
-    // Navigate to the page using Protractor
+    // Navigate to the page
   });
 
   it('… User interaction description …', () => {
-    // Interact with the page using Protractor
-    // Make expectation about the page content
-    expect(/* … */).toBe(/* … */);
+    // Interact with the page
+    // Assert something about the page content
   });
 });
 ```
 
-As a start, let us write a simple test that navigates to a remote web site and checks the content. This test visits the familiar site angular.io and expects the title to contain “Angular".
+### Testing the Counter Component
 
-```typescript
-import { browser } from 'protractor';
-
-describe('Angular web site', () => {
-  beforeEach(() => {
-    browser.get('https://angular.io/');
-  });
-
-  it('contains information on Angular', () => {
-    expect(browser.getTitle()).toContain('Angular');
-  });
-});
-```
-
-Protractor’s `browser` object provides methods for basic WebDriver commands.
-
-- In the `beforeEach` block, we call `browser.get()` to navigate to the URL `'https://angular.io/'`.
-- In the spec (`it` block), we use `browser.getTitle()` to retrieve the page title.
-
-The spec contains one expectation declared with `expect(…).toContain(…)`. Since the title is a string, we use Jasmine’s `toContain` matcher to compare the actual title with the expected title.
+Step by step, we are going to write end-to-end tests for the counter example application.
 
 <div class="book-sources" markdown="1">
-- [Protractor API reference: browser.get()](https://www.protractortest.org/#/api?view=ProtractorBrowser.prototype.get)
-- [Protractor API reference: browser.getTitle()](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.getTitle)
+- [Counter Component: Source code](https://github.com/9elements/angular-workshop)
+- [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
 </div>
+
+<button class="load-iframe">
+See the counter Component app in action
+</button>
+
+<script type="template">
+<p class="responsive-iframe">
+<iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
+</p>
+</script>
+
+As a start, let us write a minimal test that checks the document title. In the Counter repository, we create a file called `cypress/integration/counter.ts`. It looks like this:
+
+```typescript
+describe('Counter', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:4200');
+  });
+
+  it('has the correct title', () => {
+    cy.title().should('equal', 'Angular Workshop: Counters');
+  });
+});
+```
+
+Cypress commands are methods of the `cy` namespace object. Here, we are using two commands, `visit` and `title`.
+
+`cy.visit` orders the browser to visit the given URL. In this case, we use the full URL of the development server. Later, we are going to set a `baseUrl` in the Cypress configuration so we can use paths like `/`. Then, Cypress will append the path to the `baseUrl`.
+
+`cy.title` returns the page title. To be specific, it returns a Cypress **Chainer**. that wraps a string. A Chainer is an asynchronous wrapper around values, mostly DOM elements but also other values.
+
+The Chainer has a `should` method for creating an assertion. Cypress relays the call to the Chai library to verify the assertion. We pass two parameters, `'equal'` and the expected title string. `equal` creates an assertion that the subject value (the page title) equals to the given value (`'Angular Workshop: Counters'`). `equal` uses the familiar `===` comparison.
+
+This `should` style of assertions is different from Jasmine expectations, like `expect(…).toBe(…)`. Confusingly, Chai supports three different assertion styles: `should`, `assert`, but also `expect`. In Cypress, you will typically use the `should` method on Chainers and `expect` on other values.
+
+<div class="book-sources" markdown="1">
+- [Cypress API reference: cy.visit](https://docs.cypress.io/api/commands/visit.html)
+- [Cypress API reference: cy.title](https://docs.cypress.io/api/commands/title.html)
+- [Cypress API reference: cy.visit](https://docs.cypress.io/guides/references/assertions.html)
+- [Chai API reference: should style assertions](https://www.chaijs.com/api/bdd/)
+- [Chai API reference: equal](https://www.chaijs.com/api/bdd/#method_equal)
+</div>
+
+### Running the Cypress tests
+
+Save the example code above as `cypress/integration/counter.ts`
+
+Cypress has two main ways to run the end-to-end tests:
+
+1. `cypress run` – Non-interactive test runner. Runs the tests in a “headless” browser. This means the browser window is not visible. The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output. This command is typically used in the continuous integration environment.
+
+2. `cypress open` – Interactive test runner. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests. This command is typically used in the development environment.
+
+The Cypress schematic we have installed wrap these commands so they integrate with Angular.
+
+- `ng run $project-name$:cypress-run` – Starts an Angular development server (`ng serve`), then calls `cypress run`.
+- `ng run $project-name$:cypress-open` – Starts an Angular development server (`ng serve`), then calls `cypress open`.
+
+`$project-name$` is a placeholder. Insert the name of the respective Angular project. This is typically the same as the directory name. If not, it can be found in `angular.json` in the `projects` object.
+
+For example, the Counter example has the project name `angular-workshop`. Therefore, the commands are `ng run angular-workshop:cypress-run` and `ng run angular-workshop:cypress-open`.
+
+To run our first Counter end-to-end test, run:
+
+```
+ng run angular-workshop:cypress-open
+```
+
+This will open the test runner:
+
+<img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner">
+
+In the main window pane, all tests are listed.
+To run a single test, just click on it. To run all, click the “Run all specs” button.
+
+On the top-right, you can select the browser. Given you have Chrome, Firefox and Edge installed,
+Electtron
+
+### Asynchronous tests
+
+Cypress commands are declarative and the execution happens asynchronously. By calling `cy.visit` and `cy.title`, we merely add commands to a queue. The queue is processed later.
+
+As a consequence, we do not need to wait for the result of `cy.visit`. Cypress automatically waits for the page to load before proceeding with the next command. For the same reason, `cy.title` does not immediately return a string, but a Chainer that allows more declarations.
+
+In the Jasmine unit and integration tests we wrote, we had to manage time ourselves. When dealing with asynchronous commands and asynchronous values, we had to use `async` / `await`, `fakeAsync` and other means explicitly.
+
+This is not necessary when writing Cypress tests. The Cypress API is designed for expressiveness and readability. Cypress hides the fact that all commands take time.
+
+A key feature of Cypress is that it
+
 
 ### Running the Protractors tests
 
