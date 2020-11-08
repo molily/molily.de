@@ -465,6 +465,12 @@ td p:last-child {
   width: 100%;
 }
 
+.image-max-full {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}
+
 /**
  * @section Responsive Media (img, picture, video, iframe)
  *

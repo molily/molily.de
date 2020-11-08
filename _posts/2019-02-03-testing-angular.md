@@ -565,7 +565,7 @@ The launched browser opens `http://localhost:9876/`. As mentioned, this site ser
 
 When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
-<img src="/img/robust-angular/karma-success.png" width="100%">
+<img src="/img/robust-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full">
 
 This is the console output:
 
@@ -5633,17 +5633,43 @@ ng run angular-workshop:cypress-open
 
 This will open the test runner:
 
-<img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner">
+<img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full">
 
-In the main window pane, all tests are listed.
-To run a single test, just click on it. To run all, click the “Run all specs” button.
+In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”. On the top-right, you can select the browser. Chrome, Firefox and Edge will appear in the list given you have installed them on your machine.
 
-On the top-right, you can select the browser. Given you have Chrome, Firefox and Edge installed,
-Electtron
+This graphical user interface is an Electron application, a framework based on Chromium, the open source foundation of Chrome. RegardYou can always run your tests in Electron as well since it ships with Cypress.
+
+Suppose you run the tests in Chrome, the in-browser test runner looks like this:
+
+<img src="/img/robust-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full">
+
+On the left side, the specs are listed. On the right side, the web page under test is seen.
+
+By clicking on a spec name, you can see all commands and assertions in the spec.
+
+<img src="/img/robust-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full">
+
+You can watch Cypress running the specs command by command. This is especially useful when a spec fails. Let us break the spec on purpose to see Cypress’ output.
+
+```typescript
+cy.title().should('equal', 'Fluffy Golden Retrievers');
+```
+
+<img src="/img/robust-angular/cypress-spec-failed.png" alt="Failed spec in Cypress" class="image-max-full">
+
+Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
+
+A great feature of the in-browser test runner is the ability to see the state of the page at a certain point in time. Cypress creates DOM snapshot when a command is run or an assertion verified. By hovering over a command or assertion, you can travel back in time. The page on the right side then reflects the page when the command or assertion was processed.
+
+<div class="book-sources" markdown="1">
+- [Cypress documentation: The Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html)
+</div>
 
 ### Asynchronous tests
 
-Cypress commands are declarative and the execution happens asynchronously. By calling `cy.visit` and `cy.title`, we merely add commands to a queue. The queue is processed later.
+Every Cypress command takes some time to execute. But from the spec point of view, the execution happens instantly.
+
+In fact, Cypress commands are merely declarative. The execution happens asynchronously. By calling `cy.visit` and `cy.title`, we add commands to a queue. The queue is processed later.
 
 As a consequence, we do not need to wait for the result of `cy.visit`. Cypress automatically waits for the page to load before proceeding with the next command. For the same reason, `cy.title` does not immediately return a string, but a Chainer that allows more declarations.
 
@@ -5651,72 +5677,28 @@ In the Jasmine unit and integration tests we wrote, we had to manage time oursel
 
 This is not necessary when writing Cypress tests. The Cypress API is designed for expressiveness and readability. Cypress hides the fact that all commands take time.
 
-A key feature of Cypress is that it
+### Automatic retries and waiting
 
+A key feature of Cypress is that it retries certain commands and assertions. For example, Cypress queries the document title and compares it with the expected title. If the title does not match instantly, Cypress will retry the `cy.title` command and the `should` assertion for four seconds. When the timeout is reached, the spec fails.
 
-### Running the Protractors tests
+Other commands are not retried, but have a built-in waiting logic. For example, we will use Cypress’ `click` method to click on an element. Cypress automatically waits for four seconds for the element to be clickable. Cypress scrolls the element into view and checks if it is visible and not disabled. After several other checks, the Cypress performs the click.
 
-Save a file with the example code above as `angular-io.e2e-spec.ts` into the `e2e/src/` directory. On the console, run this command:
+The retry and waiting timeout of four seconds can be configured for all tests or individual commands. This feature makes end-to-end makes more reliable, but also easier to write. In other end-to-end testing frameworks, you have to wait manually manually and there is no automatic retry of commands and assertions.
 
-```
-ng e2e
-```
-
-This command compiles the Angular application and starts a local server at `http://localhost:4200`, just like `ng serve` does. Then it starts Protractor.
-
-Protractor first downloads and runs the necessary driver to control the configured browsers. Per default, it starts an instance of Chrome using ChromeDriver. You will see a Chrome window popping up and you can watch how the browser is controlled by your tests.
-
-One after another, the Jasmine specs are executed. When all tests are run, the browser instance is terminated again.
-
-The relevant `ng e2e` output may look like this:
-
-<pre><code>
-I/launcher - Running 1 instances of WebDriver
-I/direct - Using ChromeDriver directly...
-Jasmine started
-
-  Angular web site
-    <span style="color: #00bf01">✓ contains information on Angular</span>
-
-Executed 1 of 2 specs INCOMPLETE (1 SKIPPED) in 3 secs.
-I/launcher - 0 instance(s) of WebDriver still running
-I/launcher - chrome #01 passed
-</code></pre>
-
-This means the test suite “Angular web site” ran and the spec “contains information on Angular” passed.
-
-Starting up the tests with `ng e2e` is quite slow. During development, you typically have `ng serve` running anyway. There is no need for `ng e2e` to start a development server. Also it is not necessary to update the browser driver with every test run.
-
-To speed up the boot process in this case, you can pass these command line arguments:
-
-```
-ng e2e --dev-server-target= --no-webdriver-update
-```
-
-`--dev-server-target=` instructs Protractor not to start a development server. `--no-webdriver-update` tells Protractor not to perform a driver update.
-
-TODO: Watching
-
-### Testing the Counter Component
-
-Let us write our first realistic end-to-end test that examine our own Angular application: The counter example.
+TODO Retry tests
 
 <div class="book-sources" markdown="1">
-- [Counter Component: Source code](https://github.com/9elements/angular-workshop)
-- [Counter Component: Run the app](https://9elements.github.io/angular-workshop/)
+- [Cypress introduction: Commands are asynchronous](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html#Commands-Are-Asynchronous)
+- [Cypress documentation: Retry-ability](https://docs.cypress.io/guides/core-concepts/retry-ability.html)
+- [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html)
+- [Cypress documentation: Interacting with Elements](https://docs.cypress.io/guides/core-concepts/interacting-with-elements.html)
 </div>
 
-<button class="load-iframe">
-See the counter Component app in action
-</button>
+### Testing the counter increment
 
-<script type="template">
-<p class="responsive-iframe">
-<iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
-</p>
-</script>
+In our first Cypress test, we have checked the title of the counter successfully. Let us test the counter’s increament feature.
 
-First we test the counter’s increament feature. The test needs to perform the following steps:
+The test needs to perform the following steps:
 
 1. Navigate to /
 2. Find the element with the current count and read its text content
@@ -5725,56 +5707,46 @@ First we test the counter’s increament feature. The test needs to perform the 
 5. Find the element with the current count and read its text content (again)
 6. Expect that the text now reads “6”
 
-We already now how to navigate to an address: `browser.get('/')`. Protractor will expand the / to a full URL using the `baseUrl` from its configuration file or command line option. (`baseUrl` is set to `'http://localhost:4200'` per default.)
+We already now how to navigate to an address with `cy.visit('http://localhost:4200')`.
+
+For simplicity, let us set the `baseUrl` configuration option to `'http://localhost:4200'` so we can write `cy.visit('/')` instead. Once we write more and more tests, the `baseUrl` comes in handy to avoid repetition. More importantly, it allows you to run the tests against different versions of the application, for example development, staging and production.
+
+Edit the Cypress configuration file `cypress.json` in the Angular project directory. Add a property `baseUrl` and set it to the Angular development server URL:
+
+```javascript
+{
+  "baseUrl": "http://localhost:4200",
+  /* … */
+}
+```
+
+From now on, Cypress will expand the URL passed to `cy.visit` to a full URL using the `baseUrl`. The `baseUrl` configuration option can still be overriden on the command line if necessary.
 
 ### Finding elements
 
-The next step is to find an element in the current page. Protractor provides several ways to find elements. Among others, you can find an element by id, name attribute, class name or CSS selector.
-
-The structure is always the same: You call Protractor’s `element` function and pass a _locator_, which is a result of a call to a `by` method. `element` returns an _element finder_ that can be used for later commands.
+The next step is to find an element in the current page. Cypress provides several ways to find elements. We are going to use the `cy.get` method to find an element by CSS selector.
 
 ```typescript
-import { by, element } from 'protractor';
-
-element(by.id('some-id'));
-element(by.name('some-name'));
-element(by.className('some-class-name'));
-element(by.css('.some-css-selector'));
+cy.get('.example')
 ```
 
-A shortcut for `element(by.css('…'))` is `$('…')` in the style of the iconic jQuery function.
+`cy.get` returns a chainer, an asynchronous wrapper around the found elements with useful methods.
 
-`element` finds a single element or element. To find multiple elements by the same feature, use the `element.all` function.
-
-```typescript
-element.all(by.id('some-id'));
-element.all(by.name('some-name'));
-element.all(by.className('some-class-name'));
-element.all(by.css('.some-css-selector'));
-```
-
-A shortcut for `element.all(by.css('…'))` is `$$('…')`.
-
-`element.all` finds a list of elements. If not matching element was found, that list is empty.
-
-Just like with unit and integration test, the immediate question is: Which way to find an element should we use? By id, name, class, CSS selector?
+Just like with unit and integration test, the immediate question is: Which way to find an element should we use? By id, name, class or by other means?
 
 As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids), this guide recommends to mark elements with a **test ids**. These are data attributes like `data-testid="example"`. In the test, we use a corresponding attribute selector like `[data-testid="example"]` to find the elements.
 
 ```typescript
-element(by.css('[data-testid="example"]'));
-element.all(by.css('[data-testid="example"]'));
+cy.get('[data-testid="example"]')
 ```
 
-This recommendation does not mean that other ways to find elements are forbidden. They are still useful in some cases. For example, you might want to check the presence and the content of an `h1` element. This element has a special meaning and you should not find it with by test id.
+This recommendation does not mean that other ways to find elements are forbidden. They are still useful in some cases. For example, you might want to check the presence and the content of an `h1` element. This element has a special meaning and you should not find it with by arbitrary test id.
 
-The benefit of a test id is that it can be used on any element. Using a test id means ignoring the element type and other attributes. The test does not fail if those change. But if there is an important reason for this particular element type or attribute, your test should verify the usage.
+The benefit of a test id is that it can be used on any element. Using a test id means ignoring the element type (like `h1`) and other attributes. The test does not fail if those change. But if there is a reason for this particular element type or attribute, your test should verify the usage.
 
 <div class="book-sources" markdown="1">
-- [Protractor documentation: Using Locators](https://www.protractortest.org/#/locators)
-- [Protractor API reference: Locators](http://www.protractortest.org/#/api?view=ProtractorBy)
-- [Protractor API reference: element](http://www.protractortest.org/#/api?view=ElementFinder)
-- [Protractor API reference: element.all](http://www.protractortest.org/#/api?view=ElementArrayFinder)
+- [Cypress API reference: cy.get](https://docs.cypress.io/api/commands/get.html)
+- [Cypress Best Practices: Selecting Elements](https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements)
 </div>
 
 ### Interacting with elements
@@ -5782,281 +5754,248 @@ The benefit of a test id is that it can be used on any element. Using a test id 
 To test the counter component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`”`. So the element finder would be:
 
 ```typescript
-element(by.css('[data-testid="count"]'));
+cy.get('[data-testid="count"]')
 ```
 
-In short:
+The `cy.get` command already has an assertion built-in: It expects to find at least one element. Otherwise, the test fails.
+
+Next, we need to check the element’s text content to verify that the start count is 5. Again, we use the `should` method to create an assertion.
 
 ```typescript
-$('[data-testid="count"]');
+cy.get('[data-testid="count"]').should('have.text', '5');
 ```
 
-The `element` and `element.all` functions return element finders. On their own, they do nothing but describing a way to find elements on the page. They do not send a WebDriver command yet.
+The `have.text` assertion compares the text content with the given string.
 
-The command that we need to perform on the element is to get its text content. We use the element finder’s `getText` method:
+Great! We have found an element and checked its content.
+
+Now let us increment the count. We find and click on the increment button. The button has the test id `increment-button`. Cypress offers the `cy.click` method for this purpose.
 
 ```typescript
-$('[data-testid="count"]').getText();
+cy.get('[data-testid="increment-button"]').click();
 ```
 
-Protractor instructs the browser to find the element and report its text content back.
-
-We can now write our first expectation to verify that the start count is 5:
-
-```typescript
-expect($('[data-testid="count"]')).getText()).toBe('5');
-```
-
-Great! We have found an element, performed an action on it and checked the result.
-
-Now let us increment the count. We find the increment button and instruct the browser to click. The button has the test id `increment-button`. Protractor offers the `click` method for this purpose.
-
-```typescript
-$('[data-testid="increment-button"]')).click();
-```
-
-The Angular code under test handles the click event. Finally, we verify that the visible count has increased by one. We repeat the `getText` command, but expect a higher number.
+The Angular code under test handles the click event. Finally, we verify that the visible count has increased by one. We repeat the `should('have.text', …)` command, but expect a higher number.
 
 The test suite now looks like this:
 
 ```typescript
-import { browser, by, element } from 'protractor';
-
 describe('Counter', () => {
   beforeEach(() => {
-    browser.get('/');
+    cy.visit('/');
+  });
+
+  it.only('has the correct title', () => {
+    cy.title().should('equal', 'Angular Workshop: Counters');
   });
 
   it('increments the count', () => {
-    expect($('[data-testid="count"]').getText()).toBe('5');
-    $('[data-testid="increment-button"]').click();
-    expect($('[data-testid="count"]').getText()).toBe('6');
+    cy.get('[data-testid="count"]').should('have.text', '5');
+    cy.get('[data-testid="increment-button"]').click();
+    cy.get('[data-testid="count"]').should('have.text', '6');
   });
 });
+
 ```
 
 The next feature we need to test is the decrement button. The spec works similar to the increment spec. It clicks on the decrement button and checks that the count has decreased.
 
 ```typescript
 it('decrements the count', () => {
-  $('[data-testid="decrement-button"]').click();
-  expect($('[data-testid="count"]').getText()).toBe('4');
+  cy.get('[data-testid="decrement-button"]').click();
+  cy.get('[data-testid="count"]').should('have.text', '4');
 });
 ```
 
 Last but not least, we test the reset feature. The user can enter a new count into a form field (test id `reset-input`) and click on the reset button (test id `reset-button`) to set the new count.
 
-Protractor and the underlying WebDriver protocol do not have a dedicated method to fill out a form field. There is a generic method though for sending keys to an element that is keyboard-interactable: `sendKeys`.
+Cypress does not have a dedicated method to fill out a form field. A Cypress chainer has a generic method for sending keys to an element that is keyboard-interactable: `type`.
 
-To enter text into the form field, we “send keys” to the respective element. We simply pass a string to `sendKeys`.
+To enter text into the form field, we pass a string to the `type` method.
 
 ```typescript
-$('[data-testid="reset-input"]').sendKeys('123');
+cy.get('[data-testid="reset-input"]').type('123');
 ```
 
 Next, we click on the reset button and finally expect the change.
 
 ```typescript
 it('resets the count', () => {
-  $('[data-testid="reset-input"]').sendKeys('123');
-  $('[data-testid="reset-button"]').click();
-  expect($('[data-testid="count"]').getText()).toBe('123');
+  cy.get('[data-testid="reset-input"]').type('123');
+  cy.get('[data-testid="reset-button"]').click();
+  cy.get('[data-testid="count"]').should('have.text', '123');
 });
 ```
 
 This is full test suite:
 
 ```typescript
-import { $, browser } from 'protractor';
-
 describe('Counter', () => {
   beforeEach(() => {
-    browser.get('/');
+    cy.visit('/');
   });
 
-  it("increments the count", () => {
-    expect($('[data-testid="count"]').getText()).toBe('5');
-    $('[data-testid="increment-button"]').click();
-    expect($('[data-testid="count"]').getText()).toBe('6');
+  it('has the correct title', () => {
+    cy.title().should('equal', 'Angular Workshop: Counters');
   });
 
-  it("decrements the count", () => {
-    $('[data-testid="decrement-button"]').click();
-    expect($('[data-testid="count"]').getText()).toBe('4');
+  it('increments the count', () => {
+    cy.get('[data-testid="count"]').should('have.text', '5');
+    cy.get('[data-testid="increment-button"]').click();
+    cy.get('[data-testid="count"]').should('have.text', '6');
   });
 
-  it("resets the count", () => {
-    $('[data-testid="reset-input"]').sendKeys('123');
-    $('[data-testid="reset-button"]').click();
-    expect($('[data-testid="count"]').getText()).toBe('123');
+  it('decrements the count', () => {
+    cy.get('[data-testid="decrement-button"]').click();
+    cy.get('[data-testid="count"]').should('have.text', '4');
+  });
+
+  it('resets the count', () => {
+    cy.get('[data-testid="reset-input"]').type('123');
+    cy.get('[data-testid="reset-button"]').click();
+    cy.get('[data-testid="count"]').should('have.text', '123');
   });
 });
 ```
+
+On the start page of the counter project, there are in fact nine counters instance. The `cy.get` commands therefore returns nine elements instead of one.
+
+Commands like `type` and `click` can only operate on one element, so we need to reduce the element list to the first result. This is achieved by Cypress’ `first` command inserted in the chain.
+
+```typescript
+it('increments the count', () => {
+  cy.get('[data-testid="count"]').first().should('have.text', '5');
+  cy.get('[data-testid="increment-button"]').first().click();
+  cy.get('[data-testid="count"]').first().should('have.text', '6');
+});
+```
+
+This also applies to the other specs. If the element under test only appears once, the `first` command is not necessary, of course.
 
 All counter features are now tested. In the next chapters, we will refactor the code to improve its readability and maintainability.
 
 <div class="book-sources" markdown="1">
-- [Full code: app-starter.e2e-spec.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/src/app-starter.e2e-spec.ts)
-- [Protractor API reference: getText](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.getText)
-- [Protractor API reference: click](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.click]
-- [Protractor API reference: sendKeys](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.sendKeys)
+- [Full code: counter.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/integration/counter.ts)
+- [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html
+- [Cypress FAQ: How do I get an element’s text contents?](https://docs.cypress.io/faq/questions/using-cypress-faq.html#How-do-I-get-an-element%E2%80%99s-text-contents
+- [Cypress API reference: type](https://docs.cypress.io/api/commands/type.html
 </div>
 
-### End-to-end testing helpers
+### Custom Cypress commands
 
-The test we wrote is quite repetitive. The pattern `$('[data-testid="…"]')` is repeated over and over. Since we mostly find elements by test id, the first improvement is to write helper functions that hide this detail.
+The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over. Since we follow the convention to find elements by test id, the first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](#testing-helpers), `findEl` and `findEls`.
 
-- For the pattern `element(by.css('[data-testid="…"]'))`, we write a helper function called `findEl`.
-- For the pattern `element.all(by.css('[data-testid="…"]'))`, we write a helper function called `findEls`.
-
-We have already written similar functions as [unit testing helpers](#testing-helpers).
-
-Next, we create the file `e2e/e2e.spec-helper.ts`. The extension `.spec-helper.ts` is simply a convention. You can name the helper files as you wish. But they should not be called `.e2e-spec.ts`, since Protractor treats these files as end-to-end tests.
-
-`e2e/e2e.spec-helper.ts` declares and exports three functions:
+The easiest way to create a Cypress helper for finding elements is a function.
 
 ```typescript
-import {
-  ElementArrayFinder,
-  ElementFinder,
-  Locator,
-  by,
-  element,
-} from "protractor";
-
-export function queryAttributeLocator(testId: string): Locator {
-  return by.css(`[data-testid="${testId}"]`);
-}
-
-export function findEl(testId: string): ElementFinder {
-  return element(queryAttributeLocator(testId));
-}
-
-export function findEls(testId: string): ElementArrayFinder {
-  return element.all(queryAttributeLocator(testId));
+function findEl(testId: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.get(`[data-testid="${testId}"]`);
 }
 ```
 
-`queryAttributeLocator` returns a locator. It is used both by `findEl` and `findEls`.
+This would allow us to write `findEl('count')` instead of `cy.get('[data-testid="count"]')`.
 
-Using these helpers, we can declutter the test.
+This works fine, but we opt for a another way. Cypress supports adding custom commands to the `cy` namespace. We are going to add the command `byTestId` so we can write `cy.byTestId('count')`.
+
+Custom commands are placed in `cypress/support/commands.ts` file created by the Angular schematic. Using `Cypress.Commands.add`, we can extend Cypress to add our own command as a method of `cy`. The first parameter is the command name, the second is the implementation as a function.
+
+The simplest version could look like this:
 
 ```typescript
-import { browser } from 'protractor';
-import { findEl } from '../e2e.spec-helper';
+Cypress.Commands.add(
+  'byTestId',
+  (id: string) => cy.get(`[data-testid="${id}"]`)
+);
+```
 
-describe('Counter', () => {
+Now we can write `cy.byTestId('count')`. We can still fall back to `cy.get` if necessary.
+
+`cy.byTestId` should have the same flexibility as the generic `cy.get`. So we should add the second parameter, `options`, as well. We borrow the function signature from the official `cy.get` typings.
+
+```typescript
+Cypress.Commands.add(
+  'byTestId',
+  // Borrow the signature from cy.get
+  <E extends Node = HTMLElement>(
+    id: string,
+    options?: Partial<
+      Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow
+    >,
+  ): Cypress.Chainable<JQuery<E>> => cy.get(`[data-testid="${id}"]`, options),
+);
+```
+
+Save `commands.ts`, then edit `cypress/support/index.ts` and activate the line that imports `command.ts`.
+
+```typescript
+import './commands';
+```
+
+For proper type checking, we need to tell the TypeScript compiler that we have extended the `cy` namespace. We create the file `cypress/support/index.d.ts` and paste the following type definition:
+
+```typescript
+// Types for custom commands
+/// <reference types="cypress" />
+
+declare namespace Cypress {
+  interface Chainable {
+    /**
+     * Get one or more DOM elements by test id.
+     *
+     * @param id The test id
+     * @param options The same options as cy.get
+     */
+    byTestId<E extends Node = HTMLElement>(
+      id: string,
+      options?: Partial<
+        Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow
+      >,
+    ): Cypress.Chainable<JQuery<E>>;
+  }
+}
+```
+
+This is it! We now have a strictly typed command `cy.byTestId`. Using the command, we can declutter the test.
+
+```typescript
+describe('Counter (with helpers)', () => {
   beforeEach(() => {
-    browser.get('/');
+    cy.visit('/');
+  });
+
+  it('has the correct title', () => {
+    cy.title().should('equal', 'Angular Workshop: Counters');
   });
 
   it('increments the count', () => {
-    expect(findEl('count').getText()).toBe('5');
-    findEl('increment-button').click();
-    expect(findEl('count').getText()).toBe('6');
+    cy.byTestId('count').first().should('have.text', '5');
+    cy.byTestId('increment-button').first().click();
+    cy.byTestId('count').first().should('have.text', '6');
   });
 
   it('decrements the count', () => {
-    findEl('decrement-button').click();
-    expect(findEl('count').getText()).toBe('4');
+    cy.byTestId('decrement-button').first().click();
+    cy.byTestId('count').first().should('have.text', '4');
   });
 
   it('resets the count', () => {
-    findEl('reset-input').sendKeys('123');
-    findEl('reset-button').click();
-    expect(findEl('count').getText()).toBe('123');
+    cy.byTestId('reset-input').first().type('123');
+    cy.byTestId('reset-button').first().click();
+    cy.byTestId('count').first().should('have.text', '123');
   });
 });
 ```
 
 <div class="book-sources" markdown="1">
-- [Full code: e2e.spec-helper.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/e2e.spec-helper.ts)
-- [Full code: app-helpers.e2e-spec.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/src/app-helpers.e2e-spec.ts)
-</div>
-
-The next optimization is to reuse the element finders. As described, an element finder itself does nothing. It merely describes how to find an element. This is why we do not have to repeat the calls to `findEl` over and over. We can declare the element finders once and reuse them throughout the test suite.
-
-There are six element finders in our suite:
-
-```typescript
-findEl('count')
-findEl('increment-button')
-findEl('decrement-button')
-findEl('reset-input')
-findEl('reset-button')
-```
-
-We save them in constants:
-
-```typescript
-const count = findEl('count');
-const incrementButton = findEl('increment-button');
-const decrementButton = findEl('decrement-button');
-const resetInput = findEl('reset-input');
-const resetButton = findEl('reset-button');
-```
-
-And declare them in the `describe` block:
-
-```typescript
-describe('Counter', () => {
-  const count = findEl('count');
-  const incrementButton = findEl('increment-button');
-  const decrementButton = findEl('decrement-button');
-  const resetInput = findEl('reset-input');
-  const resetButton = findEl('reset-button');
-
-  /* … */
-});
-```
-
-In the specs, we can now use the constants:
-
-```typescript
-import { browser } from 'protractor';
-import { findEl } from '../e2e.spec-helper';
-
-describe('Counter', () => {
-  const count = findEl('count');
-  const incrementButton = findEl('increment-button');
-  const decrementButton = findEl('decrement-button');
-  const resetInput = findEl('reset-input');
-  const resetButton = findEl('reset-button');
-
-  beforeEach(() => {
-    browser.get('/');
-  });
-
-  it('increments the count', () => {
-    expect(count.getText()).toBe('5');
-    incrementButton.click();
-    expect(count.getText()).toBe('6');
-  });
-
-  it('decrements the count', () => {
-    decrementButton.click();
-    expect(count.getText()).toBe('4');
-  });
-
-  it('resets the count', () => {
-    resetInput.sendKeys('123');
-    resetButton.click();
-    expect(count.getText()).toBe('123');
-  });
-});
-```
-
-The goal of this refactoring is not brevity. Moving the element finders to a central place does not necessarily lead to less code. In the test suite above, only `count` is reused across the specs, so the potential savings are small.
-
-Gathering all finders in a central place separates low-level details – finding elements via test ids – from the high-level code – simulating the user interaction with the page and expectations. This makes the specs easier to read and the easier to maintain.
-
-<div class="book-sources" markdown="1">
-- [Full code: app-finder-reuse.e2e-spec.ts](https://github.com/9elements/angular-workshop/blob/master/e2e/src/app-finder-reuse.e2e-spec.ts)
+- [Full code: commands.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/support/commands.ts)
+- [Full code: index.d.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/support/index.d.ts)
+- [Cypress documentation: Custom commands](https://docs.cypress.io/api/cypress-api/custom-commands.html)
+- [Cypress documentation: Types for custom commands](https://docs.cypress.io/guides/tooling/typescript-support.html#Types-for-custom-commands)
 </div>
 
 ### Testing the Flickr search
 
-We have learned the basics of Protractor by testing the counter app. Let us delve into end-to-end testing with Protractor by testing a more complex app, the Flickr search.
+We have learned the basics of Cypress by testing the counter app. Let us delve into end-to-end testing with Cypress by testing a more complex app, the Flickr search.
 
 <div class="book-sources" markdown="1">
 - [Flickr photo search: Source code](https://github.com/9elements/angular-flickr-search)
@@ -6084,33 +6023,39 @@ Before writing any code, let us make a plan what the end-to-end test needs to do
 
 The application under test queries a third-party API with production data. The test searches for “flower” and Flickr returns different results with each test run.
 
-Due to changing search results, we cannot be specific in our expectations. We can only test the search results and the full photo superfically. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
+There are two ways to deal with this dependency during testing:
 
-This has pros and cons. Testing against the live third-party API makes the test realistic, but less reliable. But if the Flickr API has a short hiccup, the test fails although there is no bug in our code.
+- Test against the real Flickr API
+- Fake the Flickr API and return a fixed response.
 
-We could run the test against a fake API that returns predefined responses. This would allow us to inspect the application deeply. Did the application render the photos the API returned? Are the photo details shown correctly?
+If we test against the real Flickr API, we cannot be specific in our expectations due to changing search results. We can only test the search results and the full photo superfically. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
 
-Keep in mind that unit, integration and end-to-end tests complement each other. The Flickr search is also tested extensively using unit and integration tests. Each type of test should do what it does best. The unit tests already put the different photo Components through their paces. The end-to-end test should not try to achieve that level of detail.
+This has pros and cons. Testing against the live Flickr API makes the test realistic, but less reliable. If the Flickr API has a short hiccup, the test fails although there is no bug in our code.
 
-For a start, we will test against the real Flickr API and we will look into faking the API later.
+Running the test against a fake API allows us to inspect the application deeply. Did the application render the photos the API returned? Are the photo details shown correctly?
+
+Keep in mind that unit, integration and end-to-end tests complement each other. The Flickr search is also tested extensively using unit and integration tests. Each type of test should do what it does best. The unit tests already put the different photo Components through their paces. The end-to-end test does not need to achieve that level of detail.
+
+With Cypress, both type of tests are possible. For a start, we will test against the real Flickr API and we will look into faking the API later.
 
 #### Testing the search
 
-We create a file called `e2e/src/flickr-search-starter.e2e-spec.ts`. (It is called `starter` because we will refactor it later.) We start with a test suite.
+We create a file called `cypress/integration/flickr-search.ts`. We start with a test suite.
 
 ```typescript
-import { browser } from 'protractor';
-import { findEl, findEls } from '../e2e.spec-helper';
-
 describe('Flickr search', () => {
+  const SEARCH_TERM = 'flower';
+
   beforeEach(() => {
-    browser.get('/');
+    cy.visit('/');
   });
 
   it('searches for a term', () => {
     /* … */
   });
 });
+
+---------------------------------
 ```
 
 We instruct the browser to enter “flower” into the search field (test id `searchTermInput`). Then we click on the submit button (test id `submitSearch`).
@@ -6355,6 +6300,11 @@ You will find that end-to-end tests with Protractor often require a manual wait.
 </div>
 
 ### Page objects
+
+
+   The goal of this refactoring is not brevity. Moving the element finders to a central place does not necessarily lead to less code. In the test suite above, only `count` is reused across the specs, so the potential savings are small.
+
+   Gathering all finders in a central place separates low-level details – finding elements via test ids – from the high-level code – simulating the user interaction with the page and expectations. This makes the specs easier to read and the easier to maintain.
 
 The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
 
