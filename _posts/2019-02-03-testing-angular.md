@@ -1187,7 +1187,7 @@ Instead, the Angular team provides the `TestBed` to ease unit testing. The `Test
 
 ### Configuring the testing Module
 
-The `TestBed` comes with a testing Module that is configured like normal Modules in your application: You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` which accepts a Module definition:
+The `TestBed` comes with a testing Module that is configured like normal Modules in your application: You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` that accepts a Module definition:
 
 ```typescript
 TestBed.configureTestingModule({
@@ -1456,7 +1456,7 @@ const countOutput = debugElement.query(
 );
 ```
 
-The next step is to read the element’s content. In the DOM, the count is a text node that is a child of `strong`. Unfortunately, the `DebugElement` does not have a method or property for reading the text content. We need to access the native DOM element which has a convenient `textContent` property.
+The next step is to read the element’s content. In the DOM, the count is a text node that is a child of `strong`. Unfortunately, the `DebugElement` does not have a method or property for reading the text content. We need to access the native DOM element that has a convenient `textContent` property.
 
 ```typescript
 countOutput.nativeElement.textContent
@@ -2031,7 +2031,7 @@ This is especially true when writing specs. You should try to eliminate duplicat
 
 Your mileage may vary on this question. For completeness, let us discuss how we could reduce the repetition in the `countChange` Output specs.
 
-An Output is an `EventEmitter`, which is a fully-functional RxJS `Observable`. This allows us to transform the `Observable` as we please. Specifically, we can click all three buttons and then expect that the `countChange` Output has emitted three values.
+An Output is an `EventEmitter`, that is a fully-functional RxJS `Observable`. This allows us to transform the `Observable` as we please. Specifically, we can click all three buttons and then expect that the `countChange` Output has emitted three values.
 
 ```typescript
 it('emits countChange events', () => {
@@ -2246,7 +2246,7 @@ What do these warnings mean? Angular does not recognize the custom elements `app
 
 Since we plan to write a unit test, we opt for the second.
 
-When configuring the testing Module, we can specify `schemas` to tell Angular how to deal with elements which are not handled by Directives or Components.
+When configuring the testing Module, we can specify `schemas` to tell Angular how to deal with elements that are not handled by Directives or Components.
 
 The warning suggests `CUSTOM_ELEMENTS_SCHEMA`, but `app-counter` etc. are not Web Components. We want Angular to simply ignore the elements. Therefore we use the `NO_ERRORS_SCHEMA`, “a schema that allows any property on any element”.
 
@@ -3356,7 +3356,7 @@ describe('CounterService', () => {
 });
 ```
 
-Let us start with writing the spec `it('returns the count', /* … */)`. It tests tests the `getCount` method which returns an Observable.
+Let us start with writing the spec `it('returns the count', /* … */)`. It tests tests the `getCount` method that returns an Observable.
 
 For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs). We declare a variable `actualCount` that is initially undefined. Then we subscribe and assign the value emitted by the Observable to the variable. Finally, outside of the subscriber function, we compare the actual to the expected value.
 
@@ -3626,7 +3626,7 @@ By subscribing to the Observable returned by `searchPublicPhotos`, the (fake) HT
 
 In the second step, we find the pending request using the [`HttpTestingController`](https://angular.io/api/common/http/testing/HttpTestingController). This class is part of the `HttpClientTestingModule`. We get hold of the instance by calling `TestBed.inject(HttpTestingController)`.
 
-The controller has several methods to find requests by different criteria. The simplest is `expectOne` which finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
+The controller has several methods to find requests by different criteria. The simplest is `expectOne`. It finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
 
 ```typescript
 const searchTerm = 'dragonfly';
@@ -3889,7 +3889,7 @@ This approach is recommended for Service methods that have a dedicated error han
 
 We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST` etc.), query parameters (`?tags=dragonfly`), headers or the request body.
 
-`expectOne` has several signatures. We used the simplest, a string which is interpreted as URL:
+`expectOne` has several signatures. We used the simplest, a string that is interpreted as URL:
 
 ```typescript
 controller.expectOne('https://www.example.org')
@@ -4862,7 +4862,7 @@ Both ways allow to test Pipes that depend on Services. Either we provide the ori
 
 ### GreetPipe test
 
-The `GreetPipe` does not have any dependencies. We opt for the first way and write a unit test which examines the single instance.
+The `GreetPipe` does not have any dependencies. We opt for the first way and write a unit test that examines the single instance.
 
 First, we create a Jasmine test suite. In a `beforeEach` block, we create an instance of `GreetPipe`. In the specs, we scrutinize the `transform` method.
 
@@ -5608,18 +5608,18 @@ This `should` style of assertions is different from Jasmine expectations, like `
 
 ### Running the Cypress tests
 
-Save the example code above as `cypress/integration/counter.ts`
+Save the example code above as `cypress/integration/counter.ts`.
 
-Cypress has two main ways to run the end-to-end tests:
+Cypress has two shell commands to run the end-to-end tests:
 
-1. `cypress run` – Non-interactive test runner. Runs the tests in a “headless” browser. This means the browser window is not visible. The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output. This command is typically used in the continuous integration environment.
+1. `npx cypress run` – Non-interactive test runner. Runs the tests in a “headless” browser. This means the browser window is not visible. The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output. This command is typically used in the continuous integration environment.
 
-2. `cypress open` – Interactive test runner. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests. This command is typically used in the development environment.
+2. `npx cypress open` – Interactive test runner. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests. This command is typically used in the development environment.
 
 The Cypress schematic we have installed wrap these commands so they integrate with Angular.
 
-- `ng run $project-name$:cypress-run` – Starts an Angular development server (`ng serve`), then calls `cypress run`.
-- `ng run $project-name$:cypress-open` – Starts an Angular development server (`ng serve`), then calls `cypress open`.
+- `ng run $project-name$:cypress-run` – Starts an Angular development server (`ng serve`), then calls `npx cypress run`.
+- `ng run $project-name$:cypress-open` – Starts an Angular development server (`ng serve`), then calls `npx cypress open`.
 
 `$project-name$` is a placeholder. Insert the name of the respective Angular project. This is typically the same as the directory name. If not, it can be found in `angular.json` in the `projects` object.
 
@@ -6054,87 +6054,107 @@ describe('Flickr search', () => {
     /* … */
   });
 });
-
----------------------------------
 ```
 
 We instruct the browser to enter “flower” into the search field (test id `searchTermInput`). Then we click on the submit button (test id `submitSearch`).
 
 ```typescript
 it('searches for a term', () => {
-  const input = findEl('searchTermInput');
-  input.clear();
-  input.sendKeys('flower');
-  findEl('submitSearch').click();
+  cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
+  cy.byTestId('submitSearch').first().click();
   /* … */
 });
 ```
 
 As described, `sendKeys` does not overwrite the form value with a new value, but sends keyboard input, key by key.
 
-Before entering “flower”, we need to clear the field since it already has a pre-filled value. Otherwise we would append “flower” to the existing value. We use Protractor’s `clear` method for that purpose.
+Before entering “flower”, we need to clear the field since it already has a pre-filled value. Otherwise we would append “flower” to the existing value. We use Cypress’ `clear` method for that purpose.
 
 Clicking on the submit button starts the search. When the Flickr API has responded, we expect the search results to be appear.
 
 A search result consists of a link (`a` element, test id `photo-item-link`) and an image (`img` element, test id `photo-item-image`).
 
-We expect 15 links to appear since this is amount requested from Flickr. Each link needs to have an `href` which contains `https://www.flickr.com/photos/`. We cannot check an exact URL since results are the dynamic, but we know that all Flickr photo links start with `https://www.flickr.com/photos/`.
+We expect 15 links to appear since this is amount of results requested from Flickr.
 
 ```typescript
-const links = findEls('photo-item-link');
-expect(links.count()).toBe(15);
-links.each((link) => {
-  if (!link) {
-    throw new Error('link is not defined');
-  }
-  expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
-});
+cy.byTestId('photo-item-link')
+  .should('have.length', 15)
 ```
 
-Using Protractor’s `count` method, we retrieve the amount of elements with the `photo-item-link` test id. We expect it to be 15.
+By writing `should('have.length', 15)`, we assert that there are 15 elements with the `photo-item-link` test.
 
-Then we need to check each link in the list individually. The list has an `each` method to call a function for each element. This works similar to JavaScript’s `forEach` array method.
+Each link needs to have an `href` containing `https://www.flickr.com/photos/`. We cannot check for an exact URL since results are the dynamic. But we know that all Flickr photo URLs have the same structure.
 
-Inside the function, we need to check first whether the `link` parameter is defined. This is just a necessary TypeScript guard because `link` is typed with `ElementFinder | undefined`. Using Protractor’s `getAttribute` method, we obtain the `href` attribute, that is the link URL. We expect it to contain `https://www.flickr.com/photos/`.
+There is no direct Chai assertion for checking that each link in the list has an `href` attribute that contains `https://www.flickr.com/photos/`. We need to check each link in the list individually.
 
-The full test now looks like this:
+The chainer has an `each` method to call a function for each element. This works similar to JavaScript’s `forEach` array method.
 
 ```typescript
-import { browser } from 'protractor';
-import { findEl, findEls } from '../e2e.spec-helper';
+cy.byTestId('photo-item-link')
+  .should('have.length', 15)
+  .each((link) => {
+    /* Check the link */
+  });
+```
 
-describe('Flickr search (starter)', () => {
+Cypress has three surprises for us.
+
+First, `link` is a synchronous value. Inside the `each` callback, we are back in synchronous JavaScript land. (We could do asynchronous operations here, but there is no need.)
+
+Second, `link` has the type `JQuery<HTMLElement>`. This is an element wrapped with the popular jQuery library. Cypress chose jQuery because many JavaScript developers are already familiar with it. To read the `href` attribute, we use `link.attr('href')`.
+
+Third, we cannot use Cypress’ `should` method since it only exists on Cypress chainers. But we are dealing with a jQuery object here. We have to use a standard Chai assertions – `expect` or `assert` style, to be specific. We use `expect` together with `to.contain`.
+
+This brings us to:
+
+```typescript
+cy.byTestId('photo-item-link')
+  .should('have.length', 15)
+  .each((link) => {
+    expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
+  });
+```
+
+The test now looks like this:
+
+```typescript
+describe('Flickr search', () => {
+  const SEARCH_TERM = 'flower';
+
   beforeEach(() => {
-    browser.get('/');
+    cy.visit('/');
   });
 
   it('searches for a term', () => {
-    const input = findEl('searchTermInput');
-    input.clear();
-    input.sendKeys('flower');
-    findEl('submitSearch').click();
+    cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
+    cy.byTestId('submitSearch').first().click();
 
-    const links = findEls('photo-item-link');
-    expect(links.count()).toBe(15);
-    links.each((link) => {
-      if (!link) {
-        throw new Error('link is not defined');
-      }
-      expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
-    });
-
-    expect(findEls('photo-item-image').count()).toBe(15);
+    cy.byTestId('photo-item-link')
+      .should('have.length', 15)
+      .each((link) => {
+        expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
+      });
+    cy.byTestId('photo-item-image').should('have.length', 15);
   });
 });
 ```
 
-If we run `ng e2e` now, the spec should be executed and pass.
+To start the tests, we run the shell command:
+
+```
+ng run flickr-search:cypress-open
+```
+
+This opens the test runner where we can click on the test `flickr-search.ts` to run it.
+
+Alternatively, you can start the development server (`ng serve`) in one shell and the test runner (`npx cypress open`) in a second shell.
 
 <div class="book-sources" markdown="1">
 - [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
-- [Protractor API reference: clear](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.clear
-- [Protractor API reference: each](https://www.protractortest.org/#/api?view=ElementArrayFinder.prototype.each)
-- [Protractor API reference: getAttribute](https://www.protractortest.org/#/api?view=webdriver.WebElement.prototype.getAttribute)
+- [Cypress API reference: clear](https://docs.cypress.io/api/commands/clear.html)
+- [Cypress API reference: each](https://docs.cypress.io/api/commands/each.html)
+- [jQuery API reference: attr](https://api.jquery.com/attr/)
+- [Chai API reference: include (contain)](https://www.chaijs.com/api/bdd/#method_include)
 </div>
 
 #### Testing the full photo
@@ -6152,16 +6172,14 @@ it('shows the full photo', () => {
 First, it searches for “flower”, just like the spec before.
 
 ```typescript
-const input = findEl('searchTermInput');
-input.clear();
-input.sendKeys('flower');
-findEl('submitSearch').click();
+cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
+cy.byTestId('submitSearch').first().click();
 ```
 
 Then we find all photo item links, but not to inspect them, but to click on the first on:
 
 ```typescript
-findEls('photo-item-link').first().click();
+cy.byTestId('photo-item-link').first().click();
 ```
 
 The click lets the photo details appear. As mentioned above, we cannot check for a specific title, a specific photo URL or specific tags. The clicked photo might be a different one with each test run.
@@ -6169,150 +6187,57 @@ The click lets the photo details appear. As mentioned above, we cannot check for
 Since we searched for “flower”, we assert that the term is either in the photo title or tags. We check the text content of the wrapper element with the test id `full-photo`.
 
 ```typescript
-expect(findEl('full-photo').getText()).toContain('flower');
+cy.byTestId('full-photo').should('contain', SEARCH_TERM);
 ```
+
+The `contain` assertion checks the text content of the found element.
 
 Next, we check that a title and tags are present and not empty.
 
 ```typescript
-expect(findEl('full-photo-title').getText()).not.toBe('');
-expect(findEl('full-photo-tags').getText()).not.toBe('');
+cy.byTestId('full-photo-title').should('not.have.text', '');
+cy.byTestId('full-photo-tags').should('not.have.text', '');
 ```
 
-The image itself needs to be present, checked with Protractor’s `isPresent`.
+The image itself needs to be present. We cannot check the `src` attribute in detail.
 
 ```typescript
-expect(findEl('full-photo-image').isPresent()).toBe(true);
+cy.byTestId('full-photo-image').should('exist');
 ```
 
 The spec now looks like this:
 
 ```typescript
-it('shows the full photo', async () => {
-  const input = findEl('searchTermInput');
-  input.clear();
-  input.sendKeys('flower');
-  findEl('submitSearch').click();
+it('shows the full photo', () => {
+  cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
+  cy.byTestId('submitSearch').first().click();
 
-  findEls('photo-item-link').first().click();
-
-  expect(findEl('full-photo').getText()).toContain('flower');
-  expect(findEl('full-photo-title').getText()).not.toBe('');
-  expect(findEl('full-photo-tags').getText()).not.toBe('');
-  expect(findEl('full-photo-image').isPresent()).toBe(true);
+  cy.byTestId('photo-item-link').first().click();
+  cy.byTestId('full-photo').should('contain', SEARCH_TERM);
+  cy.byTestId('full-photo-title').should('not.have.text', '');
+  cy.byTestId('full-photo-tags').should('not.have.text', '');
+  cy.byTestId('full-photo-image').should('exist');
 });
 ```
 
-<div class="book-sources" markdown="1">
-- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
-- [Protractor API reference: isPresent](https://www.protractortest.org/#/api?view=ElementFinder.prototype.isPresent)
-</div>
+The assertions `contain`, `text` and `exist` are defined by Chai-jQuery, an assertion library for checking jQuery element lists.
 
-#### Manual waiting
-
-If you run the tests above with `ng e2e`, you will find that the spec *fails*!
-
-The error message reads: `Failed: element not interactable`. The error occurs when executing the `click` command.
-
-<pre><code>
-findEl('photo-item-link').first().<strong>click()</strong>;
-</code></pre>
-
-What is happening here? The code under test is correct, but we have encountered a Protractor quirk.
-
-The first element with the test id `photo-item-link` does exist. But we cannot interact with it by clicking yet – hence “not interactable”.
-
-According to the WebDriver specification, this error may happen when the clicked element is outside the viewport. This is only temporary since the click is supposed to scroll the element into view automatically.
-
-The solution is pretty dull. We need to instruct the browser to wait until the element is clickable.
-
-Protractor has a `wait` method that requires a condition. A condition can be expressed using methods of Protractor’s `ExpectedConditions`. In our case, we use `elementToBeClickable` and pass the element finder referencing the first link.
-
-```typescript
-const link = findEls('photo-item-link').first();
-browser.wait(ExpectedConditions.elementToBeClickable(link));
-link.click();
-```
-
-Protractor pauses the test and periodically checks whether the link is clickable. When it is, it continues with the `click` command. When the link is not clickable after 30 seconds, the test will fail. (This timeout can be changed in the Protractor configuration.)
-
-The full suite:
-
-```typescript
-import { browser, ExpectedConditions } from 'protractor';
-import { findEl, findEls } from '../e2e.spec-helper';
-
-describe('Flickr search', () => {
-  beforeEach(() => {
-    browser.get('/');
-  });
-
-  it('searches for a term', () => {
-    const input = findEl('searchTermInput');
-    input.clear();
-    input.sendKeys('flower');
-    findEl('submitSearch').click();
-
-    const links = findEls('photo-item-link');
-    browser.wait(ExpectedConditions.elementToBeClickable(links.first()));
-    expect(links.count()).toBe(15);
-    links.each((link) => {
-      if (!link) {
-        throw new Error('link is not defined');
-      }
-      expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
-    });
-
-    expect(findEls('photo-item-image').count()).toBe(15);
-  });
-
-  it('shows the full photo', async () => {
-    const input = findEl('searchTermInput');
-    input.clear();
-    input.sendKeys('flower');
-    findEl('submitSearch').click();
-
-    const link = findEls('photo-item-link').first();
-    browser.wait(ExpectedConditions.elementToBeClickable(link));
-    link.click();
-
-    expect(findEl('full-photo').getText()).toContain('flower');
-    expect(findEl('full-photo-title').getText()).not.toBe('');
-    expect(findEl('full-photo-tags').getText()).not.toBe('');
-    expect(findEl('full-photo-image').isPresent()).toBe(true);
-  });
-});
-```
-
-In both specs, we wait for the photo items to be clickable we proceed.
-
-Congratulations, we have successfully tested the Flickr search! This example demonstrates several Protractor commands. We also caught a glimpse of end-to-end testing quirks.
-
-You will find that end-to-end tests with Protractor often require a manual wait. Protractor waits for Angular automatically, but this is not a silver bullet. In addition to `waitForAngular` or as a replacement, you need to use `browser.wait` with a specific condition.
+Congratulations, we have successfully tested the Flickr search! This example demonstrates several Cypress commands and assertions. We also caught a glimpse of Cypress internals.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
-- [Protractor API reference: wait](https://www.protractortest.org/#/api?view=webdriver.WebDriver.prototype.wait)
-- [Protractor API reference: ExpectedConditions](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions)
-- [Protractor API reference: elementToBeClickable](https://www.protractortest.org/#/api?view=ProtractorExpectedConditions.prototype.elementToBeClickable)
-- [Protractor documentation: Timeouts](https://www.protractortest.org/#/timeouts)
-- [Full code: flickr-search.po.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.po.ts)
+- [Full code: flickr-search.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search.ts)
+- [Cypress documentation: Chai-jQuery assertions](https://docs.cypress.io/guides/references/assertions.html#Chai-jQuery)
 </div>
 
 ### Page objects
 
-
-   The goal of this refactoring is not brevity. Moving the element finders to a central place does not necessarily lead to less code. In the test suite above, only `count` is reused across the specs, so the potential savings are small.
-
-   Gathering all finders in a central place separates low-level details – finding elements via test ids – from the high-level code – simulating the user interaction with the page and expectations. This makes the specs easier to read and the easier to maintain.
-
 The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
 
-This time, we use a design pattern called *page object*. A design pattern is a way to your structure code, a best practice to solve a common problem.
+We will use a design pattern called *page object*. A design pattern is a proven code structure, a best practice to solve a common problem.
 
-A page object represents a web page that is scrutinized by end-to-end tests. The purpose of the page object is to provide a high-level interface for interacting with the page.
+A page object represents the web page that is scrutinized by an end-to-end test. The page object provides a high-level interface for interacting with the page.
 
-So far, we have written fairly low-level end-to-end tests. They find individual elements by hard-coded test id, check their content and click on them. This is fine for small tests.
+So far, we have written low-level end-to-end tests. They find individual elements by hard-coded test id, check their content and click on them. This is fine for small tests.
 
 But if the page logic is complex and there are diverse cases to test, the test becomes a unmanageable pile of low-level instructions. It is hard to find the gist of these tests, and they are hard to change.
 
@@ -6322,215 +6247,141 @@ A page object organizes numerous low-level instructions into a few high-level in
 2. Read the photo list and interact with the items
 3. Read the photo details
 
-As far as possible, we group these interactions into methods of the page object.
+Where possible, we group these interactions into methods of the page object.
 
-A page object is an abstract pattern and the exact implementation is up to you. Typically, the page object is declared as a class which is instantiated when the test starts.
+A page object is merely an abstract pattern – the exact implementation is up to you. Typically, the page object is declared as a class that is instantiated when the test starts.
 
-Let us call the class `FlickrSearch` and save it in a separate file, `flickr-search.po.ts`. The extension `.po` is short for page object.
+Let us call the class `FlickrSearch` and save it in a separate file, `cypress/pages/flickr-search.page.ts`. The directory `pages` is reserved for page objects, and the `.page.ts` suffix marks the page object.
 
 ```typescript
 export class FlickrSearch {
-  public navigateTo(): void {
-    browser.get('/');
+  public visit(): void {
+    cy.visit('/');
   }
 }
 ```
 
-The class has a `navigateTo` method that opens the page that the page object represents.
+The class has a `visit` method that opens the page that the page object represents.
 
 In the test, we import the class and create an instance in a `beforeEach` block.
 
 ```typescript
-describe('Flickr search', () => {
+import { FlickrSearch } from '../pages/flickr-search.page';
+
+describe('Flickr search (with page object)', () => {
+  const SEARCH_TERM = 'flower';
+
   let page: FlickrSearch;
 
   beforeEach(() => {
     page = new FlickrSearch();
-    page.navigateTo();
+    page.visit();
   });
 
-  /* … */
+  /* … */
 });
 ```
 
-The instance is stored in a variable declared in the `describe` scope. This way, all specs can access the page object.
+The `FlickrSearch` instance is stored in a variable declared in the `describe` scope. This way, all specs can access the page object.
 
 Let us implement the first high-level interaction on the page object: searching for photos. We move the relevant code from the test into a method of the page object.
 
 ```typescript
 public searchFor(term: string): void {
-  const input = findEls('searchTermInput').first();
-  input.clear();
-  input.sendKeys(term);
-  findEls('submitSearch').first().click();
-  browser.wait(
-    ExpectedConditions.elementToBeClickable(
-      this.photoItemLinks().first()
-    )
-  );
+  cy.byTestId('searchTermInput').first().clear().type(term);
+  cy.byTestId('submitSearch').first().click();
 }
 ```
 
 The `searchFor` method expects a search term and performs all necessary steps.
 
-The other mentioned high-level interactions, reading the photo list and the photo details, cannot be translated into page object methods. But we can relocate all element finders together with some commands. The page object now becomes the central place where all test ids and finders are located.
+Other high-level interactions, like reading the photo list and the photo details, cannot be translated into page object methods. But we can move the test ids and element queries to the page object.
 
 ```typescript
-public photoItemLinks(): ElementArrayFinder {
-  return findEls('photo-item-link');
+public photoItemLinks(): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.byTestId('photo-item-link');
 }
 
-public photoItemImages(): ElementArrayFinder {
-  return findEls('photo-item-image');
+public photoItemImages(): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.byTestId('photo-item-image');
 }
 
-public fullPhotoText(): promise.Promise<string> {
-  return findEl('full-photo').getText();
+public fullPhoto(): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.byTestId('full-photo');
 }
 
-public fullPhotoTitle(): promise.Promise<string> {
-  return findEl('full-photo-title').getText();
+public fullPhotoTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.byTestId('full-photo-title');
 }
 
-public fullPhotoTags(): promise.Promise<string> {
-  return findEl('full-photo-tags').getText();
+public fullPhotoTags(): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.byTestId('full-photo-tags');
 }
 
-public fullPhotoImage(): ElementFinder {
-  return findEl('full-photo-image');
+public fullPhotoImage(): Cypress.Chainable<JQuery<HTMLElement>> {
+  return cy.byTestId('full-photo-image');
 }
 ```
 
-These methods return element finders or the element’s text content, where applicable.
+These methods return element chainers.
 
-We can now rewrite the end-to-end test to use the page object methods.
+Then we rewrite the end-to-end test to use the page object methods.
 
 ```typescript
-describe('Flickr search', () => {
+import { FlickrSearch } from '../pages/flickr-search.page';
+
+describe('Flickr search (with page object)', () => {
+  const SEARCH_TERM = 'flower';
+
   let page: FlickrSearch;
 
   beforeEach(() => {
     page = new FlickrSearch();
-    page.navigateTo();
+    page.visit();
   });
 
   it('searches for a term', () => {
     page.searchFor(SEARCH_TERM);
-    const links = page.photoItemLinks();
-    expect(links.count()).toBe(15);
-    links.each((link) => {
-      if (!link) {
-        throw new Error('link is not defined');
-      }
-      expect(link.getAttribute('href')).toContain('https://www.flickr.com/photos/');
-    });
-    expect(page.photoItemImages().count()).toBe(15);
+    page
+      .photoItemLinks()
+      .should('have.length', 15)
+      .each((link) => {
+        expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
+      });
+    page.photoItemImages().should('have.length', 15);
   });
 
   it('shows the full photo', () => {
     page.searchFor(SEARCH_TERM);
     page.photoItemLinks().first().click();
-    expect(page.fullPhotoText()).toContain(SEARCH_TERM);
-    expect(page.fullPhotoTitle()).not.toBe('');
-    expect(page.fullPhotoTags()).not.toBe('');
-    expect(page.fullPhotoImage().isPresent()).toBe(true);
+    page.fullPhoto().should('contain', SEARCH_TERM);
+    page.fullPhotoTitle().should('not.have.text', '');
+    page.fullPhotoTags().should('not.have.text', '');
+    page.fullPhotoImage().should('exist');
   });
 });
+
 ```
 
 For the Flickr search above, a page object is probably too much of a good thing. Still the example demonstrates the key ideas of page objects:
 
 - Identify repetitive high-level interactions and map them to methods of the page object.
 - Move the finding of elements into the page object. The test ids, tag names etc. you use for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
-- Place all expectations in the specs, not the page object code.
+- Leave all assertions (`should` and `expect`) in the specs. Do not move them to the page object.
 
-When you write end-to-end tests with Protractor, you get lost in technical details quickly: finding elements, clicking elements, waiting for conditions, filling out dozens of form fields. But end-to-end tests should describe a user journey on a high level.
+When writing end-to-end tests, you get lost in technical details quickly: finding by certain features, clicking them, filling out form fields, checking fields alues and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
+
+The goal of this refactoring is not brevity. Using page objects does not necessarily lead to less code. The purpose of page objects is to separate low-level details – like finding elements by test ids – from the high-level user journey through the application. This makes the specs easier to read and the easier to maintain.
 
 You can use the page object pattern when you feel the need to tidy up complex, repetitive tests. Once you are familiar with the pattern, it also helps you to avoid writing such tests in the first place.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search.po.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.po.ts)
-- [Full code: flickr-search.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
+- [Full code: flickr-search-with-po.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-with-po.ts)
+- [Full code: flickr-search.page.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/pages/flickr-search.page.ts)
 </div>
 
-### The WebDriver control flow
+---
 
-After having written a few end-to-end tests, let us dive deeper into how Protractor works. Back to our first command and expectation:
-
-```typescript
-expect($('[data-testid="count"]').getText()).toBe('5');
-```
-
-So far, we have taken this code for granted. But there is more to it than meets the eye.
-
-While this code looks synchronous, it is indeed asynchronous. Every WebDriver command is sent to the remotely-controlled browser. It takes some time for the browser to answer.
-
-That is why all Protractor commands return Promises. `getText` for example does not return a string, but a Promise that is resolved with a string. The expectations `expect(…).toBe('5');` waits for the string result, then runs the comparison.
-
-Protractor _hides_ the asynchronous nature of the code. The spec code is executed synchronously within milliseconds. This is possible because the code merely declares the commands and expectations. They are added to a queue and processed later.
-
-The commands and expectations in the queue are processes one after another. Each command takes its time, only limited by a timeout. Once a command is executed, the next in the queue is processed, and so on.
-
-This Protractor feature is called _WebDriver control flow_. It is based on the _Promise Manager_ of the underlying Selenium WebDriverJS library.
-
-Under the hood, the code
-
-```typescript
-expect($('[data-testid="count"]').getText()).toBe('5');
-```
-is translated to
-
-```typescript
-$('[data-testid="count"]').getText().then((text) => {
-  expect(text).toBe('5');
-});
-```
-
-The benefit of the control flow is that tests are much easier to write. You do not have to think about Promises and waiting for a command result.
-
-The downside is that the code is not working as you might expect. The code is in fact declarative, it adds commands to a queue. Consequently, you cannot use imperative programming idioms like `if`.
-
-Since the WebDriver commands return Promises, you cannot work with them directly. You need to unwrap them manually using `promise.then((result) => { /* … */ })`.
-
-The best is to avoid logic that works with raw values. Use Jasmine matchers to check the result of a command. As described, Protractor overwrites `expect` so that it accepts a Promise and waits for the result.
-
-The main issue of the Promise Manager is that the underlying WebDriverJS library has deprecated the feature. It was created before `async`/`await` was standardized in ECMAScript 2017 and supported with Node.js 7.6.0. Today, both the Protractor and the WebDriverJS teams recommend to use deactivate the control flow and use `async` / `await` instead.
-
-With `async` / `await`, the Flickr search example
-
-The control flow implementation is complex and has lead to pitfalls, inconsistencies and bugs.
-
-
-
-https://www.protractortest.org/#/control-flow
-https://github.com/SeleniumHQ/selenium/wiki/WebDriverJs
-
-###
-
-<h2>End-to-End Tests: Fallstricke</h2>
-
-<ul>
-  <li>Alle WebDriver-Aktionen sind asynchron und geben Promises zurück</li>
-  <li>jasminewd ermöglicht es Tests zu schreiben, als wären die Aktionen synchron</li>
-  <li>E2E-Tests sehen Unit-Tests ähnlich, laufen aber fundamental anders</li>
-</ul>
-
-<h2>End-to-End Tests: Asynchronität</h2>
-
-```typescript
-const el = findEl(…);
-el.click();
-expect(el.getText()).toBe('Hello');
-```
-
-<p>Intern:</p>
-
-```typescript
-findEl(…)
-  .then((el) => el.click())
-  .then((el) => el.getText())
-  .then((text) => expect(text).toBe('Hello');
-```
 
 <h2>End-to-End Tests: Fazit</h2>
 
