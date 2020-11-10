@@ -3539,15 +3539,15 @@ export class FlickrService {
     return this.http
       .get<FlickrAPIResponse>('https://www.flickr.com/services/rest/', {
         params: {
+          tags: searchTerm,
           method: 'flickr.photos.search',
           format: 'json',
           nojsoncallback: '1',
-          api_key: 'API key',
-          tags: searchTerm,
           tag_mode: 'all',
           media: 'photos',
           per_page: '15',
           extras: 'tags,date_taken,owner_name,url_q,url_m',
+          api_key: 'XYZ',
         },
       })
       .pipe(map((response) => response.photos.photo));
@@ -3630,7 +3630,7 @@ The controller has several methods to find requests by different criteria. The s
 
 ```typescript
 const searchTerm = 'dragonfly';
-const expectedUrl = `https://www.flickr.com/services/rest/?method=flickr.photos.search&format=json&nojsoncallback=1&api_key=XYZ&tags=${searchTerm}&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m`;
+const expectedUrl = `https://www.flickr.com/services/rest/?tags=${searchTerm}&method=flickr.photos.search&format=json&nojsoncallback=1&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m&api_key=XYZ`;
 
 describe('FlickrService', () => {
   let flickrService: FlickrService;
@@ -3733,7 +3733,7 @@ Putting the parts together, the full test suite:
 
 ```typescript
 const searchTerm = 'dragonfly';
-const expectedUrl = `https://www.flickr.com/services/rest/?method=flickr.photos.search&format=json&nojsoncallback=1&api_key=XYZ&tags=${searchTerm}&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m`;
+const expectedUrl = `https://www.flickr.com/services/rest/?tags=${searchTerm}&method=flickr.photos.search&format=json&nojsoncallback=1&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m&api_key=XYZ`;
 
 describe('FlickrService', () => {
   let flickrService: FlickrService;
@@ -3764,8 +3764,8 @@ describe('FlickrService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [FlickrService: test code](
-https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.spec.ts)
+- [FlickrService: test code](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.spec.ts)
+- [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts)
 </div>
 
 #### Testing the error case
@@ -5171,7 +5171,7 @@ Again, there are several ways how to accomplish this. We opt for Angular’s `fa
 
 `fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
 
-The great thing about `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still complete in a few milliseconds.
+The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still complete in a few milliseconds.
 
 `fakeAsync` wraps the function passed to `it`:
 
@@ -5659,7 +5659,7 @@ cy.title().should('equal', 'Fluffy Golden Retrievers');
 
 Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
 
-A great feature of the in-browser test runner is the ability to see the state of the page at a certain point in time. Cypress creates DOM snapshot when a command is run or an assertion verified. By hovering over a command or assertion, you can travel back in time. The page on the right side then reflects the page when the command or assertion was processed.
+A unique feature of the in-browser test runner is the ability to see the state of the page at a certain point in time. Cypress creates DOM snapshot when a command is run or an assertion verified. By hovering over a command or assertion, you can travel back in time. The page on the right side then reflects the page when the command or assertion was processed.
 
 <div class="book-sources" markdown="1">
 - [Cypress documentation: The Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html)
@@ -6380,8 +6380,152 @@ You can use the page object pattern when you feel the need to tidy up complex, r
 - [Full code: flickr-search.page.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/pages/flickr-search.page.ts)
 </div>
 
----
+### Faking the Flickr API
 
+The end-to-end test we wrote for the Flickr search uses the live Flickr API. As discussed, this makes the test realistic. The test provides confidence that the application works hand in hand with the third-party API. But it makes the test slower and only allows unspecific assertions.
+
+With Cypress, we can uncouple the dependency. Cypress allows us to intercept HTTP requests and respond with fake data. The requests have to originate from JavaScript using XMLHttpRequest. Luckily, this is what Angular’s HTTP module (`@angular/common/http`) uses under the hood.
+
+First of all, we need to set up the fake data. We have already created fake photo objects for the [`FlickrService` unit test](#testing-a-service-that-sends-http-requests). For simplicity, we just import them:
+
+```typescript
+import {
+  photo1,
+  photo1Link,
+  photos,
+  searchTerm,
+} from '../../src/app/spec-helpers/photo.spec-helper';
+```
+
+Next, we need the URL of the request we want to intercept. This is a long string with numerous query parameters like the search term.
+
+```typescript
+const encodedSearchTerm = encodeURIComponent(searchTerm);
+const expectedUrl = `https://www.flickr.com/services/rest/?tags=${encodedSearchTerm}&method=flickr.photos.search&format=json&nojsoncallback=1&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m&api_key=XYZ`;
+});
+```
+
+Using the fake photos, we create a fake response object that mimics the relevant part of the Flickr response.
+
+```typescript
+const flickrResponse = {
+  photos: {
+    photo: photos,
+  },
+};
+```
+
+Now we need to instruct Cypress to intercept the Flickr API request and answer with fake data. This setup happens in the test’s `beforeEach` block.
+
+First, we call `cy.server()` to enable the interception of XMLHttpRequests. Second, we call `cy.route` to register a route for the Flickr API URL.
+
+```typescript
+beforeEach(() => {
+  cy.visit('/');
+
+  cy.server();
+  cy.route({
+    url: expectedUrl,
+    response: flickrResponse,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  }).as('flickrSearchRequest');
+});
+```
+
+`cy.route` can be called in different ways. Here, we pass a configuration object. We want to match a GET request with the given URL. (GET is the default method, we do not have to pass `method: 'GET'` explicitly.)
+
+The `response` property specifies the fake response Cypress should send. Since the request to Flickr is a cross-origin, we also need to set the `Access-Control-Allow-Origin: *` header so Angular at the origin `http://localhost:4200` is allowed to read the response from the origin `https://www.flickr.com/`.
+
+Finally, we give the request a name by calling `.as('flickrSearchRequest')`. This makes it possible to refer to the request later using the `@flickrSearchRequest` alias.
+
+After this change, Cypress catches the request to Flickr and handles it by itself. The original Flickr API is not reached.
+
+The existing, rather generic specs still pass. It is time to make them more specific.
+
+But before, we need to verify that Cypress found a match and intercepted the HTTP request. Because if it did not, the test would still pass.
+
+We can achieve this by explicitly waiting for the request after starting the search.
+
+```typescript
+it('searches for a term', () => {
+  cy.byTestId('searchTermInput').first().clear().type(searchTerm);
+  cy.byTestId('submitSearch').first().click();
+
+  cy.wait('@flickrSearchRequest');
+
+  /* … */
+});
+```
+
+`cy.wait('@flickrSearchRequest')` tells Cypress to wait for an XMLHttpRequest that matches the specified criteria. `@flickrSearchRequest` refers to the route we have defined above.
+
+If Cypress does not find a matching request until a timeout, the test fails. If Cypress caught the request,
+we know that the Angular application received the photos specified in the `photos` array.
+
+Let us write specific assertions that compare the photos in the result list to those in the `photos` array.
+
+```typescript
+cy.byTestId('photo-item-link')
+  .should('have.length', 2)
+  .each((link, index) => {
+    expect(link.attr('href')).to.equal(
+      `https://www.flickr.com/photos/${photos[index].owner}/${photos[index].id}`,
+    );
+  });
+cy.byTestId('photo-item-image')
+  .should('have.length', 2)
+  .each((image, index) => {
+    expect(image.attr('src')).to.equal(photos[index].url_q);
+  });
+```
+
+We do the same for the other spec.
+
+```typescript
+it('shows the full photo', () => {
+  cy.byTestId('searchTermInput').first().clear().type(searchTerm);
+  cy.byTestId('submitSearch').first().click();
+
+  cy.wait('@flickrSearchRequest');
+
+  cy.byTestId('photo-item-link').first().click();
+  cy.byTestId('full-photo').should('contain', searchTerm);
+  cy.byTestId('full-photo-title').should('have.text', photo1.title);
+  cy.byTestId('full-photo-tags').should('have.text', photo1.tags);
+  cy.byTestId('full-photo-image').should('have.attr', 'src', photo1.url_m);
+  cy.byTestId('full-photo-link').should('have.attr', 'href', photo1Link);
+});
+```
+
+The spec ensures that the application under test outputs the data from the Flickr API. The `have.text` checks an element’s text content, whereas `have.attr` checks the `src` and `href` attributes.
+
+We are done! Our end-to-end test fakes an API request in order to inspect the application in a specific way.
+
+In the case of the Flickr search, we intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including your own HTTP APIs.
+
+The `cy.server` and `cy.route` commands only allow to intercept XMLHttpRequest. In addition, Cypress has a new, experimental command named `cy.route2` for intercepting all kinds of requests. On top of that, `route2` is easier to use and more powerful.
+
+In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.route2` for comparison.
+
+<div class="book-sources" markdown="1">
+- [Full test with cy.server and cy.route](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network.ts)
+- [Full test with cy.route2](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network-route2.ts)
+- [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts)
+- [Cypress documentation: Network Requests](https://docs.cypress.io/guides/guides/network-requests.html)
+- [Cypress API reference: server](https://docs.cypress.io/api/commands/server.html)
+- [Cypress API reference: route](https://docs.cypress.io/api/commands/route.html)
+- [Cypress API reference: wait](https://docs.cypress.io/api/commands/wait.html)
+- [Cypress API reference: route2](https://docs.cypress.io/api/commands/route2.html)
+</div>
+
+### End-to-end testing: Conclusion
+
+Cypress
+Protractor
+
+---
 
 <h2>End-to-End Tests: Fazit</h2>
 
