@@ -1,8 +1,8 @@
 ---
 layout: book
-title: "Testing Angular – A Developer’s Guide"
+title: "Testing Angular – A Guide to Robust Angular Applications"
 description: ""
-keywords: JavaScript, Angular, Testing, Automated Tests
+keywords: JavaScript, Angular, testing, automated tests, unit tests, integration tests, end-to-end tests
 lang: en
 draft: true
 robots: noindex, follow
@@ -80,7 +80,7 @@ robots: noindex, follow
       </p>
       <h1 id="toc-book-title">
         Testing Angular<br>
-        A Developer’s Guide
+        A Guide to Robust Angular Applications
       </h1>
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
@@ -112,7 +112,7 @@ robots: noindex, follow
 
 <h1 id="main-heading">
   Testing Angular<br>
-  <span class="subheading">A Developer’s Guide</span>
+  <span class="subheading">A Guide to Robust Angular Applications</span>
 </h1>
 
 <p class="intro"><em class="intro-caps">The Angular framework</em> is a mature and comprehensive solution for building enterprise-ready applications based on web technologies. At Angular’s core lies the ability to test all application parts in an automated way. How do we take advantage of Angular’s testability?</p>
@@ -123,7 +123,7 @@ robots: noindex, follow
 
 Most web developers come across automated tests in their career. They fancy the idea of writing code to scrutinize a web application and put it to an acid test. As web developers, as business people, we want to know whether the site works for the user, our customers.
 
-Does the site allow the user to complete their tasks? Is the site still functional after new features have been introduced or internals have been refactored? How does the site react to user errors or system failure? Testing gives you answers to these questions.
+Does the site allow the user to complete their tasks? Is the site still functional after new features have been introduced or internals have been refactored? How does the site react to usage errors or system failure? Testing gives answers to these questions.
 
 I believe the benefits of automated testing are easy to grasp. Developers want to sleep well and be confident that their application works correctly. Moreover, testing helps developers to write better software. Software that is more robust, better to understand and easier to maintain.
 
@@ -301,7 +301,7 @@ In comparison, integration tests are simpler and unit tests even more so. Since 
 
 The crucial question for dividing your testing efforts is: Which tests yield the most return on investment? How much work is it to maintain a test in relation to its benefit?
 
-In theory, the benefit of end-to-end tests is the highest, since they indicate whether the application works for the user. In practice, they are flaky, imprecise, painful to write and debug. The business value of integration and unit tests is estimated higher.
+In theory, the benefit of end-to-end tests is the highest, since they indicate whether the application works for the user. In practice, they are flaky, imprecise, and hard to debug. The business value of integration and unit tests is estimated higher.
 
 For this reason, some experts argue you should write few end-to-end test, a fair amount of integration tests and many unit tests. If this distribution is visualized, it looks like a pyramid:
 
@@ -452,7 +452,7 @@ The counter comes in three flavors with different state management solutions:
 
 1. An independent, self-sufficient counter Component that holds its own state.
 2. A counter that is connected to a Service using dependency injection. It shares its state with other counters and changes it by calling Service methods.
-3. A counter that is connected to a central NgRx Store. (NgRx is a state management library we will introduce later.) The counter changes the state indirectly by dispatching NgRx Actions.
+3. A counter that is connected to a central NgRx Store. (NgRx is a popular state management library.) The counter changes the state indirectly by dispatching NgRx Actions.
 
 While this example seems trivial to implement, it already offers valuable challenges from a testing perspective.
 
@@ -473,7 +473,7 @@ See the Flickr photo search in action
 </p>
 </script>
 
-This app that enables the user to search for public photos on Flickr, the popular photo hosting site. First, the user enters a search term and starts the search. The Flickr search API is queried. Second, a list of search results with thumbnails is rendered. Third, the user might select a search result to see the photo details.
+This application allows you to search for photos on Flickr, the popular photo hosting site. First, you enter a search term and start the search. The Flickr search API is queried. Second, the search results with thumbnails are rendered. Third, you can select a search result to see the photo details.
 
 This application is straight-forward and relatively simple to implement. Still it raises important questions:
 
@@ -585,10 +585,12 @@ This feedback cycle allows you to work on the implementation and test code side-
 
 ### TODO Configuring Karma and Jasmine
 
-karma.conf.js
+`karma.conf.js`
+
 Karma & Jasmine conf
 
-src/test.ts
+`src/test.ts`
+
 Karma > Browser > Jasmine
 
 ### Testing conventions
@@ -5086,7 +5088,7 @@ class FakeTranslateService implements Partial<TranslateService> {
 
 The fake is a partial implementation of the original. The `TranslatePipe` under test only needs the `onTranslationChange` property and the `get` method. The latter returns a fake translation including the key so we can test that the key was passed correctly.
 
-Now we need to decide whether to test the Pipe directly or within a host Component. Both ways are possible and no solution is signficantly easier or more robust. You will find both solutions in the example project. In this guide, we will discuss the solution with `TestBed` and host Component.
+Now we need to decide whether to test the Pipe directly or within a host Component. Both ways are possible and no solution is significantly easier or more robust. You will find both solutions in the example project. In this guide, we will discuss the solution with `TestBed` and host Component.
 
 Let us start with the host Component:
 
@@ -5439,7 +5441,7 @@ The control flow implementation has lead to inconsistencies and bugs. The underl
 
 All Protractor commands return Promises. You are advised to use `async` / `await` to wait for a command to finish. But a lot of Protractor examples, tutorials and the default configuration still propagate the control flow.
 
-Declaring this feature obsolete was inevitable, but also eliminated a useful feature. Protractor’s contenders, namely Cypress and Webdriver.io, still have such a feature.
+Declaring this feature obsolete was inevitable, but also eliminated a useful feature. Protractor’s contenders, namely Cypress and WebDriver.io, still have such a feature.
 
 If you disable the control flow as recommended, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
 
@@ -5476,9 +5478,9 @@ Third, at the time of writing, Cypress only supports Firefox as well as Chromium
 
 Cypress is not simply better than WebDriver-based frameworks. It tries to solve their problems by narrowing the scope and making trade-offs.
 
-That being said, this guide recommends to use Cypress for testing Angular applications. Cypress is well-maintained and well-documented. With Cypress, you can write valueable end-to-end tests with little effort.
+That being said, this guide recommends to use Cypress for testing Angular applications. Cypress is well-maintained and well-documented. With Cypress, you can write valuable end-to-end tests with little effort.
 
-In case you do need a WebDriver-based framework, have a look at Webdriver.io instead.
+In case you do need a WebDriver-based framework, have a look at [Webdriver.io](https://webdriver.io/) instead.
 
 <div class="book-sources" markdown="1">
 - [Cypress: Trade-offs](https://docs.cypress.io/guides/references/trade-offs.html)
@@ -5813,7 +5815,7 @@ Cypress does not have a dedicated method to fill out a form field. A Cypress cha
 
 To enter text into the form field, we pass a string to the `type` method.
 
-```typescript
+```typescriptw
 cy.get('[data-testid="reset-input"]').type('123');
 ```
 
@@ -6501,11 +6503,11 @@ it('shows the full photo', () => {
 
 The spec ensures that the application under test outputs the data from the Flickr API. The `have.text` checks an element’s text content, whereas `have.attr` checks the `src` and `href` attributes.
 
-We are done! Our end-to-end test fakes an API request in order to inspect the application in a specific way.
+We are done! Our end-to-end test fakes an API request in order to inspect the application deeply.
 
-In the case of the Flickr search, we intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including your own HTTP APIs.
+In the case of the Flickr search, we intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including requests to your own HTTP APIs.
 
-The `cy.server` and `cy.route` commands only allow to intercept XMLHttpRequest. In addition, Cypress has a new, experimental command named `cy.route2` for intercepting all kinds of requests. On top of that, `route2` is easier to use and more powerful.
+The `cy.server` and `cy.route` commands only supports intercepting XMLHttpRequest. In addition, Cypress has a new, experimental command named `cy.route2` for intercepting all kinds of requests. Plus, `route2` is easier to use and more powerful.
 
 In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.route2` for comparison.
 
@@ -6522,20 +6524,20 @@ In the Flickr search repository, you will find the same test with `cy.server` / 
 
 ### End-to-end testing: Conclusion
 
-Cypress
-Protractor
+End-to-end tests used to be expensive while the outcome was poor. A lot of labor was necessary to write end-to-end tests that pass reliably when the application is working correctly. This time could not be invested in writing useful tests that uncover bugs and regressions.
 
----
+For years, Protractor was the end-to-end testing framework most Angular developers relied on. With Cypress, a framework arose that sets new standards. Compared to Protractor, Cypress excels in developer experience and the cost-effectiveness.
 
-<h2>End-to-End Tests: Fazit</h2>
+While this guide recommends to start with Cypress, WebDriver-based frameworks like Protractor and Webdriver.io are still useful if you need to test a broad range of browsers. For all Cypress tests in this guide, you will find equivalent Protractor tests in the example repositories.
 
-<ul>
-  <li>Äußerst effektiv, um ein Feature unter realen Bedingungen zu testen</li>
-  <li>Hochkomplex, daher unzuverlässig und fehleranfällig</li>
-  <li>Konventionen nötig</li>
-  <li>Protractor stammt aus Angular-1-Zeiten</li>
-  <li>Simulierte Synchronität ist schwarze Magie</li>
-</ul>
+Even with Cypress, end-to-end tests are much more complex and error-prone than unit and integration tests with Jasmine and Karma. Then again, end-to-end tests are highly effective to test a feature under realistic circumstances.
+
+<div class="book-sources" markdown="1">
+- [Counter: Cypress tests](https://github.com/9elements/angular-workshop/tree/master/cypress)
+- [Counter: Protractor tests](https://github.com/9elements/angular-workshop/tree/master/e2e)
+- [Flickr search: Cypress tests](https://github.com/9elements/angular-flickr-search/tree/master/cypress)
+- [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
+</div>
 
 ---
 
