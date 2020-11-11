@@ -679,18 +679,18 @@ How could the structure of the spec `it('resets the count', /* … */)` for the 
 
 1. <p><strong>Arrange:</strong></p>
 
-- Create an instance of `CounterComponent`.
-- Render the Component into the document.
+   - Create an instance of `CounterComponent`.
+   - Render the Component into the document.
 
 2. <p><strong>Act:</strong></p>
 
-- Find and focus the reset input field.
-- Enter the text “5”.
-- Find and click the “Reset” button.
+   - Find and focus the reset input field.
+   - Enter the text “5”.
+   - Find and click the “Reset” button.
 
 3. <p><strong>Assert:</strong></p>
 
-- Expect that the displayed count now reads “5”.
+   - Expect that the displayed count now reads “5”.
 
 This structure makes it easier to come up with a test and also to implement it. Ask yourself:
 
@@ -730,7 +730,7 @@ const actualValue = add(2, 3);
 expect(actualValue).toBe(expectedValue);
 ```
 
-First, we pass the actual value to the `expect()` function. It returns an expectation object with methods for checking the actual value. We would like to compare the actual value to the expected value, so we use the `toBe` matcher.
+First, we pass the actual value to the `expect` function. It returns an expectation object with methods for checking the actual value. We would like to compare the actual value to the expected value, so we use the `toBe` matcher.
 
 `toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`, also called identity operator. <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
 
@@ -1038,7 +1038,7 @@ We have used `jasmine.createSpy('name')` to create a standalone spy and have inj
 
 Sometimes, there is already an object whose method we need to spy on. This is especially helpful if the code uses global methods from the browser environment, like `window.fetch` in the example above.
 
-For this purpose, we can use the `spyOn()` method:
+For this purpose, we can use the `spyOn` method:
 
 ```typescript
 spyOn(window, 'fetch');
@@ -1215,7 +1215,7 @@ TestBed.compileComponents();
 
 This instructs the Angular compiler to translate the template files into JavaScript code.
 
-Since `configureTestingModule()` returns the `TestBed` class again, we can chain those two calls:
+Since `configureTestingModule` returns the `TestBed` class again, we can chain those two calls:
 
 ```typescript
 TestBed
@@ -1229,15 +1229,15 @@ You will see this pattern in most Angular tests that rely on the `TestBed`.
 
 ### Rendering the Component
 
-Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `createComponent()`:
+Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `createComponent`:
 
 ```typescript
 const fixture = TestBed.createComponent(CounterComponent);
 ```
 
-`createComponent()` returns a `ComponentFixture`, essentially a wrapper around the Component with useful testing tools. We will learn more about the `ComponentFixture` later.
+`createComponent` returns a `ComponentFixture`, essentially a wrapper around the Component with useful testing tools. We will learn more about the `ComponentFixture` later.
 
-`createComponent()` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{% raw %}{{ count }}{% endraw %}` in the example, are not evaluated.
+`createComponent` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{% raw %}{{ count }}{% endraw %}` in the example, are not evaluated.
 
 In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows us to test asynchronous behavior in a synchronous manner, which is much simpler.
 
@@ -1464,7 +1464,7 @@ The next step is to read the element’s content. In the DOM, the count is a tex
 countOutput.nativeElement.textContent
 ```
 
-Finally, we expect that this string is `"1"` using Jasmine’s `expect()`:
+Finally, we expect that this string is `"1"` using Jasmine’s `expect`:
 
 ```typescript
 expect(countOutput.nativeElement.textContent).toBe("1");
@@ -2392,7 +2392,7 @@ The spec finds the `app-counter` element and triggers the `countChange` event ha
 
 Under the hood, `triggerEventHandler` runs `handleCountChange($event)` with `$event` being `5`. `handleCountChange` calls `console.log`, and that is the observable effect we need to test.
 
-How do we verify that `console.log` has been called? We can [spy on existing object methods](#spying-on-existing-object-methods) with Jasmine’s `spyOn()`.
+How do we verify that `console.log` has been called? We can [spy on existing object methods](#spying-on-existing-object-methods) with Jasmine’s `spyOn`.
 
 ```typescript
 spyOn(console, 'log');
@@ -2502,7 +2502,7 @@ const element = fixture.debugElement.query(By.css('…'));
 
 Our helpers `findEl` and `findComponent` are using this pattern as well.
 
-No we want to find a nested Component. We can use `query` together with the `By.directive()` predicate function:
+No we want to find a nested Component. We can use `query` together with the `By.directive` predicate function:
 
 ```typescript
 const counterEl = fixture.debugElement.query(
@@ -2510,7 +2510,7 @@ const counterEl = fixture.debugElement.query(
 );
 ```
 
-`By.directive()` finds all kinds of Directives. A Component is a kind of Directive.
+`By.directive` finds all kinds of Directives. A Component is a kind of Directive.
 
 `query` returns a `DebugElement` or `null` in case no match was found. As we have learned, a `DebugElement` always wraps a native DOM element. When we query for `FakeCounterComponent`, we actually get a `DebugElement` wrapping the `app-counter` element – just like `By.css('app-counter')` would return.
 
@@ -2954,7 +2954,7 @@ const fakeCounterService:
 };
 ```
 
-This is fine, but overly verbose. Jasmine provides a handy helper function for creating an object with multiple spy methods, `createSpyObj()`. It expects a descriptive name and a list of methods:
+This is fine, but overly verbose. Jasmine provides a handy helper function for creating an object with multiple spy methods, `createSpyObj`. It expects a descriptive name and a list of methods:
 
 ```typescript
 const fakeCounterService =
@@ -3774,7 +3774,7 @@ describe('FlickrService', () => {
 
 Are we done with testing `searchPublicPhotos`? We have tested the success case in which the server returns a `200 OK`. But we have not tested the error case yet!
 
-`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get()` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the _unhappy path_ should be tested.
+`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the _unhappy path_ should be tested.
 
 Let us simulate a “500 Internal Server Error”. Instead of responding to the request with `flush`, we let it fail by calling `error`.
 
@@ -6040,7 +6040,7 @@ Keep in mind that unit, integration and end-to-end tests complement each other. 
 
 With Cypress, both type of tests are possible. For a start, we will test against the real Flickr API and we will look into faking the API later.
 
-#### Testing the search
+#### Testing the search form
 
 We create a file called `cypress/integration/flickr-search.ts`. We start with a test suite.
 
@@ -6404,7 +6404,6 @@ Next, we need the URL of the request we want to intercept. This is a long string
 ```typescript
 const encodedSearchTerm = encodeURIComponent(searchTerm);
 const expectedUrl = `https://www.flickr.com/services/rest/?tags=${encodedSearchTerm}&method=flickr.photos.search&format=json&nojsoncallback=1&tag_mode=all&media=photos&per_page=15&extras=tags,date_taken,owner_name,url_q,url_m&api_key=XYZ`;
-});
 ```
 
 Using the fake photos, we create a fake response object that mimics the relevant part of the Flickr response.
@@ -6419,7 +6418,7 @@ const flickrResponse = {
 
 Now we need to instruct Cypress to intercept the Flickr API request and answer with fake data. This setup happens in the test’s `beforeEach` block.
 
-First, we call `cy.server()` to enable the interception of XMLHttpRequests. Second, we call `cy.route` to register a route for the Flickr API URL.
+First, we call `cy.server` to enable the interception of XMLHttpRequests. Second, we call `cy.route` to register a route for the Flickr API URL.
 
 ```typescript
 beforeEach(() => {
