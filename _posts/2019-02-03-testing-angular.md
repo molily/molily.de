@@ -376,13 +376,15 @@ In Angular, the difference between unit and integration tests is sometimes subtl
 
 <div class="book-sources" markdown="1">
 - [Google Testing Blog: Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
+- [Kent C. Dodds: Write tests. Not too many. Mostly integration.](https://kentcdodds.com/blog/write-tests)
+- [Martin Fowler: Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html)
 </div>
 
 ### Black box vs. white box testing
 
-Once you have identified a piece of code you would like to test, you have to decide how to test it properly. One important distinction is whether a test treats the implementation as a closed box (black box) or an opened box (white box). In this metaphor, the code under test is seen as a machine in a box with holes for inputs and outputs.
+Once you have identified a piece of code you would like to test, you have to decide how to test it properly. One important distinction is whether a test treats the implementation as a closed, unlit box (**black box**) or an open, lit box (**white box**). In this metaphor, the code under test is a machine in a box with holes for inputs and outputs.
 
-**Black box testing** does not assume anything about the internal structure. It puts certain values into the box and expects certain output values. The test talks to the publicly exposed, documented API consisting of classes, methods and functions. The inner state and workings are not examined.
+**Black box testing** does not assume anything about the internal structure. It puts certain values into the box and expects certain output values. The test talks to the publicly exposed, documented API. The inner state and workings are not examined.
 
 <p>
 <svg style="display: block; margin: auto; width: 100%; max-width: 15rem" viewbox="0 0 400 450">
@@ -409,7 +411,7 @@ Once you have identified a piece of code you would like to test, you have to dec
 </svg>
 </p>
 
-**White box testing** opens the box, sheds light on the internals and takes measurements by reaching into the box. For example, a white box test calls methods that are not necessarily part of the public API, but still technically tangible. Then it checks the internal state and expects that it has changed accordingly.
+**White box testing** opens the box, sheds light on the internals and takes measurements by reaching into the box. For example, a white box test may call methods that are not part of the public API, but still technically tangible. Then it checks the internal state and expects that it has changed accordingly.
 
 While both approaches have their value, this guide recommends to **write black box tests whenever possible**. You should check what the code does for the user and for other parts of the code. For this purpose, it is not relevant how the code looks internally. Tests that make assumptions about internals are likely to break in the future when the implementation slightly changes.
 
@@ -440,7 +442,7 @@ See the counter Component app in action
 
 The counter is a reusable Component that increments, decrements and resets a number using buttons and input fields.
 
-For advanced Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but still struggle testing the ins and outs.
+For intermediate Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but still struggle testing the ins and outs.
 
 The goals of this example are:
 
@@ -454,7 +456,7 @@ The counter comes in three flavors with different state management solutions:
 2. A counter that is connected to a Service using dependency injection. It shares its state with other counters and changes it by calling Service methods.
 3. A counter that is connected to a central NgRx Store. (NgRx is a popular state management library.) The counter changes the state indirectly by dispatching NgRx Actions.
 
-While this example seems trivial to implement, it already offers valuable challenges from a testing perspective.
+While the counter seems easy to implement, it already offers valuable challenges from a testing perspective.
 
 ### The Flickr photo search
 
@@ -523,11 +525,11 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 
 Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface (CLI), it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
-So the Angular team already made important decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
+So the Angular team already made decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
 
 This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing tool chain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
 
-These alternative tools are not simply better or worse than Angular’s standard tools. They simply make different trade-offs. This guide assumes you begin with the standard setup. Later, once you have reached its limits, you should investigate whether alternatives make testing your application easier, faster and more reliable.
+These alternative tools are not simply better or worse than Angular’s standard tools. They simply make different trade-offs. This guide uses the standard setup with Jasmine and Karma for unit and integration tests. Later, once you have reached its limits, you should investigate whether alternatives make testing your application easier, faster and more reliable.
 
 ### Running the unit and integration tests
 
@@ -555,11 +557,13 @@ You might be familiar with the entry point for the application, `src/main.ts`. T
 
 The test bundle works differently. It does not start with a Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
 
-The **`.spec.ts` files** represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code. In our example application, the `CounterService` is located in [src/app/components/counter/counter.component.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.ts). The corresponding test file sits in [src/app/components/counter/counter.component.spec.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts). This is an Angular convention, not a technical necessity, and we are going to stick to it.
+The **`.spec.ts` files** represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code.
+
+In our example application, the `CounterService` is located in [src/app/components/counter/counter.component.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.ts). The corresponding test file sits in [src/app/components/counter/counter.component.spec.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts). This is an Angular convention, not a technical necessity, and we are going to stick to it.
 
 Second, `ng test` launches Karma, the test runner. Karma starts a development server at [http://localhost:9876/](http://localhost:9876/) that serves the JavaScript bundles compiled by Webpack.
 
-Karma in turn launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. Per default, Chrome is started. In Karma’s configuration file, `karma.conf.js`, you can add more browser launchers for your target browsers. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari.
+Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. Per default, Chrome is started. In Karma’s configuration file, `karma.conf.js`, you can add more browser launchers for your target browsers. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari.
 
 The launched browser opens `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and reads the results in the browser and on the console.
 
@@ -601,11 +605,11 @@ This freedom of choice benefits experts, but confuses and paralyses beginners. I
 
 The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You need to create high-level testing tools that cast your conventions into code in order to write short, readable and understandable tests.
 
-This guide values strong conventions and introduces simple helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
+This guide values strong conventions and introduces helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
 
 ## Test suites with Jasmine
 
-Angular ships with Jasmine, a tool that enables you to write and execute unit and integration tests. In particular, Jasmine is a testing framework consisting basically of three parts:
+Angular ships with Jasmine, a JavaScript framework that enables you to write and execute unit and integration tests. Jasmine consists of three important parts:
 
 1. A library with classes and functions for constructing tests.
 2. A test execution engine.
@@ -625,7 +629,7 @@ describe('Suite description', () => {
 
 Each suite _describes_ a piece of code, the _code under test_.
 
-`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` if the suite is testing the `CounterComponent` class. The second parameter is a function containing the suite definition.
+`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` for the suite that tests the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
 TODO: organize the suite with describe
 
@@ -644,7 +648,7 @@ describe('Suite description', () => {
 
 Again, `it` is a function that takes two parameters. The first parameter is a string with a human-readable spec description. The second parameter is a function containing the spec code.
 
-The pronoun `it` refers to the code under test. `it` should be the subject of a human-readable sentence that asserts the behavior of the code under test. The actual spec code then prove this assertion. This style of writing specs originates from the concept of Behavior-Driven Development (BDD).
+The pronoun `it` refers to the code under test. `it` should be the subject of a human-readable sentence that asserts the behavior of the code under test. The actual spec code then proves this assertion. This style of writing specs originates from the concept of Behavior-Driven Development (BDD).
 
 One goal of BDD is to describe software behavior in a natural language – in this case, English. Every stakeholder should be able to read the `it` sentences and understand how the code is supposed to behave. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
 
@@ -661,7 +665,7 @@ it('resets the count', () => {
 
 After `it`, typically a verb follows, like `increments` and `resets` in the example.
 
-Some people prefer to write `it('should increment the count', /* … */)`, but I see no value in the additional `should`. The nature of a spec is to state what the code under test _should_ do. So the word “should” is redundant and just makes the sentence longer. My recommendation is to simply state what the code does.
+Some people prefer to write `it('should increment the count', /* … */)`, but `should` bears no additional meaning. The nature of a spec is to state what the code under test _should_ do. So the word “should” is redundant and just makes the sentence longer. This guide recommends to simply state what the code does.
 
 <div class="book-sources" markdown="1">
 - [Jasmine tutorial: Your first suite](https://jasmine.github.io/tutorials/your_first_suite)
@@ -698,7 +702,7 @@ This structure makes it easier to come up with a test and also to implement it. 
 - What is the user input or API call that triggers the behavior I would like to test? (Act)
 - What is the expected behavior? How do I prove that the behavior is correct? (Assert)
 
-In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and pose a natural way to think of a test’s structure: “_Given_ these specific conditions, _when_ the user interacts with the application, _then_ it behaves in a certain way.”
+In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and pose a natural way to think of a test’s structure: “_Given_ these conditions, _when_ the user interacts with the application, _then_ it behaves in a certain way.”
 
 ### Expectations
 
@@ -732,22 +736,28 @@ expect(actualValue).toBe(expectedValue);
 
 First, we pass the actual value to the `expect` function. It returns an expectation object with methods for checking the actual value. We would like to compare the actual value to the expected value, so we use the `toBe` matcher.
 
-`toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`, also called identity operator. <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
+`toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`. <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
 
 `toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the same. It fails if two objects are not identical, even if they happen to have the same properties and values.
 
 For checking the deep equality of two objects, Jasmine offers the `toEqual` matcher. This example illustrates the difference:
 
 ```javascript
-// Fails, objects are not identical
+// Fails, the two objects are not identical
 expect({ name: 'Linda' }).toBe({ name: 'Linda' });
-// Passes, objects are not identical but deeply equal
+
+// Passes, the two objects are not identical but deeply equal
 expect({ name: 'Linda' }).toEqual({ name: 'Linda' });
 ```
 
 Jasmine has numerous useful [matchers](https://jasmine.github.io/api/edge/matchers) built-in, `toBe` and `toEqual` being the most common. You can add [custom matchers](https://jasmine.github.io/tutorials/custom_matcher) to hide a complex check behind a short name.
 
 The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Driven Development (BDD) again. The code forms a human-readable sentence: “Expect the actual value to equal the expected value.” The `expect` function call and the matcher methods starting with `to` form a readable sentence. The goal is to write a specification that is as readable as a plain text but can be verified automatically.
+
+<div class="book-sources" markdown="1">
+- [Jasmine documentation: Built-in matchers](https://jasmine.github.io/api/edge/matchers)
+- [Jasmine tutorials: Custom matchers](https://jasmine.github.io/tutorials/custom_matcher)
+</div>
 
 ### Efficient test suites
 
@@ -795,21 +805,23 @@ Called after each spec is run
 Called after all specs are run
 ```
 
+Most tests we are going to write will have a `beforeEach` block to host the *Arrange* code.
+
 ## Faking dependencies
 
 When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
 
-These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing of a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, **this guide uses the umbrella term “fake” and “faking”** for any dependency substitution.
+These replacements are also called _doubles_, _stubs_ or _mocks_. Replacing a dependency is called _stubbing_ or _mocking_. Since these terms are used inconsistently and their difference is subtle, **this guide uses the umbrella term “fake” and “faking”** for any dependency substitution.
 
 Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same time. Since we will create many fakes throughout this guide, we need to set up **rules for faking dependencies** to apply the technique safely.
 
 ### Equivalence of fake and original
 
-A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same methods and properties.
+A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same public methods and properties.
 
-The fake does not need to be complete, but sufficient enough to act as a replacement. The fake needs to be equivalent to the original as far as the code under test is concerned, not fully equal to the original.
+The fake does not need to be complete, but sufficient enough to act as a replacement. The fake needs to be **equivalent to the original** as far as the code under test is concerned, not fully equal to the original.
 
-Like a fake building on a movie set, the outer shape needs to be indistinguishable from an original. But behind the authentic facade, there is only a wooden scaffold.
+Imagine a fake building on a movie set. The outer shape needs to be indistinguishable from an original building. But behind the authentic facade, there is only a wooden scaffold. The building is an empty shell.
 
 The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get of sync later when the original is changed.
 
@@ -817,9 +829,9 @@ When the original dependency changes its public API, dependent code needs to be 
 
 How can we ensure that the fake is up-to-date with the original? How can we ensure the equivalence of original and fake in the long run and prevent any possible divergence?
 
-We can use TypeScript to enforce that the fake has a matching type. The fake needs to be strictly typed. The fake’s type needs to be derived from the original’s type, forming a subset.
+We can use TypeScript to **enforce that the fake has a matching type**. The fake needs to be strictly typed. The fake’s type needs to be derived from the original’s type, forming a subset.
 
-Then, TypeScript assures the equivalence. The compiler reminds us to update the implementation and the fake. The TypeScript code simply does not compile if we forget that. We will learn how to declare matching types in the several upcoming examples.
+Then, TypeScript assures the equivalence. The compiler reminds us to update the implementation and the fake. The TypeScript code simply does not compile if we forget that. We will learn how to declare matching types in the upcoming examples.
 
 ### Effective faking
 
@@ -837,7 +849,7 @@ Jasmine provides simple yet powerful patterns to create fake implementations. Th
 
 In its simplest form, a spy is a function that records its calls. For each call, it records the function parameters. Using this record, we later assert that the spy has been called with particular input values. For example, we declare in a spec: “Expect that the spy has been called two times with the values `mickey` and `minnie`, respectively.”
 
-Like every other function, a spy can have a meaningful return value. In the simple case, this may be a fixed value. The spy will always return the same value, regardless of the input parameters. In a more complex case, the return value may originate from an underlying fake function.
+Like every other function, a spy can have a meaningful return value. In the simple case, this is a fixed value. The spy will always return the same value, regardless of the input parameters. In a more complex case, the return value originates from an underlying fake function.
 
 A standalone spy is created by calling `jasmine.createSpy`:
 
@@ -868,7 +880,9 @@ class TodoService {
 }
 ```
 
-The `TodoService` uses a pattern called _constructor injection_, meaning the `fetch` dependency can be injected via an optional constructor parameter. In production code, this parameter is empty and defaults to the original `window.fetch`. In the test, a fake dependency is passed to the constructor. The `fetch` parameter, whether original or fake, is saved as an instance property `this.fetch`. Eventually, the public method `getTodos` uses it to make an HTTP request.
+The `TodoService` uses the _constructor injection_ pattern. The `fetch` dependency can be injected via an optional constructor parameter. In production code, this parameter is empty and defaults to the original `window.fetch`. In the test, a fake dependency is passed to the constructor.
+
+The `fetch` parameter, whether original or fake, is saved as an instance property `this.fetch`. Eventually, the public method `getTodos` uses it to make an HTTP request.
 
 In our unit test, we do not want the service to make any HTTP requests. We pass in a Jasmine spy as replacement for `window.fetch`.
 
@@ -1026,7 +1040,9 @@ In the _Act_ phase, we call the method under test but anticipate that it throws 
 
 In the _Assert_ phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
-Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this [later](#testing-a-service-that-makes-http-requests).
+Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
+
+TODO: Add TodoService code to the workshop repository
 
 <div class="book-sources" markdown="1">
 - [Jasmine reference: Spies](https://jasmine.github.io/api/edge/Spy.html)
@@ -2163,9 +2179,18 @@ The following table shows which properties and methods of an Angular Component y
 
 ## Testing Components with children
 
-So far we have tested an independent Component that renders plain HTML elements, but no child Components. Such low-level Components are the workhorses of an Angular application. They directly render what the user sees and interacts with. They are often highly generic and reusable. They are controlled primarily through Inputs and report back using Outputs. They have little to none dependencies. They are easy to reason about and therefore easy to test. The preferred way of testing them is a unit test.
+So far we have tested an independent Component that renders plain HTML elements, but no child Components. Such low-level Components are the workhorses of an Angular application.
 
-These Components are called _presentational_ Components since they directly present a part of the user interface using HTML and CSS. Presentational Components need to be combined and wired to form a working user interface. This is the duty of _container_ Components. These high-level Components bring multiple low-level Components together. They pull data from different sources, like Services and state managers, and distribute it to their children.
+- They directly render what the user sees and interacts with.
+- They are often highly generic and reusable.
+- They are controlled primarily through Inputs and report back using Outputs.
+- They have little to none dependencies.
+- They are easy to reason about and therefore easy to test.
+- The preferred way of testing them is a unit test.
+
+These Components are called **presentational Components** since they directly present a part of the user interface using HTML and CSS. Presentational Components need to be combined and wired to form a working user interface.
+
+This is the duty of **container Components**. These high-level Components bring multiple low-level Components together. They pull data from different sources, like Services and state managers, and distribute it to their children.
 
 Container Components have several types of dependencies. They depend on the nested child Components, but also injectables. These are classes, functions, objects etc. provided via dependency injection, like Services for example. These dependencies make testing container Components complicated.
 
@@ -2199,7 +2224,9 @@ From `HomeComponent`’s perspective, the inner workings of its children are not
 
 In particular, the `HomeComponent` unit test checks that an `app-counter` element is present, that the `startCount` Input is passed correctly and that `HomeComponent` handles the `countChange` event. The same is done for the other children, `app-service-counter` and `app-service-counter`.
 
-An **integration test of `HomeComponent`** renders the child Components. The host elements are filled with the output of `CounterComponent`, `ServiceCounterComponent` and `NgRxCounterComponent`, respectively. This integration test is actually testing all four Components. We need to decide in what level of detail we test the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
+An **integration test of `HomeComponent`** renders the child Components. The host elements are filled with the output of `CounterComponent`, `ServiceCounterComponent` and `NgRxCounterComponent`, respectively. This integration test is actually testing all four Components.
+
+We need to decide in what level of detail we test the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
 
 Let us write a unit test for `HomeComponent` first. The setup looks familiar to the `CounterComponent` test suite. We are using `TestBed` to configure a testing Module and to render the Component under test.
 
@@ -3523,7 +3550,7 @@ describe('CounterService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [CounterService: test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
+- [CounterService: Test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
 </div>
 
 ### Testing a Service that sends HTTP requests

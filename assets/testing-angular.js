@@ -43,7 +43,7 @@
       firstEntry.boundingClientRect.y > 0
     ) {
       /* Scrolling upwards: Focus previous heading */
-      var index = Array.from(headings).findIndex(function (candidate) {
+      var index = arrayFrom(headings).findIndex(function (candidate) {
         return candidate === firstEntry.target;
       });
       if (index > 0) {
