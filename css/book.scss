@@ -363,9 +363,14 @@ pre {
  */
 
 #cover {
-  margin: 2rem 0;
+  margin: 4rem 0;
   text-align: center;
   font-size: 0.6rem;
+
+  @include large {
+    margin-left: -2rem;
+    margin-right: -2rem;
+  }
 }
 
 #cover-image-tokio-tower {
