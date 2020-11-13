@@ -80,7 +80,7 @@ robots: noindex, follow
       </p>
       <h1 id="toc-book-title">
         Testing Angular<br>
-        A Guide to Robust Angular Applications
+        <small>A Guide to Robust Angular Applications</small>
       </h1>
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
@@ -320,7 +320,7 @@ For this reason, some experts argue you should write few end-to-end test, a fair
 </svg>
 </p>
 
-These proportions are known as the **[Testing Pyramid](https://martinfowler.com/bliki/TestPyramid.html)**. They are widely recognized in software testing across domains, platforms and programming languages.
+These proportions are known as the **Testing Pyramid**. They are widely recognized in software testing across domains, platforms and programming languages.
 
 However, this common distribution also drew criticism. In particular, experts disagree on the value of unit tests.
 
@@ -375,9 +375,9 @@ In Angular, the difference between unit and integration tests is sometimes subtl
 <p><small>(Table adapted from a <a href="https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html">Google Testing Blog article</a> by Mike Wacker.)</small></p>
 
 <div class="book-sources" markdown="1">
+- [Martin Fowler: Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html)
 - [Google Testing Blog: Just Say No to More End-to-End Tests](https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html)
 - [Kent C. Dodds: Write tests. Not too many. Mostly integration.](https://kentcdodds.com/blog/write-tests)
-- [Martin Fowler: Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html)
 </div>
 
 ### Black box vs. white box testing
@@ -492,9 +492,9 @@ Once you are able to write automatic tests for this example application, you wil
 
 ## Angular testing principles
 
-### Testable application parts
+### Testability
 
-In contrast to other popular front-end JavaScript libraries, Angular is a an opinionated, comprehensive framework that covers all important aspects of developing a JavaScript web application. Angular provides high-level structure, low-level building blocks and means to bundle everything together into a usable application.
+In contrast to other popular front-end JavaScript libraries, Angular is an opinionated, comprehensive framework that covers all important aspects of developing a JavaScript web application. Angular provides high-level structure, low-level building blocks and means to bundle everything together into a usable application.
 
 The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application apply the same patterns?
 
@@ -521,19 +521,23 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 - [Angular guide: Dependency injection](https://angular.io/guide/dependency-injection)
 </div>
 
-### Angular’s testing tools
+### Testing tools
 
-Angular provides solid testing tools out of the box. When you create an Angular project using the Angular command line interface (CLI), it comes with a fully-working testing setup for unit, integration and end-to-end tests.
+Angular provides solid testing tools out of the box. When you create an Angular project using the command line interface, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
-So the Angular team already made decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
+The Angular team already made decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
 
-This setup works well and covers most cases. It is a trade-off with strengths and weaknesses. Since it is merely one possible way to test Angular applications, you could compile your own testing tool chain. For example, some people use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some people swap Protractor with [Cypress](https://www.cypress.io/). Some people use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) as an abstraction instead of using `TestBed` directly.
+This setup is a trade-off with strengths and weaknesses. Since it is just one possible way to test Angular applications, you can compile your own testing tool chain.
 
-These alternative tools are not simply better or worse than Angular’s standard tools. They simply make different trade-offs. This guide uses the standard setup with Jasmine and Karma for unit and integration tests. Later, once you have reached its limits, you should investigate whether alternatives make testing your application easier, faster and more reliable.
+For example, some use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](https://www.cypress.io/). Some use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
+
+These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests, but recommends Cypress for end-to-end tests.
+
+Once you have reached the limits of this setup, you should investigate whether alternatives make testing your application easier, faster and more reliable.
 
 ### Running the unit and integration tests
 
-The Angular CLI allows us to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your console:
+The Angular command line interface (CLI) allows you to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your console:
 
 ```
 npm install -g @angular/cli
@@ -549,23 +553,23 @@ The command for starting the unit and integration tests is:
 ng test
 ```
 
-This command does several important things at once.
+This command does several things at once.
 
-First, `ng test` uses Webpack to compile your code into a JavaScript bundle. The entry point for the bundle is `src/test.ts`. This file initializes the Angular testing environment (the `TestBed`) and then imports all files in the directory tree with the name pattern `.spec.ts`.
+First, `ng test` uses Webpack to compile your code into a JavaScript bundle. The entry point for the bundle is `src/test.ts`. This file initializes the Angular testing environment (the `TestBed`) and then imports all files in the directory tree that match the pattern `.spec.ts`.
 
-You might be familiar with the entry point for the application, `src/main.ts`. This file also initializes Angular, but then it bootstraps (loads and starts) a Module, typically named `AppModule`. The `AppModule` imports other Modules, Components, Services etc. This way, the bundler finds all parts of the application.
+You might be familiar with the entry point for the application, `src/main.ts`. This file also initializes Angular, but then it typically bootstraps (loads and starts) the `AppModule`. The `AppModule` imports other Modules, Components, Services etc. This way, the bundler finds all parts of the application.
 
-The test bundle works differently. It does not start with a Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
+The test bundle works differently. It does not start with one Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
 
-The **`.spec.ts` files** represent the tests. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code.
+Each **`.spec.ts` file** represent a test. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that later). The files are co-located with the implementation code.
 
 In our example application, the `CounterService` is located in [src/app/components/counter/counter.component.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.ts). The corresponding test file sits in [src/app/components/counter/counter.component.spec.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts). This is an Angular convention, not a technical necessity, and we are going to stick to it.
 
 Second, `ng test` launches Karma, the test runner. Karma starts a development server at [http://localhost:9876/](http://localhost:9876/) that serves the JavaScript bundles compiled by Webpack.
 
-Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. Per default, Chrome is started. In Karma’s configuration file, `karma.conf.js`, you can add more browser launchers for your target browsers. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari.
+Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
 
-The launched browser opens `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and reads the results in the browser and on the console.
+The launched browser navigates to `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and read the results in the browser and on the console.
 
 When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
@@ -585,25 +589,145 @@ TOTAL: 46 SUCCESS
 
 Webpack watches changes on the `.spec.ts` files and files imported by them. When you change the implementation code, `counter.component.ts` for example, or the test code, `counter.component.spec.ts` for example, Webpack automatically re-compiles the bundle and pushes it to the open browsers. All tests will be restarted.
 
-This feedback cycle allows you to work on the implementation and test code side-by-side. This is important for test-driven development. You change the implementation and expect the test to fail (the test is “red”). You adapt the test so it passes again (the test is “green”). Or you write a failing test first, then adapt the implementation until the test passes. Test-driven development means letting the red-green cycle guide your development.
+This feedback cycle allows you to work on the implementation and test code side-by-side. This is important for test-driven development. You change the implementation and expect the test to fail – the test is “red”. You adapt the test so it passes again – the test is “green”. Or you write a failing test first, then adapt the implementation until the test passes. Test-driven development means letting the red-green cycle guide your development.
 
-### TODO Configuring Karma and Jasmine
+<div class="book-sources" markdown="1">
+- [Angular CLI reference: ng test](https://angular.io/cli/test)
+</div>
 
-`karma.conf.js`
+### Configuring Karma and Jasmine
 
-Karma & Jasmine conf
+Karma and Jasmine are configured in the file `karma.conf.js` in the project’s root directory. There are many configuration options and plenty of plugins, so we will only mention a few.
 
-`src/test.ts`
+As mentioned, the standard configuration opens Chrome. To run the tests in other browsers, we need to install different *launchers*.
 
-Karma > Browser > Jasmine
+The launcher needs to be loaded in the `plugins` array:
+
+```javascript
+plugins: [
+  require('karma-jasmine'),
+  require('karma-chrome-launcher'),
+  require('karma-jasmine-html-reporter'),
+  require('karma-coverage-istanbul-reporter'),
+  require('@angular-devkit/build-angular/plugins/karma'),
+],
+```
+
+There is already one launcher, `karma-chrome-launcher`. This is an npm package.
+
+To install other launchers, we first need to install the respective npm package. Let us install the Firefox launcher. Run this shell command:
+
+```
+npm install --save-dev karma-firefox-launcher
+```
+
+Then we require the package in `karma.conf.js`:
+
+```javascript
+plugins: [
+  require('karma-jasmine'),
+  require('karma-chrome-launcher'),
+  require('karma-firefox-launcher'),
+  require('karma-jasmine-html-reporter'),
+  require('karma-coverage-istanbul-reporter'),
+  require('@angular-devkit/build-angular/plugins/karma'),
+],
+```
+
+If we want Karma to launch Firefox when the tests run, we also need to add it to the list of browsers: `browsers: ['Chrome']` becomes `browsers: ['Chrome', 'Firefox']`.
+
+Another important concept of Karma are *reporters*. They format and output the test results. In the default configuration, three reporters are active:
+
+1. The built-in `progress` reporter is responsible for the text output on the shell. While the tests run, it outputs the progress:
+
+   ```
+   Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 9 of 46 SUCCESS (0.278 secs / 0.219 secs)
+   ```
+
+   And finally:
+
+   ```
+   Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 46 of 46 SUCCESS (0.394 secs / 0.329 secs)
+  TOTAL: 46 SUCCESS
+   ```
+2. The standard HTML reporter `kjhtml` (npm package: `karma-jasmine-html-reporter`) renders the results in the browser.
+
+   <img src="/img/robust-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full">
+3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report.
+
+   TODO link
+
+You add reporters or replace the existing ones by editing the `reporters` array:
+
+```javascript
+reporters: ['progress', 'kjhtml'],
+```
+
+For example, to add a reporter that creates JUnit XML reports, first install the npm package:
+
+```
+npm install --save-dev karma-junit-reporter
+```
+
+Next, require it as a plugin:
+
+```javascript
+plugins: [
+  require('karma-jasmine'),
+  require('karma-chrome-launcher'),
+  require('karma-jasmine-html-reporter'),
+  require('karma-coverage-istanbul-reporter'),
+  require('karma-junit-reporter'),
+  require('@angular-devkit/build-angular/plugins/karma'),
+],
+```
+
+Finally, add the reporter:
+
+```javascript
+reporters: ['progress', 'kjhtml', 'junit'],
+```
+
+When we run the tests with `ng test`, we will find an XML report file in the project directory.
+
+The configuration for the Jasmine adapter is located in the `client` object. To configure Jasmine itself, we need to add the `jasmine` property:
+
+```javascript
+client: {
+  // Configuration for the Jasmine adapter
+  clearContext: false, // leave Jasmine Spec Runner output visible in browser
+  jasmine: {
+    // Jasmine configuration goes here!
+  },
+},
+```
+
+This guide recommends to activate one useful Jasmine configuration option: `failSpecWithNoExpectations` lets the test fail if it does not contain ant least one expectation. (More on [expectations](#expectations) later.) In almost all cases, specs without expectations stem from an error in the test code.
+
+```javascript
+client: {
+  clearContext: false, // leave Jasmine Spec Runner output visible in browser
+  jasmine: {
+    failSpecWithNoExpectations: true,
+  },
+},
+```
+
+<div class="book-sources" markdown="1">
+- [Karma documentation: Configuration File](https://karma-runner.github.io/5.2/config/configuration-file.html)
+- [Karma documentation: Plugins](https://karma-runner.github.io/5.2/config/plugins.html)
+- [npm: List of Karma plugins](https://www.npmjs.com/search?q=keywords:karma-plugin)
+- [Jasmine reference: Configuration options](https://jasmine.github.io/api/edge/Configuration.html)
+</div>
+
 
 ### Testing conventions
 
-Angular offers some tools and conventions on testing, but you need to decide how to apply them. Because there are opposing testing methodologies, the tools are flexible enough to support different ways of testing.
+Angular offers some tools and conventions on testing, but you need to decide how to apply them. Since there are opposing testing methodologies, the tools are flexible enough to support different ways of testing.
 
-This freedom of choice benefits experts, but confuses and paralyses beginners. In your project, there should be one preferable way how to test a specific application part. You need to make choices and set up project-wide conventions and patterns.
+This freedom of choice benefits experts, but confuses and paralyses beginners. In your project, there should be one preferable way how to test a specific application part. You should make choices and set up project-wide conventions and patterns.
 
-The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You need to create high-level testing tools that cast your conventions into code in order to write short, readable and understandable tests.
+The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You should create **high-level testing tools** that cast your conventions into code in order to write short, readable and understandable tests.
 
 This guide values strong conventions and introduces helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
 
@@ -5507,11 +5631,12 @@ Cypress is not simply better than WebDriver-based frameworks. It tries to solve 
 
 That being said, this guide recommends to use Cypress for testing Angular applications. Cypress is well-maintained and well-documented. With Cypress, you can write valuable end-to-end tests with little effort.
 
-In case you do need a WebDriver-based framework, have a look at [Webdriver.io](https://webdriver.io/) instead.
+In case you do need a WebDriver-based framework, have a look at Webdriver.io instead.
 
 <div class="book-sources" markdown="1">
 - [Cypress: Trade-offs](https://docs.cypress.io/guides/references/trade-offs.html)
 - [Cypress: Key differences](https://docs.cypress.io/guides/overview/key-differences.html)
+- [Webdriver.io](https://webdriver.io/)
 </div>
 
 ### Installing Cypress

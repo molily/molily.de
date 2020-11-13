@@ -74,6 +74,11 @@ body {
 table {
   // Do not use rem, use unit relative to parent font-size
   font-size: 90%;
+
+  @include large {
+    margin-left: -2rem;
+    margin-right: -2rem;
+  }
 }
 
 caption {
@@ -131,18 +136,9 @@ pre {
     }
   }
 
-  #toc {
-    padding: 2rem;
-  }
-
   #main-container {
     margin-left: $toc-width;
-    padding: 0 2rem;
-  }
-
-  #main {
-    margin: auto;
-    max-width: $main-max-width;
+    // padding: 0 2rem;
   }
 }
 
@@ -195,6 +191,12 @@ pre {
  * @section Table of contents
  *
  */
+
+@include large {
+  #toc {
+    padding: 2rem;
+  }
+}
 
 #toc-home-link {
   display: none;
@@ -287,6 +289,11 @@ pre {
   font-size: 1.15rem;
   letter-spacing: 0.2px;
   word-spacing: 0.2px;
+
+  @include large {
+    margin: auto;
+    max-width: $main-max-width;
+  }
 
   h2,
   h3,
@@ -487,12 +494,12 @@ pre {
 
   a {
     display: block;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     text-decoration: none;
 
     &::before {
       content: "🔗";
-      margin-right: 0.5rem;
+      margin-right: 1rem;
     }
   }
 }

@@ -1,7 +1,7 @@
 (function () {
-  "use strict";
+  'use strict';
 
-  var TOC_HEADING_ID = "toc-heading";
+  var TOC_HEADING_ID = 'toc-heading';
 
   var currentTocLink;
   var headings;
@@ -19,7 +19,7 @@
     };
 
   function headingIntersect(entries) {
-    if (!matchMedia("screen and (min-width: 55rem)").matches) {
+    if (!matchMedia('screen and (min-width: 55rem)').matches) {
       return;
     }
     var intersectingEntries = entries.filter(function (candidate) {
@@ -52,13 +52,13 @@
     }
     if (intersectingHeading) {
       if (currentTocLink) {
-        currentTocLink.classList.remove("active");
+        currentTocLink.classList.remove('active');
       }
       var id = intersectingHeading.id;
       var link = tocTree.querySelector('[href="#' + id + '"]');
       if (link) {
-        link.classList.add("active");
-        link.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        link.classList.add('active');
+        link.scrollIntoView({ block: 'nearest' });
         currentTocLink = link;
       }
     }
@@ -74,13 +74,13 @@
         return heading.id !== TOC_HEADING_ID;
       })
       .forEach(function (heading) {
-        var li = document.createElement("li");
-        var a = document.createElement("a");
-        a.href = "#" + heading.id;
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = '#' + heading.id;
         var tag = heading.tagName.toLowerCase();
         var level = parseInt(tag[1], 10);
         a.textContent = heading.textContent;
-        li.className = "toc-heading-level-" + level;
+        li.className = 'toc-heading-level-' + level;
         li.appendChild(a);
         fragment.appendChild(li);
         if (intersectionObserver) {
@@ -92,16 +92,14 @@
 
   function installIntersectionObserver() {
     if (
-      !(
-        window.IntersectionObserver &&
-        document.body.classList &&
-        document.body.scrollIntoView &&
-        Array.prototype.findIndex
-      )
+      window.IntersectionObserver &&
+      document.body.classList &&
+      document.body.scrollIntoView &&
+      Array.prototype.findIndex
     ) {
       intersectionObserver = new IntersectionObserver(headingIntersect, {
         root: null,
-        rootMargin: "0px 0px -40% 0px",
+        rootMargin: '0px 0px -40% 0px',
         threshold: 0,
       });
     }
@@ -110,13 +108,13 @@
   function installIframeButtons() {
     if (!document.body.replaceWith) return;
 
-    var loadIframeButtons = document.querySelectorAll(".load-iframe");
+    var loadIframeButtons = document.querySelectorAll('.load-iframe');
     arrayFrom(loadIframeButtons).forEach(function (button) {
-      button.addEventListener("click", function (event) {
+      button.addEventListener('click', function (event) {
         var button = event.target;
         var scriptTemplate = button.parentNode.nextElementSibling;
         var iframeHTML = scriptTemplate.textContent;
-        var container = document.createElement("div");
+        var container = document.createElement('div');
         container.innerHTML = iframeHTML;
         scriptTemplate.replaceWith(container);
         button.remove();
@@ -134,11 +132,12 @@
         Array.prototype.filter &&
         Array.prototype.forEach
       )
-    )
+    ) {
       return;
+    }
 
-    tocTree = document.getElementById("toc-tree");
-    headings = document.querySelectorAll("h2, h3, h4, h5, h6");
+    tocTree = document.getElementById('toc-tree');
+    headings = document.querySelectorAll('h2, h3, h4, h5, h6');
 
     installIntersectionObserver();
     installTocTree();
