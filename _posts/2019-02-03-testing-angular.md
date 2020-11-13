@@ -99,15 +99,14 @@ robots: noindex, follow
 <main id="main" markdown="1">
 
 <p id="cover">
-<picture>
-  <source type="image/avif" srcset="/img/robust-angular/flying-probe-800-30.avif, /img/robust-angular/flying-probe-1600-30.avif 2x">
-  <source type="image/webp" srcset="/img/robust-angular/flying-probe-800.webp, /img/robust-angular/flying-probe-1600.webp 2x">
-  <source type="image/jpeg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
-  <img id="cover-image-flying-probe" src="/img/robust-angular/flying-probe-800-85.jpg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of a flying probe testing a printed circuit board.">
-</picture>
+  <picture>
+    <source type="image/avif" srcset="/img/robust-angular/flying-probe-800-30.avif, /img/robust-angular/flying-probe-1600-30.avif 2x">
+    <source type="image/webp" srcset="/img/robust-angular/flying-probe-800.webp, /img/robust-angular/flying-probe-1600.webp 2x">
+    <source type="image/jpeg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
+    <img id="cover-image-flying-probe" src="/img/robust-angular/flying-probe-800-85.jpg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of a flying probe testing a printed circuit board.">
+  </picture>
 
-<span id="cover-credits">Photo by genkur from iStock</span>
-
+  <span id="cover-credits">Photo by genkur from iStock</span>
 </p>
 
 <h1 id="main-heading">
@@ -115,7 +114,7 @@ robots: noindex, follow
   <span class="subheading">A Guide to Robust Angular Applications</span>
 </h1>
 
-<p class="intro"><em class="intro-caps">The Angular framework</em> is a mature and comprehensive solution for building enterprise-ready applications based on web technologies. At Angular’s core lies the ability to test all application parts in an automated way. How do we take advantage of Angular’s testability?</p>
+<p class="intro"><em class="intro-caps">The Angular framework</em> is a mature and comprehensive solution for enterprise-ready applications based on web technologies. At Angular’s core lies the ability to test all application parts in an automated way. How do we take advantage of Angular’s testability?</p>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -247,13 +246,15 @@ Tests differ in their value and quality. Some tests are more meaningful than oth
 
 A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code (file, method/function, block, expression etc.) are executed at all. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
 
-This metric on testing is useful but also deeply flawed because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance. The coverage report may point to important behavior that is not yet covered by tests, but should be. It does not tell whether the existing tests are meaningful and make the right expectations. You can merely infer that the code does not throw exceptions under test conditions.
+This metric on testing is useful but also deeply flawed because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance.
 
-It is controversial whether one should strive for 100% code coverage. While it is feasible to cover 100% of certain business-critical code, it requires immense efforts to cover all parts of an application written in Angular and TypeScript. If you write tests for the main features of your app from a user’s perspective, you can easily achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and leads to weird and twisted tests that do not reflect the actual usage of your application.
+The coverage report may point to important behavior that is not yet covered by tests, but should be. It does not tell whether the existing tests are meaningful and make the right expectations. You can merely infer that the code does not throw exceptions under test conditions.
 
-We are going to discuss the practical use of code coverage tools later.
+It is controversial whether one should strive for 100% code coverage. While it is feasible to cover 100% of certain business-critical code, it requires immense efforts to cover all parts of an application written in Angular and TypeScript.
 
-TODO
+If you write tests for the main features of your app from a user’s perspective, you can achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and leads to weird and twisted tests that do not reflect the actual usage of your application.
+
+We are going to discuss the [practical use of code coverage tools](#measuring-code-coverage) later.
 
 <div class="book-sources" markdown="1">
 - [Angular guide: Code Coverage](https://angular.io/guide/testing-code-coverage)
@@ -502,7 +503,7 @@ An important reason is **testability**. Angular’s architecture guarantees that
 
 We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunk loosely.
 
-### Dependency injection and fake objects
+### Dependency injection and faking
 
 A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an _injector_ that sits on top.
 
@@ -534,6 +535,16 @@ For example, some use [Jest](https://jestjs.io/) instead of Jasmine and Karma. S
 These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests, but recommends Cypress for end-to-end tests.
 
 Once you have reached the limits of this setup, you should investigate whether alternatives make testing your application easier, faster and more reliable.
+
+### Testing conventions
+
+Angular offers some tools and conventions on testing. By design, they are flexible enough to support different ways of testing. So you need to decide how to apply them.
+
+This freedom of choice benefits experts, but confuses beginners. In your project, there should be one preferable way how to test a specific application part. You should make choices and set up project-wide conventions and patterns.
+
+The testing tools that ship with Angular are low-level. They provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You should create **high-level testing tools** that cast your conventions into code in order to write short, readable and understandable tests.
+
+This guide values strong conventions and introduces helper functions that codify these conventions. Again, your mileage may vary. You are free to adapt these tools to your needs or build other testing helpers.
 
 ### Running the unit and integration tests
 
@@ -573,7 +584,7 @@ The launched browser navigates to `http://localhost:9876/`. As mentioned, this s
 
 When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
-<img src="/img/robust-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full">
+<img src="/img/robust-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
 This is the console output:
 
@@ -652,10 +663,8 @@ Another important concept of Karma are *reporters*. They format and output the t
    ```
 2. The standard HTML reporter `kjhtml` (npm package: `karma-jasmine-html-reporter`) renders the results in the browser.
 
-   <img src="/img/robust-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full">
-3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report.
-
-   TODO link
+   <img src="/img/robust-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
 
 You add reporters or replace the existing ones by editing the `reporters` array:
 
@@ -719,17 +728,6 @@ client: {
 - [npm: List of Karma plugins](https://www.npmjs.com/search?q=keywords:karma-plugin)
 - [Jasmine reference: Configuration options](https://jasmine.github.io/api/edge/Configuration.html)
 </div>
-
-
-### Testing conventions
-
-Angular offers some tools and conventions on testing, but you need to decide how to apply them. Since there are opposing testing methodologies, the tools are flexible enough to support different ways of testing.
-
-This freedom of choice benefits experts, but confuses and paralyses beginners. In your project, there should be one preferable way how to test a specific application part. You should make choices and set up project-wide conventions and patterns.
-
-The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You should create **high-level testing tools** that cast your conventions into code in order to write short, readable and understandable tests.
-
-This guide values strong conventions and introduces helper functions that follow essential testing conventions. Again, your mileage may vary. You should adapt these tools to your needs or build higher-level testing helpers.
 
 ## Test suites with Jasmine
 
@@ -1248,22 +1246,49 @@ Creating standalone spies and spying on existing methods are not mutually exclus
 - [Jasmine reference: spyOn](https://jasmine.github.io/api/edge/global.html#spyOn)
 </div>
 
-## TODO Debugging tests
+## Debugging tests
 
-TODO
+Writing tests is as arduous as writing implementation code. You will be stuck quite often and ask yourself why the test fails – and sometimes why the test passes when it should rather fail.
 
-Test runner
-Browser
-How to read the output
-Console
-“Debug”
+The good news is that you can apply familiar debugging techniques to tests as well.
 
-<!--
-<ul>
-  <li>Chrome benutzen, Developer Tools öffnen</li>
+### Make small steps
+
+Executing only one test, suite, spec, expectation
+
   <li>Test-Focus setzen mit <code>fdescribe()</code> und <code>fit()</code></li>
-  <li><code>console.log(…)</code> ist Gold wert</li>
-  <li>Debug-Ausgaben in Lifecycle-Methoden, Handlern und im Template</li>
+Test focus
+
+test.ts
+
+With every code change, all Jasmine tests are run again.
+slow feedback
+
+Also
+
+expectation by expectation
+
+
+### Developer tools
+
+The Jasmine test runner is just another web site made with HTML, CSS and JavaScript. This means you can debug it in the browser using the developer tools.
+
+Focus the browser window and open the developer tools. In Chrome, Firefox and Edge, you can use the F12 key.
+
+You can use the developer tools
+
+- Write debug output to the console using `console.log`, `console.debug` etc.
+- Inspect the DOM of rendered Components
+- Use the JavaScript debugger. You can either set breakpoints in the developer tools or place a `debugger`statement
+
+
+### Debug output in implementation code
+
+### Jasmine debug runner
+
+async code
+
+###
 </ul>
 -->
 
@@ -5787,7 +5812,7 @@ ng run angular-workshop:cypress-open
 
 This will open the test runner:
 
-<img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full">
+<img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
 
 In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”. On the top-right, you can select the browser. Chrome, Firefox and Edge will appear in the list given you have installed them on your machine.
 
@@ -5795,13 +5820,13 @@ This graphical user interface is an Electron application, a framework based on C
 
 Suppose you run the tests in Chrome, the in-browser test runner looks like this:
 
-<img src="/img/robust-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full">
+<img src="/img/robust-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full" loading="lazy">
 
 On the left side, the specs are listed. On the right side, the web page under test is seen.
 
 By clicking on a spec name, you can see all commands and assertions in the spec.
 
-<img src="/img/robust-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full">
+<img src="/img/robust-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full" loading="lazy">
 
 You can watch Cypress running the specs command by command. This is especially useful when a spec fails. Let us break the spec on purpose to see Cypress’ output.
 
@@ -5809,7 +5834,7 @@ You can watch Cypress running the specs command by command. This is especially u
 cy.title().should('equal', 'Fluffy Golden Retrievers');
 ```
 
-<img src="/img/robust-angular/cypress-spec-failed.png" alt="Failed spec in Cypress" class="image-max-full">
+<img src="/img/robust-angular/cypress-spec-failed.png" alt="Failed spec in Cypress" class="image-max-full" loading="lazy">
 
 Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
 
@@ -6692,7 +6717,7 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 
 ---
 
-<h2>Code Coverage</h2>
+## Measuring code coverage
 
 <ul>
   <li>Welche Codezeilen wurden durch die Unit-Tests aufgerufen?</li>
