@@ -138,7 +138,7 @@ pre {
 
   #main-container {
     margin-left: $toc-width;
-    // padding: 0 2rem;
+    padding: 0 2rem;
   }
 }
 
@@ -244,39 +244,41 @@ pre {
   text-align: center;
 }
 
-#toc ol {
-  margin: 0.5rem 0 0.5rem 1rem;
-}
-
-#toc > ol {
-  margin-bottom: 2rem;
-
-  @include large {
-    margin-bottom: 0;
+#toc {
+  ol {
+    margin: 0.5rem 0 0.5rem 1rem;
   }
-}
 
-#toc li {
-  margin: 0;
-}
+  & > ol {
+    margin-bottom: 2rem;
 
-#toc a {
-  display: block;
-  text-decoration: none;
-}
-
-#toc .active {
-  color: $toc-background;
-  background-color: $link-color;
-
-  @include dark-scheme {
-    color: $toc-background-inverted;
-    background-color: $link-color-inverted;
+    @include large {
+      margin-bottom: 0;
+    }
   }
-}
 
-#toc .link-type {
-  display: none;
+  li {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    text-decoration: none;
+  }
+
+  .active {
+    color: $toc-background;
+    background-color: $link-color;
+
+    @include dark-scheme {
+      color: $toc-background-inverted;
+      background-color: $link-color-inverted;
+    }
+  }
+
+  .link-type {
+    display: none;
+  }
 }
 
 /**

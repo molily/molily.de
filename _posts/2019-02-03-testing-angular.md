@@ -1248,49 +1248,153 @@ Creating standalone spies and spying on existing methods are not mutually exclus
 
 ## Debugging tests
 
-Writing tests is as arduous as writing implementation code. You will be stuck quite often and ask yourself why the test fails – and sometimes why the test passes when it should rather fail.
+Writing tests is as arduous as writing implementation code. To be honest, you will be stuck quite often and ask yourself why the test fails – and sometimes why the test passes when it should rather fail.
 
 The good news is that you can apply familiar debugging techniques to tests as well.
 
-### Make small steps
+### Test focus
 
-Executing only one test, suite, spec, expectation
+Some tests require an extensive *Arrange* phase, the *Act* phase calls several methods or simulates complex user input. These tests are hard to debug.
 
-  <li>Test-Focus setzen mit <code>fdescribe()</code> und <code>fit()</code></li>
-Test focus
+When locating an error, narrow down the scope gradually: Execute only one test, one suite, one spec, one expectation.
 
-test.ts
+Per default, Karma and Jasmine compile and run all specs again with every code change.
+This leads to a slow feedback cycle when you work on a particular spec. After a code change, it takes 10-20 seconds before you see the test result. Also one spec might interfere with another spec.
 
-With every code change, all Jasmine tests are run again.
-slow feedback
+The easiest way to narrow down the scope is to set a **focus** on a suite or spec.. Let us assume you have a test suite with two specs:
 
-Also
+```typescript
+describe('Example spec', () => {
+  it('one spec', () => { /* … */ });
+  it('another spec', () => { /* … */ });
+});
+```
 
-expectation by expectation
+If you want Jasmine to run only this test suite and skip all others, change `describe` to `fdescribe`:
 
+```typescript
+fdescribe('Example spec', () => {
+  it('one spec', () => { /* … */ });
+  it('another spec', () => { /* … */ });
+});
+```
+
+If you want Jasmine to run only one spec, change `it` to `fit`:
+
+```typescript
+describe('Example spec', () => {
+  fit('one spec', () => { /* … */ });
+  it('another spec', () => { /* … */ });
+});
+```
+
+This improves the developing experience tremendously.
+
+The Webpack module bundler still re-emits the whole bundle even if you have only changed one line of code and even if there is a test focus on one suite.
+
+In this case, you can instruct `ng test` to consider only the file you are currently working on. Webpack then includes all its dependencies, like the Angular framework, but not more.
+
+For example, to include only tests called `counter.component.spec.ts`, we call `ng test` with the `--include` option.
+
+```
+ng test --include **/counter.component.spec.ts
+```
+
+`**/counter.component.spec.ts` means all files called `counter.component.spec.ts` and any subdirectory.
+
+The bundling is now fast and the feedback is almost instant when we change implementation or test code.
+
+Keep in mind to remove the test focus before committing your code. There are several tools that prevent `fdescribe` and `fit` from being committed.
+
+<div class="book-sources" markdown="1">
+- [Jasmine API reference: fdescribe](https://jasmine.github.io/api/edge/global.html#fdescribe)
+- [Jasmine API reference: fit](https://jasmine.github.io/api/edge/global.html#fit)
+- [Angular CLI reference: ng test](https://angular.io/cli/test)
+- [Tim Deschryver: Don't commit focused tests](https://timdeschryver.dev/blog/dont-commit-focused-tests)
+</div>
 
 ### Developer tools
 
-The Jasmine test runner is just another web site made with HTML, CSS and JavaScript. This means you can debug it in the browser using the developer tools.
+The Jasmine test runner is just another web page made with HTML, CSS and JavaScript. This means you can debug it in the browser using the developer tools.
 
 Focus the browser window and open the developer tools. In Chrome, Firefox and Edge, you can use the F12 key.
 
-You can use the developer tools
+You can use the developer tools to:
 
-- Write debug output to the console using `console.log`, `console.debug` etc.
+- Write debug output to the console using `console.log`, `console.debug` and friends
+- Use the JavaScript debugger. You can either set breakpoints in the developer tools or place a `debugger` statement.
 - Inspect the DOM of rendered Components
-- Use the JavaScript debugger. You can either set breakpoints in the developer tools or place a `debugger`statement
 
+### Debug output and the JavaScript debugger
 
-### Debug output in implementation code
+The most primitive tool, `console.log`, is in fact invaluable when debugging tests. You can place debug output both in the test code and the implementation code.
+
+Use debug output to answer these questions:
+
+- Is the test, suite, spect run at all?
+- Does the test execution reach the log command?
+- Did the test call the class, method, function under test correctly?
+- Are callback called correctly? Do Promises complete or fail? Do Observables emit, complete or error?
+- For Component tests:
+  - Is Input data passed correctly?
+  - Are the lifecycle methods called correctly?
+
+Some people prefer to use `debugger` instead of console output.
+
+<img src="/img/robust-angular/jasmine-debugger.png" alt="Jasmine test with debugger statement in the code under test" class="image-max-full" loading="lazy">
+
+While the debugger certainly gives you more control, the benefit of `console.log` is that is does not halt the JavaScript execution. The debugger may disturb the processing of asynchronous JavaScript tasks and the order of execution.
+
+The `console` methods have one pitfalls though. For performance reasons, browser do not write the output to the console synchronously, but asynchronously.
+
+If you output a complex object with `console.log(object)`, most browsers render an interactive representation of the object on the console. You can click on the object to inspect its properties.
+
+```typescript
+const exampleObject = { name: 'Usagi Tsukino' };
+console.log(exampleObject);
+```
+
+It is important to know that the rendering happens asynchronously and lazy. If you change the object shortly after, you might see the changed object, not the object at the time of the `console.log` call.
+
+```typescript
+const exampleObject = { name: 'Usagi Tsukino' };
+console.log(exampleObject);
+exampleObject.name = 'Sailor Moon';
+```
+
+On the console, the object representation may show `name: 'Sailor Moon'` instead of `name: 'Usagi Tsukino'`.
+
+One way to prevent this confusion is to create a snapshot of the object. The JSON string representation.
+
+```typescript
+const exampleObject = { name: 'Usagi Tsukino' };
+console.log(JSON.stringify(exampleObject, null, '  '));
+exampleObject.name = 'Sailor Moon';
+```
+
+```typescript
+const exampleObject = { name: 'Usagi Tsukino' };
+console.log(JSON.parse(JSON.stringify(exampleObject)));
+exampleObject.name = 'Sailor Moon';
+```
+
+### Inspect the DOM of rendered Components
+
+In the next chapter, we will learn how to test Components. These tests will render the Component template into the DOM of the Jasmine test runner page. This means you can briefly see the states of a rendered Component in the browser.
+
+<img src="/img/robust-angular/jasmine-dom.png" alt="DOM of the Component under test in the DOM inspector" class="image-max-full" loading="lazy">
+
+Unfortunately, the root element the Component is rendered into is the last element in the document, below the Jasmine reporter output. Make sure to set a focus on a single spec to see the rendered Component.
+
+The rendered Component is interactive. For example, you can click on buttons and the click handlers will be called. But as we will learn in the next chapter, there is no automatic change detection in the testing environment. So you might not see the effect of the interaction.
 
 ### Jasmine debug runner
 
+TODO
 async code
 
-###
-</ul>
--->
+<img src="/img/robust-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
+
 
 ## Testing Components
 
@@ -1404,7 +1508,9 @@ const fixture = TestBed.createComponent(CounterComponent);
 
 `createComponent` renders the Component into a root element in the HTML DOM. Alas, something is missing. The Component is not fully rendered. All the static HTML is present, but the dynamic HTML is missing. The template bindings, like `{% raw %}{{ count }}{% endraw %}` in the example, are not evaluated.
 
-In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates. In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows us to test asynchronous behavior in a synchronous manner, which is much simpler.
+In our testing environment, there is no automatic change detection. Even with the default change detection strategy, a Component is not automatically rendered and re-rendered on updates.
+
+In testing code, we have to trigger the change detection manually. This might be a nuisance, but it is actually a feature. It allows us to test asynchronous behavior in a synchronous manner, which is much simpler.
 
 So the last thing we need to do is to trigger change detection:
 
@@ -4492,7 +4598,7 @@ The asterisk syntax `*appPaginate` and the so-called microsyntax `let item of it
 
 There is an `ng-template` with an attribute `appPaginate` and an attribute binding `appPaginateOf`. Also there is a template input variable called `item`.
 
-As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Above you see the template our `PaginateDirective` works with. The Directive renders the template for each item on the current page.
+As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Our `PaginateDirective` works with the `ng-template` you see above. The Directive renders the template for each item on the current page.
 
 Now that we have seen Angular’s internal representation, we can understand the structure of the `PaginateDirective` class:
 
@@ -4508,7 +4614,7 @@ export class PaginateDirective<T> implements OnChanges {
 }
 ```
 
-The Directive uses the `[appPaginate]` attribute selector and has an Input called `appPaginateOf`. By writing the microsyntax `*appPaginate="let item **of items**"`, we actually set the `appPaginateOf` Input to the value `items`.
+The Directive uses the `[appPaginate]` attribute selector and has an Input called `appPaginateOf`. By writing the microsyntax `*appPaginate="let item of items"`, we actually set the `appPaginateOf` Input to the value `items`.
 
 The `PaginateDirective` has a configuration option named `perPage`. It specifies how many items are visible per page. Per default, it is 10. To change it, we set `perPage: …` in the microsyntax:
 
@@ -5087,7 +5193,7 @@ The example application lets you change the user interface language during runti
 
 #### TranslateService
 
-The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to the user-facing label “s ”.
+The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to “Hello!” if the current language is English.
 
 The `TranslateService` looks like this:
 
