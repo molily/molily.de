@@ -74,11 +74,8 @@ body {
 table {
   // Do not use rem, use unit relative to parent font-size
   font-size: 90%;
-
-  @include large {
-    margin-left: -2rem;
-    margin-right: -2rem;
-  }
+  margin-left: auto;
+  margin-right: auto;
 }
 
 caption {
