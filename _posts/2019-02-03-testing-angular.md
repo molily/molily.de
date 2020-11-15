@@ -172,9 +172,9 @@ Automated testing has several technical, economical and organizational benefits.
 
 1. **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 
-Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyze and fix the bug in order to regain the user’s trust.
+   Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyze and fix the bug in order to regain the user’s trust.
 
-**A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
+   **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
 
 2. **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps fellow developers to understand the requirements the original developers had to implement and the challenges they had to deal with.
 
@@ -335,7 +335,7 @@ Integration tests provide a better trade-off. These mid-level tests prescind fro
 
 That is why some experts deem integration tests more valuable and recommend that you spend most of your testing efforts on this level.
 
-In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe etc. Dependencies are replaced with fakes. An integration test spans one component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
+In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe etc. Dependencies are replaced with fakes. An integration test spans one Component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
 
 <table class="testing-levels-table">
 <caption>Comparison of software testing levels</caption>
@@ -1006,7 +1006,7 @@ The `TodoService` uses the _constructor injection_ pattern. The `fetch` dependen
 
 The `fetch` parameter, whether original or fake, is saved as an instance property `this.fetch`. Eventually, the public method `getTodos` uses it to make an HTTP request.
 
-In our unit test, we do not want the service to make any HTTP requests. We pass in a Jasmine spy as replacement for `window.fetch`.
+In our unit test, we do not want the Service to make any HTTP requests. We pass in a Jasmine spy as replacement for `window.fetch`.
 
 ```typescript
 // Fake todos and response object
@@ -1259,9 +1259,9 @@ Some tests require an extensive *Arrange* phase, the *Act* phase calls several m
 When locating an error, narrow down the scope gradually: Execute only one test, one suite, one spec, one expectation.
 
 Per default, Karma and Jasmine compile and run all specs again with every code change.
-This leads to a slow feedback cycle when you work on a particular spec. After a code change, it takes 10-20 seconds before you see the test result. Also one spec might interfere with another spec.
+This leads to a slow feedback cycle when you work on a particular spec. After a code change, it may take 10-20 seconds before you see the test result. Also one spec might interfere with another spec.
 
-The easiest way to narrow down the scope is to set a **focus** on a suite or spec.. Let us assume you have a test suite with two specs:
+The easiest way to narrow down the scope is to set a **focus** on a suite or spec. Let us assume you have a test suite with two specs:
 
 ```typescript
 describe('Example spec', () => {
@@ -1364,7 +1364,7 @@ exampleObject.name = 'Sailor Moon';
 
 On the console, the object representation may show `name: 'Sailor Moon'` instead of `name: 'Usagi Tsukino'`.
 
-One way to prevent this confusion is to create a snapshot of the object. The JSON string representation.
+One way to prevent this confusion is to create a snapshot of the object. You convert the object to a JSON string:
 
 ```typescript
 const exampleObject = { name: 'Usagi Tsukino' };
@@ -1372,17 +1372,23 @@ console.log(JSON.stringify(exampleObject, null, '  '));
 exampleObject.name = 'Sailor Moon';
 ```
 
+If you want an interactive representation on the console, create a copy of the object with `JSON.stringify` followed by `JSON.parse`:
+
 ```typescript
 const exampleObject = { name: 'Usagi Tsukino' };
 console.log(JSON.parse(JSON.stringify(exampleObject)));
 exampleObject.name = 'Sailor Moon';
 ```
 
-### Inspect the DOM of rendered Components
+Obviously, this only works for objects that can be serialized as JSON.
 
-In the next chapter, we will learn how to test Components. These tests will render the Component template into the DOM of the Jasmine test runner page. This means you can briefly see the states of a rendered Component in the browser.
+### Inspect the DOM
+
+In the next chapter, we will learn how to test Components. These tests will render the Component into the DOM of the Jasmine test runner page. This means you can briefly see the states of the rendered Component in the browser.
 
 <img src="/img/robust-angular/jasmine-dom.png" alt="DOM of the Component under test in the DOM inspector" class="image-max-full" loading="lazy">
+
+In the screenshot above, you see the rendered Component on the left side and the inspected DOM on the right side.
 
 Unfortunately, the root element the Component is rendered into is the last element in the document, below the Jasmine reporter output. Make sure to set a focus on a single spec to see the rendered Component.
 
@@ -1390,25 +1396,35 @@ The rendered Component is interactive. For example, you can click on buttons and
 
 ### Jasmine debug runner
 
-TODO
-async code
+The Karma page at [http://localhost:9876](http://localhost:9876) loads an iframe with the actual Jasmine test runner and reporter (http://localhost:9876/context.html). This iframe complicates debugging the test because the developer tools console operates on the topmost document per default.
+
+In the developer tools, you can select the iframe window context:
+
+<img src="/img/robust-angular/karma-select-context.png" alt="Developer tools: Select the context iframe" class="image-max-full" loading="lazy">
+
+This way you can access global objects and the DOM of the document where the tests run.
+
+Another helpful feature is Karma’s debug test runner. Click on the big “DEBUG” button on the top-right. Then a new tab opens with the URL [http://localhost:9876/debug.html](http://localhost:9876/debug.html).
 
 <img src="/img/robust-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
 
+The debug test runner does not have an iframe, it loads Jasmine directly. Also it automatically logs spec runs on the console.
+
+If you change the test or implementation code, the debug runner does not re-run the tests. You have to reload the page manually.
 
 ## Testing Components
 
-Components are the power houses of an Angular application. Together, they compose the user interface.
+Components are the power houses of an Angular application. Components are composed to form the user interface.
 
-A component deals with several concerns, among others:
+A Component deals with several concerns, among others:
 
-- A component renders a certain HTML DOM using the template.
-- It accepts data from parent components using Input properties.
-- It emits data to parent components using Outputs.
+- A Component renders a certain HTML DOM using the template.
+- It accepts data from parent Components using Input properties.
+- It emits data to parent Components using Outputs.
 - It reacts to user input using event handlers.
 - It renders the content (`ng-content`) and templates (`ng-template`) that are passed.
 - It binds data to form controls and allows the user to edit the data.
-- It talks to services or other state managers.
+- It talks to Services or other state managers.
 - It uses routing information like the current URL and its parameters.
 
 All these tasks need to be tested properly.
@@ -1498,7 +1514,7 @@ You will see this pattern in most Angular tests that rely on the `TestBed`.
 
 ### Rendering the Component
 
-Now we have a fully-configured testing Module with compiled components. Finally, we can render the Component under test using `createComponent`:
+Now we have a fully-configured testing Module with compiled Components. Finally, we can render the Component under test using `createComponent`:
 
 ```typescript
 const fixture = TestBed.createComponent(CounterComponent);
@@ -1520,7 +1536,7 @@ fixture.detectChanges();
 
 ### TestBed and Jasmine
 
-Now the code for rendering a component using the `TestBed` is complete. Let us wrap the code in a Jasmine test suite.
+Now the code for rendering a Component using the `TestBed` is complete. Let us wrap the code in a Jasmine test suite.
 
 ```typescript
 describe('CounterComponent', () => {
@@ -1541,7 +1557,7 @@ describe('CounterComponent', () => {
 });
 ```
 
-Using `describe`, we define a test suite for the `CounterComponent`. Inside, there are two `beforeEach` blocks. The first `beforeEach` block configures the `TestBed`. The second renders the component.
+Using `describe`, we define a test suite for the `CounterComponent`. Inside, there are two `beforeEach` blocks. The first `beforeEach` block configures the `TestBed`. The second renders the Component.
 
 You might wonder why the function in the `beforeEach` block is marked as an `async` function. It is because `compileComponents` is an asynchronous operation. To compile the Components, Angular needs to fetch external the template files referenced by `templateUrl`.
 
@@ -1555,7 +1571,7 @@ Now we have built the scaffold for our test using the `TestBed`, we need to writ
 
 The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test and connects to electrical contacts so measurements can be taken.
 
-In the context of Angular, the `ComponentFixture` holds the component and provides a convenient interface to both the Component instance and the rendered DOM.
+In the context of Angular, the `ComponentFixture` holds the Component and provides a convenient interface to both the Component instance and the rendered DOM.
 
 The fixture references the Component instance via the `componentInstance` property. In our example, it contains a `CounterComponent` instance.
 
@@ -1578,7 +1594,7 @@ component.countChange.subscribe((count) => {
 
 More on testing Inputs and Outputs later.
 
-For accessing elements in the DOM, Angular has another abstraction: The `DebugElement` wraps the native DOM elements. The fixture’s `debugElement` property returns the host element of the component. For the `CounterComponent`, this is the `app-counter` element.
+For accessing elements in the DOM, Angular has another abstraction: The `DebugElement` wraps the native DOM elements. The fixture’s `debugElement` property returns the Component’s host element. For the `CounterComponent`, this is the `app-counter` element.
 
 ```typescript
 const { debugElement } = fixture;
@@ -2405,7 +2421,7 @@ That being said, white box testing is viable advanced technique. If you are a te
 The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
 
 <table>
-<caption>Black box testing an Angular component</caption>
+<caption>Black box testing an Angular Component</caption>
 <tr>
 <th scope="col">Class member</th>
 <th scope="col">Access from test</th>
@@ -5386,7 +5402,7 @@ class HostComponent {
 }
 ```
 
-This component uses the `TranslatePipe` to translate its `key` property. Per default, it is set to `key1`. There is also a second constant `key2` for testing the key change later.
+This Component uses the `TranslatePipe` to translate its `key` property. Per default, it is set to `key1`. There is also a second constant `key2` for testing the key change later.
 
 Let us set up the test suite:
 
@@ -5411,7 +5427,7 @@ describe('TranslatePipe: with TestBed and HostComponent', () => {
 });
 ```
 
-In the testing module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide the `FakeTranslateService` instead. Just like in a Component test, we create the Component and examine the rendered DOM.
+In the testing Module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide the `FakeTranslateService` instead. Just like in a Component test, we create the Component and examine the rendered DOM.
 
 What needs to be tested? Obviously, we need to check that `{% raw %}{{ key | translate }}{% endraw %}` evaluates to `key1`. There are two cases that needs to be tested though:
 
@@ -5590,7 +5606,7 @@ We could sneak into the metadata and check whether certain Services are provided
 
 Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
 
-There are certain Module errors that surface not before runtime. These can be caught with a _smoke test_. Given this module:
+There are certain Module errors that surface not before runtime. These can be caught with a _smoke test_. Given this Module:
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -6036,7 +6052,7 @@ The benefit of a test id is that it can be used on any element. Using a test id 
 
 ### Interacting with elements
 
-To test the counter component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`”`. So the element finder would be:
+To test the counter Component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`”`. So the element finder would be:
 
 ```typescript
 cy.get('[data-testid="count"]')
