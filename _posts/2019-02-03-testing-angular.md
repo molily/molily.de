@@ -6864,6 +6864,8 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
   <li><code>ng test --code-coverage</code></li>
 </ul>
 
+## Summary
+
 <h2>Testen und Testbarkeit</h2>
 
 <ul>
@@ -6887,6 +6889,8 @@ Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailb
 Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class, well-tested Angular applications.
 
 Thanks to Netanel Basal, Tim Deschryver, Kent C. Dodds, Kara Erickson, Tracy Lee and Brandon Roberts for insights on Angular, RxJS and testing.
+
+Thanks to Nils Binder for contributing the dark color scheme.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
