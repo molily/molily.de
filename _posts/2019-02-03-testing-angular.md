@@ -947,7 +947,7 @@ The fake does not need to be complete, but sufficient enough to act as a replace
 
 Imagine a fake building on a movie set. The outer shape needs to be indistinguishable from an original building. But behind the authentic facade, there is only a wooden scaffold. The building is an empty shell.
 
-The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get of sync later when the original is changed.
+The biggest danger of creating a fake is that it does not properly mimic the original. Even if the fake resembles the original at the time of writing the code, it might easily get out of sync later when the original is changed.
 
 When the original dependency changes its public API, dependent code needs to be adapted. Also, the fake needs to be aligned. When the fake is outdated, the unit test becomes a fantasy world where everything magically works. The test passes but in fact the code under test is broken.
 
@@ -1427,7 +1427,7 @@ A Component deals with several concerns, among others:
 - It renders the content (`ng-content`) and templates (`ng-template`) that are passed.
 - It binds data to form controls and allows the user to edit the data.
 - It talks to Services or other state managers.
-- It uses routing information like the current URL and its parameters.
+- It uses routing information like the current URL and URL parameters.
 
 All these tasks need to be tested properly.
 
@@ -3091,7 +3091,7 @@ Again, there are two fundamental ways to test the Component:
 - A unit test that replaces the `CounterService` dependency with a fake.
 - An integration test that includes a real `CounterService`.
 
-This guide will demonstrate both. For your Components, you need to make a decision on an individual basis. These questions may guide you: Which type of test is more beneficial, more meaningful? Which test is easier (less costly) to set up and to maintain in the long run?
+This guide will demonstrate both. For your Components, you need to make a decision on an individual basis. These questions may guide you: Which type of test is more beneficial, more meaningful? Which test is easier to set up and to maintain in the long run?
 
 ### Service dependency integration test
 
@@ -3285,7 +3285,7 @@ const fakeCounterService =
 
 The code above creates an object with four methods, all of them being spies. They return the given values: `getCount` returns an `Observable<number>`. The other methods return `undefined`.
 
-`createSpyObj` accepts a [TypeScript type variable](https://www.typescriptlang.org/docs/handbook/generics.html) to declare the type the object adheres to. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
+`createSpyObj` accepts a [TypeScript type variable](https://www.typescriptlang.org/docs/handbook/generics.html) to declare the type of the created object. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
 
 Let us put our fake to work. In the _Arrange_ phase, the fake is created and injected into the testing Module.
 
@@ -3419,7 +3419,7 @@ In addition, we will check that the Component correctly subscribes to and proces
 
 The fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes another value. We need to change that behavior in order to demonstrate the Component update.
 
-The fake `CounterService`, devoid of logic so far, needs to gain some logic. `getCount` should return a Observable that emits new values when `increment`, `decrement` and `reset` are called.
+The fake `CounterService`, devoid of logic so far, needs to gain some logic. `getCount` should return an Observable that emits new values when `increment`, `decrement` and `reset` are called.
 
 Instead of a fixed Observable, we use a `BehaviorSubject`, just like in the original `CounterService` implementation. The `BehaviorSubject` has a `next` method for pushing new values.
 
@@ -3589,7 +3589,7 @@ In an Angular application, Services are responsible for fetching, storing and pr
 
 The single Service instance is shared among Components and other application parts. Therefore, a Service is used when Components that are not parent and child need to communicate with each other and exchange data.
 
-“Service” is an umbrella term for any object that serves a specific purpose and is injected as a dependency. Technically, Services have little in common. There a no rules regarding the structure or behavior of a Service.
+“Service” is an umbrella term for any object that serves a specific purpose and is injected as a dependency. Technically, Services have little in common. There are no rules regarding the structure or behavior of a Service.
 
 Typically, Services are classes, but not necessarily. While Modules, Components and Directives are marked with respective decorators – `@Module`, `@Component`, `@Directive` –, Services are marked with the generic `@Injectable`.
 
@@ -3599,13 +3599,13 @@ So how do we test a Service? What needs to be tested? Services are diverse, but 
 
   In the test, we check whether a method returns correct data.
 
-- Services store data. That is, they have an internal state. We can get or set the state.
+- Services store data. They hold an internal state. We can get or set the state.
 
   In the test, we check whether the state is changed correctly. Since the state should be held in private properties, we cannot access the state directly. We test the state change by calling public methods. We should not peek into the [black box](#black-box-vs-white-box-testing).
 
 - Services interact with dependencies. These are often other Services. For example, a Service might send HTTP requests via Angular’s `HttpClient`.
 
-  In the unit test, we replace the dependency with a fake that returns canned responses. To fake the `HttpClient` dependency, we may use Angular’s `HttpClientTestingModule`.
+  In the unit test, we replace the dependency with a fake that returns canned responses. To fake the `HttpClient` dependency, we use Angular’s `HttpClientTestingModule`.
 
 ### Testing a Service with internal state
 
@@ -3626,8 +3626,8 @@ class CounterService {
 We need to identify what the Service does, what we need test and how we test it.
 
 - The Service holds an internal state, namely in the private `count` and `subject` properties. We cannot and should not access these properties in the test.
-- The Service has a public method, `getCount`, for reading the state. It does not return a synchronous value, but an RxJS Observable. We will use `getCount` to get the current count and also to subscribe to changes.
-- Last but not least, the Service has three public methods for changing the state: `increment`, `decrement` and `reset`. We will call these methods and then check whether the state has changed appropriately.
+- The Service has a public method for reading the state, `getCount`. It does not return a synchronous value, but an RxJS Observable. We will use `getCount` to get the current count and also to subscribe to changes.
+- Last but not least, the Service has three public methods for changing the state: `increment`, `decrement` and `reset`. We will call these methods and then check whether the state has changed accordingly.
 
 Let us write the test code! We create a file called `counter.service.spec.ts` and fill it with test suite boilerplate code:
 
@@ -3673,7 +3673,7 @@ describe('CounterService', () => {
 });
 ```
 
-Let us start with writing the spec `it('returns the count', /* … */)`. It tests tests the `getCount` method that returns an Observable.
+Let us start with writing the spec `it('returns the count', /* … */)`. It tests the `getCount` method that returns an Observable.
 
 For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs). We declare a variable `actualCount` that is initially undefined. Then we subscribe and assign the value emitted by the Observable to the variable. Finally, outside of the subscriber function, we compare the actual to the expected value.
 
@@ -3689,7 +3689,9 @@ it('returns the count', () => {
 
 This works because the Observable is backed by a BehaviorSubject that stores the latest value and sends it to new subscribers immediately.
 
-The next spec, `it('increments the count', /* … */)`, tests the `increment` method. The spec calls the method and then verifies that the count state has changed. As mentioned before, we cannot access the private properties for this purpose. Just like in the spec above, we need to use the public `getCount` method to read the count.
+The next spec tests the `increment` method. We call the method and verify that the count state has changed.
+
+As mentioned before, we cannot access the private properties for this purpose. Just like in the spec above, we need to use the public `getCount` method to read the count.
 
 ```typescript
 it('increments the count', () => {
@@ -3756,11 +3758,13 @@ The pattern has one variable bit, the expected count. That is why the helper fun
 
 Now that we have pulled out the code into a central helper function, there is one optimization we should add. The First Rule of RxJS Observables states: “Anyone who subscribes, must unsubscribe as well”.
 
-In `expectCount`, we need to get the current count only once. We do not want to create a long-lasting subscription. We are not interested in future changes. If we call `expectCount` only once per spec, this is not a huge problem. If we wrote a more complex spec with several `expectCount` calls, we would create pointless subscriptions. This is likely to cause confusion for example when debugging the subscriber function.
+In `expectCount`, we need to get the current count only once. We do not want to create a long-lasting subscription. We are not interested in future changes.
 
-In short, we want to fetch the count and than unsubscribe to reduce unwanted subscriptions.
+If we call `expectCount` only once per spec, this is not a huge problem. If we wrote a more complex spec with several `expectCount` calls, we would create pointless subscriptions. This is likely to cause confusion for example when debugging the subscriber function.
 
-One possible solution is to unsubscribe immediately after subscribing. The `subscribe` method returns a `Subscription` with the useful `unsubscribe` method.
+In short, we want to fetch the count and then unsubscribe to reduce unwanted subscriptions.
+
+One possible solution is unsubscribing immediately after subscribing. The `subscribe` method returns a `Subscription` with the useful `unsubscribe` method.
 
 ```typescript
 function expectCount(count: number): void {
@@ -3845,7 +3849,7 @@ describe('CounterService', () => {
 
 Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with a dependency.
 
-In the [Flickr search example application](https://github.com/9elements/angular-flickr-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
+In the [Flickr search](#the-flickr-photo-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
 
 ```typescript
 @Injectable()
@@ -3872,11 +3876,11 @@ export class FlickrService {
 }
 ```
 
-The Service is marked with `@Injectable()` so it takes part in Angular’s Dependency Injection. It depends on Angular’s standard HTTP library, _`HttpClient`_ from the `@angular/common/http` package. Most Angular applications use `HttpClient` to communicate with HTTP APIs.
+The Service is marked with `@Injectable()` so it takes part in Angular’s Dependency Injection. It depends on Angular’s standard HTTP library, `HttpClient` from the `@angular/common/http` package. Most Angular applications use `HttpClient` to communicate with HTTP APIs.
 
 There are two ways to test the `FlickrService`: an integration test or a unit test.
 
-An integration test provides the real `HttpClient`. This will lead to HTTP requests to the Flickr API when the running the tests. These HTTP requests to the real API the whole test brittle and unreliable.
+An integration test provides the real `HttpClient`. This leads to HTTP requests to the Flickr API when the running the tests. This makes the whole test unreliable.
 
 The network or the web service might be slow or unavailable. Also the Flickr API endpoint returns a different response for each request. It is hard to expect a certain `FlickrService` behavior if the input is unknown.
 
@@ -3901,7 +3905,7 @@ Our test will consist of the following steps:
 2. Find pending requests
 3. Respond to these requests with fake data
 4. Check the result of the method call
-5. Verify that all requests have been found and answered
+5. Verify that all requests have been answered
 
 <div class="book-sources" markdown="1">
 - [Angular guide:  Communicating with backend services using HTTP ](https://angular.io/guide/http)
@@ -3937,13 +3941,13 @@ describe('FlickrService', () => {
 });
 ```
 
-By subscribing to the Observable returned by `searchPublicPhotos`, the (fake) HTTP request is sent. We will investigate the response, `actualPhotos`, later in step four.
+We subscribe to the Observable returned by `searchPublicPhotos` so the (fake) HTTP request is sent. We will investigate the response, `actualPhotos`, later in step four.
 
 #### Find pending requests
 
 In the second step, we find the pending request using the [`HttpTestingController`](https://angular.io/api/common/http/testing/HttpTestingController). This class is part of the `HttpClientTestingModule`. We get hold of the instance by calling `TestBed.inject(HttpTestingController)`.
 
-The controller has several methods to find requests by different criteria. The simplest is `expectOne`. It finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
+The controller has methods to find requests by different criteria. The simplest is `expectOne`. It finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
 
 ```typescript
 const searchTerm = 'dragonfly';
@@ -3973,7 +3977,7 @@ describe('FlickrService', () => {
 });
 ```
 
-`expectOne` returns the found request, that is an instance of TestRequest. If there is no pending request that matches the URL, `expectOne` throws an exception, failing the spec.
+`expectOne` returns the found request, that is an instance of `TestRequest`. If there is no pending request that matches the URL, `expectOne` throws an exception, failing the spec.
 
 <div class="book-sources" markdown="1">
 - [Angular API reference: HttpTestingController](https://angular.io/api/common/http/testing/HttpTestingController)
@@ -3982,7 +3986,7 @@ describe('FlickrService', () => {
 
 #### Respond with fake data
 
-Now that we have the pending request, we respond to it with an object that mimics the original API response. The Flickr API returns a complex object with an array of photos objects deep within. In the `FlickrService` test, we only care about the payload, the photos array.
+Now that we have the pending request at hand, we respond to it with an object that mimics the original API response. The Flickr API returns a complex object with an array of photos objects deep within. In the `FlickrService` test, we only care about the payload, the photos array.
 
 The Flickr search repository contains [fake photo objects](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts) that are used throughout the tests. For the `FlickrService` test, we import the `photos` array with two fake photo objects.
 
@@ -3994,7 +3998,7 @@ request.flush({ photos: { photo: photos } });
 
 #### Check the result of the method call
 
-The spec has proven that the method under test makes a request to the expected URL. It still needs to prove that the method passes through the desired part of the API response. In particular, it needs to prove that the Observable emits the `photos` array.
+The spec has proven that `searchPublicPhotos` makes a request to the expected URL. It still needs to prove that the method passes through the desired part of the API response. In particular, it needs to prove that the Observable emits the `photos` array.
 
 We have already subscribed to the Observable:
 
@@ -4032,9 +4036,9 @@ expect(actualPhotos).toEqual(photos);
 
 The `expect` call is outside of the `next` callback function to ensure it is definitely called. If the Observable emits no value or a wrong value, the spec fails.
 
-#### Verify that all requests have been found and answered
+#### Verify that all requests have been answered
 
-In the fifth and last step, we ensure that there are no pending requests left. We expect the method under test to make one request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
+In the last step, we ensure that there are no pending requests left. We expect the method under test to make *one* request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
 
 Finally, we call:
 
@@ -4107,9 +4111,9 @@ request.error(
 
 The `TestRequest`’s `error` method expects an `ErrorEvent`, and an optional options object.
 
-[`ErrorEvent`](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent) is a special `Error` that is provided by the browser. For testing purposes, we create an instance using `new ErrorEvent('…')`. The constructor parameter is an arbitrary message string. We can use any message that describes or error case well.
+[`ErrorEvent`](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent) is a special `Error` that is provided by the browser. For testing purposes, we create an instance using `new ErrorEvent('…')`. The constructor parameter is an arbitrary message string. We should use a message that describes the error case well.
 
-The second parameter, the options object, allows you to set the HTTP `status` (like `500`), the `statusText` (like `'Internal Server Error'`) and response headers. In the example above, we set `status` and `statusText`.
+The second parameter, the options object, allows us to set the HTTP `status` (like `500`), the `statusText` (like `'Internal Server Error'`) and response headers. In the example above, we set `status` and `statusText`.
 
 Now we check that the returned Observable behaves correctly. It must not emit a next value and must not complete. It must fail with an error.
 
@@ -4143,7 +4147,7 @@ flickrService.searchPublicPhotos(searchTerm).subscribe(
 );
 ```
 
-After answering the request with a fake server error, we check that the error information is passed through. The `error` handler receives a `HttpErrorResponse` object that reflects the `ErrorEvent` as well es the status information.
+After answering the request with a server error, we check that the error is passed through. The `error` handler receives a `HttpErrorResponse` object that reflects the `ErrorEvent` as well as the status information.
 
 ```typescript
 if (!actualError) {
@@ -4202,9 +4206,9 @@ This approach is recommended for Service methods that have a dedicated error han
 - [MDN reference: ErrorEvent](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent)
 </div>
 
-#### Alternative ways to find pending requests
+#### Alternatives for finding pending requests
 
-We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST` etc.), query parameters (`?tags=dragonfly`), headers or the request body.
+We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST` etc.), headers or the request body.
 
 `expectOne` has several signatures. We used the simplest, a string that is interpreted as URL:
 
@@ -4215,7 +4219,10 @@ controller.expectOne('https://www.example.org')
 To search for a request with a given method and url, pass an object with these properties:
 
 ```typescript
-controller.expectOne({ method: 'GET', url: 'https://www.example.org' })
+controller.expectOne({
+  method: 'GET',
+  url: 'https://www.example.org'
+})
 ```
 
 If you need to find one request by looking at its details, you can pass a function:
@@ -4229,7 +4236,7 @@ controller.expectOne(
 );
 ```
 
-The function is a predicate. This means the function is called for each request, decides whether the candidate is a match and returns a boolean.
+The function is a predicate. The function is called for each request, decides whether the candidate matches and returns a boolean.
 
 This lets you sift through all requests programmatically and check all criteria. The candidate is an [HttpRequest](https://angular.io/api/common/http/HttpRequest) instance with properties like `method`, `url`, `headers`, `body`, `params` etc.
 
@@ -4299,11 +4306,13 @@ We verify the number of requests and also the body of each request. If these che
 
 ### Testing Services: Summary
 
-In a nutshell, testing Services is easier than testing other Angular application parts. Most Services have a clear purpose and a well-defined public API.
+All in all, testing Services is easier than testing other Angular application parts. Most Services have a clear purpose and a well-defined public API.
 
 If the Service under test depends on another Service, a unit test needs to the fake the dependency. This is probably the hardest part, but takes the same effort as faking Services that are Component dependencies.
 
-Angular ships with numerous Services like `HttpClient` that are commonly used in your own Services. These can be replaced with fakes quite easily. For some central Services, Angular offers tools for intercepting and verifying calls. We have used the `HttpClientTestingModule` for testing a Service that depends on `HttpClient`. Similarly, there is the [`RouterTestingModule`](https://angular.io/api/router/testing/RouterTestingModule) for testing Services that depend on `Router` and `Location`, for example.
+Angular ships with crucial Services that are commonly used in your own Services. Since Angular intends to be testable, Angular also offers tools to replace them with fakes.
+
+We have used the `HttpClientTestingModule` for testing a Service that depends on `HttpClient`. To name another example, there is the [`RouterTestingModule`](https://angular.io/api/router/testing/RouterTestingModule) for testing Services that depend on `Router` and `Location`.
 
 ## Testing Directives
 
@@ -5242,7 +5251,7 @@ export interface Translations {
 
 @Injectable()
 export class TranslateService {
-  /** The current langage */
+  /** The current language */
   private currentLang = 'en';
 
   /** Translations for the current language */
@@ -5663,7 +5672,7 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 
 We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group of connected parts work as intended.
 
-Karma and Jamine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in a controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
+Karma and Jasmine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in a controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
 
 The most effective and reliable way to ensure a working application is _manual testing_: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
 
@@ -5675,7 +5684,7 @@ We need automated tests that take the user’s perspective. This is what **end-t
 
 As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
-When all parts of the application come together, an new type of bugs arise. Often these bugs have to do with timing and order of events, like network latency and race conditions.
+When all parts of the application come together, a new type of bugs arise. Often these bugs have to do with timing and order of events, like network latency and race conditions.
 
 The unit and integration tests we wrote worked with a fake back-end. We send fake HTTP requests and respond with fake data. We made an effort to keep the originals and fakes on par.
 
@@ -5777,7 +5786,7 @@ Cypress is an end-to-end testing framework that is not based on WebDriver. There
 
 WebDriver-based testing solutions are flexible and powerful but turned out to be slow and unreliable. Cypress aims to improve both the developing experience and the reliability of end-to-end tests.
 
-Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not remotely-controlled, but the tests run directly in the browser, supported by a browser plugin. The test runner provides a powerful user interface for inspecting an debugging tests right in the browser.
+Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not remotely-controlled, but the tests run directly in the browser, supported by a browser plugin. The runner provides a powerful user interface for inspecting and debugging tests right in the browser.
 
 Cypress is the product of one company, Cypress.io, Inc. The test runner we are going to use is open source and free of charge.
 
@@ -6014,7 +6023,7 @@ TODO Retry tests
 
 ### Testing the counter increment
 
-In our first Cypress test, we have checked the title of the counter successfully. Let us test the counter’s increament feature.
+In our first Cypress test, we have checked the title of the counter successfully. Let us test the counter’s increment feature.
 
 The test needs to perform the following steps:
 
@@ -6027,7 +6036,7 @@ The test needs to perform the following steps:
 
 We already now how to navigate to an address with `cy.visit('http://localhost:4200')`.
 
-For simplicity, let us set the `baseUrl` configuration option to `'http://localhost:4200'` so we can write `cy.visit('/')` instead. Once we write more and more tests, the `baseUrl` comes in handy to avoid repetition. More importantly, it allows you to run the tests against different versions of the application, for example development, staging and production.
+For simplicity, we set the `baseUrl` configuration option to `'http://localhost:4200'` so we can write `cy.visit('/')` instead. Once we write more and more tests, the `baseUrl` comes in handy to avoid repetition. More importantly, it allows you to run the tests against different versions of the application, for example development, staging and production.
 
 Edit the Cypress configuration file `cypress.json` in the Angular project directory. Add a property `baseUrl` and set it to the Angular development server URL:
 
@@ -6038,7 +6047,7 @@ Edit the Cypress configuration file `cypress.json` in the Angular project direct
 }
 ```
 
-From now on, Cypress will expand the URL passed to `cy.visit` to a full URL using the `baseUrl`. The `baseUrl` configuration option can still be overriden on the command line if necessary.
+From now on, Cypress will expand the URL passed to `cy.visit` to a full URL using the `baseUrl`. The `baseUrl` configuration option can still be overridden on the command line if necessary.
 
 ### Finding elements
 
@@ -6346,7 +6355,7 @@ There are two ways to deal with this dependency during testing:
 - Test against the real Flickr API
 - Fake the Flickr API and return a fixed response.
 
-If we test against the real Flickr API, we cannot be specific in our expectations due to changing search results. We can only test the search results and the full photo superfically. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
+If we test against the real Flickr API, we cannot be specific in our expectations due to changing search results. We can only test the search results and the full photo superficially. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
 
 This has pros and cons. Testing against the live Flickr API makes the test realistic, but less reliable. If the Flickr API has a short hiccup, the test fails although there is no bug in our code.
 
@@ -6557,7 +6566,7 @@ A page object represents the web page that is scrutinized by an end-to-end test.
 
 So far, we have written low-level end-to-end tests. They find individual elements by hard-coded test id, check their content and click on them. This is fine for small tests.
 
-But if the page logic is complex and there are diverse cases to test, the test becomes a unmanageable pile of low-level instructions. It is hard to find the gist of these tests, and they are hard to change.
+But if the page logic is complex and there are diverse cases to test, the test becomes an unmanageable pile of low-level instructions. It is hard to find the gist of these tests, and they are hard to change.
 
 A page object organizes numerous low-level instructions into a few high-level interactions. What are the high-level interactions in the Flickr search app?
 
@@ -6687,7 +6696,7 @@ For the Flickr search above, a page object is probably too much of a good thing.
 - Move the finding of elements into the page object. The test ids, tag names etc. you use for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
 - Leave all assertions (`should` and `expect`) in the specs. Do not move them to the page object.
 
-When writing end-to-end tests, you get lost in technical details quickly: finding by certain features, clicking them, filling out form fields, checking fields alues and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
+When writing end-to-end tests, you get lost in technical details quickly: finding by certain features, clicking them, filling out form fields, checking fields values and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
 
 The goal of this refactoring is not brevity. Using page objects does not necessarily lead to less code. The purpose of page objects is to separate low-level details – like finding elements by test ids – from the high-level user journey through the application. This makes the specs easier to read and the easier to maintain.
 
