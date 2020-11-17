@@ -5759,9 +5759,9 @@ Protractor has a feature called _WebDriver control flow_. While WebDriver comman
 
 The control flow implementation has lead to inconsistencies and bugs. The underlying WebDriverJS library removed the feature, so Protractor deprecated it as well. Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests.
 
-All Protractor commands return Promises. You are advised to use `async` / `await` to wait for a command to finish. But a lot of Protractor examples, tutorials and the default configuration still propagate the control flow.
+All Protractor commands return Promises. You are advised to use `async` / `await` to wait for a command to finish. But most Protractor examples, tutorials and the default configuration still propagate the control flow.
 
-Declaring this feature obsolete was inevitable, but also eliminated a useful feature. Protractor’s contenders, namely Cypress and WebDriver.io, still have such a feature.
+Declaring this control flow obsolete was inevitable, but also eliminated a useful feature. Protractor’s contenders, namely Cypress and WebDriver.io, still have such a feature.
 
 If you disable the control flow as recommended, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
 
@@ -6199,14 +6199,14 @@ All counter features are now tested. In the next chapters, we will refactor the 
 
 <div class="book-sources" markdown="1">
 - [Full code: counter.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/integration/counter.ts)
-- [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html
-- [Cypress FAQ: How do I get an element’s text contents?](https://docs.cypress.io/faq/questions/using-cypress-faq.html#How-do-I-get-an-element%E2%80%99s-text-contents
-- [Cypress API reference: type](https://docs.cypress.io/api/commands/type.html
+- [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html)
+- [Cypress FAQ: How do I get an element’s text contents?](https://docs.cypress.io/faq/questions/using-cypress-faq.html#How-do-I-get-an-element%E2%80%99s-text-contents)
+- [Cypress API reference: type](https://docs.cypress.io/api/commands/type.html)
 </div>
 
 ### Custom Cypress commands
 
-The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over. Since we follow the convention to find elements by test id, the first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](#testing-helpers), `findEl` and `findEls`.
+The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over. Since we follow the convention to [find elements by test id](#querying-the-dom-with-test-ids), the first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](#testing-helpers), `findEl` and `findEls`.
 
 The easiest way to create a Cypress helper for finding elements is a function.
 
@@ -6218,22 +6218,23 @@ function findEl(testId: string): Cypress.Chainable<JQuery<HTMLElement>> {
 
 This would allow us to write `findEl('count')` instead of `cy.get('[data-testid="count"]')`.
 
-This works fine, but we opt for a another way. Cypress supports adding custom commands to the `cy` namespace. We are going to add the command `byTestId` so we can write `cy.byTestId('count')`.
+This works fine, but we opt for a another way. Cypress supports adding **custom commands** to the `cy` namespace. We are going to add the command `byTestId` so we can write `cy.byTestId('count')`.
 
-Custom commands are placed in `cypress/support/commands.ts` file created by the Angular schematic. Using `Cypress.Commands.add`, we can extend Cypress to add our own command as a method of `cy`. The first parameter is the command name, the second is the implementation as a function.
+Custom commands are placed in `cypress/support/commands.ts` created by the Angular schematic. Using `Cypress.Commands.add`, we can extend Cypress to add our own command as a method of `cy`. The first parameter is the command name, the second is the implementation as a function.
 
 The simplest version could look like this:
 
 ```typescript
 Cypress.Commands.add(
   'byTestId',
-  (id: string) => cy.get(`[data-testid="${id}"]`)
+  (id: string) =>
+    cy.get(`[data-testid="${id}"]`)
 );
 ```
 
-Now we can write `cy.byTestId('count')`. We can still fall back to `cy.get` if necessary.
+Now we can write `cy.byTestId('count')`. We can still fall back to `cy.get` if we want to find an element by other means.
 
-`cy.byTestId` should have the same flexibility as the generic `cy.get`. So we should add the second parameter, `options`, as well. We borrow the function signature from the official `cy.get` typings.
+`cy.byTestId` should have the same flexibility as the generic `cy.get`. So we add the second `options` parameter as well. We borrow the function signature from the official `cy.get` typings.
 
 ```typescript
 Cypress.Commands.add(
@@ -6244,7 +6245,8 @@ Cypress.Commands.add(
     options?: Partial<
       Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow
     >,
-  ): Cypress.Chainable<JQuery<E>> => cy.get(`[data-testid="${id}"]`, options),
+  ): Cypress.Chainable<JQuery<E>> =>
+    cy.get(`[data-testid="${id}"]`, options),
 );
 ```
 
@@ -6308,6 +6310,8 @@ describe('Counter (with helpers)', () => {
   });
 });
 ```
+
+Keep in mind that all these `first` calls are only necessary since there are multiple counters on the example page under test. If there is only one element with the given test id on the page, you do not need those `.first()` calls.
 
 <div class="book-sources" markdown="1">
 - [Full code: commands.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/support/commands.ts)
