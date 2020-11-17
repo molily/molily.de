@@ -1,7 +1,7 @@
 ---
 layout: book
 title: "Testing Angular – A Guide to Robust Angular Applications"
-description: ""
+description: "How do we take advantage of Angular’s testability?"
 keywords: JavaScript, Angular, testing, automated tests, unit tests, integration tests, end-to-end tests
 lang: en
 draft: true
@@ -15,18 +15,21 @@ robots: noindex, follow
 #toc li {
   list-style: none;
 }
-#toc-tree a {
+/* Boost specificity */
+ol#toc-tree {
   margin: 0 -1rem;
-  padding: 0 1rem;
+}
+#toc-tree a {
+  padding: 0 0.5rem;
 }
 #toc .toc-heading-level-3 a {
-  margin-left: calc(1 * 1rem);
+  padding-left: calc(0.5rem + 2 * 1rem);
 }
 #toc .toc-heading-level-4 a {
-  margin-left: calc(2 * 1rem);
+  padding-left: calc(0.5rem + 3 * 1rem);
 }
 #toc .toc-heading-level-5 a {
-  margin-left: calc(3 * 1rem);
+  padding-left: calc(0.5rem + 4 * 1rem);
 }
 
 .responsive-iframe {
@@ -84,13 +87,6 @@ robots: noindex, follow
       </h1>
       <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
       <h2 id="toc-heading">Table of Contents</h2>
-      <!--
-      <ol id="toc-tree">
-        <li>
-          <a href="#introduction">Introduction</a>
-        </li>
-      </ol>
-      -->
       <ol id="toc-tree"></ol>
     </nav>
   </div>
@@ -5692,7 +5688,7 @@ It is much harder to keep the front-end code as well as the fakes in sync with t
 
 It is the goal of end-to-end tests to catch these bugs that cannot be caught by other automated tests.
 
-### Deploying the app for end-to-end test
+### Deployment for end-to-end tests
 
 Back-end frameworks typically support environment configurations for development, testing and production. End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
 

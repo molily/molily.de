@@ -4,6 +4,7 @@
   var TOC_HEADING_ID = 'toc-heading';
 
   var currentTocLink;
+  /** @type {HTMLHeadingElement[]} */
   var headings;
   var tocTree;
   var intersectionObserver;
@@ -69,20 +70,41 @@
 
     var fragment = document.createDocumentFragment();
 
+    /** @type {number | undefined} */
+    var lastLevel;
+    /** @type {HTMLOListElement | undefined} */
+    var lastList = tocTree;
+    /** @type {HTMLLIElement | undefined} */
+    var lastListItem;
     arrayFrom(headings)
       .filter(function (heading) {
         return heading.id !== TOC_HEADING_ID;
       })
       .forEach(function (heading) {
+        var tag = heading.tagName.toLowerCase();
+        var level = parseInt(tag[1], 10);
+
+        if (lastLevel !== undefined) {
+          if (level < lastLevel) {
+            lastList = lastList.parentNode.parentNode;
+          } else if (level > lastLevel) {
+            var ol = document.createElement('ol');
+            lastListItem.appendChild(ol);
+            lastList = ol;
+          }
+        }
+
         var li = document.createElement('li');
         var a = document.createElement('a');
         a.href = '#' + heading.id;
-        var tag = heading.tagName.toLowerCase();
-        var level = parseInt(tag[1], 10);
         a.textContent = heading.textContent;
         li.className = 'toc-heading-level-' + level;
         li.appendChild(a);
-        fragment.appendChild(li);
+        lastList.appendChild(li)
+
+        lastLevel = level;
+        lastListItem = li;
+
         if (intersectionObserver) {
           intersectionObserver.observe(heading);
         }
