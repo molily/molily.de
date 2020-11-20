@@ -191,13 +191,13 @@ Automated testing is a tool with a specific purpose and scope of application. A 
 The [International Software Testing Qualifications Board (ISTQB)](https://www.istqb.org) came up with **Seven
 Testing Principles** (CTFL Syllabus 2018 V3.1) that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
 
-The purpose of a test is to discover bugs. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that _this particular test setup_ did not trigger a bug. It does not prove that the code is correct and free of bugs.
+The purpose of a test is to **discover bugs**. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that _this particular test setup_ did not trigger a bug. It does not prove that the code is correct and free of bugs.
 
-So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “Exhaustive testing is impossible”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should _assess the risks_ of a certain case and write tests for high-risk cases first.
+So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “**Exhaustive testing is impossible**”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should _assess the risks_ of a certain case and write tests for high-risk cases first.
 
 Even if it was viable to cover all cases, it would give you a false sense of security. No software is without errors, and a fully tested software may still be a usability nightmare that does not satisfy its users.
 
-Another core idea is that testing depends on its context and that it needs to be adapted again and again to provide meaning. The specific context in this guide are single-page web applications written in JavaScript, made with Angular. Such applications need specific testing methods and tools we will get to know.
+Another core idea is that **testing depends on its context** and that it needs to be adapted again and again to provide meaning. The specific context in this guide are single-page web applications written in JavaScript, made with Angular. Such applications need specific testing methods and tools we will get to know.
 
 Once you have learned and applied these tools, you should not stop. A fixed tool chain will only discover certain types of bugs. You need to try out different approaches to find new classes of bugs. Likewise, an existing test suite needs to be updated regularly so that it still finds regressions.
 
@@ -211,26 +211,30 @@ There is not one correct approach to testing. In fact there are several competin
 
 Before you start setting up tests, you should examine the current situation of your application:
 
-- What are the critical features? For example, logging in, searching for a record and editing a form.
-- Which technical obstacles frustrate your users? For example, bad cross-browser compatibility.
-- What are the frequently reported technical problems? For example, your application may lack error handling.
-- What are the technical requirements? For example, your application needs to consume structured data from a given back-end API. In turn, it needs to expose certain URL routes.
+- What are the **critical features**? For example, logging in, searching for a record and editing a form.
+- What are the frequently reported **technical problems and obstacles**? For example, your application may lack error handling or cross-browser compatibility.
+- What are the **technical requirements**? For example, your application needs to consume structured data from a given back-end API. In turn, it needs to expose certain URL routes.
 
 This technical assessment is as important as an inquiry of your development team:
 
-- What is the overall attitude on testing? For example, some developers value testing while others find it ineffective to avoid bugs.
-- What is the current testing practice? For example, developers sometimes write tests, but not as a daily routine.
-- What is the experience on writing tests? For example, some developers have written tests for several environments, while others understand the basic concepts but have not yet gotten into practice.
-- What are the obstacles that impede a good testing routing? For example, developers have not been trained on the testing tools.
-- Are tests well-integrated into your development workflow? For example, a continuous integration server automatically runs the test suite on every change set.
+- What is the overall **attitude on testing**? For example, some developers value testing while others find it ineffective to avoid bugs.
+- What is the current **testing practice**? For example, developers sometimes write tests, but not as a daily routine.
+- What is the **experience on writing tests**? For example, some developers have written tests for several environments, while others understand the basic concepts but have not yet gotten into practice.
+- What are the **obstacles** that impede a good testing routine? For example, developers have not been trained on the testing tools.
+- Are tests **well-integrated** into your development workflow? For example, a continuous integration server automatically runs the test suite on every change set.
 
 Once you have answered these questions, you should set up a testing goal and implement steps to achieve it.
 
-A good start is to think economically. What is the return on investment of writing a test? Pick the low-hanging fruits. Find business-critical features and make sure they are covered by tests. Write tests that are easy to write but cover large parts of the code.
+A good start is to think economically. What is the return on investment of writing a test? Pick the low-hanging fruits. Find business-critical features and make sure they are covered by tests. Write tests that are require little effort but cover large parts of the code.
 
-Simultaneously, integrate testing into your team’s workflow. Make sure everyone shares the same basic expertise. Offer formal training workshops and pair experienced programmers with team members less familiar with testing. Appoint maintainers and contact persons for test quality and testing infrastructure. If applicable, hire dedicated software testers.
+Simultaneously, integrate testing into your team’s workflow:
 
-Writing automated tests should be easy and fun for your team members. Remove any obstacles that make testing difficult or inefficient.
+- Make sure everyone shares the same basic expertise.
+- Offer formal training workshops and pair experienced programmers with team members less familiar with testing.
+- Appoint maintainers and contact persons for test quality and testing infrastructure.
+- Hire dedicated software testers, if applicable.
+
+Writing automated tests should be **easy and fun** for your team members. Remove any obstacles that make testing difficult or inefficient.
 
 ### The right amount of testing
 
@@ -240,15 +244,15 @@ So we need to reach a sweet spot. If your testing practice deteriorates from thi
 
 Tests differ in their value and quality. Some tests are more meaningful than others. If they fail, your application is actually unusable. This means the quality of tests is more important than their quantity.
 
-A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code (file, method/function, block, expression etc.) are executed at all. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
+A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code are executed at all.
 
-This metric on testing is useful but also deeply flawed because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance.
+This metric on testing is **useful but also deeply flawed** because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance.
 
 The coverage report may point to important behavior that is not yet covered by tests, but should be. It does not tell whether the existing tests are meaningful and make the right expectations. You can merely infer that the code does not throw exceptions under test conditions.
 
 It is controversial whether one should strive for 100% code coverage. While it is feasible to cover 100% of certain business-critical code, it requires immense efforts to cover all parts of an application written in Angular and TypeScript.
 
-If you write tests for the main features of your app from a user’s perspective, you can achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and leads to weird and twisted tests that do not reflect the actual usage of your application.
+If you write tests for the main features of your app from a user’s perspective, you can achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and bears weird and twisted tests that do not reflect the actual usage of your application.
 
 We are going to discuss the [practical use of code coverage tools](#measuring-code-coverage) later.
 
@@ -6863,17 +6867,87 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 - [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
 </div>
 
----
 
 ## Measuring code coverage
 
-<ul>
-  <li>Welche Codezeilen wurden durch die Unit-Tests aufgerufen?</li>
-  <li><a href="https://istanbul.js.org/">Istanbul test coverage tool</a></li>
-  <li><code>ng test --code-coverage</code></li>
-</ul>
+Code coverage, also called test coverage, tells you which parts of your code are executed by running the unit and integration tests. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
+
+Statements are, broadly speaking, control structures like `if` and `for` as well as code separated by semicolon. Branches refers to the two branches of `if (…) {…} else {…}` and `… ? … : …` conditions. Functions and lines are self-explanatory.
+
+### Istanbul coverage report
+
+In Angular’s Karma and Jasmine setup, [Istanbul](https://istanbul.js.org/) is used for measuring test coverage. Istanbul rewrites the code under test to record whether a statement, branch, function and line was called. Then it produces a comprehensive test report.
+
+To activate Istanbul when running the tests, add the `--code-coverage` parameter:
+
+```
+ng test --code-coverage
+```
+
+After the tests have completed, Istanbul saves the report in the `coverage` directory located in the Angular project directory. The report is a bunch of HTML files you can open with a browser. Start by dragging `coverage/index.html` into the browser of your choice.
+
+The report for the Flickr search example looks like this:
+
+<img src="/img/robust-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
+
+Istanbul creates an HTML page for every directory and every file. By following the links, you can descend to reports for the individual files.
+
+For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
+
+<img src="/img/robust-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
+
+The report renders the source code annotated with the information how many times a line was called. In the  example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
+
+The spec `it('focusses a photo on click', () => {…})` clicks on the photo item to test whether the `focusPhoto` Output emits. Let us disable the spec on purpose to see the impact.
+
+<img src="/img/robust-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
+
+You can tell from the coverage report above that the `handleClick` method is never called. A key Component behavior is untested.
+
+### How to use the coverage report
+
+Now that we know how to generate the report, what should we do with it?
+
+In [The right amount of testing](#the-right-amount-of-testing), we identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
+
+Software testing is not a competition. We should not try to reach a particular score just for the sake of it. For what purpose are we measuring code coverage then?
+
+The coverage report is a valuable tool you should use while writing tests. The report provides guidance by revealing code behavior that is not yet tested. Moreover, it deepens your understanding of how your tests work.
+
+Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](#tailoring-your-testing-approach), testing should be part of the developer’s daily routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
+
+Writing new code and changing existing code should not lower the coverage score, but gradually increase it. This means if your existing tests cover 75% lines of code, new code needs to be at least 75% covered. Otherwise the score would slowly decline.
+
+It is common practice to run the unit and integration tests in a continuous integration environment and measure the code coverage. To enforce a certain coverage score and to prevent decline, you can configure **thresholds** in the [Karma configuration](#configuring-karma-and-jasmine).
+
+In `karma.conf.js`, you can add global thresholds for statements, branches, functions and lines.
+
+```
+coverageIstanbulReporter: {
+  /* … */
+  thresholds: {
+      emitWarning: false,
+      global: {
+          statements: 75,
+          branches: 75,
+          functions: 75,
+          lines: 75,
+      },
+  },
+},
+```
+
+In the example configuration above, all values are set to 75%. If the coverage drops below that number, the test execution fails even if all specs succeeded.
+
+When new code is added to the project with a test coverage better than average, you can raise the thresholds in the configuration slowly but steadily – for example, from `75` to `75.1`, `75.2`, `75.3` and so on. Soon these small improvements add up.
+
+Test coverage should not be a pointless competition that puts developers under pressure and shames those that do not meet an arbitrary mark. Measuring coverage is merely a tool you should use for your benefit. Writing meaningful, spot-on tests does not necessarily increase the coverage score.
+
+For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For advanced learners, the score may also help to keep up a steady testing practice.
 
 ## Summary
+
+
 
 <h2>Testen und Testbarkeit</h2>
 
