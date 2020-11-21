@@ -714,7 +714,18 @@ Each suite _describes_ a piece of code, the _code under test_.
 
 `describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` for the suite that tests the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
-TODO: organize the suite with describe
+`describe` blocks can be nested to structure big suites and divide them into sections:
+
+```typescript
+describe('Suite description', () => {
+  describe('One aspect', () => {
+    /* … */
+  });
+  describe('Another aspect', () => {
+    /* … */
+  });
+});
+```
 
 ### Specifications
 
@@ -1100,8 +1111,8 @@ describe('TodoService', () => {
   /* … */
   it('handles an HTTP error when getting the to-dos', async () => {
     // Arrange
-      const fetchSpy = jasmine.createSpy('fetch')
-        .and.returnValue(errorResponse);
+    const fetchSpy = jasmine.createSpy('fetch')
+      .and.returnValue(errorResponse);
     const todoService = new TodoService(fetchSpy);
 
     // Act
@@ -1113,8 +1124,8 @@ describe('TodoService', () => {
     }
 
     // Assert
-      expect(error).toEqual(new Error('HTTP error: 404 Not Found'));
-      expect(fetchSpy).toHaveBeenCalledWith('/todos');
+    expect(error).toEqual(new Error('HTTP error: 404 Not Found'));
+    expect(fetchSpy).toHaveBeenCalledWith('/todos');
   });
 });
 ```
