@@ -82,6 +82,8 @@ Second, testing has a steep learning curve. If testing can be seen as a tool, it
 
 This is meant to encourage you. Getting started with testing is hard, but it gets easier and easier with more practice. The goal of this guide is to empower you to write tests on a daily basis that cover the important features of your Angular application.
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Target audience
 
 The target audience of this guide are intermediate Angular developers. You should be familiar with Angular’s core concepts.
@@ -94,6 +96,8 @@ Furthermore, this guide is not an introduction to JavaScript or TypeScript. It a
 
 The official Angular documentation offers a comprehensive [guide on testing](https://angular.io/guide/testing). It is a recommended reading, but this guide does not assume you have read it.
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Terminology
 
 Before we dive in, a quick note regarding the technical terms.
@@ -103,6 +107,8 @@ Some words have a special meaning in the context of Angular. In the broader Java
 When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_ etc.
 
 When using these terms in the general sense, this guide uses **lower case**: _module, component, service, input, output_ etc.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Testing principles
 
@@ -370,6 +376,8 @@ More importantly, white box tests run the risk of forgetting to check the real o
 
 For an Angular Component, Directive, Service, Pipe etc., a black box test passes a certain input and expects a proper output or measures side effects. The test only calls methods that are marked with `public` in the TypeScript code. Internal methods should be marked with `private`.
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Example applications
 
 In this guide, we will explore the different aspects of testing Angular applications by looking at two examples.
@@ -440,6 +448,8 @@ The Flickr search comes in two flavors using different state management solution
 2. The state is managed by an NgRx Store. Components are connected to the store to pull state and dispatch Actions. The state is changed in a Reducer. The side effects of an Action are handled by NgRx Effects.
 
 Once you are able to write automatic tests for this example application, you will be able to test most features of a typical Angular application.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Angular testing principles
 
@@ -679,6 +689,8 @@ client: {
 - [Jasmine reference: Configuration options](https://jasmine.github.io/api/edge/Configuration.html)
 </div>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Test suites with Jasmine
 
 Angular ships with Jasmine, a JavaScript framework that enables you to write and execute unit and integration tests. Jasmine consists of three important parts:
@@ -878,6 +890,8 @@ Called after all specs are run
 ```
 
 Most tests we are going to write will have a `beforeEach` block to host the *Arrange* code.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Faking dependencies
 
@@ -1196,9 +1210,11 @@ Creating standalone spies and spying on existing methods are not mutually exclus
 - [Jasmine reference: spyOn](https://jasmine.github.io/api/edge/global.html#spyOn)
 </div>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Debugging tests
 
-Writing tests is as arduous as writing implementation code. To be honest, you will be stuck quite often and ask yourself why the test fails – and sometimes why the test passes when it should rather fail.
+Writing tests is as arduous as writing implementation code. You will be stuck quite often and ask yourself why the test fails – and sometimes why the test passes when it should rather fail.
 
 The good news is that you can apply familiar debugging techniques to tests as well.
 
@@ -1361,6 +1377,8 @@ Another helpful feature is Karma’s debug test runner. Click on the big “DEBU
 The debug test runner does not have an iframe, it loads Jasmine directly. Also it automatically logs spec runs on the shell.
 
 If you change the test or implementation code, the debug runner does not re-run the tests. You have to reload the page manually.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Testing Components
 
@@ -2406,6 +2424,8 @@ The following table shows which properties and methods of an Angular Component y
 </tr>
 </table>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Testing Components with children
 
 So far we have tested an independent Component that renders plain HTML elements, but no child Components. Such low-level Components are the workhorses of an Angular application.
@@ -3016,6 +3036,8 @@ This was only a glimpse of ng-mocks. The library not only helps with nested Comp
 - [ng-mocks](https://github.com/ike18t/ng-mocks)
 </div>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Testing Components depending on Services
 
 We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the [ServiceCounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/service-counter).
@@ -3530,6 +3552,8 @@ There are two takeaways you should remember:
 2. Whichever approach you choose, make sure to meet the [basic requirements](#rules-for-faking-dependencies):
    1. Equivalence of fake and original: The fake must have a type derived from the original.
    2. Effective faking: the original stays untouched.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Testing Services
 
@@ -4261,6 +4285,8 @@ If the Service under test depends on another Service, a unit test needs to the f
 Angular ships with crucial Services that are commonly used in your own Services. Since Angular intends to be testable, Angular also offers tools to replace them with fakes.
 
 We have used the `HttpClientTestingModule` for testing a Service that depends on `HttpClient`. To name another example, there is the [`RouterTestingModule`](https://angular.io/api/router/testing/RouterTestingModule) for testing Services that depend on `Router` and `Location`.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Testing Directives
 
@@ -5084,6 +5110,8 @@ describe('PaginateDirective', () => {
 - [PaginateDirective: test code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.spec.ts)
 </div>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Testing Pipes
 
 An Angular Pipe is a special function that is called from a Component template. Its purpose is to transform a value: You pass a value to the Pipe, the Pipe computes a new value and returns it.
@@ -5570,6 +5598,8 @@ We made it! Writing these specs is challenging without doubt.
 - [RxJS: delay operator](https://rxjs-dev.firebaseapp.com/api/operators/delay)
 </div>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Testing Modules
 
 Modules are central parts of Angular applications. Often they contain important setup code. Yet they are hard to test since there is no typical logic, only sophisticated configuration.
@@ -5615,6 +5645,8 @@ describe('FeatureModule', () => {
 ```
 
 The integration test uses the `TestBed` to import the Module under test. It verifies that no error occurs when importing the Module.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Measuring code coverage
 
@@ -5696,6 +5728,8 @@ For beginners and experts alike, the coverage report helps to set up, debug and 
 <div class="book-sources" markdown="1">
 - [karma-coverage-istanbul-reporter: Configuration](https://github.com/mattlewis92/karma-coverage-istanbul-reporter)
 </div>
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## End-to-end testing
 
@@ -6896,6 +6930,8 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 - [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
 </div>
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Summary
 
 Automated software testing is a microcosm with its own concepts, practices, tools and community. This guide barely scratches the surface, yet tries to give a well-balanced overview of testing Angular applications.
@@ -6912,10 +6948,14 @@ Automated testing does not only make your software more reliable, but also evolv
 
 Testing is challenging and rewarding for several reasons. There are diverse, even conflicting perspectives on testing. Despite all troubles, that makes it fascinating.
 
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## References
 
 - _Angular_, Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen, dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
 - _Testing Angular Applications_, Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## About
 
@@ -6942,4 +6982,6 @@ Published on <time datetime="2020-y-x">x, y, 2020</time>.
 </main>
 </div>
 
+<script src="/assets/link-types.js"></script>
 <script src="/assets/testing-angular.js"></script>
+<script src="/assets/highlight-toc.js"></script>

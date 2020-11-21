@@ -2121,5 +2121,6 @@ Published on <time datetime="2017-12-21">December 21, 2017</time>.
 </div><!-- #toc-and-main -->
 
 <script src="/assets/link-types.js"></script>
+<script src="/assets/highlight-toc.js"></script>
 
 {% include register-service-worker.html %}

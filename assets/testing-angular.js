@@ -1,14 +1,6 @@
 (function () {
   'use strict';
 
-  var TOC_HEADING_ID = 'toc-heading';
-
-  var currentTocLink;
-  /** @type {HTMLHeadingElement[]} */
-  var headings;
-  var tocTree;
-  var intersectionObserver;
-
   var arrayFrom =
     Array.from ||
     function (list) {
@@ -19,54 +11,13 @@
       return array;
     };
 
-  function headingIntersect(entries) {
-    if (!matchMedia('screen and (min-width: 55rem)').matches) {
-      return;
-    }
-    var intersectingEntries = entries.filter(function (candidate) {
-      return candidate.isIntersecting;
-    });
-    var relevantIntersectingEntries = intersectingEntries.filter(function (
-      candidate
-    ) {
-      return candidate.target.id !== TOC_HEADING_ID;
-    });
-    var firstIntersectingEntry = relevantIntersectingEntries[0];
-    var firstEntry = entries[0];
-    var intersectingHeading;
-    if (
-      firstIntersectingEntry &&
-      firstIntersectingEntry.target !== intersectingHeading
-    ) {
-      intersectingHeading = firstIntersectingEntry.target;
-    } else if (
-      firstEntry.boundingClientRect &&
-      firstEntry.boundingClientRect.y > 0
-    ) {
-      /* Scrolling upwards: Focus previous heading */
-      var index = arrayFrom(headings).findIndex(function (candidate) {
-        return candidate === firstEntry.target;
-      });
-      if (index > 0) {
-        intersectingHeading = headings[index - 1];
-      }
-    }
-    if (intersectingHeading) {
-      if (currentTocLink) {
-        currentTocLink.classList.remove('active');
-      }
-      var id = intersectingHeading.id;
-      var link = tocTree.querySelector('[href="#' + id + '"]');
-      if (link) {
-        link.classList.add('active');
-        link.scrollIntoView({ block: 'nearest' });
-        currentTocLink = link;
-      }
-    }
-  }
-
   function installTocTree() {
     if (!document.createDocumentFragment) return;
+
+    /** @type {HTMLOListElement} */
+    var tocTree = document.getElementById('toc-tree');
+    /** @type {HTMLHeadingElement[]} */
+    var headings = document.querySelectorAll('h2, h3, h4, h5, h6');
 
     var fragment = document.createDocumentFragment();
 
@@ -76,9 +27,10 @@
     var lastList = tocTree;
     /** @type {HTMLLIElement | undefined} */
     var lastListItem;
+
     arrayFrom(headings)
       .filter(function (heading) {
-        return heading.id !== TOC_HEADING_ID;
+        return heading.id !== 'toc-heading';
       })
       .forEach(function (heading) {
         var tag = heading.tagName.toLowerCase();
@@ -86,8 +38,13 @@
 
         if (lastLevel !== undefined) {
           if (level < lastLevel) {
-            lastList = lastList.parentNode.parentNode;
+            // Go up to find the right ol for the level
+            var levelDifference = lastLevel - level;
+            for (var i = 0; i < levelDifference; i++) {
+              lastList = lastList.parentNode.parentNode;
+            }
           } else if (level > lastLevel) {
+            // Go down, create a nested ol
             var ol = document.createElement('ol');
             lastListItem.appendChild(ol);
             lastList = ol;
@@ -98,33 +55,13 @@
         var a = document.createElement('a');
         a.href = '#' + heading.id;
         a.textContent = heading.textContent;
-        li.className = 'toc-heading-level-' + level;
         li.appendChild(a);
-        lastList.appendChild(li)
+        lastList.appendChild(li);
 
         lastLevel = level;
         lastListItem = li;
-
-        if (intersectionObserver) {
-          intersectionObserver.observe(heading);
-        }
       });
     tocTree.appendChild(fragment);
-  }
-
-  function installIntersectionObserver() {
-    if (
-      window.IntersectionObserver &&
-      document.body.classList &&
-      document.body.scrollIntoView &&
-      Array.prototype.findIndex
-    ) {
-      intersectionObserver = new IntersectionObserver(headingIntersect, {
-        root: null,
-        rootMargin: '0px 0px -40% 0px',
-        threshold: 0,
-      });
-    }
   }
 
   function installIframeButtons() {
@@ -146,24 +83,16 @@
 
   function install() {
     if (
-      !(
-        document.createElement &&
-        document.getElementById &&
-        document.querySelectorAll &&
-        document.addEventListener &&
-        Array.prototype.filter &&
-        Array.prototype.forEach
-      )
+      document.createElement &&
+      document.getElementById &&
+      document.querySelectorAll &&
+      document.addEventListener &&
+      Array.prototype.filter &&
+      Array.prototype.forEach
     ) {
-      return;
+      installTocTree();
+      installIframeButtons();
     }
-
-    tocTree = document.getElementById('toc-tree');
-    headings = document.querySelectorAll('h2, h3, h4, h5, h6');
-
-    installIntersectionObserver();
-    installTocTree();
-    installIframeButtons();
   }
 
   install();

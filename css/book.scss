@@ -9,10 +9,10 @@
  *
  */
 
-@import "reset";
-@import "fonts";
-@import "content";
-@import "highlight";
+@import 'reset';
+@import 'fonts';
+@import 'content';
+@import 'highlight';
 
 /**
  * @section Variables
@@ -241,22 +241,33 @@ pre {
   text-align: center;
 }
 
-#toc {
+#toc-tree {
+  margin: 0 -1rem;
+
   ol {
-    margin: 0.5rem 0 0.5rem 1rem;
+    margin: 0.5rem 0 0.5rem 0;
   }
-
-  & > ol {
-    margin-bottom: 2rem;
-
-    @include large {
-      margin-bottom: 0;
-    }
-  }
-
   li {
-    margin: 0;
+    list-style: none;
+    margin-bottom: 0;
   }
+  a {
+    padding: 0 0.5rem;
+  }
+  ol a {
+    padding-left: calc(0.5rem + 2 * 1rem);
+  }
+  ol ol a {
+    padding-left: calc(0.5rem + 3 * 1rem);
+  }
+
+  // & > ol {
+  //   margin-bottom: 2rem;
+
+  //   @include large {
+  //     margin-bottom: 0;
+  //   }
+  // }
 
   a {
     display: block;
@@ -276,30 +287,6 @@ pre {
   .link-type {
     display: none;
   }
-}
-
-#toc ol {
-  margin-left: 0;
-}
-#toc li {
-  list-style: none;
-}
-
-/* Boost specificity */
-ol#toc-tree {
-  margin: 0 -1rem;
-}
-#toc-tree a {
-  padding: 0 0.5rem;
-}
-#toc .toc-heading-level-3 a {
-  padding-left: calc(0.5rem + 2 * 1rem);
-}
-#toc .toc-heading-level-4 a {
-  padding-left: calc(0.5rem + 3 * 1rem);
-}
-#toc .toc-heading-level-5 a {
-  padding-left: calc(0.5rem + 4 * 1rem);
 }
 
 /**
@@ -351,7 +338,7 @@ ol#toc-tree {
 
   h2::before {
     counter-increment: h2;
-    content: counter(h2) ".";
+    content: counter(h2) '.';
   }
 
   h3 {
@@ -361,7 +348,7 @@ ol#toc-tree {
 
   h3::before {
     counter-increment: h3;
-    content: counter(h2) "." counter(h3);
+    content: counter(h2) '.' counter(h3);
   }
 
   h4 {
@@ -370,7 +357,7 @@ ol#toc-tree {
 
   h4::before {
     counter-increment: h4;
-    content: counter(h2) "." counter(h3) "." counter(h4);
+    content: counter(h2) '.' counter(h3) '.' counter(h4);
   }
 
   h2::before,
@@ -528,7 +515,7 @@ ol#toc-tree {
     text-decoration: none;
 
     &::before {
-      content: "🔗";
+      content: '🔗';
       margin-right: 1rem;
     }
   }
