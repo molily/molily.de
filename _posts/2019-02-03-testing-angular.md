@@ -6975,7 +6975,7 @@ Thanks to Nils Binder for contributing the dark color scheme.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
-Published on <time datetime="2020-y-x">x, y, 2020</time>.
+Published on <time datetime="2020-11-21">November 21, 2020</time>.
 
 <p><a href="/impressum/" lang="de" hreflang="de">Impressum und Datenschutz</a></p>
 
