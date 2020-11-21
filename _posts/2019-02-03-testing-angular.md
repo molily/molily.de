@@ -8,58 +8,6 @@ draft: true
 robots: noindex, follow
 ---
 
-<style>
-#toc ol {
-  margin-left: 0;
-}
-#toc li {
-  list-style: none;
-}
-/* Boost specificity */
-ol#toc-tree {
-  margin: 0 -1rem;
-}
-#toc-tree a {
-  padding: 0 0.5rem;
-}
-#toc .toc-heading-level-3 a {
-  padding-left: calc(0.5rem + 2 * 1rem);
-}
-#toc .toc-heading-level-4 a {
-  padding-left: calc(0.5rem + 3 * 1rem);
-}
-#toc .toc-heading-level-5 a {
-  padding-left: calc(0.5rem + 4 * 1rem);
-}
-
-.responsive-iframe {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1000px;
-  height: 0;
-  padding-top: 56.25%;
-}
-.responsive-iframe__iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 1px solid white;
-}
-
-.load-iframe {
-  border: 2px solid #140a32;
-  padding: 0 1rem;
-  background-color: #22233d;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-}
-</style>
-
 <svg style="display: none">
   <symbol id="ornament" viewbox="0 0 14.666 16.598">
       <path d="M6.262 13.106q0 1.464-.988 2.47-.988 1.022-2.31 1.022-1.2 0-1.994-.776-.776-.758-.776-1.834 0-.988.6-1.57.617-.6 1.658-.6.723 0 1.217.494.511.476.511 1.094 0 .529-.493.97-.477.458-1.059.458-.44 0-.74-.317-.283-.3-.283-.776 0-.212.124-.459.123-.265.123-.3 0-.529-.37-.529-.3 0-.565.476-.247.459-.247 1.13 0 .881.653 1.498.67.635 1.676.635 1.058 0 1.852-.864.793-.864.793-2.046 0-1.535-2.046-3.404l-1.481-1.34q-.565-.53-.565-.812 0-.459.441-.459.07 0 .212.07.159.071.247.071.194 0 .194-.282 0-.264-.459-.617-.564-.406-1.111-.812-.882-.723-.882-1.57 0-.229.335-.229.035 0 .106.018.088.017.159.017.353 0 .353-.229 0-.035-.283-.688-.388-.846-.688-1.71Q0 .81 0 .581 0 0 .353 0q.23 0 .423.829.318 1.358.759 2.381.458 1.006.687 1.447.653 1.27 1.606 2.646 2.434 3.51 2.434 5.803zM14.666 14.146q0 .97-.811 1.676-.847.759-2.082.759-1.375 0-2.31-1.059-.918-1.04-.918-2.628 0-1.27.777-2.822.282-.547 1.834-3.122.917-1.517 1.27-2.258 1.164-2.452 1.252-3.51.053-.6.071-.67.053-.23.282-.23.318 0 .318.388 0 .177-.741 2.787-.035.124-.035.212 0 .194.14.194.107 0 .3-.07.212-.071.3-.071.23 0 .23.282 0 .706-.882 1.323-1.323.935-1.323 1.164 0 .23.3.23.123 0 .353-.071.229-.088.335-.088.388 0 .388.44 0 .46-.706.9-1.358.882-1.482.988-.6.494-1.234 1.535-1.006 1.64-1.006 2.557 0 1.517.653 2.329.67.81 1.834.81 1.059 0 1.711-.563.653-.547.653-1.43 0-1.887-1.482-1.887h-.105q-.089.018-.089.106 0 .07.388.459.388.388.388.9 0 .51-.405.846-.406.335-1.023.335-.477 0-.83-.476-.352-.476-.352-1.147 0-.67.564-1.199.582-.53 1.288-.53.952 0 1.57.76.617.74.617 1.851z" fill="currentColor" />
@@ -128,7 +76,7 @@ Often individual developers are blamed for the lack of tests. The claim that dev
 
 If you are struggling with writing tests, it is not your fault or deficit. We are all struggling because testing software is inherently complicated and difficult.
 
-Why is testing so difficult? First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over. You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable strategy to improve your code.
+First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over. You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable strategy to improve your code.
 
 Second, testing has a steep learning curve. If testing can be seen as a tool, it is not a like a screwdriver or power drill. Rather, it compares to a tractor or excavator. It takes training to operate these machines. And it takes experience to apply them accurately and safely.
 
@@ -550,7 +498,7 @@ This guide values strong conventions and introduces helper functions that codify
 
 ### Running the unit and integration tests
 
-The Angular command line interface (CLI) allows you to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your console:
+The Angular command line interface (CLI) allows you to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your shell:
 
 ```
 npm install -g @angular/cli
@@ -582,13 +530,13 @@ Second, `ng test` launches Karma, the test runner. Karma starts a development se
 
 Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
 
-The launched browser navigates to `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and read the results in the browser and on the console.
+The launched browser navigates to `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and read the results in the browser and on the shell.
 
 When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
 <img src="/img/robust-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
-This is the console output:
+This is the shell output:
 
 ```
 INFO [karma-server]: Karma v5.0.7 server started at http://0.0.0.0:9876/
@@ -1410,7 +1358,7 @@ Another helpful feature is Karma’s debug test runner. Click on the big “DEBU
 
 <img src="/img/robust-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
 
-The debug test runner does not have an iframe, it loads Jasmine directly. Also it automatically logs spec runs on the console.
+The debug test runner does not have an iframe, it loads Jasmine directly. Also it automatically logs spec runs on the shell.
 
 If you change the test or implementation code, the debug runner does not re-run the tests. You have to reload the page manually.
 
@@ -2535,7 +2483,7 @@ describe('HomeComponent', () => {
 
 This suite has one spec that acts as a _smoke test_. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
 
-From Angular 9 on, the spec passes but produces a bunch of warnings on the console:
+From Angular 9 on, the spec passes but produces a bunch of warnings on the shell:
 
 <p>
   <code>
@@ -4338,6 +4286,11 @@ Neither of our [example applications](#example-applications) contain an Attribut
 
 Note that numbers above the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
 
+<div class="book-sources" markdown="1">
+- [ThresholdWarningDirective: Source code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.ts)
+- [ThresholdWarningDirective: Run the app](https://molily.github.io/threshold-warning-directive/)
+</div>
+
 <button class="load-iframe">
 See the ThresholdWarningDirective in action
 </button>
@@ -4349,11 +4302,6 @@ See the ThresholdWarningDirective in action
 </script>
 
 Enter a number greater than 10 to see the effect.
-
-<div class="book-sources" markdown="1">
-- [ThresholdWarningDirective: Source code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.ts)
-- [ThresholdWarningDirective: Run the app](https://molily.github.io/threshold-warning-directive/)
-</div>
 
 This is the Directive’s code:
 
@@ -4599,6 +4547,11 @@ We are introducing and testing the `PaginateDirective`, a complex Structural Dir
 
 `PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called _pagination_. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
+<div class="book-sources" markdown="1">
+- [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
+- [PaginateDirective: Run the app](https://molily.github.io/paginate-directive/)
+</div>
+
 <button class="load-iframe">
 See the PaginateDirective in action
 </button>
@@ -4608,11 +4561,6 @@ See the PaginateDirective in action
 <iframe src="https://molily.github.io/paginate-directive/" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
-
-<div class="book-sources" markdown="1">
-- [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
-- [PaginateDirective: Run the app](https://molily.github.io/paginate-directive/)
-</div>
 
 Before writing the test, we need to understand the outer structure of `PaginateDirective` first.
 
@@ -5216,6 +5164,11 @@ Many Pipes depend on local settings, including the user interface language, date
 
 We are introducing and testing the `TranslatePipe`, a complex Pipe with a Service dependency.
 
+<div class="book-sources" markdown="1">
+- [TranslatePipe: Run the app](https://molily.github.io/translate-pipe/)
+- [TranslatePipe: Source code](https://github.com/molily/translate-pipe)
+</div>
+
 <button class="load-iframe">
 See the TranslatePipe in action
 </button>
@@ -5225,11 +5178,6 @@ See the TranslatePipe in action
 <iframe src="https://molily.github.io/translate-pipe/" class="responsive-iframe__iframe"></iframe>
 </p>
 </script>
-
-<div class="book-sources" markdown="1">
-- [TranslatePipe: Run the app](https://molily.github.io/translate-pipe/)
-- [TranslatePipe: Source code](https://github.com/molily/translate-pipe)
-</div>
 
 The example application lets you change the user interface language during runtime. A popular solution for this task is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
 
@@ -5668,6 +5616,87 @@ describe('FeatureModule', () => {
 
 The integration test uses the `TestBed` to import the Module under test. It verifies that no error occurs when importing the Module.
 
+## Measuring code coverage
+
+Code coverage, also called test coverage, tells you which parts of your code are executed by running the unit and integration tests. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
+
+Statements are, broadly speaking, control structures like `if` and `for` as well as code separated by semicolon. Branches refers to the two branches of `if (…) {…} else {…}` and `… ? … : …` conditions. Functions and lines are self-explanatory.
+
+### Istanbul coverage report
+
+In Angular’s Karma and Jasmine setup, [Istanbul](https://istanbul.js.org/) is used for measuring test coverage. Istanbul rewrites the code under test to record whether a statement, branch, function and line was called. Then it produces a comprehensive test report.
+
+To activate Istanbul when running the tests, add the `--code-coverage` parameter:
+
+```
+ng test --code-coverage
+```
+
+After the tests have completed, Istanbul saves the report in the `coverage` directory located in the Angular project directory. The report is a bunch of HTML files you can open with a browser. Start by dragging `coverage/index.html` into the browser of your choice.
+
+The report for the Flickr search example looks like this:
+
+<img src="/img/robust-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
+
+Istanbul creates an HTML page for every directory and every file. By following the links, you can descend to reports for the individual files.
+
+For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
+
+<img src="/img/robust-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
+
+The report renders the source code annotated with the information how many times a line was called. In the  example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
+
+The spec `it('focusses a photo on click', () => {…})` clicks on the photo item to test whether the `focusPhoto` Output emits. Let us disable the spec on purpose to see the impact.
+
+<img src="/img/robust-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
+
+You can tell from the coverage report above that the `handleClick` method is never called. A key Component behavior is untested.
+
+### How to use the coverage report
+
+Now that we know how to generate the report, what should we do with it?
+
+In the chapter [The right amount of testing](#the-right-amount-of-testing), we identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
+
+Software testing is not a competition. We should not try to reach a particular score just for the sake of it. For what purpose are we measuring code coverage then?
+
+The coverage report is a valuable tool you should use while writing tests. The report provides guidance by revealing code behavior that is not yet tested. Moreover, it deepens your understanding of how your tests work.
+
+Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](#tailoring-your-testing-approach), testing should be part of the development routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
+
+Writing new code and changing existing code should not lower the coverage score, but gradually increase it. This means if your existing tests cover 75% lines of code, new code needs to be at least 75% covered. Otherwise the score slowly deteriorates.
+
+It is common practice to run the unit and integration tests in a continuous integration environment and measure the code coverage. To enforce a certain coverage score and to prevent decline, you can configure **thresholds** in the [Karma configuration](#configuring-karma-and-jasmine).
+
+In `karma.conf.js`, you can add global thresholds for statements, branches, functions and lines.
+
+```
+coverageIstanbulReporter: {
+  /* … */
+  thresholds: {
+      emitWarning: false,
+      global: {
+          statements: 75,
+          branches: 75,
+          functions: 75,
+          lines: 75,
+      },
+  },
+},
+```
+
+In the example configuration above, all values are set to 75%. If the coverage drops below that number, the test execution fails even if all specs succeeded.
+
+When new code is added to the project with a test coverage better than average, you can raise the thresholds in the configuration slowly but steadily – for example, from `75` to `75.1`, `75.2`, `75.3` and so on. Soon these small improvements add up.
+
+Test coverage should not be a pointless competition that puts developers under pressure and shames those that do not meet an arbitrary mark. Measuring coverage is a tool you should use for your benefit. Keep in mind that writing meaningful, spot-on tests does not necessarily increase the coverage score.
+
+For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For advanced learners, the score may helps to keep up a steady testing practice.
+
+<div class="book-sources" markdown="1">
+- [karma-coverage-istanbul-reporter: Configuration](https://github.com/mattlewis92/karma-coverage-istanbul-reporter)
+</div>
+
 ## End-to-end testing
 
 We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group of connected parts work as intended.
@@ -5684,7 +5713,7 @@ We need automated tests that take the user’s perspective. This is what **end-t
 
 As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
-When all parts of the application come together, a new type of bugs arise. Often these bugs have to do with timing and order of events, like network latency and race conditions.
+When all parts of the application come together, a new type of bugs appears. Often these bugs have to do with timing and order of events, like network latency and race conditions.
 
 The unit and integration tests we wrote worked with a fake back-end. We send fake HTTP requests and respond with fake data. We made an effort to keep the originals and fakes on par.
 
@@ -5743,11 +5772,11 @@ In this guide, we will discuss two frameworks, one of each category: _Protractor
 - [Cypress: Official web site](https://www.cypress.io/)
 </div>
 
-### Protractor
+### Introducing Protractor
 
 Protractor is an end-to-end testing framework based on WebDriver, made for Angular applications.
 
-Protractor is an official Angular project and also originates from Google. In a new project created with the Angular CLI, Protractor is already installed as the default end-to-end testing framework.
+Protractor is an official Angular project and also originates from Google. In a project created with the Angular CLI, Protractor is already installed as the default end-to-end testing framework.
 
 Just like the unit and integration test we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
 
@@ -5771,7 +5800,7 @@ If you disable the control flow as recommended, you practically need to disable 
 
 Protractor is a great project, but today there is no compelling reason to choose Protractor over its competitors.
 
-If you are looking for Protractor examples, you will find tests in different flavors for the Counter and Flickr search. They are not explained in this guide though.
+If you are looking for Protractor examples, have a look at the Protractor end-to-end tests for the Counter and Flickr search. They come in two variants, one with the control flow and one with `async` / `await`. They are not explained in this guide though.
 
 <div class="book-sources" markdown="1">
 - [Counter: End-to-end tests with Protractor](https://github.com/9elements/angular-workshop/tree/master/e2e)
@@ -5780,7 +5809,7 @@ If you are looking for Protractor examples, you will find tests in different fla
 - [Protractor: async/await](https://www.protractortest.org/#/async-await)
 </div>
 
-### Cypress
+### Introducing Cypress
 
 Cypress is an end-to-end testing framework that is not based on WebDriver. There are no Angular-specific features. Any web site can be tested with Cypress.
 
@@ -5794,15 +5823,15 @@ The company generates revenue with an additional paid service: The Cypress dashb
 
 From our perspective, Cypress has several drawbacks.
 
-First, Cypress requires some initial setup. While Cypress works well with Angular applications, it is not pre-installed like Protractor is.
+First, Cypress requires some initial setup. While Cypress works well with Angular applications, it is not pre-installed like Protractor.
 
-Second, Cypress uses Mocha and Chai for writing tests, not Jasmine. While both serve the same purpose, you have to learn the subtle differences. If you use Jasmine for unit and integration tests, there will be an inconsistency in your tests.
+Second, Cypress uses the Mocha and Chai libraries for writing tests, not Jasmine. While both serve the same purpose, you have to learn the subtle differences. If you use Jasmine for unit and integration tests, there will be an inconsistency in your tests.
 
 Third, at the time of writing, Cypress only supports Firefox as well as Chromium-based browsers like Chrome and Microsoft Edge. It does not support Safari, legacy Edge or even Internet Explorer.
 
 Cypress is not simply better than WebDriver-based frameworks. It tries to solve their problems by narrowing the scope and making trade-offs.
 
-That being said, this guide recommends to use Cypress for testing Angular applications. Cypress is well-maintained and well-documented. With Cypress, you can write valuable end-to-end tests with little effort.
+That being said, this guide **recommends to use Cypress for testing Angular applications**. Cypress is well-maintained and well-documented. With Cypress, you can write valuable end-to-end tests with little effort.
 
 In case you do need a WebDriver-based framework, have a look at Webdriver.io instead.
 
@@ -6867,97 +6896,26 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 - [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
 </div>
 
-
-## Measuring code coverage
-
-Code coverage, also called test coverage, tells you which parts of your code are executed by running the unit and integration tests. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
-
-Statements are, broadly speaking, control structures like `if` and `for` as well as code separated by semicolon. Branches refers to the two branches of `if (…) {…} else {…}` and `… ? … : …` conditions. Functions and lines are self-explanatory.
-
-### Istanbul coverage report
-
-In Angular’s Karma and Jasmine setup, [Istanbul](https://istanbul.js.org/) is used for measuring test coverage. Istanbul rewrites the code under test to record whether a statement, branch, function and line was called. Then it produces a comprehensive test report.
-
-To activate Istanbul when running the tests, add the `--code-coverage` parameter:
-
-```
-ng test --code-coverage
-```
-
-After the tests have completed, Istanbul saves the report in the `coverage` directory located in the Angular project directory. The report is a bunch of HTML files you can open with a browser. Start by dragging `coverage/index.html` into the browser of your choice.
-
-The report for the Flickr search example looks like this:
-
-<img src="/img/robust-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
-
-Istanbul creates an HTML page for every directory and every file. By following the links, you can descend to reports for the individual files.
-
-For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
-
-<img src="/img/robust-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
-
-The report renders the source code annotated with the information how many times a line was called. In the  example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
-
-The spec `it('focusses a photo on click', () => {…})` clicks on the photo item to test whether the `focusPhoto` Output emits. Let us disable the spec on purpose to see the impact.
-
-<img src="/img/robust-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
-
-You can tell from the coverage report above that the `handleClick` method is never called. A key Component behavior is untested.
-
-### How to use the coverage report
-
-Now that we know how to generate the report, what should we do with it?
-
-In [The right amount of testing](#the-right-amount-of-testing), we identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
-
-Software testing is not a competition. We should not try to reach a particular score just for the sake of it. For what purpose are we measuring code coverage then?
-
-The coverage report is a valuable tool you should use while writing tests. The report provides guidance by revealing code behavior that is not yet tested. Moreover, it deepens your understanding of how your tests work.
-
-Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](#tailoring-your-testing-approach), testing should be part of the developer’s daily routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
-
-Writing new code and changing existing code should not lower the coverage score, but gradually increase it. This means if your existing tests cover 75% lines of code, new code needs to be at least 75% covered. Otherwise the score would slowly decline.
-
-It is common practice to run the unit and integration tests in a continuous integration environment and measure the code coverage. To enforce a certain coverage score and to prevent decline, you can configure **thresholds** in the [Karma configuration](#configuring-karma-and-jasmine).
-
-In `karma.conf.js`, you can add global thresholds for statements, branches, functions and lines.
-
-```
-coverageIstanbulReporter: {
-  /* … */
-  thresholds: {
-      emitWarning: false,
-      global: {
-          statements: 75,
-          branches: 75,
-          functions: 75,
-          lines: 75,
-      },
-  },
-},
-```
-
-In the example configuration above, all values are set to 75%. If the coverage drops below that number, the test execution fails even if all specs succeeded.
-
-When new code is added to the project with a test coverage better than average, you can raise the thresholds in the configuration slowly but steadily – for example, from `75` to `75.1`, `75.2`, `75.3` and so on. Soon these small improvements add up.
-
-Test coverage should not be a pointless competition that puts developers under pressure and shames those that do not meet an arbitrary mark. Measuring coverage is merely a tool you should use for your benefit. Writing meaningful, spot-on tests does not necessarily increase the coverage score.
-
-For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For advanced learners, the score may also help to keep up a steady testing practice.
-
 ## Summary
 
+Automated software testing is a microcosm with its own concepts, practices, tools and community. This guide barely scratches the surface, yet tries to give a well-balanced overview of testing Angular applications.
 
+Writing tests is often a frustrating experience that comes on top of implementation troubles. The logical and technical complexity is overwhelming and intimidating. To make matters worse, the testing community is not exactly friendly to beginners.
 
-<h2>Testen und Testbarkeit</h2>
+All this drains motivation. Find a testing strategy for you and your team that reduces the frustration and benefits the quality of your software.
 
-<ul>
-  <li>Testing lehrt testbaren Code zu schreiben</li>
-  <li>Testbarer Code ist besserer Code</li>
-  <li>Do one thing and do it well</li>
-  <li>Logik in kleine, wohldefinierte Einheiten aufbrechen</li>
-  <li>Einheiten einzeln und im Verbund testen</li>
-</ul>
+Once you have written tests for a couple of application features, you will learn which kind of tests are worthwhile. Tests that uncover bugs and prevent regressions. Continue with these successes, then slowly explore other kind of tests.
+
+Luckily, the Angular community works steadily to make testing accessible. Angular’s architecture facilitates testing all relevant parts. The framework ships with robust testing tools. If they do not fit your needs, there are mature community projects with alternative workflows.
+
+Automated testing does not only make your software more reliable, but also evolves your coding practice in the long run. It requires to write testable code, and testable code is usually less complex.
+
+Testing is challenging and rewarding for several reasons. There are diverse, even conflicting perspectives on testing. Despite all troubles, that makes it fascinating.
+
+## References
+
+- _Angular_, Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen, dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
+- _Testing Angular Applications_, Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
 
 ## About
 
@@ -6967,7 +6925,7 @@ Mathias is a software developer with a focus on web development and JavaScript w
 
 Twitter: [@molily](https://twitter.com/molily)
 
-Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).
+**Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).**
 
 Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class, well-tested Angular applications.
 
