@@ -6964,9 +6964,9 @@ Testing is challenging and rewarding for several reasons. There are diverse, eve
 
 ## References
 
-- _Angular_, Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen, dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
-- _Testing Angular Applications_, Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
-- _JavaScript Testing Recipes_, James Coglan, 2016
+- [_Angular_](https://angular-buch.com/), Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen, dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
+- [_Testing Angular Applications_](https://www.manning.com/books/testing-angular-applications), Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
+- _[JavaScript Testing Recipes](https://shop.jcoglan.com/javascript-testing-recipes/)_, James Coglan, 2016
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -6980,15 +6980,15 @@ Twitter: [@molily](https://twitter.com/molily)
 
 **Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).**
 
+License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
+
+The example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
+
 Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class, well-tested Angular applications.
 
 Thanks to Netanel Basal, Tim Deschryver, Kent C. Dodds, Kara Erickson, Tracy Lee and Brandon Roberts for insights on Angular, RxJS and testing.
 
 Thanks to Nils Binder for contributing the dark color scheme.
-
-License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
-
-The example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
 
 Published on <time datetime="2020-11-21">November 21, 2020</time>.
 
