@@ -261,14 +261,6 @@ pre {
     padding-left: calc(0.5rem + 3 * 1rem);
   }
 
-  // & > ol {
-  //   margin-bottom: 2rem;
-
-  //   @include large {
-  //     margin-bottom: 0;
-  //   }
-  // }
-
   a {
     display: block;
     text-decoration: none;
@@ -452,6 +444,10 @@ pre {
 .link-type {
   font-size: 0.8rem;
   color: gray;
+
+  @include dark-scheme {
+    color: inherit;
+  }
 }
 
 /**
