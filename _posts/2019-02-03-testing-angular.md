@@ -714,7 +714,7 @@ Each suite _describes_ a piece of code, the _code under test_.
 
 `describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` for the suite that tests the `CounterComponent` class. The second parameter is a function containing the suite definition.
 
-`describe` blocks can be nested to structure big suites and divide them into sections:
+`describe` blocks can be nested to structure big suites and divide them into logical sections:
 
 ```typescript
 describe('Suite description', () => {
@@ -726,6 +726,8 @@ describe('Suite description', () => {
   });
 });
 ```
+
+The `describe` blocks group related specs we will learn about in the next chapter. Nested `describe` blocks add a human-readable description to the group. They can also host their own setup and teardown logic.
 
 ### Specifications
 
@@ -6964,6 +6966,7 @@ Testing is challenging and rewarding for several reasons. There are diverse, eve
 
 - _Angular_, Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen, dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
 - _Testing Angular Applications_, Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
+- _JavaScript Testing Recipes_, James Coglan, 2016
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -6984,6 +6987,8 @@ Thanks to Netanel Basal, Tim Deschryver, Kent C. Dodds, Kara Erickson, Tracy Lee
 Thanks to Nils Binder for contributing the dark color scheme.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
+
+The example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
 
 Published on <time datetime="2020-11-21">November 21, 2020</time>.
 
