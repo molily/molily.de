@@ -8,7 +8,7 @@ lang: en
 
 It seems to me that the JavaScript community is stuck in a time warp. We’re having the same discussions about JavaScript-driven web applications we already had in 2006, when “Ajax” appeared, and in 2012, when JavaScript “single-page apps” became popular. It’s great to continue discussions as long as we stand on the shoulders of giants and try to improve what is already the best practice.
 
-A recent rant by Stefan Tilkov is called [“Why I hate your Single Page App”](https://medium.com/@stilkov/why-i-hate-your-single-page-app-f08bb4ff9134). It throws the knowledge overboard that we gathered in previous discussions. It makes bold claims and generalizations about JavaScript web apps. As someone who is deeply interested in progressive enhancement, I’m disappointed to read such a poor analysis from a co-organizer of an <a href="http://enhanceconf.com/">ambitious conference on progressive enhancement</a>.
+A recent rant by Stefan Tilkov is called [“Why I hate your Single Page App”](https://medium.com/free-code-camp/why-i-hate-your-single-page-app-f08bb4ff9134). It throws the knowledge overboard that we gathered in previous discussions. It makes bold claims and generalizations about JavaScript web apps. As someone who is deeply interested in progressive enhancement, I’m disappointed to read such a poor analysis from a co-organizer of an <a href="http://enhanceconf.com/">ambitious conference on progressive enhancement</a>.
 
 ## More JavaScript web apps, less single-page apps
 
@@ -38,7 +38,7 @@ Does the concept make it hard to apply priciples of robustness? Let’s refine t
 
 ## Why are we building JavaScript web apps again?
 
-[Ten years ago](http://adaptivepath.org/ideas/ajax-new-approach-web-applications/), web creators tried to understand how user interfaces of native apps work, and what benefits they provide. To catch up with the <q cite="http://adaptivepath.org/ideas/ajax-new-approach-web-applications/">richness and responsiveness</q> of desktop apps, they adapted certain existing patterns for the web.
+[Ten years ago](http://web.archive.org/web/20190507051447/http://adaptivepath.org/ideas/ajax-new-approach-web-applications/), web creators tried to understand how user interfaces of native apps work, and what benefits they provide. To catch up with the <q cite="http://web.archive.org/web/20190507051447/http://adaptivepath.org/ideas/ajax-new-approach-web-applications/">richness and responsiveness</q> of desktop apps, they adapted certain existing patterns for the web.
 
 Today, we need to recall the benefits of user interfaces that overcome server round-trips and full-page refreshes. We can only improve the user experience with the front-end technologies we have. So we need to identify interactions that can and should be improved with client-side JavaScript.
 
@@ -50,7 +50,7 @@ From a perspective of progressive enhancement, it is necessary to **resolve the 
 
 Stefan Tilkov makes a claim about the architecture of web apps I’d like to comment on:
 
-<blockquote cite="https://medium.com/@stilkov/why-i-hate-your-single-page-app-f08bb4ff9134">
+<blockquote cite="https://medium.com/free-code-camp/why-i-hate-your-single-page-app-f08bb4ff9134">
 <p>“In this architectural approach [a traditional non-JavaScript web application], it is absolutely clear that the responsibility for actual business logic resides completely on the server. … Business logic does not belong in the client, unless you like having to redundantly maintain the same logic in every kind of client you support (in addition to maintaining it on the server, of course — remember that you can never trust any client).”</p>
 </blockquote>
 
@@ -76,7 +76,7 @@ There are already practical ways to share logic between client and server. In th
 
 Tilkov writes:
 
-<blockquote cite="https://medium.com/@stilkov/why-i-hate-your-single-page-app-f08bb4ff9134">
+<blockquote cite="https://medium.com/free-code-camp/why-i-hate-your-single-page-app-f08bb4ff9134">
 <p>“A fantastic example of the problems created by the SPA approach is parallelization of work. If you have a team of multiple people, or God forbid, multiple teams working on the same SPA, you need to come up with a good way to support this. Instead, you can just have each of those teams build their own web application. Each of those applications can be connected to every other one built at the same time by the same organization (as well as to every other web application residing anywhere, if you want to) — in fact relying on the core strength of the web.”</p>
 </blockquote>
 
@@ -103,7 +103,7 @@ There are special accessibility requirements when using JavaScript to show, hide
 
 My main concern with Tilkov’s article is that he sees no use for JavaScript web apps:
 
-<blockquote cite="https://medium.com/@stilkov/why-i-hate-your-single-page-app-f08bb4ff9134">
+<blockquote cite="https://medium.com/free-code-camp/why-i-hate-your-single-page-app-f08bb4ff9134">
 
 <p>“[The single-page apps that I know] are bloated and slow to load, even though the actual information they display and the interaction they offer is very simple. […]”</p>
 
