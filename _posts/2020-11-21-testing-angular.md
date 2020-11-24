@@ -86,7 +86,7 @@ This is meant to encourage you. Getting started with testing is hard, but it get
 
 The target audience of this guide are intermediate Angular developers. You should be familiar with Angular’s core concepts.
 
-This guide teaches you how to test Angular application parts like Modules, Components and Services. It assumes you know how to implement them, but not how to test them properly. If you have questions regarding Angular’s core concepts, please refer to the [official Angular documentation](https://angular.io/docs).
+This guide teaches you how to test Angular application parts like Components and Services. It assumes you know how to implement them, but not how to test them properly. If you have questions regarding Angular’s core concepts, please refer to the [official Angular documentation](https://angular.io/docs).
 
 If you have not used individual concepts yet, like Directives, that is fine. You can simply skip the chapters that deal with testing those, and pick chapters you are interested in.
 
@@ -110,19 +110,19 @@ When using these terms in the general sense, this guide uses **lower case**: _mo
 
 ## Testing principles
 
-There is a gap between practical introductions – how to test a feature at all – and essential discussions on the core concepts – what does testing achieve, which type of tests are beneficial etc. Before we dive into the practical tutorial, we need to reflect on a few basics about testing.
+There is a gap between practical introductions – how to test a feature – and fundamental discussions on the core concepts – what does testing achieve, which type of tests are beneficial etc. Before we dive into the tutorial, we need to reflect on a few basics about testing.
 
-### Why we test – what makes a good test
+### What makes a good test
 
-When you are writing tests, you need to keep in mind what the goals of testing are. You need to judge whether a test is valuable with regard to these goals.
+When writing tests, you need to keep the goals of testing in mind. You need to judge whether a test is valuable with regard to these goals.
 
 Automated testing has several technical, economical and organizational benefits. Let us look pick a few that are useful to judge a test:
 
 1. **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 
-   Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting the bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyze and fix the bug in order to regain the user’s trust.
+   Of course, quality assurance takes time and costs money itself. But it takes less time and is cheaper then letting bugs slip through into the software release. When a faulty application ships to the customer, when users run into a bug, when data is lost or corrupted, your whole business might be at stake. After an incident, it is expensive to analyze and fix the bug in order to regain the user’s trust.
 
-   **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage is prevents.
+   **A valuable test is cost-effective.** The test prevents bugs that could ultimately render the application unusable. The test is cheap to write compared to the potential damage it prevents.
 
 2. **Testing formalizes and documents the requirements.** A test suite is a formal, human- and machine-readable description of how the code should behave. It helps the original developers to understand the requirements they have to implement. It helps fellow developers to understand the challenges they had to deal with.
 
@@ -138,7 +138,7 @@ Automated testing has several technical, economical and organizational benefits.
 
 ### What testing can achieve
 
-Automated testing is a tool with a specific purpose and scope of application. A basic concept is that testing helps you to ship an application that functions according to its requirements. That is true, but there are certain subtleties.
+Automated testing is a tool with a specific purpose. A basic concept is that testing helps to build an application that functions according to its requirements. That is true, but there are certain subtleties.
 
 The [International Software Testing Qualifications Board (ISTQB)](https://www.istqb.org) came up with **Seven
 Testing Principles** (CTFL Syllabus 2018 V3.1) that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
@@ -151,7 +151,7 @@ Even if it was viable to cover all cases, it would give you a false sense of sec
 
 Another core idea is that **testing depends on its context** and that it needs to be adapted again and again to provide meaning. The specific context in this guide are single-page web applications written in JavaScript, made with Angular. Such applications need specific testing methods and tools we will get to know.
 
-Once you have learned and applied these tools, you should not stop. A fixed tool chain will only discover certain types of bugs. You need to try out different approaches to find new classes of bugs. Likewise, an existing test suite needs to be updated regularly so that it still finds regressions.
+Once you have learned and applied these tools, you should not stop. A fixed tool chain will only discover certain types of bugs. You need to try different approaches to find new classes of bugs. Likewise, an existing test suite needs to be updated regularly so that it still finds regressions.
 
 <div class="book-sources" markdown="1">
 - [International Software Testing Qualifications Board: Certified Tester Foundation Level Syllabus, Version 2018 V3.1, Page 16: Seven Testing Principles](https://www.istqb.org/downloads/category/2-foundation-level-documents.html)
@@ -177,7 +177,7 @@ This technical assessment is as important as an inquiry of your development team
 
 Once you have answered these questions, you should set up a testing goal and implement steps to achieve it.
 
-A good start is to think economically. What is the return on investment of writing a test? Pick the low-hanging fruits. Find business-critical features and make sure they are covered by tests. Write tests that are require little effort but cover large parts of the code.
+A good start is to think economically. What is the return on investment of writing a test? Pick the low-hanging fruits. Find business-critical features and make sure they are covered by tests. Write tests that require little effort but cover large parts of the code.
 
 Simultaneously, integrate testing into your team’s workflow:
 
@@ -194,7 +194,7 @@ A fierce debate revolves around the right amount of testing. Too little testing 
 
 So we need to reach a sweet spot. If your testing practice deteriorates from this spot, you run into problems. If you add more tests, you observe little benefit.
 
-Tests differ in their value and quality. Some tests are more meaningful than others. If they fail, your application is actually unusable. This means the quality of tests is more important than their quantity.
+Tests differ in their value and quality. Some tests are more meaningful than others. If they fail, your application is actually unusable. This means **the quality of tests is more important than their quantity**.
 
 A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code are executed at all.
 
@@ -488,11 +488,11 @@ The Angular team already made decisions for you: [Jasmine](https://jasmine.githu
 
 This setup is a trade-off with strengths and weaknesses. Since it is just one possible way to test Angular applications, you can compile your own testing tool chain.
 
-For example, some use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](https://www.cypress.io/). Some use [Spectator](https://github.com/ngneat/spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
+For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](#introducing-cypress). Some use [Spectator](#unit-testing-with-spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
 
-These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests, but recommends Cypress for end-to-end tests.
+These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests. Later, you will learn about Spectator. For end-to-end tests, this guide deviates from the standard setup by recommending Cypress.
 
-Once you have reached the limits of this setup, you should investigate whether alternatives make testing your application easier, faster and more reliable.
+Once you have reached the limits of a particular setup, you should investigate whether alternatives make testing your application easier, faster and more reliable.
 
 ### Testing conventions
 
@@ -1968,6 +1968,10 @@ it('increments the count', () => {
 
 That is much better to read and less to write! You can tell what the spec is doing at first glance.
 
+<div class="book-sources" markdown="1">
+- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts)
+</div>
+
 ### Filling out forms
 
 We have tested the increment and decrement button successfully. The remaining user-facing feature we need to test is the reset feature.
@@ -2050,7 +2054,9 @@ it('resets the count', () => {
 });
 ```
 
-Filling out forms is a common task in tests, so it makes sense to extract the code and put it into a helper. The helper function takes a test id and a string value. It finds the corresponding element, sets the `value` and dispatches an `input` event.
+Filling out forms is a common task in tests, so it makes sense to extract the code and put it into a helper.
+
+The helper function `setFieldValue` takes a test id and a string value. It finds the corresponding element using `findEl`. Then it calls another helper, `enterText`, that sets the `value` and dispatches an `input` event.
 
 ```typescript
 export function setFieldValue<T>(
@@ -2058,10 +2064,16 @@ export function setFieldValue<T>(
   testId: string,
   value: string,
 ): void {
-  const element = findEl(fixture, testId).nativeElement;
+  enterText(findEl(fixture, testId).nativeElement, value);
+}
+
+export function enterText(
+  element: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+  value: string,
+): void {
+  element.focus();
   element.value = value;
-  // Dispatch a fake input event so Angular form bindings
-  // take notice of the change.
+  // Dispatch a fake input event so Angular form bindings take notice of the change.
   const event = document.createEvent('Event');
   event.initEvent('input', true, false);
   element.dispatchEvent(event);
@@ -2085,6 +2097,10 @@ it('resets the count', () => {
 ```
 
 That is it! While the reset feature is simple, this is how to test most form logic.
+
+<div class="book-sources" markdown="1">
+- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts)
+</div>
 
 ### Testing Inputs
 
@@ -5621,11 +5637,11 @@ Modules are central parts of Angular applications. Often they contain important 
 
 Angular Modules are classes, but most of the time, the class itself is empty. The essence lies in the metadata set with `@NgModule({ … })`.
 
-We could sneak into the metadata and check whether certain Services are provided, third-party Modules are imported, and Components are exported. Such a test would simply mirror the implementation. This does not give you more confidence, it only increases the cost of change.
+We could sneak into the metadata and check whether certain Services are provided, third-party Modules are imported, and Components are exported. But such a test would simply **mirror the implementation**. Code duplication does not give you more confidence, it only increases the cost of change.
 
 Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
 
-There are certain Module errors that surface not before runtime. These can be caught with a _smoke test_. Given this Module:
+There are certain Module errors that only surface during runtime. These can be caught with a _smoke test_. Given this Module:
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -5665,26 +5681,26 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 
 ## Unit testing with Spectator
 
-We have used Angular’s testing tools for setting up modules, rendering Components, querying the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`. As described, these are fairly low-level and unopinionated.
+We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`. As described, they are fairly low-level and unopinionated.
 
-These tools have several drawbacks:
+The build-in tools have several drawbacks:
 
 - `TestBed` requires a huge amount of boilerplate code to set up a common Component or Service test.
-- `DebugElement` lacks essential features and is a “leaky” abstraction. You are permanently forced to work with the native DOM elements for common tasks.
+- `DebugElement` lacks essential features and is a “leaky” abstraction. You are forced to work with the wrapped native DOM element for common tasks.
 - There are no default solutions for faking Components and Service dependencies safely.
 - The tests itself get verbose and repetitive. You have to establish testing conventions and write helpers yourself.
 
 We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs. If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They cannot address the above-mentioned structural problems.
 
-**[Spectator](https://github.com/ngneat/spectator)** is an opinionated library for testing Angular application. Technically, it sits on top of `TestBed`, `ComponentFixture` and `DebugElement`. But the main idea is to unify all these APIs in one consistent, powerful and user-friendly interface – the `spectator` object.
+**[Spectator](https://github.com/ngneat/spectator)** is an opinionated library for testing Angular application. Technically, it sits on top of `TestBed`, `ComponentFixture` and `DebugElement`. But the main idea is to unify all these APIs in one consistent, powerful and user-friendly interface – the `Spectator` object.
 
-Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength is clearly to ease Component tests with Inputs, Outputs, children, event handling, Service dependencies and more. For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
+Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength are Component tests with Inputs, Outputs, children, event handling, Service dependencies and more. For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
-The [Flickr search example](#the-flickr-photo-search) is tested using the standard Angular tools with our element spec helpers, but also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+The [Flickr search example](#the-flickr-photo-search) is tested using the standard Angular tools with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
-### Testing a simple Component with an Input
+### Component with an Input
 
 Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
 
@@ -5727,7 +5743,7 @@ describe('FullPhotoComponent', () => {
 
 This suite already benefits from `expectText` and `findEl`, but it is still using the leaky `DebugElement` abstraction.
 
-When using Spectator, configuring the test Module and creating the Component looks different. In the scope of the test suite, we create a Component factory_
+When using Spectator, configuring the test Module and creating the Component looks different. In the scope of the test suite, we create a *Component factory*:
 
 ```typescript
 describe('FullPhotoComponent with spectator', () => {
@@ -5785,9 +5801,9 @@ expect(
 ).toHaveText(photo1.title);
 ```
 
-The `spectator.query` method is used for finding an element in the DOM. There are many ways to find elements, and we decided on test ids (`data-testid` attributes).
+The `spectator.query` method finds an element in the DOM. There are many ways to find element. We decided on test ids (`data-testid` attributes).
 
-Spectator supports this out of the box, so we write:
+Spectator supports test ids out of the box, so we write:
 
 ```typescript
 spectator.query(byTestId('full-photo-title'))
@@ -5795,7 +5811,7 @@ spectator.query(byTestId('full-photo-title'))
 
 `spectator.query` returns a native DOM element or `null` in case no match was found. Note that it does not return a `DebugElement`.
 
-When using Spectator, you work directly with DOM element objects. This seems cumbersome, but indeed it lifts the burden of the leaky `DebugElement` abstraction.
+When using Spectator, you work directly with DOM element objects. What seems cumbersome at first glance, in fact lifts the burden of the leaky `DebugElement` abstraction.
 
 Spectator makes it easy to work with plain DOM elements. Several matchers are added to Jasmine to create expectations on an element.
 
@@ -5863,12 +5879,12 @@ Compared to the version with custom spec helpers, the Spectator version is not n
 Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
 
 <div class="book-sources" markdown="1">
-- [FullPhotoComponent: Source code for the implementation and the different tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo)
+- [FullPhotoComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo)
 </div>
 
 ### Component with children and Service dependency
 
-Spectator really shines when testing [container Components](#testing-components-with-children), these are Components with children and Service dependencies.
+Spectator really shines when testing [container Components](#testing-components-with-children). These are Components with children and Service dependencies.
 
 In the Flickr search, the topmost `FlickrSearchComponent` calls the `FlickrService` and holds the state. It orchestrates three other Components, passes down the state and listens for Outputs.
 
@@ -5923,14 +5939,12 @@ export class FlickrSearchComponent {
 }
 ```
 
-Since this is the Component where all things come together, there is much to test here.
+Since this is the Component where all things come together, there is much to test.
 
 1. Initially, the `SearchFormComponent` and the `PhotoListComponent` are rendered, not the `FullPhotoComponent`.
 2. When the `SearchFormComponent` emits the `search` output, the `FlickrService` is called with the search term.
-3. The search term and the photos list are passed down to the `PhotoListComponent` via Input.
+3. The search term and the photo list are passed down to the `PhotoListComponent` via Input.
 4. When the `PhotoListComponent` emits the `focusPhoto` output, the `FullPhotoComponent` is rendered. The selected photo is passed down via Input.
-
-We are going to write a unit test that replaces the child Component and the FlickrService with fakes.
 
 The [`FlickrSearchComponent` test suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/flickr-search/flickr-search.component.spec.ts) looks like this:
 
@@ -6020,7 +6034,7 @@ Without going too much into detail, a few notes:
 
 Rewriting this suite with Spectator brings two major changes:
 
-1. We use [ng-mocks](#faking-a-child-component-with-ng-mocks) to fake the children The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
+1. We replace the child Components with fakes created by [ng-mocks](#faking-a-child-component-with-ng-mocks). The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
 2. We use Spectator to create the fake `FlickrService`.
 
 The test suite setup:
@@ -6044,7 +6058,7 @@ describe('FlickrSearchComponent with spectator', () => {
 
 Again we use Spectator’s `createComponentFactory`. This time, we replace the child Components with fakes using ng-mocks’ `MockComponents` function.
 
-Then we use Spectator’s `mockProvider` function to create a fake `FlickrService`. Under the hood, this works roughly the same as our manual `fakeFlickrService`. It creates an object with a spy method.
+Then we use Spectator’s `mockProvider` function to create a fake `FlickrService`. Under the hood, this works roughly the same as our manual `fakeFlickrService`. It creates an object with spy methods.
 
 In a `beforeEach` block, the Component is created.
 
@@ -6072,13 +6086,13 @@ describe('FlickrSearchComponent with spectator', () => {
 });
 ```
 
-`spectator.inject` is the equivalent of `TestBed.inject`. We get hold of the the `FlickrService` fake and configure the `searchPublicPhotos` spy to return fixed data.
+`spectator.inject` is the equivalent of `TestBed.inject`. We get hold of the `FlickrService` fake and configure the `searchPublicPhotos` spy to return fixed data.
 
 `spectator.query` not only finds elements in the DOM, but also child Components and other nested Directives. We find the three child Components and save them in variables since they will be used in all specs.
 
 Note that `searchForm`, `photoList` and `fullPhoto` are typed as Component instances, not `DebugElement`s wrapping the host elements. This is accurate because the fakes have the same public interfaces, the same Inputs and Output.
 
-This means we can access Inputs with the pattern *`componentInstance.input`*. And we let an Output emit a value with the pattern *`componentInstance.output.emit(…)`*.
+This means we can access Inputs with the pattern *`componentInstance.input`*. And we let an Output emit with the pattern *`componentInstance.output.emit(…)`*.
 
 The first spec checks the initial state:
 
@@ -6093,9 +6107,9 @@ it('renders the search form and the photo list, not the full photo', () => {
 });
 ```
 
-`spectator.query(PhotoListComponent)` either returns the Component instance or `null` if there is no such nested Component. Thus, the `photoList` variable is typed as `PhotoListComponent | null`.
+`spectator.query(PhotoListComponent)` either returns the Component instance or `null` if there is no such nested Component. Hence, the `photoList` variable is typed as `PhotoListComponent | null`.
 
-Unfortunately, `expect` is not a [type guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html). Jasmine expectations do not narrow down the type of the `photoList` variable from TypeScript’s point of view.
+Unfortunately, `expect` is not a [TypeScript type guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html). Jasmine expectations cannot narrow down the type from `PhotoListComponent | null` to `PhotoListComponent`.
 
 We cannot call `expect(photoList).not.toBe(null)` and continue with `expect(photoList.title).toBe('')`. The first expectation throws an error in the `null` case, but TypeScript does not know this. TypeScript still assumes the type `PhotoListComponent | null`, so it would complain about `photoList.title`.
 
@@ -6103,7 +6117,7 @@ This is why we manually throw an error when `photoList` is `null`. In the rest o
 
 In contrast, our `findComponent` helper function directly throws an exception if no match was found. To verify that a child Component is absent, we had to expect this exception with `expect(() => { findComponent(fixture, 'app-full-photo'); }).toThrow();`.
 
-The spec goes on and uses `expect(fullPhoto).not.toExist()`, which is equivalent to `expect(fullPhoto).toBe(null)`. `toExist` is a custom Jasmine matcher added by Spectator.
+The spec goes on and uses `expect(fullPhoto).not.toExist()`, which is equivalent to `expect(fullPhoto).toBe(null)`. Spectator adds the Jasmine matcher `toExist`.
 
 The second spec covers the search:
 
@@ -6149,15 +6163,82 @@ it('renders the full photo when a photo is focussed', () => {
 
 Again, the main difference is that we directly work with Inputs and Outputs.
 
+<div class="book-sources" markdown="1">
+- [FlickrSearchComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/flickr-search)
+</div>
+
+### Event handling with Spectator
+
+Most Components handle input events like clicks, keypresses or form field changes. To simulate them, we have used the `triggerEventHandler` method on `DebugElement`s. This method does not actually simulate DOM events, it merely calls the event handlers registered by `(click)="handler($event)"` and the like. 
+
+`triggerEventHandler` leaves it to you to provide an event object that becomes `$event` in the template. The drawback is you have to set up the event object all by yourself. For this reason, we have introduced the `click` and `makeClickEvent` helpers.
+
+Spectator takes a different approach: It dispatches synthetic DOM events. This makes the test more realistic. Synthetic events can bubble up in the DOM tree like real events. Spectator creates the event objects for you while you can configure the details.
+
+To perform a simple click, we use `spectator.click` and pass the target element or a `byTestId` selector. An example from the [PhotoItemComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.spectator.spec.ts):
+
+```typescript
+describe('PhotoItemComponent with spectator', () => {
+  /* … */
+
+  it('focusses a photo on click', () => {
+    let photo: Photo | undefined;
+
+    spectator.component.focusPhoto.subscribe((otherPhoto: Photo) => {
+      photo = otherPhoto;
+    });
+
+    spectator.click(byTestId('photo-item-link'));
+
+    expect(photo).toBe(photo1);
+  });
+
+  /* … */
+});
+```
+
+Another common task is to simulate form field input. We have used the [`setFieldValue` helper](#filling-out-forms) for this purpose.
+
+Spectator has an equivalent method named `spectator.typeInElement`. It is used by the [SearchFormComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/search-form/search-form.component.spectator.spec.ts):
+
+```typescript
+describe('SearchFormComponent with spectator', () => {
+  /* … */
+
+  it('starts a search', () => {
+    let actualSearchTerm: string | undefined;
+
+    spectator.component.search.subscribe((otherSearchTerm: string) => {
+      actualSearchTerm = otherSearchTerm;
+    });
+
+    spectator.typeInElement(searchTerm, byTestId('searchTermInput'));
+
+    spectator.dispatchFakeEvent(byTestId('form'), 'submit');
+
+    expect(actualSearchTerm).toBe(searchTerm);
+  });
+});
+```
+
+The spec simulates typing in the search term into the search field. Then it simulates a `submit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
+
+Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
+
+<div class="book-sources" markdown="1">
+- [PhotoItemComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/photo-item)
+- [SearchFormComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/search-form)
+</div>
+
 ### Spectator: Summary
 
-Spectator is a mature and streamlined library that addresses that practical needs of Angular developers. Spectator offers solutions for the most common Angular testing problems. It makes simple tasks simple without losing any power.
+Spectator is a mature library that addresses the practical needs of Angular developers. It offers solutions for the most common Angular testing problems. The examples above presented only a few of Spectator’s features.
 
-Test code should be both concise and easy to understand. Spectator has found an expressive, high-level language for writing Angular tests. Best practices are baked into the library.
+Test code should be both concise and easy to understand. Spectator provides an expressive, high-level language for writing Angular tests. Spectator makes simple tasks simple without losing any power.
 
-Spectator’s success underlines that the standard Angular testing tools are cumbersome, low-level and inconsistent. Alternative concepts are both necessary and beneficial.
+Spectator’s success underlines that the standard Angular testing tools are cumbersome and incoherent. Alternative concepts are both necessary and beneficial.
 
-Once you are familiar with the standard Angular testing stack, you should try out alternatives like Spectator and ng-mocks. Then decide whether to stick with your own testing helpers or switch to more comprehensive testing tools.
+Once you are familiar with the standard tools, you should try out alternatives like Spectator and ng-mocks. Then decide whether you stick with isolated testing helpers or switch to more comprehensive testing libraries.
 
 <div class="book-sources" markdown="1">
 - [Spectator project site](https://github.com/ngneat/spectator)
@@ -7476,6 +7557,14 @@ Testing is challenging and rewarding for several reasons. There are diverse, eve
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
+## Acknowledgements
+
+Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class, well-tested Angular applications.
+
+Thanks to Netanel Basal, Tim Deschryver, Kent C. Dodds, Kara Erickson, Tracy Lee and Brandon Roberts for insights on Angular, RxJS and testing.
+
+Thanks to Nils Binder for contributing the dark color scheme.
+
 ## About
 
 Author: [Mathias Schäfer (molily)](/)
@@ -7489,12 +7578,6 @@ Twitter: [@molily](https://twitter.com/molily)
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
 The example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
-
-Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class, well-tested Angular applications.
-
-Thanks to Netanel Basal, Tim Deschryver, Kent C. Dodds, Kara Erickson, Tracy Lee and Brandon Roberts for insights on Angular, RxJS and testing.
-
-Thanks to Nils Binder for contributing the dark color scheme.
 
 Published on <time datetime="2020-11-21">November 21, 2020</time>.
 
