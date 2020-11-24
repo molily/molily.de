@@ -7559,11 +7559,13 @@ Testing is challenging and rewarding for several reasons. There are diverse, eve
 
 ## Acknowledgements
 
-Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class, well-tested Angular applications.
+Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for the opportunity to work on first-class Angular applications.
 
-Thanks to Netanel Basal, Tim Deschryver, Kent C. Dodds, Kara Erickson, Tracy Lee and Brandon Roberts for insights on Angular, RxJS and testing.
+Thanks to [Netanel Basal](https://netbasal.com/), [Tim Deschryver](https://timdeschryver.dev/), [Kent C. Dodds](https://kentcdodds.com/), [Kara Erickson](https://twitter.com/karaforthewin), [Asim Hussain](https://asim.dev/), [Tracy Lee](https://twitter.com/ladyleet) and [Brandon Roberts](https://brandonroberts.dev/) for insights on Angular, RxJS and automated testing.
 
-Thanks to Nils Binder for contributing the dark color scheme.
+Thanks to [Nils Binder](https://ichimnetz.com/) for contributing the dark color scheme.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## About
 
