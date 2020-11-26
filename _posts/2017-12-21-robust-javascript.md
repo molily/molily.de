@@ -352,7 +352,7 @@ JavaScript does not support the definition of native sandboxes yet, but we can e
 
 Jon Postel was a computer scientist that helped designing the core technologies of the internet. He edited the technical specifications of fundamental internet protocols, called Request for Comments (RFC).
 
-In [RFC 790](https://tools.ietf.org/html/rfc760), published in January 1980, Postel first described the Internet Protocol (IPv4). There is a precise description of how implementations should behave:
+In [RFC 760](https://tools.ietf.org/html/rfc760), published in January 1980, Postel first described the Internet Protocol (IPv4). There is a precise description of how implementations should behave:
 
 <blockquote cite="https://tools.ietf.org/html/rfc760">
   <p>The implementation of a protocol must be robust. Each implementation must expect to interoperate with others created by different individuals. While the goal of this specification is to be explicit about the protocol there is the possibility of differing interpretations. In general, an implementation should be conservative in its sending behavior, and liberal in its receiving behavior. That is, it should be careful to send well-formed datagrams, but should accept any datagram that it can interpret (e.g., not object to technical errors where the meaning is still clear).</p>
