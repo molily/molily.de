@@ -901,7 +901,7 @@ Called after each spec is run
 Called after all specs are run
 ```
 
-Most tests we are going to write will have a `beforeEach` block to host the *Arrange* code.
+Most tests we are going to write will have a `beforeEach` block to host the _Arrange_ code.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -909,7 +909,7 @@ Most tests we are going to write will have a `beforeEach` block to host the *Arr
 
 When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
 
-These replacements are also called *test doubles*, *stubs* or *mocks*. Replacing a dependency is called _stubbing_ or _mocking_.
+These replacements are also called _test doubles_, _stubs_ or _mocks_. Replacing a dependency is called _stubbing_ or _mocking_.
 
 Since these terms are used inconsistently and their difference is subtle, **this guide uses the term “fake” and “faking”** for any dependency substitution.
 
@@ -943,7 +943,7 @@ This is dangerous since we may forget to overwrite methods. When the code under 
 
 This guide will present thorough faking techniques that do not allow a slip. They imitate the original code while shielding the original from calls.
 
-### Faking function dependencies with Jasmine spies
+### Faking functions with Jasmine spies
 
 Jasmine provides simple yet powerful patterns to create fake implementations. The most basic pattern is the **Jasmine spy** for replacing a function dependency.
 
@@ -964,7 +964,7 @@ Assuming we have class `TodoService` responsible for fetching a to-do list from 
 ```typescript
 class TodoService {
   constructor(
-    // Bind `fetch ` to `window` to ensure that `window` is the `this` context
+    // Bind `fetch` to `window` to ensure that `window` is the `this` context
     private fetch = window.fetch.bind(window)
   ) {}
 
@@ -1015,7 +1015,7 @@ describe('TodoService', () => {
 });
 ```
 
-There is a lot to unpack in this example. First, we set up the fake data before the `describe` block:
+There is a lot to unpack in this example. Let us start with the fake data before the `describe` block:
 
 ```typescript
 const todos = [
@@ -1031,7 +1031,7 @@ const okResponse = new Response(JSON.stringify(todos), {
 
 First, we define the fake data we want the `fetch` spy to return. Essentially, this is an array of strings.
 
-The original `fetch` function returns a `Response` object. We create one using the built-in `Response` constructor. The original server response is a string before it is parsed as JSON. So we need to serialize the array into a string before passing it to the `Response` constructor. (You do not have to understand these `fetch` details to grasp the overall example.)
+The original `fetch` function returns a `Response` object. We create one using the built-in `Response` constructor. The original server response is a string before it is parsed as JSON. So we need to serialize the array into a string before passing it to the `Response` constructor. (You do not have to understand these `fetch` details to grasp the example.)
 
 Then, we declare a test suite using `describe`:
 
@@ -1049,7 +1049,7 @@ it('gets the to-dos', async () => {
 });
 ```
 
-The spec starts with *Arrange* code:
+The spec starts with _Arrange_ code:
 
 ```typescript
 // Arrange
@@ -1060,12 +1060,11 @@ const todoService = new TodoService(fetchSpy);
 
 Here, we create a spy. With `.and.returnValue(…)`, we set a fixed return value: the successful response.
 
-We also create an instance of `TodoService`, the class under test. We pass the spy into the constructor.
+We also create an instance of `TodoService`, the class under test. We pass the spy into the constructor. This is a form of manual dependency injection.
 
 In the _Act_ phase, we call the method under test:
 
 ```typescript
-// Act
 const actualTodos = await todoService.getTodos();
 ```
 
@@ -1074,12 +1073,11 @@ const actualTodos = await todoService.getTodos();
 In the _Assert_ phase, we make two expectations:
 
 ```typescript
-// Assert
 expect(actualTodos).toEqual(todos);
 expect(fetchSpy).toHaveBeenCalledWith('/todos');
 ```
 
-First, we verify the return value. We compare the actual data (`actualTodos`) with the fake data the spy has returned (`todos`). If they are equal, we have proven that `getTodos` parsed the response as JSON and returned the result. (Since there is no other way `getTodos` could access the fake data, we can also deduce that the spy has been called at all.)
+First, we verify the return value. We compare the actual data (`actualTodos`) with the fake data the spy returns (`todos`). If they are equal, we have proven that `getTodos` parsed the response as JSON and returned the result. (Since there is no other way `getTodos` could access the fake data, we can deduce that the spy has been called.)
 
 Second, we verify that the `fetch` spy has been called with the correct parameter, the API endpoint URL. Jasmine offers several matchers for making expectations on spies. The example uses `toHaveBeenCalledWith` to assert that the spy has been called with the parameter `'/todos'`.
 
@@ -1134,7 +1132,7 @@ describe('TodoService', () => {
 });
 ```
 
-In the _Arrange_ phase, we inject a spy that returns the new error response.
+In the _Arrange_ phase, we inject a spy that returns the error response.
 
 In the _Act_ phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the error. Most likely, this is how implementation code would handle the error.
 
@@ -1142,9 +1140,8 @@ In the _Assert_ phase, we make two expectations again. Instead of verifying the 
 
 Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
 
-TODO: Add TodoService code to the workshop repository
-
 <div class="book-sources" markdown="1">
+- [TodoService: Implementation and test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/todos-service.spec.ts)
 - [Jasmine reference: Spies](https://jasmine.github.io/api/edge/Spy.html)
 </div>
 
@@ -1234,7 +1231,7 @@ The good news is that you can apply familiar debugging techniques to tests as we
 
 ### Test focus
 
-Some tests require an extensive *Arrange* phase, the *Act* phase calls several methods or simulates complex user input. These tests are hard to debug.
+Some tests require an extensive _Arrange_ phase, the _Act_ phase calls several methods or simulates complex user input. These tests are hard to debug.
 
 When locating an error, narrow down the scope gradually: Execute only one test, one suite, one spec, one expectation.
 
@@ -3286,7 +3283,7 @@ const fakeCounterService: Pick<CounterService, 'getCount'> = {
 
 A plain object literal with methods is an easy way to provide a fake instance. We should not forgot that the spec needs to verify that the methods have been called with the right parameters.
 
-[Jasmine spies](#faking-function-dependencies-with-jasmine-spies) are the right tool for this job. We can fill the fake object with spies. A first approach could look like this:
+[Jasmine spies](#faking-functions-with-jasmine-spies) are the right tool for this job. We can fill the fake object with spies. A first approach could look like this:
 
 ```typescript
 const fakeCounterService:
@@ -4552,9 +4549,9 @@ The last spec makes sure that the threshold is still considered as a safe value.
 
 ```typescript
 it('removes the class if the number is at the threshold', () => {
-    setFieldValue(fixture, 'input', '10');
+  setFieldValue(fixture, 'input', '10');
   fixture.detectChanges();
-    expect(input.classList.contains('overThreshold')).toBe(false);
+  expect(input.classList.contains('overThreshold')).toBe(false);
 });
 ```
 
