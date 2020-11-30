@@ -1933,7 +1933,7 @@ This function returns on partial [MouseEvent](https://developer.mozilla.org/en-U
 
 The `click` testing helper can be used on every element that has a `(click)="…"` event handler. For accessibility, make sure the element can be focussed and activated. This is already the case for buttons (`button` element) and links (`a` elements).
 
-Historically, the `click` event was specific to mouse input. Today, it is still triggered by a mouse click, but it transformed into a generic “activate” event. It is also triggered by touch input (“tap”), keyboard input or voice input.
+Historically, the `click` event was only triggered by mouse input. Today, it is a generic “activate” event. It is also triggered by touch input (“tap”), keyboard input or voice input.
 
 So in your Component, you do not need to listen for touch or keyboard events separately. In the test, a generic `click` event usually suffices.
 
@@ -2012,9 +2012,9 @@ The click handler uses `resetInput` to access the `input` element, reads the `va
 
 The example already works because the form is very simple. Setting a field’s `value` is not a full simulation of user input and will not work with Template-driven or Reactive Forms yet.
 
-Angular forms cannot observe `value` changes directly. Instead Angular listens for an `input` event that the browser fires when a field value changes. For **compatibility with Template-driven and Reactive Forms**, we need to dispatch a fake `input` event.
+Angular forms cannot observe `value` changes directly. Instead, Angular listens for an `input` event that the browser fires when a field value changes. For **compatibility with Template-driven and Reactive Forms**, we need to dispatch a fake `input` event. Such events are also called **synthetic events**.
 
-DOM elements have a `dispatchEvent` method for this purpose. In newer browsers, we can create a fake (so-called synthetic) `input` event with `new Event('input')`.
+In newer browsers, we create fake `input` event with `new Event('input')`. To dispatch the event, we use the `dispatchEvent` method of the target element.
 
 ```typescript
 const resetInputEl = findEl(fixture, 'reset-input').nativeElement;
@@ -2097,7 +2097,29 @@ it('resets the count', () => {
 });
 ```
 
-That is it! While the reset feature is simple, this is how to test most form logic.
+While the reset feature is simple, this is how to test most form logic.
+
+The `CounterComponent` checks the input value before it resets the count. If the value is not a number, clicking the reset button does nothing.
+
+We need to cover this behavior with another spec:
+
+```typescript
+it('does not reset if the value is not a number', () => {
+  const value = 'not a number';
+
+  // Act
+  setFieldValue(fixture, 'reset-input', value);
+  click(fixture, 'reset-button');
+  fixture.detectChanges();
+
+  // Assert
+  expectText(fixture, 'count', startCount);
+});
+```
+
+The small difference in this spec is that we set the field value to “not a number”, a string that cannot be parsed as a number, and expect the count to remain unchanged.
+
+This is it! We have tested the reset form with both valid and invalid input.
 
 <div class="book-sources" markdown="1">
 - [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts)
@@ -2105,18 +2127,22 @@ That is it! While the reset feature is simple, this is how to test most form log
 
 ### Testing Inputs
 
-`CounterComponent` has an Input `startCount` that sets the initial count. We need to test that the counter reacts to the Input properly. For example, if we set `startCount` to `123`, the rendered count should be `123` as well. If the Input is empty, the rendered count should be `0`, the default value.
+`CounterComponent` has an Input `startCount` that sets the initial count. We need to test that the counter handles to the Input properly.
 
-Setting an Input during testing is rather easy: An Input is a special property of the Component instance. We can set this property in the _Arrange_ phase.
+For example, if we set `startCount` to `123`, the rendered count needs to be `123` as well. If the Input is empty, the rendered count needs to be `0`, the default value.
+
+An Input is a special property of the Component instance. We can set this property in the _Arrange_ phase.
 
 ```typescript
 const component = fixture.componentInstance;
 component.startCount = 10;
 ```
 
-It is a good practice not to change an Input value within a Component. An Input property should always reflect the data passed in by the parent Component. That is why `CounterComponent` has a public Input named `startCount` as well as an internal property named `count`. When the user clicks the increment or decrement buttons, `count` is changed, but `startCount` remains unchanged.
+It is a good practice not to change an Input value within a Component. An Input property should always reflect the data passed in by the parent Component.
 
-Whenever the `startCount` Input changes, `count` needs to be set to `startCount`. The safe place to do that is the `ngOnChanges` lifecycle function:
+That is why `CounterComponent` has a public Input named `startCount` as well as an internal property named `count`. When the user clicks the increment or decrement buttons, `count` is changed, but `startCount` remains unchanged.
+
+Whenever the `startCount` Input changes, `count` needs to be set to `startCount`. The safe place to do that is the `ngOnChanges` lifecycle method:
 
 ```typescript
 public ngOnChanges(): void {
@@ -2126,7 +2152,7 @@ public ngOnChanges(): void {
 
 `ngOnChanges` is called whenever a “data-bound property” changes, including Inputs and Outputs.
 
-Let us write a test for the `startCount` Input. We set the Input in the `beforeEach` block, before calling `detectChanges`. The spec `it`self checks that the correct count is rendered.
+Let us write a test for the `startCount` Input. We set the Input in the `beforeEach` block, before calling `detectChanges`. The spec itself checks that the correct count is rendered.
 
 ```typescript
 /* Incomplete! */
@@ -2187,7 +2213,7 @@ The `CounterComponent` expects a `number` Input and renders it into the DOM. Whe
 
 While Inputs pass data from parent to child, Outputs send data from child to parent. In combination, a Component can perform a specific operation just with the required data. For example, a Component may render a form so the user can edit or review the data. Once completed, the Component emits the data as an Output.
 
-Outputs are not a user-facing feature, but a vital part of the public Component API. Technically, Output are a Component instance properties. A unit test must inspect the Outputs thoroughly to proof that the Component plays well with other Components.
+Outputs are not a user-facing feature, but a vital part of the public Component API. Technically, Outputs are a Component instance properties. A unit test must inspect the Outputs thoroughly to proof that the Component plays well with other Components.
 
 The `CounterComponent` has an output named `countChange`. Whenever the count changes, the `countChange` Output emits the new value.
 
@@ -2200,7 +2226,7 @@ export class CounterComponent implements OnChanges {
 }
 ```
 
-The Output’s type `EventEmitter` is a subclass of RxJS `Subject`, which is itself extends RxJS `Observable`. The Component uses the `emit` method to publish new values. The parent Component uses the `subscribe` method to listen for emitted values. In the testing environment, we will do the same.
+`EventEmitter` is a subclass of RxJS `Subject`, which is itself extends RxJS `Observable`. The Component uses the `emit` method to publish new values. The parent Component uses the `subscribe` method to listen for emitted values. In the testing environment, we will do the same.
 
 Let us write a spec for the `countChange` Output!
 
@@ -2361,7 +2387,7 @@ This example requires some RxJS knowledge. We are going to encounter RxJS Observ
 
 ### Black vs. white box Component testing
 
-Component tests turn out to be most meaningful if they closely mimic how the user interacts with the Component. The tests we have written try to apply this principle. We have worked directly with the DOM to read text, click on buttons and fill out form fields because that is what the user does.
+Component tests are most meaningful if they closely mimic how the user interacts with the Component. The tests we have written apply this principle. We have worked directly with the DOM to read text, click on buttons and fill out form fields because this is what the user does.
 
 These tests are black box tests. We have already talked about [black box vs. white box testing](#black-box-vs-white-box-testing) in theory. Both are valid testing methods. As stated, this guide advises to use black box testing first and foremost.
 
@@ -2408,7 +2434,7 @@ describe('CounterComponent', () => {
 
 This white box test reaches into the Component to access an internal, yet `public` method. This is sometimes valuable, but most of the time it is misused.
 
-As we have learned, a Component test is meaningful if it interacts with the Component using Inputs, Outputs and the rendered DOM. Calling internal methods or accessing internal properties runs the risk of failing to cover important behavior like template logic and event handling.
+As we have learned, a Component test is meaningful if it interacts with the Component via Inputs, Outputs and the rendered DOM. Calling internal methods or accessing internal properties runs the risk of failing to cover important behavior like template logic and event handling.
 
 The spec above deals with the increment feature. It calls the `increment` method, but does not test the corresponding template code, the increment button:
 
@@ -2418,7 +2444,7 @@ The spec above deals with the increment feature. It calls the `increment` method
 
 If we remove the increment button from the template entirely, the feature is obviously broken. But the white box test does not fail.
 
-When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Components. Then imitate the real usage in your test.
+When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Component. Then imitate the usage in your test.
 
 A white box test that does not examine the Component from the DOM perspective runs the risk of missing crucial Component behavior. It gives the illusion that all code is tested.
 
@@ -2984,7 +3010,7 @@ We can then query the rendered DOM for an instance of `CounterComponent`. The fo
 Still, we can declare the type `CounterComponent`.
 
 ```typescript
-describe('HomeComponent (with ng-mocks)', () => {
+describe('HomeComponent with ng-mocks', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
   // Original type!
@@ -3018,7 +3044,7 @@ Every proposition that holds true for a `CounterComponent` holds true for the fa
 The full code:
 
 ```typescript
-describe('HomeComponent (with ng-mocks)', () => {
+describe('HomeComponent with ng-mocks', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component: HomeComponent;
   let counter: CounterComponent;
@@ -4042,7 +4068,7 @@ The `expect` call is outside of the `next` callback function to ensure it is def
 
 #### Verify that all requests have been answered
 
-In the last step, we ensure that there are no pending requests left. We expect the method under test to make *one* request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
+In the last step, we ensure that there are no pending requests left. We expect the method under test to make _one_ request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
 
 Finally, we call:
 
@@ -5699,7 +5725,7 @@ Spectator simplifies testing Components, Services, Directives, Pipes, routing an
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
-The [Flickr search example](#the-flickr-photo-search) is tested  with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+The [Flickr search example](#the-flickr-photo-search) is tested with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
 ### Component with an Input
 
@@ -5744,7 +5770,7 @@ describe('FullPhotoComponent', () => {
 
 This suite already benefits from `expectText` and `findEl`, but it is still using the leaky `DebugElement` abstraction.
 
-When using Spectator, configuring the test Module and creating the Component looks different. In the scope of the test suite, we create a *Component factory*:
+When using Spectator, configuring the test Module and creating the Component looks different. In the scope of the test suite, we create a _Component factory_:
 
 ```typescript
 import { createComponentFactory } from '@ngneat/spectator';
@@ -5790,7 +5816,7 @@ describe('FullPhotoComponent with spectator', () => {
 
 `createComponent` returns a `Spectator` object. This is the powerful interface we are going to use in the specs.
 
-The spec `it('renders the photo information', /* … */)` repeats three essential tasks several times:
+The spec `it('renders the photo information', /* … */)` repeats three essential tasks several times:
 
 1. Find an element by test id
 2. Check its text content
@@ -6114,7 +6140,7 @@ describe('FlickrSearchComponent with spectator', () => {
 
 Note that `searchForm`, `photoList` and `fullPhoto` are typed as Component instances, not `DebugElement`s wrapping the host elements. This is accurate because the fakes have the same public interfaces, the same Inputs and Output.
 
-This means we can access Inputs with the pattern *`componentInstance.input`*. And we let an Output emit with the pattern *`componentInstance.output.emit(…)`*.
+This means we can access Inputs with the pattern _`componentInstance.input`_. And we let an Output emit with the pattern _`componentInstance.output.emit(…)`_.
 
 The first spec checks the initial state:
 
@@ -6308,7 +6334,7 @@ For example, the coverage report for [photo-item.component.ts](https://github.co
 
 <img src="/img/robust-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
 
-The report renders the source code annotated with the information how many times a line was called. In the  example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
+The report renders the source code annotated with the information how many times a line was called. In the example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
 
 The spec `it('focusses a photo on click', () => {…})` clicks on the photo item to test whether the `focusPhoto` Output emits. Let us disable the spec on purpose to see the impact.
 
@@ -6446,7 +6472,7 @@ Protractor is an official Angular project and also originates from Google. In a 
 
 Just like the unit and integration test we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
 
-Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next  WebDriver command. This feature seeks to make testing Angular applications more robust.
+Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next WebDriver command. This feature seeks to make testing Angular applications more robust.
 
 Despite all these benefits, **this guide does not recommend using Protractor for new projects**. Why so?
 
@@ -6817,7 +6843,6 @@ describe('Counter', () => {
     cy.get('[data-testid="count"]').should('have.text', '6');
   });
 });
-
 ```
 
 The next feature we need to test is the decrement button. The spec works similar to the increment spec. It clicks on the decrement button and checks that the count has decreased.
@@ -7259,7 +7284,7 @@ Congratulations, we have successfully tested the Flickr search! This example dem
 
 The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
 
-We will use a design pattern called *page object*. A design pattern is a proven code structure, a best practice to solve a common problem.
+We will use a design pattern called _page object_. A design pattern is a proven code structure, a best practice to solve a common problem.
 
 A page object represents the web page that is scrutinized by an end-to-end test. The page object provides a high-level interface for interacting with the page.
 
