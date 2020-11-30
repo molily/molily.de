@@ -4237,7 +4237,7 @@ This approach is recommended for Service methods that have a dedicated error han
 
 We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST` etc.), headers or the request body.
 
-`expectOne` has several signatures. We used the simplest, a string that is interpreted as URL:
+`expectOne` has several signatures. We have used the simplest, a string that is interpreted as URL:
 
 ```typescript
 controller.expectOne('https://www.example.org')
@@ -5661,7 +5661,7 @@ Modules are central parts of Angular applications. Often they contain important 
 
 Angular Modules are classes, but most of the time, the class itself is empty. The essence lies in the metadata set with `@NgModule({ … })`.
 
-We could sneak into the metadata and check whether certain Services are provided, third-party Modules are imported, and Components are exported. But such a test would simply **mirror the implementation**. Code duplication does not give you more confidence, it only increases the cost of change.
+We could sneak into the metadata and check whether certain Services are provided, whether third-party Modules are imported, and whether Components are exported. But such a test would simply **mirror the implementation**. Code duplication does not give you more confidence, it only increases the cost of change.
 
 Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
 
@@ -5707,14 +5707,14 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 
 We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`. As described, they are fairly low-level and unopinionated.
 
-The build-in tools have several drawbacks:
+The built-in tools have several drawbacks:
 
 - `TestBed` requires a large amount of boilerplate code to set up a common Component or Service test.
 - `DebugElement` lacks essential features and is a “leaky” abstraction. You are forced to work with the wrapped native DOM element for common tasks.
 - There are no default solutions for faking Components and Service dependencies safely.
 - The tests itself get verbose and repetitive. You have to establish testing conventions and write helpers yourself.
 
-We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs. If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They cannot address the above-mentioned structural problems.
+We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs. If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They do not address the above-mentioned structural problems.
 
 **[Spectator](https://github.com/ngneat/spectator)** is an opinionated library for testing Angular application. Technically, it sits on top of `TestBed`, `ComponentFixture` and `DebugElement`. But the main idea is to unify all these APIs in one consistent, powerful and user-friendly interface – the `Spectator` object.
 
@@ -5722,7 +5722,9 @@ Spectator simplifies testing Components, Services, Directives, Pipes, routing an
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
-The [Flickr search example](#the-flickr-photo-search) is tested with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+Both [example applications](#example-applications) are tested with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+
+In this guide, we will look at testing the Flickr search example with Spectator.
 
 ### Component with an Input
 
@@ -5786,11 +5788,11 @@ describe('FullPhotoComponent with spectator', () => {
 
 `createComponentFactory` expects a configuration object. `component: FullPhotoComponent` specifies the Component under test. `shallow: true` means we want [shallow, not deep rendering](#shallow-vs-deep-rendering). It does not make a difference for `FullPhotoComponent` though since it has no children.
 
-The configuration object will include more options for the testing Module, as we will see later. Internally, `createComponentFactory` creates a `beforeEach` block that calls `TestBed.configureTestingModule` and `TestBed.compileComponents`, just like we did manually.
+The configuration object may include more options for the testing Module, as we will see later. Internally, `createComponentFactory` creates a `beforeEach` block that calls `TestBed.configureTestingModule` and `TestBed.compileComponents`, just like we did manually.
 
 `createComponentFactory` returns a factory function for creating a `FullPhotoComponent`. We save that function in the `createComponent` constant.
 
-The next step is to create a `beforeEach` block that creates the Component instance. `createComponent` again takes an options object. To set the `photo` Input property, we pass `props: { photo: photo1 }`.
+The next step is to add a `beforeEach` block that creates the Component instance. `createComponent` again takes an options object. To set the `photo` Input property, we pass `props: { photo: photo1 }`.
 
 ```typescript
 import { createComponentFactory, Spectator } from '@ngneat/spectator';
@@ -5817,7 +5819,7 @@ The spec `it('renders the photo information', /* … */)` repeats three essentia
 
 1. Find an element by test id
 2. Check its text content
-3. Check the value of an attribute
+3. Check its attribute value
 
 First, the spec finds the element with the test id `full-photo-title` and expects it to contain the photo’s title.
 
@@ -5829,7 +5831,7 @@ expect(
 ).toHaveText(photo1.title);
 ```
 
-The central `spectator.query` method finds an element in the DOM. We decided to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
+The central `spectator.query` method finds an element in the DOM. We have to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
 
 Spectator supports test ids out of the box, so we write:
 
@@ -6343,7 +6345,7 @@ You can tell from the coverage report above that the `handleClick` method is nev
 
 Now that we know how to generate the report, what should we do with it?
 
-In the chapter [The right amount of testing](#the-right-amount-of-testing), we identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
+In the chapter [The right amount of testing](#the-right-amount-of-testing), we have identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
 
 Software testing is not a competition. We should not try to reach a particular score just for the sake of it. For what purpose are we measuring code coverage then?
 
@@ -7232,7 +7234,7 @@ cy.byTestId('photo-item-link').first().click();
 
 The click lets the photo details appear. As mentioned above, we cannot check for a specific title, a specific photo URL or specific tags. The clicked photo might be a different one with each test run.
 
-Since we searched for “flower”, we assert that the term is either in the photo title or tags. We check the text content of the wrapper element with the test id `full-photo`.
+Since have searched for “flower”, we assert that the term is either in the photo title or tags. We check the text content of the wrapper element with the test id `full-photo`.
 
 ```typescript
 cy.byTestId('full-photo').should('contain', SEARCH_TERM);
@@ -7550,21 +7552,21 @@ The spec ensures that the application under test outputs the data from the Flick
 
 We are done! Our end-to-end test fakes an API request in order to inspect the application deeply.
 
-In the case of the Flickr search, we intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including requests to your own HTTP APIs.
+In the case of the Flickr search, we have intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including requests to your own HTTP APIs.
 
-The `cy.server` and `cy.route` commands only supports intercepting XMLHttpRequest. In addition, Cypress has a new, experimental command named `cy.route2` for intercepting all kinds of requests. Plus, `route2` is easier to use and more powerful.
+The `cy.server` and `cy.route` commands only supports intercepting XMLHttpRequest. In addition, Cypress has a new, experimental command named `cy.intercept` for intercepting all kinds of requests. Plus, `intercept` is easier to use and more powerful.
 
-In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.route2` for comparison.
+In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.intercept` for comparison.
 
 <div class="book-sources" markdown="1">
 - [Full test with cy.server and cy.route](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network.ts)
-- [Full test with cy.route2](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network-route2.ts)
+- [Full test with cy.intercept](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network-intercept.ts)
 - [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts)
 - [Cypress documentation: Network Requests](https://docs.cypress.io/guides/guides/network-requests.html)
 - [Cypress API reference: server](https://docs.cypress.io/api/commands/server.html)
 - [Cypress API reference: route](https://docs.cypress.io/api/commands/route.html)
 - [Cypress API reference: wait](https://docs.cypress.io/api/commands/wait.html)
-- [Cypress API reference: route2](https://docs.cypress.io/api/commands/route2.html)
+- [Cypress API reference: intercept](https://docs.cypress.io/api/commands/intercept.html)
 </div>
 
 ### End-to-end testing: Conclusion
