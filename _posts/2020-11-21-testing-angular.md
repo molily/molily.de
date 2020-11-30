@@ -5831,7 +5831,7 @@ expect(
 ).toHaveText(photo1.title);
 ```
 
-The central `spectator.query` method finds an element in the DOM. We have to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
+The central `spectator.query` method finds an element in the DOM. We have decided to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
 
 Spectator supports test ids out of the box, so we write:
 
