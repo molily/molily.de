@@ -1145,7 +1145,7 @@ Again, this is a plain JavaScript example to illustrate the usage of spies. Usua
 - [Jasmine reference: Spies](https://jasmine.github.io/api/edge/Spy.html)
 </div>
 
-### Spying on existing object methods
+### Spying on existing methods
 
 We have used `jasmine.createSpy('name')` to create a standalone spy and have injected it into the constructor. Explicit constructor injection is a straight-forward and recommended way to provide a dependency. It is also the predominant dependency injection strategy in Angular.
 
@@ -2723,7 +2723,7 @@ The spec finds the `app-counter` element and triggers the `countChange` event ha
 
 Under the hood, `triggerEventHandler` runs `handleCountChange($event)` with `$event` being `5`. `handleCountChange` calls `console.log`, and that is the observable effect we need to test.
 
-How do we verify that `console.log` has been called? We can [spy on existing object methods](#spying-on-existing-object-methods) with Jasmine’s `spyOn`.
+How do we verify that `console.log` has been called? We can [spy on existing methods](#spying-on-existing-methods) with Jasmine’s `spyOn`.
 
 ```typescript
 spyOn(console, 'log');
@@ -7588,19 +7588,17 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 
 ## Summary
 
-Automated software testing is a microcosm with its own concepts, practices, tools and community. This guide barely scratches the surface, yet tries to give a well-balanced overview of testing Angular applications.
+The goal of this guide is to dispel the fear of testing. While testing Angular applications is a complex matter, this guide breaks it down into small, approachable steps and tries to give a well-balanced overview.
 
-Writing tests is often a frustrating experience that comes on top of implementation troubles. The logical and technical complexity is overwhelming and intimidating. To make matters worse, the testing community is not exactly friendly to beginners.
+Writing tests is often a frustrating experience that comes on top of implementation troubles. The logical and technical complexity is overwhelming and intimidating. All this drains motivation.
 
-All this drains motivation. Find a testing strategy for you and your team that reduces the frustration and benefits the quality of your software.
-
-Once you have written tests for a couple of application features, you will learn which kind of tests are worthwhile. Tests that uncover bugs and prevent regressions. Continue with these successes, then slowly explore other kind of tests.
+Find a testing strategy that reduces the frustration and benefits the quality of your software. Once you have written tests for a couple of features, you will learn which tests are worthwhile – tests that uncover bugs and prevent regressions. Continue with these successes, then slowly explore other kind of tests.
 
 Luckily, the Angular community works steadily to make testing accessible. Angular’s architecture facilitates testing all relevant parts. The framework ships with robust testing tools. If they do not fit your needs, there are mature community projects with alternative workflows.
 
-Automated testing does not only make your software more reliable, but also evolves your coding practice in the long run. It requires to write testable code, and testable code is usually less complex.
+Testing does not only make your software more reliable, but also evolves your coding practice in the long run. It requires to write testable code, and testable code is usually less complex.
 
-Testing is challenging and rewarding for several reasons. There are diverse, even conflicting perspectives on testing. Despite all troubles, that makes it fascinating.
+Automated software testing is challenging and rewarding for various reasons. Despite all troubles, that makes it fascinating.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
