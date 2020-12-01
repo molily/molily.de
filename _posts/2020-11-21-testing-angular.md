@@ -103,15 +103,15 @@ Before we dive in, a quick note regarding the technical terms.
 
 Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish between these meanings by using a different letter case.
 
-When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_ etc.
+When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_, etc.
 
-When using these terms in the general sense, this guide uses **lower case**: _module, component, service, input, output_ etc.
+When using these terms in the general sense, this guide uses **lower case**: _module, component, service, input, output_, etc.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Testing principles
 
-There is a gap between practical introductions – how to test a feature – and fundamental discussions on the core concepts – what does testing achieve, which type of tests are beneficial etc. Before we dive into the tutorial, we need to reflect on a few basics about testing.
+There is a gap between practical introductions – how to test a feature – and fundamental discussions on the core concepts – what does testing achieve, which type of tests are beneficial, etc. Before we dive into the tutorial, we need to reflect on a few basics about testing.
 
 ### What makes a good test
 
@@ -247,7 +247,7 @@ What is indisputable is that high-level tests like end-to-end tests are expensiv
 
 End-to-end tests are brittle, meaning they often fail even though the software is without fault. Sometimes they fail for no apparent reason. When you run the same tests again, they suddenly pass. Even if the test correctly fails, it is hard to find the root cause of the problem. You need to wander through the full stack to locate the bug.
 
-End-to-end test use a real browser and run against the full software stack. Therefore the testing setup is immense. You need to deploy front-end, back-end, databases, caches etc. to testing machines and then have machines to run the end-to-end tests.
+End-to-end test use a real browser and run against the full software stack. Therefore the testing setup is immense. You need to deploy front-end, back-end, databases, caches, etc. to testing machines and then have machines to run the end-to-end tests.
 
 Several commercial tools try to make end-to-end tests easier, faster and more robust. Since end-to-end tests are unreliable because of the inherent complexity, these tools try to reduce complexity at the expense of flexibility. For example, they remote-control one possible browser instead of all browsers that support a generic automation protocol.
 
@@ -290,7 +290,7 @@ Integration tests provide a better trade-off. These mid-level tests prescind fro
 
 That is why some experts deem integration tests more valuable and recommend that you spend most of your testing efforts on this level.
 
-In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe etc. Dependencies are replaced with fakes. An integration test spans one Component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
+In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe, etc. Dependencies are replaced with fakes. An integration test spans one Component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
 
 <table class="testing-levels-table">
 <caption>Comparison of software testing levels</caption>
@@ -373,7 +373,7 @@ While both approaches have their value, this guide recommends to **write black b
 
 More importantly, white box tests run the risk of forgetting to check the real output. They reach into the box, spin some wheel, flip some switch and check a particular state. They just assume the output without actually checking it. So they fail to cover important code behavior.
 
-For an Angular Component, Directive, Service, Pipe etc., a black box test passes a certain input and expects a proper output or measures side effects. The test only calls methods that are marked with `public` in the TypeScript code. Internal methods should be marked with `private`.
+For an Angular Component, Directive, Service, Pipe, etc., a black box test passes a certain input and expects a proper output or measures side effects. The test only calls methods that are marked with `public` in the TypeScript code. Internal methods should be marked with `private`.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -456,7 +456,7 @@ Once you are able to write automatic tests for this example application, you wil
 
 In contrast to other popular front-end JavaScript libraries, Angular is an opinionated, comprehensive framework that covers all important aspects of developing a JavaScript web application. Angular provides high-level structure, low-level building blocks and means to bundle everything together into a usable application.
 
-The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application apply the same patterns?
+The complexity of Angular cannot be understood without considering automated testing. Why is an Angular application structured into Components, Services, Modules, etc.? Why are the parts intertwined the way they are? Why do all parts of an Angular application apply the same patterns?
 
 An important reason is **testability**. Angular’s architecture guarantees that all application parts can be tested easily in a similar way.
 
@@ -527,7 +527,7 @@ This command does several things at once.
 
 First, `ng test` uses Webpack to compile your code into a JavaScript bundle. The entry point for the bundle is `src/test.ts`. This file initializes the Angular testing environment – the `TestBed` – and then imports all files in the directory tree that match the pattern `.spec.ts`.
 
-You might be familiar with the entry point for the application, `src/main.ts`. This file also initializes Angular, but then it typically bootstraps (loads and starts) the `AppModule`. The `AppModule` imports other Modules, Components, Services etc. This way, the bundler finds all parts of the application.
+You might be familiar with the entry point for the application, `src/main.ts`. This file also initializes Angular, but then it typically bootstraps (loads and starts) the `AppModule`. The `AppModule` imports other Modules, Components, Services, etc. This way, the bundler finds all parts of the application.
 
 The test bundle works differently. It does not start with one Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
 
@@ -537,7 +537,7 @@ In our example application, the `CounterService` is located in [src/app/componen
 
 Second, `ng test` launches Karma, the test runner. Karma starts a development server at [http://localhost:9876/](http://localhost:9876/) that serves the JavaScript bundles compiled by Webpack.
 
-Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. All widely-used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
+Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. All widely used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
 
 The launched browser navigates to `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and read the results in the browser and on the shell.
 
@@ -1575,7 +1575,7 @@ component.countChange.subscribe((count) => {
 });
 ```
 
-More on testing Inputs and Outputs later.
+We will learn more on testing Inputs and Outputs later.
 
 For accessing elements in the DOM, Angular has another abstraction: The `DebugElement` wraps the native DOM elements. The fixture’s `debugElement` property returns the Component’s host element. For the `CounterComponent`, this is the `app-counter` element.
 
@@ -1926,7 +1926,7 @@ export function makeClickEvent(target: EventTarget): Partial<MouseEvent> {
 }
 ```
 
-This function returns on partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods of properties of real click events. It is suitable for clicks on buttons, links etc. where the pointer position, the pressed mouse button and modifier keys do not matter.
+This function returns on partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods of properties of real click events. It is suitable for clicks on buttons and links when the pointer position, the pressed mouse button and modifier keys do not matter.
 
 The `click` testing helper can be used on every element that has a `(click)="…"` event handler. For accessibility, make sure the element can be focussed and activated. This is already the case for buttons (`button` element) and links (`a` elements).
 
@@ -2494,7 +2494,7 @@ These Components are called **presentational Components** since they directly pr
 
 This is the duty of **container Components**. These high-level Components bring multiple low-level Components together. They pull data from different sources, like Services and state managers, and distribute it to their children.
 
-Container Components have several types of dependencies. They depend on the nested child Components, but also Injectables. These are classes, functions, objects etc. provided via dependency injection, like Services. These dependencies make testing container Components complicated.
+Container Components have several types of dependencies. They depend on the nested child Components, but also Injectables. These are classes, functions, objects, etc. provided via dependency injection, like Services. These dependencies make testing container Components complicated.
 
 There are two fundamental ways to test Components with children:
 
@@ -2581,7 +2581,7 @@ Since we plan to write a unit test, we opt for the second.
 
 When configuring the testing Module, we can specify `schemas` to tell Angular how to deal with elements that are not handled by Directives or Components.
 
-The warning suggests `CUSTOM_ELEMENTS_SCHEMA`, but `app-counter` etc. are not Web Components. We want Angular to simply ignore the elements. Therefore we use the `NO_ERRORS_SCHEMA`, “a schema that allows any property on any element”.
+The warning suggests `CUSTOM_ELEMENTS_SCHEMA`, but the elements in question are not Web Components. We want Angular to simply ignore the elements. Therefore we use the `NO_ERRORS_SCHEMA`, “a schema that allows any property on any element”.
 
 ```typescript
 TestBed.configureTestingModule({
@@ -2833,7 +2833,7 @@ const element = fixture.debugElement.query(By.css('…'));
 
 Our helpers `findEl` and `findComponent` are using this pattern as well.
 
-No we want to find a nested Component. We can use `query` together with the `By.directive` predicate function:
+Now we want to find a nested Component. We can use `query` together with the `By.directive` predicate function:
 
 ```typescript
 const counterEl = fixture.debugElement.query(
@@ -3360,13 +3360,13 @@ providers: [
 
 This is the crucial moment where we tell Angular: For the `CounterService` dependency, use the value `fakeCounterService` instead. This is how we replace the original with a fake.
 
-In this setup, Angular instantiates and injects a `CounterService` instance whenever a Component, Service etc. asks for the `CounterService`. By using `{ provide: …, useValue: … }`, we skip the instantiation and directly provide the value to inject.
+In this setup, Angular instantiates and injects a `CounterService` instance whenever a Component, Service, etc. asks for the `CounterService`. By using `{ provide: …, useValue: … }`, we skip the instantiation and directly provide the value to inject.
 
 The _Arrange_ phase is complete now, let us write the actual specs.
 
 The _Act_ phase is the same as in the other counter Component tests: We click on buttons and fill out form fields.
 
-In the _Assert_ phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith` etc.
+In the _Assert_ phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith`, etc.
 
 ```typescript
 expect(fakeCounterService.getCount).toHaveBeenCalled();
@@ -4235,7 +4235,7 @@ This approach is recommended for Service methods that have a dedicated error han
 
 #### Alternatives for finding pending requests
 
-We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST` etc.), headers or the request body.
+We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST`, etc.), headers or the request body.
 
 `expectOne` has several signatures. We have used the simplest, a string that is interpreted as URL:
 
@@ -4265,7 +4265,7 @@ controller.expectOne(
 
 The function is a predicate. The function is called for each request, decides whether the candidate matches and returns a boolean.
 
-This lets you sift through all requests programmatically and check all criteria. The candidate is an [HttpRequest](https://angular.io/api/common/http/HttpRequest) instance with properties like `method`, `url`, `headers`, `body`, `params` etc.
+This lets you sift through all requests programmatically and check all criteria. The candidate is an [HttpRequest](https://angular.io/api/common/http/HttpRequest) instance with properties like `method`, `url`, `headers`, `body`, `params`, etc.
 
 There are two possible approaches: Either you use `expectOne` with many criteria, like in the predicate example. If some request detail does not match, `expectOne` throws an exception and fails the test.
 
@@ -4359,7 +4359,7 @@ We have already tested Components. We have yet to test the two other types of Di
 
 The name Attribute Directive comes from the attribute selector, for example `[ngModel]`. An Attribute Directive does not have a template and cannot alter the DOM structure.
 
-We have already mentioned the built-in Attribute Directives `NgClass` and `NgStyle`. In addition, both Template-driven and Reactive Forms rely heavily on Attribute Directives: `NgForm`, `NgModel`, `FormGroupDirective`, `FormControlName` etc.
+We have already mentioned the built-in Attribute Directives `NgClass` and `NgStyle`. In addition, both Template-driven and Reactive Forms rely heavily on Attribute Directives: `NgForm`, `NgModel`, `FormGroupDirective`, `FormControlName`, etc.
 
 Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes. Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
 
@@ -5526,7 +5526,7 @@ At the same time, we are writing an asynchronous spec. That is, Jasmine needs to
 
 Again, there are several ways how to accomplish this. We opt for Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
 
-`fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
+`fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables, etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
 
 The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still complete in a few milliseconds.
 
@@ -7416,7 +7416,7 @@ describe('Flickr search (with page object)', () => {
 For the Flickr search above, a page object is probably too much of a good thing. Still the example demonstrates the key ideas of page objects:
 
 - Identify repetitive high-level interactions and map them to methods of the page object.
-- Move the finding of elements into the page object. The test ids, tag names etc. you use for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
+- Move the finding of elements into the page object. The test ids, tag names, etc. used for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
 - Leave all assertions (`should` and `expect`) in the specs. Do not move them to the page object.
 
 When writing end-to-end tests, you get lost in technical details quickly: finding by certain features, clicking them, filling out form fields, checking fields values and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
