@@ -5769,7 +5769,7 @@ describe('FullPhotoComponent', () => {
 
 This suite already benefits from `expectText` and `findEl`, but it is still using the leaky `DebugElement` abstraction.
 
-When using Spectator, configuring the test Module and creating the Component looks different. In the scope of the test suite, we create a _Component factory_:
+When using Spectator, the Module configuration and the Component creation looks different. In the scope of the test suite, we create a _Component factory_:
 
 ```typescript
 import { createComponentFactory } from '@ngneat/spectator';
@@ -6506,7 +6506,7 @@ Cypress is an end-to-end testing framework that is not based on WebDriver. There
 
 WebDriver-based testing solutions are flexible and powerful but turned out to be slow and unreliable. Cypress aims to improve both the developing experience and the reliability of end-to-end tests.
 
-Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not remotely-controlled, but the tests run directly in the browser, supported by a browser plugin. The runner provides a powerful user interface for inspecting and debugging tests right in the browser.
+Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not controlled remotely, but the tests run directly in the browser, supported by a browser plugin. The runner provides a powerful user interface for inspecting and debugging tests right in the browser.
 
 Cypress is the product of one company, Cypress.io, Inc. The test runner we are going to use is open source and free of charge.
 
@@ -6730,7 +6730,7 @@ A key feature of Cypress is that it retries certain commands and assertions. For
 
 Other commands are not retried, but have a built-in waiting logic. For example, we will use Cypress’ `click` method to click on an element. Cypress automatically waits for four seconds for the element to be clickable. Cypress scrolls the element into view and checks if it is visible and not disabled. After several other checks, the Cypress performs the click.
 
-The retry and waiting timeout of four seconds can be configured for all tests or individual commands. This feature makes end-to-end makes more reliable, but also easier to write. In other end-to-end testing frameworks, you have to wait manually manually and there is no automatic retry of commands and assertions.
+The retry and waiting timeout of four seconds can be configured for all tests or individual commands. This feature makes end-to-end makes more reliable, but also easier to write. In other end-to-end testing frameworks, you have to wait manually and there is no automatic retry of commands and assertions.
 
 TODO Retry tests
 
@@ -6798,7 +6798,7 @@ The benefit of a test id is that it can be used on any element. Using a test id 
 
 ### Interacting with elements
 
-To test the counter Component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`”`. So the element finder would be:
+To test the counter Component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`. So the element finder would be:
 
 ```typescript
 cy.get('[data-testid="count"]')
@@ -7590,9 +7590,9 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 
 ## Summary
 
-The goal of this guide is to dispel the fear of testing. While testing Angular applications is a complex matter, this guide breaks it down into small, approachable steps and tries to give a well-balanced overview.
-
 Writing tests is often a frustrating experience that comes on top of implementation troubles. The logical and technical complexity is overwhelming and intimidating. All this drains motivation.
+
+The goal of this guide is to dispel the fear of testing. While testing Angular applications is a complex matter, this guide breaks it down into small, approachable steps and aims to give a well-balanced overview.
 
 Find a testing strategy that reduces the frustration and benefits the quality of your software. Once you have written tests for a couple of features, you will learn which tests are worthwhile – tests that uncover bugs and prevent regressions. Continue with these successes, then slowly explore other kind of tests.
 
