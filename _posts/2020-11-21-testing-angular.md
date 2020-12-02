@@ -46,10 +46,12 @@ draft: true
     <source type="image/avif" srcset="/img/robust-angular/flying-probe-800-30.avif, /img/robust-angular/flying-probe-1600-30.avif 2x">
     <source type="image/webp" srcset="/img/robust-angular/flying-probe-800.webp, /img/robust-angular/flying-probe-1600.webp 2x">
     <source type="image/jpeg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
-    <img id="cover-image-flying-probe" src="/img/robust-angular/flying-probe-800-85.jpg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of a flying probe testing a printed circuit board.">
+    <img id="cover-image-flying-probe" src="/img/robust-angular/flying-probe-800-85.jpg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of flying probes testing a printed circuit board.">
   </picture>
 
-  <span id="cover-credits">Photo by genkur from iStock</span>
+  <span id="cover-credits">
+    Flying probes testing a printed circuit board. Photo by genkur from iStock
+  </span>
 </p>
 
 <h1 id="main-heading">
@@ -6860,7 +6862,7 @@ Cypress does not have a dedicated method to fill out a form field. A Cypress cha
 
 To enter text into the form field, we pass a string to the `type` method.
 
-```typescriptw
+```typescript
 cy.get('[data-testid="reset-input"]').type('123');
 ```
 
@@ -7636,6 +7638,8 @@ Twitter: [@molily](https://twitter.com/molily)
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
 The example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
+
+Cover photo: Flying probes testing a printed circuit board by genkur, [licensed from iStock](https://www.istockphoto.com/photo/printed-circuit-board-during-a-flying-probe-test-gm1144549508-307752215).
 
 Published on <time datetime="2020-11-21">November 21, 2020</time>.
 
