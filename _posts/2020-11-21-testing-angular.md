@@ -662,8 +662,8 @@ The configuration for the Jasmine adapter is located in the `client` object. To 
 
 ```javascript
 client: {
-  // Configuration for the Jasmine adapter
-  clearContext: false, // leave Jasmine Spec Runner output visible in browser
+  // leave Jasmine Spec Runner output visible in browser
+  clearContext: false,
   jasmine: {
     // Jasmine configuration goes here!
   },
@@ -674,7 +674,8 @@ This guide recommends to activate one useful Jasmine configuration option: `fail
 
 ```javascript
 client: {
-  clearContext: false, // leave Jasmine Spec Runner output visible in browser
+  // leave Jasmine Spec Runner output visible in browser
+  clearContext: false,
   jasmine: {
     failSpecWithNoExpectations: true,
   },
