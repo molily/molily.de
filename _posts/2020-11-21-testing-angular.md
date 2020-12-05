@@ -2719,7 +2719,7 @@ These tests are black box tests. We have already talked about [black box vs. whi
 A common technique to enforce black box testing is to mark internal methods as `private` so they cannot be called in the test. The test should only inspect the documented, public API.
 
 <aside class="margin-note" markdown="1">
-  Internal, yet `public`
+  Internal yet `public`
 </aside>
 
 In Angular Components, the difference between external and internal properties and methods does not coincide with their TypeScript visibility (`public` vs. `private`). Properties and methods need to be `public` so that the template is able to access them.
@@ -4158,6 +4158,8 @@ describe('CounterService', () => {
 
 Let us start with writing the spec `it('returns the count', /* … */)`. It tests the `getCount` method that returns an Observable.
 
+<aside class="margin-note">Change variable value</aside>
+
 For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs). We declare a variable `actualCount` that is initially undefined. Then we subscribe and assign the value emitted by the Observable to the variable. Finally, outside of the subscriber function, we compare the actual to the expected value.
 
 ```typescript
@@ -4170,7 +4172,9 @@ it('returns the count', () => {
 });
 ```
 
-This works because the Observable is backed by a BehaviorSubject that stores the latest value and sends it to new subscribers immediately.
+This works because the Observable is backed by a `BehaviorSubject` that stores the latest value and sends it to new subscribers immediately.
+
+<aside class="margin-note">State change</aside>
 
 The next spec tests the `increment` method. We call the method and verify that the count state has changed.
 
@@ -4188,7 +4192,9 @@ it('increments the count', () => {
 });
 ```
 
-The order here is important: First, we call `increment`, then we subscribe to the Observable to read and verify the changed value. Again, the BehaviorSubject emits the current value to new subscribers synchronously.
+<aside class="margin-note">Expect changed value</aside>
+
+The order here is important: First, we call `increment`, then we subscribe to the Observable to read and verify the changed value. Again, the `BehaviorSubject` emits the current value to new subscribers synchronously.
 
 The two remaining specs work almost the same. We just call the respective methods.
 
@@ -4215,6 +4221,8 @@ it('resets the count',, () => {
 });
 ```
 
+<aside class="margin-note">Repeating patterns</aside>
+
 We quickly notice that the specs are highly repetitive and noisy. In every spec’s _Assert_ phase, we are using this pattern to inspect the Service state:
 
 ```typescript
@@ -4239,13 +4247,17 @@ function expectCount(count: number): void {
 
 The pattern has one variable bit, the expected count. That is why the helper function has one parameter.
 
+<aside class="margin-note">Unsubscribe</aside>
+
 Now that we have pulled out the code into a central helper function, there is one optimization we should add. The First Rule of RxJS Observables states: “Anyone who subscribes, must unsubscribe as well”.
 
 In `expectCount`, we need to get the current count only once. We do not want to create a long-lasting subscription. We are not interested in future changes.
 
-If we call `expectCount` only once per spec, this is not a huge problem. If we wrote a more complex spec with several `expectCount` calls, we would create pointless subscriptions. This is likely to cause confusion for example when debugging the subscriber function.
+If we call `expectCount` only once per spec, this is not a huge problem. If we wrote a more complex spec with several `expectCount` calls, we would create pointless subscriptions. This is likely to cause confusion when debugging the subscriber function.
 
 In short, we want to fetch the count and then unsubscribe to reduce unwanted subscriptions.
+
+<aside class="margin-note">Unsubscribe manually</aside>
 
 One possible solution is unsubscribing immediately after subscribing. The `subscribe` method returns a `Subscription` with the useful `unsubscribe` method.
 
@@ -4261,6 +4273,8 @@ function expectCount(count: number): void {
   expect(actualCount).toBe(count);
 }
 ```
+
+<aside class="margin-note">RxJS operator</aside>
 
 A more idiomatic way is to use an RxJS operator that completes the Observable after the first value: [`first`](https://rxjs-dev.firebaseapp.com/api/operators/first).
 
@@ -4363,15 +4377,21 @@ The Service is marked with `@Injectable()` so it takes part in Angular’s Depen
 
 There are two ways to test the `FlickrService`: an integration test or a unit test.
 
-An integration test provides the real `HttpClient`. This leads to HTTP requests to the Flickr API when the running the tests. This makes the whole test unreliable.
+<aside class="margin-note">Requests against production</aside>
+
+An i**ntegration test** provides the real `HttpClient`. This leads to HTTP requests to the Flickr API when the running the tests. This makes the whole test unreliable.
 
 The network or the web service might be slow or unavailable. Also the Flickr API endpoint returns a different response for each request. It is hard to expect a certain `FlickrService` behavior if the input is unknown.
 
 Requests to third-party production APIs make little sense in a testing environment. If you want to write an integration test for a Service that makes HTTP request, better use a dedicated testing API that returns fixed data. This API can run on the same machine or in the local network.
 
-In the case of `FlickrService`, we better write a unit test. Angular has a powerful helper for testing code that depends on `HttpClient`: the [`HttpClientTestingModule`](https://angular.io/guide/http#testing-http-requests).
+<aside class="margin-note">Intercept requests</aside>
 
-For testing a Service with dependencies, it would be tedious to instantiate the Service with `new`. Instead, we are using the `TestBed` to set up a testing Module. Instead of providing the `HttpClient`, we import the `HttpClientTestingModule`.
+In the case of `FlickrService`, we better write a **unit test**. Angular has a powerful helper for testing code that depends on `HttpClient`: the [`HttpClientTestingModule`](https://angular.io/guide/http#testing-http-requests).
+
+For testing a Service with dependencies, it is tedious to instantiate the Service with `new`. Instead, we use the `TestBed` to set up a testing Module.
+
+In place of the `HttpClient`, we import the `HttpClientTestingModule`.
 
 ```typescript
 TestBed.configureTestingModule({
@@ -4381,6 +4401,8 @@ TestBed.configureTestingModule({
 ```
 
 The `HttpClientTestingModule` provides a fake implementation of `HttpClient`. It does not actually send out HTTP requests. It merely intercepts them and records them internally. In the test, we inspect that log of HTTP requests. We respond to pending requests manually with fake data.
+
+<aside class="margin-note">Find, respond, verify</aside>
 
 Our test will consist of the following steps:
 
@@ -4429,6 +4451,10 @@ We subscribe to the Observable returned by `searchPublicPhotos` so the (fake) HT
 #### Find pending requests
 
 In the second step, we find the pending request using the [`HttpTestingController`](https://angular.io/api/common/http/testing/HttpTestingController). This class is part of the `HttpClientTestingModule`. We get hold of the instance by calling `TestBed.inject(HttpTestingController)`.
+
+<aside class="margin-note" markdown="1">
+  `expectOne`
+</aside>
 
 The controller has methods to find requests by different criteria. The simplest is `expectOne`. It finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
 
