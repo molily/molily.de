@@ -457,17 +457,13 @@ pre {
  */
 
 .erroneous {
-  background-color: #fcf2f2;
-
-  @include dark-scheme {
-    background-color: adjust-color(
-      $highlight-background-color-inverted,
-      $red: 15
-    );
-  }
-
   pre {
-    background-color: transparent;
+    @include dark-scheme {
+      background-color: adjust-color(
+        $highlight-background-color-inverted,
+        $red: 15
+      );
+    }
   }
 }
 
@@ -550,4 +546,27 @@ pre {
   font-size: inherit;
   line-height: inherit;
   color: inherit;
+}
+
+/**
+ * @section Margin notes
+ */
+
+$margin-note-inner-width: 8rem;
+$margin-note-gap: 2rem;
+$margin-note-outer-width: $margin-note-inner-width + $margin-note-gap;
+$margin-note-breakpoint: $toc-width + $main-max-width + (2 * $margin-note-outer-width);
+
+.margin-note {
+  display: none;
+
+  @media screen and (min-width: $margin-note-breakpoint) {
+    display: block;
+    float: left;
+    width: $margin-note-inner-width;
+    margin-left: -$margin-note-outer-width;
+    margin-top: 0.4rem;
+    text-align: right;
+    font-size: 80%;
+  }
 }
