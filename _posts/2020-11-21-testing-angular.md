@@ -4527,6 +4527,8 @@ flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
 
 This leads to a problem that is known from [testing Outputs](#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. Despite the defect, Jasmine thinks that all is fine.
 
+<aside class="margin-note">Expect changed value</aside>
+
 There are several ways to solve this problem. We have opted for a variable that is `undefined` initially and is assigned a value.
 
 ```typescript
@@ -4602,6 +4604,8 @@ describe('FlickrService', () => {
 
 Are we done with testing `searchPublicPhotos`? We have tested the success case in which the server returns a `200 OK`. But we have not tested the error case yet!
 
+<aside class="margin-note">Unhappy path</aside>
+
 `searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the _unhappy path_ should be tested.
 
 Let us simulate a “500 Internal Server Error”. Instead of responding to the request with `flush`, we let it fail by calling `error`.
@@ -4624,6 +4628,8 @@ The `TestRequest`’s `error` method expects an `ErrorEvent`, and an optional op
 
 The second parameter, the options object, allows us to set the HTTP `status` (like `500`), the `statusText` (like `'Internal Server Error'`) and response headers. In the example above, we set `status` and `statusText`.
 
+<aside class="margin-note">Expect Observable error</aside>
+
 Now we check that the returned Observable behaves correctly. It must not emit a next value and must not complete. It must fail with an error.
 
 We achieve that by subscribing to `next`, `error` and `complete` events:
@@ -4635,6 +4641,10 @@ flickrService.searchPublicPhotos(searchTerm).subscribe(
   () => { /* complete handler must not be called! */ },
 );
 ```
+
+<aside class="margin-note" markdown="1">
+  `fail`
+</aside>
 
 When the `next` or `complete` handlers are called, the spec must fail immediately. There is a handy global Jasmine function for this purpose: `fail`. We directly pass `fail` as `next` and `complete` handler.
 
@@ -4666,6 +4676,8 @@ expect(actualError.error).toBe(errorEvent);
 expect(actualError.status).toBe(status);
 expect(actualError.statusText).toBe(statusText);
 ```
+
+<aside class="margin-note">Type guard</aside>
 
 Since `actualError` is defined as `HttpErrorResponse | undefined`, we need to rule out the `undefined` case first before accessing the properties. `expect(actualError).toBeDefined()` would accomplish that. But the TypeScript compiler does not understand that `expect(…).toBeDefined()` rules out the `undefined` case. So we need to throw an exception manually.
 
@@ -4769,6 +4781,10 @@ request.flush({ success: true });
 
 This is equivalent to the predicate example, but gives a more specific error message if the header is incorrect.
 
+<aside class="margin-note" markdown="1">
+  `match`
+</aside>
+
 In addition to `expectOne`, there is the `match` method for finding multiple requests that match certain criteria. It returns an array of requests. If there are no matches, the array is empty, but the spec does not fail. Hence, you need to add Jasmine expectations to check the array and the requests therein.
 
 Assume there is a `CommentService` with a method `postTwoComments`. The code under test makes two requests to the same URL, but with a different body.
@@ -4819,6 +4835,8 @@ All in all, testing Services is easier than testing other Angular application pa
 
 If the Service under test depends on another Service, a unit test needs to the fake the dependency. This is probably the hardest part, but takes the same effort as faking Services that are Component dependencies.
 
+<aside class="margin-note">Predefined testing modules</aside>
+
 Angular ships with crucial Services that are commonly used in your own Services. Since Angular intends to be testable, Angular also offers tools to replace them with fakes.
 
 We have used the `HttpClientTestingModule` for testing a Service that depends on `HttpClient`. To name another example, there is the [`RouterTestingModule`](https://angular.io/api/router/testing/RouterTestingModule) for testing Services that depend on `Router` and `Location`.
@@ -4831,9 +4849,9 @@ Angular beginners quickly encounter three core concepts: Modules, Components and
 
 In Angular, there are three types of Directives:
 
-1. A _Component_ is a Directive with a template. A Component typically uses an element type selector, like `app-counter`. Angular then looks for `app-counter` elements and renders the Component template into these host elements.
-2. An _Attribute Directive_ adds logic to an existing host element in the DOM. Examples for built-in Attribute Directives are `NgClass` and `NgStyle`.
-3. A _Structural Directive_ alters the structure of the DOM, meaning it adds and removes elements programmatically. Examples for built-in Structural Directives are `NgIf`, `NgFor` and `NgSwitch`.
+1. A **Component** is a Directive with a template. A Component typically uses an element type selector, like `app-counter`. Angular then looks for `app-counter` elements and renders the Component template into these host elements.
+2. An **Attribute Directive** adds logic to an existing host element in the DOM. Examples for built-in Attribute Directives are `NgClass` and `NgStyle`.
+3. A **Structural Directive** alters the structure of the DOM, meaning it adds and removes elements programmatically. Examples for built-in Structural Directives are `NgIf`, `NgFor` and `NgSwitch`.
 
 We have already tested Components. We have yet to test the two other types of Directives.
 
