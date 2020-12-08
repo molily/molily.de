@@ -4054,6 +4054,641 @@ There are two guidelines that may help you:
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
+
+## Component testing with Spectator
+
+We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`. As described, they are fairly low-level and unopinionated.
+
+<aside class="margin-note">Structural weaknesses</aside>
+
+The built-in tools have several drawbacks:
+
+- `TestBed` requires a large amount of boilerplate code to set up a common Component or Service test.
+- `DebugElement` lacks essential features and is a “leaky” abstraction. You are forced to work with the wrapped native DOM element for common tasks.
+- There are no default solutions for faking Components and Service dependencies safely.
+- The tests itself get verbose and repetitive. You have to establish testing conventions and write helpers yourself.
+
+We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs. If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They do not address the above-mentioned structural problems.
+
+<aside class="margin-note">Unified testing API</aside>
+
+**[Spectator](https://github.com/ngneat/spectator)** is an opinionated library for testing Angular application. Technically, it sits on top of `TestBed`, `ComponentFixture` and `DebugElement`. But the main idea is to unify all these APIs in one consistent, powerful and user-friendly interface – the `Spectator` object.
+
+Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength are Component tests with Inputs, Outputs, children, event handling, Service dependencies and more. For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
+
+This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
+
+Both [example applications](#example-applications) are tested with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+
+In this guide, we will look at testing the Flickr search example with Spectator.
+
+### Component with an Input
+
+Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
+
+The [`FullPhotoComponent` suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/full-photo/full-photo.component.spec.ts) looks like this:
+
+```typescript
+describe('FullPhotoComponent', () => {
+  let component: FullPhotoComponent;
+  let fixture: ComponentFixture<FullPhotoComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [FullPhotoComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(FullPhotoComponent);
+    component = fixture.componentInstance;
+    component.photo = photo1;
+    fixture.detectChanges();
+  });
+
+  it('renders the photo information', () => {
+    expectText(fixture, 'full-photo-title', photo1.title);
+
+    const img = findEl(fixture, 'full-photo-image');
+    expect(img.properties.src).toBe(photo1.url_m);
+    expect(img.properties.alt).toBe(photo1.title);
+
+    expectText(fixture, 'full-photo-ownername', photo1.ownername);
+    expectText(fixture, 'full-photo-datetaken', photo1.datetaken);
+    expectText(fixture, 'full-photo-tags', photo1.tags);
+
+    const link = findEl(fixture, 'full-photo-link');
+    expect(link.properties.href).toBe(photo1Link);
+    expect(link.nativeElement.textContent.trim()).toBe(photo1Link);
+  });
+});
+```
+
+This suite already benefits from `expectText` and `findEl`, but it is still using the leaky `DebugElement` abstraction.
+
+<aside class="margin-note">Component factory</aside>
+
+When using Spectator, the Module configuration and the Component creation looks different. In the scope of the test suite, we create a **Component factory**:
+
+```typescript
+import { createComponentFactory } from '@ngneat/spectator';
+
+describe('FullPhotoComponent with spectator', () => {
+  /* … */
+
+  const createComponent = createComponentFactory({
+    component: FullPhotoComponent,
+    shallow: true,
+  });
+
+  /* … */
+});
+```
+
+`createComponentFactory` expects a configuration object. `component: FullPhotoComponent` specifies the Component under test. `shallow: true` means we want [shallow, not deep rendering](#shallow-vs-deep-rendering). It does not make a difference for `FullPhotoComponent` though since it has no children.
+
+The configuration object may include more options for the testing Module, as we will see later. Internally, `createComponentFactory` creates a `beforeEach` block that calls `TestBed.configureTestingModule` and `TestBed.compileComponents`, just like we did manually.
+
+`createComponentFactory` returns a factory function for creating a `FullPhotoComponent`. We save that function in the `createComponent` constant.
+
+<aside class="margin-note">Create Component</aside>
+
+The next step is to add a `beforeEach` block that creates the Component instance. `createComponent` again takes an options object. To set the `photo` Input property, we pass `props: { photo: photo1 }`.
+
+```typescript
+import { createComponentFactory, Spectator } from '@ngneat/spectator';
+
+describe('FullPhotoComponent with spectator', () => {
+  let spectator: Spectator<FullPhotoComponent>;
+
+  const createComponent = createComponentFactory({
+    component: FullPhotoComponent,
+    shallow: true,
+  });
+
+  beforeEach(() => {
+    spectator = createComponent({ props: { photo: photo1 } });
+  });
+
+  /* … */
+});
+```
+
+<aside class="margin-note">Spectator</aside>
+
+`createComponent` returns a `Spectator` object. This is the powerful interface we are going to use in the specs.
+
+The spec `it('renders the photo information', /* … */)` repeats three essential tasks several times:
+
+1. Find an element by test id
+2. Check its text content
+3. Check its attribute value
+
+First, the spec finds the element with the test id `full-photo-title` and expects it to contain the photo’s title.
+
+With Spectator, it reads:
+
+```typescript
+expect(
+  spectator.query(byTestId('full-photo-title'))
+).toHaveText(photo1.title);
+```
+
+<aside class="margin-note" markdown="1">
+  `spectator.query`
+</aside>
+
+The central `spectator.query` method finds an element in the DOM. We have decided to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
+
+Spectator supports test ids out of the box, so we write:
+
+```typescript
+spectator.query(byTestId('full-photo-title'))
+```
+
+`spectator.query` returns a native DOM element or `null` in case no match was found. Note that it does not return a `DebugElement`.
+
+When using Spectator, you work directly with DOM element objects. What seems cumbersome at first glance, in fact lifts the burden of the leaky `DebugElement` abstraction.
+
+<aside class="margin-note">Jasmine matchers</aside>
+
+Spectator makes it easy to work with plain DOM elements. Several matchers are added to Jasmine to create expectations on an element.
+
+For checking an element’s text content, Spectator provides the `toHaveText` matcher. This leads us to the following expectation:
+
+```typescript
+expect(
+  spectator.query(byTestId('full-photo-title'))
+).toHaveText(photo1.title);
+```
+
+This code is equivalent to our `expectText` helper, but more idiomatic and fluent to read.
+
+Next, we need to verify that the Component renders the full photo using an `img` element.
+
+```typescript
+const img = spectator.query(byTestId('full-photo-image'));
+expect(img).toHaveAttribute('src', photo1.url_m);
+expect(img).toHaveAttribute('alt', photo1.title);
+```
+
+Here, we find the element with the test id `full-photo-image` to check its `src` and `alt` attributes. We use Spectator’s matcher `toHaveAttribute` for this purpose.
+
+The rest of the spec finds more elements to inspect their contents and attributes.
+
+The full test suite using Spectator (only imports from Spectator are shown):
+
+```typescript
+import {
+  byTestId, createComponentFactory, Spectator
+} from '@ngneat/spectator';
+
+describe('FullPhotoComponent with spectator', () => {
+  let spectator: Spectator<FullPhotoComponent>;
+
+  const createComponent = createComponentFactory({
+    component: FullPhotoComponent,
+    shallow: true,
+  });
+
+  beforeEach(() => {
+    spectator = createComponent({ props: { photo: photo1 } });
+  });
+
+  it('renders the photo information', () => {
+    expect(
+      spectator.query(byTestId('full-photo-title'))
+    ).toHaveText(photo1.title);
+
+    const img = spectator.query(byTestId('full-photo-image'));
+    expect(img).toHaveAttribute('src', photo1.url_m);
+    expect(img).toHaveAttribute('alt', photo1.title);
+
+    expect(
+      spectator.query(byTestId('full-photo-ownername'))
+    ).toHaveText(photo1.ownername);
+    expect(
+      spectator.query(byTestId('full-photo-datetaken'))
+    ).toHaveText(photo1.datetaken);
+    expect(
+      spectator.query(byTestId('full-photo-tags'))
+    ).toHaveText(photo1.tags);
+
+    const link = spectator.query(byTestId('full-photo-link'));
+    expect(link).toHaveAttribute('href', photo1Link);
+    expect(link).toHaveText(photo1Link);
+  });
+});
+```
+
+Compared to the version with custom spec helpers, the Spectator version is not necessarily shorter. But it works on a *consistent abstraction level*. Instead of a wild mix of `TestBed`, `ComponentFixture`, `DebugElement` plus helper functions, there is the `createComponentFactory` function and one `Spectator` instance.
+
+Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
+
+<div class="book-sources" markdown="1">
+- [FullPhotoComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo)
+- [Spectator: Queries](https://github.com/ngneat/spectator#queries)
+- [Spectator: Custom matchers](https://github.com/ngneat/spectator#custom-matchers)
+</div>
+
+### Component with children and Service dependency
+
+Spectator really shines when testing [container Components](#testing-components-with-children). These are Components with children and Service dependencies.
+
+In the Flickr search, the topmost `FlickrSearchComponent` calls the `FlickrService` and holds the state. It orchestrates three other Components, passes down the state and listens for Outputs.
+
+The `FlickrSearchComponent` template:
+
+```html
+<app-search-form (search)="handleSearch($event)"></app-search-form>
+
+<div class="photo-list-and-full-photo">
+  <app-photo-list
+    [title]="searchTerm"
+    [photos]="photos"
+    (focusPhoto)="handleFocusPhoto($event)"
+    class="photo-list"
+  ></app-photo-list>
+
+  <app-full-photo
+    *ngIf="currentPhoto"
+    [photo]="currentPhoto"
+    class="full-photo"
+    data-testid="full-photo"
+  ></app-full-photo>
+</div>
+```
+
+The `FlickrSearchComponent` class:
+
+```typescript
+@Component({
+  selector: 'app-flickr-search',
+  templateUrl: './flickr-search.component.html',
+  styleUrls: ['./flickr-search.component.css'],
+})
+export class FlickrSearchComponent {
+  public searchTerm = '';
+  public photos: Photo[] = [];
+  public currentPhoto: Photo | null = null;
+
+  constructor(private flickrService: FlickrService) {}
+
+  public handleSearch(searchTerm: string): void {
+    this.flickrService.searchPublicPhotos(searchTerm).subscribe((photos) => {
+      this.searchTerm = searchTerm;
+      this.photos = photos;
+      this.currentPhoto = null;
+    });
+  }
+
+  public handleFocusPhoto(photo: Photo): void {
+    this.currentPhoto = photo;
+  }
+}
+```
+
+<aside class="margin-note">Child Components</aside>
+
+Since this is the Component where all things come together, there is much to test.
+
+1. Initially, the `SearchFormComponent` and the `PhotoListComponent` are rendered, not the `FullPhotoComponent`. The photo list is empty.
+2. When the `SearchFormComponent` emits the `search` output, the `FlickrService` is called with the search term.
+3. The search term and the photo list are passed down to the `PhotoListComponent` via Input.
+4. When the `PhotoListComponent` emits the `focusPhoto` output, the `FullPhotoComponent` is rendered. The selected photo is passed down via Input.
+
+The [`FlickrSearchComponent` test suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/flickr-search/flickr-search.component.spec.ts) looks like this:
+
+```typescript
+describe('FlickrSearchComponent', () => {
+  let fixture: ComponentFixture<FlickrSearchComponent>;
+  let component: FlickrSearchComponent;
+  let fakeFlickrService: Pick<FlickrService, keyof FlickrService>;
+
+  let searchForm: DebugElement;
+  let photoList: DebugElement;
+
+  beforeEach(async () => {
+    fakeFlickrService = {
+      searchPublicPhotos: jasmine
+        .createSpy('searchPublicPhotos')
+        .and.returnValue(of(photos)),
+    };
+
+    await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      declarations: [FlickrSearchComponent],
+      providers: [{ provide: FlickrService, useValue: fakeFlickrService }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(FlickrSearchComponent);
+    component = fixture.debugElement.componentInstance;
+    fixture.detectChanges();
+
+    searchForm = findComponent(fixture, 'app-search-form');
+    photoList = findComponent(fixture, 'app-photo-list');
+  });
+
+  it('renders the search form and the photo list, not the full photo', () => {
+    expect(searchForm).toBeTruthy();
+    expect(photoList).toBeTruthy();
+    expect(photoList.properties.title).toBe('');
+    expect(photoList.properties.photos).toEqual([]);
+
+    expect(() => {
+      findComponent(fixture, 'app-full-photo');
+    }).toThrow();
+  });
+
+  it('searches and passes the resulting photos to the photo list', () => {
+    const searchTerm = 'beautiful flowers';
+    searchForm.triggerEventHandler('search', searchTerm);
+    fixture.detectChanges();
+
+    expect(fakeFlickrService.searchPublicPhotos).toHaveBeenCalledWith(searchTerm);
+    expect(photoList.properties.title).toBe(searchTerm);
+    expect(photoList.properties.photos).toBe(photos);
+  });
+
+  it('renders the full photo when a photo is focussed', () => {
+    expect(() => {
+      findComponent(fixture, 'app-full-photo');
+    }).toThrow();
+
+    photoList.triggerEventHandler('focusPhoto', photo1);
+
+    fixture.detectChanges();
+
+    const fullPhoto = findComponent(fixture, 'app-full-photo');
+    expect(fullPhoto.properties.photo).toBe(photo1);
+  });
+});
+```
+
+Without going too much into detail, a few notes:
+
+- We use [shallow rendering](#shallow-vs-deep-rendering). The child Components are not declared and only empty shell elements are rendered (`app-search-form`, `app-photo-list` and `app-full-photo`). This lets us check their presence, their Inputs and Outputs.
+- We use our `findComponent` testing helper to find the child elements.
+- To check the Input values, we use the `properties` of `DebugElement`s.
+- To simulate that an Output emits, we use `triggerEventListener` on `DebugElement`s.
+- We provide our own fake `FlickrService`. It contains one Jasmine spy that returns a Observable with a fixed list of photos.
+
+  ```typescript
+  fakeFlickrService = {
+    searchPublicPhotos: jasmine
+      .createSpy('searchPublicPhotos')
+      .and.returnValue(of(photos)),
+  };
+  ```
+
+Rewriting this suite with Spectator brings two major changes:
+
+<aside class="margin-note">Fake children and Service</aside>
+
+1. We replace the child Components with fakes created by [ng-mocks](#faking-a-child-component-with-ng-mocks). The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
+2. We use Spectator to create the fake `FlickrService`.
+
+The test suite setup:
+
+```typescript
+import {
+  createComponentFactory, mockProvider, Spectator
+} from '@ngneat/spectator';
+
+describe('FlickrSearchComponent with spectator', () => {
+  /* … */
+
+  const createComponent = createComponentFactory({
+    component: FlickrSearchComponent,
+    shallow: true,
+    declarations: [
+      MockComponents(
+        SearchFormComponent, PhotoListComponent, FullPhotoComponent
+      ),
+    ],
+    providers: [mockProvider(FlickrService)],
+  });
+
+  /* … */
+});
+```
+
+Again we use Spectator’s `createComponentFactory`. This time, we replace the child Components with fakes using ng-mocks’ `MockComponents` function.
+
+<aside class="margin-note" markdown="1">
+  `mockProvider`
+</aside>
+
+Then we use Spectator’s `mockProvider` function to create a fake `FlickrService`. Under the hood, this works roughly the same as our manual `fakeFlickrService`. It creates an object that resembles the original, but the methods are replaced with Jasmine spies.
+
+In a `beforeEach` block, the Component is created.
+
+```typescript
+import {
+  createComponentFactory, mockProvider, Spectator
+} from '@ngneat/spectator';
+
+describe('FlickrSearchComponent with spectator', () => {
+  let spectator: Spectator<FlickrSearchComponent>;
+
+  let searchForm: SearchFormComponent | null;
+  let photoList: PhotoListComponent | null;
+  let fullPhoto: FullPhotoComponent | null;
+
+  const createComponent = createComponentFactory(/* … */);
+
+  beforeEach(() => {
+    spectator = createComponent();
+
+    spectator.inject(FlickrService).searchPublicPhotos.and.returnValue(of(photos));
+
+    searchForm = spectator.query(SearchFormComponent);
+    photoList = spectator.query(PhotoListComponent);
+    fullPhoto = spectator.query(FullPhotoComponent);
+  });
+
+  /* … */
+});
+```
+
+`spectator.inject` is the equivalent of `TestBed.inject`. We get hold of the `FlickrService` fake instance and configure the `searchPublicPhotos` spy to return fixed data.
+
+<aside class="margin-note">Find children</aside>
+
+`spectator.query` not only finds elements in the DOM, but also child Components and other nested Directives. We find the three child Components and save them in variables since they will be used in all specs.
+
+Note that `searchForm`, `photoList` and `fullPhoto` are typed as Component instances, not `DebugElement`s. This is accurate because the fakes have the same public interfaces, the same Inputs and Output.
+
+Due to the equivalence of fake and original, we can access Inputs with the pattern _`componentInstance.input`_. And we let an Output emit with the pattern _`componentInstance.output.emit(…)`_.
+
+The first spec checks the initial state:
+
+```typescript
+it('renders the search form and the photo list, not the full photo', () => {
+  if (!(searchForm && photoList)) {
+    throw new Error('searchForm or photoList not found');
+  }
+  expect(photoList.title).toBe('');
+  expect(photoList.photos).toEqual([]);
+  expect(fullPhoto).not.toExist();
+});
+```
+
+`spectator.query(PhotoListComponent)` either returns the Component instance or `null` if there is no such nested Component. Hence, the `photoList` variable is typed as `PhotoListComponent | null`.
+
+<aside class="margin-note">Manual type guard</aside>
+
+Unfortunately, `expect` is not a [TypeScript type guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html). Jasmine expectations cannot narrow down the type from `PhotoListComponent | null` to `PhotoListComponent`.
+
+We cannot call `expect(photoList).not.toBe(null)` and continue with `expect(photoList.title).toBe('')`. The first expectation throws an error in the `null` case, but TypeScript does not know this. TypeScript still assumes the type `PhotoListComponent | null`, so it would complain about `photoList.title`.
+
+This is why we manually throw an error when `photoList` is `null`. TypeScript infers that in the rest of the spec, the type must be `PhotoListComponent`.
+
+In contrast, our `findComponent` helper function throws an exception directly if no match was found, failing the test early. To verify that a child Component is absent, we had to expect this exception:
+
+```typescript
+expect(() => {
+  findComponent(fixture, 'app-full-photo');
+}).toThrow();`.
+```
+
+The Spectator spec goes on and uses `expect(fullPhoto).not.toExist()`, which is equivalent to `expect(fullPhoto).toBe(null)`. The Jasmine matcher `toExist` comes from Spectator.
+
+The second spec covers the search:
+
+```typescript
+it('searches and passes the resulting photos to the photo list', () => {
+  if (!(searchForm && photoList)) {
+    throw new Error('searchForm or photoList not found');
+  }
+  const searchTerm = 'beautiful flowers';
+  searchForm.search.emit(searchTerm);
+
+  spectator.detectChanges();
+
+  const flickrService = spectator.inject(FlickrService);
+  expect(flickrService.searchPublicPhotos).toHaveBeenCalledWith(searchTerm);
+  expect(photoList.title).toBe(searchTerm);
+  expect(photoList.photos).toBe(photos);
+});
+```
+
+When the `SearchFormComponent` emits a search term, we expect that the `FlickrService` has been called. In addition, we expect that the search term and the photo list from Service are passed to the `PhotoListComponent`.
+
+`spectator.detectChanges()` is just Spectator’s shortcut to `fixture.detectChanges()`.
+
+The last spec focusses a photo:
+
+```typescript
+it('renders the full photo when a photo is focussed', () => {
+  expect(fullPhoto).not.toExist();
+
+  if (!photoList) {
+    throw new Error('photoList not found');
+  }
+  photoList.focusPhoto.emit(photo1);
+
+  spectator.detectChanges();
+
+  fullPhoto = spectator.query(FullPhotoComponent);
+  if (!fullPhoto) {
+    throw new Error('fullPhoto not found');
+  }
+  expect(fullPhoto.photo).toBe(photo1);
+});
+```
+
+Again, the main difference is that we directly work with Inputs and Outputs.
+
+<div class="book-sources" markdown="1">
+- [FlickrSearchComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/flickr-search)
+- [ng-mocks: How to mock a component](https://github.com/ike18t/ng-mocks#how-to-create-a-mock-component)
+- [Spectator: Mocking providers](https://github.com/ngneat/spectator#mocking-providers)
+</div>
+
+### Event handling with Spectator
+
+Most Components handle input events like mouse clicks, keypresses or form field changes. To simulate them, we have used the `triggerEventHandler` method on `DebugElement`s. This method does not actually simulate DOM events, it merely calls the event handlers registered by `(click)="handler($event)"` and the like.
+
+`triggerEventHandler` requires you to create an event object that becomes `$event` in the template. For this reason, we have introduced the `click` and `makeClickEvent` helpers.
+
+Spectator takes a different approach: It dispatches synthetic DOM events. This makes the test more realistic. Synthetic events can bubble up in the DOM tree like real events. Spectator creates the event objects for you while you can configure the details.
+
+To perform a simple click, we use `spectator.click` and pass the target element or a `byTestId` selector. An example from the [PhotoItemComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.spectator.spec.ts):
+
+```typescript
+describe('PhotoItemComponent with spectator', () => {
+  /* … */
+
+  it('focusses a photo on click', () => {
+    let photo: Photo | undefined;
+
+    spectator.component.focusPhoto.subscribe((otherPhoto: Photo) => {
+      photo = otherPhoto;
+    });
+
+    spectator.click(byTestId('photo-item-link'));
+
+    expect(photo).toBe(photo1);
+  });
+
+  /* … */
+});
+```
+
+Another common task is to simulate form field input. So far, we have used the [`setFieldValue` helper](#filling-out-forms) for this purpose.
+
+Spectator has an equivalent method named `spectator.typeInElement`. It is used by the [SearchFormComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/search-form/search-form.component.spectator.spec.ts):
+
+```typescript
+describe('SearchFormComponent with spectator', () => {
+  /* … */
+
+  it('starts a search', () => {
+    let actualSearchTerm: string | undefined;
+
+    spectator.component.search.subscribe((otherSearchTerm: string) => {
+      actualSearchTerm = otherSearchTerm;
+    });
+
+    spectator.typeInElement(searchTerm, byTestId('searchTermInput'));
+
+    spectator.dispatchFakeEvent(byTestId('form'), 'submit');
+
+    expect(actualSearchTerm).toBe(searchTerm);
+  });
+});
+```
+
+The spec simulates typing in the search term into the search field. Then it simulates a `submit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
+
+Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
+
+<div class="book-sources" markdown="1">
+- [PhotoItemComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/photo-item)
+- [SearchFormComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/search-form)
+- [Spectator: Events API](https://github.com/ngneat/spectator#events-api)
+</div>
+
+### Spectator: Summary
+
+Spectator is a mature library that addresses the practical needs of Angular developers. It offers solutions for common Angular testing problems. The examples above presented only a few of Spectator’s features.
+
+Test code should be both concise and easy to understand. Spectator provides an expressive, high-level language for writing Angular tests. Spectator makes simple tasks simple without losing any power.
+
+Spectator’s success underlines that the standard Angular testing tools are cumbersome and inconsistent. Alternative concepts are both necessary and beneficial.
+
+Once you are familiar with the standard tools, you should try out alternatives like Spectator and ng-mocks. Then decide whether you stick with isolated testing helpers or switch to more comprehensive testing libraries.
+
+<div class="book-sources" markdown="1">
+- [Spectator project site](https://github.com/ngneat/spectator)
+- [ng-mocks project site](https://github.com/ike18t/ng-mocks)
+</div>
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
 ## Testing Services
 
 In an Angular application, Services are responsible for fetching, storing and processing data. Services are singletons, meaning there is only one instance of a Service during runtime. They are fit for central data storage, HTTP and WebSocket communication as well as data validation.
@@ -4861,6 +5496,8 @@ The name Attribute Directive comes from the attribute selector, for example `[ng
 
 We have already mentioned the built-in Attribute Directives `NgClass` and `NgStyle`. In addition, both Template-driven and Reactive Forms rely heavily on Attribute Directives: `NgForm`, `NgModel`, `FormGroupDirective`, `FormControlName`, etc.
 
+<aside class="margin-note">Styling logic</aside>
+
 Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes. Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
 
 Neither of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing the **`ThresholdWarningDirective`**. This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
@@ -4928,7 +5565,9 @@ input[type='number'].overThreshold {
 }
 ```
 
-Before we write the test for the Directive, let us walk through the implementation parts quickly.
+Before we write the test for the Directive, let us walk through the implementation parts.
+
+<aside class="margin-note">Input of the same name</aside>
 
 The `ThresholdWarningDirective` is applied with an attribute binding `[appThresholdWarning]="…"`. It receives the attribute value as an Input of the same name. This is how the threshold is configured.
 
@@ -4936,6 +5575,10 @@ The `ThresholdWarningDirective` is applied with an attribute binding `[appThresh
 @Input()
 public appThresholdWarning: number | null = null;
 ```
+
+<aside class="margin-note" markdown="1">
+  `input` event
+</aside>
 
 Using `HostListener`, the Directive lists for `input` event on the host element. When the user changes the field value, the `inputHandler` method is called. This method gets the field value and checks whether it is over the threshold. The result is stored in the `overThreshold` boolean property.
 
@@ -4948,7 +5591,11 @@ public inputHandler(): void {
 }
 ```
 
-To access the host element, we use the `ElementRef` dependency. `ElementRef` is a wrapper around the host element’s DOM node. `this.elementRef.nativeElement` yields the DOM node, and `this.elementRef.nativeElement.valueAsNumber` the actual value.
+<aside class="margin-note">Read value</aside>
+
+To access the host element, we use the `ElementRef` dependency. `ElementRef` is a wrapper around the host element’s DOM node. `this.elementRef.nativeElement` yields the `input` element’s DOM node. `valueAsNumber` contains the input value as a number.
+
+<aside class="margin-note">Toggle class</aside>
 
 Last but not least, the `overThreshold` property is bound to a class of the same name using `HostBinding`. This is how the class is toggled.
 
@@ -4958,6 +5605,8 @@ public overThreshold = false;
 ```
 
 Now that we understand what is going on, we need to replicate the workflow in our test.
+
+<aside class="margin-note">Host Component</aside>
 
 First of all, Attribute and Structural Directives need an existing host element they can be applied to. When testing these Directives, we use a **host Component** that renders the host element. For example, the `ThresholdWarningDirective` needs an `<input type="number">` host element.
 
@@ -4992,9 +5641,11 @@ describe('ThresholdWarningDirective', () => {
 
 When configuring the testing Module, we declare both the Directive under test and the host Component. Just like in a Component test, we render the Component and obtain a `ComponentFixture`.
 
-In the following specs, we need to access the input element. Again, we use the standard approach of setting a `data-testid` attribute. Then, we use the [testing helpers](#testing-helpers) to find the element (`findEl`).
+<aside class="margin-note">Find input element</aside>
 
-For convenience, we pick the input element in the `beforeEach` block after rendering. We save it in a shared variable named `input`.
+In the following specs, we need to access the input element. We use the standard approach: a `data-testid` attribute and the `findEl` [testing helper](#testing-helpers).
+
+For convenience, we pick the input element in the `beforeEach` block. We save it in a shared variable named `input`.
 
 ```typescript
 @Component({
@@ -5025,6 +5676,8 @@ describe('ThresholdWarningDirective', () => {
 });
 ```
 
+<aside class="margin-note">Check class</aside>
+
 The first spec ensures that the Directive does nothing when the user has not touched the input. Using the element’s [classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList), we expect the class `overThreshold` to be absent.
 
 ```typescript
@@ -5033,7 +5686,7 @@ it('does not set the class initially', () => {
 });
 ```
 
-The next spec expects the class to be present when the user enters a number over the threshold. To simulate the user input, we use our handy testing helper `setFieldValue`.
+The next spec enters a number over the threshold. To simulate the user input, we use our handy testing helper `setFieldValue`. Then, the spec expects the class to be present.
 
 ```typescript
 it('adds the class if the number is over the threshold', () => {
@@ -5116,6 +5769,8 @@ describe('ThresholdWarningDirective', () => {
 
 A Structural Directive does not have a template like a Component, but operates on an internal `ng-template`. The Directive renders the template into the DOM programmatically, passing context data to the template.
 
+<aside class="margin-note">Render template programmatically</aside>
+
 The prime examples `NgIf` demonstrate what Structural Directives are capable of: The `NgIf` Directive decides whether the template is rendered or not. The `NgFor` Directive walks over a list of items and renders the template repeatedly for each item.
 
 A Structural Directive uses an attribute selector, like `[ngIf]`. The attribute is applied to a host element with the special asterisk syntax, for example `*ngIf`. Internally, this is translated to `<ng-template [ngIf]="…">…</ng-template>`.
@@ -5126,7 +5781,11 @@ This guide assumes that you roughly understand how Structural Directives work an
 
 We are introducing and testing the `PaginateDirective`, a complex Structural Directive.
 
-`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called _pagination_. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
+<aside class="margin-note" markdown="1">
+  `NgFor` with Pagination
+</aside>
+
+`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called **pagination**. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
 <div class="book-sources" markdown="1">
 - [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
@@ -5157,7 +5816,7 @@ The simplest use of the Directive looks like this:
 
 This is similar to the `NgFor` directive. Assuming that `items` is an array of numbers (`[1, 2, 3, …]`), the example above renders the first 10 numbers in the array.
 
-The asterisk syntax `*appPaginate` and the so-called microsyntax `let item of items` is _syntactic sugar_. That is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
+The asterisk syntax `*appPaginate` and the so-called _microsyntax_ `let item of items` is _syntactic sugar_. This is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
 
 ```html
 <ng-template appPaginate let-item [appPaginateOf]="items">
@@ -5168,6 +5827,8 @@ The asterisk syntax `*appPaginate` and the so-called microsyntax `let item of it
 ```
 
 There is an `ng-template` with an attribute `appPaginate` and an attribute binding `appPaginateOf`. Also there is a template input variable called `item`.
+
+<aside class="margin-note">Render template for each item</aside>
 
 As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Our `PaginateDirective` works with the `ng-template` you see above. The Directive renders the template for each item on the current page.
 
@@ -5186,6 +5847,8 @@ export class PaginateDirective<T> implements OnChanges {
 ```
 
 The Directive uses the `[appPaginate]` attribute selector and has an Input called `appPaginateOf`. By writing the microsyntax `*appPaginate="let item of items"`, we actually set the `appPaginateOf` Input to the value `items`.
+
+<aside class="margin-note">Directive Inputs</aside>
 
 The `PaginateDirective` has a configuration option named `perPage`. It specifies how many items are visible per page. Per default, it is 10. To change it, we set `perPage: …` in the microsyntax:
 
@@ -5232,6 +5895,8 @@ This is how built-in Structural Directives like `NgIf` and `NgFor` work as well.
 
 Again, a Structural Directive lacks a template. `PaginateDirective` cannot render the “next” and “previous” buttons itself. And to remain flexible, it should not render specific markup. The Component that uses the Directive should decide how the controls look.
 
+<aside class="margin-note">Pass another template</aside>
+
 Therefore we pass the controls as a template to the Directive. In particular, we pass a reference to a separate `ng-template`. This will be the second template the Directive operates on.
 
 This is how the controls template could look like:
@@ -5256,7 +5921,9 @@ This is how the controls template could look like:
 
 `#controls` sets a [template reference variable](https://angular.io/guide/template-reference-variables). This means we can further reference the template by the name `controls`.
 
-The Directive renders the template with a _context_ object consisting of these properties: `previousPage`, `nextPage`, `page` and `pages`. We can describe the context object with a TypeScript interface that is also part of the Directive’s code:
+<aside class="margin-note">Context object</aside>
+
+The Directive renders the controls template with a _context_ object that implements the following TypeScript interface:
 
 ```typescript
 interface ControlsContext {
@@ -5267,7 +5934,9 @@ interface ControlsContext {
 }
 ```
 
-`page` is the current page the user seems, `pages` is the total number of pages. `previousPage` and `nextPage` are functions for turning the pages.
+`page` is the current page the user seems. `pages` is the total number of pages. `previousPage` and `nextPage` are functions for turning the pages.
+
+<aside class="margin-note">Use properties from context</aside>
 
 The `ng-template` takes these properties from the context and saves them in local variables of the same name:
 
@@ -5347,6 +6016,8 @@ The inner workings of the `PaginateDirective` are not relevant for testing, so w
 
 We have explored all features of `PaginateDirective` and are now ready to test them!
 
+<aside class="margin-note">Host Component</aside>
+
 First, we need a host Component that applies the Structural Directive under test. We let it render a list of 10 numbers, 3 numbers on each page.
 
 ```typescript
@@ -5368,6 +6039,8 @@ class HostComponent {
   public items = items;
 }
 ```
+
+<aside class="margin-note">Controls template</aside>
 
 Since we also want to test the custom controls feature, we need to pass a controls template. We will use the simple controls discussed above.
 
@@ -5439,7 +6112,9 @@ This is a standard Component test setup – nothing special yet.
 
 The first spec verifies that the Directive renders the items on the first page, in our case the numbers 1, 2 and 3.
 
-We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts) to find all elements with the said test id.
+We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts) to find all elements with said test id.
+
+<aside class="margin-note">Expect rendered items</aside>
 
 We expect to find three items. Then we examine the text content of each item and expect that it matches the item in the number list, respectively.
 
@@ -5478,6 +6153,8 @@ it('renders the items of the first page', () => {
 });
 ```
 
+<aside class="margin-note">Check controls</aside>
+
 The next spec proves that the controls template is rendered passing the current page and the total number of pages.
 
 The elements have have a `data-testid="page"` and `data-testid="pages"`, respectively. We use the [`expectText` testing helper](#testing-helpers) to check their text content.
@@ -5502,6 +6179,8 @@ it('shows the next page', () => {
 });
 ```
 
+<aside class="margin-note">Turn pages</aside>
+
 We simulate a click on the “next” button using the `click` testing helper. Then we start Angular’s change detection so the Component together with the Directive are re-rendered. Finally, we verify that the Directive has rendered the next three items, the numbers 4, 5 and 6.
 
 The spec for the “previous” button looks similar. First, we jump to the second page, then back to the first page.
@@ -5517,6 +6196,8 @@ it('shows the previous page', () => {
   expectItems(els, [1, 2, 3]);
 });
 ```
+
+<aside class="margin-note">Stress test</aside>
 
 We have now covered the Directive’s important behavior. Time for testing edge cases! Does the Directive behave correctly if we click on the “previous” button on the first page and the “next” button on the last page?
 
@@ -5679,9 +6360,13 @@ In this example, the value from `user.birthday` is transformed by the `date` Pip
 {% raw %}{{ user.birthday | date }}{% endraw %}
 ```
 
+<aside class="margin-note">Formatting</aside>
+
 Pipes are often used for internationalization, including translation of labels and messages, formatting of dates, times and various numbers. In these cases, the Pipe input value should not be shown to the user. The output value is user-readable.
 
 Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. They format dates, amounts of money and numbers, respectively, according to the localization settings. Another well-known Pipe is the `AsyncPipe` which unwraps an Observable or Promise.
+
+<aside class="margin-note">Pure Pipes</aside>
 
 Most Pipes are _pure_, meaning they merely take a value and compute a new value. They do not have _side effects_: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
@@ -5708,9 +6393,11 @@ In a Component template, we transform a value using the Pipe:
 
 The `GreetPipe` take the string `'Julie'` and computes a new string, `'Hello , Julie!'`.
 
+<aside class="margin-note">Simple vs. complex setup</aside>
+
 There are two important ways to test a Pipe:
 
-1. Create an instance of the Pipe class manually without the `TestBed`. Then call the `transform` method.
+1. Create an instance of the Pipe class manually. Then call the `transform` method.
 2. Set up a `TestBed`. Render a host Component that uses the Pipe. Then check the text content in the DOM.
 
 The first way requires minimal setup, is fast and straight-forward. The second closely mimics how the Pipe is used in practice. It also tests the name of the Pipe, declared in the `@Pipe()` decorator.
@@ -5748,8 +6435,8 @@ Many Pipes depend on local settings, including the user interface language, date
 We are introducing and testing the `TranslatePipe`, a complex Pipe with a Service dependency.
 
 <div class="book-sources" markdown="1">
-- [TranslatePipe: Run the app](https://molily.github.io/translate-pipe/)
 - [TranslatePipe: Source code](https://github.com/molily/translate-pipe)
+- [TranslatePipe: Run the app](https://molily.github.io/translate-pipe/)
 </div>
 
 <button class="load-iframe">
@@ -5904,7 +6591,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.onTranslationChangeSubscription.unsubscribe();
     if (this.getSubscription) {
       this.getSubscription.unsubscribe();
@@ -5913,11 +6600,17 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 }
 ```
 
+<aside class="margin-note">Async translation</aside>
+
 The `TranslatePipe` is _impure_ because the translations are loaded asynchronously. When called the first time, the `transform` method cannot return the correct translation synchronously. It calls the `TranslateService`’s `get` method which returns an Observable.
+
+<aside class="margin-note">Trigger change detection</aside>
 
 Once the translation is loaded, the `TranslatePipe` saves it and notifies the Angular change detector. In particular, it marks the corresponding view as changed by calling [`ChangeDetectorRef`’s `markForCheck`](https://angular.io/api/core/ChangeDetectorRef#markForCheck) method.
 
-In turn, Angular re-evaluates the expression that uses the Pipe, for example `'greeting' | translate`, and calls the `transform` method again. Finally, `transform` returns the right translation synchronously.
+In turn, Angular re-evaluates every expression that uses the Pipe, like `'greeting' | translate`, and calls the `transform` method again. Finally, `transform` returns the right translation synchronously.
+
+<aside class="margin-note">Translation changes</aside>
 
 The same process happens when the user changes the language and new translations are loaded. The Pipe subscribes to `TranslateService`’s `onTranslationChange` and calls the `TranslateService` again to get the new translation.
 
@@ -5942,6 +6635,8 @@ class FakeTranslateService implements Partial<TranslateService> {
 ```
 
 The fake is a partial implementation of the original. The `TranslatePipe` under test only needs the `onTranslationChange` property and the `get` method. The latter returns a fake translation including the key so we can test that the key was passed correctly.
+
+<aside class="margin-note">Host Component</aside>
 
 Now we need to decide whether to test the Pipe directly or within a host Component. Both ways are possible and no solution is significantly easier or more robust. You will find both solutions in the example project. In this guide, we will discuss the solution with `TestBed` and host Component.
 
@@ -5986,11 +6681,12 @@ describe('TranslatePipe: with TestBed and HostComponent', () => {
 
 In the testing Module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide the `FakeTranslateService` instead. Just like in a Component test, we create the Component and examine the rendered DOM.
 
+<aside class="margin-note">Sync and async translation</aside>
+
 What needs to be tested? Obviously, we need to check that `{% raw %}{{ key | translate }}{% endraw %}` evaluates to `key1`. There are two cases that needs to be tested though:
 
-As described above, `TranslatePipe`’s `transform` calls `TranslateService`’s `get`, which returns an Observable. If the translations are already loaded, the Observable completes immediately and `transform` is able to return the correct translation synchronously.
-
-If the translations are pending, the Pipe returns `null` (or an outdated translation) and the Observable completes afterwards. A change detection cycle with a second call to `transform` is necessary to render to correct translation.
+1. The translations are already loaded. In this case, the the Observable returned by `TranslateService`’s `get` completes immediately. `transform` returns the correct translation synchronously.
+2. The translations are pending. `transform` returns `null` (or an outdated translation). The Observable completes any time later. The change detection is triggered, `transform` is called the second time and returns the correct translation.
 
 In the test, we write specs for both scenarios:
 
@@ -6018,13 +6714,19 @@ This Observable emits one “next” value and completes immediately. This mimic
 
 We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
 
-Then we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
+Finally, we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
+
+<aside class="margin-note">Simulate delay</aside>
 
 To test the second case is trickier because we need to simulate that the Observable emits asynchronously. There are numerous ways to do this. We are using [RxJS’ `delay` operator](https://rxjs-dev.firebaseapp.com/api/operators/delay) for simplicity.
 
 At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
 
 Again, there are several ways how to accomplish this. We opt for Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
+
+<aside class="margin-note" markdown="1">
+  `fakeAsync` and `tick`
+</aside>
 
 `fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables, etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
 
@@ -6047,6 +6749,8 @@ it('translates the key, async service response', fakeAsync(() => {
   /* … */
 });
 ```
+
+<aside class="margin-note">Delay Observable</aside>
 
 We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is _some_ delay greater or equal 1.
 
@@ -6113,9 +6817,11 @@ it('translates a changed key', /* … */);
 it('updates on translation change', /* … */);
 ```
 
-The `TranslatePipe` stores the last key and the last translation. This necessary because it receives the translation asynchronously. Also, Angular calls `transform` several times with the same key. Since `TranslatePipe` is _impure_, Angular cannot simply cache the result.
+The `TranslatePipe` receives the translation asynchronously and stores both the key and the translation. When Angular calls `transform` with the *same key* again, the Pipe returns the translation synchronously. Since the `TranslatePipe` is marked as _impure_, Angular does not cache the `transform` result.
 
-When `translate` is called with a different key, the `TranslatePipe` needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
+<aside class="margin-note">Different key and translation</aside>
+
+When `translate` is called with a *different key*, the `TranslatePipe` needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
 
 ```typescript
 it('translates a changed key', () => {
@@ -6126,11 +6832,11 @@ it('translates a changed key', () => {
 });
 ```
 
-After another change detection cycle, the DOM contains the updated translation for `key2`.
+After a change detection cycle, the DOM contains the updated translation for `key2`.
 
-Last but no least, the Pipe needs to fetch a new translation when the user has changed the language and new translations have been loaded. For this purpose, the Pipe subscribes to the Service’s `onTranslationChange` emitter.
+Last but no least, the Pipe needs to fetch a new translation from the `TranslateService` when the user changes the language and new translations have been loaded. For this purpose, the Pipe subscribes to the Service’s `onTranslationChange` emitter.
 
-Our `FakeTranslateService` supports this `EventEmitter` as well, hence we call the `emit` method to simulate a translation change. Before, we let the Service return a different translation in order to see a change in the DOM.
+Our `FakeTranslateService` supports `onTranslationChange` as well, hence we call the `emit` method to simulate a translation change. Before, we let the Service return a different translation in order to see a change in the DOM.
 
 ```typescript
 it('updates on translation change', () => {
@@ -6151,6 +6857,7 @@ We made it! Writing these specs is challenging without doubt.
 - [Angular API reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
 - [Angular API reference: tick](https://angular.io/api/core/testing/tick)
 - [RxJS: delay operator](https://rxjs-dev.firebaseapp.com/api/operators/delay)
+- [ngx-translate](https://github.com/ngx-translate/core)
 </div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
@@ -6159,11 +6866,15 @@ We made it! Writing these specs is challenging without doubt.
 
 Modules are central parts of Angular applications. Often they contain important setup code. Yet they are hard to test since there is no typical logic, only sophisticated configuration.
 
+<aside class="margin-note">Only metadata</aside>
+
 Angular Modules are classes, but most of the time, the class itself is empty. The essence lies in the metadata set with `@NgModule({ … })`.
 
 We could sneak into the metadata and check whether certain Services are provided, whether third-party Modules are imported, and whether Components are exported. But such a test would simply **mirror the implementation**. Code duplication does not give you more confidence, it only increases the cost of change.
 
 Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
+
+<aside class="margin-note">Smoke test</aside>
 
 There are certain Module errors that only surface during runtime. These can be caught with a _smoke test_. Given this Module:
 
@@ -6200,608 +6911,6 @@ describe('FeatureModule', () => {
 ```
 
 The integration test uses the `TestBed` to import the Module under test. It verifies that no error occurs when importing the Module.
-
-<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
-
-## Unit testing with Spectator
-
-We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`. As described, they are fairly low-level and unopinionated.
-
-The built-in tools have several drawbacks:
-
-- `TestBed` requires a large amount of boilerplate code to set up a common Component or Service test.
-- `DebugElement` lacks essential features and is a “leaky” abstraction. You are forced to work with the wrapped native DOM element for common tasks.
-- There are no default solutions for faking Components and Service dependencies safely.
-- The tests itself get verbose and repetitive. You have to establish testing conventions and write helpers yourself.
-
-We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs. If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They do not address the above-mentioned structural problems.
-
-**[Spectator](https://github.com/ngneat/spectator)** is an opinionated library for testing Angular application. Technically, it sits on top of `TestBed`, `ComponentFixture` and `DebugElement`. But the main idea is to unify all these APIs in one consistent, powerful and user-friendly interface – the `Spectator` object.
-
-Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength are Component tests with Inputs, Outputs, children, event handling, Service dependencies and more. For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
-
-This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
-
-Both [example applications](#example-applications) are tested with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
-
-In this guide, we will look at testing the Flickr search example with Spectator.
-
-### Component with an Input
-
-Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
-
-The [`FullPhotoComponent` suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/full-photo/full-photo.component.spec.ts) looks like this:
-
-```typescript
-describe('FullPhotoComponent', () => {
-  let component: FullPhotoComponent;
-  let fixture: ComponentFixture<FullPhotoComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [FullPhotoComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(FullPhotoComponent);
-    component = fixture.componentInstance;
-    component.photo = photo1;
-    fixture.detectChanges();
-  });
-
-  it('renders the photo information', () => {
-    expectText(fixture, 'full-photo-title', photo1.title);
-
-    const img = findEl(fixture, 'full-photo-image');
-    expect(img.properties.src).toBe(photo1.url_m);
-    expect(img.properties.alt).toBe(photo1.title);
-
-    expectText(fixture, 'full-photo-ownername', photo1.ownername);
-    expectText(fixture, 'full-photo-datetaken', photo1.datetaken);
-    expectText(fixture, 'full-photo-tags', photo1.tags);
-
-    const link = findEl(fixture, 'full-photo-link');
-    expect(link.properties.href).toBe(photo1Link);
-    expect(link.nativeElement.textContent.trim()).toBe(photo1Link);
-  });
-});
-```
-
-This suite already benefits from `expectText` and `findEl`, but it is still using the leaky `DebugElement` abstraction.
-
-When using Spectator, the Module configuration and the Component creation looks different. In the scope of the test suite, we create a _Component factory_:
-
-```typescript
-import { createComponentFactory } from '@ngneat/spectator';
-
-describe('FullPhotoComponent with spectator', () => {
-  /* … */
-
-  const createComponent = createComponentFactory({
-    component: FullPhotoComponent,
-    shallow: true,
-  });
-
-  /* … */
-});
-```
-
-`createComponentFactory` expects a configuration object. `component: FullPhotoComponent` specifies the Component under test. `shallow: true` means we want [shallow, not deep rendering](#shallow-vs-deep-rendering). It does not make a difference for `FullPhotoComponent` though since it has no children.
-
-The configuration object may include more options for the testing Module, as we will see later. Internally, `createComponentFactory` creates a `beforeEach` block that calls `TestBed.configureTestingModule` and `TestBed.compileComponents`, just like we did manually.
-
-`createComponentFactory` returns a factory function for creating a `FullPhotoComponent`. We save that function in the `createComponent` constant.
-
-The next step is to add a `beforeEach` block that creates the Component instance. `createComponent` again takes an options object. To set the `photo` Input property, we pass `props: { photo: photo1 }`.
-
-```typescript
-import { createComponentFactory, Spectator } from '@ngneat/spectator';
-
-describe('FullPhotoComponent with spectator', () => {
-  let spectator: Spectator<FullPhotoComponent>;
-
-  const createComponent = createComponentFactory({
-    component: FullPhotoComponent,
-    shallow: true,
-  });
-
-  beforeEach(() => {
-    spectator = createComponent({ props: { photo: photo1 } });
-  });
-
-  /* … */
-});
-```
-
-`createComponent` returns a `Spectator` object. This is the powerful interface we are going to use in the specs.
-
-The spec `it('renders the photo information', /* … */)` repeats three essential tasks several times:
-
-1. Find an element by test id
-2. Check its text content
-3. Check its attribute value
-
-First, the spec finds the element with the test id `full-photo-title` and expects it to contain the photo’s title.
-
-With Spectator, it reads:
-
-```typescript
-expect(
-  spectator.query(byTestId('full-photo-title'))
-).toHaveText(photo1.title);
-```
-
-The central `spectator.query` method finds an element in the DOM. We have decided to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
-
-Spectator supports test ids out of the box, so we write:
-
-```typescript
-spectator.query(byTestId('full-photo-title'))
-```
-
-`spectator.query` returns a native DOM element or `null` in case no match was found. Note that it does not return a `DebugElement`.
-
-When using Spectator, you work directly with DOM element objects. What seems cumbersome at first glance, in fact lifts the burden of the leaky `DebugElement` abstraction.
-
-Spectator makes it easy to work with plain DOM elements. Several matchers are added to Jasmine to create expectations on an element.
-
-For checking an element’s text content, Spectator provides the `toHaveText` matcher. This leads us to the following expectation:
-
-```typescript
-expect(
-  spectator.query(byTestId('full-photo-title'))
-).toHaveText(photo1.title);
-```
-
-This code is equivalent to our `expectText` helper, but more idiomatic and fluent to read.
-
-Next, we need to verify that the Component renders the full photo using an `img` element.
-
-```typescript
-const img = spectator.query(byTestId('full-photo-image'));
-expect(img).toHaveAttribute('src', photo1.url_m);
-expect(img).toHaveAttribute('alt', photo1.title);
-```
-
-Here, we find the element with the test id `full-photo-image` to check its `src` and `alt` attributes. We use Spectator’s matcher `toHaveAttribute` for this purpose.
-
-The rest of the spec finds more elements to inspect their contents and attributes.
-
-The full test suite using Spectator (only imports from Spectator are shown):
-
-```typescript
-import {
-  byTestId, createComponentFactory, Spectator
-} from '@ngneat/spectator';
-
-describe('FullPhotoComponent with spectator', () => {
-  let spectator: Spectator<FullPhotoComponent>;
-
-  const createComponent = createComponentFactory({
-    component: FullPhotoComponent,
-    shallow: true,
-  });
-
-  beforeEach(() => {
-    spectator = createComponent({ props: { photo: photo1 } });
-  });
-
-  it('renders the photo information', () => {
-    expect(spectator.query(byTestId('full-photo-title'))).toHaveText(photo1.title);
-
-    const img = spectator.query(byTestId('full-photo-image'));
-    expect(img).toHaveAttribute('src', photo1.url_m);
-    expect(img).toHaveAttribute('alt', photo1.title);
-
-    expect(spectator.query(byTestId('full-photo-ownername'))).toHaveText(
-      photo1.ownername,
-    );
-    expect(spectator.query(byTestId('full-photo-datetaken'))).toHaveText(
-      photo1.datetaken,
-    );
-    expect(spectator.query(byTestId('full-photo-tags'))).toHaveText(photo1.tags);
-
-    const link = spectator.query(byTestId('full-photo-link'));
-    expect(link).toHaveAttribute('href', photo1Link);
-    expect(link).toHaveText(photo1Link);
-  });
-});
-```
-
-Compared to the version with custom spec helpers, the Spectator version is not necessarily shorter. But it works on a consistent abstraction level. Instead of a wild mix of `TestBed`, `ComponentFixture`, `DebugElement` plus helper functions, there is the `createComponentFactory` function and one `Spectator` instance.
-
-Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
-
-<div class="book-sources" markdown="1">
-- [FullPhotoComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo)
-- [Spectator: Queries](https://github.com/ngneat/spectator#queries)
-- [Spectator: Custom matchers](https://github.com/ngneat/spectator#custom-matchers)
-</div>
-
-### Component with children and Service dependency
-
-Spectator really shines when testing [container Components](#testing-components-with-children). These are Components with children and Service dependencies.
-
-In the Flickr search, the topmost `FlickrSearchComponent` calls the `FlickrService` and holds the state. It orchestrates three other Components, passes down the state and listens for Outputs.
-
-The `FlickrSearchComponent` template:
-
-```html
-<app-search-form (search)="handleSearch($event)"></app-search-form>
-
-<div class="photo-list-and-full-photo">
-  <app-photo-list
-    [title]="searchTerm"
-    [photos]="photos"
-    (focusPhoto)="handleFocusPhoto($event)"
-    class="photo-list"
-  ></app-photo-list>
-
-  <app-full-photo
-    *ngIf="currentPhoto"
-    [photo]="currentPhoto"
-    class="full-photo"
-    data-testid="full-photo"
-  ></app-full-photo>
-</div>
-```
-
-The `FlickrSearchComponent` class:
-
-```typescript
-@Component({
-  selector: 'app-flickr-search',
-  templateUrl: './flickr-search.component.html',
-  styleUrls: ['./flickr-search.component.css'],
-})
-export class FlickrSearchComponent {
-  public searchTerm = '';
-  public photos: Photo[] = [];
-  public currentPhoto: Photo | null = null;
-
-  constructor(private flickrService: FlickrService) {}
-
-  public handleSearch(searchTerm: string): void {
-    this.flickrService.searchPublicPhotos(searchTerm).subscribe((photos) => {
-      this.searchTerm = searchTerm;
-      this.photos = photos;
-      this.currentPhoto = null;
-    });
-  }
-
-  public handleFocusPhoto(photo: Photo): void {
-    this.currentPhoto = photo;
-  }
-}
-```
-
-Since this is the Component where all things come together, there is much to test.
-
-1. Initially, the `SearchFormComponent` and the `PhotoListComponent` are rendered, not the `FullPhotoComponent`. The photo list is empty.
-2. When the `SearchFormComponent` emits the `search` output, the `FlickrService` is called with the search term.
-3. The search term and the photo list are passed down to the `PhotoListComponent` via Input.
-4. When the `PhotoListComponent` emits the `focusPhoto` output, the `FullPhotoComponent` is rendered. The selected photo is passed down via Input.
-
-The [`FlickrSearchComponent` test suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/flickr-search/flickr-search.component.spec.ts) looks like this:
-
-```typescript
-describe('FlickrSearchComponent', () => {
-  let fixture: ComponentFixture<FlickrSearchComponent>;
-  let component: FlickrSearchComponent;
-  let fakeFlickrService: Pick<FlickrService, keyof FlickrService>;
-
-  let searchForm: DebugElement;
-  let photoList: DebugElement;
-
-  beforeEach(async () => {
-    fakeFlickrService = {
-      searchPublicPhotos: jasmine
-        .createSpy('searchPublicPhotos')
-        .and.returnValue(of(photos)),
-    };
-
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [FlickrSearchComponent],
-      providers: [{ provide: FlickrService, useValue: fakeFlickrService }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FlickrSearchComponent);
-    component = fixture.debugElement.componentInstance;
-    fixture.detectChanges();
-
-    searchForm = findComponent(fixture, 'app-search-form');
-    photoList = findComponent(fixture, 'app-photo-list');
-  });
-
-  it('renders the search form and the photo list, not the full photo', () => {
-    expect(searchForm).toBeTruthy();
-    expect(photoList).toBeTruthy();
-    expect(photoList.properties.title).toBe('');
-    expect(photoList.properties.photos).toEqual([]);
-
-    expect(() => {
-      findComponent(fixture, 'app-full-photo');
-    }).toThrow();
-  });
-
-  it('searches and passes the resulting photos to the photo list', () => {
-    const searchTerm = 'beautiful flowers';
-    searchForm.triggerEventHandler('search', searchTerm);
-    fixture.detectChanges();
-
-    expect(fakeFlickrService.searchPublicPhotos).toHaveBeenCalledWith(searchTerm);
-    expect(photoList.properties.title).toBe(searchTerm);
-    expect(photoList.properties.photos).toBe(photos);
-  });
-
-  it('renders the full photo when a photo is focussed', () => {
-    expect(() => {
-      findComponent(fixture, 'app-full-photo');
-    }).toThrow();
-
-    photoList.triggerEventHandler('focusPhoto', photo1);
-
-    fixture.detectChanges();
-
-    const fullPhoto = findComponent(fixture, 'app-full-photo');
-    expect(fullPhoto.properties.photo).toBe(photo1);
-  });
-});
-```
-
-Without going too much into detail, a few notes:
-
-- We use [shallow rendering](#shallow-vs-deep-rendering). The child Components are not declared and only empty shell elements are rendered (`app-search-form`, `app-photo-list` and `app-full-photo`). This lets us check their presence, their Inputs and Outputs.
-- We use our `findComponent` testing helper to find the child elements.
-- To check the Input values, we use the `properties` on `DebugElement`s.
-- To simulate that an Output emits, we use `triggerEventListener` on `DebugElement`s.
-- We provide our own fake `FlickrService`. It contains one Jasmine spy that returns a Observable with a fixed list of photos.
-
-  ```typescript
-  fakeFlickrService = {
-    searchPublicPhotos: jasmine
-      .createSpy('searchPublicPhotos')
-      .and.returnValue(of(photos)),
-  };
-  ```
-
-Rewriting this suite with Spectator brings two major changes:
-
-1. We replace the child Components with fakes created by [ng-mocks](#faking-a-child-component-with-ng-mocks). The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
-2. We use Spectator to create the fake `FlickrService`.
-
-The test suite setup:
-
-```typescript
-import {
-  createComponentFactory, mockProvider, Spectator
-} from '@ngneat/spectator';
-
-describe('FlickrSearchComponent with spectator', () => {
-  /* … */
-
-  const createComponent = createComponentFactory({
-    component: FlickrSearchComponent,
-    shallow: true,
-    declarations: [
-      MockComponents(
-        SearchFormComponent, PhotoListComponent, FullPhotoComponent
-      ),
-    ],
-    providers: [mockProvider(FlickrService)],
-  });
-
-  /* … */
-});
-```
-
-Again we use Spectator’s `createComponentFactory`. This time, we replace the child Components with fakes using ng-mocks’ `MockComponents` function.
-
-Then we use Spectator’s `mockProvider` function to create a fake `FlickrService`. Under the hood, this works roughly the same as our manual `fakeFlickrService`. It creates an object that resembles the original, but the methods are replaced with Jasmine spies.
-
-In a `beforeEach` block, the Component is created.
-
-```typescript
-import {
-  createComponentFactory, mockProvider, Spectator
-} from '@ngneat/spectator';
-
-describe('FlickrSearchComponent with spectator', () => {
-  let spectator: Spectator<FlickrSearchComponent>;
-
-  let searchForm: SearchFormComponent | null;
-  let photoList: PhotoListComponent | null;
-  let fullPhoto: FullPhotoComponent | null;
-
-  const createComponent = createComponentFactory(/* … */);
-
-  beforeEach(() => {
-    spectator = createComponent();
-
-    spectator.inject(FlickrService).searchPublicPhotos.and.returnValue(of(photos));
-
-    searchForm = spectator.query(SearchFormComponent);
-    photoList = spectator.query(PhotoListComponent);
-    fullPhoto = spectator.query(FullPhotoComponent);
-  });
-
-  /* … */
-});
-```
-
-`spectator.inject` is the equivalent of `TestBed.inject`. We get hold of the `FlickrService` fake instance and configure the `searchPublicPhotos` spy to return fixed data.
-
-`spectator.query` not only finds elements in the DOM, but also child Components and other nested Directives. We find the three child Components and save them in variables since they will be used in all specs.
-
-Note that `searchForm`, `photoList` and `fullPhoto` are typed as Component instances, not `DebugElement`s wrapping the host elements. This is accurate because the fakes have the same public interfaces, the same Inputs and Output.
-
-This means we can access Inputs with the pattern _`componentInstance.input`_. And we let an Output emit with the pattern _`componentInstance.output.emit(…)`_.
-
-The first spec checks the initial state:
-
-```typescript
-it('renders the search form and the photo list, not the full photo', () => {
-  if (!(searchForm && photoList)) {
-    throw new Error('searchForm or photoList not found');
-  }
-  expect(photoList.title).toBe('');
-  expect(photoList.photos).toEqual([]);
-  expect(fullPhoto).not.toExist();
-});
-```
-
-`spectator.query(PhotoListComponent)` either returns the Component instance or `null` if there is no such nested Component. Hence, the `photoList` variable is typed as `PhotoListComponent | null`.
-
-Unfortunately, `expect` is not a [TypeScript type guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html). Jasmine expectations cannot narrow down the type from `PhotoListComponent | null` to `PhotoListComponent`.
-
-We cannot call `expect(photoList).not.toBe(null)` and continue with `expect(photoList.title).toBe('')`. The first expectation throws an error in the `null` case, but TypeScript does not know this. TypeScript still assumes the type `PhotoListComponent | null`, so it would complain about `photoList.title`.
-
-This is why we manually throw an error when `photoList` is `null`. TypeScript infers that in the rest of the spec, the type must be `PhotoListComponent`.
-
-In contrast, our `findComponent` helper function throws an exception directly if no match was found, failing the test early. To verify that a child Component is absent, we had to expect this exception:
-
-```typescript
-expect(() => {
-  findComponent(fixture, 'app-full-photo');
-}).toThrow();`.
-```
-
-The Spectator spec goes on and uses `expect(fullPhoto).not.toExist()`, which is equivalent to `expect(fullPhoto).toBe(null)`. Spectator adds the Jasmine matcher `toExist`.
-
-The second spec covers the search:
-
-```typescript
-it('searches and passes the resulting photos to the photo list', () => {
-  if (!(searchForm && photoList)) {
-    throw new Error('searchForm or photoList not found');
-  }
-  const searchTerm = 'beautiful flowers';
-  searchForm.search.emit(searchTerm);
-
-  spectator.detectChanges();
-
-  const flickrService = spectator.inject(FlickrService);
-  expect(flickrService.searchPublicPhotos).toHaveBeenCalledWith(searchTerm);
-  expect(photoList.title).toBe(searchTerm);
-  expect(photoList.photos).toBe(photos);
-});
-```
-
-When the `SearchFormComponent` emits a search term, we expect that the `FlickrService` has been called. In addition, we expect that the search term and the photo list from Service are passed to the `PhotoListComponent`.
-
-`spectator.detectChanges()` is just Spectator’s shortcut to `fixture.detectChanges()`.
-
-The last spec focusses a photo:
-
-```typescript
-it('renders the full photo when a photo is focussed', () => {
-  expect(fullPhoto).not.toExist();
-
-  if (!photoList) {
-    throw new Error('photoList not found');
-  }
-  photoList.focusPhoto.emit(photo1);
-
-  spectator.detectChanges();
-
-  fullPhoto = spectator.query(FullPhotoComponent);
-  if (!fullPhoto) {
-    throw new Error('fullPhoto not found');
-  }
-  expect(fullPhoto.photo).toBe(photo1);
-});
-```
-
-Again, the main difference is that we directly work with Inputs and Outputs.
-
-<div class="book-sources" markdown="1">
-- [FlickrSearchComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/flickr-search)
-- [ng-mocks: How to mock a component](https://github.com/ike18t/ng-mocks#how-to-create-a-mock-component)
-- [Spectator: Mocking providers](https://github.com/ngneat/spectator#mocking-providers)
-</div>
-
-### Event handling with Spectator
-
-Most Components handle input events like mouse clicks, keypresses or form field changes. To simulate them, we have used the `triggerEventHandler` method on `DebugElement`s. This method does not actually simulate DOM events, it merely calls the event handlers registered by `(click)="handler($event)"` and the like.
-
-`triggerEventHandler` requires you to create an event object that becomes `$event` in the template. For this reason, we have introduced the `click` and `makeClickEvent` helpers.
-
-Spectator takes a different approach: It dispatches synthetic DOM events. This makes the test more realistic. Synthetic events can bubble up in the DOM tree like real events. Spectator creates the event objects for you while you can configure the details.
-
-To perform a simple click, we use `spectator.click` and pass the target element or a `byTestId` selector. An example from the [PhotoItemComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.spectator.spec.ts):
-
-```typescript
-describe('PhotoItemComponent with spectator', () => {
-  /* … */
-
-  it('focusses a photo on click', () => {
-    let photo: Photo | undefined;
-
-    spectator.component.focusPhoto.subscribe((otherPhoto: Photo) => {
-      photo = otherPhoto;
-    });
-
-    spectator.click(byTestId('photo-item-link'));
-
-    expect(photo).toBe(photo1);
-  });
-
-  /* … */
-});
-```
-
-Another common task is to simulate form field input. So far, we have used the [`setFieldValue` helper](#filling-out-forms) for this purpose.
-
-Spectator has an equivalent method named `spectator.typeInElement`. It is used by the [SearchFormComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/search-form/search-form.component.spectator.spec.ts):
-
-```typescript
-describe('SearchFormComponent with spectator', () => {
-  /* … */
-
-  it('starts a search', () => {
-    let actualSearchTerm: string | undefined;
-
-    spectator.component.search.subscribe((otherSearchTerm: string) => {
-      actualSearchTerm = otherSearchTerm;
-    });
-
-    spectator.typeInElement(searchTerm, byTestId('searchTermInput'));
-
-    spectator.dispatchFakeEvent(byTestId('form'), 'submit');
-
-    expect(actualSearchTerm).toBe(searchTerm);
-  });
-});
-```
-
-The spec simulates typing in the search term into the search field. Then it simulates a `submit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
-
-Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
-
-<div class="book-sources" markdown="1">
-- [PhotoItemComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/photo-item)
-- [SearchFormComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/search-form)
-- [Spectator: Events API](https://github.com/ngneat/spectator#events-api)
-</div>
-
-### Spectator: Summary
-
-Spectator is a mature library that addresses the practical needs of Angular developers. It offers solutions for common Angular testing problems. The examples above presented only a few of Spectator’s features.
-
-Test code should be both concise and easy to understand. Spectator provides an expressive, high-level language for writing Angular tests. Spectator makes simple tasks simple without losing any power.
-
-Spectator’s success underlines that the standard Angular testing tools are cumbersome and inconsistent. Alternative concepts are both necessary and beneficial.
-
-Once you are familiar with the standard tools, you should try out alternatives like Spectator and ng-mocks. Then decide whether you stick with isolated testing helpers or switch to more comprehensive testing libraries.
-
-<div class="book-sources" markdown="1">
-- [Spectator project site](https://github.com/ngneat/spectator)
-- [ng-mocks project site](https://github.com/ike18t/ng-mocks)
-</div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -8134,7 +8243,9 @@ Twitter: [@molily](https://twitter.com/molily)
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
-The example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
+All example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
+
+The Flickr search example application uses the [Flickr API](https://www.flickr.com/services/api/) but is not endorsed or certified by Flickr, Inc. or SmugMug, Inc. Flickr is a trademark of Flickr, Inc. The displayed photos are property of their respective owners.
 
 Cover photo: Flying probes testing a printed circuit board by genkur, [licensed from iStock](https://www.istockphoto.com/photo/printed-circuit-board-during-a-flying-probe-test-gm1144549508-307752215).
 
