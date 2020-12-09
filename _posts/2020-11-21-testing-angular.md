@@ -4614,7 +4614,13 @@ Most Components handle input events like mouse clicks, keypresses or form field 
 
 `triggerEventHandler` requires you to create an event object that becomes `$event` in the template. For this reason, we have introduced the `click` and `makeClickEvent` helpers.
 
+<aside class="margin-note">Synthetic events</aside>
+
 Spectator takes a different approach: It dispatches synthetic DOM events. This makes the test more realistic. Synthetic events can bubble up in the DOM tree like real events. Spectator creates the event objects for you while you can configure the details.
+
+<aside class="margin-note" markdown="1">
+  `spectator.click`
+</aside>
 
 To perform a simple click, we use `spectator.click` and pass the target element or a `byTestId` selector. An example from the [PhotoItemComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.spectator.spec.ts):
 
@@ -4640,6 +4646,10 @@ describe('PhotoItemComponent with spectator', () => {
 
 Another common task is to simulate form field input. So far, we have used the [`setFieldValue` helper](#filling-out-forms) for this purpose.
 
+<aside class="margin-note">
+  <p><code>spectator.&#x200b;typeInElement</code></p>
+</aside>
+
 Spectator has an equivalent method named `spectator.typeInElement`. It is used by the [SearchFormComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/search-form/search-form.component.spectator.spec.ts):
 
 ```typescript
@@ -4661,6 +4671,10 @@ describe('SearchFormComponent with spectator', () => {
   });
 });
 ```
+
+<aside class="margin-note" markdown="1">
+  Dispatch `submit`
+</aside>
 
 The spec simulates typing in the search term into the search field. Then it simulates a `submit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
 
@@ -6958,9 +6972,13 @@ In the chapter [The right amount of testing](#the-right-amount-of-testing), we h
 
 Software testing is not a competition. We should not try to reach a particular score just for the sake of it. For what purpose are we measuring code coverage then?
 
+<aside class="margin-note">Find uncovered code</aside>
+
 The coverage report is a valuable tool you should use while writing tests. The report provides guidance by revealing code behavior that is not yet tested. Moreover, it deepens your understanding of how your tests work.
 
 Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](#tailoring-your-testing-approach), testing should be part of the development routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
+
+<aside class="margin-note">Improve coverage</aside>
 
 Writing new code and changing existing code should not lower the coverage score, but gradually increase it. This means if your existing tests cover 75% lines of code, new code needs to be at least 75% covered. Otherwise the score slowly deteriorates.
 
@@ -6985,6 +7003,8 @@ coverageIstanbulReporter: {
 
 In the example configuration above, all values are set to 75%. If the coverage drops below that number, the test execution fails even if all specs succeeded.
 
+<aside class="margin-note">Raise the bar</aside>
+
 When new code is added to the project with a test coverage better than average, you can raise the thresholds in the configuration slowly but steadily – for example, from `75` to `75.1`, `75.2`, `75.3` and so on. Soon these small improvements add up.
 
 Test coverage should not be a pointless competition that puts developers under pressure and shames those that do not meet an arbitrary mark. Measuring coverage is a tool you should use for your benefit. Keep in mind that writing meaningful, spot-on tests does not necessarily increase the coverage score.
@@ -7001,7 +7021,9 @@ For beginners and experts alike, the coverage report helps to set up, debug and 
 
 We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group of connected parts work as intended.
 
-Karma and Jasmine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in a controlled and isolated test environment. What is really important though is whether the whole application works _for the user_.
+<aside class="margin-note">User perspective</aside>
+
+Karma and Jasmine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in a controlled and isolated test environment. What is really important though is whether the whole application works **for the user**.
 
 The most effective and reliable way to ensure a working application is _manual testing_: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
 
