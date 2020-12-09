@@ -2008,9 +2008,7 @@ const countOutput = debugElement.query(
 );
 ```
 
-<aside class="margin-note" markdown="1">
-  `textContent`
-</aside>
+<aside class="margin-note">Text content</aside>
 
 The next step is to read the element’s content. In the DOM, the count is a text node that is a child of `strong`. Unfortunately, the `DebugElement` does not have a method or property for reading the text content. We need to access the native DOM element that has a convenient `textContent` property.
 
@@ -7035,9 +7033,13 @@ We need automated tests that take the user’s perspective. This is what **end-t
 
 As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
+<aside class="margin-note">Real conditions</aside>
+
 When all parts of the application come together, a new type of bugs appears. Often these bugs have to do with timing and order of events, like network latency and race conditions.
 
 The unit and integration tests we wrote worked with a fake back-end. We send fake HTTP requests and respond with fake data. We made an effort to keep the originals and fakes on par.
+
+<aside class="margin-note">Front-end and back-end</aside>
 
 It is much harder to keep the front-end code as well as the fakes in sync with the actual API endpoints and responses from the back-end. Even if the front-end and the back-end share type information about the transferred data, there will be mismatches.
 
@@ -7047,15 +7049,19 @@ It is the goal of end-to-end tests to catch these bugs that cannot be caught by 
 
 Back-end frameworks typically support environment configurations for development, testing and production. End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
 
+<aside class="margin-note">Deterministic environment</aside>
+
 The database needs to be filled with pre-fabricated fake data. With each run of the end-to-end tests, you need to reset the database to a defined initial state.
 
-The back-end services need to answer requests with deterministic, canned responses. Third-party dependencies need to be set up so they return realistic data but do not compromise production data.
+The back-end services need to answer requests with deterministic responses. Third-party dependencies need to be set up so they return realistic data but do not compromise production data.
 
 Since this guide is not about DevOps, we will not go into details here and focus on writing end-to-end tests.
 
 ### How end-to-end tests work
 
 An end-to-end test tries to mimic how a user interacts with the application. Typically, the test engine launches an ordinary browser and controls it remotely.
+
+<aside class="margin-note">Simulate user actions</aside>
 
 Once the browser is started, the end-to-end test navigates to the application’s URL, reads the page content and makes pointer and keyboard input. For example, the test fills out a form and clicks on the submit button.
 
@@ -7067,7 +7073,9 @@ Frameworks for end-to-end tests allow navigating to URLs, simulating user input 
 
 There are two categories of end-to-end testing frameworks: Those that use WebDriver and those that do not.
 
-The [WebDriver protocol](https://www.w3.org/TR/webdriver/) defines a way to control a browser remotely with a set of commands. It originates from the Selenium browser automation project and is now developed at the World Wide Web Consortium (W3C).
+<aside class="margin-note">Browser automation</aside>
+
+The **WebDriver protocol** defines a way to control a browser remotely with a set of commands. It originates from the Selenium browser automation project and is now developed at the World Wide Web Consortium (W3C).
 
 All common browsers support the WebDriver protocol and can be controlled remotely. The most important WebDriver commands are:
 
@@ -7084,9 +7092,14 @@ WebDriver is a key technology most end-to-end testing frameworks depend on. The 
 
 WebDriver is a high-level, generic, HTTP-based protocol. It connects the test running on one machine with a browser possibly running on another machine. The level of control over the browser is limited.
 
+<aside class="margin-note">Flexibility vs. reliability</aside>
+
 Not all frameworks build on WebDriver. Some frameworks integrate more directly into the browser. This makes them more reliable, less complex, but also less flexible since they only support few browsers.
 
-In this guide, we will discuss two frameworks, one of each category: _Protractor_, which is based on WebDriver, and _Cypress_, which does not use WebDriver.
+In this guide, we will learn about two frameworks, one of each category:
+
+- _Protractor_, which is based on WebDriver,
+- _Cypress_, which does not use WebDriver.
 
 <div class="book-sources" markdown="1">
 - [WebDriver protocol](https://www.w3.org/TR/webdriver/)
@@ -7098,11 +7111,15 @@ In this guide, we will discuss two frameworks, one of each category: _Protractor
 
 Protractor is an end-to-end testing framework based on WebDriver, made for Angular applications.
 
+<aside class="margin-note">Well-integrated</aside>
+
 Protractor is an official Angular project and also originates from Google. In a project created with the Angular CLI, Protractor is already installed as the default end-to-end testing framework.
 
 Just like the unit and integration test we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
 
 Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next WebDriver command. This feature seeks to make testing Angular applications more robust.
+
+<aside class="margin-note">Not recommended</aside>
 
 Despite all these benefits, **this guide does not recommend using Protractor for new projects**. Why so?
 
@@ -7114,13 +7131,17 @@ Protractor has a feature called _WebDriver control flow_. While WebDriver comman
 
 The control flow implementation has lead to inconsistencies and bugs. The underlying WebDriverJS library removed the feature, so Protractor deprecated it as well. Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests.
 
+<aside class="margin-note">Asynchronous commands</aside>
+
 All Protractor commands return Promises. You are advised to use `async` / `await` to wait for a command to finish. But most Protractor examples, tutorials and the default configuration still propagate the control flow.
 
-Declaring this control flow obsolete was inevitable, but also eliminated a useful feature. Protractor’s contenders, namely Cypress and WebDriver.io, still have such a feature.
+Declaring the control flow obsolete was inevitable, but eliminated a useful feature. Protractor’s contenders, namely Cypress and WebDriver.io, still have such a feature.
 
-If you disable the control flow as recommended, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
+If you disable the control flow, you practically need to disable the “wait for Angular” feature as well. This means both key Protractor features have lapsed.
 
 Protractor is a solid project, but today there is no compelling reason to choose Protractor over its competitors.
+
+<aside class="margin-note">Tested with Protractor</aside>
 
 If you are looking for Protractor examples, have a look at the Protractor end-to-end tests for the Counter and Flickr search. They come in two variants, one with the control flow and one with `async` / `await`. They are not explained in this guide though.
 
@@ -7135,23 +7156,29 @@ If you are looking for Protractor examples, have a look at the Protractor end-to
 
 Cypress is an end-to-end testing framework that is not based on WebDriver. There are no Angular-specific features. Any web site can be tested with Cypress.
 
+<aside class="margin-note">Reproducible tests</aside>
+
 WebDriver-based testing solutions are flexible and powerful but turned out to be slow and unreliable. Cypress aims to improve both the developing experience and the reliability of end-to-end tests.
 
-Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not controlled remotely, but the tests run directly in the browser, supported by a browser plugin. The runner provides a powerful user interface for inspecting and debugging tests right in the browser.
+Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not controlled remotely, but the tests run directly in the browser, supported by a browser plugin. The test runner provides a powerful user interface for inspecting and debugging tests right in the browser.
+
+<aside class="margin-note">Test runner</aside>
 
 Cypress is the product of one company, Cypress.io, Inc. The test runner we are going to use is open source and free of charge.
 
 The company generates revenue with an additional paid service: The Cypress dashboard manages test runs recorded in a continuous integration environment. You do not have to subscribe to this service to write and run Cypress tests.
 
+<aside class="margin-note">Trade-offs</aside>
+
 From our perspective, Cypress has several drawbacks.
 
-First, Cypress requires some initial setup. While Cypress works well with Angular applications, it is not pre-installed like Protractor.
-
-Second, Cypress uses the Mocha and Chai libraries for writing tests, not Jasmine. While both serve the same purpose, you have to learn the subtle differences. If you use Jasmine for unit and integration tests, there will be an inconsistency in your tests.
-
-Third, at the time of writing, Cypress only supports Firefox as well as Chromium-based browsers like Chrome and Microsoft Edge. It does not support Safari, legacy Edge or even Internet Explorer.
+- Cypress requires some initial setup. While Cypress works well with Angular applications, it is not pre-installed like Protractor.
+-  In place of Jasmine, Cypress uses the Mocha and Chai libraries for writing tests. While both serve the same purpose, you have to learn the subtle differences. If you use Jasmine for unit and integration tests, there will be an inconsistency in your tests.
+- At the time of writing, Cypress only supports Firefox as well as Chromium-based browsers like Chrome and Microsoft Edge. It does not support Safari, legacy Edge or even Internet Explorer.
 
 Cypress is not simply better than WebDriver-based frameworks. It tries to solve their problems by narrowing the scope and making trade-offs.
+
+<aside class="margin-note">Recommended</aside>
 
 That being said, this guide **recommends to use Cypress for testing Angular applications**. Cypress is well-maintained and well-documented. With Cypress, you can write valuable end-to-end tests with little effort.
 
@@ -7214,6 +7241,8 @@ The test files in `integration` are TypeScript files with the extension `.ts`.
 
 The tests itself are structured with the test framework Mocha. The assertions (also called expectations) are written using Chai. Mocha and Chai is a popular combination. They roughly do the same as Jasmine, but are much more flexible and rich in features.
 
+<aside class="margin-note">Test suites</aside>
+
 If you have written unit tests with Jasmine before, the Mocha structure will be familiar to you. A test file contains one or more suites declared with `describe('…', () => { /* … */})`. Typically, one file contains one `describe` block, possible with nested `describe` blocks.
 
 Inside `describe`, the blocks `beforeEach`, `afterEach`, `beforeAll`, `afterAll` and `it` can be used similar to Jasmine tests.
@@ -7266,11 +7295,17 @@ describe('Counter', () => {
 });
 ```
 
+<aside class="margin-note">Commands</aside>
+
 Cypress commands are methods of the `cy` namespace object. Here, we are using two commands, `visit` and `title`.
 
 `cy.visit` orders the browser to visit the given URL. In this case, we use the full URL of the development server. Later, we are going to set a `baseUrl` in the Cypress configuration so we can use paths like `/`. Then, Cypress will append the path to the `baseUrl`.
 
+<aside class="margin-note">Chainers</aside>
+
 `cy.title` returns the page title. To be specific, it returns a Cypress **Chainer**. that wraps a string. A Chainer is an asynchronous wrapper around values, mostly DOM elements but also other values.
+
+<aside class="margin-note">Assertions</aside>
 
 The Chainer has a `should` method for creating an assertion. Cypress relays the call to the Chai library to verify the assertion. We pass two parameters, `'equal'` and the expected title string. `equal` creates an assertion that the subject value (the page title) equals to the given value (`'Angular Workshop: Counters'`). `equal` uses the familiar `===` comparison.
 
@@ -7286,13 +7321,17 @@ This `should` style of assertions is different from Jasmine expectations, like `
 
 ### Running the Cypress tests
 
-Save the example code above as `cypress/integration/counter.ts`.
+Save the minimal test from the last chapter as `cypress/integration/counter.ts`.
 
 Cypress has two shell commands to run the end-to-end tests:
+
+<aside class="margin-note">Test runner</aside>
 
 1. `npx cypress run` – Non-interactive test runner. Runs the tests in a “headless” browser. This means the browser window is not visible. The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output. This command is typically used in the continuous integration environment.
 
 2. `npx cypress open` – Interactive test runner. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests. This command is typically used in the development environment.
+
+<aside class="margin-note">Serve and run tests</aside>
 
 The Cypress schematic we have installed wrap these commands so they integrate with Angular.
 
@@ -7309,19 +7348,25 @@ To run our first Counter end-to-end test, run:
 ng run angular-workshop:cypress-open
 ```
 
+<aside class="margin-note">Launch window</aside>
+
 This will open the test runner:
 
 <img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
 
 In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”. On the top-right, you can select the browser. Chrome, Firefox and Edge will appear in the list given you have installed them on your machine.
 
-This graphical user interface is an Electron application, a framework based on Chromium, the open source foundation of Chrome. RegardYou can always run your tests in Electron as well since it ships with Cypress.
+This graphical user interface is an Electron application, a framework based on Chromium, the open source foundation of the Chrome browser. You can always run your tests in Electron since it ships with Cypress.
+
+<aside class="margin-note">In-browser runner</aside>
 
 Suppose you run the tests in Chrome, the in-browser test runner looks like this:
 
 <img src="/img/robust-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full" loading="lazy">
 
 On the left side, the specs are listed. On the right side, the web page under test is seen.
+
+<aside class="margin-note">Spec log</aside>
 
 By clicking on a spec name, you can see all commands and assertions in the spec.
 
@@ -7337,6 +7382,8 @@ cy.title().should('equal', 'Fluffy Golden Retrievers');
 
 Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
 
+<aside class="margin-note">Time travel</aside>
+
 A unique feature of the in-browser test runner is the ability to see the state of the page at a certain point in time. Cypress creates DOM snapshot when a command is run or an assertion verified. By hovering over a command or assertion, you can travel back in time. The page on the right side then reflects the page when the command or assertion was processed.
 
 <div class="book-sources" markdown="1">
@@ -7347,11 +7394,13 @@ A unique feature of the in-browser test runner is the ability to see the state o
 
 Every Cypress command takes some time to execute. But from the spec point of view, the execution happens instantly.
 
+<aside class="margin-note">Declarative code</aside>
+
 In fact, Cypress commands are merely declarative. The execution happens asynchronously. By calling `cy.visit` and `cy.title`, we add commands to a queue. The queue is processed later.
 
 As a consequence, we do not need to wait for the result of `cy.visit`. Cypress automatically waits for the page to load before proceeding with the next command. For the same reason, `cy.title` does not immediately return a string, but a Chainer that allows more declarations.
 
-In the Jasmine unit and integration tests we wrote, we had to manage time ourselves. When dealing with asynchronous commands and asynchronous values, we had to use `async` / `await`, `fakeAsync` and other means explicitly.
+In the Jasmine unit and integration tests we wrote, we had to manage time ourselves. When dealing with asynchronous commands and values, we had to use `async` / `await`, `fakeAsync` and other means explicitly.
 
 This is not necessary when writing Cypress tests. The Cypress API is designed for expressiveness and readability. Cypress hides the fact that all commands take time.
 
@@ -7359,17 +7408,23 @@ This is not necessary when writing Cypress tests. The Cypress API is designed fo
 
 A key feature of Cypress is that it retries certain commands and assertions. For example, Cypress queries the document title and compares it with the expected title. If the title does not match instantly, Cypress will retry the `cy.title` command and the `should` assertion for four seconds. When the timeout is reached, the spec fails.
 
-Other commands are not retried, but have a built-in waiting logic. For example, we will use Cypress’ `click` method to click on an element. Cypress automatically waits for four seconds for the element to be clickable. Cypress scrolls the element into view and checks if it is visible and not disabled. After several other checks, the Cypress performs the click.
+<aside class="margin-note">Wait automatically</aside>
 
-The retry and waiting timeout of four seconds can be configured for all tests or individual commands. This feature makes end-to-end makes more reliable, but also easier to write. In other end-to-end testing frameworks, you have to wait manually and there is no automatic retry of commands and assertions.
+Other commands are not retried, but have a built-in waiting logic. For example, we are going to use Cypress’ `click` method to click on an element. Cypress automatically waits for four seconds for the element to be clickable. Cypress scrolls the element into view and checks if it is visible and not disabled. After several other checks, the Cypress performs the click.
 
-TODO Retry tests
+The retry and waiting timeout can be configured for all tests or individual commands.
+
+<aside class="margin-note">Retry specs</aside>
+
+If a spec fails despite these retries and waiting, Cypress can be configured to retry the whole spec. This is the last resort if a particular spec produces inconsistent results.
+
+These features makes end-to-end tests more reliable, but also easier to write. In other frameworks, you have to wait manually and there is no automatic retry of commands, assertions or specs.
 
 <div class="book-sources" markdown="1">
 - [Cypress introduction: Commands are asynchronous](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress.html#Commands-Are-Asynchronous)
-- [Cypress documentation: Retry-ability](https://docs.cypress.io/guides/core-concepts/retry-ability.html)
-- [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html)
 - [Cypress documentation: Interacting with Elements](https://docs.cypress.io/guides/core-concepts/interacting-with-elements.html)
+- [Cypress documentation: Retry-ability](https://docs.cypress.io/guides/core-concepts/retry-ability.html)
+- [Cypress documentation: Test Retries](https://docs.cypress.io/guides/guides/test-retries.html)
 </div>
 
 ### Testing the counter increment
@@ -7388,6 +7443,8 @@ The test needs to perform the following steps:
 We already now how to navigate to an address with `cy.visit('http://localhost:4200')`.
 
 For simplicity, we set the `baseUrl` configuration option to `'http://localhost:4200'` so we can write `cy.visit('/')` instead. Once we write more and more tests, the `baseUrl` comes in handy to avoid repetition. More importantly, it allows you to run the tests against different versions of the application, for example development, staging and production.
+
+<aside class="margin-note">Base URL</aside>
 
 Edit the Cypress configuration file `cypress.json` in the Angular project directory. Add a property `baseUrl` and set it to the Angular development server URL:
 
@@ -7408,9 +7465,11 @@ The next step is to find an element in the current page. Cypress provides severa
 cy.get('.example')
 ```
 
-`cy.get` returns a chainer, an asynchronous wrapper around the found elements with useful methods.
+`cy.get` returns a Chainer, an asynchronous wrapper around the found elements with useful methods.
 
 Just like with unit and integration test, the immediate question is: Which way to find an element should we use? By id, name, class or by other means?
+
+<aside class="margin-note">Find by test id</aside>
 
 As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids), this guide recommends to mark elements with a **test ids**. These are data attributes like `data-testid="example"`. In the test, we use a corresponding attribute selector like `[data-testid="example"]` to find the elements.
 
@@ -7418,7 +7477,9 @@ As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids
 cy.get('[data-testid="example"]')
 ```
 
-This recommendation does not mean that other ways to find elements are forbidden. They are still useful in some cases. For example, you might want to check the presence and the content of an `h1` element. This element has a special meaning and you should not find it with by arbitrary test id.
+<aside class="margin-note">Find by type</aside>
+
+Test ids are recommended, but other ways to find elements are still useful in some cases. For example, you might want to check the presence and the content of an `h1` element. This element has a special meaning and you should not find it with by arbitrary test id.
 
 The benefit of a test id is that it can be used on any element. Using a test id means ignoring the element type (like `h1`) and other attributes. The test does not fail if those change. But if there is a reason for this particular element type or attribute, your test should verify the usage.
 
@@ -7435,7 +7496,10 @@ To test the counter Component, we want to verify that the start count for the fi
 cy.get('[data-testid="count"]')
 ```
 
+<aside class="margin-note">Presence and content</aside>
+
 The `cy.get` command already has an assertion built-in: It expects to find at least one element. Otherwise, the test fails.
+
 
 Next, we need to check the element’s text content to verify that the start count is 5. Again, we use the `should` method to create an assertion.
 
@@ -7446,6 +7510,8 @@ cy.get('[data-testid="count"]').should('have.text', '5');
 The `have.text` assertion compares the text content with the given string.
 
 We did it! We have found an element and checked its content.
+
+<aside class="margin-note">Click</aside>
 
 Now let us increment the count. We find and click on the increment button. The button has the test id `increment-button`. Cypress offers the `cy.click` method for this purpose.
 
@@ -7486,7 +7552,9 @@ it('decrements the count', () => {
 
 Last but not least, we test the reset feature. The user can enter a new count into a form field (test id `reset-input`) and click on the reset button (test id `reset-button`) to set the new count.
 
-Cypress does not have a dedicated method to fill out a form field. A Cypress chainer has a generic method for sending keys to an element that is keyboard-interactable: `type`.
+<aside class="margin-note">Fill out form</aside>
+
+The Cypress Chainer has a generic method for sending keys to an element that is keyboard-interactable: `type`.
 
 To enter text into the form field, we pass a string to the `type` method.
 
@@ -7537,6 +7605,8 @@ describe('Counter', () => {
 
 On the start page of the counter project, there are in fact nine counters instance. The `cy.get` commands therefore returns nine elements instead of one.
 
+<aside class="margin-note">First match</aside>
+
 Commands like `type` and `click` can only operate on one element, so we need to reduce the element list to the first result. This is achieved by Cypress’ `first` command inserted in the chain.
 
 ```typescript
@@ -7554,13 +7624,18 @@ All counter features are now tested. In the next chapters, we will refactor the 
 <div class="book-sources" markdown="1">
 - [Full code: counter.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/integration/counter.ts)
 - [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html)
-- [Cypress FAQ: How do I get an element’s text contents?](https://docs.cypress.io/faq/questions/using-cypress-faq.html#How-do-I-get-an-element%E2%80%99s-text-contents)
 - [Cypress API reference: type](https://docs.cypress.io/api/commands/type.html)
+- [Cypress API reference: first](https://docs.cypress.io/api/commands/first.html)
+- [Cypress FAQ: How do I get an element’s text contents?](https://docs.cypress.io/faq/questions/using-cypress-faq.html#How-do-I-get-an-element%E2%80%99s-text-contents)
 </div>
 
 ### Custom Cypress commands
 
-The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over. Since we follow the convention to [find elements by test id](#querying-the-dom-with-test-ids), the first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](#testing-helpers), `findEl` and `findEls`.
+The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over.
+
+The first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](#testing-helpers), `findEl` and `findEls`.
+
+<aside class="margin-note">Find by test id</aside>
 
 The easiest way to create a Cypress helper for finding elements is a function.
 
@@ -7572,9 +7647,15 @@ function findEl(testId: string): Cypress.Chainable<JQuery<HTMLElement>> {
 
 This would allow us to write `findEl('count')` instead of `cy.get('[data-testid="count"]')`.
 
+<aside class="margin-note">Custom commands</aside>
+
 This works fine, but we opt for a another way. Cypress supports adding **custom commands** to the `cy` namespace. We are going to add the command `byTestId` so we can write `cy.byTestId('count')`.
 
 Custom commands are placed in `cypress/support/commands.ts` created by the Angular schematic. Using `Cypress.Commands.add`, we can extend Cypress to add our own command as a method of `cy`. The first parameter is the command name, the second is the implementation as a function.
+
+<aside class="margin-note" markdown="1">
+  `cy.byTestId`
+</aside>
 
 The simplest version could look like this:
 
@@ -7603,6 +7684,8 @@ Cypress.Commands.add(
     cy.get(`[data-testid="${id}"]`, options),
 );
 ```
+
+You do not have to understand the type definitions in detail. They simply make sure that you can pass the same `options` to `cy.byTestId` as you can pass to `cy.get`.
 
 Save `commands.ts`, then edit `cypress/support/index.ts` and activate the line that imports `command.ts`.
 
@@ -7702,6 +7785,8 @@ Before writing any code, let us make a plan what the end-to-end test needs to do
 5. Click on a photo item
 6. Expect the full photo details to appear
 
+<aside class="margin-note">Nondeterministic API</aside>
+
 The application under test queries a third-party API with production data. The test searches for “flower” and Flickr returns different results with each test run.
 
 There are two ways to deal with this dependency during testing:
@@ -7711,13 +7796,15 @@ There are two ways to deal with this dependency during testing:
 
 If we test against the real Flickr API, we cannot be specific in our expectations due to changing search results. We can only test the search results and the full photo superficially. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
 
-This has pros and cons. Testing against the live Flickr API makes the test realistic, but less reliable. If the Flickr API has a short hiccup, the test fails although there is no bug in our code.
+<aside class="margin-note">Real vs. fake API</aside>
+
+This has pros and cons. Testing against the real Flickr API makes the test realistic, but less reliable. If the Flickr API has a short hiccup, the test fails although there is no bug in our code.
 
 Running the test against a fake API allows us to inspect the application deeply. Did the application render the photos the API returned? Are the photo details shown correctly?
 
 Keep in mind that unit, integration and end-to-end tests complement each other. The Flickr search is also tested extensively using unit and integration tests. Each type of test should do what it does best. The unit tests already put the different photo Components through their paces. The end-to-end test does not need to achieve that level of detail.
 
-With Cypress, both type of tests are possible. For a start, we will test against the real Flickr API and we will look into faking the API later.
+With Cypress, both type of tests are possible. For a start, we will test against the real Flickr API. Then, we will fake the API.
 
 #### Testing the search form
 
@@ -7747,11 +7834,15 @@ it('searches for a term', () => {
 });
 ```
 
-As described, `sendKeys` does not overwrite the form value with a new value, but sends keyboard input, key by key.
+<aside class="margin-note">Clear, then type</aside>
+
+The `type` command does not overwrite the form value with a new value, but sends keyboard input, key by key.
 
 Before entering “flower”, we need to clear the field since it already has a pre-filled value. Otherwise we would append “flower” to the existing value. We use Cypress’ `clear` method for that purpose.
 
 Clicking on the submit button starts the search. When the Flickr API has responded, we expect the search results to be appear.
+
+<aside class="margin-note">Expect search results</aside>
 
 A search result consists of a link (`a` element, test id `photo-item-link`) and an image (`img` element, test id `photo-item-image`).
 
@@ -7768,7 +7859,7 @@ Each link needs to have an `href` containing `https://www.flickr.com/photos/`. W
 
 There is no direct Chai assertion for checking that each link in the list has an `href` attribute that contains `https://www.flickr.com/photos/`. We need to check each link in the list individually.
 
-The chainer has an `each` method to call a function for each element. This works similar to JavaScript’s `forEach` array method.
+The Chainer has an `each` method to call a function for each element. This works similar to JavaScript’s `forEach` array method.
 
 ```typescript
 cy.byTestId('photo-item-link')
@@ -7780,11 +7871,13 @@ cy.byTestId('photo-item-link')
 
 Cypress has three surprises for us.
 
-First, `link` is a synchronous value. Inside the `each` callback, we are back in synchronous JavaScript land. (We could do asynchronous operations here, but there is no need.)
+<aside class="margin-note">Synchronous jQuery object</aside>
 
-Second, `link` has the type `JQuery<HTMLElement>`. This is an element wrapped with the popular jQuery library. Cypress chose jQuery because many JavaScript developers are already familiar with it. To read the `href` attribute, we use `link.attr('href')`.
+1. `link` is a synchronous value. Inside the `each` callback, we are back in synchronous JavaScript land. (We could do asynchronous operations here, but there is no need.)
 
-Third, we cannot use Cypress’ `should` method since it only exists on Cypress chainers. But we are dealing with a jQuery object here. We have to use a standard Chai assertions – `expect` or `assert` style, to be specific. We use `expect` together with `to.contain`.
+2. `link` has the type `JQuery<HTMLElement>`. This is an element wrapped with the popular jQuery library. Cypress chose jQuery because many JavaScript developers are already familiar with it. To read the `href` attribute, we use `link.attr('href')`.
+
+3. We cannot use Cypress’ `should` method since it only exists on Cypress Chainers. But we are dealing with a jQuery object here. We have to use a standard Chai assertions – `expect` or `assert` style, to be specific. We use `expect` together with `to.contain`.
 
 This brings us to:
 
@@ -7871,7 +7964,9 @@ Since have searched for “flower”, we assert that the term is either in the p
 cy.byTestId('full-photo').should('contain', SEARCH_TERM);
 ```
 
-The `contain` assertion checks the text content of the found element.
+<aside class="margin-note">Contain vs. have&nbsp;text</aside>
+
+The `contain` assertion checks whether the given string is somewhere in the element’s text content. (In contrast, the `have.text` assertion checks whether the content equals the given string. It does not allow additional content.)
 
 Next, we check that a title and tags are present and not empty.
 
@@ -7914,7 +8009,9 @@ Congratulations, we have successfully tested the Flickr search! This example dem
 
 The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
 
-We will use a design pattern called _page object_. A design pattern is a proven code structure, a best practice to solve a common problem.
+We will use a design pattern called **page object**. A design pattern is a proven code structure, a best practice to solve a common problem.
+
+<aside class="margin-note">High-level interactions</aside>
 
 A page object represents the web page that is scrutinized by an end-to-end test. The page object provides a high-level interface for interacting with the page.
 
@@ -7929,6 +8026,8 @@ A page object organizes numerous low-level instructions into a few high-level in
 3. Read the photo details
 
 Where possible, we group these interactions into methods of the page object.
+
+<aside class="margin-note">Plain class</aside>
 
 A page object is merely an abstract pattern – the exact implementation is up to you. Typically, the page object is declared as a class that is instantiated when the test starts.
 
@@ -7965,6 +8064,8 @@ describe('Flickr search (with page object)', () => {
 
 The `FlickrSearch` instance is stored in a variable declared in the `describe` scope. This way, all specs can access the page object.
 
+<aside class="margin-note">Search</aside>
+
 Let us implement the first high-level interaction on the page object: searching for photos. We move the relevant code from the test into a method of the page object.
 
 ```typescript
@@ -7975,6 +8076,8 @@ public searchFor(term: string): void {
 ```
 
 The `searchFor` method expects a search term and performs all necessary steps.
+
+<aside class="margin-note">Element queries</aside>
 
 Other high-level interactions, like reading the photo list and the photo details, cannot be translated into page object methods. But we can move the test ids and element queries to the page object.
 
@@ -8004,7 +8107,7 @@ public fullPhotoImage(): Cypress.Chainable<JQuery<HTMLElement>> {
 }
 ```
 
-These methods return element chainers.
+These methods return element Chainers.
 
 Then we rewrite the end-to-end test to use the page object methods.
 
@@ -8050,6 +8153,8 @@ For the Flickr search above, a page object is probably too much of a good thing.
 - Move the finding of elements into the page object. The test ids, tag names, etc. used for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
 - Leave all assertions (`should` and `expect`) in the specs. Do not move them to the page object.
 
+<aside class="margin-note">High-level tests</aside>
+
 When writing end-to-end tests, you get lost in technical details quickly: finding by certain features, clicking them, filling out form fields, checking fields values and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
 
 The goal of this refactoring is not brevity. Using page objects does not necessarily lead to less code. The purpose of page objects is to separate low-level details – like finding elements by test ids – from the high-level user journey through the application. This makes the specs easier to read and the easier to maintain.
@@ -8064,6 +8169,8 @@ You can use the page object pattern when you feel the need to tidy up complex, r
 ### Faking the Flickr API
 
 The end-to-end test we wrote for the Flickr search uses the live Flickr API. As discussed, this makes the test realistic. The test provides confidence that the application works hand in hand with the third-party API. But it makes the test slower and only allows unspecific assertions.
+
+<aside class="margin-note">Intercept XMLHttpRequest</aside>
 
 With Cypress, we can uncouple the dependency. Cypress allows us to intercept HTTP requests and respond with fake data. The requests have to originate from JavaScript using XMLHttpRequest. Luckily, this is what Angular’s HTTP module (`@angular/common/http`) uses under the hood.
 
@@ -8097,6 +8204,8 @@ const flickrResponse = {
 
 Now we need to instruct Cypress to intercept the Flickr API request and answer with fake data. This setup happens in the test’s `beforeEach` block.
 
+<aside class="margin-note">Fake server with route</aside>
+
 First, we call `cy.server` to enable the interception of XMLHttpRequests. Second, we call `cy.route` to register a route for the Flickr API URL.
 
 ```typescript
@@ -8116,15 +8225,17 @@ beforeEach(() => {
 
 `cy.route` can be called in different ways. Here, we pass a configuration object. We want to match a GET request with the given URL. (GET is the default method, we do not have to pass `method: 'GET'` explicitly.)
 
+<aside class="margin-note">Response and headers</aside>
+
 The `response` property specifies the fake response Cypress should send. Since the request to Flickr is a cross-origin, we also need to set the `Access-Control-Allow-Origin: *` header so Angular at the origin `http://localhost:4200` is allowed to read the response from the origin `https://www.flickr.com/`.
 
 Finally, we give the request a name by calling `.as('flickrSearchRequest')`. This makes it possible to refer to the request later using the `@flickrSearchRequest` alias.
 
 After this change, Cypress catches the request to Flickr and handles it by itself. The original Flickr API is not reached.
 
-The existing, rather generic specs still pass. It is time to make them more specific.
+The existing, rather generic specs still pass. Before we make them more specific, we need to verify that Cypress found a match and intercepted the HTTP request. Because if it did not, the test would still pass.
 
-But before, we need to verify that Cypress found a match and intercepted the HTTP request. Because if it did not, the test would still pass.
+<aside class="margin-note">Wait for request</aside>
 
 We can achieve this by explicitly waiting for the request after starting the search.
 
@@ -8143,6 +8254,8 @@ it('searches for a term', () => {
 
 If Cypress does not find a matching request until a timeout, the test fails. If Cypress caught the request,
 we know that the Angular application received the photos specified in the `photos` array.
+
+<aside class="margin-note">Deterministic fake API</aside>
 
 Let us write specific assertions that compare the photos in the result list to those in the `photos` array.
 
@@ -8182,6 +8295,8 @@ it('shows the full photo', () => {
 The spec ensures that the application under test outputs the data from the Flickr API. The `have.text` checks an element’s text content, whereas `have.attr` checks the `src` and `href` attributes.
 
 We are done! Our end-to-end test fakes an API request in order to inspect the application deeply.
+
+<aside class="margin-note">Intercept all requests</aside>
 
 In the case of the Flickr search, we have intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including requests to your own HTTP APIs.
 
