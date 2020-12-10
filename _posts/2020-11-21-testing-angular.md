@@ -8317,11 +8317,13 @@ In the Flickr search repository, you will find the same test with `cy.server` / 
 
 ### End-to-end testing: Conclusion
 
-End-to-end tests used to be expensive while the outcome was poor. A lot of labor was necessary to write end-to-end tests that pass reliably when the application is working correctly. This time could not be invested in writing useful tests that uncover bugs and regressions.
+End-to-end tests used to be expensive while the outcome was poor. It was hard to write tests that pass reliably when the application is working correctly. This time could not be invested in writing useful tests that uncover bugs and regressions.
 
 For years, Protractor was the end-to-end testing framework most Angular developers relied on. With Cypress, a framework arose that sets new standards. Compared to Protractor, Cypress excels in developer experience and cost-effectiveness.
 
-While this guide recommends to start with Cypress, WebDriver-based frameworks like Protractor and Webdriver.io are still useful if you need to test a broad range of browsers. For all Cypress tests in this guide, you will find equivalent Protractor tests in the example repositories.
+<aside class="margin-note">Protractor and Cypress examples</aside>
+
+While this guide recommends to start with Cypress, WebDriver-based frameworks are still useful if you need to test a broad range of browsers. For all Cypress tests in this guide, you will find equivalent Protractor tests in the example repositories.
 
 Even with Cypress, end-to-end tests are much more complex and error-prone than unit and integration tests with Jasmine and Karma. Then again, end-to-end tests are highly effective to test a feature under realistic circumstances.
 
@@ -8342,9 +8344,9 @@ The goal of this guide is to dispel the fear of testing. While testing Angular a
 
 Find a testing strategy that reduces the frustration and benefits the quality of your software. Once you have written tests for a couple of features, you will learn which tests are worthwhile – tests that uncover bugs and prevent regressions. Continue with these successes, then slowly explore other kind of tests.
 
-Luckily, the Angular community works steadily to make testing accessible. Angular’s architecture facilitates testing all relevant parts. The framework ships with robust testing tools. If they do not fit your needs, there are mature community projects with alternative workflows.
+Luckily, the Angular community works steadily to make testing accessible. Angular’s architecture facilitates the testing of all relevant parts. The framework ships with robust testing tools. If they do not fit your needs, there are mature community projects with alternative workflows.
 
-Testing does not only make your software more reliable, but also evolves your coding practice in the long run. It requires to write testable code, and testable code is usually less complex.
+Testing does not only make your software more reliable, but also evolves your coding practice in the long run. It requires to write testable code, and testable code is usually simpler.
 
 Automated software testing is challenging and rewarding for various reasons. Despite all troubles, that makes it fascinating.
 
@@ -8352,9 +8354,9 @@ Automated software testing is challenging and rewarding for various reasons. Des
 
 ## References
 
-- [_Angular_](https://angular-buch.com/), Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen, dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
+- [_Angular_](https://angular-buch.com/), Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen. dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
 - [_Testing Angular Applications_](https://www.manning.com/books/testing-angular-applications), Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
-- _[JavaScript Testing Recipes](https://shop.jcoglan.com/javascript-testing-recipes/)_, James Coglan, 2016
+- _[JavaScript Testing Recipes](https://shop.jcoglan.com/javascript-testing-recipes/)_, James Coglan, 2016.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -8378,6 +8380,10 @@ Twitter: [@molily](https://twitter.com/molily)
 
 **Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).**
 
+Published on <time datetime="2020-12-xx">December XX, 2020</time>.
+
+## License
+
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
 All example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
@@ -8385,8 +8391,6 @@ All example code is free and unencumbered software released into the public doma
 The Flickr search example application uses the [Flickr API](https://www.flickr.com/services/api/) but is not endorsed or certified by Flickr, Inc. or SmugMug, Inc. Flickr is a trademark of Flickr, Inc. The displayed photos are property of their respective owners.
 
 Cover photo: Flying probes testing a printed circuit board by genkur, [licensed from iStock](https://www.istockphoto.com/photo/printed-circuit-board-during-a-flying-probe-test-gm1144549508-307752215).
-
-Published on <time datetime="2020-11-21">November 21, 2020</time>.
 
 <p><a href="/impressum/" lang="de" hreflang="de">Impressum und Datenschutz</a></p>
 
