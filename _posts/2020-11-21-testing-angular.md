@@ -50,7 +50,7 @@ draft: true
   </picture>
 
   <span id="cover-credits">
-    Flying probes testing a printed circuit board. Photo by genkur from iStock
+    Flying probes testing a printed circuit board. Photo by genkur from iStock.
   </span>
 </p>
 
@@ -93,9 +93,9 @@ The target audience of this guide are intermediate Angular developers. You shoul
 
 This guide teaches you how to test Angular application parts like Components and Services. It assumes you know how to implement them, but not how to test them properly. If you have questions regarding Angular’s core concepts, please refer to the [official Angular documentation](https://angular.io/docs).
 
-If you have not used individual concepts yet, like Directives, that is fine. You can simply skip the chapters that deal with testing those, and pick chapters you are interested in.
+If you have not used individual concepts yet, like Directives, that is fine. You can simply skip the related chapters and pick chapters you are interested in.
 
-<aside class="margin-note">JavaScript & TypeScript knowledge required</aside>
+<aside class="margin-note">JavaScript & TypeScript proficiency</aside>
 
 Furthermore, this guide is not an introduction to JavaScript or TypeScript. It assumes you have enough JavaScript and TypeScript knowledge to write the implementation and test code you need. Of course, this guide will explain special idioms commonly used for testing.
 
@@ -107,7 +107,7 @@ The official Angular documentation offers a comprehensive [guide on testing](htt
 
 Before we dive in, a quick note regarding the technical terms.
 
-Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish between these meanings by using a different letter case.
+Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish these meanings by using a different letter case.
 
 When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_, etc.
 
@@ -143,7 +143,7 @@ Automated testing has several technical, economical and organizational benefits.
 
 3. **Testing ensures that the code implements the requirements and does not exhibit bugs.** Testing taps every part of the code in order to find flaws.
 
-   <aside class="margin-note">Cover success and error cases</aside>
+   <aside class="margin-note">Success and error cases</aside>
 
    **A valuable test covers the important scenarios** – both correct and incorrect input, expected cases as well as exceptional cases.
 
@@ -258,7 +258,7 @@ We can distinguish automated tests by their perspective and proximity to the cod
 
 <aside class="margin-note">Simulate real usage</aside>
 
-Some tests have a _high-level, bird’s-eye view_ on the application. They try to replicate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. These tests make expectations about what the user sees and reads in the browser.
+Some tests have a _high-level, bird’s-eye view_ on the application. They simulate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. These tests make expectations about what the user sees and reads in the browser.
 
 From the user’s perspective, it does not matter that your application is implemented in Angular. Technical details like the inner structure of your code are not relevant. There is no distinction between front-end and back-end, between parts of your code. The full experience is tested.
 
@@ -339,7 +339,7 @@ These proportions are known as the **Testing Pyramid**. They are widely recogniz
 
 However, this common distribution also drew criticism. In particular, experts disagree on the value of unit tests.
 
-<aside class="margin-note">Unit tests guide design</aside>
+<aside class="margin-note">Design guide</aside>
 
 On the one hand, unit tests are precise and cheap. They are ideal to specify all tiny details of a shared module. They help developers to design small, composable modules that “do one thing and do it well”. This level of testing forces developers to reconsider how the module interacts with other modules.
 
@@ -440,9 +440,11 @@ Once you have identified a piece of code you would like to test, you have to dec
 
 **White box testing** opens the box, sheds light on the internals and takes measurements by reaching into the box. For example, a white box test may call methods that are not part of the public API, but still technically tangible. Then it checks the internal state and expects that it has changed accordingly.
 
-<aside class="margin-note">Relevant behavior,<br>irrelevant internals</aside>
+<aside class="margin-note">Irrelevant internals</aside>
 
 While both approaches have their value, this guide recommends to **write black box tests whenever possible**. You should check what the code does for the user and for other parts of the code. For this purpose, it is not relevant how the code looks internally. Tests that make assumptions about internals are likely to break in the future when the implementation slightly changes.
+
+<aside class="margin-note">Relevant behavior</aside>
 
 More importantly, white box tests run the risk of forgetting to check the real output. They reach into the box, spin some wheel, flip some switch and check a particular state. They just assume the output without actually checking it. So they fail to cover important code behavior.
 
@@ -475,14 +477,14 @@ See the counter Component app in action
 
 The counter is a reusable Component that increments, decrements and resets a number using buttons and input fields.
 
-<aside class="margin-note">Easy to implement, challenging to test</aside>
+<aside class="margin-note">Challenging to test</aside>
 
-For intermediate Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but still struggle testing the ins and outs.
+For intermediate Angular developers, this might look trivial. That is intentional. This guide assumes that you know Angular basics and that you are able to build a counter Component, but struggle testing the ins and outs.
 
 The goals of this example are:
 
 - **Simplicity**: Quickly grasp what the Component is supposed to do.
-- **Covering core Angular features**: Reusable Components with state, Inputs, Outputs, templates, event handling.
+- **Cover core Angular features**: Reusable Components with state, Inputs, Outputs, templates, event handling.
 - **Scalability**: Starting point for more complex application architectures.
 
 <aside class="margin-note">State management</aside>
@@ -549,7 +551,7 @@ An important reason is **testability**. Angular’s architecture guarantees that
 
 <aside class="margin-note">Well-structured code</aside>
 
-We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunk loosely.
+We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunks loosely.
 
 ### Dependency injection and faking
 
@@ -586,7 +588,7 @@ This setup is a trade-off with strengths and weaknesses. Since it is just one po
 
 <aside class="margin-note">Alternatives</aside>
 
-For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](#introducing-cypress). Some use [Spectator](#unit-testing-with-spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
+For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](#introducing-cypress). Some use [Spectator](#component-testing-with-spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
 
 These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests. Later, you will learn about Spectator. For end-to-end tests, this guide deviates from the standard setup by recommending Cypress.
 
@@ -602,7 +604,9 @@ This freedom of choice benefits experts, but confuses beginners. In your project
 
 <aside class="margin-note">Cast conventions into code</aside>
 
-The testing tools that ship with Angular are low-level. They provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain. You should create **high-level testing tools** that cast your conventions into code in order to write short, readable and understandable tests.
+The testing tools that ship with Angular are low-level. They merely provide the basic operations. If you use these tools directly, your tests become messy, repetitive and hard to maintain.
+
+Therefore, you should create **high-level testing tools** that cast your conventions into code in order to write short, readable and understandable tests.
 
 This guide values strong conventions and introduces helper functions that codify these conventions. Again, your mileage may vary. You are free to adapt these tools to your needs or build other testing helpers.
 
@@ -638,7 +642,7 @@ First, `ng test` uses Webpack to compile your code into a JavaScript bundle. The
 
 You might be familiar with the entry point for the application, `src/main.ts`. This file also initializes Angular, but then it typically bootstraps (loads and starts) the `AppModule`. The `AppModule` imports other Modules, Components, Services, etc. This way, the bundler finds all parts of the application.
 
-The test bundle works differently. It does not start with one Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
+The test bundle with the entry point `test.ts` works differently. It does not start with one Module and walks through all its dependencies. It merely imports all files whose name ends with `.spec.ts`.
 
 <aside class="margin-note" markdown="1">
   `.spec.ts`
@@ -652,7 +656,7 @@ In our example application, the `CounterService` is located in [src/app/componen
 
 Second, `ng test` launches Karma, the test runner. Karma starts a development server at [http://localhost:9876/](http://localhost:9876/) that serves the JavaScript bundles compiled by Webpack.
 
-Karma then launches one or more browsers. The idea of Karma is to run the tests in different browser to ensure cross-browser interoperability. All widely used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
+Karma then launches one or more browsers. The idea of Karma is to run the same tests in different browser to ensure cross-browser interoperability. All widely used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
 
 <aside class="margin-note">Test runner</aside>
 
@@ -678,7 +682,9 @@ Webpack watches changes on the `.spec.ts` files and files imported by them. When
 
 <aside class="margin-note">Red-green cycle</aside>
 
-This feedback cycle allows you to work on the implementation and test code side-by-side. This is important for test-driven development. You change the implementation and expect the test to fail – the test is “red”. You adapt the test so it passes again – the test is “green”. Or you write a failing test first, then adapt the implementation until the test passes. Test-driven development means letting the red-green cycle guide your development.
+This feedback cycle allows you to work on the implementation and test code side-by-side. This is important for test-driven development. You change the implementation and expect the test to fail – the test is “red”. You adapt the test so it passes again – the test is “green”. Or you write a failing test first, then adapt the implementation until the test passes.
+
+Test-driven development means letting the red-green cycle guide your development.
 
 <div class="book-sources" markdown="1">
 - [Angular CLI reference: ng test](https://angular.io/cli/test)
@@ -733,22 +739,19 @@ Another important concept of Karma are **reporters**. They format and output the
 
 1. The built-in `progress` reporter is responsible for the text output on the shell. While the tests run, it outputs the progress:
 
-   ```
-   Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 9 of 46 SUCCESS (0.278 secs / 0.219 secs)
-   ```
+   `Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 9 of 46 SUCCESS (0.278 secs / 0.219 secs)`
 
    And finally:
 
-   ```
-   Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 46 of 46 SUCCESS (0.394 secs / 0.329 secs)
-  TOTAL: 46 SUCCESS
-   ```
+   `Chrome 84.0.4147.135 (Mac OS 10.15.6): Executed 46 of 46 SUCCESS (0.394 secs / 0.329 secs)`<br>
+   `TOTAL: 46 SUCCESS`
+
 2. The standard HTML reporter `kjhtml` (npm package: `karma-jasmine-html-reporter`) renders the results in the browser.
 
    <img src="/img/robust-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
 
-You add reporters or replace the existing ones by editing the `reporters` array:
+By editing the `reporters` array, you can add reporters or replace the existing ones:
 
 ```javascript
 reporters: ['progress', 'kjhtml'],
@@ -824,11 +827,11 @@ Angular ships with Jasmine, a JavaScript framework that enables you to write and
 2. A test execution engine.
 3. A reporting engine that outputs test results in different formats.
 
-If you are new to Jasmine, I recommend reading the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite). This guide provides a short introduction to Jasmine, exploring the basic structure and terminology that will be used throughout this guide.
+If you are new to Jasmine, it is recommended to read the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite). This guide provides a short introduction to Jasmine, exploring the basic structure and terminology that will be used throughout this guide.
 
 ### Creating a test suite
 
-In terms of Jasmine, a test consists of one or more **suites**_**. A suite is declared with a `describe` block:
+In terms of Jasmine, a test consists of one or more **suites**. A suite is declared with a `describe` block:
 
 ```typescript
 describe('Suite description', () => {
@@ -842,7 +845,16 @@ Each suite _describes_ a piece of code, the _code under test_.
   `describe`: Suite
 </aside>
 
-`describe` is a function that takes two parameters. The first parameter is a string with a human-readable name. Typically, contains the name of the class or function under test. For example, `describe('CounterComponent', /* … */)` for the suite that tests the `CounterComponent` class. The second parameter is a function containing the suite definition.
+`describe` is a function that takes two parameters.
+
+1. A string with a human-readable name. Typically the name of the function or class under test. For example, `describe('CounterComponent', /* … */)` is the suite that tests the `CounterComponent` class.
+2. A function containing the suite definition.
+
+A `describe` block groups related specs that we will learn about in the next chapter.
+
+<aside class="margin-note" markdown="1">
+  Nesting `describe`
+</aside>
 
 `describe` blocks can be nested to structure big suites and divide them into logical sections:
 
@@ -857,11 +869,7 @@ describe('Suite description', () => {
 });
 ```
 
-<aside class="margin-note" markdown="1">
-  Nesting `describe`
-</aside>
-
-The `describe` blocks group related specs we will learn about in the next chapter. Nested `describe` blocks add a human-readable description to the group. They can also host their own setup and teardown logic.
+Nested `describe` blocks add a human-readable description to a group of specs. They can also host their own setup and teardown logic.
 
 ### Specifications
 
@@ -869,7 +877,7 @@ The `describe` blocks group related specs we will learn about in the next chapte
   `it`: Spec
 </aside>
 
-Each suit consists of one of more _specifications_, or short, **_**specs**. A spec is declared with an `it` block:
+Each suit consists of one of more _specifications_, or short, **specs**. A spec is declared with an `it` block:
 
 ```typescript
 describe('Suite description', () => {
@@ -880,11 +888,11 @@ describe('Suite description', () => {
 });
 ```
 
-Again, `it` is a function that takes two parameters. The first parameter is a string with a human-readable spec description. The second parameter is a function containing the spec code.
+Again, `it` is a function that takes two parameters. The first parameter is a string with a human-readable description. The second parameter is a function containing the spec code.
 
 <aside class="margin-note">Readable sentence</aside>
 
-The pronoun `it` refers to the code under test. `it` should be the subject of a human-readable sentence that asserts the behavior of the code under test. The actual spec code then proves this assertion. This style of writing specs originates from the concept of Behavior-Driven Development (BDD).
+The pronoun `it` refers to the code under test. `it` should be the subject of a human-readable sentence that asserts the behavior of the code under test. The spec code then proves this assertion. This style of writing specs originates from the concept of Behavior-Driven Development (BDD).
 
 One goal of BDD is to describe software behavior in a natural language – in this case, English. Every stakeholder should be able to read the `it` sentences and understand how the code is supposed to behave. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
 
@@ -903,7 +911,7 @@ After `it`, typically a verb follows, like `increments` and `resets` in the exam
 
 <aside class="margin-note">No “should”</aside>
 
-Some people prefer to write `it('should increment the count', /* … */)`, but `should` bears no additional meaning. The nature of a spec is to state what the code under test _should_ do. So the word “should” is redundant and just makes the sentence longer. This guide recommends to simply state what the code does.
+Some people prefer to write `it('should increment the count', /* … */)`, but `should` bears no additional meaning. The nature of a spec is to state what the code under test _should_ do. The word “should” is redundant and just makes the sentence longer. This guide recommends to simply state what the code does.
 
 <div class="book-sources" markdown="1">
 - [Jasmine tutorial: Your first suite](https://jasmine.github.io/tutorials/your_first_suite)
@@ -954,13 +962,13 @@ In the _Assert_ phase, the test compares the actual output or return value to th
 
 Let us examine a simple contrived example, an `add` function:
 
-```javascript
+```typescript
 const add = (a, b) => a + b;
 ```
 
 A primitive test without any testing tools could look like this:
 
-```javascript
+```typescript
 const expectedValue = 5;
 const actualValue = add(2, 3);
 if (expectedValue !== actualValue) {
@@ -976,7 +984,7 @@ if (expectedValue !== actualValue) {
 
 We could write that code in a Jasmine spec, but Jasmine allows us to create expectations in an easier and more concise manner: The `expect` function together with a **Matcher**.
 
-```javascript
+```typescript
 const expectedValue = 5;
 const actualValue = add(2, 3);
 expect(actualValue).toBe(expectedValue);
@@ -992,7 +1000,7 @@ First, we pass the actual value to the `expect` function. It returns an expectat
 
 For checking the deep equality of two objects, Jasmine offers the `toEqual` matcher. This example illustrates the difference:
 
-```javascript
+```typescript
 // Fails, the two objects are not identical
 expect({ name: 'Linda' }).toBe({ name: 'Linda' });
 
@@ -1000,7 +1008,7 @@ expect({ name: 'Linda' }).toBe({ name: 'Linda' });
 expect({ name: 'Linda' }).toEqual({ name: 'Linda' });
 ```
 
-Jasmine has numerous useful [matchers](https://jasmine.github.io/api/edge/matchers) built-in, `toBe` and `toEqual` being the most common. You can add [custom matchers](https://jasmine.github.io/tutorials/custom_matcher) to hide a complex check behind a short name.
+Jasmine has numerous useful matchers built-in, `toBe` and `toEqual` being the most common. You can add custom matchers to hide a complex check behind a short name.
 
 <aside class="margin-note">Readable sentence</aside>
 
@@ -1017,9 +1025,9 @@ When writing multiple specs in one suite, you quickly realize that the _Arrange_
 
 <aside class="margin-note">Repetitive setup</aside>
 
-This setup is repeated over and over, so it should be defined once at a central place. You could simply write a `setup` function and call it at the beginning of each spec. But using Jasmine, you can declare code that is called before and after each spec, or before and after all specs.
+This setup is repeated over and over, so it should be defined once in a central place. You could write a `setup` function and call it at the beginning of each spec. But using Jasmine, you can declare code that is called before and after each spec, or before and after all specs.
 
-For this purpose, there are four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
+For this purpose, Jasmine provides four functions: `beforeEach`, `afterEach`, `beforeAll` and `afterAll`. They are called inside of a `describe` block, just like `it`. They expect one parameter, a function that is called at the given stages.
 
 ```typescript
 describe('Suite description', () => {
@@ -1095,7 +1103,7 @@ When the original dependency changes its public API, dependent code needs to be 
 
 How can we ensure that the fake is up-to-date with the original? How can we ensure the equivalence of original and fake in the long run and prevent any possible divergence?
 
-We can use TypeScript to **enforce that the fake has a matching type**. The fake needs to be strictly typed. The fake’s type needs to be derived from the original’s type, forming a subset.
+We can use TypeScript to **enforce that the fake has a matching type**. The fake needs to be strictly typed. The fake’s type needs to be a subset of the original’s type.
 
 <aside class="margin-note">Type equivalence</aside>
 
