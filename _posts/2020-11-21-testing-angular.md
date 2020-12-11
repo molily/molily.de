@@ -1139,7 +1139,7 @@ const spy = jasmine.createSpy('name');
 
 `createSpy` expects one parameter, an optional name. It is recommended to pass a name that describes the original. The name will be used in error messages when you make expectations against the spy.
 
-Assuming we have class `TodoService` responsible for fetching a to-do list from the server. The class uses the [Fetch API](https://developer.mozilla.org/de/docs/Web/API/Fetch_API) to make an HTTP request. (This is a plain JavaScript example. It is uncommon to use `fetch` directly in an Angular app.)
+Assume we have class `TodoService` responsible for fetching a to-do list from the server. The class uses the [Fetch API](https://developer.mozilla.org/de/docs/Web/API/Fetch_API) to make an HTTP request. (This is a plain TypeScript example. It is uncommon to use `fetch` directly in an Angular app.)
 
 ```typescript
 class TodoService {
@@ -1215,7 +1215,7 @@ First, we define the fake data we want the `fetch` spy to return. Essentially, t
 
 <aside class="margin-note">Fake response</aside>
 
-The original `fetch` function returns a `Response` object. We create one using the built-in `Response` constructor. The original server response is a string before it is parsed as JSON. So we need to serialize the array into a string before passing it to the `Response` constructor. (You do not have to understand these `fetch` details to grasp the example.)
+The original `fetch` function returns a `Response` object. We create one using the built-in `Response` constructor. The original server response is a string before it is parsed as JSON. So we need to serialize the array into a string before passing it to the `Response` constructor. (These `fetch` details are not relevant to grasp the spy example.)
 
 Then, we declare a test suite using `describe`:
 
@@ -1254,9 +1254,9 @@ In the _Act_ phase, we call the method under test:
 const actualTodos = await todoService.getTodos();
 ```
 
-`getTodos` returns a Promise We use an `async` function together with `await` to access the return value easily. Jasmine deals with async functions just fine and waits for them to complete.
+`getTodos` returns a Promise. We use an `async` function together with `await` to access the return value easily. Jasmine deals with async functions just fine and waits for them to complete.
 
-In the _Assert_ phase, we make two expectations:
+In the _Assert_ phase, we create two expectations:
 
 ```typescript
 expect(actualTodos).toEqual(todos);
@@ -1269,7 +1269,7 @@ First, we verify the return value. We compare the actual data (`actualTodos`) wi
 
 <aside class="margin-note">Verify call record</aside>
 
-Second, we verify that the `fetch` spy has been called with the correct parameter, the API endpoint URL. Jasmine offers several matchers for making expectations on spies. The example uses `toHaveBeenCalledWith` to assert that the spy has been called with the parameter `'/todos'`.
+Second, we verify that the `fetch` spy has been called *with the correct parameter*, the API endpoint URL. Jasmine offers several matchers for making expectations on spies. The example uses `toHaveBeenCalledWith` to assert that the spy has been called with the parameter `'/todos'`.
 
 Both expectations are necessary to guarantee that `getTodos` works correctly.
 
@@ -1332,7 +1332,7 @@ In the _Act_ phase, we call the method under test but anticipate that it throws 
 
 In the _Assert_ phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
-Again, this is a plain JavaScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
+Again, this is a plain TypeScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
 
 <div class="book-sources" markdown="1">
 - [TodoService: Implementation and test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/todos-service.spec.ts)
@@ -1355,7 +1355,7 @@ spyOn(window, 'fetch');
 
 <aside class="margin-note">Overwrite and restore</aside>
 
-This installs a spy on the global `fetch` method. Under the hood it saves the original `window.fetch` function for later and overwrites `window.fetch` with a spy. Once the spec is completed, Jasmine automatically restores the original function.
+This installs a spy on the global `fetch` method. Under the hood, Jasmine saves the original `window.fetch` function for later and overwrites `window.fetch` with a spy. Once the spec is completed, Jasmine automatically restores the original function.
 
 `spyOn` returns the created spy, enabling us to set a return value, like we have learned above.
 
@@ -1523,10 +1523,10 @@ The most primitive tool, `console.log`, is in fact invaluable when debugging tes
 
 Use debug output to answer these questions:
 
-- Is the test, suite, spect run at all?
+- Is the test, suite, spec run at all?
 - Does the test execution reach the log command?
 - Did the test call the class, method, function under test correctly?
-- Are callback called correctly? Do Promises complete or fail? Do Observables emit, complete or error?
+- Are callbacks called correctly? Do Promises complete or fail? Do Observables emit, complete or error?
 - For Component tests:
   - Is Input data passed correctly?
   - Are the lifecycle methods called correctly?
