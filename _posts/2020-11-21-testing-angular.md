@@ -359,41 +359,47 @@ That is why some experts deem integration tests more valuable and recommend that
 
 In Angular, the difference between unit and integration tests is sometimes subtle. A unit test typically focusses on a single Angular Component, Directive, Service, Pipe, etc. Dependencies are replaced with fakes. An integration test spans one Component together with its children and possibly connected Services as well. It is also possible to write a test that integrates all parts of an Angular Module.
 
-<table class="testing-levels-table">
+<div class="wide-table-wrapper">
+<table class="wide-table">
 <caption>Comparison of software testing levels</caption>
 <tr>
-<th scope="col">Level</th>
-<th scope="col">Coverage</th>
-<th scope="col">Performance</th>
-<th scope="col">Reliability</th>
-<th scope="col">Isolate Failures</th>
-<th scope="col">Simulate the Real User</th>
+<th scope="row">Level</th>
+<th scope="col">End-to-End</th>
+<th scope="col">Inte&shy;gration</th>
+<th scope="col">Unit</th>
 </tr>
 <tr>
-<th scope="row">End-to-End</th>
+<th scope="row">Coverage</th>
 <td>full</td>
-<td>slow</td>
-<td>least reliable</td>
-<td>hard</td>
-<td>yes</td>
-</tr>
-<tr>
-<th scope="row">Integration</th>
 <td>large</td>
-<td>fast</td>
-<td>reliable</td>
-<td>fair</td>
-<td>no</td>
+<td>small</td>
 </tr>
 <tr>
-<th scope="row">Unit</th>
-<td>small</td>
+<th scope="row">Performance</th>
+<td>slow</td>
+<td>fast</td>
 <td>fastest</td>
+</tr>
+<tr>
+<th scope="row">Reliability</th>
+<td>least reliable</td>
+<td>reliable</td>
 <td>most reliable</td>
+</tr>
+<tr>
+<th scope="row">Isolate Failures</th>
+<td>hard</td>
+<td>fair</td>
 <td>easy</td>
+</tr>
+<tr>
+<th scope="row">Simulate the Real User</th>
+<td>yes</td>
+<td>no</td>
 <td>no</td>
 </tr>
 </table>
+</div>
 
 <p><small>(Table adapted from a <a href="https://testing.googleblog.com/2015/04/just-say-no-to-more-end-to-end-tests.html">Google Testing Blog article</a> by Mike Wacker.)</small></p>
 
@@ -469,7 +475,7 @@ In this guide, we will explore the different aspects of testing Angular applicat
 See the counter Component app in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -508,7 +514,7 @@ While the counter seems easy to implement, it already offers valuable challenges
 See the Flickr photo search in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -1643,7 +1649,7 @@ As a first example, we are going to test the [CounterComponent](https://github.c
 See the CounterComponent in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -3508,7 +3514,7 @@ We have successfully tested the independent `CounterComponent` as well as the co
 See the ServiceCounterComponent in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/service-counter-component" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -5594,7 +5600,7 @@ We are introducing and testing the `TranslatePipe`, a complex Pipe with a Servic
 See the TranslatePipe in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://molily.github.io/translate-pipe/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -6048,7 +6054,7 @@ Note that numbers above the threshold are valid input. The `ThresholdWarningDire
 See the ThresholdWarningDirective in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://molily.github.io/threshold-warning-directive/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -6331,7 +6337,7 @@ We are introducing and testing the `PaginateDirective`, a complex Structural Dir
 See the PaginateDirective in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://molily.github.io/paginate-directive/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -7284,7 +7290,7 @@ Step by step, we are going to write end-to-end tests for the counter example app
 See the counter Component app in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-workshop/" class="responsive-iframe__iframe"></iframe>
 </p>
@@ -7779,7 +7785,7 @@ We have learned the basics of Cypress by testing the counter app. Let us delve i
 See the Flickr photo search in action
 </button>
 
-<script type="template">
+<script type="text/x-template">
 <p class="responsive-iframe">
 <iframe src="https://9elements.github.io/angular-flickr-search/" class="responsive-iframe__iframe"></iframe>
 </p>

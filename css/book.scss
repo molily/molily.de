@@ -91,6 +91,16 @@ th {
   font-weight: bold;
 }
 
+.wide-table-wrapper {
+  margin-left: -1rem;
+  margin-right: -1rem;
+  overflow: auto;
+}
+
+.wide-table {
+  font-size: 80%;
+}
+
 /**
  * @section Code
  *
@@ -98,15 +108,16 @@ th {
 
 pre {
   border-radius: 0.5px;
-
   margin-left: -1rem;
   margin-right: -1rem;
+  font-size: 90%;
 
   @include large {
     margin-left: -2rem;
     margin-right: -2rem;
     padding-left: 2rem;
     padding-right: 2rem;
+    font-size: 100%;
   }
 }
 
@@ -242,7 +253,11 @@ pre {
 }
 
 #toc-tree {
-  margin: 0 -1rem;
+  margin: 0;
+
+  @include large {
+    margin: 0 -1rem;
+  }
 
   ol {
     margin: 0.5rem 0 0.5rem 0;
@@ -292,6 +307,7 @@ pre {
   font-size: 1.15rem;
   letter-spacing: 0.2px;
   word-spacing: 0.2px;
+  overflow-wrap: break-word;
 
   @include large {
     margin: auto;
@@ -486,7 +502,11 @@ pre {
 
 .book-sources {
   margin-bottom: 1rem;
-  font-size: 90%;
+  font-size: 80%;
+
+  @include large {
+    font-size: 90%;
+  }
 
   ul {
     margin: 0;
@@ -524,7 +544,13 @@ pre {
   margin-right: auto;
   max-width: 1000px;
   height: 0;
-  padding-top: 56.25%;
+  // 1:1
+  padding-top: 100%;
+
+  @include large {
+    // 16:9
+   padding-top: 56.25%;
+  }
 }
 
 .responsive-iframe__iframe {
