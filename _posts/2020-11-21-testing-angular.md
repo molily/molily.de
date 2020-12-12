@@ -2675,7 +2675,7 @@ On the other hand, abstractions like helper functions make tests more complex an
 
 <aside class="margin-note">Duplication vs. abstraction</aside>
 
-There is a controversial debate in software development regarding “do not repeat yourself” and the value of abstractions. As Sandi Metz [famously stated](https://www.sandimetz.com/blog/2016/1/20/the-wrong-abstraction), “duplication is far cheaper than the wrong abstraction”.
+There is a controversial debate in software development regarding “do not repeat yourself” and the value of abstractions. [As Sandi Metz famously stated](https://www.sandimetz.com/blog/2016/1/20/the-wrong-abstraction), “duplication is far cheaper than the wrong abstraction”.
 
 This is especially true when writing specs. You should try to eliminate duplication and boilerplate code with `beforeEach`/`beforeAll`, simple helper functions and even testing libraries. But do not try to apply your optimization habits and skills to test code.
 
@@ -2803,7 +2803,8 @@ The following table shows which properties and methods of an Angular Component y
 
 <aside class="margin-note">Recommendations</aside>
 
-<table>
+<div class="wide-table-wrapper">
+<table class="wide-table">
 <caption>Black box testing an Angular Component</caption>
 <tr>
 <th scope="col">Class member</th>
@@ -2830,6 +2831,7 @@ The following table shows which properties and methods of an Angular Component y
 <td>No access</td>
 </tr>
 </table>
+</div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
