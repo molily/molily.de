@@ -515,7 +515,11 @@ pre {
 
   li {
     margin: 0;
-    background-color: $highlight-background-color-inverted;
+
+    background-color: $highlight-background-color;
+    @include dark-scheme {
+      background-color: $highlight-background-color-inverted;
+    }
   }
 
   li + li {
@@ -559,19 +563,28 @@ pre {
   left: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid white;
+
+  border: 2px solid $darker-text-color;
+  @include dark-scheme {
+    border: 2px solid white;
+  }
 }
 
 .load-iframe {
   display: block;
   width: 100%;
-  border: 2px solid #140a32;
   padding: 0 1rem;
-  background-color: #22233d;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
+
+  border: 2px solid $darker-text-color;
+  background-color: $highlight-background-color;
+  @include dark-scheme {
+    border: 2px solid $dark-background-color-inverted;
+    background-color: $highlight-background-color-inverted;
+  }
 }
 
 /**
