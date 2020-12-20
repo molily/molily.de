@@ -154,7 +154,13 @@
 // Changes by molily
 // In JavaScript/TypeScript, err is used for the `template literal`.
 // Make it look like a normal .s1 (Literal.String.Single) instead of an error.
-.language-typescript .highlight .err { color: #CC3300; background-color: transparent }
-@include dark-scheme {
-  .language-typescript .highlight .err { color: #ed9d13; background-color: transparent }
+.language-typescript, .language-js {
+  .highlight .err {
+    color: #CC3300;
+    background-color: transparent;
+    @include dark-scheme {
+      color: #ed9d13;
+      background-color: transparent;
+    }
+  }
 }
