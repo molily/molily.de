@@ -29,6 +29,8 @@ $sticky-menu-background: #f0f0f0;
 $toc-background-inverted: $dark-background-color-inverted;
 $sticky-menu-background-inverted: $dark-background-color-inverted;
 
+$font-size-small: math.percentage(16 / 18);
+
 /**
  * @section Mixins
  *
@@ -73,7 +75,7 @@ body {
 
 table {
   // Do not use rem, use unit relative to parent font-size
-  font-size: 90%;
+  font-size: $font-size-small;
   margin-left: auto;
   margin-right: auto;
 }
@@ -110,14 +112,13 @@ pre {
   border-radius: 0.5px;
   margin-left: -1rem;
   margin-right: -1rem;
-  font-size: 90%;
+  font-size: $font-size-small;
 
   @include large {
     margin-left: -2rem;
     margin-right: -2rem;
     padding-left: 2rem;
     padding-right: 2rem;
-    font-size: 100%;
   }
 }
 
@@ -274,7 +275,7 @@ pre {
   }
   ol ol a {
     padding-left: calc(0.5rem + 3 * 1rem);
-    font-size: 90%;
+    font-size: $font-size-small;
   }
 
   a {
@@ -304,7 +305,7 @@ pre {
 
 #main {
   // Slightly larger font size than the default
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   letter-spacing: 0.2px;
   word-spacing: 0.2px;
   overflow-wrap: break-word;
@@ -502,11 +503,7 @@ pre {
 
 .book-sources {
   margin-bottom: 1rem;
-  font-size: 80%;
-
-  @include large {
-    font-size: 90%;
-  }
+  font-size: $font-size-small;
 
   ul {
     margin: 0;
