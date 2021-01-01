@@ -5,6 +5,7 @@ description: "How do we take advantage of Angular’s testability?"
 keywords: JavaScript, Angular, testing, automated tests, unit tests, integration tests, end-to-end tests
 lang: en
 draft: true
+robots: noindex, follow
 ---
 
 <svg style="display: none">
@@ -28,6 +29,7 @@ draft: true
         <a href="/" title="Home">molily.de</a>
         <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
       </p>
+      <p style="border: 1px solid red; padding: 1rem; background-color: rgba(255, 0, 0, 0.05); text-align: center; text-transform: uppercase; font-size: 1.5rem; color: red;"><strong>Draft</strong></p>
       <h1 id="toc-book-title">
         Testing Angular<br>
         <small>A Guide to Robust Angular Applications</small>
@@ -53,6 +55,8 @@ draft: true
     Flying probes testing a printed circuit board. Photo by genkur from iStock.
   </span>
 </p>
+
+<p style="border: 1px solid red; padding: 1rem; background-color: rgba(255, 0, 0, 0.05); text-align: center; text-transform: uppercase; font-size: 1.5rem; color: red;"><strong>Draft</strong></p>
 
 <h1 id="main-heading">
   Testing Angular<br>
@@ -5881,15 +5885,17 @@ To test the second case is trickier because we need to simulate that the Observa
 
 At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
 
-Again, there are several ways how to accomplish this. We opt for Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
+Again, there are several ways how to accomplish this. We are going to use Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
 
 <aside class="margin-note" markdown="1">
   `fakeAsync` and `tick`
 </aside>
 
-`fakeAsync` freezes time. It prevents asynchronous tasks created by timers, Promises, Observables, etc. from being executed. We then use the `tick` function to simulate the passage of time. All scheduled asynchronous tasks will be executed. We can then test their effect.
+`fakeAsync` freezes time. It hooks into the processing of asynchronous tasks created by timers, intervals, Promises and Observables. It prevents these tasks from being executed.
 
-The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if 10 seconds pass in the simulation, the spec may still complete in a few milliseconds.
+We then use the `tick` function to simulate the passage of time. The scheduled asynchronous tasks will be executed. We can then test their effect.
+
+The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if ten seconds pass in the simulation, the spec may still complete in a few milliseconds.
 
 `fakeAsync` wraps the function passed to `it`:
 
@@ -5924,7 +5930,7 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-`TranslatePipe`’s `transform` is called for the first time and returns `null` since the Observable does not emit a value immediately. So we expect that the output is empty:
+`TranslatePipe`’s `transform` method is called for the first time and returns `null` since the Observable does not emit a value immediately. So we expect that the output is empty:
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -5952,7 +5958,7 @@ it('translates the key, async service response', fakeAsync(() => {
 
 This causes the Observable to emit the translation and complete. The `TranslatePipe` receives the translation and saves it.
 
-To see a change in the DOM, we need to start a change detection cycle. `transform` is called for the second time and returns the correct translation.
+To see a change in the DOM, we start a second change detection cycle. The `TranslatePipe`’s `transform` method is called for the second time and returns the correct translation.
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -5967,7 +5973,7 @@ it('translates the key, async service response', fakeAsync(() => {
 }));
 ```
 
-Testing these details may seem pedantic at first. But the logic in `TranslatePipe` exists for a reason. Therefore we should test both cases.
+Testing these details may seem pedantic at first. But the logic in `TranslatePipe` exists for a reason.
 
 There are two specs left to write:
 
