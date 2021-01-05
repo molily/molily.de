@@ -235,7 +235,6 @@ Tests differ in their value and quality. Some tests are more meaningful than oth
 
 A common metric of testing is **code coverage**. It counts the lines in your code that are called by your tests. It tells you which parts of your code are executed at all.
 
-
 This metric on testing is **useful but also deeply flawed** because the value of a test cannot be quantified automatically. Code coverage tells you whether a piece of code was called, regardless of its importance.
 
 <aside class="margin-note">Find uncovered code</aside>
@@ -759,6 +758,7 @@ Another important concept of Karma are **reporters**. They format and output the
 2. The standard HTML reporter `kjhtml` (npm package: `karma-jasmine-html-reporter`) renders the results in the browser.
 
    <img src="/img/robust-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+
 3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
 
 By editing the `reporters` array, you can add reporters or replace the existing ones:
@@ -2037,7 +2037,7 @@ countOutput.nativeElement.textContent
 Finally, we expect that this string is `"1"` using Jasmine’s `expect`:
 
 ```typescript
-expect(countOutput.nativeElement.textContent).toBe("1");
+expect(countOutput.nativeElement.textContent).toBe('1');
 ```
 
 The `counter.component.spec.ts` now looks like this:
@@ -3739,7 +3739,7 @@ const fakeCounterService:
   `createSpyObj`
 </aside>
 
-This is fine, but overly verbose. Jasmine provides a handy helper function for creating an object with multiple spy methods, `createSpyObj`. It expects a descriptive name and a list of methods:
+This is fine, but overly verbose. Jasmine provides a handy helper function for creating an object with multiple spy methods, `createSpyObj`. It expects a descriptive name and an object with method names and return values:
 
 ```typescript
 const fakeCounterService = jasmine.createSpyObj<CounterService>(
