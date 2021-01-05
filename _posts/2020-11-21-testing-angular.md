@@ -2070,7 +2070,7 @@ describe('CounterComponent', () => {
     const countOutput = debugElement.query(
       By.css('[data-testid="count"]')
     );
-    expect(countOutput.nativeElement.textContent).toBe("1");
+    expect(countOutput.nativeElement.textContent).toBe('1');
   });
 });
 ```
@@ -2123,7 +2123,7 @@ describe('CounterComponent', () => {
     const countOutput = debugElement.query(
       By.css('[data-testid="count"]')
     );
-    expect(countOutput.nativeElement.textContent).toBe("1");
+    expect(countOutput.nativeElement.textContent).toBe('1');
   });
 });
 ```
