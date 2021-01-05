@@ -3578,11 +3578,11 @@ describe('ServiceCounterComponent: integration test', () => {
   });
 
   it('resets the count', () => {
-    const newCount = '123';
-    setFieldValue(fixture, 'reset-input', newCount);
+    const newCount = 456;
+    setFieldValue(fixture, 'reset-input', String(newCount));
     click(fixture, 'reset-button');
     fixture.detectChanges();
-    expectText(fixture, 'count', newCount);
+    expectText(fixture, 'count', String(newCount));
   });
 });
 ```
@@ -3742,13 +3742,15 @@ const fakeCounterService:
 This is fine, but overly verbose. Jasmine provides a handy helper function for creating an object with multiple spy methods, `createSpyObj`. It expects a descriptive name and a list of methods:
 
 ```typescript
-const fakeCounterService =
-  jasmine.createSpyObj<CounterService>('CounterService', {
+const fakeCounterService = jasmine.createSpyObj<CounterService>(
+  'CounterService',
+  {
     getCount: of(currentCount),
     increment: undefined,
     decrement: undefined,
     reset: undefined,
-  });
+  }
+);
 ```
 
 The code above creates an object with four methods, all of them being spies. They return the given values: `getCount` returns an `Observable<number>`. The other methods return `undefined`.
@@ -3760,9 +3762,9 @@ The code above creates an object with four methods, all of them being spies. The
 Let us put our fake to work. In the _Arrange_ phase, the fake is created and injected into the testing Module.
 
 ```typescript
-const currentCount = 123;
-
 describe('ServiceCounterComponent: unit test', () => {
+  const currentCount = 123;
+
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
   // Declare shared variable
@@ -3770,13 +3772,15 @@ describe('ServiceCounterComponent: unit test', () => {
 
   beforeEach(async () => {
     // Create fake
-    fakeCounterService =
-      jasmine.createSpyObj<CounterService>('CounterService', {
+    fakeCounterService = jasmine.createSpyObj<CounterService>(
+      'CounterService',
+      {
         getCount: of(currentCount),
         increment: undefined,
         decrement: undefined,
         reset: undefined,
-      });
+      }
+    );
 
     await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
@@ -3824,9 +3828,9 @@ expect(fakeCounterService.getCount).toHaveBeenCalled();
 Applied to all specs, the test suite looks like this:
 
 ```typescript
-const currentCount = 123;
-
 describe('ServiceCounterComponent: unit test', () => {
+  const currentCount = 123;
+
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
   // Declare shared variable
@@ -3834,13 +3838,15 @@ describe('ServiceCounterComponent: unit test', () => {
 
   beforeEach(async () => {
     // Create fake
-    fakeCounterService =
-      jasmine.createSpyObj<CounterService>('CounterService', {
+    fakeCounterService = jasmine.createSpyObj<CounterService>(
+      'CounterService',
+      {
         getCount: of(currentCount),
         increment: undefined,
         decrement: undefined,
         reset: undefined,
-      });
+      }
+    );
 
     await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
@@ -3906,7 +3912,7 @@ Instead of a fixed Observable, we use a `BehaviorSubject`, just like in the orig
 We declare a variable `fakeCount$` in the scope of the test suite and assign a `BehaviorSubject` in the first `beforeEach` block:
 
 ```typescript
-describe('ServiceCounterComponent: unit test', () => {
+describe('ServiceCounterComponent: unit test with minimal Service logic', () => {
   /* … */
   let fakeCount$: BehaviorSubject<number>;
 
@@ -3965,9 +3971,9 @@ expectText(fixture, 'count', '…');
 Assembling all parts, the full `ServiceCounterComponent` unit test:
 
 ```typescript
-const newCount = '123';
+describe('ServiceCounterComponent: unit test with minimal Service logic', () => {
+  const newCount = 456;
 
-describe('ServiceCounterComponent: unit test', () => {
   let component: ServiceCounterComponent;
   let fixture: ComponentFixture<ServiceCounterComponent>;
 
@@ -4035,7 +4041,7 @@ describe('ServiceCounterComponent: unit test', () => {
     fixture.detectChanges();
 
     expectText(fixture, 'count', newCount);
-    expect(fakeCounterService.reset).toHaveBeenCalled();
+    expect(fakeCounterService.reset).toHaveBeenCalledWith(newCount);
   });
 });
 ```
@@ -4071,7 +4077,6 @@ There are two guidelines that may help you:
    2. Effective faking: the original stays untouched.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
-
 
 ## Testing Components with Spectator
 
