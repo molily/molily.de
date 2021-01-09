@@ -4688,7 +4688,7 @@ describe('SearchFormComponent with spectator', () => {
 
     spectator.typeInElement(searchTerm, byTestId('searchTermInput'));
 
-    spectator.dispatchFakeEvent(byTestId('form'), 'submit');
+    spectator.dispatchFakeEvent(byTestId('form'), 'ngSubmit');
 
     expect(actualSearchTerm).toBe(searchTerm);
   });
@@ -4696,10 +4696,10 @@ describe('SearchFormComponent with spectator', () => {
 ```
 
 <aside class="margin-note" markdown="1">
-  Dispatch `submit`
+  Dispatch `ngSubmit`
 </aside>
 
-The spec simulates typing in the search term into the search field. Then it simulates a `submit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
+The spec simulates typing in the search term into the search field. Then it simulates an `ngSubmit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
 
 Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
 
