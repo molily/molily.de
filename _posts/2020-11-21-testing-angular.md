@@ -45,10 +45,10 @@ robots: noindex, follow
 
 <p id="cover">
   <picture>
-    <source type="image/avif" srcset="/img/robust-angular/flying-probe-800-30.avif, /img/robust-angular/flying-probe-1600-30.avif 2x">
-    <source type="image/webp" srcset="/img/robust-angular/flying-probe-800.webp, /img/robust-angular/flying-probe-1600.webp 2x">
-    <source type="image/jpeg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
-    <img id="cover-image-flying-probe" src="/img/robust-angular/flying-probe-800-85.jpg" srcset="/img/robust-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of flying probes testing a printed circuit board.">
+    <source type="image/avif" srcset="/img/testing-angular/flying-probe-800-cavif-q60.avif, /img/testing-angular/flying-probe-1600-cavif-q50.avif 2x">
+    <source type="image/webp" srcset="/img/testing-angular/flying-probe-800-cwebp-q80.webp, /img/testing-angular/flying-probe-1600.webp 2x">
+    <source type="image/jpeg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
+    <img id="cover-image-flying-probe" src="/img/testing-angular/flying-probe-800-85.jpg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of flying probes testing a printed circuit board.">
   </picture>
 
   <span id="cover-credits">
