@@ -2374,7 +2374,7 @@ Filling out forms is a common task in tests, so it makes sense to extract the co
 
 <aside class="margin-note">Helper functions</aside>
 
-The helper function `setFieldValue` takes a test id and a string value. It finds the corresponding element using `findEl`. Then it calls another helper, `enterText`, that sets the `value` and dispatches an `input` event.
+The helper function `setFieldValue` takes a test id and a string value. It finds the corresponding element using `findEl`. Using another helper, `setFieldElementValue`, it sets the `value` and dispatches an `input` event.
 
 ```typescript
 export function setFieldValue<T>(
@@ -2382,19 +2382,10 @@ export function setFieldValue<T>(
   testId: string,
   value: string,
 ): void {
-  enterText(findEl(fixture, testId).nativeElement, value);
-}
-
-export function enterText(
-  element: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
-  value: string,
-): void {
-  element.focus();
-  element.value = value;
-  // Dispatch a fake input event so Angular form bindings take notice of the change.
-  const event = document.createEvent('Event');
-  event.initEvent('input', true, false);
-  element.dispatchEvent(event);
+  setFieldElementValue(
+    findEl(fixture, testId).nativeElement,
+    value
+  );
 }
 ```
 
