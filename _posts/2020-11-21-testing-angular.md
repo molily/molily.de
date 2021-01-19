@@ -81,7 +81,9 @@ Often individual developers are blamed for the lack of tests. The claim that dev
 
 If you are struggling with writing tests, it is not your fault or deficit. We are all struggling because testing software is inherently complicated and difficult.
 
-First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over. You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable strategy to improve your code.
+First, writing automated tests requires a different mindset than writing the implementation code. Implementing a feature means building a structure – testing means trying to knock it over.
+
+You try to find weaknesses and loopholes in your own work. You think through all possible cases and pester your code with “What if?” questions. What seems frustrating at first sight is an invaluable strategy to improve your code.
 
 Second, testing has a steep learning curve. If testing can be seen as a tool, it is not a like a screwdriver or power drill. Rather, it compares to a tractor or excavator. It takes training to operate these machines. And it takes experience to apply them accurately and safely.
 
@@ -161,8 +163,7 @@ Automated testing has several technical, economical and organizational benefits.
 
 Automated testing is a tool with a specific purpose. A basic concept is that testing helps to build an application that functions according to its requirements. That is true, but there are certain subtleties.
 
-The [International Software Testing Qualifications Board (ISTQB)](https://www.istqb.org) came up with **Seven
-Testing Principles** (CTFL Syllabus 2018 V3.1) that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
+The [International Software Testing Qualifications Board (ISTQB)](https://www.istqb.org) came up with **Seven Testing Principles** that shed light on what testing can achieve and what not. Without discussing every principle, let us consider the main ideas.
 
 <aside class="margin-note">Discover bugs</aside>
 
@@ -4066,6 +4067,192 @@ There are two guidelines that may help you:
 
    1. Equivalence of fake and original: The fake must have a type derived from the original.
    2. Effective faking: the original stays untouched.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
+## Testing complex forms
+
+Forms are the powerhouses of large web applications. Especially enterprise applications revolve around entering and editing data via forms. Therefore, implementing complex forms is a vital feature of the Angular framework.
+
+We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` spec helper for setting the value of a an `input` field.
+
+The forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and clicking on the submit button.
+
+Now we will look at a more complex example. We are introducing and testing a **sign-up form** for a fictional online service.
+
+ <div class="book-sources" markdown="1">
+- [Counter Component: Source code](https://github.com/molily/angular-form-testing)
+- [Counter Component: Run the app](https://molily.github.io/angular-form-testing/)
+</div>
+
+<button class="load-iframe">
+See the sign-up form in action
+</button>
+
+<script type="text/x-template">
+<p class="responsive-iframe">
+<iframe src="https://molily.github.io/angular-form-testing/" class="responsive-iframe__iframe"></iframe>
+</p>
+</script>
+
+The sign-up form features:
+
+- Different types of input fields: text, radio buttons, checkboxes, select boxes
+- Field validation, synchronous and asynchronous validators
+- Accessible form structure, field labels and error messages
+- Dynamic relations between fields
+
+The form consists of four sections:
+
+1. The plan selection (personal, business, non-profit)
+2. The login credentials (username, email, password)
+3. A billing address
+4. Terms of Services and submit
+
+<aside class="margin-note">Impractical</aside>
+
+Please note that this form is for demonstration purposes only. While it follows best practices regarding validation and accessibility, it is not a practical sign-up form as a whole. The form is way too complex to get new users onboard.
+
+<aside class="margin-note">Client & server</aside>
+
+In contrast to the other example repositories, this one is split into a `client` and a `server` directory:
+
+- The [`client` directory](https://github.com/molily/angular-form-testing/tree/main/client) contains a standard Angular app created with Angular CLI.
+- The [`server` directory](https://github.com/molily/angular-form-testing/tree/main/server) contains a simple Node.js service that simulates a user management and account creation.
+
+  Again, this is for demonstration purposes only. The service holds the created user accounts in memory and discards them when stopped. Please do not use it in production.
+
+Containing 12 form controls, the sign-up form is not particularly large. But there are subtle details we are going to explore.
+
+### Sign-up form Component
+
+The form logic lies in the [`SignupFormComponent`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.ts). The Component depends on the [`SignupService`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts) for communicating with the back-end service.
+
+You might remember that there are two fundamental approaches to forms in Angular: Template-driven Forms and Reactive Forms. While they look quite different in practice, they are based on the same concepts under the hood: Form groups (`FormGroup` objects) and form controls (`FormControl` objects).
+
+<aside class="margin-note">Reactive Form</aside>
+
+The `SignupFormComponent` is a Reactive Form that explictly creates the groups and controls in the Component class. This way, it is easier to specify custom validators and to set up dynamic field relations.
+
+As with other Angular core concepts, this guide assumes you have a basic understanding about Reactive Forms. Please refer to the [official guide on Reactive Forms](https://angular.io/guide/reactive-forms) to brush up your knowledge.
+
+The important bits of the `SignupFormComponent` class look like this:
+
+```typescript
+@Component({
+  selector: 'app-signup-form',
+  templateUrl: './signup-form.component.html',
+  styleUrls: ['./signup-form.component.scss'],
+})
+export class SignupFormComponent {
+  /* … */
+  public form = this.formBuilder.group({
+    plan: ['personal', required],
+    username: [
+      null,
+      [required, maxLength(50), pattern('[a-zA-Z0-9.]+')],
+      (control: AbstractControl) => this.validateUsername(control.value),
+    ],
+    email: [
+      null,
+      [required, email, maxLength(100)],
+      (control: AbstractControl) => this.validateEmail(control.value),
+    ],
+    password: [null, required, () => this.validatePassword()],
+    tos: [null, requiredTrue],
+    address: this.formBuilder.group({
+      name: [null, required],
+      addressLine1: [null],
+      addressLine2: [null, required],
+      city: [null, required],
+      postcode: [null, required],
+      region: [null],
+      country: [null, required],
+    }),
+  });
+  /* … */
+  constructor(private signupService: SignupService, private formBuilder: FormBuilder) {
+    /* … */
+  }
+  /* … */
+}
+```
+
+<aside class="margin-note">Form groups and controls</aside>
+
+Using Angular’s [FormBuilder](https://angular.io/guide/reactive-forms#using-the-formbuilder-service-to-generate-controls), we create the `form` property, the topmost form group. Inside, there is another form group for the address-related fields.
+
+The form controls are declared with their initial values (mostly empty, thus `null`) and their validators.
+
+The template uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively. The stripped-down structure with the `name` control looks like this:
+
+```html
+<form [formGroup]="form">
+  <fieldset formGroupName="address">
+    <label>
+      Full name
+      <input type="text" formControlName="name" />
+    </label>
+  </fieldset>
+</form>
+```
+
+<aside class="margin-note">Form submission</aside>
+
+When the form is filled out correctly and all validations pass, the user is able to submit to the form. It produces a data object described by the [`SignupData` interface](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts):
+
+```typescript
+export interface SignupData {
+  plan: Plan;
+  username: string;
+  email: string;
+  password: string;
+  tos: true;
+  address: {
+    name: string;
+    addressLine1?: string;
+    addressLine2: string;
+    city: string;
+    postcode: string;
+    region?: string;
+    country: string;
+  };
+}
+```
+
+The `SignupService`’s `signup` method takes the `SignupData` and sends it to the server. For security reasons, the server needs to validate the data again. But we will focus on the front-end in this guide.
+
+### Validators
+
+Several form controls have synchronous validators. `required`, `email`, `maxLength`, `pattern` etc. are built-in, synchronous validators provided by Angular:
+
+```typescript
+import { Validators } from '@angular/forms';
+
+const { email, maxLength, pattern, required, requiredTrue } = Validators;
+```
+
+These validators take the control value, a string most of the time, and return a `ValidationErrors` object with error messages. The validation happens synchronously on the client.
+
+For the username, the email and the password, there are custom asynchronous validators. They talk to the (fake) back-end service to check whether username and email are available and to measure the password strength. This HTTP request to the back-end makes the validation asynchronous.
+
+What to test
+
+- Successful form submission when all fields are filled out correctly
+- Check required state
+-
+- Dynamic relations between fields: plan > address line 1
+- Accessible form structure, field labels and error messages
+  Not via Angular
+
+Accessibility
+
+pa11y
+axe-core
+Puppeteer
+
+"a11y": "start-server-and-test start https-get://localhost:4200/ pa11y-ci",
+"pa11y-ci": "pa11y-ci"
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
