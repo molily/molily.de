@@ -4132,7 +4132,7 @@ You might remember that there are two fundamental approaches to forms in Angular
 
 <aside class="margin-note">Reactive Form</aside>
 
-The `SignupFormComponent` is a Reactive Form that explictly creates the groups and controls in the Component class. This way, it is easier to specify custom validators and to set up dynamic field relations.
+The `SignupFormComponent` is a **Reactive Form** that explictly creates the groups and controls in the Component class. This way, it is easier to specify custom validators and to set up dynamic field relations.
 
 As with other Angular core concepts, this guide assumes you have a basic understanding about Reactive Forms. Please refer to the [official guide on Reactive Forms](https://angular.io/guide/reactive-forms) to brush up your knowledge.
 
@@ -4182,9 +4182,11 @@ export class SignupFormComponent {
 
 Using Angular’s [FormBuilder](https://angular.io/guide/reactive-forms#using-the-formbuilder-service-to-generate-controls), we create the `form` property, the topmost form group. Inside, there is another form group for the address-related fields.
 
-The form controls are declared with their initial values (mostly empty, thus `null`) and their validators.
+The form controls are declared with their initial values (mostly empty, hence `null`) and their validators.
 
-The template uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively. The stripped-down structure with the `name` control looks like this:
+The Component template uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively.
+
+The stripped-down form structure with only one control looks like this:
 
 ```html
 <form [formGroup]="form">
@@ -4220,32 +4222,103 @@ export interface SignupData {
 }
 ```
 
-The `SignupService`’s `signup` method takes the `SignupData` and sends it to the server. For security reasons, the server needs to validate the data again. But we will focus on the front-end in this guide.
+The `SignupService`’s `signup` method takes the `SignupData` and sends it to the server. For security reasons, the server validates the data again. But we will focus on the front-end in this guide.
 
-### Validators
+### Validation
 
 Several form controls have synchronous validators. `required`, `email`, `maxLength`, `pattern` etc. are built-in, synchronous validators provided by Angular:
 
 ```typescript
 import { Validators } from '@angular/forms';
 
-const { email, maxLength, pattern, required, requiredTrue } = Validators;
+const {
+  email, maxLength, pattern, required, requiredTrue
+} = Validators;
 ```
 
 These validators take the control value, a string most of the time, and return a `ValidationErrors` object with error messages. The validation happens synchronously on the client.
 
-For the username, the email and the password, there are custom asynchronous validators. They talk to the (fake) back-end service to check whether username and email are available and to measure the password strength. This HTTP request to the back-end makes the validation asynchronous.
+<aside class="margin-note">Async validators</aside>
+
+For the username, the email and the password, there are custom asynchronous validators. Via the `SignupService`, they talk to the (fake) back-end service to check whether username and email are available and to measure the password strength. These HTTP requests to the back-end turn the validation asynchronous.
+
+<aside class="margin-note">Error rendering</aside>
+
+When a validator returned some errors, corresponding error messages are shown below the form control. This repetitive task is outsourced to the [`FieldErrorsComponent`](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/field-errors).
+
+<aside class="margin-note">invalid && (touched || dirty)</aside>
+
+This Component displays the errors when the form control is *invalid* and either *touched* or *dirty*. Touched means the user has focussed the control but it lost the focus again (`blur` event). Dirty means the user has entered a value different from the initial value.
+
+For the `name` control, the interaction between the control and the `FieldErrorsComponent` looks like this:
+
+```html
+<label>
+  Full name
+  <input
+    type="text"
+    formControlName="name"
+    aria-required="true"
+    appErrorMessage="name-errors"
+  />
+</label>
+<!-- … -->
+<app-field-errors controlName="name" id="name-errors">
+  <ng-template let-errors>
+    <ng-container *ngIf="errors.required">
+      Name must be given.
+    </ng-container>
+  </ng-template>
+</app-field-errors>
+```
+
+<aside class="margin-note">ARIA attributes</aside>
+
+The `appErrorMessage` attribute activates the [`ErrorMessageDirective`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/directives/error-message.directive.ts). When the form control is invalid and either touched or dirty, the Directive adds `aria-invalid` and `aria-errormessage` attributes.
+
+`aria-invalid` marks the the control as invalid for assistive technology like screen readers. `aria-errormessage` points to another element that contains the error messages.
+
+<aside class="margin-note">Connect control with errors</aside>
+
+In case of an error, the Directive sets `aria-errormessage` to the id of the corresponding `app-field-errors` element. In the example above, the id is `name-errors`. This way, the user finds the associated error messages quickly.
+
+The control-specific error messages are still located in `signup-form.component.html`. They are passed to `FieldErrorsComponent` as an `ng-template`. The `FieldErrorsComponent` renders the template dynamically, passing the `errors` object as a variable:
+
+```html
+<ng-template let-errors>
+  <ng-container *ngIf="errors.required">
+    Name must be given.
+  </ng-container>
+</ng-template>
+```
+
+You do not have to understand the details of this specific implementation. The solution in the sign-up form is just one possibility to display errors, avoid repetition and set ARIA attributes for accessibility.
+
+From the user perspective and also from a testing perspective, it does not matter how you implement the rendering of error messages – as long as they are present and accessible.
+
+<aside class="margin-note">Implementation details</aside>
+
+We are going to test the `SignupFormComponent` in conjunction with `FieldErrorsComponent` and `ErrorMessageDirective` in a **black-box integration test**. For this test, the latter two will be irrelevant implementation details.
+
+<div class="book-sources" markdown="1">
+- [Angular guide: Validating form input](https://angular.io/guide/form-validation)
+- [MDN: Introduction to ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
+- [MDN: Using the aria-invalid attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-invalid_attribute)
+- [ARIA specification: aria-errormessage](https://www.w3.org/TR/wai-aria-1.1/#aria-errormessage)
+</div>
+
+### Test plan
 
 What to test
 
 - Successful form submission when all fields are filled out correctly
+- Async validation of username, email and password
 - Check required state
--
 - Dynamic relations between fields: plan > address line 1
 - Accessible form structure, field labels and error messages
   Not via Angular
 
-Accessibility
+### Testing accessibility
 
 pa11y
 axe-core
