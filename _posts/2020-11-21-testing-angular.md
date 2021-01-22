@@ -932,7 +932,7 @@ Some people prefer to write `it('should increment the count', /* … */)`, but `
 
 Inside the `it` block lies the actual testing code. Irrespective of the testing framework, the testing code typically consists of three phases: **Arrange, Act and Assert**.
 
-<aside class="margin-note">Three phases</aside>
+<aside class="margin-note">Arrange, Act, Assert</aside>
 
 1. **Arrange** is the preparation and setup phase. For example, the class under test is instantiated. Dependencies are set up. Spies and fakes are created.
 2. **Act** is the phase where interaction with the code under test happens. For example, a method is called or an HTML element in the DOM is clicked.
@@ -4226,7 +4226,7 @@ export interface SignupData {
 
 The `SignupService`’s `signup` method takes the `SignupData` and sends it to the server. For security reasons, the server validates the data again. But we will focus on the front-end in this guide.
 
-### Validation
+### Form validation and errors
 
 Several form controls have synchronous validators. `required`, `email`, `maxLength`, `pattern` etc. are built-in, synchronous validators provided by Angular:
 
@@ -4250,7 +4250,10 @@ When a validator returned some errors, corresponding error messages are shown be
 
 <aside class="margin-note">invalid && (touched || dirty)</aside>
 
-`ControlErrorsComponent` displays the errors when the form control is *invalid* and either *touched* or *dirty*. Touched means the user has focussed the control but it has lost the focus again (the `blur` event fired). Dirty means the user has changed the value.
+`ControlErrorsComponent` displays the errors when the form control is *invalid* and either *touched* or *dirty*.
+
+- *Touched* means the user has focussed the control but it has lost the focus again (the `blur` event fired).
+- *Dirty* means the user has changed the value.
 
 For the `name` control, the interaction between the `input` element and the `ControlErrorsComponent` looks like this:
 
@@ -4533,7 +4536,7 @@ it('submits the form successfully', async () => {
 
     findEl(fixture, 'form').triggerEventHandler('submit', {});
 
-    expect(signupService.signup).toHaveBeenCalledWith(signup);
+    expect(signupService.signup).toHaveBeenCalledWith(signupData);
 });
 ```
 
@@ -4547,14 +4550,322 @@ but it was never called.
 
 The spec fails because the form is still in the *invalid* state even though we have filled out all fields correctly.
 
-The cause are the **asynchronous validators** for username, email and password. They wait for one second before sending a request to the server. (In production, the HTTP request takes additional time, but our fake `SignupService` returns the response instantly.)
+The cause are the **asynchronous validators** for username, email and password. When the user stopped typing into these fields, they wait for one second before sending a request to the server. (In production, the HTTP request takes additional time, but our fake `SignupService` returns the response instantly.)
 
-The spec above submits the form immediately after filling out the fields. At this point in time, the asynchronous validators have been called but have not returned a value yet. They are still waiting for a second to pass.
+This technique to reduce the amount of requests is called *debouncing*. Typing the username “fox” for example should send one request with “fox”, not three subsequent requests with “f”, “fo” and “fox”, respectively.
 
-After each change, the synchronous validators of the control run
-But asynchronous
+The spec above submits the form immediately after filling out the fields. At this point in time, the asynchronous validators have been called but have not returned a value yet. They are still waiting for the debounce period to pass.
 
-WAIT
+In consequence, the test needs to wait one second for the asynchronous validators. The easiest way would be to write an asynchronous Jasmine test that uses `setTimeout(() => { /* … */}, 1000)`. But this would slow down our specs.
+
+Instead, we are going to use Angular’s `fakeAsync` and `tick` functions to *simulate* the passage of time. They are a powerful couple to test asynchronous behavior.
+
+<aside class="margin-note" markdown="1">
+  `fakeAsync` and `tick`
+</aside>
+
+`fakeAsync` freezes time. It hooks into the processing of asynchronous tasks created by timers, intervals, Promises and Observables. It prevents these tasks from being executed.
+
+Inside the time warp created by `fakeAsync`, we use the `tick` function to simulate the passage of time. The scheduled tasks are executed and we can test their effect.
+
+The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if one minute passes in the simulation, the spec may still complete in a few milliseconds.
+
+`fakeAsync` wraps the whole spec function which is already an `async` function due to the `setup` call. After filling out the form, we simulate the waiting with `tick(1000)`.
+
+```typescript
+it('submits the form successfully', fakeAsync(async () => {
+  await setup();
+
+  fillForm();
+
+  // Wait for async validators
+  tick(1000);
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+  expect(signupService.signup).toHaveBeenCalledWith(signupData);
+}));
+```
+
+This spec passes! Now we should add some expectations to test the details.
+
+First, we expect that the asynchronous validators called the `SignupService` methods correctly, namely `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
+
+```typescript
+it('submits the form successfully', fakeAsync(async () => {
+  await setup();
+
+  fillForm();
+
+  // Wait for async validators
+  tick(1000);
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+  expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+  expect(signupService.isEmailTaken).toHaveBeenCalledWith(email);
+  expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+  expect(signupService.signup).toHaveBeenCalledWith(signupData);
+}));
+```
+
+Next, we make sure that the submit button is disabled initially. After successful validation, the button is enabled. (The submit button carries the test id `submit`.)
+
+Also, when the form has been submitted successfully, the status message “Sign-up successful!” needs to appear. (The status message carries the test id `status`.)
+
+This brings us to the final spec:
+
+```typescript
+it('submits the form successfully', fakeAsync(async () => {
+  await setup();
+
+  fillForm();
+  fixture.detectChanges();
+
+  expect(findEl(fixture, 'submit').properties.disabled).toBe(true);
+
+  // Wait for async validators
+  tick(1000);
+  fixture.detectChanges();
+
+  expect(findEl(fixture, 'submit').properties.disabled).toBe(false);
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
+  fixture.detectChanges();
+
+  expectText(fixture, 'status', 'Sign-up successful!');
+
+  expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+  expect(signupService.isEmailTaken).toHaveBeenCalledWith(email);
+  expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+  expect(signupService.signup).toHaveBeenCalledWith(signupData);
+}));
+```
+
+Because we are testing DOM changes, we have to call `detectChanges` after each Act phase.
+
+<div class="book-sources" markdown="1">
+- [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+- [Angular API reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
+- [Angular API reference: tick](https://angular.io/api/core/testing/tick)
+</div>
+
+### Invalid form
+
+Now that we have tested the successful form submission, let us check that the Component prevents submitting an invalid form. What happens if we do not fill out any fields, but submit the form?
+
+We create a new spec for this case:
+
+```typescript
+it('does not submit an invalid form', fakeAsync(async () => {
+  await setup();
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+  // Wait for async validators
+  tick(1000);
+
+  expect(signupService.isUsernameTaken).not.toHaveBeenCalled();
+  expect(signupService.isEmailTaken).not.toHaveBeenCalled();
+  expect(signupService.getPasswordStrength).not.toHaveBeenCalled();
+  expect(signupService.signup).not.toHaveBeenCalled();
+}));
+```
+
+This spec does less than the previous. We submit the form immediately, wait for a second and expect that no `SignupService` methods have been called.
+
+### Required fields
+
+A vital form logic is that certain fields are required and that the user interface conveys the fact clear,y. Let us write a spec that checks whether required fields as marked as such.
+
+The requirements are:
+
+- A required field needs an `aria-required` attribute
+- A required, invalid field needs an `aria-errormessage` attribute
+- The `aria-errormessage` contains the id of another element
+- This element contains an error message “… must be given”. (The text for the Terms of Services checkbox reads “Please accept the Terms and Services”.)
+
+Our spec needs to verify all required fields, so we start with compiling a list of their respective test ids:
+
+```typescript
+const requiredFields = [
+  'username',
+  'email',
+  'name',
+  'addressLine2',
+  'city',
+  'postcode',
+  'country',
+  'tos',
+];
+```
+
+Before examining the fields, we need to trigger the display of form errors. As described in [Form validation and errors](#form-validation-and-errors), error messages are shown when the field is *invalid* and either *touched* or *dirty*.
+
+Luckily, the empty, but required fields are already invalid. Entering text would make them *dirty*, but we want to test the opposite case.
+
+So we need to *touch* the fields. If a field is focussed and loses focus again, Angular considers it as *touched*. Under the hood, Angular listens for the `blur` event.
+
+In our spec, we simulate a `blur` event using the `dispatchFakeEvent` testing helper. Let us put the call in a reusable function:
+
+```typescriot
+const markFieldAsTouched = (element: DebugElement) => {
+  dispatchFakeEvent(element.nativeElement, 'blur');
+};
+```
+
+We can now write the Arrange and Act phases of the spec:
+
+```typescript
+it('marks fields as required', async () => {
+  await setup();
+
+  // Mark required fields as touched
+  requiredFields.forEach((testId) => {
+    markFieldAsTouched(findEl(fixture, testId));
+  });
+
+  fixture.detectChanges();
+
+  /* … */
+});
+```
+
+A `forEach` loop walks through the required field test ids, finds the element and marks the field as touched. We call `detectChanges` afterwards so the error messages appear.
+
+Next, the Assert phase. Again we walk through the required fields to examine each one of them. Let us start with the `aria-required` attribute.
+
+```typescript
+requiredFields.forEach((testId) => {
+  const el = findEl(fixture, testId);
+
+  // Check aria-required attribute
+  expect(el.attributes['aria-required']).toBe(
+    'true',
+    `${testId} must be marked as aria-required`,
+  );
+
+  /* … */
+});
+```
+
+`findEl` returns a `DebugElement` with an `attributes` property. This object contains all attributes set by the template. We expect that the attribute `aria-required="true"` is present.
+
+The next part tests the error message with three steps:
+
+1. Read the `aria-errormessage` attribute. Expect that it is set.
+2. Find the element the id in `aria-errormessage` points to. Expect that it exists.
+3. Read the text content. Expect an error message.
+
+Step 1 looks like this:
+
+```typescript
+// Check aria-errormessage attribute
+const errormessageId = el.attributes['aria-errormessage'];
+if (!errormessageId) {
+  throw new Error(`Error message id for ${testId} not present`);
+}
+```
+
+Normally, we would use a Jasmine expectation like `expect(errormessageId).toBeDefined()`. But `errormessageId` has the type `string | null` whereas we need a `string` in the upcoming commands.
+
+We need a TypeScript type assertion that rules out the `null` case and narrows down the type to `string`. If the attribute is absent or empty, we throw an exception. This fails the test with the given error and ensures that `errormessageId` is a string.
+
+Step 2 finds the error message element:
+
+```typescript
+// Check element with error message
+const errormessageEl = document.getElementById(errormessageId);
+if (!errormessageEl) {
+  throw new Error(`Error message element for ${testId} not found`);
+}
+```
+
+We use the native DOM method `document.getElementById` to find the element. `errormessageEl` has the type `HTMLElement | null`, so we rule out the `null` case to work with `errormessageEl`.
+
+Finally, we ensure that the element contains an error message, with a special treatment of the Terms and Services message.
+
+```typescript
+if (errormessageId === 'tos-errors') {
+  expect(errormessageEl.textContent).toContain(
+    'Please accept the Terms and Services',
+  );
+} else {
+  expect(errormessageEl.textContent).toContain('must be given');
+}
+```
+
+The full spec looks like this:
+
+```typescript
+it('marks fields as required', async () => {
+  await setup();
+
+  // Mark required fields as touched
+  requiredFields.forEach((testId) => {
+    markFieldAsTouched(findEl(fixture, testId));
+  });
+
+  fixture.detectChanges();
+
+  requiredFields.forEach((testId) => {
+    const el = findEl(fixture, testId);
+
+    // Check aria-required attribute
+    expect(el.attributes['aria-required']).toBe(
+      'true',
+      `${testId} must be marked as aria-required`,
+    );
+
+    // Check aria-errormessage attribute
+    const errormessageId = el.attributes['aria-errormessage'];
+    if (!errormessageId) {
+      throw new Error(`Error message id for ${testId} not present`);
+    }
+    // Check element with error message
+    const errormessageEl = document.getElementById(errormessageId);
+    if (!errormessageEl) {
+      throw new Error(`Error message element for ${testId} not found`);
+    }
+    if (errormessageId === 'tos-errors') {
+      expect(errormessageEl.textContent).toContain(
+        'Please accept the Terms and Services',
+      );
+    } else {
+      expect(errormessageEl.textContent).toContain('must be given');
+    }
+  });
+});
+```
+
+### Asynchronous validators
+
+The signup-form has three asynchronous validators for username, email and password.
+
+We have already covered the “happy path” in which the entered username and email are available and the password is strong enough. We need to write three specs for the error cases: Username or email are taken and the password is too weak.
+
+The validators call `SignupService` methods
+The fake returns
+success case
+but we created a setup function for a reason:
+It allows us to overwrite the fake behavior
+
+We configure a different fakes
+
+await setup({
+  // Let the API return that the username is taken
+  isUsernameTaken: of(true),
+});
+
+await setup({
+  // Let the API return that the email is taken
+  isEmailTaken: of(true),
+});
+
+await setup({
+  // Let the API return that the password is weak
+  getPasswordStrength: of(weakPassword),
+});
 
 ### Testing accessibility
 
@@ -6380,6 +6691,8 @@ To test the second case is trickier because we need to simulate that the Observa
 At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
 
 Again, there are several ways how to accomplish this. We are going to use Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
+
+TODO: See above
 
 <aside class="margin-note" markdown="1">
   `fakeAsync` and `tick`
