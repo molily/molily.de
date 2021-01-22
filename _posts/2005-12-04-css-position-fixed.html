@@ -8,11 +8,12 @@ lang: de
 
 <style>
 .post-full img {
-  box-sizing: content-box;
-  border: 1px solid #ccc;
+  display: block;
+  max-width: 100%;
 }
-table {
-  background-color: white;
+.scroll-wrapper {
+  width: 100%;
+  overflow: auto;
 }
 </style>
 
@@ -150,15 +151,16 @@ h2[id], h3[id], h4[id] {
 
 <p>Der beschriebene Code hat zur Folge, dass in allen Browsern, welche die Attributselektoren interpretieren, die CSS-Box des <code>h<var>X</var></code>-Überschriftelements durch das <code>a</code>-Blockelement um dessen Höhe nach oben vergrößert wird. Beim Anspringen des Ankers wird die Oberkante des <code>h<var>X</var></code>-Elements an den oberen Rand des Anzeigebereichs gerückt. Dadurch liegt der fest positionierte Bereich über dem leeren Abstand (dem <code>a</code>-Element), ohne dass der eigentliche Inhalt der Überschrift verdeckt wird.</p>
 
-<table border="1" cellspacing="0" cellpadding="3">
-<caption>Browser-Unterstützung der ersten CSS-Lösung</caption>
-<tr><th>Mozilla Milestone 16 (Gecko/20000613) Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Opera 5.12 Windows</th><td>Negativ getestet. Das Blockelement wird zwar erzeugt und wie gewünscht angezeigt, aber der Text danach angesprungen.</td></tr>
-<tr><th>Opera 6.00 Windows</th><td>Negativ getestet, der Überschriftstext wird angesprungen.</td></tr>
-<tr><th>Opera 6.01 Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Safari 1.2 MacOS X</th><td>positiv getestet</td></tr>
-<tr><th>Konqueror 3.2.2 Linux</th><td>positiv getestet Konqueror zeigt einen angesprungenen Anker jedoch nicht direkt am oberen Rand des Anzeigebereichs an, sondern lässt einen schmalen Spalt dazwischen. Er springt also nicht so weit nach unten wie die anderen Browser, wodurch ein Teil des leeren Abstands zwischen der Unterkante des fest positionierten Bereichs und dem Überschriftstext zu sehen ist.</td></tr>
-</table>
+<h3>Browser-Unterstützung der ersten CSS-Lösung</h3>
+
+<dl>
+<dt>Mozilla Milestone 16 (Gecko/20000613) Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Opera 5.12 Windows</dt><dd>Negativ getestet. Das Blockelement wird zwar erzeugt und wie gewünscht angezeigt, aber der Text danach angesprungen.</dd>
+<dt>Opera 6.00 Windows</dt><dd>Negativ getestet, der Überschriftstext wird angesprungen.</dd>
+<dt>Opera 6.01 Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Safari 1.2 MacOS X</dt><dd>positiv getestet</dd>
+<dt>Konqueror 3.2.2 Linux</dt><dd>positiv getestet Konqueror zeigt einen angesprungenen Anker jedoch nicht direkt am oberen Rand des Anzeigebereichs an, sondern lässt einen schmalen Spalt dazwischen. Er springt also nicht so weit nach unten wie die anderen Browser, wodurch ein Teil des leeren Abstands zwischen der Unterkante des fest positionierten Bereichs und dem Überschriftstext zu sehen ist.</dd>
+</dl>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -287,14 +289,14 @@ h2[id], h3[id], h4[id] {
 
 <p>Sofern der Browser die genannten Regeln wie gewünscht umsetzt, entstehen vor allen relevanten Überschriften durch die eingefügten Blockinhalte Abstände beziehungsweise Freiräume, die die Boxen der Überschriften nach oben vergrößern. Beim Anspringen einer mit einem Anker versehenen Überschrift wird der Dokumentausschnitt so verschoben, dass sich die obere Kante der Überschriftbox mit der des Anzeigebereichs deckt. Der fest positionierte Bereich überlappt somit den Freiraum. Der Überschrifttext liegt vertikal unterhalb des fest positionierte Bereich und bleibt sichtbar.</p>
 
+<h3>Browser-Unterstützung der zweiten CSS-Lösung</h3>
 
-<table border="1" cellspacing="0" cellpadding="3">
-<caption>Browser-Unterstützung der zweiten CSS-Lösung</caption>
-<tr><th>Mozilla Milestone 16 (Gecko/20000613) Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Opera 5.12 bis 6.06 Windows</th><td>Negativ getestet. Der Überschriftstext wird gesprungen, nicht die Oberkante der eingefügten Block-Box.</td></tr>
-<tr><th>Opera 7.02 Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Safari 1.2 MacOS X und Konqueror 3.2.2 Linux</th><td>Negativ getestet. Die Block-Box wird zwar mit der gewünschten Höhe eingefügt, der Überschriftstext erscheint aber nicht unter derselbigen, sondern <em>darin</em>. Dadurch schließt der Überschriftstext direkt an das Element davor mit <code>class="lp"</code> an und zum ersten Absatz des eingeleiteten Abschnitts entsteht eine große Lücke. Beim Anspringen des Ankers liegt der Überschriftstext also unter dem fest positionierten Bereich und ist nicht lesbar.</td></tr>
-</table>
+<dl>
+<dt>Mozilla Milestone 16 (Gecko/20000613) Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Opera 5.12 bis 6.06 Windows</dt><dd>Negativ getestet. Der Überschriftstext wird gesprungen, nicht die Oberkante der eingefügten Block-Box</dd>
+<dt>Opera 7.02 Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Safari 1.2 MacOS X und Konqueror 3.2.2 Linux</dt><dd>Negativ getestet. Die Block-Box wird zwar mit der gewünschten Höhe eingefügt, der Überschriftstext erscheint aber nicht unter derselbigen, sondern <em>darin</em>. Dadurch schließt der Überschriftstext direkt an das Element davor mit <code>class="lp"</code> an und zum ersten Absatz des eingeleiteten Abschnitts entsteht eine große Lücke. Beim Anspringen des Ankers liegt der Überschriftstext also unter dem fest positionierten Bereich und ist nicht lesbar</dd>
+</dl>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -395,53 +397,46 @@ h2 a[name], h3 a[name], h4 a[name] {
 
 <p>Der Vorteil dieser Lösung ist, dass am äußeren Erscheinungsbild des Dokuments selbst nichts geändert wird. Von den vor den Überschriften positionierten Ankerelemente merkt der Benutzer nichts, wenn der Browser die CSS-Formatierungen richtig verarbeitet und anwendet. Der große <a href="#css1-nachteile">Nachteil des ersten Lösungsansatzes</a> &#8211; der durch das <code>a</code>-Blockelement erzwungene Abstand vor jeder Überschrift &#8211; ist bei dieser Lösungsmöglichkeit nicht vorhanden.</p>
 
-<table border="1" cellspacing="0" cellpadding="3">
-<caption>Browser-Unterstützung der dritten CSS-Lösung</caption>
-<tr><th>Mozilla 0.9.9 Windows</th><td>negativ getestet.</td></tr>
-<tr><th>Mozilla 1.0 <span lang="en">Release Candidate</span> 1 Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Opera 6.00 Windows</th><td>negativ getestet.</td></tr>
-<tr><th>Opera 6.01 Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Safari 1.2 MacOS X</th><td>negativ getestet.</td></tr>
-<tr><th>Konqueror 3.2.2</th><td>positiv getestet, allerdings tritt das aus den vorigen Lösungen bekannte Phänomen auf: Das Überschriftselement schließt beim Anspringen nicht direkt an die Oberkante des Anzeigebereichs an, somit liegt der Überschriftstext um ungefähr 20 Pixel weiter unten als in den anderen Browsern.</td></tr>
-</table>
+<h3>Browser-Unterstützung der dritten CSS-Lösung</h3>
+
+<dl>
+<dt>Mozilla 0.9.9 Windows</dt><dd>negativ getestet.</dd>
+<dt>Mozilla 1.0 <span lang="en">Release Candidate</span> 1 Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Opera 6.00 Windows</dt><dd>negativ getestet.</dd>
+<dt>Opera 6.01 Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Safari 1.2 MacOS X</dt><dd>negativ getestet.</dd>
+<dt>Konqueror 3.2.2</dt><dd>positiv getestet, allerdings tritt das aus den vorigen Lösungen bekannte Phänomen auf: Das Überschriftselement schließt beim Anspringen nicht direkt an die Oberkante des Anzeigebereichs an, somit liegt der Überschriftstext um ungefähr 20 Pixel weiter unten als in den anderen Browsern.</dd>
+</dl>
 
 <p>In Mozilla M16 funktioniert die Lösung (mit <code>font-size:2px; line-height:0;</code>, siehe unten), wenn der Anker aus einem externen Dokument angesprungen wird oder in die Adresszeile eingegeben wird, während ein fremdes Dokument angezeigt wird. Im Mozilla M18 bis einschließlich 0.9.9 funktioniert die Lösung nicht wie gewünscht. Im Mozilla 1.0 RC1 und darüber funktioniert die Lösung nur, wenn der fragliche Anker über einen dokumentinternen Link angesprungen wird.</p>
 
 <p>Im Opera 7.02, 7.11, 7.21, 7.23 und 7.5 wirkt die Formatierung <code>height:0</code> nur im <a href="http://www.hut.fi/~hsivonen/doctype.html">standardkonformen Rendermodus</a>, der abhängig von der Dokumenttyp-Angabe ist. Im Quirks-Modus hat der relativ positionierte Anker eine bestimmte Höhe, wodurch vor der Oberkante der Überschrift und dem Überschriftstext freier Platz bleibt. Auch Mozilla zeigt dieses Verhalten bis auschließlich Version 1.3, und zwar unabhängig vom Rendermodus. Dies lässt sich durch <code>font-size:2px; line-height:0</code> kompensieren. Im Opera (getestet mit 6.01 bis 7.5) führt dies jedoch zu einer Verschiebung nach oben beim Anspringen des Ankers. Dies hängt damit zusammen, welche Mindestschriftgröße eingestellt ist.</p>
 
-<table>
-<caption>Verschiebung beim Anspringen eines Ankers im Opera 7.x im Quirks-Modus bei <code>font-size:2px; line-height:0</code></caption>
-<thead>
-<tr>
-<th scope="col">Keine Mindestschriftgröße</th>
-<th scope="col">13 Pixel Mindestschriftgröße</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="/img/css-posfixed-css2-5.png" width="250" height="150" alt=""></td>
-<td><img src="/img/css-posfixed-css2-6.png" width="250" height="150" alt=""></td>
-</tr>
-</tbody>
-</table>
+<p><strong>Verschiebung beim Anspringen eines Ankers im Opera 7.x im Quirks-Modus bei <code>font-size:2px; line-height:0</code></strong></p>
+
+<figure>
+  <figcaption>Keine Mindestschriftgröße</figcaption>
+  <img src="/img/css-posfixed-css2-5.png" width="250" height="150" alt="">
+</figure>
+
+<figure>
+  <figcaption>13 Pixel Mindestschriftgröße</figcaption>
+  <img src="/img/css-posfixed-css2-6.png" width="250" height="150" alt="">
+</figure>
 
 <p>Der Wert <var>2px</var> für <code>font-size</code> bietet sich an, weil Mozilla bei <var>0</var> das Element als nicht existent ansieht und die Lösung insgesamt nicht mehr wirkt. In Mozilla-Versionen unter 1.3, in denen wie gesagt <code>height:0</code> nicht wirkt, setzt eine gegebenenfalls eingestellte Mindestschriftgröße die Angaben <code>font-size:2px; line-height:0</code> außer Kraft.</p>
 
-<table>
-<caption>Größe des verschobenen Ankerelements je nach Mindestschriftgröße im Mozilla &lt; 1.3 bei <code>font-size:2px; line-height:0</code> (zur Veranschaulichung ohne <code>visibility:hidden</code>)</caption>
-<thead>
-<tr>
-<th scope="col">Keine Mindestschriftgröße</th>
-<th scope="col">13 Pixel Mindestschriftgröße</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img src="/img/css-posfixed-css2-7.png" width="150" height="250" alt=""></td>
-<td><img src="/img/css-posfixed-css2-8.png" width="150" height="250" alt=""></td>
-</tr>
-</tbody>
-</table>
+<p><strong>Größe des verschobenen Ankerelements je nach Mindestschriftgröße im Mozilla &lt; 1.3 bei <code>font-size:2px; line-height:0</code> (zur Veranschaulichung ohne <code>visibility:hidden</code>)</strong></p>
+
+<figure>
+  <figcaption>Keine Mindestschriftgröße</figcaption>
+  <img src="/img/css-posfixed-css2-7.png" width="150" height="250" alt="">
+</figure>
+
+<figure>
+  <figcaption>13 Pixel Mindestschriftgröße</figcaption>
+  <img src="/img/css-posfixed-css2-8.png" width="150" height="250" alt="">
+</figure>
 
 <p>Unglücklicherweise lassen sich nicht beide Fehler gleichzeitig beheben. Denn wenn Opera 7.x im standardkonformen Modus bedient wird, damit <code>height:0</code> wirkt, und für Mozilla &lt; 1.3 <code>font-size:2px; line-height:0</code> eingesetzt wird, hat die Mindestschriftgröße im Opera die besagte Auswirkung auf die Höhe des relativ positionierten Ankerelements. Immerhin ist die durch die Mindestschriftgröße erzeugte Lücke höchstwahrscheinlich schmaler als diejenige, die entsteht, wenn keine wirksame Höhenbegrenzung angegeben ist.</p>
 
@@ -501,16 +496,17 @@ h2 a[name], h3 a[name], h4 a[name] {
  padding-top:<var>60</var>px; <em class="comment">/* Dieser Wert kann variieren. */</em>
 }</pre>
 
-<table border="1" cellspacing="0" cellpadding="3">
-<caption>Browser-Unterstützung der vierten CSS-Lösung</caption>
-<tr><th>Opera 5.12 bis 6.06 Windows</th><td>negativ getestet</td></tr>
-<tr><th>Opera 7.02 Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Mozilla M16 Windows</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Beim Anspringen des Ankers über einen externen Link oder beim Eingeben der Adresse in die Adresszeile liegt die Überschrift unter dem fest positionierten Bereich.</td></tr>
-<tr><th>Mozilla M18 Windows</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Mozilla M18 springt aus einem fremden Dokument referenzierten Anker anscheinend gar nicht an, dasselbe gilt für das Eingeben der Adresse in die Adresszeile, während ein anderes Dokument gezeigt wird.</td></tr>
-<tr><th>spätestens ab Mozilla 0.9 Windows</th><td>positiv getestet (ohne Einschränkungen)</td></tr>
-<tr><th>Safari 1.2 MacOS X</th><td>positiv getestet</td></tr>
-<tr><th>Konqueror 3.2.2 Linux</th><td>positiv getestet, allerdings tritt das aus den vorigen Lösungen bekannte Phänomen auf: Das Überschriftselement schließt beim Anspringen nicht direkt an die Oberkante des Anzeigebereichs an, somit liegt der Überschriftstext um ungefähr 20 Pixel weiter unten als in den anderen Browsern.</td></tr>
-</table>
+<h3>Browser-Unterstützung der vierten CSS-Lösung</h3>
+
+<dl>
+<dt>Opera 5.12 bis 6.06 Windows</dt><dd>negativ getestet</dd>
+<dt>Opera 7.02 Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Mozilla M16 Windows</dt><dd>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Beim Anspringen des Ankers über einen externen Link oder beim Eingeben der Adresse in die Adresszeile liegt die Überschrift unter dem fest positionierten Bereich.</dd>
+<dt>Mozilla M18 Windows</dt><dd>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Mozilla M18 springt aus einem fremden Dokument referenzierten Anker anscheinend gar nicht an, dasselbe gilt für das Eingeben der Adresse in die Adresszeile, während ein anderes Dokument gezeigt wird.</dd>
+<dt>spätestens ab Mozilla 0.9 Windows</dt><dd>positiv getestet (ohne Einschränkungen)</dd>
+<dt>Safari 1.2 MacOS X</dt><dd>positiv getestet</dd>
+<dt>Konqueror 3.2.2 Linux</dt><dd>positiv getestet, allerdings tritt das aus den vorigen Lösungen bekannte Phänomen auf: Das Überschriftselement schließt beim Anspringen nicht direkt an die Oberkante des Anzeigebereichs an, somit liegt der Überschriftstext um ungefähr 20 Pixel weiter unten als in den anderen Browsern.</dd>
+</dl>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -538,15 +534,16 @@ h2 a[name], h3 a[name], h4 a[name] {
 
 <ins><p>[Erklärung fehlt]</p></ins>
 
-<table border="1" cellspacing="0" cellpadding="3">
-<caption>Browser-Unterstützung der fünften CSS-Lösung</caption>
-<tr><th>Opera 5.12 bis 6.06 Windows</th><td>negativ getestet</td></tr>
-<tr><th>Opera 7.02 Windows und darüber</th><td>positiv getestet</td></tr>
-<tr><th>Mozilla M16 Windows</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen externen Link und beim ersten Eingeben der Adresse zum Anker in die Adresszeile, das heißt während ein fremdes Dokument angezeigt wird</td></tr>
-<tr><th>Mozilla M18 bis einschließlich 0.9.9 Windows</th><td>negativ getestet</td></tr>
-<tr><th>Mozilla 1.0 Release Candidate 1 Windows und darüber</th><td>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Beim Anspringen des Ankers über einen externen Link oder beim Eingeben der Adresse zum Anker in die Adresszeile liegt die Überschrift unter dem fest positionierten Bereich.</td></tr>
-<tr><th>Safari 1.2 MacOS X und Konqueror 3.2.2 Linux</th><td>negativ getestet</td></tr>
-</table>
+<h3>Browser-Unterstützung der fünften CSS-Lösung</h3>
+
+<dl>
+<dt>Opera 5.12 bis 6.06 Windows</dt><dd>negativ getestet</dd>
+<dt>Opera 7.02 Windows und darüber</dt><dd>positiv getestet</dd>
+<dt>Mozilla M16 Windows</dt><dd>positiv getestet, allerdings nur beim Anspringen des Ankers über einen externen Link und beim ersten Eingeben der Adresse zum Anker in die Adresszeile, das heißt während ein fremdes Dokument angezeigt wird</dd>
+<dt>Mozilla M18 bis einschließlich 0.9.9 Windows</dt><dd>negativ getestet</dd>
+<dt>Mozilla 1.0 Release Candidate 1 Windows und darüber</dt><dd>positiv getestet, allerdings nur beim Anspringen des Ankers über einen dokumentinternen Link. Beim Anspringen des Ankers über einen externen Link oder beim Eingeben der Adresse zum Anker in die Adresszeile liegt die Überschrift unter dem fest positionierten Bereich.</dd>
+<dt>Safari 1.2 MacOS X und Konqueror 3.2.2 Linux</dt><dd>negativ getestet</dd>
+</dl>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -727,7 +724,8 @@ addEvent(window, "load", init_position_fixed);
 
 <p>Angenommen, das Dokument wird mit einem Anker aufgerufen und <code>testlink</code> steht für einen Hyperlink im Dokument mit <code>id="testlink"</code>, welcher über den Array <code>document.links</code> oder über <code>document.getElementById("testlink")</code> angesprochen wird, so lassen sich folgende Werte beobachten:</p>
 
-<table border="1" cellspacing="0" cellpadding="3" id="eigenschaftsvergleich">
+<div class="scroll-wrapper">
+<table id="eigenschaftsvergleich">
 <caption>Vergleich der Werte der unterschiedlichen Objekteigenschaften bei verschiedenen Browsern</caption>
 <thead>
 <tr>
@@ -794,6 +792,7 @@ addEvent(window, "load", init_position_fixed);
 </tr>
 </tbody>
 </table>
+</div>
 
 <p>Die Überprüfung wäre einfach, wenn <strong>A. der Zielankername des Links</strong>, <strong>B. die Zieladresse des Links ohne Anker</strong> und <strong>C. die Adresse des aktuellen Dokuments ohne Anker</strong>, sowie  einzeln zur Verfügung stünden. Unglücklicherweise zeigt die obige Tabelle, dass nur A. direkt in Erfahrung gebracht werden kann, nämlich über die Eigenschaft <code>hash</code>.</p>
 
