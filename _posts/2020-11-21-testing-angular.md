@@ -4074,7 +4074,7 @@ There are two guidelines that may help you:
 
 Forms are the powerhouses of large web applications. Especially enterprise applications revolve around entering and editing data via forms. Therefore, implementing complex forms is a vital feature of the Angular framework.
 
-We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` spec helper for setting the value of a an `input` field.
+We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` testing helper for setting the value of a an `input` field.
 
 The forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and clicking on the submit button.
 
@@ -4171,7 +4171,9 @@ export class SignupFormComponent {
     }),
   });
   /* … */
-  constructor(private signupService: SignupService, private formBuilder: FormBuilder) {
+  constructor(
+    private signupService: SignupService,
+    private formBuilder: FormBuilder) {
     /* … */
   }
   /* … */
@@ -4244,13 +4246,13 @@ For the username, the email and the password, there are custom asynchronous vali
 
 <aside class="margin-note">Error rendering</aside>
 
-When a validator returned some errors, corresponding error messages are shown below the form control. This repetitive task is outsourced to the [`FieldErrorsComponent`](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/field-errors).
+When a validator returned some errors, corresponding error messages are shown below the form control. This repetitive task is outsourced to the [`ControlErrorsComponent`](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/control-errors).
 
 <aside class="margin-note">invalid && (touched || dirty)</aside>
 
-This Component displays the errors when the form control is *invalid* and either *touched* or *dirty*. Touched means the user has focussed the control but it lost the focus again (`blur` event). Dirty means the user has entered a value different from the initial value.
+`ControlErrorsComponent` displays the errors when the form control is *invalid* and either *touched* or *dirty*. Touched means the user has focussed the control but it has lost the focus again (the `blur` event fired). Dirty means the user has changed the value.
 
-For the `name` control, the interaction between the control and the `FieldErrorsComponent` looks like this:
+For the `name` control, the interaction between the `input` element and the `ControlErrorsComponent` looks like this:
 
 ```html
 <label>
@@ -4263,26 +4265,26 @@ For the `name` control, the interaction between the control and the `FieldErrors
   />
 </label>
 <!-- … -->
-<app-field-errors controlName="name" id="name-errors">
+<app-control-errors controlName="name" id="name-errors">
   <ng-template let-errors>
     <ng-container *ngIf="errors.required">
       Name must be given.
     </ng-container>
   </ng-template>
-</app-field-errors>
+</app-control-errors>
 ```
 
 <aside class="margin-note">ARIA attributes</aside>
 
 The `appErrorMessage` attribute activates the [`ErrorMessageDirective`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/directives/error-message.directive.ts). When the form control is invalid and either touched or dirty, the Directive adds `aria-invalid` and `aria-errormessage` attributes.
 
-`aria-invalid` marks the the control as invalid for assistive technology like screen readers. `aria-errormessage` points to another element that contains the error messages.
+`aria-invalid` marks the control as invalid for assistive technologies like screen readers. `aria-errormessage` points to another element that contains the error messages.
 
 <aside class="margin-note">Connect control with errors</aside>
 
-In case of an error, the Directive sets `aria-errormessage` to the id of the corresponding `app-field-errors` element. In the example above, the id is `name-errors`. This way, the user finds the associated error messages quickly.
+In case of an error, the Directive sets `aria-errormessage` to the id of the corresponding `app-control-errors` element. In the example above, the id is `name-errors`. This way, a screen reader user finds the associated error messages quickly.
 
-The control-specific error messages are still located in `signup-form.component.html`. They are passed to `FieldErrorsComponent` as an `ng-template`. The `FieldErrorsComponent` renders the template dynamically, passing the `errors` object as a variable:
+The control-specific error messages are still located in `signup-form.component.html`. They are passed to `ControlErrorsComponent` as an `ng-template`. The `ControlErrorsComponent` renders the template dynamically, passing the `errors` object as a variable:
 
 ```html
 <ng-template let-errors>
@@ -4292,13 +4294,13 @@ The control-specific error messages are still located in `signup-form.component.
 </ng-template>
 ```
 
-You do not have to understand the details of this specific implementation. The solution in the sign-up form is just one possibility to display errors, avoid repetition and set ARIA attributes for accessibility.
+You do not have to understand the details of this particular implementation. The solution in the sign-up form is just one possibility to display errors, avoid repetition and set ARIA attributes for accessibility.
 
 From the user perspective and also from a testing perspective, it does not matter how you implement the rendering of error messages – as long as they are present and accessible.
 
 <aside class="margin-note">Implementation details</aside>
 
-We are going to test the `SignupFormComponent` in conjunction with `FieldErrorsComponent` and `ErrorMessageDirective` in a **black-box integration test**. For this test, the latter two will be irrelevant implementation details.
+We are going to test the `SignupFormComponent` in conjunction with `ControlErrorsComponent` and `ErrorMessageDirective` in a **black-box integration test**. For this test, the latter two will be irrelevant implementation details.
 
 <div class="book-sources" markdown="1">
 - [Angular guide: Validating form input](https://angular.io/guide/form-validation)
@@ -4309,14 +4311,250 @@ We are going to test the `SignupFormComponent` in conjunction with `FieldErrorsC
 
 ### Test plan
 
-What to test
+What are the important parts of the sign-up form that need to be tested?
 
-- Successful form submission when all fields are filled out correctly
-- Async validation of username, email and password
-- Check required state
-- Dynamic relations between fields: plan > address line 1
-- Accessible form structure, field labels and error messages
-  Not via Angular
+- Successful form submission
+- Required fields are marked as such and display error messages
+- Asynchronous validation of username, email and password
+- Dynamic relations between fields: If the selected plan is “Business” or “Education & Non-profit”, the field “Address line 1” is required. If the selected plan is “Personal”, the field is optional.
+- Accessibility of the form structure, field labels and error messages
+
+### Test setup
+
+Before writing the individual specs, we need to set up the suite in `signup-form.component.spec.ts`. Let us start with the testing Module configuration.
+
+```typescript
+await TestBed.configureTestingModule({
+  imports: [ReactiveFormsModule],
+  declarations: [
+    SignupFormComponent,
+    ControlErrorsComponent,
+    ErrorMessageDirective
+  ],
+  providers: [
+    { provide: SignupService, useValue: signupService }
+  ],
+}).compileComponents();
+```
+
+The Component under test contains a Reactive Form. That is why we import the `ReactiveFormsModule`:
+
+```typescript
+imports: [ReactiveFormsModule],
+```
+
+As described, we are writing an integration test, so we declare the Component and its child components:
+
+```typescript
+declarations: [
+  SignupFormComponent,
+  ControlErrorsComponent,
+  ErrorMessageDirective
+],
+```
+
+The `SignupFormComponent` depends on the `SignupService`. We do not want HTTP requests to the back-end when the test run, so we [replace the Service with a fake instance](#faking-service-dependencies).
+
+```typescript
+providers: [
+  { provide: SignupService, useValue: signupService }
+],
+```
+
+A `SignupService` fake looks like this:
+
+```typescript
+const signupService:
+  Pick<SignupService, keyof SignupService> = {
+  isUsernameTaken() { return of(false); },
+  isEmailTaken() { return of(false); },
+  getPasswordStrength() { return of(strongPassword); },
+  signup() { return of({ success: true }); },
+};
+```
+
+This fake implements the success case: the username and email are available, the password is strong enough and the form submission was successful.
+
+Since we are going to test the success case and several error cases, we need to create fakes dynamically. Also we need Jasmine spies to verify that the Service methods are called correctly.
+
+This is a job for Jasmine’s `createSpyObj`.
+
+```typescript
+const signupService = jasmine.createSpyObj<SignupService>(
+  'SignupService',
+  {
+    // Successful responses per default
+    isUsernameTaken: of(false),
+    isEmailTaken: of(false),
+    getPasswordStrength: of(strongPassword),
+    signup: of({ success: true }),
+  }
+);
+```
+
+Together with the testing Module configuration, we put this code into a setup function. To adjust the `SignupService` fake behavior, we allow passing method return values.
+
+```typescript
+describe('SignupFormComponent', () => {
+  let fixture: ComponentFixture<SignupFormComponent>;
+  let signupService: jasmine.SpyObj<SignupService>;
+
+  const setup = async (
+    signupServiceReturnValues?: jasmine.SpyObjMethodNames<SignupService>,
+  ) => {
+    signupService = jasmine.createSpyObj<SignupService>(
+      'SignupService',
+      {
+        // Successful responses per default
+        isUsernameTaken: of(false),
+        isEmailTaken: of(false),
+        getPasswordStrength: of(strongPassword),
+        signup: of({ success: true }),
+        // Overwrite with given return values
+        ...signupServiceReturnValues,
+      }
+    );
+
+    await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
+      declarations: [SignupFormComponent, ControlErrorsComponent, ErrorMessageDirective],
+      providers: [{ provide: SignupService, useValue: signupService }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(SignupFormComponent);
+    fixture.detectChanges();
+  };
+
+  /* … */
+});
+```
+
+In following specs, we are going to call `setup` first. If we simply write `async setup()`, the `SignupService` fake returns successful responses.
+
+We can pass an object with different return values to simulate failure. For example, when testing that the username is taken:
+
+```typescript
+await setup({
+  // Let the API return that the username is taken
+  isUsernameTaken: of(true),
+});
+```
+
+This `setup` function is just one way to create fakes and to avoid repetition.
+
+### Successful form submission
+
+The first case we need to test is the successful form submission. If the user fills out all required fields and the validations pass, we expect the Component to call `SignupService`’s `signup` method with the entered form data.
+
+The first step is to define valid test data we can fill into the form. We put this in a separate file, [signup-data.spec-helper.ts](https://github.com/molily/angular-form-testing/blob/main/client/src/app/spec-helpers/signup-data.spec-helper.ts):
+
+```typescript
+export const username = 'quickBrownFox';
+export const password = 'dog lazy the over jumps fox brown quick the';
+export const email = 'quick.brown.fox@example.org';
+export const name = 'Mr. Fox';
+export const addressLine1 = '';
+export const addressLine2 = 'Under the Tree 1';
+export const city = 'Farmtown';
+export const postcode = '123456';
+export const region = 'Upper South';
+export const country = 'Luggnagg';
+
+export const signupData: SignupData = {
+  plan: 'personal',
+  username,
+  email,
+  password,
+  address: {
+    name, addressLine1, addressLine2,
+    city, postcode, region, country
+  },
+  tos: true,
+};
+```
+
+In the [signup-form.component.html](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.html) template, all field elements need to be marked with test ids so we can find them and enter the values programmatically.
+
+For example, the username input gets the test id `username`, the email input gets `email` and so on.
+
+Back in `signup-form.component.spec.ts`, we create a new spec that calls the setup function.
+
+```typescript
+it('submits the form successfully', async () => {
+    await setup();
+
+    /* … */
+});
+```
+
+Next, we fill out all required fields with valid values. Since we need to do that in several upcoming specs, let us create a reusable function.
+
+```typescript
+const fillForm = () => {
+  setFieldValue(fixture, 'username', username);
+  setFieldValue(fixture, 'email', email);
+  setFieldValue(fixture, 'password', password);
+  setFieldValue(fixture, 'name', name);
+  setFieldValue(fixture, 'addressLine1', addressLine1);
+  setFieldValue(fixture, 'addressLine2', addressLine2);
+  setFieldValue(fixture, 'city', city);
+  setFieldValue(fixture, 'postcode', postcode);
+  setFieldValue(fixture, 'region', region);
+  setFieldValue(fixture, 'country', country);
+  setCheckboxValue(fixture, 'tos', true);
+};
+```
+
+The `fillForm` function lies in the scope of `describe` so it may access the `fixture` variable. It uses the `setFieldValue` and `setCheckboxValue` [element testing helpers](#testing-helpers).
+
+In the spec, we call `fillForm`:
+
+```typescript
+it('submits the form successfully', async () => {
+    await setup();
+
+    fillForm();
+
+    /* … */
+});
+```
+
+Let us try to submit the form immediately after. The form under test listens for an [`ngSubmit` event](https://angular.io/api/forms/NgForm#listening-for-form-submission) at the `form` element. This boils down to a native `submit` event.
+
+After assigning a test id to the `form` element, we find it to simulate a `submit` event (see [Triggering event handlers](#triggering-event-handlers)).
+
+Then we expect that the `signup` spy to have been called with the entered signup data.
+
+```typescript
+it('submits the form successfully', async () => {
+    await setup();
+
+    fillForm();
+
+    findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+    expect(signupService.signup).toHaveBeenCalledWith(signup);
+});
+```
+
+If we run this spec, we find that is fails:
+
+```
+Expected spy SignupService.signup to have been called with:
+  [ Object({ plan: 'personal', … }) ]
+but it was never called.
+```
+
+The spec fails because the form is still in the *invalid* state even though we have filled out all fields correctly.
+
+The cause are the **asynchronous validators** for username, email and password. They wait for one second before sending a request to the server. (In production, the HTTP request takes additional time, but our fake `SignupService` returns the response instantly.)
+
+The spec above submits the form immediately after filling out the fields. At this point in time, the asynchronous validators have been called but have not returned a value yet. They are still waiting for a second to pass.
+
+After each change, the synchronous validators of the control run
+But asynchronous
+
+WAIT
 
 ### Testing accessibility
 
@@ -4352,7 +4590,7 @@ Spectator simplifies testing Components, Services, Directives, Pipes, routing an
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
-Both [example applications](#example-applications) are tested with our element spec helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+Both [example applications](#example-applications) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
 In this guide, we will look at testing the Flickr search example with Spectator.
 
@@ -4554,7 +4792,7 @@ describe('FullPhotoComponent with spectator', () => {
 });
 ```
 
-Compared to the version with custom spec helpers, the Spectator version is not necessarily shorter. But it works on a *consistent abstraction level*. Instead of a wild mix of `TestBed`, `ComponentFixture`, `DebugElement` plus helper functions, there is the `createComponentFactory` function and one `Spectator` instance.
+Compared to the version with custom testing helpers, the Spectator version is not necessarily shorter. But it works on a *consistent abstraction level*. Instead of a wild mix of `TestBed`, `ComponentFixture`, `DebugElement` plus helper functions, there is the `createComponentFactory` function and one `Spectator` instance.
 
 Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
 
