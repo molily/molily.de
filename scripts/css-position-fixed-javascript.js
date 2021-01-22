@@ -15,7 +15,6 @@ function addEvent (obj, event, func) {
     }
 }
 function link_scrollup () {
-    alert("link_scrollup");
     window.setTimeout('window.scrollBy(0, -60)', 10); // Der Wert -60 muss an die Höhe des fest positionierten Elements angepasst werden.
 }
 function init_position_fixed () {
@@ -50,7 +49,6 @@ function init_position_fixed () {
     }
 }
 function cancel_event (e) {
-	alert("cancel_event");
 	return false;
 }
 function init_cancel () {
