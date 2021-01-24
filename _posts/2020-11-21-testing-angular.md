@@ -4356,6 +4356,8 @@ declarations: [
 ],
 ```
 
+<aside class="margin-note">Fake Service</aside>
+
 The `SignupFormComponent` depends on the `SignupService`. We do not want HTTP requests to the back-end when the test run, so we [replace the Service with a fake instance](#faking-service-dependencies).
 
 ```typescript
@@ -4380,6 +4382,10 @@ This fake implements the success case: the username and email are available, the
 
 Since we are going to test the success case and several error cases, we need to create fakes dynamically. Also we need Jasmine spies to verify that the Service methods are called correctly.
 
+<aside class="margin-note" markdown="1">
+  `createSpyObj`
+</aside>
+
 This is a job for Jasmine’s `createSpyObj`.
 
 ```typescript
@@ -4395,6 +4401,8 @@ const signupService = jasmine.createSpyObj<SignupService>(
 );
 ```
 
+<aside class="margin-note">Setup function</aside>
+
 Together with the testing Module configuration, we put this code into a setup function. To adjust the `SignupService` fake behavior, we allow passing method return values.
 
 ```typescript
@@ -4403,7 +4411,8 @@ describe('SignupFormComponent', () => {
   let signupService: jasmine.SpyObj<SignupService>;
 
   const setup = async (
-    signupServiceReturnValues?: jasmine.SpyObjMethodNames<SignupService>,
+    signupServiceReturnValues?:
+      jasmine.SpyObjMethodNames<SignupService>,
   ) => {
     signupService = jasmine.createSpyObj<SignupService>(
       'SignupService',
@@ -4432,7 +4441,7 @@ describe('SignupFormComponent', () => {
 });
 ```
 
-In following specs, we are going to call `setup` first. If we simply write `async setup()`, the `SignupService` fake returns successful responses.
+In all following specs, we are going to call `setup` first. If we simply write `async setup()`, the `SignupService` fake returns successful responses.
 
 We can pass an object with different return values to simulate failure. For example, when testing that the username is taken:
 
@@ -4443,13 +4452,15 @@ await setup({
 });
 ```
 
-This `setup` function is just one way to create fakes and to avoid repetition.
+Such a `setup` function is just one way to create fakes and avoid repetition. You might come up with a different solution that serves the same purpose.
 
 ### Successful form submission
 
 The first case we need to test is the successful form submission. If the user fills out all required fields and the validations pass, we expect the Component to call `SignupService`’s `signup` method with the entered form data.
 
-The first step is to define valid test data we can fill into the form. We put this in a separate file, [signup-data.spec-helper.ts](https://github.com/molily/angular-form-testing/blob/main/client/src/app/spec-helpers/signup-data.spec-helper.ts):
+<aside class="margin-note">Test data</aside>
+
+The first step is to define **valid test data* we can fill into the form. We put this in a separate file, [signup-data.spec-helper.ts](https://github.com/molily/angular-form-testing/blob/main/client/src/app/spec-helpers/signup-data.spec-helper.ts):
 
 ```typescript
 export const username = 'quickBrownFox';
@@ -4490,6 +4501,8 @@ it('submits the form successfully', async () => {
 });
 ```
 
+<aside class="margin-note">Fill out form</aside>
+
 Next, we fill out all required fields with valid values. Since we need to do that in several upcoming specs, let us create a reusable function.
 
 ```typescript
@@ -4524,7 +4537,9 @@ it('submits the form successfully', async () => {
 
 Let us try to submit the form immediately after. The form under test listens for an [`ngSubmit` event](https://angular.io/api/forms/NgForm#listening-for-form-submission) at the `form` element. This boils down to a native `submit` event.
 
-After assigning a test id to the `form` element, we find it to simulate a `submit` event (see [Triggering event handlers](#triggering-event-handlers)).
+<aside class="margin-note">Submit form</aside>
+
+We find the `form` element by its test id and simulate a `submit` event (see [Triggering event handlers](#triggering-event-handlers)).
 
 Then we expect that the `signup` spy to have been called with the entered signup data.
 
@@ -4550,7 +4565,11 @@ but it was never called.
 
 The spec fails because the form is still in the *invalid* state even though we have filled out all fields correctly.
 
+<aside class="margin-note">Async validators</aside>
+
 The cause are the **asynchronous validators** for username, email and password. When the user stopped typing into these fields, they wait for one second before sending a request to the server. (In production, the HTTP request takes additional time, but our fake `SignupService` returns the response instantly.)
+
+<aside class="margin-note">One second debounce</aside>
 
 This technique to reduce the amount of requests is called *debouncing*. Typing the username “fox” for example should send one request with “fox”, not three subsequent requests with “f”, “fo” and “fox”, respectively.
 
@@ -4558,13 +4577,15 @@ The spec above submits the form immediately after filling out the fields. At thi
 
 In consequence, the test needs to wait one second for the asynchronous validators. The easiest way would be to write an asynchronous Jasmine test that uses `setTimeout(() => { /* … */}, 1000)`. But this would slow down our specs.
 
-Instead, we are going to use Angular’s `fakeAsync` and `tick` functions to *simulate* the passage of time. They are a powerful couple to test asynchronous behavior.
-
 <aside class="margin-note" markdown="1">
   `fakeAsync` and `tick`
 </aside>
 
+Instead, we are going to use Angular’s `fakeAsync` and `tick` functions to *simulate* the passage of time. They are a powerful couple to test asynchronous behavior.
+
 `fakeAsync` freezes time. It hooks into the processing of asynchronous tasks created by timers, intervals, Promises and Observables. It prevents these tasks from being executed.
+
+<aside class="margin-note">Simulate passage of time</aside>
 
 Inside the time warp created by `fakeAsync`, we use the `tick` function to simulate the passage of time. The scheduled tasks are executed and we can test their effect.
 
@@ -4645,7 +4666,7 @@ it('submits the form successfully', fakeAsync(async () => {
 Because we are testing DOM changes, we have to call `detectChanges` after each Act phase.
 
 <div class="book-sources" markdown="1">
-- [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+- [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
 - [Angular API reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
 - [Angular API reference: tick](https://angular.io/api/core/testing/tick)
 </div>
@@ -4676,12 +4697,12 @@ This spec does less than the previous. We submit the form immediately, wait for 
 
 ### Required fields
 
-A vital form logic is that certain fields are required and that the user interface conveys the fact clear,y. Let us write a spec that checks whether required fields as marked as such.
+A vital form logic is that certain fields are required and that the user interface conveys the fact clearly. Let us write a spec that checks whether required fields as marked as such.
 
 The requirements are:
 
-- A required field needs an `aria-required` attribute
-- A required, invalid field needs an `aria-errormessage` attribute
+- A required field has an `aria-required` attribute
+- A required, invalid field has an `aria-errormessage` attribute
 - The `aria-errormessage` contains the id of another element
 - This element contains an error message “… must be given”. (The text for the Terms of Services checkbox reads “Please accept the Terms and Services”.)
 
@@ -4700,15 +4721,19 @@ const requiredFields = [
 ];
 ```
 
+<aside class="margin-note">invalid && (touched || dirty)</aside>
+
 Before examining the fields, we need to trigger the display of form errors. As described in [Form validation and errors](#form-validation-and-errors), error messages are shown when the field is *invalid* and either *touched* or *dirty*.
 
 Luckily, the empty, but required fields are already invalid. Entering text would make them *dirty*, but we want to test the opposite case.
+
+<aside class="margin-note">Mark as touched</aside>
 
 So we need to *touch* the fields. If a field is focussed and loses focus again, Angular considers it as *touched*. Under the hood, Angular listens for the `blur` event.
 
 In our spec, we simulate a `blur` event using the `dispatchFakeEvent` testing helper. Let us put the call in a reusable function:
 
-```typescriot
+```typescript
 const markFieldAsTouched = (element: DebugElement) => {
   dispatchFakeEvent(element.nativeElement, 'blur');
 };
@@ -4733,6 +4758,10 @@ it('marks fields as required', async () => {
 
 A `forEach` loop walks through the required field test ids, finds the element and marks the field as touched. We call `detectChanges` afterwards so the error messages appear.
 
+<aside class="margin-note" markdown="1">
+  `aria-required`
+</aside>
+
 Next, the Assert phase. Again we walk through the required fields to examine each one of them. Let us start with the `aria-required` attribute.
 
 ```typescript
@@ -4750,6 +4779,10 @@ requiredFields.forEach((testId) => {
 ```
 
 `findEl` returns a `DebugElement` with an `attributes` property. This object contains all attributes set by the template. We expect that the attribute `aria-required="true"` is present.
+
+<aside class="margin-note" markdown="1">
+  `aria-errormessage`
+</aside>
 
 The next part tests the error message with three steps:
 
@@ -4769,6 +4802,8 @@ if (!errormessageId) {
 
 Normally, we would use a Jasmine expectation like `expect(errormessageId).toBeDefined()`. But `errormessageId` has the type `string | null` whereas we need a `string` in the upcoming commands.
 
+<aside class="margin-note">Type assertions</aside>
+
 We need a TypeScript type assertion that rules out the `null` case and narrows down the type to `string`. If the attribute is absent or empty, we throw an exception. This fails the test with the given error and ensures that `errormessageId` is a string.
 
 Step 2 finds the error message element:
@@ -4782,6 +4817,8 @@ if (!errormessageEl) {
 ```
 
 We use the native DOM method `document.getElementById` to find the element. `errormessageEl` has the type `HTMLElement | null`, so we rule out the `null` case to work with `errormessageEl`.
+
+<aside class="margin-note">Error message</aside>
 
 Finally, we ensure that the element contains an error message, with a special treatment of the Terms and Services message.
 
@@ -4838,43 +4875,296 @@ it('marks fields as required', async () => {
 });
 ```
 
+<div class="book-sources" markdown="1">
+- [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+</div>
+
 ### Asynchronous validators
 
-The signup-form has three asynchronous validators for username, email and password.
+The signup-form has three asynchronous validators for username, email and password. They are asynchronous because they wait for a second and make an HTTP request. Under the hood, they are implemented using RxJS Observables.
+
+<aside class="margin-note">Async validation failure</aside>
 
 We have already covered the “happy path” in which the entered username and email are available and the password is strong enough. We need to write three specs for the error cases: Username or email are taken and the password is too weak.
 
-The validators call `SignupService` methods
-The fake returns
-success case
-but we created a setup function for a reason:
-It allows us to overwrite the fake behavior
+The validators call `SignupService` methods. The `setup` function contains a default fake that returns successful responses.
 
-We configure a different fakes
+```typescript
+const setup = async (
+  signupServiceReturnValues?:
+    jasmine.SpyObjMethodNames<SignupService>,
+) => {
+  signupService = jasmine.createSpyObj<SignupService>(
+    'SignupService',
+    {
+      // Successful responses per default
+      isUsernameTaken: of(false),
+      isEmailTaken: of(false),
+      getPasswordStrength: of(strongPassword),
+      signup: of({ success: true }),
+      // Overwrite with given return values
+      ...signupServiceReturnValues,
+    }
+  );
 
-await setup({
-  // Let the API return that the username is taken
-  isUsernameTaken: of(true),
-});
+  /* … */
+};
+```
 
-await setup({
-  // Let the API return that the email is taken
-  isEmailTaken: of(true),
-});
+But the `setup` function allows us to overwrite the default fake behavior. It accepts an object with `SignupService` method return values.
 
-await setup({
-  // Let the API return that the password is weak
-  getPasswordStrength: of(weakPassword),
-});
+We add three specs for the error cases that configure the fake accordingly:
 
-### Testing accessibility
+```typescript
+it('fails if the username is taken', fakeAsync(async () => {
+  await setup({
+    // Let the API return that the username is taken
+    isUsernameTaken: of(true),
+  });
+  /* … */
+}));
+```
 
+```typescript
+it('fails if the email is taken', fakeAsync(async () => {
+  await setup({
+    // Let the API return that the email is taken
+    isEmailTaken: of(true),
+  });
+  /* … */
+}));
+```
+
+```typescript
+it('fails if the password is too weak', fakeAsync(async () => {
+  await setup({
+    // Let the API return that the password is weak
+    getPasswordStrength: of(weakPassword),
+  });
+  /* … */
+}));
+```
+
+The rest is the same for all three specs. Here is the first spec:
+
+```typescript
+it('fails if the username is taken', fakeAsync(async () => {
+  await setup({
+    // Let the API return that the username is taken
+    isUsernameTaken: of(true),
+  });
+
+  fillForm();
+
+  // Wait for async validators
+  tick(1000);
+  fixture.detectChanges();
+
+  expect(findEl(fixture, 'submit').properties.disabled).toBe(true);
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
+
+  expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+  expect(signupService.isEmailTaken).toHaveBeenCalledWith(email);
+  expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+  expect(signupService.signup).not.toHaveBeenCalled();
+}));
+```
+
+We fill out the form, wait for the async validators and try to submit the form.
+
+We expect that all three async validators call the respective `SignupService` methods, `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
+
+The username validation fails, so we expect that the Component prevents the form submission. The `signup` method must not be called.
+
+As mentioned before, the two other specs `it('fails if the email is taken', /* … */)` and `it('fails if the password is too weak', /* … */)` look the same apart from the fake setup.
+
+<div class="book-sources" markdown="1">
+- [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+</div>
+
+### Dynamic form XYZ
+
+### Password type switcher
+
+### Testing form accessibility
+
+Web accessibility means that all people can use a web site, regardless of their physical or mental abilities or web access techniques. It is is part of a greater effort called Inclusive Design, the process of creating information systems that account for diverse people with their diverse needs and abilities.
+
+Designing web forms is a huge usability and accessibility challenge. Web forms often pose a barrier for web users with disabilities and users of assistive technologies.
+
+<aside class="margin-note">Accessible form</aside>
+
+The sign-up form has several accessibility features, among others:
+
+- The form is well-structured with heading, `fieldset` and `legend` elements.
+- All fields have proper labels, e.g. “Username (required)”.
+- Some fields have additional descriptions. The descriptions are linked with `aria-describedby` attributes.
+- Required fields are marked with `aria-required="true"`.
+- Invalid fields are marked with `aria-invalid="true"`. The error messages below are linked with `aria-errormessage` attributes.
+- When the form is submitted, the result is communicated using a status message with `role="status"`.
+- The structure and styling clearly conveys the current focus as well as the validity state.
+
+<aside class="margin-note">Automated accessibility testing</aside>
+
+There are many more accessibility requirements and best practices that we have not mentioned. Since this guide is not about creating accessible forms primarily, let us explore how to **test accessibility in an automated way**.
+
+We have tested some of the features above in the `SignupFormComponent`’s integration test. Instead of writing more specs for accessibility requirements by hand, it makes more sense to test the accessibility with a proper tool.
+
+<aside class="margin-note">Error message</aside>
+
+#### pa11y
+
+There are many tools for automated accessibility testing. In this guide, we will look at **pa11y**, a Node.js program that checks the accessibility of a web page.
+
+Under the hood, pa11y starts and remotely-controls a Chrome or Chromium browser. The browser navigates to the page under test. pa11y then injects *axe-core* and/or *HTML CodeSniffer*, two accessibility testing engines. They check compliance with the rules of the W3C Web Content Accessibility Guidelines (WCAG).
+
+pa11y has two modes of operation: The command line interface (CLI) for checking one web page and the continuous integration (CI) mode for checking multiple web pages.
+
+For ad-hoc testing of a single page of your Angular application, use the command line interface. When testing a whole application on a regular basis, use the continuous integration mode.
+
+To use the command line interface, install pa11y as a global NPM module:
+
+```
+npm install -g pa11y
+```
+
+This installs a global command called `pa11y`. To test a page on the local Angular development server, run:
+
+```
+pa11y http://localhost:4200/
+```
+
+For the sign-up form, pa11y does not report any errors:
+
+```
+Welcome to Pa11y
+
+ > Running Pa11y on URL http://localhost:4200/
+
+No issues found!
+```
+
+If one of the form fields did not have a proper label, pa11y would complain:
+
+```
+ • Error: This textinput element does not have a name available to
+   an accessibility API. Valid names are: label element,
+   title undefined, aria-label undefined, aria-labelledby undefined.
+   ├── WCAG2AA.Principle4.Guideline4_1.4_1_2.H91.InputText.Name
+   ├── html > body > app-root > main > app-signup-form > form > fieldset:nth-child(2) > div:nth-child(2) > p > span > input
+   └── <input _ngcontent-srr-c42="" type="text" formcontrolname="username" …
+
+ • Error: This form field should be labelled in some way.
+   Use the label element (either with a "for" attribute or
+   wrapped around the form field), or "title", "aria-label"
+   or "aria-labelledby" attributes as appropriate.
+   ├── WCAG2AA.Principle1.Guideline1_3.1_3_1.F68
+   ├── html > body > app-root > main > app-signup-form > form > fieldset:nth-child(2) > div:nth-child(2) > p > span > input
+   └── <input _ngcontent-srr-c42="" type="text" formcontrolname="username" …
+```
+
+Each error message contains the violated WCAG rule, the DOM path to the violating element and its HTML code.
+
+#### pa11y-ci
+
+For comprehensive test runs both during development and on a build server, we will set up the pa11y in the continuous integration mode.
+
+In your Angular project directory, install the `pa11y-ci` package:
+
+```
+npm install pa11y-ci
+```
+
+pa11y-ci expects a configuration file named `.pa11yci` in the project directory. Create the file and paste this JSON:
+
+```json
+{
+  "defaults": {
+    "runner": [
+      "axe",
+      "htmlcs"
+    ]
+  },
+  "urls": [
+    "http://localhost:4200"
+  ]
+}
+```
+
+This configuration tells pa11y to check the URL http://localhost:4200 and to use both available testing engines. You can add many URLs to the `urls` array.
+
+We can now run pa11y-ci with:
+
+```
+npx pa11y-ci
+```
+
+For the sign-up form, we get this output:
+
+```
+Running Pa11y on 1 URLs:
+> http://localhost:4200 - 0 errors
+
+✔ 1/1 URLs passed
+```
+
+#### Start server and run pa11y-ci
+
+The configuration above expects that the development server is already running at http://localhost:4200. Both in development and on the build server, it is useful to start the Angular server, run the accessibility tests and then stop the server again.
+
+We can achieve this with another handy Node.js package, `start-server-and-test`.
+
+```
+npm install start-server-and-test
+```
+
+`start-server-and-test` first runs an NPM script that starts an HTTP server. Then it waits for the server to boot up. Once a given URL is available, it runs another NPM script.
+
+In our case, the first script is `start`, an alias for `ng serve`. We need to create the second script to run `pa11y-ci`.
+
+We edit package.json, and add two scripts:
+
+```json
+{
+  "scripts": {
+    "a11y": "start-server-and-test start https-get://localhost:4200/ pa11y-ci",
+    "pa11y-ci": "pa11y-ci"
+  },
+}
+```
+
+Now, `npm run a11y` starts the Angular development server, then runs pa11y-ci, finally stops the server.
+
+pa11y is a powerful set of tools with many options. We have barely touched on the its features.
+
+Automated accessibility testing is a great addition to unit, integration and end-to-end tests. You should run an accessibility tester like pa11y against all pages of your Angular application. It is especially helpful to ensure the accessibilty of complex forms.
+
+Bear in mind that automated testing only points out certain accessibility barriers that can be detected programmatically.
+
+The Web Content Accessibility Guidelines (WCAG) establish – from abstract to specific – *principles*, *guidelines* and *success criteria*. The latter are the practical rules some of which can be checked automatically.
+
+The WCAG success criteria are accompanied by *techniques* for HTML, CSS, JavaScript etc. For JavaScript web applications, techniques like ARIA are especially relevant.
+
+In short, you have to learn about accessibility and Inclusive Design first, apply the rules while designing and implementing the application, then check the compliance manually and automatically.
+
+https://inclusivedesignprinciples.org/
+How to Meet WCAG (Quick Reference)
+https://www.w3.org/WAI/WCAG21/quickref/
+Web Content Accessibility Guidelines (WCAG) 2.1
+W3C Recommendation 05 June 2018
+https://www.w3.org/TR/WCAG21/
+
+https://www.w3.org/WAI/tutorials/forms/
 pa11y
+https://pa11y.org/
+https://github.com/pa11y/pa11y
+https://github.com/pa11y/pa11y-ci
 axe-core
-Puppeteer
-
-"a11y": "start-server-and-test start https-get://localhost:4200/ pa11y-ci",
-"pa11y-ci": "pa11y-ci"
+https://github.com/dequelabs/axe-core
+HTML CodeSniffer
+https://github.com/squizlabs/HTML_CodeSniffer
+https://github.com/bahmutov/start-server-and-test
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
