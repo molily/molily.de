@@ -8541,13 +8541,13 @@ In `karma.conf.js`, you can add global thresholds for statements, branches, func
 coverageIstanbulReporter: {
   /* … */
   thresholds: {
-      emitWarning: false,
-      global: {
-          statements: 75,
-          branches: 75,
-          functions: 75,
-          lines: 75,
-      },
+    emitWarning: false,
+    global: {
+      statements: 75,
+      branches: 75,
+      functions: 75,
+      lines: 75,
+    },
   },
 },
 ```
