@@ -4074,15 +4074,17 @@ There are two guidelines that may help you:
 
 Forms are the powerhouses of large web applications. Especially enterprise applications revolve around entering and editing data via forms. Therefore, implementing complex forms is a vital feature of the Angular framework.
 
-We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` testing helper for setting the value of a an `input` field.
+We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` testing helper.
 
-The forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and clicking on the submit button.
+The forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and submitting the form.
+
+<aside class="margin-note">Sign-up form</aside>
 
 Now we will look at a more complex example. We are introducing and testing a **sign-up form** for a fictional online service.
 
  <div class="book-sources" markdown="1">
-- [Counter Component: Source code](https://github.com/molily/angular-form-testing)
-- [Counter Component: Run the app](https://molily.github.io/angular-form-testing/)
+- [Sign-up form: Source code](https://github.com/molily/angular-form-testing)
+- [Sign-up form: Run the app](https://molily.github.io/angular-form-testing/)
 </div>
 
 <button class="load-iframe">
@@ -4095,19 +4097,19 @@ See the sign-up form in action
 </p>
 </script>
 
-The sign-up form features:
+The sign-up form features are:
 
 - Different types of input fields: text, radio buttons, checkboxes, select boxes
-- Field validation, synchronous and asynchronous validators
+- Field validation with synchronous and asynchronous validators
 - Accessible form structure, field labels and error messages
 - Dynamic relations between fields
 
 The form consists of four sections:
 
-1. The plan selection (personal, business, non-profit)
-2. The login credentials (username, email, password)
-3. A billing address
-4. Terms of Services and submit
+1. The plan selection: “Personal”, “Business” or “Education & Non-profit”
+2. The login credentials: username, email and password
+3. The billing address
+4. Terms of Services and submit button
 
 <aside class="margin-note">Impractical</aside>
 
@@ -4120,15 +4122,15 @@ In contrast to the other example repositories, this one is split into a `client`
 - The [`client` directory](https://github.com/molily/angular-form-testing/tree/main/client) contains a standard Angular app created with Angular CLI.
 - The [`server` directory](https://github.com/molily/angular-form-testing/tree/main/server) contains a simple Node.js service that simulates a user management and account creation.
 
-  Again, this is for demonstration purposes only. The service holds the created user accounts in memory and discards them when stopped. Please do not use it in production.
+Again, the Node.js service is for demonstration purposes only. The service holds the created user accounts in memory and discards them when stopped. Please do not use it in production.
 
-Containing 12 form controls, the sign-up form is not particularly large. But there are subtle details we are going to explore.
+With 12 form controls, the sign-up form is not particularly large. But there are subtle details we are going to explore.
 
 ### Sign-up form Component
 
 The form logic lies in the [`SignupFormComponent`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.ts). The Component depends on the [`SignupService`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts) for communicating with the back-end service.
 
-You might remember that there are two fundamental approaches to forms in Angular: Template-driven Forms and Reactive Forms. While they look quite different in practice, they are based on the same concepts under the hood: Form groups (`FormGroup` objects) and form controls (`FormControl` objects).
+You might remember that there are two fundamental approaches to forms in Angular: *Template-driven Forms* and *Reactive Forms*. While they look quite different in practice, they are based on the same concepts under the hood: Form groups (`FormGroup` objects) and form controls (`FormControl` objects).
 
 <aside class="margin-note">Reactive Form</aside>
 
@@ -4186,7 +4188,7 @@ Using Angular’s [FormBuilder](https://angular.io/guide/reactive-forms#using-th
 
 The form controls are declared with their initial values (mostly empty, hence `null`) and their validators.
 
-The Component template uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively.
+The [Component template](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.html) uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively.
 
 The stripped-down form structure with only one control looks like this:
 
@@ -4226,7 +4228,14 @@ export interface SignupData {
 
 The `SignupService`’s `signup` method takes the `SignupData` and sends it to the server. For security reasons, the server validates the data again. But we will focus on the front-end in this guide.
 
+<div class="book-sources" markdown="1">
+- [SignupFormComponent: full code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/)
+- [Angular documentation: Reactive forms](https://angular.io/guide/reactive-forms)
+</div>
+
 ### Form validation and errors
+
+<aside class="margin-note">Sync validators</aside>
 
 Several form controls have synchronous validators. `required`, `email`, `maxLength`, `pattern` etc. are built-in, synchronous validators provided by Angular:
 
@@ -4242,20 +4251,22 @@ These validators take the control value, a string most of the time, and return a
 
 <aside class="margin-note">Async validators</aside>
 
-For the username, the email and the password, there are custom asynchronous validators. Via the `SignupService`, they talk to the (fake) back-end service to check whether username and email are available and to measure the password strength. These HTTP requests to the back-end turn the validation asynchronous.
+For the username, the email and the password, there are custom asynchronous validators. They check whether username and email are available and to measure the password strength.
+
+The asynchronous validators use the `SignupService` to talk to the (fake) back-end service. These HTTP requests turn the validation asynchronous.
 
 <aside class="margin-note">Error rendering</aside>
 
-When a validator returned some errors, corresponding error messages are shown below the form control. This repetitive task is outsourced to the [`ControlErrorsComponent`](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/control-errors).
+When a validator returned some errors, corresponding error messages are shown below the form control. This repetitive task is outsourced to another Component
 
 <aside class="margin-note">invalid && (touched || dirty)</aside>
 
-`ControlErrorsComponent` displays the errors when the form control is *invalid* and either *touched* or *dirty*.
+The [`ControlErrorsComponent`](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/control-errors) displays the errors when the form control is *invalid* and either *touched* or *dirty*.
 
 - *Touched* means the user has focussed the control but it has lost the focus again (the `blur` event fired).
 - *Dirty* means the user has changed the value.
 
-For the `name` control, the interaction between the `input` element and the `ControlErrorsComponent` looks like this:
+For example, for the `name` control, the interaction between the `input` element and the `ControlErrorsComponent` looks like this:
 
 ```html
 <label>
@@ -4310,21 +4321,27 @@ We are going to test the `SignupFormComponent` in conjunction with `ControlError
 - [MDN: Introduction to ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA)
 - [MDN: Using the aria-invalid attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-invalid_attribute)
 - [ARIA specification: aria-errormessage](https://www.w3.org/TR/wai-aria-1.1/#aria-errormessage)
+- [ErrorMessageDirective: full code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/directives/error-message.directive.ts)
+- [ControlErrorsComponent: full code](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/control-errors)
 </div>
 
 ### Test plan
 
 What are the important parts of the sign-up form that need to be tested?
 
-- Successful form submission
-- Required fields are marked as such and display error messages
-- Asynchronous validation of username, email and password
-- Dynamic relations between fields: If the selected plan is “Business” or “Education & Non-profit”, the field “Address line 1” is required. If the selected plan is “Personal”, the field is optional.
-- Accessibility of the form structure, field labels and error messages
+1. Form submission
+  - [Successful submission](#successful-form-submission)
+  - [Do not submit the invalid form](#invalid-form)
+  - [Submission failure](#form-submission-failure)
+2. [Required fields are marked as such and display error messages](#required-fields)
+3. [Asynchronous validation of username, email and password](#asynchronous-validators)
+4. [Dynamic field relations](#dynamic-field-relations)
+5. [Password type toggle](#password-type-toggle)
+6. [Accessibility of the form structure, field labels and error messages](#testing-form-accessibility)
 
 ### Test setup
 
-Before writing the individual specs, we need to set up the suite in `signup-form.component.spec.ts`. Let us start with the testing Module configuration.
+Before writing the individual specs, we need to set up the suite in [`signup-form.component.spec.ts`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts). Let us start with the testing Module configuration.
 
 ```typescript
 await TestBed.configureTestingModule({
@@ -4346,6 +4363,8 @@ The Component under test contains a Reactive Form. That is why we import the `Re
 imports: [ReactiveFormsModule],
 ```
 
+<aside class="margin-note">Deep rendering</aside>
+
 As described, we are writing an integration test, so we declare the Component and its child components:
 
 ```typescript
@@ -4358,7 +4377,7 @@ declarations: [
 
 <aside class="margin-note">Fake Service</aside>
 
-The `SignupFormComponent` depends on the `SignupService`. We do not want HTTP requests to the back-end when the test run, so we [replace the Service with a fake instance](#faking-service-dependencies).
+The `SignupFormComponent` depends on the `SignupService`. We do not want HTTP requests to the back-end when the tests run, so we [replace the Service with a fake instance](#faking-service-dependencies).
 
 ```typescript
 providers: [
@@ -4366,27 +4385,35 @@ providers: [
 ],
 ```
 
-A `SignupService` fake looks like this:
+A possible `SignupService` fake looks like this:
 
 ```typescript
 const signupService:
   Pick<SignupService, keyof SignupService> = {
-  isUsernameTaken() { return of(false); },
-  isEmailTaken() { return of(false); },
-  getPasswordStrength() { return of(strongPassword); },
-  signup() { return of({ success: true }); },
+  isUsernameTaken() {
+    return of(false);
+  },
+  isEmailTaken() {
+    return of(false);
+  },
+  getPasswordStrength() {
+    return of(strongPassword);
+  },
+  signup() {
+    return of({ success: true });
+  },
 };
 ```
 
-This fake implements the success case: the username and email are available, the password is strong enough and the form submission was successful.
+This fake implements the *success case*: the username and email are available, the password is strong enough and the form submission was successful.
 
-Since we are going to test the success case and several error cases, we need to create fakes dynamically. Also we need Jasmine spies to verify that the Service methods are called correctly.
+Since we are going to test the success case and several error cases, we need to create `SignupService` fakes dynamically. Also we need Jasmine spies to verify that the Service methods are called correctly.
 
 <aside class="margin-note" markdown="1">
   `createSpyObj`
 </aside>
 
-This is a job for Jasmine’s `createSpyObj`.
+This is a job for Jasmine’s `createSpyObj` (see [Faking Service dependencies](#faking-service-dependencies)).
 
 ```typescript
 const signupService = jasmine.createSpyObj<SignupService>(
@@ -4429,8 +4456,14 @@ describe('SignupFormComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
-      declarations: [SignupFormComponent, ControlErrorsComponent, ErrorMessageDirective],
-      providers: [{ provide: SignupService, useValue: signupService }],
+      declarations: [
+        SignupFormComponent,
+        ControlErrorsComponent,
+        ErrorMessageDirective
+      ],
+      providers: [
+        { provide: SignupService, useValue: signupService }
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignupFormComponent);
@@ -4460,7 +4493,7 @@ The first case we need to test is the successful form submission. If the user fi
 
 <aside class="margin-note">Test data</aside>
 
-The first step is to define **valid test data* we can fill into the form. We put this in a separate file, [signup-data.spec-helper.ts](https://github.com/molily/angular-form-testing/blob/main/client/src/app/spec-helpers/signup-data.spec-helper.ts):
+The first step is to define *valid test data* we can fill into the form. We put this in a separate file, [signup-data.spec-helper.ts](https://github.com/molily/angular-form-testing/blob/main/client/src/app/spec-helpers/signup-data.spec-helper.ts):
 
 ```typescript
 export const username = 'quickBrownFox';
@@ -4517,11 +4550,11 @@ const fillForm = () => {
   setFieldValue(fixture, 'postcode', postcode);
   setFieldValue(fixture, 'region', region);
   setFieldValue(fixture, 'country', country);
-  setCheckboxValue(fixture, 'tos', true);
+  checkField(fixture, 'tos', true);
 };
 ```
 
-The `fillForm` function lies in the scope of `describe` so it may access the `fixture` variable. It uses the `setFieldValue` and `setCheckboxValue` [element testing helpers](#testing-helpers).
+The `fillForm` function lies in the scope of `describe` so it may access the `fixture` variable. It uses the `setFieldValue` and `checkField` [element testing helpers](#testing-helpers).
 
 In the spec, we call `fillForm`:
 
@@ -4681,10 +4714,10 @@ We create a new spec for this case:
 it('does not submit an invalid form', fakeAsync(async () => {
   await setup();
 
-  findEl(fixture, 'form').triggerEventHandler('submit', {});
-
   // Wait for async validators
   tick(1000);
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
 
   expect(signupService.isUsernameTaken).not.toHaveBeenCalled();
   expect(signupService.isEmailTaken).not.toHaveBeenCalled();
@@ -4693,7 +4726,84 @@ it('does not submit an invalid form', fakeAsync(async () => {
 }));
 ```
 
-This spec does less than the previous. We submit the form immediately, wait for a second and expect that no `SignupService` methods have been called.
+This spec does less than the previous. We wait for a second and submit the form without entering data. Finally, we expect that no `SignupService` method has been called.
+
+### Form submission failure
+
+We have already tested the [successful form submission](#successful-form-submission). Now let us test the form submission failure.
+
+Despite correct input, the submission may fail for several reasons:
+
+- The network is unavailable
+- The back-end processed the request but returned an error:
+  - The server-side validation failed
+  - The request structure is not as expected
+  - The server code has bugs, has crashed or is frozen
+
+When the user submits the form, the Component under tests calls the `SignupService`’s `signup` method.
+
+- In the *success case*, the `signup` method returns an Observable that emits the “next” value `{ success: true }` and completes. The sign-up form displays a status message “Sign-up successful!”.
+- In the *error case*, the Observable fails with an error. The form displays a status message “Sign-up error”.
+
+Let us test the latter case in a new spec. The structure resembles the spec for the successful submission. But we configure the fake `signup` method to returns an Observable that fails with an error.
+
+```typescript
+it('handles signup failure', fakeAsync(async () => {
+  await setup({
+    // Let the API report a failure
+    signup: throwError(new Error('Validation failed')),
+  });
+
+  /* … */
+});
+```
+
+We fill out the form, wait for the validators and submit the form.
+
+```typescript
+fillForm();
+
+// Wait for async validators
+tick(1000);
+
+findEl(fixture, 'form').triggerEventHandler('submit', {});
+fixture.detectChanges();
+```
+
+Finally, we expect the “Sign-up error” status message to appear. Also, we verify that the relevant `SignupService` methods have been called.
+
+```typescript
+expectText(fixture, 'status', 'Sign-up error');
+
+expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+expect(signupService.signup).toHaveBeenCalledWith(signupData);
+```
+
+The full spec:
+
+```typescript
+it('handles signup failure', fakeAsync(async () => {
+  await setup({
+    // Let the API report a failure
+    signup: throwError(new Error('Validation failed')),
+  });
+
+  fillForm();
+
+  // Wait for async validators
+  tick(1000);
+
+  findEl(fixture, 'form').triggerEventHandler('submit', {});
+  fixture.detectChanges();
+
+  expectText(fixture, 'status', 'Sign-up error');
+
+  expect(signupService.isUsernameTaken).toHaveBeenCalledWith(username);
+  expect(signupService.getPasswordStrength).toHaveBeenCalledWith(password);
+  expect(signupService.signup).toHaveBeenCalledWith(signupData);
+}));
+```
 
 ### Required fields
 
@@ -4981,11 +5091,207 @@ As mentioned before, the two other specs `it('fails if the email is taken', /* �
 
 <div class="book-sources" markdown="1">
 - [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+- [Angular documentation: Creating asynchronous validators](https://angular.io/guide/form-validation#creating-asynchronous-validators)
 </div>
 
-### Dynamic form XYZ
+### Dynamic field relations
 
-### Password type switcher
+The sign-up form has a fixed set of field. But the `addressLine1` field depends on the value of the `plan` field:
+
+- If the selected plan is “Personal”, the field is optional and the label reads “Address line 1”.
+- If the selected plan is “Business”, the field is required and the label reads “Company”.
+- If the selected plan is “Education & Non-profit”, the field is required and the label reads “Organization”.
+
+The implementation in the Component class looks like this:
+
+```typescript
+this.plan.valueChanges.subscribe((plan: Plan) => {
+  if (plan !== this.PERSONAL) {
+    this.addressLine1.setValidators(required);
+  } else {
+    this.addressLine1.setValidators(null);
+  }
+  this.addressLine1.updateValueAndValidity();
+});
+```
+
+We listen for value changes of the `plan` control. Depending on the selection, we either add the `required` validator to the `addressLine1` control or remove all validators. Finally, we need to tell Angular to revalidate the field value, now that the validators have changed.
+
+Let us write a spec to ensure that `addressLine1` 1 is required for certain plans.
+
+```typescript
+it('requires address line 1 for business and non-profit plans', async () => {
+  await setup();
+
+  /* … */
+});
+```
+
+First, we need inspect the initial state: The “Personal” plan is selected per default and `addressLine1` is optional.
+
+We do so by looking at attributes of the `addressLine1` field element: The `ng-invalid` class and the `aria-required` attribute must be absent.
+
+```typescript
+// Initial state (personal plan)
+const addressLine1El = findEl(fixture, 'addressLine1');
+expect('ng-invalid' in addressLine1El.classes).toBe(false);
+expect('aria-required' in addressLine1El.attributes).toBe(false);
+});
+```
+
+Now that we have set a baseline, let us change the plan from “Personal” to “Business”. The plan selection uses radio buttons
+
+```typescript
+// Change plan to business
+checkField(fixture, 'plan-business', true);
+fixture.detectChanges();
+```
+
+To see the effect of the change, we need to tell Angular to update the DOM. Then we expect the `ng-invalid` class and the `aria-required` to be present.
+
+```typescript
+expect(addressLine1El.attributes['aria-required']).toBe('true');
+expect(addressLine1El.classes['ng-invalid']).toBe(true);
+```
+
+We perform the same check for the “Education & Non-profit” plan.
+
+```typescript
+// Change plan to non-profit
+checkField(fixture, 'plan-non-profit', true);
+fixture.detectChanges();
+
+expect(addressLine1El.attributes['aria-required']).toBe('true');
+expect(addressLine1El.classes['ng-invalid']).toBe(true);
+```
+
+This is it! Here is the full spec:
+
+```typescript
+it('requires address line 1 for business and non-profit plans', async () => {
+  await setup();
+
+  // Initial state (personal plan)
+  const addressLine1El = findEl(fixture, 'addressLine1');
+  expect('ng-invalid' in addressLine1El.classes).toBe(false);
+  expect('aria-required' in addressLine1El.attributes).toBe(false);
+
+  // Change plan to business
+  checkField(fixture, 'plan-business', true);
+  fixture.detectChanges();
+
+  expect(addressLine1El.attributes['aria-required']).toBe('true');
+  expect(addressLine1El.classes['ng-invalid']).toBe(true);
+
+  // Change plan to non-profit
+  checkField(fixture, 'plan-non-profit', true);
+  fixture.detectChanges();
+
+  expect(addressLine1El.attributes['aria-required']).toBe('true');
+  expect(addressLine1El.classes['ng-invalid']).toBe(true);
+});
+```
+
+We have already checked the presence of `aria-required` attributes when testing the [required fields](#required-fields). For consistency, we check for `aria-required` in this spec as well.
+
+As a second indicator, we check for the `ng-invalid` class. This class is set by Angular itself on invalid form fields without us having to add it via the template. But the mere presence of the class does not imply that the invalid state is conveyed visually.
+
+Alternatively, we could check for the presence of an error message, like we in the required fields spec.
+
+### Password type toggle
+
+Another small feature of the sign-up form is the password type switcher. This button toggles the visibility of the entered password. Under the hood, it changes the input type from `password` to `text` and vice versa.
+
+The Component class has a boolean property that stores the visibility:
+
+```ts
+public showPassword = false;
+```
+
+In the template, the password input type depends on the `showPassword` property (shortened code):
+
+```html
+<input [type]="showPassword ? 'text' : 'password'" />
+```
+
+Finally, the button switches the `showPassword` value (shortened code):
+
+```html
+<button
+  type="button"
+  (click)="showPassword = !showPassword"
+>
+  {% raw  %}{{ showPassword ? '🔒 Hide password' : '👁️ Show password' }}{% endraw  %}
+</button>
+```
+
+To test this feature, we create a new spec:
+
+```typescript
+it('toggles the password display', async () => {
+  await setup();
+
+  /* … */
+});
+```
+
+Initially, the password field has the `password` type so the entered text is obfuscated like `****` or `····`. Let us test this baseline.
+
+First, we enter a password into the field. This is not strictly necessary but makes the test more realistic and debugging easier. (The password field has the test id `password`.)
+
+```typescript
+setFieldValue(fixture, 'password', 'top secret');
+```
+
+We find the input element by its test id again to check the `type` attribute.
+
+```typescript
+setFieldValue(fixture, 'password', 'top secret');
+const passwordEl = findEl(fixture, 'password');
+expect(passwordEl.attributes.type).toBe('password');
+```
+
+Now we click on the toggle button for the first time. We let Angular update the DOM and check the input type again.
+
+```typescript
+click(fixture, 'show-password');
+fixture.detectChanges();
+
+expect(passwordEl.attributes.type).toBe('text');
+```
+
+We expect that the type has changed from `password` to `text`. The password is now visible.
+
+With a second click on the toggle button, the type switches back to `password`.
+
+```typescript
+click(fixture, 'show-password');
+fixture.detectChanges();
+
+expect(passwordEl.attributes.type).toBe('password');
+```
+
+This is the whole spec:
+
+```typescript
+it('toggles the password display', async () => {
+  await setup();
+
+  setFieldValue(fixture, 'password', 'top secret');
+  const passwordEl = findEl(fixture, 'password');
+  expect(passwordEl.attributes.type).toBe('password');
+
+  click(fixture, 'show-password');
+  fixture.detectChanges();
+
+  expect(passwordEl.attributes.type).toBe('text');
+
+  click(fixture, 'show-password');
+  fixture.detectChanges();
+
+  expect(passwordEl.attributes.type).toBe('password');
+});
+```
 
 ### Testing form accessibility
 
@@ -5010,8 +5316,6 @@ The sign-up form has several accessibility features, among others:
 There are many more accessibility requirements and best practices that we have not mentioned. Since this guide is not about creating accessible forms primarily, let us explore how to **test accessibility in an automated way**.
 
 We have tested some of the features above in the `SignupFormComponent`’s integration test. Instead of writing more specs for accessibility requirements by hand, it makes more sense to test the accessibility with a proper tool.
-
-<aside class="margin-note">Error message</aside>
 
 #### pa11y
 
@@ -5068,7 +5372,7 @@ Each error message contains the violated WCAG rule, the DOM path to the violatin
 
 #### pa11y-ci
 
-For comprehensive test runs both during development and on a build server, we will set up the pa11y in the continuous integration mode.
+For comprehensive test runs both during development and on a build server, we will set up pa11y in the continuous integration mode.
 
 In your Angular project directory, install the `pa11y-ci` package:
 
@@ -5092,7 +5396,7 @@ pa11y-ci expects a configuration file named `.pa11yci` in the project directory.
 }
 ```
 
-This configuration tells pa11y to check the URL http://localhost:4200 and to use both available testing engines. You can add many URLs to the `urls` array.
+This configuration tells pa11y to check the URL http://localhost:4200 and to use both available testing engines, `axe` and `htmlcs`. You can add many URLs to the `urls` array.
 
 We can now run pa11y-ci with:
 
@@ -5148,23 +5452,17 @@ The WCAG success criteria are accompanied by *techniques* for HTML, CSS, JavaScr
 
 In short, you have to learn about accessibility and Inclusive Design first, apply the rules while designing and implementing the application, then check the compliance manually and automatically.
 
-https://inclusivedesignprinciples.org/
-How to Meet WCAG (Quick Reference)
-https://www.w3.org/WAI/WCAG21/quickref/
-Web Content Accessibility Guidelines (WCAG) 2.1
-W3C Recommendation 05 June 2018
-https://www.w3.org/TR/WCAG21/
-
-https://www.w3.org/WAI/tutorials/forms/
-pa11y
-https://pa11y.org/
-https://github.com/pa11y/pa11y
-https://github.com/pa11y/pa11y-ci
-axe-core
-https://github.com/dequelabs/axe-core
-HTML CodeSniffer
-https://github.com/squizlabs/HTML_CodeSniffer
-https://github.com/bahmutov/start-server-and-test
+<div class="book-sources" markdown="1">
+- [Inclusive Design Principles](https://inclusivedesignprinciples.org/)
+- [Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)
+- [Quick Reference: How to Meet WCAG](https://www.w3.org/WAI/WCAG21/quickref/)
+- [Web Accessibility Tutorial: Forms](https://www.w3.org/WAI/tutorials/forms/)
+- [pa11y: Accessibility testing tools](https://pa11y.org/)
+- [pa11y-ci: CI-centric accessibility test runner](https://github.com/pa11y/pa11y-ci)
+- [axe-core: Accessibility engine for automated Web UI testing](https://github.com/dequelabs/axe-core)
+- [HTML CodeSniffer: Accessibility auditor](https://github.com/squizlabs/HTML_CodeSniffer)
+- [start-server-and-test: Starts server, waits for URL, then runs test command](https://github.com/bahmutov/start-server-and-test)
+</div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -8047,6 +8345,10 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 # Testing Observables
+
+TODO
+
+---
 
 RxJS Observables are used throughout Angular applications to manage asynchronous operations and values. Let us recap the potential ways to test them.
 
