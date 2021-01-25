@@ -674,7 +674,7 @@ The launched browser navigates to `http://localhost:9876/`. As mentioned, this s
 
 When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
 
-<img src="/img/robust-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
 This is the shell output:
 
@@ -758,7 +758,7 @@ Another important concept of Karma are **reporters**. They format and output the
 
 2. The standard HTML reporter `kjhtml` (npm package: `karma-jasmine-html-reporter`) renders the results in the browser.
 
-   <img src="/img/robust-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+   <img src="/img/testing-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
 3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
 
@@ -1548,7 +1548,7 @@ Use debug output to answer these questions:
 
 Some people prefer to use `debugger` instead of console output.
 
-<img src="/img/robust-angular/jasmine-debugger.png" alt="Jasmine test with debugger statement in the code under test" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/jasmine-debugger.png" alt="Jasmine test with debugger statement in the code under test" class="image-max-full" loading="lazy">
 
 While the debugger certainly gives you more control, it halts the JavaScript execution. It may disturb the processing of asynchronous JavaScript tasks and the order of execution.
 
@@ -1597,7 +1597,7 @@ Obviously, this only works for objects that can be serialized as JSON.
 
 In the next chapter, we will learn how to test Components. These tests will render the Component into the DOM of the Jasmine test runner page. This means you can briefly see the states of the rendered Component in the browser.
 
-<img src="/img/robust-angular/jasmine-dom.png" alt="DOM of the Component under test in the DOM inspector" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/jasmine-dom.png" alt="DOM of the Component under test in the DOM inspector" class="image-max-full" loading="lazy">
 
 In the screenshot above, you see the rendered Component on the left side and the inspected DOM on the right side.
 
@@ -1613,7 +1613,7 @@ The Karma page at [http://localhost:9876](http://localhost:9876) loads an iframe
 
 In the developer tools, you can select the iframe window context (Chrome is pictured):
 
-<img src="/img/robust-angular/karma-select-context.png" alt="Developer tools: Select the context iframe" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/karma-select-context.png" alt="Developer tools: Select the context iframe" class="image-max-full" loading="lazy">
 
 This way you can access global objects and the DOM of the document where the tests run.
 
@@ -1621,7 +1621,7 @@ This way you can access global objects and the DOM of the document where the tes
 
 Another helpful feature is Karma’s debug test runner. Click on the big “DEBUG” button on the top-right. Then a new tab opens with the URL [http://localhost:9876/debug.html](http://localhost:9876/debug.html).
 
-<img src="/img/robust-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
 
 The debug test runner does not have an iframe, it loads Jasmine directly. Also it automatically logs spec runs on the shell.
 
@@ -4076,11 +4076,11 @@ Forms are the powerhouses of large web applications. Especially enterprise appli
 
 We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` testing helper.
 
-The forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and submitting the form.
+The simple forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and submitting the form. Now we will look at a more complex example.
 
 <aside class="margin-note">Sign-up form</aside>
 
-Now we will look at a more complex example. We are introducing and testing a **sign-up form** for a fictional online service.
+We are introducing and testing a **sign-up form** for a fictional online service.
 
  <div class="book-sources" markdown="1">
 - [Sign-up form: Source code](https://github.com/molily/angular-form-testing)
@@ -4113,7 +4113,7 @@ The form consists of four sections:
 
 <aside class="margin-note">Impractical</aside>
 
-Please note that this form is for demonstration purposes only. While it follows best practices regarding validation and accessibility, it is not a practical sign-up form as a whole. The form is way too complex to get new users onboard.
+Please note that this form is for demonstration purposes only. While it follows best practices regarding validation and accessibility, it is not practical from a design and user experience perspective. Among other things, it is way too complex to get new users onboard.
 
 <aside class="margin-note">Client & server</aside>
 
@@ -4138,7 +4138,7 @@ The `SignupFormComponent` is a **Reactive Form** that explictly creates the grou
 
 As with other Angular core concepts, this guide assumes you have a basic understanding about Reactive Forms. Please refer to the [official guide on Reactive Forms](https://angular.io/guide/reactive-forms) to brush up your knowledge.
 
-The important bits of the `SignupFormComponent` class look like this:
+The important bits of the `SignupFormComponent` class are:
 
 ```typescript
 @Component({
@@ -4152,15 +4152,21 @@ export class SignupFormComponent {
     plan: ['personal', required],
     username: [
       null,
-      [required, maxLength(50), pattern('[a-zA-Z0-9.]+')],
-      (control: AbstractControl) => this.validateUsername(control.value),
+      [required, pattern('[a-zA-Z0-9.]+'), maxLength(50)],
+      (control: AbstractControl) =>
+        this.validateUsername(control.value),
     ],
     email: [
       null,
       [required, email, maxLength(100)],
-      (control: AbstractControl) => this.validateEmail(control.value),
+      (control: AbstractControl) =>
+        this.validateEmail(control.value),
     ],
-    password: [null, required, () => this.validatePassword()],
+    password: [
+      null,
+      required,
+      () => this.validatePassword()
+    ],
     tos: [null, requiredTrue],
     address: this.formBuilder.group({
       name: [null, required],
@@ -4186,7 +4192,18 @@ export class SignupFormComponent {
 
 Using Angular’s [FormBuilder](https://angular.io/guide/reactive-forms#using-the-formbuilder-service-to-generate-controls), we create the `form` property, the topmost form group. Inside, there is another form group for the address-related fields.
 
-The form controls are declared with their initial values (mostly empty, hence `null`) and their validators.
+The form controls are declared with their initial values and their validators. For example, the password control:
+
+```typescript
+password: [
+  // The initial value (null means empty)
+  null,
+  // The synchronous validator
+  required,
+  // The asynchronous validator
+  () => this.validatePassword()
+],
+```
 
 The [Component template](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.html) uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively.
 
@@ -4226,6 +4243,12 @@ export interface SignupData {
 }
 ```
 
+`Plan` is a union of strings:
+
+```typescript
+export type Plan = 'personal' | 'business' | 'non-profit';
+```
+
 The `SignupService`’s `signup` method takes the `SignupData` and sends it to the server. For security reasons, the server validates the data again. But we will focus on the front-end in this guide.
 
 <div class="book-sources" markdown="1">
@@ -4251,13 +4274,13 @@ These validators take the control value, a string most of the time, and return a
 
 <aside class="margin-note">Async validators</aside>
 
-For the username, the email and the password, there are custom asynchronous validators. They check whether username and email are available and to measure the password strength.
+For the username, the email and the password, there are custom asynchronous validators. They check whether the username and email are available and whether the password is strong enough.
 
 The asynchronous validators use the `SignupService` to talk to the (fake) back-end service. These HTTP requests turn the validation asynchronous.
 
 <aside class="margin-note">Error rendering</aside>
 
-When a validator returned some errors, corresponding error messages are shown below the form control. This repetitive task is outsourced to another Component
+When a validator returns any errors, corresponding messages are shown below the form control. This repetitive task is outsourced to another Component.
 
 <aside class="margin-note">invalid && (touched || dirty)</aside>
 
@@ -4407,7 +4430,7 @@ const signupService:
 
 This fake implements the *success case*: the username and email are available, the password is strong enough and the form submission was successful.
 
-Since we are going to test the success case and several error cases, we need to create `SignupService` fakes dynamically. Also we need Jasmine spies to verify that the Service methods are called correctly.
+Since we are going to test several error cases as well, we need to create `SignupService` fakes dynamically. Also we need Jasmine spies to verify that the Service methods are called correctly.
 
 <aside class="margin-note" markdown="1">
   `createSpyObj`
@@ -4574,7 +4597,7 @@ Let us try to submit the form immediately after. The form under test listens for
 
 We find the `form` element by its test id and simulate a `submit` event (see [Triggering event handlers](#triggering-event-handlers)).
 
-Then we expect that the `signup` spy to have been called with the entered signup data.
+Then we expect the `signup` spy to have been called with the entered data.
 
 ```typescript
 it('submits the form successfully', async () => {
@@ -4600,15 +4623,17 @@ The spec fails because the form is still in the *invalid* state even though we h
 
 <aside class="margin-note">Async validators</aside>
 
-The cause are the **asynchronous validators** for username, email and password. When the user stopped typing into these fields, they wait for one second before sending a request to the server. (In production, the HTTP request takes additional time, but our fake `SignupService` returns the response instantly.)
+The cause are the **asynchronous validators** for username, email and password. When the user stops typing into these fields, they wait for one second before sending a request to the server.
+
+In production, the HTTP request takes additional time, but our fake `SignupService` returns the response instantly.
 
 <aside class="margin-note">One second debounce</aside>
 
-This technique to reduce the amount of requests is called *debouncing*. Typing the username “fox” for example should send one request with “fox”, not three subsequent requests with “f”, “fo” and “fox”, respectively.
+This technique to reduce the amount of requests is called *debouncing*. Typing the username “fox” for example should send one request with “fox”, not three subsequent requests with “f”, “fo”, “fox”.
 
 The spec above submits the form immediately after filling out the fields. At this point in time, the asynchronous validators have been called but have not returned a value yet. They are still waiting for the debounce period to pass.
 
-In consequence, the test needs to wait one second for the asynchronous validators. The easiest way would be to write an asynchronous Jasmine test that uses `setTimeout(() => { /* … */}, 1000)`. But this would slow down our specs.
+In consequence, the test needs to wait one second for the asynchronous validators. An easy way would be to write an asynchronous test that uses `setTimeout(() => { /* … */}, 1000)`. But this would slow down our specs.
 
 <aside class="margin-note" markdown="1">
   `fakeAsync` and `tick`
@@ -4622,9 +4647,9 @@ Instead, we are going to use Angular’s `fakeAsync` and `tick` functions to *si
 
 Inside the time warp created by `fakeAsync`, we use the `tick` function to simulate the passage of time. The scheduled tasks are executed and we can test their effect.
 
-The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if one minute passes in the simulation, the spec may still complete in a few milliseconds.
+The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if one minute passes in the simulation, the spec still completes in a few milliseconds.
 
-`fakeAsync` wraps the whole spec function which is already an `async` function due to the `setup` call. After filling out the form, we simulate the waiting with `tick(1000)`.
+`fakeAsync` wraps the spec function which is also an `async` function due to the `setup` call. After filling out the form, we simulate the waiting with `tick(1000)`.
 
 ```typescript
 it('submits the form successfully', fakeAsync(async () => {
@@ -4643,7 +4668,7 @@ it('submits the form successfully', fakeAsync(async () => {
 
 This spec passes! Now we should add some expectations to test the details.
 
-First, we expect that the asynchronous validators called the `SignupService` methods correctly, namely `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
+First, we expect the asynchronous validators to call the `SignupService` methods correctly. These are `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
 
 ```typescript
 it('submits the form successfully', fakeAsync(async () => {
@@ -4663,7 +4688,11 @@ it('submits the form successfully', fakeAsync(async () => {
 }));
 ```
 
+<aside class="margin-note">Submit button</aside>
+
 Next, we make sure that the submit button is disabled initially. After successful validation, the button is enabled. (The submit button carries the test id `submit`.)
+
+<aside class="margin-note">Status message</aside>
 
 Also, when the form has been submitted successfully, the status message “Sign-up successful!” needs to appear. (The status message carries the test id `status`.)
 
@@ -4706,7 +4735,7 @@ Because we are testing DOM changes, we have to call `detectChanges` after each A
 
 ### Invalid form
 
-Now that we have tested the successful form submission, let us check that the Component prevents submitting an invalid form. What happens if we do not fill out any fields, but submit the form?
+Now that we have tested the successful form submission, let us check the handling of an invalid form. What happens if we do not fill out any fields, but submit the form?
 
 We create a new spec for this case:
 
@@ -4730,7 +4759,9 @@ This spec does less than the previous. We wait for a second and submit the form 
 
 ### Form submission failure
 
-We have already tested the [successful form submission](#successful-form-submission). Now let us test the form submission failure.
+We have already tested the successful form submission. Now let us test the form submission failure.
+
+<aside class="margin-note">Reasons for failure</aside>
 
 Despite correct input, the submission may fail for several reasons:
 
@@ -4739,6 +4770,8 @@ Despite correct input, the submission may fail for several reasons:
   - The server-side validation failed
   - The request structure is not as expected
   - The server code has bugs, has crashed or is frozen
+
+<aside class="margin-note">Observable</aside>
 
 When the user submits the form, the Component under tests calls the `SignupService`’s `signup` method.
 
@@ -4769,6 +4802,8 @@ tick(1000);
 findEl(fixture, 'form').triggerEventHandler('submit', {});
 fixture.detectChanges();
 ```
+
+<aside class="margin-note">Status message</aside>
 
 Finally, we expect the “Sign-up error” status message to appear. Also, we verify that the relevant `SignupService` methods have been called.
 
@@ -4809,14 +4844,15 @@ it('handles signup failure', fakeAsync(async () => {
 
 A vital form logic is that certain fields are required and that the user interface conveys the fact clearly. Let us write a spec that checks whether required fields as marked as such.
 
+<aside class="margin-note">Requirements</aside>
+
 The requirements are:
 
-- A required field has an `aria-required` attribute
-- A required, invalid field has an `aria-errormessage` attribute
-- The `aria-errormessage` contains the id of another element
-- This element contains an error message “… must be given”. (The text for the Terms of Services checkbox reads “Please accept the Terms and Services”.)
+- A required field has an `aria-required` attribute.
+- A required, invalid field has an `aria-errormessage` attribute. It contains the id of another element.
+- This element contains an error message “… must be given”. (The text for the Terms of Services checkbox reads “Please accept the Terms and Services” instead.)
 
-Our spec needs to verify all required fields, so we start with compiling a list of their respective test ids:
+Our spec needs to verify all required fields, so we compile a list of their respective test ids:
 
 ```typescript
 const requiredFields = [
@@ -4835,7 +4871,7 @@ const requiredFields = [
 
 Before examining the fields, we need to trigger the display of form errors. As described in [Form validation and errors](#form-validation-and-errors), error messages are shown when the field is *invalid* and either *touched* or *dirty*.
 
-Luckily, the empty, but required fields are already invalid. Entering text would make them *dirty*, but we want to test the opposite case.
+Luckily, the empty, but required fields are already invalid. Entering text would make them *dirty* but also *valid*.
 
 <aside class="margin-note">Mark as touched</aside>
 
@@ -4859,7 +4895,6 @@ it('marks fields as required', async () => {
   requiredFields.forEach((testId) => {
     markFieldAsTouched(findEl(fixture, testId));
   });
-
   fixture.detectChanges();
 
   /* … */
@@ -4888,7 +4923,7 @@ requiredFields.forEach((testId) => {
 });
 ```
 
-`findEl` returns a `DebugElement` with an `attributes` property. This object contains all attributes set by the template. We expect that the attribute `aria-required="true"` is present.
+`findEl` returns a `DebugElement` with an `attributes` property. This object contains all attributes set by the template. We expect the attribute `aria-required="true"` to be present.
 
 <aside class="margin-note" markdown="1">
   `aria-errormessage`
@@ -4897,7 +4932,7 @@ requiredFields.forEach((testId) => {
 The next part tests the error message with three steps:
 
 1. Read the `aria-errormessage` attribute. Expect that it is set.
-2. Find the element the id in `aria-errormessage` points to. Expect that it exists.
+2. Find the element that `aria-errormessage` refers to. Expect that it exists.
 3. Read the text content. Expect an error message.
 
 Step 1 looks like this:
@@ -4914,7 +4949,7 @@ Normally, we would use a Jasmine expectation like `expect(errormessageId).toBeDe
 
 <aside class="margin-note">Type assertions</aside>
 
-We need a TypeScript type assertion that rules out the `null` case and narrows down the type to `string`. If the attribute is absent or empty, we throw an exception. This fails the test with the given error and ensures that `errormessageId` is a string.
+We need a TypeScript type assertion that rules out the `null` case and narrows down the type to `string`. If the attribute is absent or empty, we throw an exception. This fails the test with the given error and ensures that `errormessageId` is a string for the rest of the spec.
 
 Step 2 finds the error message element:
 
@@ -4952,7 +4987,6 @@ it('marks fields as required', async () => {
   requiredFields.forEach((testId) => {
     markFieldAsTouched(findEl(fixture, testId));
   });
-
   fixture.detectChanges();
 
   requiredFields.forEach((testId) => {
@@ -4967,12 +5001,16 @@ it('marks fields as required', async () => {
     // Check aria-errormessage attribute
     const errormessageId = el.attributes['aria-errormessage'];
     if (!errormessageId) {
-      throw new Error(`Error message id for ${testId} not present`);
+      throw new Error(
+        `Error message id for ${testId} not present`
+      );
     }
     // Check element with error message
     const errormessageEl = document.getElementById(errormessageId);
     if (!errormessageEl) {
-      throw new Error(`Error message element for ${testId} not found`);
+      throw new Error(
+        `Error message element for ${testId} not found`
+      );
     }
     if (errormessageId === 'tos-errors') {
       expect(errormessageEl.textContent).toContain(
@@ -4991,13 +5029,13 @@ it('marks fields as required', async () => {
 
 ### Asynchronous validators
 
-The signup-form has three asynchronous validators for username, email and password. They are asynchronous because they wait for a second and make an HTTP request. Under the hood, they are implemented using RxJS Observables.
+The signup-form features asynchronous validators for username, email and password. They are asynchronous because they wait for a second and make an HTTP request. Under the hood, they are implemented using RxJS Observables.
 
 <aside class="margin-note">Async validation failure</aside>
 
 We have already covered the “happy path” in which the entered username and email are available and the password is strong enough. We need to write three specs for the error cases: Username or email are taken and the password is too weak.
 
-The validators call `SignupService` methods. The `setup` function contains a default fake that returns successful responses.
+The validators call `SignupService` methods. Per default, the `SignupService` fake returns successful responses.
 
 ```typescript
 const setup = async (
@@ -5021,9 +5059,9 @@ const setup = async (
 };
 ```
 
-But the `setup` function allows us to overwrite the default fake behavior. It accepts an object with `SignupService` method return values.
+The `setup` function allows us to overwrite the fake behavior. It accepts an object with `SignupService` method return values.
 
-We add three specs for the error cases that configure the fake accordingly:
+We add three specs that configure the fake accordingly:
 
 ```typescript
 it('fails if the username is taken', fakeAsync(async () => {
@@ -5083,11 +5121,11 @@ it('fails if the username is taken', fakeAsync(async () => {
 
 We fill out the form, wait for the async validators and try to submit the form.
 
-We expect that all three async validators call the respective `SignupService` methods, `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
+We expect that the three async validators call the respective `SignupService` methods.
 
 The username validation fails, so we expect that the Component prevents the form submission. The `signup` method must not be called.
 
-As mentioned before, the two other specs `it('fails if the email is taken', /* … */)` and `it('fails if the password is too weak', /* … */)` look the same apart from the fake setup.
+As stated above, the two other specs `it('fails if the email is taken', /* … */)` and `it('fails if the password is too weak', /* … */)` look the same apart from the fake setup.
 
 <div class="book-sources" markdown="1">
 - [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
@@ -5096,7 +5134,7 @@ As mentioned before, the two other specs `it('fails if the email is taken', /* �
 
 ### Dynamic field relations
 
-The sign-up form has a fixed set of field. But the `addressLine1` field depends on the value of the `plan` field:
+The sign-up form has a fixed set of fields. But the `addressLine1` field depends on the value of the `plan` field:
 
 - If the selected plan is “Personal”, the field is optional and the label reads “Address line 1”.
 - If the selected plan is “Business”, the field is required and the label reads “Company”.
@@ -5115,9 +5153,11 @@ this.plan.valueChanges.subscribe((plan: Plan) => {
 });
 ```
 
-We listen for value changes of the `plan` control. Depending on the selection, we either add the `required` validator to the `addressLine1` control or remove all validators. Finally, we need to tell Angular to revalidate the field value, now that the validators have changed.
+We listen for value changes of the `plan` control. Depending on the selection, we either add the `required` validator to the `addressLine1` control or remove all validators.
 
-Let us write a spec to ensure that `addressLine1` 1 is required for certain plans.
+Finally, we need to tell Angular to revalidate the field value, now that the validators have changed.
+
+Let us write a spec to ensure that `addressLine1` is required for certain plans.
 
 ```typescript
 it('requires address line 1 for business and non-profit plans', async () => {
@@ -5127,7 +5167,7 @@ it('requires address line 1 for business and non-profit plans', async () => {
 });
 ```
 
-First, we need inspect the initial state: The “Personal” plan is selected per default and `addressLine1` is optional.
+First, we need inspect the initial state: The “Personal” plan is selected and `addressLine1` is optional.
 
 We do so by looking at attributes of the `addressLine1` field element: The `ng-invalid` class and the `aria-required` attribute must be absent.
 
@@ -5136,10 +5176,9 @@ We do so by looking at attributes of the `addressLine1` field element: The `ng-i
 const addressLine1El = findEl(fixture, 'addressLine1');
 expect('ng-invalid' in addressLine1El.classes).toBe(false);
 expect('aria-required' in addressLine1El.attributes).toBe(false);
-});
 ```
 
-Now that we have set a baseline, let us change the plan from “Personal” to “Business”. The plan selection uses radio buttons
+From this baseline, let us change the plan from “Personal” to “Business”. We use the `checkField` spec helper to activate the corresponding radio button.
 
 ```typescript
 // Change plan to business
@@ -5202,19 +5241,19 @@ Alternatively, we could check for the presence of an error message, like we in t
 
 Another small feature of the sign-up form is the password type switcher. This button toggles the visibility of the entered password. Under the hood, it changes the input type from `password` to `text` and vice versa.
 
-The Component class has a boolean property that stores the visibility:
+The Component class stores the visibility in a boolean property:
 
 ```ts
 public showPassword = false;
 ```
 
-In the template, the password input type depends on the `showPassword` property (shortened code):
+In the template, the input type depends on the property (shortened code):
 
 ```html
 <input [type]="showPassword ? 'text' : 'password'" />
 ```
 
-Finally, the button switches the `showPassword` value (shortened code):
+Finally, the button toggles the boolean value (shortened code):
 
 ```html
 <button
@@ -5235,7 +5274,7 @@ it('toggles the password display', async () => {
 });
 ```
 
-Initially, the password field has the `password` type so the entered text is obfuscated like `****` or `····`. Let us test this baseline.
+Initially, the field has the `password` type so the entered text is obfuscated. Let us test this baseline.
 
 First, we enter a password into the field. This is not strictly necessary but makes the test more realistic and debugging easier. (The password field has the test id `password`.)
 
@@ -5246,7 +5285,6 @@ setFieldValue(fixture, 'password', 'top secret');
 We find the input element by its test id again to check the `type` attribute.
 
 ```typescript
-setFieldValue(fixture, 'password', 'top secret');
 const passwordEl = findEl(fixture, 'password');
 expect(passwordEl.attributes.type).toBe('password');
 ```
@@ -5295,9 +5333,9 @@ it('toggles the password display', async () => {
 
 ### Testing form accessibility
 
-Web accessibility means that all people can use a web site, regardless of their physical or mental abilities or web access techniques. It is is part of a greater effort called Inclusive Design, the process of creating information systems that account for diverse people with their diverse needs and abilities.
+Web accessibility means that all people can use a web site, regardless of their physical or mental abilities or web access technologies. It is is part of a greater effort called Inclusive Design, the process of creating information systems that account for people with diverse abilities and needs.
 
-Designing web forms is a huge usability and accessibility challenge. Web forms often pose a barrier for web users with disabilities and users of assistive technologies.
+Designing web forms is a usability and accessibility challenge. Web forms often pose a barrier for users with disabilities and users of assistive technologies.
 
 <aside class="margin-note">Accessible form</aside>
 
@@ -5307,7 +5345,7 @@ The sign-up form has several accessibility features, among others:
 - All fields have proper labels, e.g. “Username (required)”.
 - Some fields have additional descriptions. The descriptions are linked with `aria-describedby` attributes.
 - Required fields are marked with `aria-required="true"`.
-- Invalid fields are marked with `aria-invalid="true"`. The error messages below are linked with `aria-errormessage` attributes.
+- Invalid fields are marked with `aria-invalid="true"`. The error messages are linked with `aria-errormessage` attributes.
 - When the form is submitted, the result is communicated using a status message with `role="status"`.
 - The structure and styling clearly conveys the current focus as well as the validity state.
 
@@ -5315,25 +5353,37 @@ The sign-up form has several accessibility features, among others:
 
 There are many more accessibility requirements and best practices that we have not mentioned. Since this guide is not about creating accessible forms primarily, let us explore how to **test accessibility in an automated way**.
 
-We have tested some of the features above in the `SignupFormComponent`’s integration test. Instead of writing more specs for accessibility requirements by hand, it makes more sense to test the accessibility with a proper tool.
+We have tested some of the features above in the `SignupFormComponent`’s integration test. Instead of writing more specs for accessibility requirements by hand, let us test the accessibility with a proper tool.
+
+<div class="book-sources" markdown="1">
+- [Inclusive Design Principles](https://inclusivedesignprinciples.org/)
+</div>
 
 #### pa11y
 
-There are many tools for automated accessibility testing. In this guide, we will look at **pa11y**, a Node.js program that checks the accessibility of a web page.
+In this guide, we will look at **pa11y**, a Node.js program that checks the accessibility of a web page.
 
-Under the hood, pa11y starts and remotely-controls a Chrome or Chromium browser. The browser navigates to the page under test. pa11y then injects *axe-core* and/or *HTML CodeSniffer*, two accessibility testing engines. They check compliance with the rules of the W3C Web Content Accessibility Guidelines (WCAG).
+<aside class="margin-note">Tests in Chrome</aside>
+
+pa11y starts and remotely-controls a Chrome or Chromium browser. The browser navigates to the page under test. pa11y then injects *axe-core* and/or *HTML CodeSniffer*, two accessibility testing engines.
+
+These engines check compliance with the Web Content Accessibility Guidelines (WCAG), the authoritative technical standard for web accessibility.
+
+<aside class="margin-note">CLI vs. CI</aside>
 
 pa11y has two modes of operation: The command line interface (CLI) for checking one web page and the continuous integration (CI) mode for checking multiple web pages.
 
 For ad-hoc testing of a single page of your Angular application, use the command line interface. When testing a whole application on a regular basis, use the continuous integration mode.
 
-To use the command line interface, install pa11y as a global NPM module:
+To use the command line interface, install pa11y as a global npm module:
 
 ```
 npm install -g pa11y
 ```
 
-This installs a global command called `pa11y`. To test a page on the local Angular development server, run:
+<aside class="margin-note">Test single page</aside>
+
+This installs the global command `pa11y`. To test a page on the local Angular development server, run:
 
 ```
 pa11y http://localhost:4200/
@@ -5348,6 +5398,8 @@ Welcome to Pa11y
 
 No issues found!
 ```
+
+<aside class="margin-note">Error report</aside>
 
 If one of the form fields did not have a proper label, pa11y would complain:
 
@@ -5369,6 +5421,13 @@ If one of the form fields did not have a proper label, pa11y would complain:
 ```
 
 Each error message contains the violated WCAG rule, the DOM path to the violating element and its HTML code.
+
+<div class="book-sources" markdown="1">
+- [pa11y: Accessibility testing tools](https://pa11y.org/)
+- [axe-core: Accessibility engine for automated Web UI testing](https://github.com/dequelabs/axe-core)
+- [HTML CodeSniffer: Accessibility auditor](https://github.com/squizlabs/HTML_CodeSniffer)
+- [Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)
+</div>
 
 #### pa11y-ci
 
@@ -5396,6 +5455,8 @@ pa11y-ci expects a configuration file named `.pa11yci` in the project directory.
 }
 ```
 
+<aside class="margin-note">Test multiple URLs</aside>
+
 This configuration tells pa11y to check the URL http://localhost:4200 and to use both available testing engines, `axe` and `htmlcs`. You can add many URLs to the `urls` array.
 
 We can now run pa11y-ci with:
@@ -5413,9 +5474,13 @@ Running Pa11y on 1 URLs:
 ✔ 1/1 URLs passed
 ```
 
+<div class="book-sources" markdown="1">
+- [pa11y-ci: CI-centric accessibility test runner](https://github.com/pa11y/pa11y-ci)
+</div>
+
 #### Start server and run pa11y-ci
 
-The configuration above expects that the development server is already running at http://localhost:4200. Both in development and on the build server, it is useful to start the Angular server, run the accessibility tests and then stop the server again.
+The configuration above expects that the development server is already running at http://localhost:4200. Both in development and on a build server, it is useful to start the Angular server, run the accessibility tests and then stop the server again.
 
 We can achieve this with another handy Node.js package, `start-server-and-test`.
 
@@ -5423,9 +5488,11 @@ We can achieve this with another handy Node.js package, `start-server-and-test`.
 npm install start-server-and-test
 ```
 
-`start-server-and-test` first runs an NPM script that starts an HTTP server. Then it waits for the server to boot up. Once a given URL is available, it runs another NPM script.
+`start-server-and-test` first runs an npm script that is supposed to start an HTTP server. Then it waits for the server to boot up. Once a given URL is available, it runs another npm script.
 
 In our case, the first script is `start`, an alias for `ng serve`. We need to create the second script to run `pa11y-ci`.
+
+<aside class="margin-note">npm scripts</aside>
 
 We edit package.json, and add two scripts:
 
@@ -5438,11 +5505,17 @@ We edit package.json, and add two scripts:
 }
 ```
 
-Now, `npm run a11y` starts the Angular development server, then runs pa11y-ci, finally stops the server.
+Now, `npm run a11y` starts the Angular development server, then runs pa11y-ci, finally stops the server. The audit result is written to the standard output.
 
-pa11y is a powerful set of tools with many options. We have barely touched on the its features.
+<div class="book-sources" markdown="1">
+- [start-server-and-test: Starts server, waits for URL, then runs test command](https://github.com/bahmutov/start-server-and-test)
+</div>
 
-Automated accessibility testing is a great addition to unit, integration and end-to-end tests. You should run an accessibility tester like pa11y against all pages of your Angular application. It is especially helpful to ensure the accessibilty of complex forms.
+### Form accessibility: Summary
+
+pa11y is a powerful set of tools with many options. We have barely touched on its features.
+
+Automated accessibility testing is a valuable addition to unit, integration and end-to-end tests. You should run an accessibility tester like pa11y against the pages of your Angular application. It is especially helpful to ensure the accessibility of complex forms.
 
 Bear in mind that automated testing only points out certain accessibility barriers that can be detected programmatically.
 
@@ -5450,29 +5523,24 @@ The Web Content Accessibility Guidelines (WCAG) establish – from abstract to 
 
 The WCAG success criteria are accompanied by *techniques* for HTML, CSS, JavaScript etc. For JavaScript web applications, techniques like ARIA are especially relevant.
 
-In short, you have to learn about accessibility and Inclusive Design first, apply the rules while designing and implementing the application, then check the compliance manually and automatically.
+In short, you need to learn about accessibility and Inclusive Design first, apply the rules while designing and implementing the application. Then check the compliance manually and automatically.
 
 <div class="book-sources" markdown="1">
-- [Inclusive Design Principles](https://inclusivedesignprinciples.org/)
 - [Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)
 - [Quick Reference: How to Meet WCAG](https://www.w3.org/WAI/WCAG21/quickref/)
+- [WebAIM: Introduction to ARIA - Accessible Rich Internet Applications](https://webaim.org/techniques/aria/)
 - [Web Accessibility Tutorial: Forms](https://www.w3.org/WAI/tutorials/forms/)
-- [pa11y: Accessibility testing tools](https://pa11y.org/)
-- [pa11y-ci: CI-centric accessibility test runner](https://github.com/pa11y/pa11y-ci)
-- [axe-core: Accessibility engine for automated Web UI testing](https://github.com/dequelabs/axe-core)
-- [HTML CodeSniffer: Accessibility auditor](https://github.com/squizlabs/HTML_CodeSniffer)
-- [start-server-and-test: Starts server, waits for URL, then runs test command](https://github.com/bahmutov/start-server-and-test)
 </div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 ## Testing Components with Spectator
 
-We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`. As described, they are fairly low-level and unopinionated.
+We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`.
 
 <aside class="margin-note">Structural weaknesses</aside>
 
-The built-in tools have several drawbacks:
+The built-in tools are fairly low-level and unopinionated. They have several drawbacks:
 
 - `TestBed` requires a large amount of boilerplate code to set up a common Component or Service test.
 - `DebugElement` lacks essential features and is a “leaky” abstraction. You are forced to work with the wrapped native DOM element for common tasks.
@@ -7278,19 +7346,13 @@ To test the second case is trickier because we need to simulate that the Observa
 
 At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
 
-Again, there are several ways how to accomplish this. We are going to use Angular’s `fakeAsync` and `tick` functions, an easy and powerful way to test asynchronous behavior.
-
-TODO: See above
-
 <aside class="margin-note" markdown="1">
   `fakeAsync` and `tick`
 </aside>
 
-`fakeAsync` freezes time. It hooks into the processing of asynchronous tasks created by timers, intervals, Promises and Observables. It prevents these tasks from being executed.
+Again, there are several ways how to accomplish this. We are going to use Angular’s `fakeAsync` and `tick` functions. We have introduced them when [testing a form with async validators](#successful-form-submission).
 
-We then use the `tick` function to simulate the passage of time. The scheduled asynchronous tasks will be executed. We can then test their effect.
-
-The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if ten seconds pass in the simulation, the spec may still complete in a few milliseconds.
+A quick recap: `fakeAsync` freezes time and prevents asynchronous tasks from being executed. The `tick` function then simulates the passage of time, executing the scheduled tasks.
 
 `fakeAsync` wraps the function passed to `it`:
 
@@ -7353,7 +7415,7 @@ it('translates the key, async service response', fakeAsync(() => {
 
 This causes the Observable to emit the translation and complete. The `TranslatePipe` receives the translation and saves it.
 
-To see a change in the DOM, we start a second change detection cycle. The `TranslatePipe`’s `transform` method is called for the second time and returns the correct translation.
+To see a change in the DOM, we start a second change detection. The `TranslatePipe`’s `transform` method is called for the second time and returns the correct translation.
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -7392,7 +7454,7 @@ it('translates a changed key', () => {
 });
 ```
 
-After a change detection cycle, the DOM contains the updated translation for `key2`.
+After a change detection, the DOM contains the updated translation for `key2`.
 
 Last but no least, the Pipe needs to fetch a new translation from the `TranslateService` when the user changes the language and new translations have been loaded. For this purpose, the Pipe subscribes to the Service’s `onTranslationChange` emitter.
 
@@ -8437,19 +8499,19 @@ After the tests have completed, Istanbul saves the report in the `coverage` dire
 
 The report for the Flickr search example looks like this:
 
-<img src="/img/robust-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
 
 Istanbul creates an HTML page for every directory and every file. By following the links, you can descend to reports for the individual files.
 
 For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
 
-<img src="/img/robust-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
 
 The report renders the source code annotated with the information how many times a line was called. In the example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
 
 The spec `it('focusses a photo on click', () => {…})` clicks on the photo item to test whether the `focusPhoto` Output emits. Let us disable the spec on purpose to see the impact.
 
-<img src="/img/robust-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
 
 You can tell from the coverage report above that the `handleClick` method is never called. A key Component behavior is untested.
 
@@ -8843,7 +8905,7 @@ ng run angular-workshop:cypress-open
 
 This will open the test runner:
 
-<img src="/img/robust-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
 
 In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”. On the top-right, you can select the browser. Chrome, Firefox and Edge will appear in the list given you have installed them on your machine.
 
@@ -8853,7 +8915,7 @@ This graphical user interface is an Electron application, a framework based on C
 
 Suppose you run the tests in Chrome, the in-browser test runner looks like this:
 
-<img src="/img/robust-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full" loading="lazy">
 
 On the left side, the specs are listed. On the right side, the web page under test is seen.
 
@@ -8861,7 +8923,7 @@ On the left side, the specs are listed. On the right side, the web page under te
 
 By clicking on a spec name, you can see all commands and assertions in the spec.
 
-<img src="/img/robust-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full" loading="lazy">
 
 You can watch Cypress running the specs command by command. This is especially useful when a spec fails. Let us break the spec on purpose to see Cypress’ output.
 
@@ -8869,7 +8931,7 @@ You can watch Cypress running the specs command by command. This is especially u
 cy.title().should('equal', 'Fluffy Golden Retrievers');
 ```
 
-<img src="/img/robust-angular/cypress-spec-failed.png" alt="Failed spec in Cypress" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/cypress-spec-failed.png" alt="Failed spec in Cypress" class="image-max-full" loading="lazy">
 
 Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
 
@@ -9376,7 +9438,9 @@ This brings us to:
 cy.byTestId('photo-item-link')
   .should('have.length', 15)
   .each((link) => {
-    expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
+    expect(link.attr('href')).to.contain(
+      'https://www.flickr.com/photos/'
+    );
   });
 ```
 
@@ -9805,7 +9869,7 @@ In the Flickr search repository, you will find the same test with `cy.server` / 
 - [Cypress API reference: intercept](https://docs.cypress.io/api/commands/intercept.html)
 </div>
 
-### End-to-end testing: Conclusion
+### End-to-end testing: Summary
 
 End-to-end tests used to be expensive while the outcome was poor. It was hard to write tests that pass reliably when the application is working correctly. This time could not be invested in writing useful tests that uncover bugs and regressions.
 
@@ -9870,7 +9934,7 @@ Twitter: [@molily](https://twitter.com/molily)
 
 **Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).**
 
-Published on <time datetime="2020-12-xx">December XX, 2020</time>.
+Published on <time datetime="2021-xx-xx">XX XX, 2021</time>.
 
 ## License
 
