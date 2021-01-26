@@ -7472,7 +7472,7 @@ it('updates on translation change', () => {
 
 We made it! Writing these specs is challenging without doubt.
 
-`TranslateService` and `TranslatePipe` are non-trivial examples with a proven API. The original classes from ngx-translate are more powerful. If you look for a robust and flexible solution, it is recommended to use the ngx-translate library directly.
+`TranslateService` and `TranslatePipe` are non-trivial examples with a proven API. The original classes from ngx-translate are more powerful. If you look for a robust and flexible solution, you should use the ngx-translate library directly.
 
 <div class="book-sources" markdown="1">
 - [TranslatePipe: test code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.spec.ts)
