@@ -660,7 +660,7 @@ The test bundle with the entry point `test.ts` works differently. It does not st
 
 Each **`.spec.ts` file** represent a test. Typically, one `.spec.ts` file contains at least one Jasmine test suite (more on that in the next chapter). The files are co-located with the implementation code.
 
-In our example application, the `CounterService` is located in [src/app/components/counter/counter.component.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.ts). The corresponding test file sits in [src/app/components/counter/counter.component.spec.ts](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts). This is an Angular convention, not a technical necessity, and we are going to stick to it.
+In our example application, the `CounterService` is located in [src/app/components/counter/counter.component.ts](https://github.com/9elements/angular-workshop/blob/main/src/app/components/counter/counter.component.ts). The corresponding test file sits in [src/app/components/counter/counter.component.spec.ts](https://github.com/9elements/angular-workshop/blob/main/src/app/components/counter/counter.component.spec.ts). This is an Angular convention, not a technical necessity, and we are going to stick to it.
 
 <aside class="margin-note">Karma</aside>
 
@@ -1346,7 +1346,7 @@ In the _Assert_ phase, we make two expectations again. Instead of verifying the 
 Again, this is a plain TypeScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
 
 <div class="book-sources" markdown="1">
-- [TodoService: Implementation and test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/todos-service.spec.ts)
+- [TodoService: Implementation and test code](https://github.com/9elements/angular-workshop/blob/main/src/app/services/todos-service.spec.ts)
 - [Jasmine reference: Spies](https://jasmine.github.io/api/edge/Spy.html)
 </div>
 
@@ -1648,7 +1648,7 @@ All these tasks need to be tested properly.
 
 ### Unit test for the counter Component
 
-As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/counter).
+As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter).
 
 <button class="load-iframe">
 See the CounterComponent in action
@@ -1675,12 +1675,12 @@ We will test the following features of the `CounterComponent`:
 Writing down what the Component does already helps to structure the unit test. The features above roughly translate into specs in a test suite.
 
 <div class="book-sources" markdown="1">
-- [Code for the CounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/counter)
+- [Code for the CounterComponent](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter)
 </div>
 
 ### TestBed
 
-Several chores are necessary to render a Component in Angular, even the simple counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/master/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/master/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
+Several chores are necessary to render a Component in Angular, even the simple counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/main/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/main/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
 
 The Angular compiler translates the templates into JavaScript code. To prepare the rendering, an instance of the Component is created, dependencies are resolved and injected, inputs are set. Finally, the template is rendered into the DOM. For testing, you could do all that manually, but you would need to dive deeply into Angular internals.
 
@@ -2280,7 +2280,7 @@ it('increments the count', () => {
 That is much better to read and less to write! You can tell what the spec is doing at first glance.
 
 <div class="book-sources" markdown="1">
-- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts)
+- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
 </div>
 
 ### Filling out forms
@@ -2433,7 +2433,7 @@ The small difference in this spec is that we set the field value to “not a num
 This is it! We have tested the reset form with both valid and invalid input.
 
 <div class="book-sources" markdown="1">
-- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts)
+- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
 </div>
 
 ### Testing Inputs
@@ -2715,7 +2715,7 @@ it('emits countChange events', () => {
 This example requires some RxJS knowledge. We are going to encounter RxJS Observables again and again when testing Angular applications. If you do not understand the example above, that is totally fine. It is just optional way to merge three specs into one.
 
 <div class="book-sources" markdown="1">
-- [CounterComponent: test code](https://github.com/9elements/angular-workshop/blob/master/src/app/components/counter/counter.component.spec.ts)
+- [CounterComponent: test code](https://github.com/9elements/angular-workshop/blob/main/src/app/components/counter/counter.component.spec.ts)
 </div>
 
 ### Black vs. white box Component testing
@@ -2864,7 +2864,7 @@ Again, both are valid approaches we are going to discuss.
 
 ### Shallow vs. deep rendering
 
-In the counter example application, the [`HomeComponent`](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.ts) contains `CounterComponent`s, `ServiceCounterComponent`s and `NgRxCounterComponent`s. From the [template](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.html):
+In the counter example application, the [`HomeComponent`](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home.component.ts) contains `CounterComponent`s, `ServiceCounterComponent`s and `NgRxCounterComponent`s. From the [template](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home.component.html):
 
 ```html
 <app-counter
@@ -3170,7 +3170,7 @@ Note that this is one possible testing method. As always, it has pros and cons. 
 However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular to ignore the elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `HomeComponent` uses a wrong element name and the test copies that error? The test would pass incorrectly. We need to render the involved Components together to spot the error.
 
 <div class="book-sources" markdown="1">
-- [HomeComponent: implementation and test code](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/)
+- [HomeComponent: implementation and test code](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/)
 </div>
 
 ### Faking a child Component
@@ -3383,7 +3383,7 @@ For example, if the original changes its selector `app-counter`, the test should
 We are going to address these shortcomings in the next chapter.
 
 <div class="book-sources" markdown="1">
-- [HomeComponent spec that fakes a child Component](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home.component.fake-child.spec.ts)
+- [HomeComponent spec that fakes a child Component](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home.component.fake-child.spec.ts)
 </div>
 
 ### Faking a child Component with ng-mocks
@@ -3498,7 +3498,7 @@ We have eliminated the manual `FakeCounterComponent`. We are using `MockComponen
 This was only a glimpse of ng-mocks. The library not only helps with nested Components, but provides high-level helpers for setting up the Angular test environment. ng-mocks replaces the conventional setup with `TestBed.configureTestingModule` and helps faking Modules, Components, Directives, Pipes and Services.
 
 <div class="book-sources" markdown="1">
-- [HomeComponent spec with ng-mocks](https://github.com/9elements/angular-workshop/blob/master/src/app/components/home/home-component.ng-mocks.spec.ts)
+- [HomeComponent spec with ng-mocks](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home-component.ng-mocks.spec.ts)
 - [ng-mocks](https://github.com/ike18t/ng-mocks)
 </div>
 
@@ -3506,7 +3506,7 @@ This was only a glimpse of ng-mocks. The library not only helps with nested Comp
 
 ## Testing Components depending on Services
 
-We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the [ServiceCounterComponent](https://github.com/9elements/angular-workshop/tree/master/src/app/components/service-counter).
+We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the [ServiceCounterComponent](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter).
 
 <button class="load-iframe">
 See the ServiceCounterComponent in action
@@ -3598,7 +3598,7 @@ The integration test does not examine the Component’s inner workings. It only 
 If we want an integration test to verify that the Component stores the count in the Service, we would need a test with two `ServiceCounterComponent`s: When increasing the count using one Component, the displayed count in the other should change accordingly.
 
 <div class="book-sources" markdown="1">
-- [ServiceCounterComponent: integration test](https://github.com/9elements/angular-workshop/blob/master/src/app/components/service-counter/service-counter.component.spec.ts)
+- [ServiceCounterComponent: integration test](https://github.com/9elements/angular-workshop/blob/main/src/app/components/service-counter/service-counter.component.spec.ts)
 </div>
 
 ### Faking Service dependencies
@@ -3878,7 +3878,7 @@ describe('ServiceCounterComponent: unit test', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [ServiceCounterComponent: Implementation and test code](https://github.com/9elements/angular-workshop/tree/master/src/app/components/service-counter)
+- [ServiceCounterComponent: Implementation and test code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter)
 </div>
 
 ### Fake Service with minimal logic
@@ -4043,7 +4043,7 @@ Again, this example is intentionally verbose. The fake re-implements a large par
 In reality, Services are more complex and Components process the data they receive from the Services. Then, the effort of faking essential logic is worthwhile.
 
 <div class="book-sources" markdown="1">
-- [ServiceCounterComponent: unit test](https://github.com/9elements/angular-workshop/blob/master/src/app/components/service-counter/service-counter.component.spec.ts)
+- [ServiceCounterComponent: unit test](https://github.com/9elements/angular-workshop/blob/main/src/app/components/service-counter/service-counter.component.spec.ts)
 </div>
 
 ### Faking Services: Summary
@@ -4082,7 +4082,7 @@ The simple forms we have dealt with served the purpose of entering one value. We
 
 We are introducing and testing a **sign-up form** for a fictional online service.
 
- <div class="book-sources" markdown="1">
+<div class="book-sources" markdown="1">
 - [Sign-up form: Source code](https://github.com/molily/angular-form-testing)
 - [Sign-up form: Run the app](https://molily.github.io/angular-form-testing/)
 </div>
@@ -5563,9 +5563,9 @@ In this guide, we will look at testing the Flickr search example with Spectator.
 
 ### Component with an Input
 
-Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
+Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
 
-The [`FullPhotoComponent` suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/full-photo/full-photo.component.spec.ts) looks like this:
+The [`FullPhotoComponent` suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/full-photo/full-photo.component.spec.ts) looks like this:
 
 ```typescript
 describe('FullPhotoComponent', () => {
@@ -5764,7 +5764,7 @@ Compared to the version with custom testing helpers, the Spectator version is no
 Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
 
 <div class="book-sources" markdown="1">
-- [FullPhotoComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/full-photo)
+- [FullPhotoComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo)
 - [Spectator: Queries](https://github.com/ngneat/spectator#queries)
 - [Spectator: Custom matchers](https://github.com/ngneat/spectator#custom-matchers)
 </div>
@@ -5835,7 +5835,7 @@ Since this is the Component where all things come together, there is much to tes
 3. The search term and the photo list are passed down to the `PhotoListComponent` via Input.
 4. When the `PhotoListComponent` emits the `focusPhoto` output, the `FullPhotoComponent` is rendered. The selected photo is passed down via Input.
 
-The [`FlickrSearchComponent` test suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/flickr-search/flickr-search.component.spec.ts) looks like this:
+The [`FlickrSearchComponent` test suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/flickr-search/flickr-search.component.spec.ts) looks like this:
 
 ```typescript
 describe('FlickrSearchComponent', () => {
@@ -6082,7 +6082,7 @@ it('renders the full photo when a photo is focussed', () => {
 Again, the main difference is that we directly work with Inputs and Outputs.
 
 <div class="book-sources" markdown="1">
-- [FlickrSearchComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/flickr-search)
+- [FlickrSearchComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/flickr-search)
 - [ng-mocks: How to mock a component](https://github.com/ike18t/ng-mocks#how-to-create-a-mock-component)
 - [Spectator: Mocking providers](https://github.com/ngneat/spectator#mocking-providers)
 </div>
@@ -6101,7 +6101,7 @@ Spectator takes a different approach: It dispatches synthetic DOM events. This m
   `spectator.click`
 </aside>
 
-To perform a simple click, we use `spectator.click` and pass the target element or a `byTestId` selector. An example from the [PhotoItemComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.spectator.spec.ts):
+To perform a simple click, we use `spectator.click` and pass the target element or a `byTestId` selector. An example from the [PhotoItemComponent test](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/photo-item/photo-item.component.spectator.spec.ts):
 
 ```typescript
 describe('PhotoItemComponent with spectator', () => {
@@ -6129,7 +6129,7 @@ Another common task is to simulate form field input. So far, we have used the [`
   <p><code>spectator.&#x200b;typeInElement</code></p>
 </aside>
 
-Spectator has an equivalent method named `spectator.typeInElement`. It is used by the [SearchFormComponent test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/search-form/search-form.component.spectator.spec.ts):
+Spectator has an equivalent method named `spectator.typeInElement`. It is used by the [SearchFormComponent test](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/search-form/search-form.component.spectator.spec.ts):
 
 ```typescript
 describe('SearchFormComponent with spectator', () => {
@@ -6160,8 +6160,8 @@ The spec simulates typing in the search term into the search field. Then it simu
 Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
 
 <div class="book-sources" markdown="1">
-- [PhotoItemComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/photo-item)
-- [SearchFormComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/master/src/app/components/search-form)
+- [PhotoItemComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/photo-item)
+- [SearchFormComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/search-form)
 - [Spectator: Events API](https://github.com/ngneat/spectator#events-api)
 </div>
 
@@ -6214,7 +6214,7 @@ So what does a Service do and how do we test it? Services are diverse, but some 
 
 ### Testing a Service with internal state
 
-Let us start with testing the [`CounterService`](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.ts). By now, you should be familiar with the Service. As a reminder, here is the shape including private members:
+Let us start with testing the [`CounterService`](https://github.com/9elements/angular-workshop/blob/main/src/app/services/counter.service.ts). By now, you should be familiar with the Service. As a reminder, here is the shape including private members:
 
 ```typescript
 class CounterService {
@@ -6467,14 +6467,14 @@ describe('CounterService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [CounterService: Test code](https://github.com/9elements/angular-workshop/blob/master/src/app/services/counter.service.spec.ts)
+- [CounterService: Test code](https://github.com/9elements/angular-workshop/blob/main/src/app/services/counter.service.spec.ts)
 </div>
 
 ### Testing a Service that sends HTTP requests
 
 Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with a dependency.
 
-In the [Flickr search](#the-flickr-photo-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
+In the [Flickr search](#the-flickr-photo-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/main/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
 
 ```typescript
 @Injectable()
@@ -6625,7 +6625,7 @@ describe('FlickrService', () => {
 
 Now that we have the pending request at hand, we respond to it with an object that mimics the original API response. The Flickr API returns a complex object with an array of photos objects deep within. In the `FlickrService` test, we only care about the payload, the photos array.
 
-The Flickr search repository contains [fake photo objects](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts) that are used throughout the tests. For the `FlickrService` test, we import the `photos` array with two fake photo objects.
+The Flickr search repository contains [fake photo objects](https://github.com/9elements/angular-flickr-search/blob/main/src/app/spec-helpers/photo.spec-helper.ts) that are used throughout the tests. For the `FlickrService` test, we import the `photos` array with two fake photo objects.
 
 We use the request’s `flush` method to respond with fake data. This simulates a successful “200 OK” server response.
 
@@ -6724,8 +6724,8 @@ describe('FlickrService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [FlickrService: test code](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/flickr.service.spec.ts)
-- [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts)
+- [FlickrService: test code](https://github.com/9elements/angular-flickr-search/blob/main/src/app/services/flickr.service.spec.ts)
+- [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/main/src/app/spec-helpers/photo.spec-helper.ts)
 </div>
 
 #### Testing the error case
@@ -6850,7 +6850,7 @@ This example is deliberately verbose. It shows you how to test all details. It f
 This approach is recommended for Service methods that have a dedicated error handling. For example, a Service might distinguish between successful responses (like “200 OK”), client errors (like “404 Not Found”) and server errors (like “500 Server error”).
 
 <div class="book-sources" markdown="1">
-- [FlickrService: implementation and test](https://github.com/9elements/angular-flickr-search/blob/master/src/app/services/)
+- [FlickrService: implementation and test](https://github.com/9elements/angular-flickr-search/blob/main/src/app/services/)
 - [Angular API reference: HttpErrorResponse](https://angular.io/api/common/http/HttpErrorResponse)
 - [MDN reference: ErrorEvent](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent)
 </div>
@@ -7145,8 +7145,8 @@ This is what the Service provides:
 In the example project, the `AppComponent` depends on the `TranslateService`. On creation, the Service loads the English translations. The `AppComponent` renders a select field allowing the user to change the language.
 
 <div class="book-sources" markdown="1">
-- [TranslateService: implementation code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.ts)
-- [TranslateService: test code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.service.spec.ts)
+- [TranslateService: implementation code](https://github.com/molily/translate-pipe/blob/main/src/app/translate.service.ts)
+- [TranslateService: test code](https://github.com/molily/translate-pipe/blob/main/src/app/translate.service.spec.ts)
 </div>
 
 #### TranslatePipe
@@ -7239,7 +7239,7 @@ In turn, Angular re-evaluates every expression that uses the Pipe, like `'greeti
 The same process happens when the user changes the language and new translations are loaded. The Pipe subscribes to `TranslateService`’s `onTranslationChange` and calls the `TranslateService` again to get the new translation.
 
 <div class="book-sources" markdown="1">
-- [TranslatePipe: implementation code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.ts)
+- [TranslatePipe: implementation code](https://github.com/molily/translate-pipe/blob/main/src/app/translate.pipe.ts)
 - [Angular API reference: ChangeDetectorRef](https://angular.io/api/core/ChangeDetectorRef)
 </div>
 
@@ -7338,7 +7338,7 @@ This Observable emits one “next” value and completes immediately. This mimic
 
 We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
 
-Finally, we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/master/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
+Finally, we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/main/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
 
 <aside class="margin-note">Simulate delay</aside>
 
@@ -7475,7 +7475,7 @@ We made it! Writing these specs is challenging without doubt.
 `TranslateService` and `TranslatePipe` are non-trivial examples with a proven API. The original classes from ngx-translate are more powerful. If you look for a robust and flexible solution, you should use the ngx-translate library directly.
 
 <div class="book-sources" markdown="1">
-- [TranslatePipe: test code](https://github.com/molily/translate-pipe/blob/master/src/app/translate.pipe.spec.ts)
+- [TranslatePipe: test code](https://github.com/molily/translate-pipe/blob/main/src/app/translate.pipe.spec.ts)
 - [Angular API reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
 - [Angular API reference: tick](https://angular.io/api/core/testing/tick)
 - [RxJS: delay operator](https://rxjs-dev.firebaseapp.com/api/operators/delay)
@@ -7511,7 +7511,7 @@ Neither of our [example applications](#example-applications) contain an Attribut
 Note that numbers above the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
 
 <div class="book-sources" markdown="1">
-- [ThresholdWarningDirective: Source code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.ts)
+- [ThresholdWarningDirective: Source code](https://github.com/molily/threshold-warning-directive/blob/main/src/app/threshold-warning.directive.ts)
 - [ThresholdWarningDirective: Run the app](https://molily.github.io/threshold-warning-directive/)
 </div>
 
@@ -7767,8 +7767,8 @@ describe('ThresholdWarningDirective', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [ThresholdWarningDirective: implementation code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.ts )
-- [ThresholdWarningDirective: test code](https://github.com/molily/threshold-warning-directive/blob/master/src/app/threshold-warning.directive.spec.ts)
+- [ThresholdWarningDirective: implementation code](https://github.com/molily/threshold-warning-directive/blob/main/src/app/threshold-warning.directive.ts )
+- [ThresholdWarningDirective: test code](https://github.com/molily/threshold-warning-directive/blob/main/src/app/threshold-warning.directive.spec.ts)
 </div>
 
 ### Testing Structural Directives
@@ -7794,7 +7794,7 @@ We are introducing and testing the `PaginateDirective`, a complex Structural Dir
 `PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called **pagination**. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
 <div class="book-sources" markdown="1">
-- [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
+- [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.ts)
 - [PaginateDirective: Run the app](https://molily.github.io/paginate-directive/)
 </div>
 
@@ -8015,7 +8015,7 @@ export class PaginateDirective<T> implements OnChanges {
 The inner workings of the `PaginateDirective` are not relevant for testing, so we will not discuss them in detail here. Please refer to the Angular guide [Write a structural directive](https://angular.io/guide/structural-directives#write-a-structural-directive) for a general explanation.
 
 <div class="book-sources" markdown="1">
-- [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
+- [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.ts)
 </div>
 
 #### PaginateDirective test
@@ -8118,7 +8118,7 @@ This is a standard Component test setup – nothing special yet.
 
 The first spec verifies that the Directive renders the items on the first page, in our case the numbers 1, 2 and 3.
 
-We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/master/src/app/spec-helpers/element.spec-helper.ts) to find all elements with said test id.
+We have marked the item element with `data-testid="item"`. We use the [`findEls` test helper](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts) to find all elements with said test id.
 
 <aside class="margin-note">Expect rendered items</aside>
 
@@ -8348,8 +8348,8 @@ describe('PaginateDirective', () => {
 `PaginateDirective` is a complex Structural Directive that requires a complex test setup. Once we have created a suitable host Component, we can test it using our familiar testing helpers. The fact that the logic resides in the Directive is not relevant for the specs.
 
 <div class="book-sources" markdown="1">
-- [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.ts)
-- [PaginateDirective: test code](https://github.com/molily/paginate-directive/blob/master/src/app/paginate.directive.spec.ts)
+- [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.ts)
+- [PaginateDirective: test code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.spec.ts)
 </div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
@@ -8430,7 +8430,7 @@ The report for the Flickr search example looks like this:
 
 Istanbul creates an HTML page for every directory and every file. By following the links, you can descend to reports for the individual files.
 
-For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/master/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
+For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
 
 <img src="/img/testing-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
 
@@ -8626,8 +8626,8 @@ Protractor is a solid project, but today there is no compelling reason to choose
 If you are looking for Protractor examples, have a look at the Protractor end-to-end tests for the Counter and Flickr search. They come in two variants, one with the control flow and one with `async` / `await`. They are not explained in this guide though.
 
 <div class="book-sources" markdown="1">
-- [Counter: End-to-end tests with Protractor](https://github.com/9elements/angular-workshop/tree/master/e2e)
-- [Flickr search: End-to-end tests with Protractor](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
+- [Counter: End-to-end tests with Protractor](https://github.com/9elements/angular-workshop/tree/main/e2e)
+- [Flickr search: End-to-end tests with Protractor](https://github.com/9elements/angular-flickr-search/tree/main/e2e)
 - [Protractor: The WebDriver Control Flow](https://www.protractortest.org/#/control-flow)
 - [Protractor: async/await](https://www.protractortest.org/#/async-await)
 </div>
@@ -9102,7 +9102,7 @@ This also applies to the other specs. If the element under test only appears onc
 All counter features are now tested. In the next chapters, we will refactor the code to improve its readability and maintainability.
 
 <div class="book-sources" markdown="1">
-- [Full code: counter.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/integration/counter.ts)
+- [Full code: counter.ts](https://github.com/9elements/angular-workshop/blob/main/cypress/integration/counter.ts)
 - [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html)
 - [Cypress API reference: type](https://docs.cypress.io/api/commands/type.html)
 - [Cypress API reference: first](https://docs.cypress.io/api/commands/first.html)
@@ -9231,8 +9231,8 @@ describe('Counter (with helpers)', () => {
 Keep in mind that all these `first` calls are only necessary since there are multiple counters on the example page under test. If there is only one element with the given test id on the page, you do not need those `.first()` calls.
 
 <div class="book-sources" markdown="1">
-- [Full code: commands.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/support/commands.ts)
-- [Full code: index.d.ts](https://github.com/9elements/angular-workshop/blob/master/cypress/support/index.d.ts)
+- [Full code: commands.ts](https://github.com/9elements/angular-workshop/blob/main/cypress/support/commands.ts)
+- [Full code: index.d.ts](https://github.com/9elements/angular-workshop/blob/main/cypress/support/index.d.ts)
 - [Cypress documentation: Custom commands](https://docs.cypress.io/api/cypress-api/custom-commands.html)
 - [Cypress documentation: Types for custom commands](https://docs.cypress.io/guides/tooling/typescript-support.html#Types-for-custom-commands)
 </div>
@@ -9406,7 +9406,7 @@ This opens the test runner where we can click on the test `flickr-search.ts` to 
 Alternatively, you can start the development server (`ng serve`) in one shell and the test runner (`npx cypress open`) in a second shell.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/master/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
+- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/main/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
 - [Cypress API reference: clear](https://docs.cypress.io/api/commands/clear.html)
 - [Cypress API reference: each](https://docs.cypress.io/api/commands/each.html)
 - [jQuery API reference: attr](https://api.jquery.com/attr/)
@@ -9483,7 +9483,7 @@ The assertions `contain`, `text` and `exist` are defined by Chai-jQuery, an asse
 Congratulations, we have successfully tested the Flickr search! This example demonstrates several Cypress commands and assertions. We also caught a glimpse of Cypress internals.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search.ts)
+- [Full code: flickr-search.ts](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search.ts)
 - [Cypress documentation: Chai-jQuery assertions](https://docs.cypress.io/guides/references/assertions.html#Chai-jQuery)
 </div>
 
@@ -9643,8 +9643,8 @@ The goal of this refactoring is not brevity. Using page objects does not necessa
 You can use the page object pattern when you feel the need to tidy up complex, repetitive tests. Once you are familiar with the pattern, it also helps you to avoid writing such tests in the first place.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search-with-po.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-with-po.ts)
-- [Full code: flickr-search.page.ts](https://github.com/9elements/angular-flickr-search/blob/master/cypress/pages/flickr-search.page.ts)
+- [Full code: flickr-search-with-po.ts](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-with-po.ts)
+- [Full code: flickr-search.page.ts](https://github.com/9elements/angular-flickr-search/blob/main/cypress/pages/flickr-search.page.ts)
 </div>
 
 ### Faking the Flickr API
@@ -9786,9 +9786,9 @@ The `cy.server` and `cy.route` commands only supports intercepting XMLHttpReques
 In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.intercept` for comparison.
 
 <div class="book-sources" markdown="1">
-- [Full test with cy.server and cy.route](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network.ts)
-- [Full test with cy.intercept](https://github.com/9elements/angular-flickr-search/blob/master/cypress/integration/flickr-search-stub-network-intercept.ts)
-- [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/master/src/app/spec-helpers/photo.spec-helper.ts)
+- [Full test with cy.server and cy.route](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-stub-network.ts)
+- [Full test with cy.intercept](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-stub-network-intercept.ts)
+- [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/main/src/app/spec-helpers/photo.spec-helper.ts)
 - [Cypress documentation: Network Requests](https://docs.cypress.io/guides/guides/network-requests.html)
 - [Cypress API reference: server](https://docs.cypress.io/api/commands/server.html)
 - [Cypress API reference: route](https://docs.cypress.io/api/commands/route.html)
@@ -9809,10 +9809,10 @@ While this guide recommends to start with Cypress, WebDriver-based frameworks ar
 Even with Cypress, end-to-end tests are much more complex and error-prone than unit and integration tests with Jasmine and Karma. Then again, end-to-end tests are highly effective to test a feature under realistic circumstances.
 
 <div class="book-sources" markdown="1">
-- [Counter: Cypress tests](https://github.com/9elements/angular-workshop/tree/master/cypress)
-- [Counter: Protractor tests](https://github.com/9elements/angular-workshop/tree/master/e2e)
-- [Flickr search: Cypress tests](https://github.com/9elements/angular-flickr-search/tree/master/cypress)
-- [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/master/e2e)
+- [Counter: Cypress tests](https://github.com/9elements/angular-workshop/tree/main/cypress)
+- [Counter: Protractor tests](https://github.com/9elements/angular-workshop/tree/main/e2e)
+- [Flickr search: Cypress tests](https://github.com/9elements/angular-flickr-search/tree/main/cypress)
+- [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/main/e2e)
 </div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
@@ -9830,6 +9830,21 @@ Luckily, the Angular community works steadily to make testing accessible. Angula
 Testing does not only make your software more reliable, but also evolves your coding practice in the long run. It requires to write testable code, and testable code is usually simpler.
 
 Automated software testing is challenging and rewarding for various reasons. Despite all troubles, that makes it fascinating.
+
+<svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
+## Index of example applications
+
+All example applications are repositories on GitHub:
+
+<div class="book-sources" markdown="1">
+- [Counter Component](https://github.com/9elements/angular-workshop)
+- [Flickr photo search](https://github.com/9elements/angular-flickr-search)
+- [Sign-up form](https://github.com/molily/angular-form-testing)
+- [TranslatePipe](https://github.com/molily/translate-pipe)
+- [ThresholdWarningDirective](https://github.com/molily/threshold-warning-directive)
+- [PaginateDirective](https://github.com/molily/paginate-directive)
+</div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -9853,7 +9868,7 @@ Thanks to [Nils Binder](https://ichimnetz.com/) for contributing the dark color 
 
 ## About
 
-Author: [Mathias Schäfer (molily)](/)
+Author: [Mathias Schäfer (molily)](https://molily.de)
 
 Mathias is a software developer with a focus on web development and JavaScript web applications, working at [9elements](https://9elements.com).
 
