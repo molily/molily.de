@@ -34,7 +34,7 @@ robots: noindex, follow
         Testing Angular<br>
         <small>A Guide to Robust Angular Applications</small>
       </h1>
-      <!-- <p id="toc-epub-link"><strong><a href="/assets/.epub" download>Download this book as EPUB (724 KB)</a></strong></p> -->
+      <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
       <h2 id="toc-heading">Table of Contents</h2>
       <ol id="toc-tree"></ol>
     </nav>
@@ -369,7 +369,7 @@ In Angular, the difference between unit and integration tests is sometimes subtl
 <tr>
 <th scope="row">Level</th>
 <th scope="col">End-to-End</th>
-<th scope="col">Inte&shy;gration</th>
+<th scope="col">Inte&#xAD;gration</th>
 <th scope="col">Unit</th>
 </tr>
 <tr>
@@ -1811,7 +1811,7 @@ Now we have built the scaffold for our test using the `TestBed`, we need to writ
 The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test and connects to electrical contacts so measurements can be taken.
 
 <aside class="margin-note">
-  <p><code>Component&shy;Fixture</code></p>
+  <p><code>Component&#xAD;Fixture</code></p>
 </aside>
 
 In the context of Angular, the `ComponentFixture` holds the Component and provides a convenient interface to both the Component instance and the rendered DOM.
@@ -9446,7 +9446,7 @@ Since have searched for “flower”, we assert that the term is either in the p
 cy.byTestId('full-photo').should('contain', SEARCH_TERM);
 ```
 
-<aside class="margin-note">Contain vs. have&nbsp;text</aside>
+<aside class="margin-note">Contain vs. have&#xA0;text</aside>
 
 The `contain` assertion checks whether the given string is somewhere in the element’s text content. (In contrast, the `have.text` assertion checks whether the content equals the given string. It does not allow additional content.)
 
