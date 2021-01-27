@@ -1675,7 +1675,7 @@ We will test the following features of the `CounterComponent`:
 Writing down what the Component does already helps to structure the unit test. The features above roughly translate into specs in a test suite.
 
 <div class="book-sources" markdown="1">
-- [Code for the CounterComponent](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter)
+- [CounterComponent: full code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter)
 </div>
 
 ### TestBed
@@ -2280,7 +2280,7 @@ it('increments the count', () => {
 That is much better to read and less to write! You can tell what the spec is doing at first glance.
 
 <div class="book-sources" markdown="1">
-- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
+- [Element spec helpers: full code](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
 </div>
 
 ### Filling out forms
@@ -2433,7 +2433,7 @@ The small difference in this spec is that we set the field value to “not a num
 This is it! We have tested the reset form with both valid and invalid input.
 
 <div class="book-sources" markdown="1">
-- [Source code of all element spec helpers](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
+- [Element spec helpers: full code](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
 </div>
 
 ### Testing Inputs
@@ -3878,7 +3878,7 @@ describe('ServiceCounterComponent: unit test', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [ServiceCounterComponent: Implementation and test code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter)
+- [ServiceCounterComponent: implementation and test code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter)
 </div>
 
 ### Fake Service with minimal logic
@@ -4728,7 +4728,7 @@ it('submits the form successfully', fakeAsync(async () => {
 Because we are testing DOM changes, we have to call `detectChanges` after each Act phase.
 
 <div class="book-sources" markdown="1">
-- [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+- [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
 - [Angular API reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
 - [Angular API reference: tick](https://angular.io/api/core/testing/tick)
 </div>
@@ -5024,7 +5024,7 @@ it('marks fields as required', async () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+- [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
 </div>
 
 ### Asynchronous validators
@@ -5128,7 +5128,7 @@ The username validation fails, so we expect that the Component prevents the form
 As stated above, the two other specs `it('fails if the email is taken', /* … */)` and `it('fails if the password is too weak', /* … */)` look the same apart from the fake setup.
 
 <div class="book-sources" markdown="1">
-- [SignupFormComponent: full test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
+- [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
 - [Angular documentation: Creating asynchronous validators](https://angular.io/guide/form-validation#creating-asynchronous-validators)
 </div>
 
@@ -5764,7 +5764,7 @@ Compared to the version with custom testing helpers, the Spectator version is no
 Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
 
 <div class="book-sources" markdown="1">
-- [FullPhotoComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo)
+- [FullPhotoComponent: implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo)
 - [Spectator: Queries](https://github.com/ngneat/spectator#queries)
 - [Spectator: Custom matchers](https://github.com/ngneat/spectator#custom-matchers)
 </div>
@@ -6082,7 +6082,7 @@ it('renders the full photo when a photo is focussed', () => {
 Again, the main difference is that we directly work with Inputs and Outputs.
 
 <div class="book-sources" markdown="1">
-- [FlickrSearchComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/flickr-search)
+- [FlickrSearchComponent: implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/flickr-search)
 - [ng-mocks: How to mock a component](https://github.com/ike18t/ng-mocks#how-to-create-a-mock-component)
 - [Spectator: Mocking providers](https://github.com/ngneat/spectator#mocking-providers)
 </div>
@@ -6160,8 +6160,8 @@ The spec simulates typing in the search term into the search field. Then it simu
 Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
 
 <div class="book-sources" markdown="1">
-- [PhotoItemComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/photo-item)
-- [SearchFormComponent: Implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/search-form)
+- [PhotoItemComponent: implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/photo-item)
+- [SearchFormComponent: implementation code and the two tests](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/search-form)
 - [Spectator: Events API](https://github.com/ngneat/spectator#events-api)
 </div>
 
@@ -6467,7 +6467,7 @@ describe('CounterService', () => {
 ```
 
 <div class="book-sources" markdown="1">
-- [CounterService: Test code](https://github.com/9elements/angular-workshop/blob/main/src/app/services/counter.service.spec.ts)
+- [CounterService: test code](https://github.com/9elements/angular-workshop/blob/main/src/app/services/counter.service.spec.ts)
 </div>
 
 ### Testing a Service that sends HTTP requests
@@ -6541,7 +6541,7 @@ Our test will consist of the following steps:
 5. Verify that all requests have been answered
 
 <div class="book-sources" markdown="1">
-- [Angular guide:  Communicating with backend services using HTTP ](https://angular.io/guide/http)
+- [Angular guide: Communicating with backend services using HTTP ](https://angular.io/guide/http)
 - [Angular API reference: HttpClient](https://angular.io/api/common/http/HttpClient)
 - [Angular guide: Testing HTTP requests](https://angular.io/guide/http#testing-http-requests)
 - [Angular API reference: HttpClientTestingModule](https://angular.io/api/common/http/testing/HttpClientTestingModule)
@@ -9102,7 +9102,7 @@ This also applies to the other specs. If the element under test only appears onc
 All counter features are now tested. In the next chapters, we will refactor the code to improve its readability and maintainability.
 
 <div class="book-sources" markdown="1">
-- [Full code: counter.ts](https://github.com/9elements/angular-workshop/blob/main/cypress/integration/counter.ts)
+- [Counter E2E test code](https://github.com/9elements/angular-workshop/blob/main/cypress/integration/counter.ts)
 - [Cypress API reference: click](https://docs.cypress.io/api/commands/click.html)
 - [Cypress API reference: type](https://docs.cypress.io/api/commands/type.html)
 - [Cypress API reference: first](https://docs.cypress.io/api/commands/first.html)
@@ -9231,6 +9231,7 @@ describe('Counter (with helpers)', () => {
 Keep in mind that all these `first` calls are only necessary since there are multiple counters on the example page under test. If there is only one element with the given test id on the page, you do not need those `.first()` calls.
 
 <div class="book-sources" markdown="1">
+- [Counter E2E test with helpers](https://github.com/9elements/angular-workshop/blob/main/cypress/integration/counter-helpers.ts)
 - [Full code: commands.ts](https://github.com/9elements/angular-workshop/blob/main/cypress/support/commands.ts)
 - [Full code: index.d.ts](https://github.com/9elements/angular-workshop/blob/main/cypress/support/index.d.ts)
 - [Cypress documentation: Custom commands](https://docs.cypress.io/api/cypress-api/custom-commands.html)
@@ -9406,7 +9407,7 @@ This opens the test runner where we can click on the test `flickr-search.ts` to 
 Alternatively, you can start the development server (`ng serve`) in one shell and the test runner (`npx cypress open`) in a second shell.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search-starter.e2e-spec.ts](https://github.com/9elements/angular-flickr-search/blob/main/e2e/src/promise-manager/flickr-search.e2e-spec.ts)
+- [Flickr search E2E test code](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search.ts)
 - [Cypress API reference: clear](https://docs.cypress.io/api/commands/clear.html)
 - [Cypress API reference: each](https://docs.cypress.io/api/commands/each.html)
 - [jQuery API reference: attr](https://api.jquery.com/attr/)
@@ -9483,7 +9484,7 @@ The assertions `contain`, `text` and `exist` are defined by Chai-jQuery, an asse
 Congratulations, we have successfully tested the Flickr search! This example demonstrates several Cypress commands and assertions. We also caught a glimpse of Cypress internals.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search.ts](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search.ts)
+- [Flickr search E2E test code](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search.ts)
 - [Cypress documentation: Chai-jQuery assertions](https://docs.cypress.io/guides/references/assertions.html#Chai-jQuery)
 </div>
 
@@ -9643,8 +9644,8 @@ The goal of this refactoring is not brevity. Using page objects does not necessa
 You can use the page object pattern when you feel the need to tidy up complex, repetitive tests. Once you are familiar with the pattern, it also helps you to avoid writing such tests in the first place.
 
 <div class="book-sources" markdown="1">
-- [Full code: flickr-search-with-po.ts](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-with-po.ts)
-- [Full code: flickr-search.page.ts](https://github.com/9elements/angular-flickr-search/blob/main/cypress/pages/flickr-search.page.ts)
+- [Flickr search E2E test with page object](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-with-po.ts)
+- [Flickr search page object](https://github.com/9elements/angular-flickr-search/blob/main/cypress/pages/flickr-search.page.ts)
 </div>
 
 ### Faking the Flickr API
@@ -9786,8 +9787,8 @@ The `cy.server` and `cy.route` commands only supports intercepting XMLHttpReques
 In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.intercept` for comparison.
 
 <div class="book-sources" markdown="1">
-- [Full test with cy.server and cy.route](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-stub-network.ts)
-- [Full test with cy.intercept](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-stub-network-intercept.ts)
+- [Flickr search E2E test with cy.server and cy.route](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-stub-network.ts)
+- [Flickr search E2E test with cy.intercept](https://github.com/9elements/angular-flickr-search/blob/main/cypress/integration/flickr-search-stub-network-intercept.ts)
 - [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/main/src/app/spec-helpers/photo.spec-helper.ts)
 - [Cypress documentation: Network Requests](https://docs.cypress.io/guides/guides/network-requests.html)
 - [Cypress API reference: server](https://docs.cypress.io/api/commands/server.html)
