@@ -75,7 +75,7 @@ Does the site allow the user to complete their tasks? Is the site still function
 
 I believe the benefits of automated testing are easy to grasp. Developers want to sleep well and be confident that their application works correctly. Moreover, testing helps developers to write better software. Software that is more robust, better to understand and easier to maintain.
 
-In stark contrast, I have met only few web developers with a steady testing practice. Only few find it _easy_, let alone _enjoy_ writing tests. This task is seen as a chore or nuisance.
+In stark contrast, I have met only few web developers with a steady testing practice. Only few find it *easy*, let alone *enjoy* writing tests. This task is seen as a chore or nuisance.
 
 Often individual developers are blamed for the lack of tests. The claim that developers are just too ignorant or lazy to write tests is simplistic and downright toxic. If testing has an indisputable value, we need to examine why developers avoid it while being convinced of the benefits. Testing should be easy, straight-forward and commonplace.
 
@@ -115,9 +115,9 @@ Before we dive in, a quick note regarding the technical terms.
 
 Some words have a special meaning in the context of Angular. In the broader JavaScript context, they have plenty other meanings. This guide tries to distinguish these meanings by using a different letter case.
 
-When referring to core Angular concepts, this guide uses **upper case**: _Module, Component, Service, Input, Output, Directive, Pipe_, etc.
+When referring to core Angular concepts, this guide uses **upper case**: *Module, Component, Service, Input, Output, Directive, Pipe*, etc.
 
-When using these terms in the general sense, this guide uses **lower case**: _module, component, service, input, output_, etc.
+When using these terms in the general sense, this guide uses **lower case**: *module, component, service, input, output*, etc.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -167,11 +167,11 @@ The [International Software Testing Qualifications Board (ISTQB)](https://www.is
 
 <aside class="margin-note">Discover bugs</aside>
 
-The purpose of a test is to **discover bugs**. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that _this particular test setup_ did not trigger a bug. It does not prove that the code is correct and free of bugs.
+The purpose of a test is to **discover bugs**. If the test fails, it proves the presence of a bug (or the test is set up incorrectly). If the test passes, it proves that *this particular test setup* did not trigger a bug. It does not prove that the code is correct and free of bugs.
 
 <aside class="margin-note">Test high-risk cases</aside>
 
-So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “**Exhaustive testing is impossible**”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should _assess the risks_ of a certain case and write tests for high-risk cases first.
+So should you write automated tests for all possible cases to ensure correctness? No, say the ISTQB principles: “**Exhaustive testing is impossible**”. It is neither technically feasible nor worthwhile to write tests for all possible inputs and conditions. Instead, you should *assess the risks* of a certain case and write tests for high-risk cases first.
 
 Even if it was viable to cover all cases, it would give you a false sense of security. No software is without errors, and a fully tested software may still be a usability nightmare that does not satisfy its users.
 
@@ -262,7 +262,7 @@ We can distinguish automated tests by their perspective and proximity to the cod
 
 <aside class="margin-note">Simulate real usage</aside>
 
-Some tests have a _high-level, bird’s-eye view_ on the application. They simulate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. These tests make expectations about what the user sees and reads in the browser.
+Some tests have a *high-level, bird’s-eye view* on the application. They simulate a user interacting with the application: Navigating to an address, reading text, clicking on a link or button, filling out a form, moving the mouse or typing on the keyboard. These tests make expectations about what the user sees and reads in the browser.
 
 From the user’s perspective, it does not matter that your application is implemented in Angular. Technical details like the inner structure of your code are not relevant. There is no distinction between front-end and back-end, between parts of your code. The full experience is tested.
 
@@ -272,11 +272,11 @@ These tests are called **end-to-end (E2E) tests** since they integrate all parts
 
 #### Unit tests
 
-Other tests have a _low-level, worm’s-eye view_ on the application. They pick a small piece of code and put it through its paces. From this perspective, implementation details matter. The developer needs to set up an appropriate testing environment to trigger all relevant cases.
+Other tests have a *low-level, worm’s-eye view* on the application. They pick a small piece of code and put it through its paces. From this perspective, implementation details matter. The developer needs to set up an appropriate testing environment to trigger all relevant cases.
 
 <aside class="margin-note">Isolate one piece</aside>
 
-The shortsighted worm only sees what is directly in front. This perspective tries to cut off the ties of the code under test with its dependencies. It tries to _isolate_ the code in order to examine it.
+The shortsighted worm only sees what is directly in front. This perspective tries to cut off the ties of the code under test with its dependencies. It tries to *isolate* the code in order to examine it.
 
 <aside class="margin-note">Unit tests</aside>
 
@@ -286,11 +286,11 @@ These tests are called **unit tests**. A unit is a small piece of code that is r
 
 <aside class="margin-note">Cohesive groups</aside>
 
-Between these two extreme perspectives, there are tests that operate on specific parts of the code, but test cohesive groups. They prescind from implementation details and try to take the user’s perspective.
+Between these two extreme perspectives, there are tests that operate on specific parts of the code, but test *cohesive groups*. They prescind from implementation details and try to take the user’s perspective.
 
 <aside class="margin-note">Integration tests</aside>
 
-These tests are called **integration tests** since they test how well the parts _integrate_ into the group. For example, all parts of one feature may be tested together. An integration test proves that the parts work together properly.
+These tests are called **integration tests** since they test how well the parts *integrate* into the group. For example, all parts of one feature may be tested together. An integration test proves that the parts work together properly.
 
 ### Distribution of testing efforts
 
@@ -304,13 +304,11 @@ What is indisputable is that high-level tests like end-to-end tests are expensiv
 
 <aside class="margin-note">Reliability</aside>
 
-End-to-end tests are brittle, meaning they often fail even though the software is without fault. Sometimes they fail for no apparent reason. When you run the same tests again, they suddenly pass. Even if the test correctly fails, it is hard to find the root cause of the problem. You need to wander through the full stack to locate the bug.
+Because of their inherent complexity, end-to-end tests tend to be unreliable. They often fail even though the software is without fault. Sometimes they fail for no apparent reason. When you run the same tests again, they suddenly pass. Even if the test correctly fails, it is hard to find the root cause of the problem. You need to wander through the full stack to locate the bug.
 
 <aside class="margin-note">Setup costs</aside>
 
 End-to-end test use a real browser and run against the full software stack. Therefore the testing setup is immense. You need to deploy front-end, back-end, databases, caches, etc. to testing machines and then have machines to run the end-to-end tests.
-
-Several commercial tools try to make end-to-end tests easier, faster and more robust. Since end-to-end tests are unreliable because of the inherent complexity, these tools try to reduce complexity at the expense of flexibility. For example, they remote-control one possible browser instead of all browsers that support a generic automation protocol.
 
 In comparison, integration tests are simpler and unit tests even more so. Since they have less moving parts and fewer dependencies, they run faster and the results are reproducible. The setup is relatively simple. Integration and unit tests typically run on one machine with a build of the code under test.
 
@@ -565,7 +563,7 @@ We know from experience that code that is easy to test is also simpler, better s
 
 ### Dependency injection and faking
 
-A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an _injector_ that sits on top.
+A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an *injector* that sits on top.
 
 This division of work decouples an application part from its dependencies: One part does not need to know how to set up a dependency, let alone the dependency’s dependencies and so forth.
 
@@ -578,7 +576,7 @@ Dependency injection turns tight coupling into loose coupling. A certain applica
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
 - We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](#integration-tests) that includes direct and indirect dependencies.
-- Or we provide a **fake** implementation that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in _isolation_.
+- Or we provide a **fake** implementation that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in *n*.
 
 A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and reconnect it with equivalent fake objects.
 
@@ -592,7 +590,7 @@ Angular provides solid testing tools out of the box. When you create an Angular 
 
 <aside class="margin-note">Balanced defaults</aside>
 
-The Angular team already made decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code are bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
+The Angular team already made decisions for you: [Jasmine](https://jasmine.github.io/) as testing framework, [Karma](https://karma-runner.github.io/) as test runner as well as [Protractor](https://www.protractortest.org/) for running end-to-end tests. Implementation and test code is bundled with [Webpack](https://webpack.js.org). Application parts are typically tested inside Angular’s [TestBed](https://angular.io/api/core/testing/TestBed).
 
 This setup is a trade-off with strengths and weaknesses. Since it is just one possible way to test Angular applications, you can compile your own testing tool chain.
 
@@ -850,7 +848,7 @@ describe('Suite description', () => {
 });
 ```
 
-Each suite _describes_ a piece of code, the _code under test_.
+Each suite *describes* a piece of code, the *code under test*.
 
 <aside class="margin-note" markdown="1">
   `describe`: Suite
@@ -888,7 +886,7 @@ Nested `describe` blocks add a human-readable description to a group of specs. T
   `it`: Spec
 </aside>
 
-Each suit consists of one of more _specifications_, or short, **specs**. A spec is declared with an `it` block:
+Each suit consists of one of more *specifications*, or short, **specs**. A spec is declared with an `it` block:
 
 ```typescript
 describe('Suite description', () => {
@@ -907,7 +905,7 @@ The pronoun `it` refers to the code under test. `it` should be the subject of a 
 
 One goal of BDD is to describe software behavior in a natural language – in this case, English. Every stakeholder should be able to read the `it` sentences and understand how the code is supposed to behave. Team members without JavaScript knowledge should be able to add more requirements by forming `it does something` sentences.
 
-Ask yourself, what does the code under test do? For example, in case of a `CounterComponent`, _it_ increments the counter value. And _it_ resets the counter to a specific value. So you could write:
+Ask yourself, what does the code under test do? For example, in case of a `CounterComponent`, *it* increments the counter value. And *it* resets the counter to a specific value. So you could write:
 
 ```typescript
 it('increments the count', () => {
@@ -922,7 +920,7 @@ After `it`, typically a verb follows, like `increments` and `resets` in the exam
 
 <aside class="margin-note">No “should”</aside>
 
-Some people prefer to write `it('should increment the count', /* … */)`, but `should` bears no additional meaning. The nature of a spec is to state what the code under test _should_ do. The word “should” is redundant and just makes the sentence longer. This guide recommends to simply state what the code does.
+Some people prefer to write `it('should increment the count', /* … */)`, but `should` bears no additional meaning. The nature of a spec is to state what the code under test *should* do. The word “should” is redundant and just makes the sentence longer. This guide recommends to simply state what the code does.
 
 <div class="book-sources" markdown="1">
 - [Jasmine tutorial: Your first suite](https://jasmine.github.io/tutorials/your_first_suite)
@@ -959,17 +957,17 @@ How could the structure of the spec `it('resets the count', /* … */)` for the 
 
 This structure makes it easier to come up with a test and also to implement it. Ask yourself:
 
-- What is the necessary setup? Which dependencies do I need to provide? How do they behave? (Arrange)
-- What is the user input or API call that triggers the behavior I would like to test? (Act)
-- What is the expected behavior? How do I prove that the behavior is correct? (Assert)
+- What is the necessary setup? Which dependencies do I need to provide? How do they behave? (*Arrange*)
+- What is the user input or API call that triggers the behavior I would like to test? (*Act*)
+- What is the expected behavior? How do I prove that the behavior is correct? (*Assert*)
 
 <aside class="margin-note">Given, When, Then</aside>
 
-In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and pose a natural way to think of a test’s structure: “_Given_ these conditions, _when_ the user interacts with the application, _then_ it behaves in a certain way.”
+In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and pose a natural way to think of a test’s structure: “*Given* these conditions, *when* the user interacts with the application, *then* it behaves in a certain way.”
 
 ### Expectations
 
-In the _Assert_ phase, the test compares the actual output or return value to the expected output or return value. If they are the same, the test passes. If they differ, the test fails.
+In the *Assert* phase, the test compares the actual output or return value to the expected output or return value. If they are the same, the test passes. If they differ, the test fails.
 
 Let us examine a simple contrived example, an `add` function:
 
@@ -1032,7 +1030,7 @@ The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Dri
 
 ### Efficient test suites
 
-When writing multiple specs in one suite, you quickly realize that the _Arrange_ phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the _Arrange_ phase always consists of creating an instance of the class and rendering the Component into the document.
+When writing multiple specs in one suite, you quickly realize that the *Arrange* phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the *Arrange* phase always consists of creating an instance of the class and rendering the Component into the document.
 
 <aside class="margin-note">Repetitive setup</aside>
 
@@ -1078,7 +1076,7 @@ Called after each spec is run
 Called after all specs are run
 ```
 
-Most tests we are going to write will have a `beforeEach` block to host the _Arrange_ code.
+Most tests we are going to write will have a `beforeEach` block to host the *Arrange* code.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -1088,7 +1086,7 @@ When testing a piece of code, you need to decide between an [integration test](#
 
 <aside class="margin-note">Also known as mocking</aside>
 
-These replacements are also called _test doubles_, _stubs_ or _mocks_. Replacing a dependency is called _stubbing_ or _mocking_.
+These replacements are also called *test doubles*, *stubs* or *mocks*. Replacing a dependency is called *stubbing* or *mocking*.
 
 Since these terms are used inconsistently and their difference is subtle, **this guide uses the term “fake” and “faking”** for any dependency substitution.
 
@@ -1122,7 +1120,7 @@ Then, TypeScript assures the equivalence. The compiler reminds us to update the 
 
 ### Effective faking
 
-The original dependency code has side effects that need to be suppressed during testing. The fake needs to _effectively_ prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
+The original dependency code has side effects that need to be suppressed during testing. The fake needs to *effectively* prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
 
 <aside class="margin-note">Do not mix fake and original</aside>
 
@@ -1244,7 +1242,7 @@ it('gets the to-dos', async () => {
 });
 ```
 
-The spec starts with _Arrange_ code:
+The spec starts with *Arrange* code:
 
 ```typescript
 // Arrange
@@ -1259,7 +1257,7 @@ Here, we create a spy. With `.and.returnValue(…)`, we set a fixed return value
 
 We also create an instance of `TodoService`, the class under test. We pass the spy into the constructor. This is a form of manual dependency injection.
 
-In the _Act_ phase, we call the method under test:
+In the *Act* phase, we call the method under test:
 
 ```typescript
 const actualTodos = await todoService.getTodos();
@@ -1267,7 +1265,7 @@ const actualTodos = await todoService.getTodos();
 
 `getTodos` returns a Promise. We use an `async` function together with `await` to access the return value easily. Jasmine deals with async functions just fine and waits for them to complete.
 
-In the _Assert_ phase, we create two expectations:
+In the *Assert* phase, we create two expectations:
 
 ```typescript
 expect(actualTodos).toEqual(todos);
@@ -1286,7 +1284,7 @@ Both expectations are necessary to guarantee that `getTodos` works correctly.
 
 <aside class="margin-note">Happy and unhappy paths</aside>
 
-After having written the first spec for `getTodos`, we need to ask ourselves: Does the test fully cover its behavior? We have tested the success case, also called _happy path_, but the error case, also called _unhappy path_, is yet to be tested. In particular, this error handling code:
+After having written the first spec for `getTodos`, we need to ask ourselves: Does the test fully cover its behavior? We have tested the success case, also called *happy path*, but the error case, also called *unhappy path*, is yet to be tested. In particular, this error handling code:
 
 ```typescript
 if (!response.ok) {
@@ -1335,13 +1333,13 @@ describe('TodoService', () => {
 });
 ```
 
-In the _Arrange_ phase, we inject a spy that returns the error response.
+In the *Arrange* phase, we inject a spy that returns the error response.
 
 <aside class="margin-note">Catching errors</aside>
 
-In the _Act_ phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the error. Most likely, this is how implementation code would handle the error.
+In the *Act* phase, we call the method under test but anticipate that it throws an error. In Jasmine, there are several ways to test whether a Promise has been rejected with an error. The example above wraps the `getTodos` call in a `try/catch` statement and saves the error. Most likely, this is how implementation code would handle the error.
 
-In the _Assert_ phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
+In the *Assert* phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
 Again, this is a plain TypeScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
 
@@ -1440,7 +1438,7 @@ The good news is that you can apply familiar debugging techniques to tests as we
 
 ### Test focus
 
-Some tests require an extensive _Arrange_ phase, the _Act_ phase calls several methods or simulates complex user input. These tests are hard to debug.
+Some tests require an extensive *Arrange* phase, the *Act* phase calls several methods or simulates complex user input. These tests are hard to debug.
 
 <aside class="margin-note">Isolate the problem</aside>
 
@@ -1884,7 +1882,7 @@ it('increments the count', () => {
 });
 ```
 
-The **Arrange, Act and Assert** structure helps us to structure the spec. We have already covered the _Arrange_ phase in the `beforeEach` blocks that render the Component. In the _Act_ phase, we click on the increment button. In the _Assert_ phase, we check that the displayed count has incremented.
+The **Arrange, Act and Assert** structure helps us to structure the spec. We have already covered the *Arrange* phase in the `beforeEach` blocks that render the Component. In the *Act* phase, we click on the increment button. In the *Assert* phase, we check that the displayed count has incremented.
 
 ```typescript
 it('increments the count', () => {
@@ -2003,7 +2001,7 @@ This is fine as long as the event handler is registered on the element itself. I
 
 ### Expecting text output
 
-We have completed the _Act_ phase in which the test clicks on the increment button. In the _Assert_ phase, we need to expect that the displayed count changes from “0” to “1”.
+We have completed the *Act* phase in which the test clicks on the increment button. In the *Assert* phase, we need to expect that the displayed count changes from “0” to “1”.
 
 In the template, the count is rendered into a `strong` element:
 
@@ -2311,7 +2309,7 @@ resetInputEl.value = '123';
 
 This fills in the value programmatically.
 
-In `CounterComponent`’s template, the reset input has a _template reference variable_, `#resetInput`:
+In `CounterComponent`’s template, the reset input has a *template reference variable*, `#resetInput`:
 
 ```html
 <input type="number" #resetInput data-testid="reset-input" />
@@ -2444,7 +2442,7 @@ For example, if we set `startCount` to `123`, the rendered count needs to be `12
 
 <aside class="margin-note">Set Input value</aside>
 
-An Input is a special property of the Component instance. We can set this property in the _Arrange_ phase.
+An Input is a special property of the Component instance. We can set this property in the *Arrange* phase.
 
 ```typescript
 const component = fixture.componentInstance;
@@ -2557,7 +2555,7 @@ it('emits countChange events', () => {
 });
 ```
 
-Within the spec, we access the Output via `fixture.componentInstance.countChange`. In the _Arrange_ phase, we subscribe to the `EventEmitter`.
+Within the spec, we access the Output via `fixture.componentInstance.countChange`. In the *Arrange* phase, we subscribe to the `EventEmitter`.
 
 ```typescript
 it('emits countChange events on increment', () => {
@@ -2568,7 +2566,7 @@ it('emits countChange events on increment', () => {
 });
 ```
 
-We need to verify that the observer function is called with the right value when the increment button is clicked. In the _Act_ phase, we click on the button using our helper function:
+We need to verify that the observer function is called with the right value when the increment button is clicked. In the *Act* phase, we click on the button using our helper function:
 
 ```typescript
 it('emits countChange events on increment', () => {
@@ -2584,7 +2582,7 @@ it('emits countChange events on increment', () => {
 
 <aside class="margin-note">Change variable value</aside>
 
-In the _Assert_ phase, we expect that `count` has the correct value. The easiest way is to declare a variable in the spec scope. Let us name it `actualCount`. Initially, it is `undefined`. The observer function sets a value – or not, if it is never called.
+In the *Assert* phase, we expect that `count` has the correct value. The easiest way is to declare a variable in the spec scope. Let us name it `actualCount`. Initially, it is `undefined`. The observer function sets a value – or not, if it is never called.
 
 ```typescript
 it('emits countChange events on increment', () => {
@@ -2921,7 +2919,7 @@ describe('HomeComponent', () => {
 
 <aside class="margin-note">Smoke test</aside>
 
-This suite has one spec that acts as a _smoke test_. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
+This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
 
 From Angular 9 on, the spec passes but produces a bunch of warnings on the shell:
 
@@ -3077,8 +3075,8 @@ it('listens for count changes', () => {
 
 The spec needs to do two things:
 
-1. _Act:_ Find the child Component and let the `countChange` Output emit a value.
-2. _Assert:_ Check that `console.log` has been called.
+1. *Act:* Find the child Component and let the `countChange` Output emit a value.
+2. *Assert:* Check that `console.log` has been called.
 
 As mentioned, from the parent’s viewpoint, `countChange` is simply an event. Shallow rendering means there is no `CounterComponent` instance and no `EventEmitter` named `countChange`. Angular only sees an element, `app-counter`, with an event handler, `(countChange)="handleCountChange($event)"`.
 
@@ -3110,7 +3108,7 @@ How do we verify that `console.log` has been called? We can [spy on existing met
 spyOn(console, 'log');
 ```
 
-This overwrites `console.log` with a spy for the duration of the test run. We need to set up the spy in the _Arrange_ phase, at the beginning of our spec.
+This overwrites `console.log` with a spy for the duration of the test run. We need to set up the spy in the *Arrange* phase, at the beginning of our spec.
 
 ```typescript
 it('listens for count changes', () => {
@@ -3122,7 +3120,7 @@ it('listens for count changes', () => {
 });
 ```
 
-In the _Assert_ phase, we expect that the spy has been called with a certain text and the number the Output has emitted.
+In the *Assert* phase, we expect that the spy has been called with a certain text and the number the Output has emitted.
 
 ```typescript
 it('listens for count changes', () => {
@@ -3175,7 +3173,7 @@ However, the unit test gives little confidence that `HomeComponent` works in pro
 
 ### Faking a child Component
 
-There is a middle ground between a naive unit test and an integration test. Instead of working with empty custom elements, we can render _fake_ child Components.
+There is a middle ground between a naive unit test and an integration test. Instead of working with empty custom elements, we can render *fake* child Components.
 
 A fake Component has the same selector, Inputs and Outputs, but has no dependencies and does not have to render anything. When testing a Component with children, we substitute the children for fake Components.
 
@@ -3751,7 +3749,7 @@ The code above creates an object with four methods, all of them being spies. The
 
 `createSpyObj` accepts a [TypeScript type variable](https://www.typescriptlang.org/docs/handbook/generics.html) to declare the type of the created object. We pass `CounterService` between angle brackets so TypeScript checks that the fake matches the original.
 
-Let us put our fake to work. In the _Arrange_ phase, the fake is created and injected into the testing Module.
+Let us put our fake to work. In the *Arrange* phase, the fake is created and injected into the testing Module.
 
 ```typescript
 describe('ServiceCounterComponent: unit test', () => {
@@ -3805,13 +3803,13 @@ This is the crucial moment where we tell Angular: For the `CounterService` depen
 
 In this setup, Angular instantiates and injects a `CounterService` instance whenever a Component, Service, etc. asks for the `CounterService`. By using `{ provide: …, useValue: … }`, we skip the instantiation and directly provide the value to inject.
 
-The _Arrange_ phase is complete now, let us write the actual specs.
+The *Arrange* phase is complete now, let us write the actual specs.
 
-The _Act_ phase is the same as in the other counter Component tests: We click on buttons and fill out form fields.
+The *Act* phase is the same as in the other counter Component tests: We click on buttons and fill out form fields.
 
 <aside class="margin-note">Verify spies</aside>
 
-In the _Assert_ phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith`, etc.
+In the *Assert* phase, we need to verify that the Service methods have been called. Thanks to `jasmine.createSpyObj`, all methods of `fakeCounterService` are spies. We use `expect` together with an appropriate matcher like `toHaveBeenCalled`, `toHaveBeenCalledWith`, etc.
 
 ```typescript
 expect(fakeCounterService.getCount).toHaveBeenCalled();
@@ -4052,7 +4050,7 @@ Creating fake Service dependencies and verifying their usage is probably the mos
 
 <aside class="margin-note">Testable Services</aside>
 
-Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice teaches you to write _simple Services that are easy to fake_: Services with a clear API and an obvious purpose.
+Faking Services requires effort and steady practice. The more unit tests you write, the more experience you gain. More importantly, the practice teaches you to write *simple Services that are easy to fake*: Services with a clear API and an obvious purpose.
 
 Unfortunately, there are no best practices when it comes to faking Services. You will find plenty of approaches online that have their strengths and weaknesses. The associated unit tests have different degrees of accuracy and completeness.
 
@@ -4725,7 +4723,7 @@ it('submits the form successfully', fakeAsync(async () => {
 }));
 ```
 
-Because we are testing DOM changes, we have to call `detectChanges` after each Act phase.
+Because we are testing DOM changes, we have to call `detectChanges` after each *Act* phase.
 
 <div class="book-sources" markdown="1">
 - [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
@@ -4885,7 +4883,7 @@ const markFieldAsTouched = (element: DebugElement) => {
 };
 ```
 
-We can now write the Arrange and Act phases of the spec:
+We can now write the *Arrange* and *Act* phases of the spec:
 
 ```typescript
 it('marks fields as required', async () => {
@@ -4907,7 +4905,7 @@ A `forEach` loop walks through the required field test ids, finds the element an
   `aria-required`
 </aside>
 
-Next, the Assert phase. Again we walk through the required fields to examine each one of them. Let us start with the `aria-required` attribute.
+Next, the *Assert* phase. Again we walk through the required fields to examine each one of them. Let us start with the `aria-required` attribute.
 
 ```typescript
 requiredFields.forEach((testId) => {
@@ -6000,7 +5998,7 @@ describe('FlickrSearchComponent with spectator', () => {
 
 Note that `searchForm`, `photoList` and `fullPhoto` are typed as Component instances, not `DebugElement`s. This is accurate because the fakes have the same public interfaces, the same Inputs and Output.
 
-Due to the equivalence of fake and original, we can access Inputs with the pattern _`componentInstance.input`_. And we let an Output emit with the pattern _`componentInstance.output.emit(…)`_.
+Due to the equivalence of fake and original, we can access Inputs with the pattern *`componentInstance.input`*. And we let an Output emit with the pattern *`componentInstance.output.emit(…)`*.
 
 The first spec checks the initial state:
 
@@ -6259,7 +6257,7 @@ describe('CounterService', () => {
   Instantiate without `TestBed`
 </aside>
 
-In the _Arrange_ phase, each spec needs to create an instance of `CounterService`. The simplest way to do that is:
+In the *Arrange* phase, each spec needs to create an instance of `CounterService`. The simplest way to do that is:
 
 ```typescript
 const counterService = new CounterService();
@@ -6351,7 +6349,7 @@ it('resets the count',, () => {
 
 <aside class="margin-note">Repeating patterns</aside>
 
-We quickly notice that the specs are highly repetitive and noisy. In every spec’s _Assert_ phase, we are using this pattern to inspect the Service state:
+We quickly notice that the specs are highly repetitive and noisy. In every spec’s *Assert* phase, we are using this pattern to inspect the Service state:
 
 ```typescript
 let actualCount: number | undefined;
@@ -6677,7 +6675,7 @@ The `expect` call is outside of the `next` callback function to ensure it is def
 
 #### Verify that all requests have been answered
 
-In the last step, we ensure that there are no pending requests left. We expect the method under test to make _one_ request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
+In the last step, we ensure that there are no pending requests left. We expect the method under test to make *one* request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
 
 Finally, we call:
 
@@ -6734,7 +6732,7 @@ Are we done with testing `searchPublicPhotos`? We have tested the success case i
 
 <aside class="margin-note">Unhappy path</aside>
 
-`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the _unhappy path_ should be tested.
+`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the *unhappy path* should be tested.
 
 Let us simulate a “500 Internal Server Error”. Instead of responding to the request with `flush`, we let it fail by calling `error`.
 
@@ -6992,7 +6990,7 @@ Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. Th
 
 <aside class="margin-note">Pure Pipes</aside>
 
-Most Pipes are _pure_, meaning they merely take a value and compute a new value. They do not have _side effects_: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
+Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
 ### GreetPipe
 
@@ -7226,7 +7224,7 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 
 <aside class="margin-note">Async translation</aside>
 
-The `TranslatePipe` is _impure_ because the translations are loaded asynchronously. When called the first time, the `transform` method cannot return the correct translation synchronously. It calls the `TranslateService`’s `get` method which returns an Observable.
+The `TranslatePipe` is *impure* because the translations are loaded asynchronously. When called the first time, the `transform` method cannot return the correct translation synchronously. It calls the `TranslateService`’s `get` method which returns an Observable.
 
 <aside class="margin-note">Trigger change detection</aside>
 
@@ -7374,7 +7372,7 @@ it('translates the key, async service response', fakeAsync(() => {
 
 <aside class="margin-note">Delay Observable</aside>
 
-We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is _some_ delay greater or equal 1.
+We still use `of`, but we delay the output by 100 milliseconds. The exact number does not matter as long as there is *some* delay greater or equal 1.
 
 Now, we can call `detectChanges` for the first time.
 
@@ -7439,7 +7437,7 @@ it('translates a changed key', /* … */);
 it('updates on translation change', /* … */);
 ```
 
-The `TranslatePipe` receives the translation asynchronously and stores both the key and the translation. When Angular calls `transform` with the *same key* again, the Pipe returns the translation synchronously. Since the `TranslatePipe` is marked as _impure_, Angular does not cache the `transform` result.
+The `TranslatePipe` receives the translation asynchronously and stores both the key and the translation. When Angular calls `transform` with the *same key* again, the Pipe returns the translation synchronously. Since the `TranslatePipe` is marked as *impure*, Angular does not cache the `transform` result.
 
 <aside class="margin-note">Different key and translation</aside>
 
@@ -7822,7 +7820,7 @@ The simplest use of the Directive looks like this:
 
 This is similar to the `NgFor` directive. Assuming that `items` is an array of numbers (`[1, 2, 3, …]`), the example above renders the first 10 numbers in the array.
 
-The asterisk syntax `*appPaginate` and the so-called _microsyntax_ `let item of items` is _syntactic sugar_. This is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
+The asterisk syntax `*appPaginate` and the so-called *microsyntax* `let item of items` is *syntactic sugar*. This is a shorter and nicer way to write something complex. Internally, Angular translates the code to the following:
 
 ```html
 <ng-template appPaginate let-item [appPaginateOf]="items">
@@ -7929,7 +7927,7 @@ This is how the controls template could look like:
 
 <aside class="margin-note">Context object</aside>
 
-The Directive renders the controls template with a _context_ object that implements the following TypeScript interface:
+The Directive renders the controls template with a *context* object that implements the following TypeScript interface:
 
 ```typescript
 interface ControlsContext {
@@ -8368,7 +8366,7 @@ Should we write tests for Modules at all? If there is a reference error in the M
 
 <aside class="margin-note">Smoke test</aside>
 
-There are certain Module errors that only surface during runtime. These can be caught with a _smoke test_. Given this Module:
+There are certain Module errors that only surface during runtime. These can be caught with a *smoke test*. Given this Module:
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -8503,7 +8501,7 @@ We have successfully written unit and integration tests using Karma, Jasmine and
 
 Karma and Jasmine tests take a technical perspective. They focus on the front-end JavaScript code alone and run it in a controlled and isolated test environment. What is really important though is whether the whole application works **for the user**.
 
-The most effective and reliable way to ensure a working application is _manual testing_: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
+The most effective and reliable way to ensure a working application is *manual testing*: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
 
 Manual tests are slow, labor-intensive and cannot be repeated often. They are unspecific from a developer perspective: If the test fails, we cannot easily pin down what part of the application is responsible or what code change causes the regression.
 
@@ -8578,8 +8576,8 @@ Not all frameworks build on WebDriver. Some frameworks integrate more directly i
 
 In this guide, we will learn about two frameworks, one of each category:
 
-- _Protractor_, which is based on WebDriver,
-- _Cypress_, which does not use WebDriver.
+- *Protractor*, which is based on WebDriver,
+- *Cypress*, which does not use WebDriver.
 
 <div class="book-sources" markdown="1">
 - [WebDriver protocol](https://www.w3.org/TR/webdriver/)
@@ -8607,7 +8605,7 @@ First of all, Protractor is practically unmaintained. The future of the project 
 
 Second, the project underwent fundamental changes that curtail its usability.
 
-Protractor has a feature called _WebDriver control flow_. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if the code was synchronous.
+Protractor has a feature called *WebDriver control flow*. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if the code was synchronous.
 
 The control flow implementation has lead to inconsistencies and bugs. The underlying WebDriverJS library removed the feature, so Protractor deprecated it as well. Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests.
 
@@ -9851,9 +9849,9 @@ All example applications are repositories on GitHub:
 
 ## References
 
-- [_Angular_](https://angular-buch.com/), Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen. dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
-- [_Testing Angular Applications_](https://www.manning.com/books/testing-angular-applications), Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
-- _[JavaScript Testing Recipes](https://shop.jcoglan.com/javascript-testing-recipes/)_, James Coglan, 2016.
+- *[Angular](https://angular-buch.com/)*, Second Edition, Ferdinand Malcher, Johannes Hoppe, Danny Koppenhagen. dpunkt.verlag, 2019. ISBN 978-3-86490-646-6
+- *[Testing Angular Applications](https://www.manning.com/books/testing-angular-applications)*, Jesse Palmer, Corinna Cohn, Mike Giambalvo, Craig Nishina. Manning Publications, 2018. ISBN 978-1-61729-364-1
+- *[JavaScript Testing Recipes](https://shop.jcoglan.com/javascript-testing-recipes/)*, James Coglan, 2016.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 

@@ -594,15 +594,32 @@ $margin-note-outer-width: $margin-note-inner-width + $margin-note-gap;
 $margin-note-breakpoint: $toc-width + $main-max-width + (2 * $margin-note-outer-width);
 
 .margin-note {
-  display: none;
+  display: block;
+  margin: 0 0 1rem 0;
+  font-size: 80%;
+  line-height: 2;
+  font-variant: small-caps;
+  text-align: center;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  word-spacing: 1px;
+  page-break-after: avoid;
 
   @media screen and (min-width: $margin-note-breakpoint) {
-    display: block;
     float: left;
     width: $margin-note-inner-width;
     margin-left: -$margin-note-outer-width;
-    margin-top: 0.4rem;
+    margin-top: 0.3rem;
+    line-height: 1.6;
+    font-variant: normal;
     text-align: right;
-    font-size: 80%;
+    text-transform: none;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+  }
+
+  p {
+    margin: 0;
+    line-height: inherit;
   }
 }
