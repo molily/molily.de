@@ -4102,7 +4102,7 @@ In reality, Services are more complex and Components process the data they recei
 
 ### Faking Services: Summary
 
-Creating fake Service dependencies and verifying their usage is probably the most challenging problem when testing Angular applications. This guide can only catch a glimpse on the subject.
+Creating fake Service dependencies and verifying their usage is one of the most challenging problems when testing Angular applications. This guide can only catch a glimpse on the subject.
 
 <aside class="margin-note">Testable Services</aside>
 
@@ -4129,7 +4129,7 @@ There are two guidelines that may help you:
 
 Forms are the powerhouses of large web applications. Especially enterprise applications revolve around entering and editing data via forms. Therefore, implementing complex forms is a vital feature of the Angular framework.
 
-We have already learned how to [fill out form fields](#filling-out-forms) when testing the Counter Component. In doing so, we developed the `setFieldValue` testing helper.
+We have already learned how to [fill out form fields](#filling-out-forms) when testing the counter Component. In doing so, we developed the `setFieldValue` testing helper.
 
 The simple forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and submitting the form. Now we will look at a more complex example.
 
@@ -4185,13 +4185,15 @@ With 12 form controls, the sign-up form is not particularly large. But there are
 
 The form logic lies in the [`SignupFormComponent`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.ts). The Component depends on the [`SignupService`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts) for communicating with the back-end service.
 
-You might remember that there are two fundamental approaches to forms in Angular: *Template-driven Forms* and *Reactive Forms*. While they look quite different in practice, they are based on the same concepts under the hood: Form groups (`FormGroup` objects) and form controls (`FormControl` objects).
+You might remember that there are two fundamental approaches to forms in Angular: *Template-driven Forms* and *Reactive Forms*.
+
+While both approaches look quite different in practice, they are based on the same underlying concepts: Form groups (`FormGroup` objects) and form controls (`FormControl` objects).
 
 <aside class="margin-note">Reactive Form</aside>
 
 The `SignupFormComponent` is a **Reactive Form** that explictly creates the groups and controls in the Component class. This way, it is easier to specify custom validators and to set up dynamic field relations.
 
-As with other Angular core concepts, this guide assumes you have a basic understanding about Reactive Forms. Please refer to the [official guide on Reactive Forms](https://angular.io/guide/reactive-forms) to brush up your knowledge.
+As with other Angular core concepts, this guide assumes you have a basic understanding of Reactive Forms. Please refer to the [official guide on Reactive Forms](https://angular.io/guide/reactive-forms) to brush up your knowledge.
 
 The important bits of the `SignupFormComponent` class are:
 
@@ -4260,7 +4262,7 @@ password: [
 ],
 ```
 
-The [Component template](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.html) uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively.
+The [`SignupFormComponent` template](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.html) uses the `formGroup`, `formGroupName` and `formControlName` directives to associate elements with a form group or control, respectively.
 
 The stripped-down form structure with only one control looks like this:
 
@@ -4325,13 +4327,13 @@ const {
 } = Validators;
 ```
 
-These validators take the control value, a string most of the time, and return a `ValidationErrors` object with error messages. The validation happens synchronously on the client.
+These validators take the control value, a string most of the time, and return a `ValidationErrors` object with potential error messages. The validation happens synchronously on the client.
 
 <aside class="margin-note">Async validators</aside>
 
 For the username, the email and the password, there are custom asynchronous validators. They check whether the username and email are available and whether the password is strong enough.
 
-The asynchronous validators use the `SignupService` to talk to the (fake) back-end service. These HTTP requests turn the validation asynchronous.
+The asynchronous validators use the `SignupService` to talk to the back-end service. These HTTP requests turn the validation asynchronous.
 
 <aside class="margin-note">Error rendering</aside>
 
@@ -4702,7 +4704,7 @@ Instead, we are going to use Angular’s `fakeAsync` and `tick` functions to *si
 
 Inside the time warp created by `fakeAsync`, we use the `tick` function to simulate the passage of time. The scheduled tasks are executed and we can test their effect.
 
-The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if one minute passes in the simulation, the spec still completes in a few milliseconds.
+The specialty of `fakeAsync` and `tick` is that the passage of time is only virtual. Even if one second passes in the simulation, the spec still completes in a few milliseconds.
 
 `fakeAsync` wraps the spec function which is also an `async` function due to the `setup` call. After filling out the form, we simulate the waiting with `tick(1000)`.
 
@@ -4723,7 +4725,7 @@ it('submits the form successfully', fakeAsync(async () => {
 
 This spec passes! Now we should add some expectations to test the details.
 
-First, we expect the asynchronous validators to call the `SignupService` methods correctly. These are `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
+First, we expect the asynchronous validators to call the `SignupService` methods with the user input. The methods are `isUsernameTaken`, `isEmailTaken` and `getPasswordStrength`.
 
 ```typescript
 it('submits the form successfully', fakeAsync(async () => {
@@ -4830,10 +4832,10 @@ Despite correct input, the submission may fail for several reasons:
 
 When the user submits the form, the Component under tests calls the `SignupService`’s `signup` method.
 
-- In the *success case*, the `signup` method returns an Observable that emits the “next” value `{ success: true }` and completes. The sign-up form displays a status message “Sign-up successful!”.
+- In the *success case*, the `signup` method returns an Observable that emits the “next” value `{ success: true }` and completes. The form displays a status message “Sign-up successful!”.
 - In the *error case*, the Observable fails with an error. The form displays a status message “Sign-up error”.
 
-Let us test the latter case in a new spec. The structure resembles the spec for the successful submission. But we configure the fake `signup` method to returns an Observable that fails with an error.
+Let us test the latter case in a new spec. The structure resembles the spec for the successful submission. But we configure the fake `signup` method to return an Observable that fails with an error.
 
 ```typescript
 it('handles signup failure', fakeAsync(async () => {
@@ -8798,7 +8800,7 @@ describe('… Feature description …', () => {
 });
 ```
 
-### Testing the Counter Component
+### Testing the counter Component
 
 Step by step, we are going to write end-to-end tests for the counter example application.
 
@@ -8817,7 +8819,7 @@ See the counter Component app in action
 </p>
 </script>
 
-As a start, let us write a minimal test that checks the document title. In the Counter repository, we create a file called `cypress/integration/counter.ts`. It looks like this:
+As a start, let us write a minimal test that checks the document title. In the project directory, we create a file called `cypress/integration/counter.ts`. It looks like this:
 
 ```typescript
 describe('Counter', () => {
