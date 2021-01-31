@@ -2931,6 +2931,8 @@ An **integration test of `HomeComponent`** renders the child Components. The hos
 
 We need to decide in what level of detail we test the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
 
+<aside class="margin-note">Unit test</aside>
+
 Let us write a unit test for `HomeComponent` first. The setup looks familiar to the `CounterComponent` test suite. We are using `TestBed` to configure a testing Module and to render the Component under test.
 
 ```typescript
@@ -2957,7 +2959,9 @@ describe('HomeComponent', () => {
 
 <aside class="margin-note">Smoke test</aside>
 
-This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors. If this spec fails, you know that something is wrong with the testing setup.
+This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors.
+
+If the smoke test fails, you know that something is wrong with the testing setup.
 
 From Angular 9 on, the spec passes but produces a bunch of warnings on the shell:
 
@@ -2983,13 +2987,15 @@ When configuring the testing Module, we can specify `schemas` to tell Angular ho
 The warning suggests `CUSTOM_ELEMENTS_SCHEMA`, but the elements in question are not Web Components. We want Angular to simply ignore the elements. Therefore we use the `NO_ERRORS_SCHEMA`, “a schema that allows any property on any element”.
 
 ```typescript
-TestBed.configureTestingModule({
+await TestBed.configureTestingModule({
   declarations: [HomeComponent],
   schemas: [NO_ERRORS_SCHEMA],
 }).compileComponents();
 ```
 
-With this addition, our smoke test passes. Now let us write a more meaningful spec! We start with the nested `app-counter`. This is the code we need to cover:
+With this addition, our smoke test passes.
+
+Now let us write a more meaningful spec! We start with the nested `app-counter`. This is the code we need to cover:
 
 ```html
 <app-counter
@@ -2997,6 +3003,8 @@ With this addition, our smoke test passes. Now let us write a more meaningful sp
   (countChange)="handleCountChange($event)"
 ></app-counter>
 ```
+
+<aside class="margin-note">Child presence</aside>
 
 First of all, we need to test the presence of `app-counter`, the independent counter. We create a new spec for that purpose:
 
@@ -3017,9 +3025,11 @@ This code uses the `app-counter` type selector to find the element. You might wo
 
 <aside class="margin-note">Find by element type</aside>
 
-In this rare occasion, we need to enforce the element `app-counter` because that is `CounterComponent`’s selector. Using a test id makes the element type arbitrary. This makes tests more robust in other case. When testing the existence of child Components though, it is the element type that invokes the child.
+In this rare occasion, we need to enforce the element `app-counter` because this is `CounterComponent`’s selector.
 
-Our spec is almost ready. One expectation is missing. The query method returns a `DebugElement` or `null`. We simply assert that the return value is truthy:
+Using a test id makes the element type arbitrary. This makes tests more robust in other case. When testing the existence of child Components though, it is the element type that invokes the child.
+
+Our spec still lacks an expectation. The query method returns a `DebugElement` or `null`. We simply assert that the return value is truthy:
 
 ```typescript
 it('renders an independent counter', () => {
@@ -3057,21 +3067,24 @@ it('renders an independent counter', () => {
 });
 ```
 
+<aside class="margin-note">Check Inputs</aside>
+
 The next feature we need to test is the `startCount` Input. In particular, the property binding `[startCount]="5"` in `HomeComponent`’s template. Let us create a new spec:
 
 ```typescript
 it('passes a start count', () => {
   const counter = findComponent(fixture, 'app-counter');
   /* … */
-  expect(el.properties.startCount).toBe(5);
 });
 ```
 
-<aside class="margin-note">Check Inputs</aside>
+<aside class="margin-note" markdown="1">
+  `properties``
+</aside>
 
 How do we read the Input value? Each `DebugElement` has a `properties` object that contains DOM properties together with its values. In addition, it contains certain property bindings. (The type is `{ [key: string]: any }`).
 
-In a unit test with shallow rendering, `properties` contains the Inputs of a child Component. First, we find `app-counter` to get the corresponding `DebugElement`. Then we check the Input value, `properties.startCount`.
+In a unit test with shallow rendering, `properties` contains the Inputs of a child Component. First, we find `app-counter` to obtain the corresponding `DebugElement`. Then we check the Input value, `properties.startCount`.
 
 ```typescript
 it('passes a start count', () => {
@@ -3116,11 +3129,11 @@ The spec needs to do two things:
 1. *Act:* Find the child Component and let the `countChange` Output emit a value.
 2. *Assert:* Check that `console.log` has been called.
 
-As mentioned, from the parent’s viewpoint, `countChange` is simply an event. Shallow rendering means there is no `CounterComponent` instance and no `EventEmitter` named `countChange`. Angular only sees an element, `app-counter`, with an event handler, `(countChange)="handleCountChange($event)"`.
+From the parent’s viewpoint, `countChange` is simply an event. Shallow rendering means there is no `CounterComponent` instance and no `EventEmitter` named `countChange`. Angular only sees an element, `app-counter`, with an event handler, `(countChange)="handleCountChange($event)"`.
 
 <aside class="margin-note">Simulate Output</aside>
 
-In this setup, we can simulate the Output using the well-known `triggerEventHandler` method.
+In this setup, we can simulate the Output using the known `triggerEventHandler` method.
 
 ```typescript
 it('listens for count changes', () => {
@@ -3203,7 +3216,9 @@ Note that this is one possible testing method. As always, it has pros and cons. 
 
 <aside class="margin-note">Unit test confidence</aside>
 
-However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular to ignore the elements `app-counter`, `app-service-counter` and `app-ngrx-counter`. What if `HomeComponent` uses a wrong element name and the test copies that error? The test would pass incorrectly. We need to render the involved Components together to spot the error.
+However, the unit test gives little confidence that `HomeComponent` works in production. We have instructed Angular to ignore the elements `app-counter`, `app-service-counter` and `app-ngrx-counter`.
+
+What if `HomeComponent` uses a wrong element name and the test copies that error? The test would pass incorrectly. We need to render the involved Components together to spot the error.
 
 <div class="book-sources" markdown="1">
 - [HomeComponent: implementation and test code](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/)
@@ -3408,13 +3423,13 @@ The original child Component, `CounterComponent`, is imported only to create the
 
 Instead of searching for an element named `app-counter`, we search for a Component instance. This is more robust. The presence of the host element is a good indicator, but it is more relevant that a Component has been rendered into this element.
 
-Working with the Component instance is more intuitive than working with the `DebugElement` abstraction. We can read the Component class to learn about Inputs and Outputs. Basic JavaScript and Angular knowledge suffice to write specs against such an instance.
+Working with the Component instance is more intuitive than working with the `DebugElement` abstraction. We can read the Component class to learn about Inputs and Outputs. Basic JavaScript and Angular knowledge suffices to write specs against such an instance.
 
 <aside class="margin-note">Manual faking drawbacks</aside>
 
 Our simple approach to faking a child Component has its flaws. We have created the fake manually. This is tedious and time-consuming, but also risky. The fake is only partly tied to the original.
 
-For example, if the original changes its selector `app-counter`, the test should fail and remind us to adapt the template. Instead, it passes incorrectly since we did not inherit the Component metadata, `{ selector: 'app-counter', … }` but duplicated in the test.
+For example, if the original changes its selector `app-counter`, the test should fail and remind us to adapt the template. Instead, it passes incorrectly since we did not inherit the Component metadata, `{ selector: 'app-counter', … }`, but duplicated it in the test.
 
 We are going to address these shortcomings in the next chapter.
 
@@ -3709,7 +3724,7 @@ Unfortunately, this does not work. TypeScript complains that private methods and
 
 `Type '{ getCount(): Observable<number>; increment(): void; decrement(): void; reset(): void; }' is missing the following properties from type 'CounterService': count, subject, notify`
 
-That is correct. But we cannot add a private members to an object literal, nor should we.
+That is correct. But we cannot add private members to an object literal, nor should we.
 
 <aside class="margin-note">Pick public members</aside>
 
@@ -3733,7 +3748,9 @@ When the `CounterService` changes its public API, the dependent `ServiceCounterC
 
 <aside class="margin-note">Fake what is necessary</aside>
 
-`ServiceCounterComponent` calls all existing public `CounterService` methods, so we have added them to the fake. If the code under test does not use the full API, the fake does not need to replicate the full API either. Only declare those methods and properties the code under test actually uses.
+`ServiceCounterComponent` calls all existing public `CounterService` methods, so we have added them to the fake.
+
+If the code under test does not use the full API, the fake does not need to replicate the full API either. Only declare those methods and properties the code under test actually uses.
 
 For example, if the code under test only calls `getCount`, just provide this method. Make sure to add a type declaration that picks the method from the original type:
 
@@ -3840,7 +3857,7 @@ providers: [
 
 This is the crucial moment where we tell Angular: For the `CounterService` dependency, use the value `fakeCounterService` instead. This is how we replace the original with a fake.
 
-In this setup, Angular instantiates and injects a `CounterService` instance whenever a Component, Service, etc. asks for the `CounterService`. By using `{ provide: …, useValue: … }`, we skip the instantiation and directly provide the value to inject.
+Normally, Angular instantiates and injects a `CounterService` instance whenever a Component, Service, etc. asks for the `CounterService`. By using `{ provide: …, useValue: … }`, we skip the instantiation and directly provide the value to inject.
 
 The *Arrange* phase is complete now, let us write the actual specs.
 
@@ -3930,7 +3947,7 @@ In addition, we will check that the Component updates when new values are pushed
 
 The fake `getCount` method returns `of(currentCount)`, an Observable with the fixed value 123. The Observable completes immediately and never pushes another value. We need to change that behavior in order to demonstrate the Component update.
 
-The fake `CounterService`, devoid of logic so far, needs to gain some logic. `getCount` should return an Observable that emits new values when `increment`, `decrement` and `reset` are called.
+The fake `CounterService`, devoid of logic so far, needs to gain some logic. `getCount` needs to return an Observable that emits new values when `increment`, `decrement` and `reset` are called.
 
 <aside class="margin-note" markdown="1">
   `BehaviorSubject`
