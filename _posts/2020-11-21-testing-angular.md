@@ -5086,7 +5086,7 @@ it('marks fields as required', async () => {
 
 ### Asynchronous validators
 
-The signup-form features asynchronous validators for username, email and password. They are asynchronous because they wait for a second and make an HTTP request. Under the hood, they are implemented using RxJS Observables.
+The sign-up form features asynchronous validators for username, email and password. They are asynchronous because they wait for a second and make an HTTP request. Under the hood, they are implemented using RxJS Observables.
 
 <aside class="margin-note">Async validation failure</aside>
 
