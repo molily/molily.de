@@ -4832,7 +4832,7 @@ Despite correct input, the submission may fail for several reasons:
 
 When the user submits the form, the Component under tests calls the `SignupService`’s `signup` method.
 
-- In the *success case*, the `signup` method returns an Observable that emits the “next” value `{ success: true }` and completes. The form displays a status message “Sign-up successful!”.
+- In the *success case*, the `signup` method returns an Observable that emits the value `{ success: true }` and completes. The form displays a status message “Sign-up successful!”.
 - In the *error case*, the Observable fails with an error. The form displays a status message “Sign-up error”.
 
 Let us test the latter case in a new spec. The structure resembles the spec for the successful submission. But we configure the fake `signup` method to return an Observable that fails with an error.
@@ -5290,7 +5290,7 @@ it('requires address line 1 for business and non-profit plans', async () => {
 
 We have already checked the presence of `aria-required` attributes when testing the [required fields](#required-fields). For consistency, we check for `aria-required` in this spec as well.
 
-As a second indicator, we check for the `ng-invalid` class. This class is set by Angular itself on invalid form fields without us having to add it via the template. But the mere presence of the class does not imply that the invalid state is conveyed visually.
+As a second indicator, we check for the `ng-invalid` class. This class is set by Angular itself on invalid form fields without us having to add it via the template. Note that the mere presence of the class does not imply that the invalid state is conveyed visually.
 
 Alternatively, we could check for the presence of an error message, like we in the required fields spec.
 
@@ -5430,7 +5430,7 @@ These engines check compliance with the Web Content Accessibility Guidelines (WC
 
 pa11y has two modes of operation: The command line interface (CLI) for checking one web page and the continuous integration (CI) mode for checking multiple web pages.
 
-For ad-hoc testing of a single page of your Angular application, use the command line interface. When testing a whole application on a regular basis, use the continuous integration mode.
+For quickly testing a single page of your Angular application, use the command line interface. When testing the whole application on a regular basis, use the continuous integration mode.
 
 To use the command line interface, install pa11y as a global npm module:
 
@@ -5580,7 +5580,7 @@ The Web Content Accessibility Guidelines (WCAG) establish – from abstract to 
 
 The WCAG success criteria are accompanied by *techniques* for HTML, CSS, JavaScript etc. For JavaScript web applications, techniques like ARIA are especially relevant.
 
-In short, you need to learn about accessibility and Inclusive Design first, apply the rules while designing and implementing the application. Then check the compliance manually and automatically.
+In summary, you need to learn about accessibility and Inclusive Design first, apply the rules while designing and implementing the application. Then check the compliance manually and automatically.
 
 <div class="book-sources" markdown="1">
 - [Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)
@@ -5604,19 +5604,23 @@ The built-in tools are fairly low-level and unopinionated. They have several dra
 - There are no default solutions for faking Components and Service dependencies safely.
 - The tests itself get verbose and repetitive. You have to establish testing conventions and write helpers yourself.
 
-We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs. If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They do not address the above-mentioned structural problems.
+We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs.
+
+If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They do not address the above-mentioned structural problems.
 
 <aside class="margin-note">Unified testing API</aside>
 
 **[Spectator](https://github.com/ngneat/spectator)** is an opinionated library for testing Angular application. Technically, it sits on top of `TestBed`, `ComponentFixture` and `DebugElement`. But the main idea is to unify all these APIs in one consistent, powerful and user-friendly interface – the `Spectator` object.
 
-Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength are Component tests with Inputs, Outputs, children, event handling, Service dependencies and more. For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
+Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength are Component tests with Inputs, Outputs, children, event handling, Service dependencies and more.
+
+For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
 Both [example applications](#example-applications) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
-In this guide, we will look at testing the Flickr search example with Spectator.
+TIn this chapter, we will discuss testing the Flickr search with Spectator.
 
 ### Component with an Input
 
@@ -5682,7 +5686,9 @@ describe('FullPhotoComponent with spectator', () => {
 
 `createComponentFactory` expects a configuration object. `component: FullPhotoComponent` specifies the Component under test. `shallow: true` means we want [shallow, not deep rendering](#shallow-vs-deep-rendering). It does not make a difference for `FullPhotoComponent` though since it has no children.
 
-The configuration object may include more options for the testing Module, as we will see later. Internally, `createComponentFactory` creates a `beforeEach` block that calls `TestBed.configureTestingModule` and `TestBed.compileComponents`, just like we did manually.
+The configuration object may include more options for the testing Module, as we will see later.
+
+Internally, `createComponentFactory` creates a `beforeEach` block that calls `TestBed.configureTestingModule` and `TestBed.compileComponents`, just like we did manually.
 
 `createComponentFactory` returns a factory function for creating a `FullPhotoComponent`. We save that function in the `createComponent` constant.
 
@@ -5733,7 +5739,7 @@ expect(
   `spectator.query`
 </aside>
 
-The central `spectator.query` method finds an element in the DOM. We have decided to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
+The central `spectator.query` method finds an element in the DOM. This guide recommends to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
 
 Spectator supports test ids out of the box, so we write:
 
@@ -5816,7 +5822,9 @@ describe('FullPhotoComponent with spectator', () => {
 });
 ```
 
-Compared to the version with custom testing helpers, the Spectator version is not necessarily shorter. But it works on a *consistent abstraction level*. Instead of a wild mix of `TestBed`, `ComponentFixture`, `DebugElement` plus helper functions, there is the `createComponentFactory` function and one `Spectator` instance.
+Compared to the version with custom testing helpers, the Spectator version is not necessarily shorter. But it works on a *consistent abstraction level*.
+
+Instead of a wild mix of `TestBed`, `ComponentFixture`, `DebugElement` plus helper functions, there is the `createComponentFactory` function and one `Spectator` instance.
 
 Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers for common DOM expectations.
 
@@ -5870,11 +5878,13 @@ export class FlickrSearchComponent {
   constructor(private flickrService: FlickrService) {}
 
   public handleSearch(searchTerm: string): void {
-    this.flickrService.searchPublicPhotos(searchTerm).subscribe((photos) => {
-      this.searchTerm = searchTerm;
-      this.photos = photos;
-      this.currentPhoto = null;
-    });
+    this.flickrService.searchPublicPhotos(searchTerm).subscribe(
+      (photos) => {
+        this.searchTerm = searchTerm;
+        this.photos = photos;
+        this.currentPhoto = null;
+      }
+    );
   }
 
   public handleFocusPhoto(photo: Photo): void {
@@ -5891,6 +5901,8 @@ Since this is the Component where all things come together, there is much to tes
 2. When the `SearchFormComponent` emits the `search` output, the `FlickrService` is called with the search term.
 3. The search term and the photo list are passed down to the `PhotoListComponent` via Input.
 4. When the `PhotoListComponent` emits the `focusPhoto` output, the `FullPhotoComponent` is rendered. The selected photo is passed down via Input.
+
+<aside class="margin-note">Without Spectator</aside>
 
 The [`FlickrSearchComponent` test suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/flickr-search/flickr-search.component.spec.ts) looks like this:
 
@@ -5979,9 +5991,9 @@ Without going too much into detail, a few notes:
   };
   ```
 
-Rewriting this suite with Spectator brings two major changes:
+<aside class="margin-note">With Spectator</aside>
 
-<aside class="margin-note">Fake children and Service</aside>
+Rewriting this suite with Spectator brings two major changes:
 
 1. We replace the child Components with fakes created by [ng-mocks](#faking-a-child-component-with-ng-mocks). The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
 2. We use Spectator to create the fake `FlickrService`.
@@ -6076,7 +6088,6 @@ it('renders the search form and the photo list, not the full photo', () => {
 
 <aside class="margin-note">Manual type guard</aside>
 
-
 Unfortunately, `expect` is not a [TypeScript type guard](https://www.typescriptlang.org/docs/handbook/advanced-types.html). Jasmine expectations cannot narrow down the type from `PhotoListComponent | null` to `PhotoListComponent`.
 
 We cannot call `expect(photoList).not.toBe(null)` and continue with `expect(photoList.title).toBe('')`. The first expectation throws an error in the `null` case, but TypeScript does not know this. TypeScript still assumes the type `PhotoListComponent | null`, so it would complain about `photoList.title`.
@@ -6092,6 +6103,8 @@ expect(() => {
 ```
 
 The Spectator spec goes on and uses `expect(fullPhoto).not.toExist()`, which is equivalent to `expect(fullPhoto).toBe(null)`. The Jasmine matcher `toExist` comes from Spectator.
+
+<aside class="margin-note">Test search</aside>
 
 The second spec covers the search:
 
@@ -6115,6 +6128,8 @@ it('searches and passes the resulting photos to the photo list', () => {
 When the `SearchFormComponent` emits a search term, we expect that the `FlickrService` has been called. In addition, we expect that the search term and the photo list from Service are passed to the `PhotoListComponent`.
 
 `spectator.detectChanges()` is just Spectator’s shortcut to `fixture.detectChanges()`.
+
+<aside class="margin-note">Test focus photo</aside>
 
 The last spec focusses a photo:
 
@@ -6213,7 +6228,7 @@ describe('SearchFormComponent with spectator', () => {
   Dispatch `ngSubmit`
 </aside>
 
-The spec simulates typing in the search term into the search field. Then it simulates an `ngSubmit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
+The spec simulates typing the search term into the search field. Then it simulates an `ngSubmit` event at the `form` element. We use the generic method `spectator.dispatchFakeEvent` for this end.
 
 Spectator offers many more convenient shortcuts for triggering events. The Flickr search Spectator tests just use the most common ones.
 
@@ -6268,7 +6283,7 @@ So what does a Service do and how do we test it? Services are diverse, but some 
 
 - Services interact with dependencies. These are often other Services. For example, a Service might send HTTP requests via Angular’s `HttpClient`.
 
-  In the unit test, we replace the dependency with a fake that returns canned responses. To fake the `HttpClient` dependency, we use Angular’s `HttpClientTestingModule`.
+  In the unit test, we replace the dependency with a fake that returns canned responses.
 
 ### Testing a Service with internal state
 
@@ -6346,7 +6361,11 @@ Let us start with writing the spec `it('returns the count', /* … */)`. It test
 
 <aside class="margin-note">Change variable value</aside>
 
-For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs). We declare a variable `actualCount` that is initially undefined. Then we subscribe and assign the value emitted by the Observable to the variable. Finally, outside of the subscriber function, we compare the actual to the expected value.
+For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs):
+
+1. We declare a variable `actualCount` that is initially undefined.
+2. We subscribe to the Observable. We assign the emitted value to the `actualCount` variable.
+3. Finally, outside of the subscriber function, we compare the actual to the expected value.
 
 ```typescript
 it('returns the count', () => {
@@ -6586,11 +6605,13 @@ TestBed.configureTestingModule({
 });
 ```
 
-The `HttpClientTestingModule` provides a fake implementation of `HttpClient`. It does not actually send out HTTP requests. It merely intercepts them and records them internally. In the test, we inspect that log of HTTP requests. We respond to pending requests manually with fake data.
+The `HttpClientTestingModule` provides a fake implementation of `HttpClient`. It does not actually send out HTTP requests. It merely intercepts them and records them internally.
+
+In the test, we inspect that record of HTTP requests. We respond to pending requests manually with fake data.
 
 <aside class="margin-note">Find, respond, verify</aside>
 
-Our test will consist of the following steps:
+Our test will perform the following steps:
 
 1. Call the method under test that sends HTTP requests
 2. Find pending requests
@@ -6624,9 +6645,11 @@ describe('FlickrService', () => {
   });
 
   it('searches for public photos', () => {
-    flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
-      /* … */
-    });
+    flickrService.searchPublicPhotos(searchTerm).subscribe(
+      (actualPhotos) => {
+        /* … */
+      }
+    );
     /* … */
   });
 });
@@ -6642,7 +6665,9 @@ In the second step, we find the pending request using the [`HttpTestingControlle
   `expectOne`
 </aside>
 
-The controller has methods to find requests by different criteria. The simplest is `expectOne`. It finds a request matching the given criteria and expects that there is exactly one match. In our case, we search for a request with a given URL of the Flickr API.
+The controller has methods to find requests by different criteria. The simplest is `expectOne`. It finds a request matching the given criteria and expects that there is exactly one match.
+
+In our case, we search for a request with a given URL of the Flickr API.
 
 ```typescript
 const searchTerm = 'dragonfly';
@@ -6662,9 +6687,11 @@ describe('FlickrService', () => {
   });
 
   it('searches for public photos', () => {
-    flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
-      /* … */
-    });
+    flickrService.searchPublicPhotos(searchTerm).subscribe(
+      (actualPhotos) => {
+        /* … */
+      }
+    );
 
     const request = controller.expectOne(expectedUrl);
     /* … */
@@ -6698,17 +6725,21 @@ The spec has proven that `searchPublicPhotos` makes a request to the expected UR
 We have already subscribed to the Observable:
 
 ```typescript
-flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
-  /* … */
-});
+flickrService.searchPublicPhotos(searchTerm).subscribe(
+  (actualPhotos) => {
+    /* … */
+  }
+);
 ```
 
 We expect that the Observable emits a photos array that equals to the one from the API response:
 
 ```typescript
-flickrService.searchPublicPhotos(searchTerm).subscribe((actualPhotos) => {
-  expect(actualPhotos).toEqual(photos);
-});
+flickrService.searchPublicPhotos(searchTerm).subscribe(
+  (actualPhotos) => {
+    expect(actualPhotos).toEqual(photos);
+  }
+);
 ```
 
 This leads to a problem that is known from [testing Outputs](#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. Despite the defect, Jasmine thinks that all is fine.
@@ -6719,9 +6750,11 @@ There are several ways to solve this problem. We have opted for a variable that 
 
 ```typescript
 let actualPhotos: Photo[] | undefined;
-flickrService.searchPublicPhotos(searchTerm).subscribe((otherPhotos) => {
-  actualPhotos = otherPhotos;
-});
+flickrService.searchPublicPhotos(searchTerm).subscribe(
+  (otherPhotos) => {
+    actualPhotos = otherPhotos;
+  }
+);
 
 const request = controller.expectOne(expectedUrl);
 // Answer the request so the Observable emits a value.
@@ -6731,7 +6764,7 @@ request.flush({ photos: { photo: photos } });
 expect(actualPhotos).toEqual(photos);
 ```
 
-The `expect` call is outside of the `next` callback function to ensure it is definitely called. If the Observable emits no value or a wrong value, the spec fails.
+The `expect` call is located outside of the `next` callback function to ensure it is definitely called. If the Observable emits no value or a wrong value, the spec fails.
 
 #### Verify that all requests have been answered
 
@@ -6768,9 +6801,11 @@ describe('FlickrService', () => {
 
   it('searches for public photos', () => {
     let actualPhotos: Photo[] | undefined;
-    flickrService.searchPublicPhotos(searchTerm).subscribe((otherPhotos) => {
-      actualPhotos = otherPhotos;
-    });
+    flickrService.searchPublicPhotos(searchTerm).subscribe(
+      (otherPhotos) => {
+        actualPhotos = otherPhotos;
+      }
+    );
 
     const request = controller.expectOne(expectedUrl);
     request.flush({ photos: { photo: photos } });
@@ -6792,7 +6827,9 @@ Are we done with testing `searchPublicPhotos`? We have tested the success case i
 
 <aside class="margin-note">Unhappy path</aside>
 
-`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error. Whether there is custom error handling in the Service or not, the *unhappy path* should be tested.
+`searchPublicPhotos` passes through the error from `HttpClient`. If the Observable returned by `this.http.get` fails with an error, the Observable returned by `searchPublicPhotos` fails with the same error.
+
+Whether there is custom error handling in the Service or not, the *unhappy path* should be tested.
 
 Let us simulate a “500 Internal Server Error”. Instead of responding to the request with `flush`, we let it fail by calling `error`.
 
@@ -6810,7 +6847,7 @@ request.error(
 
 The `TestRequest`’s `error` method expects an `ErrorEvent`, and an optional options object.
 
-[`ErrorEvent`](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent) is a special `Error` that is provided by the browser. For testing purposes, we create an instance using `new ErrorEvent('…')`. The constructor parameter is an arbitrary message string. We should use a message that describes the error case well.
+[`ErrorEvent`](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent) is a special type of `Error`. For testing purposes, we create an instance using `new ErrorEvent('…')`. The constructor parameter is a string message that describes the error case.
 
 The second parameter, the options object, allows us to set the HTTP `status` (like `500`), the `statusText` (like `'Internal Server Error'`) and response headers. In the example above, we set `status` and `statusText`.
 
@@ -6822,9 +6859,18 @@ We achieve that by subscribing to `next`, `error` and `complete` events:
 
 ```typescript
 flickrService.searchPublicPhotos(searchTerm).subscribe(
-  () => { /* next handler must not be called! */ },
-  (error) => { /* error handler must be called! Also, we need to inspect the error. */ },
-  () => { /* complete handler must not be called! */ },
+  () => {
+    /* next handler must not be called! */
+  },
+  (error) => {
+    /*
+    error handler must be called!
+    Also, we need to inspect the error.
+    */
+  },
+  () => {
+    /* complete handler must not be called! */
+  },
 );
 ```
 
@@ -6832,7 +6878,7 @@ flickrService.searchPublicPhotos(searchTerm).subscribe(
   `fail`
 </aside>
 
-When the `next` or `complete` handlers are called, the spec must fail immediately. There is a handy global Jasmine function for this purpose: `fail`. We directly pass `fail` as `next` and `complete` handler.
+When the `next` or `complete` handlers are called, the spec must fail immediately. There is a handy global Jasmine function for this purpose: `fail`.
 
 For inspecting the error, we use the same pattern as above, saving the error in a variable in the outer scope.
 
@@ -6852,7 +6898,7 @@ flickrService.searchPublicPhotos(searchTerm).subscribe(
 );
 ```
 
-After answering the request with a server error, we check that the error is passed through. The `error` handler receives a `HttpErrorResponse` object that reflects the `ErrorEvent` as well as the status information.
+After answering the request with a server error, we check that the error is passed through. The `error` handler receives an `HttpErrorResponse` object that reflects the `ErrorEvent` as well as the status information.
 
 ```typescript
 if (!actualError) {
@@ -6865,7 +6911,9 @@ expect(actualError.statusText).toBe(statusText);
 
 <aside class="margin-note">Type guard</aside>
 
-Since `actualError` is defined as `HttpErrorResponse | undefined`, we need to rule out the `undefined` case first before accessing the properties. `expect(actualError).toBeDefined()` would accomplish that. But the TypeScript compiler does not understand that `expect(…).toBeDefined()` rules out the `undefined` case. So we need to throw an exception manually.
+Since `actualError` is defined as `HttpErrorResponse | undefined`, we need to rule out the `undefined` case first before accessing the properties.
+
+`expect(actualError).toBeDefined()` would accomplish that. But the TypeScript compiler does not know that this rules out the `undefined` case. So we need to throw an exception manually.
 
 This is the full spec for the error case:
 
@@ -6943,7 +6991,7 @@ controller.expectOne(
 );
 ```
 
-The function is a predicate. The function is called for each request, decides whether the candidate matches and returns a boolean.
+This predicate function is called for each request, decides whether the candidate matches and returns a boolean.
 
 This lets you sift through all requests programmatically and check all criteria. The candidate is an [HttpRequest](https://angular.io/api/common/http/HttpRequest) instance with properties like `method`, `url`, `headers`, `body`, `params`, etc.
 
@@ -6965,7 +7013,7 @@ expect(httpRequest.headers.get('Accept')).toBe('application/json');
 request.flush({ success: true });
 ```
 
-This is equivalent to the predicate example, but gives a more specific error message if the header is incorrect.
+This is equivalent to the predicate example above, but gives a more specific error message if the header is incorrect.
 
 <aside class="margin-note" markdown="1">
   `match`
@@ -7034,7 +7082,7 @@ We have used the `HttpClientTestingModule` for testing a Service that depends on
 
 An Angular Pipe is a special function that is called from a Component template. Its purpose is to transform a value: You pass a value to the Pipe, the Pipe computes a new value and returns it.
 
-The name Pipe originates from the vertical bar “\|” that sits between the value and the Pipe name. The concept as well as the “\|” syntax originates from Unix pipes and Unix shells.
+The name Pipe originates from the vertical bar “\|” that sits between the value and the Pipe’s name. The concept as well as the “\|” syntax originate from Unix pipes and Unix shells.
 
 In this example, the value from `user.birthday` is transformed by the `date` Pipe:
 
@@ -7050,7 +7098,7 @@ Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. Th
 
 <aside class="margin-note">Pure Pipes</aside>
 
-Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value, they do not hold any state and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
+Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
 ### GreetPipe
 
@@ -7135,7 +7183,9 @@ The example application lets you change the user interface language during runti
 
 #### TranslateService
 
-The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language. The translations are a map of keys and translation strings. For example, the key `greeting` translates to “Hello!” if the current language is English.
+The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language.
+
+The translations are stored in a map of keys and translation strings. For example, the key `greeting` translates to “Hello!” if the current language is English.
 
 The `TranslateService` looks like this:
 
@@ -7392,7 +7442,7 @@ Remember, the provided `FakeTranslateService` returns an Observable created with
 return of(`Translation for ${key}`);
 ```
 
-This Observable emits one “next” value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
+This Observable emits one value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
 
 We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
 
