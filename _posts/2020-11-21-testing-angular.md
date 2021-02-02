@@ -6481,7 +6481,7 @@ function expectCount(count: number): void {
 
 <aside class="margin-note">RxJS operator</aside>
 
-A more idiomatic way is to use an RxJS operator that completes the Observable after the first value: [`first`](https://rxjs-dev.firebaseapp.com/api/operators/first).
+A more idiomatic way is to use an RxJS operator that completes the Observable after the first value: [`first`](https://rxjs.dev/api/operators/first).
 
 ```typescript
 import { first } from 'rxjs/operators';
@@ -7358,19 +7358,23 @@ Now let us test the `TranslatePipe`! We can either write a test that integrates 
 `TranslateService` performs HTTP requests to load the translations. We should avoid these side effects when testing `TranslatePipe`. So let us fake the Service to write a unit test.
 
 ```typescript
-class FakeTranslateService implements Partial<TranslateService> {
-  public onTranslationChange = new EventEmitter<Translations>();
-  public get(key: string): Observable<string> {
+let translateService: Pick<
+  TranslateService, 'onTranslationChange' | 'get'
+>;
+/* … */
+translateService = {
+  onTranslationChange: new EventEmitter<Translations>(),
+  get(key: string): Observable<string> {
     return of(`Translation for ${key}`);
-  }
-}
+  },
+};
 ```
 
 The fake is a partial implementation of the original. The `TranslatePipe` under test only needs the `onTranslationChange` property and the `get` method. The latter returns a fake translation including the key so we can test that the key was passed correctly.
 
 <aside class="margin-note">Host Component</aside>
 
-Now we need to decide whether to test the Pipe directly or within a host Component. Both ways are possible and no solution is significantly easier or more robust. You will find both solutions in the example project. In this guide, we will discuss the solution with `TestBed` and host Component.
+Now we need to decide whether to test the Pipe directly or within a host Component. Neither solution is significantly easier or more robust. You will find both solutions in the example project. In this guide, we will discuss the solution with `TestBed` and host Component.
 
 Let us start with the host Component:
 
@@ -7393,13 +7397,22 @@ Let us set up the test suite:
 ```typescript
 describe('TranslatePipe: with TestBed and HostComponent', () => {
   let fixture: ComponentFixture<HostComponent>;
-  let translateService: TranslateService;
+  let translateService: Pick<
+    TranslateService, 'onTranslationChange' | 'get'
+  >;
 
   beforeEach(async () => {
+    translateService = {
+      onTranslationChange: new EventEmitter<Translations>(),
+      get(key: string): Observable<string> {
+        return of(`Translation for ${key}`);
+      },
+    };
+
     await TestBed.configureTestingModule({
       declarations: [TranslatePipe, HostComponent],
       providers: [
-        { provide: TranslateService, useClass: FakeTranslateService },
+        { provide: TranslateService, useValue: translateService }
       ],
     }).compileComponents();
 
@@ -7411,14 +7424,14 @@ describe('TranslatePipe: with TestBed and HostComponent', () => {
 });
 ```
 
-In the testing Module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide the `FakeTranslateService` instead. Just like in a Component test, we create the Component and examine the rendered DOM.
+In the testing Module, we declare the Pipe under test and the `HostComponent`. For the `TranslateService`, we provide a fake object instead. Just like in a Component test, we create the Component and examine the rendered DOM.
 
 <aside class="margin-note">Sync and async translation</aside>
 
-What needs to be tested? Obviously, we need to check that `{% raw %}{{ key | translate }}{% endraw %}` evaluates to `key1`. There are two cases that needs to be tested though:
+What needs to be tested? We need to check that `{% raw %}{{ key | translate }}{% endraw %}` evaluates to `Translation for key1`. There are two cases that need to be tested though:
 
-1. The translations are already loaded. In this case, the the Observable returned by `TranslateService`’s `get` completes immediately. `transform` returns the correct translation synchronously.
-2. The translations are pending. `transform` returns `null` (or an outdated translation). The Observable completes any time later. The change detection is triggered, `transform` is called the second time and returns the correct translation.
+1. The translations are already loaded. The Pipe’s `transform` method returns the correct translation synchronously. The Observable returned by `TranslateService`’s `get` emits the translation and completes immediately.
+2. The translations are pending. `transform` returns `null` (or an outdated translation). The Observable completes at any time later. Then, the change detection is triggered, `transform` is called the second time and returns the correct translation.
 
 In the test, we write specs for both scenarios:
 
@@ -7436,21 +7449,21 @@ it('translates the key, sync service response', () => {
 });
 ```
 
-Remember, the provided `FakeTranslateService` returns an Observable created with RxJS’ `of`.
+Remember, the `TranslateService` fake returns an Observable created with `of`.
 
 ```typescript
 return of(`Translation for ${key}`);
 ```
 
-This Observable emits one value and completes immediately. This mimics the first case in which the Service has already loaded the translations.
+This Observable emits one value and completes immediately. This mimics the case in which the Service has already loaded the translations.
 
-We merely need to call `detectChanges`. Angular calls `TranslatePipe`’s `transform` method, which calls `FakeTranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
+We merely need to call `detectChanges`. Angular calls the Pipe’s `transform` method, which calls `TranslateService`’s `get`. The Observable emits the translation right away and `transform` passes it through.
 
 Finally, we use the [`expectContent` Component helper](https://github.com/molily/translate-pipe/blob/main/src/app/spec-helpers/element.spec-helper.ts) to test the DOM output.
 
 <aside class="margin-note">Simulate delay</aside>
 
-To test the second case is trickier because we need to simulate that the Observable emits asynchronously. There are numerous ways to do this. We are using [RxJS’ `delay` operator](https://rxjs-dev.firebaseapp.com/api/operators/delay) for simplicity.
+Testing the second case is trickier because the Observable needs to emit asynchronously. There are numerous ways to achieve this. We will use the [RxJS `delay` operator](https://rxjs.dev/api/operators/delay) for simplicity.
 
 At the same time, we are writing an asynchronous spec. That is, Jasmine needs to wait for the Observable and the expectations before the spec is finished.
 
@@ -7470,7 +7483,7 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-Next, we need to change the behavior of `FakeTranslateService`’s `get` to make it asynchronous.
+Next, we need to change the `TranslateService`’s `get` method to make it asynchronous.
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -7495,7 +7508,9 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-`TranslatePipe`’s `transform` method is called for the first time and returns `null` since the Observable does not emit a value immediately. So we expect that the output is empty:
+The Pipe’s `transform` method is called for the first time and returns `null` since the Observable does not emit a value immediately.
+
+So we expect that the output is empty:
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -7507,7 +7522,7 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-Here comes the interesting part. We want the Observable to emit the value now. We simulate the passage of 100 milliseconds with `tick(100)`.
+Here comes the interesting part. We want the Observable to emit a value now. We simulate the passage of 100 milliseconds with `tick(100)`.
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -7521,9 +7536,9 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
-This causes the Observable to emit the translation and complete. The `TranslatePipe` receives the translation and saves it.
+This causes the Observable to emit the translation and complete. The Pipe receives the translation and saves it.
 
-To see a change in the DOM, we start a second change detection. The `TranslatePipe`’s `transform` method is called for the second time and returns the correct translation.
+To see a change in the DOM, we start a second change detection. The Pipe’s `transform` method is called for the second time and returns the correct translation.
 
 ```typescript
 it('translates the key, async service response', fakeAsync(() => {
@@ -7547,11 +7562,11 @@ it('translates a changed key', /* … */);
 it('updates on translation change', /* … */);
 ```
 
-The `TranslatePipe` receives the translation asynchronously and stores both the key and the translation. When Angular calls `transform` with the *same key* again, the Pipe returns the translation synchronously. Since the `TranslatePipe` is marked as *impure*, Angular does not cache the `transform` result.
+The `TranslatePipe` receives the translation asynchronously and stores both the key and the translation. When Angular calls `transform` with the *same key* again, the Pipe returns the translation synchronously. Since the Pipe is marked as *impure*, Angular does not cache the `transform` result.
 
 <aside class="margin-note">Different key and translation</aside>
 
-When `translate` is called with a *different key*, the `TranslatePipe` needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
+When `translate` is called with a *different key*, the Pipe needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
 
 ```typescript
 it('translates a changed key', () => {
@@ -7566,12 +7581,13 @@ After a change detection, the DOM contains the updated translation for `key2`.
 
 Last but no least, the Pipe needs to fetch a new translation from the `TranslateService` when the user changes the language and new translations have been loaded. For this purpose, the Pipe subscribes to the Service’s `onTranslationChange` emitter.
 
-Our `FakeTranslateService` supports `onTranslationChange` as well, hence we call the `emit` method to simulate a translation change. Before, we let the Service return a different translation in order to see a change in the DOM.
+Our `TranslateService` fake supports `onTranslationChange` as well, hence we call the `emit` method to simulate a translation change. Before, we let the Service return a different translation in order to see a change in the DOM.
 
 ```typescript
 it('updates on translation change', () => {
   fixture.detectChanges();
-  translateService.get = (key) => of(`New translation for ${key}`);
+  translateService.get = (key) =>
+    of(`New translation for ${key}`);
   translateService.onTranslationChange.emit({});
   fixture.detectChanges();
   expectContent(fixture, 'New translation for key1');
@@ -7586,7 +7602,7 @@ We made it! Writing these specs is challenging without doubt.
 - [TranslatePipe: test code](https://github.com/molily/translate-pipe/blob/main/src/app/translate.pipe.spec.ts)
 - [Angular API reference: fakeAsync](https://angular.io/api/core/testing/fakeAsync)
 - [Angular API reference: tick](https://angular.io/api/core/testing/tick)
-- [RxJS: delay operator](https://rxjs-dev.firebaseapp.com/api/operators/delay)
+- [RxJS: delay operator](https://rxjs.dev/api/operators/delay)
 - [ngx-translate](https://github.com/ngx-translate/core)
 </div>
 
@@ -7594,7 +7610,7 @@ We made it! Writing these specs is challenging without doubt.
 
 ## Testing Directives
 
-Angular beginners quickly encounter four core concepts: Modules, Components, Services and Pipes. A less known core concept are Directives. Without knowing, even beginners are using Directives, because Directives are everywhere.
+Angular beginners quickly encounter four core concepts: Modules, Components, Services and Pipes. A lesser known core concept are Directives. Without knowing, even beginners are using Directives, because Directives are everywhere.
 
 In Angular, there are three types of Directives:
 
@@ -7612,11 +7628,15 @@ We have already mentioned the built-in Attribute Directives `NgClass` and `NgSty
 
 <aside class="margin-note">Styling logic</aside>
 
-Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes. Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
+Attributes Directives are often used for changing the style of an element, either directly with inline styles or indirectly with classes.
 
-Neither of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing the **`ThresholdWarningDirective`**. This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
+Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
 
-Note that numbers above the threshold are valid input. The `ThresholdWarningDirective` does not add an Angular validator. We merely want to warn the user so they check the input twice.
+None of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
+
+This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
+
+Note that numbers above the threshold are valid input. The `ThresholdWarningDirective` does not add a form control validator. We merely want to warn the user so they check the input twice.
 
 <div class="book-sources" markdown="1">
 - [ThresholdWarningDirective: Source code](https://github.com/molily/threshold-warning-directive/blob/main/src/app/threshold-warning.directive.ts)
@@ -7694,7 +7714,9 @@ public appThresholdWarning: number | null = null;
   `input` event
 </aside>
 
-Using `HostListener`, the Directive lists for `input` event on the host element. When the user changes the field value, the `inputHandler` method is called. This method gets the field value and checks whether it is over the threshold. The result is stored in the `overThreshold` boolean property.
+Using `HostListener`, the Directive listens for `input` event on the host element. When the user changes the field value, the `inputHandler` method is called.
+
+The `inputHandler` gets the field value and checks whether it is over the threshold. The result is stored in the `overThreshold` boolean property.
 
 ```typescript
 @HostListener('input')
@@ -7722,7 +7744,7 @@ Now that we understand what is going on, we need to replicate the workflow in ou
 
 <aside class="margin-note">Host Component</aside>
 
-First of all, Attribute and Structural Directives need an existing host element they can be applied to. When testing these Directives, we use a **host Component** that renders the host element. For example, the `ThresholdWarningDirective` needs an `<input type="number">` host element.
+First of all, Attribute and Structural Directives need an existing host element they are applied to. When testing these Directives, we use a **host Component** that renders the host element. For example, the `ThresholdWarningDirective` needs an `<input type="number">` host element.
 
 ```typescript
 @Component({
@@ -7810,7 +7832,7 @@ it('adds the class if the number is over the threshold', () => {
 });
 ```
 
-`setFieldValue` triggers a fake `input` event. This triggers the Directive’s event handler. `11` is greater than the threshold `10`, so the class should be added. We still need to call `detectChanges` so the DOM is updated.
+`setFieldValue` triggers a fake `input` event. This triggers the Directive’s event handler. `11` is greater than the threshold `10`, so the class is added. We still need to call `detectChanges` so the DOM is updated.
 
 The last spec makes sure that the threshold is still considered as a safe value. No warning should be shown.
 
@@ -7822,7 +7844,7 @@ it('removes the class if the number is at the threshold', () => {
 });
 ```
 
-This is it! Testing the `ThresholdWarningDirective` is like testing a Component. The difference is that the Component only exists in our test as a host for the Directive.
+This is it! Testing the `ThresholdWarningDirective` is like testing a Component. The difference is that the Component serves as a host for the Directive.
 
 The full spec for the `ThresholdWarningDirective` looks like this:
 
