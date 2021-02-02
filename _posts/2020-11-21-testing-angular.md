@@ -7885,9 +7885,12 @@ A Structural Directive does not have a template like a Component, but operates o
 
 <aside class="margin-note">Render template programmatically</aside>
 
-The prime examples `NgIf` demonstrate what Structural Directives are capable of: The `NgIf` Directive decides whether the template is rendered or not. The `NgFor` Directive walks over a list of items and renders the template repeatedly for each item.
+The prime examples emonstrate what Structural Directives are capable of:
 
-A Structural Directive uses an attribute selector, like `[ngIf]`. The attribute is applied to a host element with the special asterisk syntax, for example `*ngIf`. Internally, this is translated to `<ng-template [ngIf]="…">…</ng-template>`.
+- The `NgIf` Directive decides whether the template is rendered or not.
+- The `NgFor` Directive walks over a list of items and renders the template repeatedly for each item.
+
+A Structural Directive uses an attribute selector, like `[ngIf]`. The attribute is applied to a host element with the special asterisk syntax, for example `*ngIf`. Internally, this is translated to `<ng-template [ngIf]="…"> … </ng-template>`.
 
 This guide assumes that you roughly understand how Structural Directives work and how the microsyntax translates to Directive Inputs. Please refer to the [comprehensive official guide on Structural Directives](https://angular.io/guide/structural-directives).
 
@@ -7899,7 +7902,9 @@ We are introducing and testing the `PaginateDirective`, a complex Structural Dir
   `NgFor` with Pagination
 </aside>
 
-`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called **pagination**. Per default, only 10 items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
+`PaginateDirective` works similar to `NgFor`, but does not render all list items at once. It spreads the items over pages, usually called **pagination**.
+
+Per default, only ten items are rendered. The user can turn the pages by clicking on “next” or “previous” buttons.
 
 <div class="book-sources" markdown="1">
 - [PaginateDirective: Source code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.ts)
@@ -7944,7 +7949,7 @@ There is an `ng-template` with an attribute `appPaginate` and an attribute bindi
 
 <aside class="margin-note">Render template for each item</aside>
 
-As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Our `PaginateDirective` works with the `ng-template` you see above. The Directive renders the template for each item on the current page.
+As mentioned, a Structural Directive does not have its own template, but operates on an `ng-template` and renders it programmatically. Our `PaginateDirective` works with the `ng-template` shown above. The Directive renders the template for each item on the current page.
 
 Now that we have seen Angular’s internal representation, we can understand the structure of the `PaginateDirective` class:
 
@@ -7964,7 +7969,9 @@ The Directive uses the `[appPaginate]` attribute selector and has an Input calle
 
 <aside class="margin-note">Directive Inputs</aside>
 
-The `PaginateDirective` has a configuration option named `perPage`. It specifies how many items are visible per page. Per default, it is 10. To change it, we set `perPage: …` in the microsyntax:
+The `PaginateDirective` has a configuration option named `perPage`. It specifies how many items are visible per page.
+
+Per default, there are ten items on a page. To change it, we set `perPage: …` in the microsyntax:
 
 ```html
 <ul>
@@ -8005,13 +8012,15 @@ export class PaginateDirective<T> implements OnChanges {
 }
 ```
 
-This is how built-in Structural Directives like `NgIf` and `NgFor` work as well. Now it gets more complicated. Since we want to paginate the items, we need user controls to turn the pages – in addition to rendering the items.
+This is how built-in Structural Directives like `NgIf` and `NgFor` work as well.
+
+Now it gets more complicated. Since we want to paginate the items, we need user controls to turn the pages – in addition to rendering the items.
 
 Again, a Structural Directive lacks a template. `PaginateDirective` cannot render the “next” and “previous” buttons itself. And to remain flexible, it should not render specific markup. The Component that uses the Directive should decide how the controls look.
 
 <aside class="margin-note">Pass another template</aside>
 
-Therefore we pass the controls as a template to the Directive. In particular, we pass a reference to a separate `ng-template`. This will be the second template the Directive operates on.
+We solve this by passing the controls as a template to the Directive. In particular, we pass a reference to a separate `ng-template`. This will be the second template the Directive operates on.
 
 This is how the controls template could look like:
 
@@ -8048,7 +8057,7 @@ interface ControlsContext {
 }
 ```
 
-`page` is the current page the user seems. `pages` is the total number of pages. `previousPage` and `nextPage` are functions for turning the pages.
+`page` is the current page number. `pages` is the total number of pages. `previousPage` and `nextPage` are functions for turning the pages.
 
 <aside class="margin-note">Use properties from context</aside>
 
@@ -8100,7 +8109,7 @@ This translates to:
 </ng-template>
 ```
 
-`controls: …` in the microsyntax translates to an Input named `appPaginateControls`. This concludes the outer structure:
+`controls: …` in the microsyntax translates to an Input named `appPaginateControls`. This concludes the Directive‘s outer structure:
 
 ```typescript
 @Directive({
@@ -8132,7 +8141,7 @@ We have explored all features of `PaginateDirective` and are now ready to test t
 
 <aside class="margin-note">Host Component</aside>
 
-First, we need a host Component that applies the Structural Directive under test. We let it render a list of 10 numbers, 3 numbers on each page.
+First, we need a host Component that applies the Structural Directive under test. We let it render a list of ten numbers, three numbers on each page.
 
 ```typescript
 const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -8295,7 +8304,9 @@ it('shows the next page', () => {
 
 <aside class="margin-note">Turn pages</aside>
 
-We simulate a click on the “next” button using the `click` testing helper. Then we start Angular’s change detection so the Component together with the Directive are re-rendered. Finally, we verify that the Directive has rendered the next three items, the numbers 4, 5 and 6.
+We simulate a click on the “next” button using the `click` testing helper. Then we start Angular’s change detection so the Component together with the Directive are re-rendered.
+
+Finally, we verify that the Directive has rendered the next three items, the numbers 4, 5 and 6.
 
 The spec for the “previous” button looks similar. First, we jump to the second page, then back to the first page.
 
@@ -8334,7 +8345,7 @@ it('checks the pages bounds', () => {
 });
 ```
 
-We jump through all pages just to end up on the first page again.
+By clicking on the buttons, we jump forward to the last page and backward to the first page again.
 
 This is it! Here is the full test code:
 
@@ -8470,7 +8481,9 @@ Modules are central parts of Angular applications. Often they contain important 
 
 Angular Modules are classes, but most of the time, the class itself is empty. The essence lies in the metadata set with `@NgModule({ … })`.
 
-We could sneak into the metadata and check whether certain Services are provided, whether third-party Modules are imported, and whether Components are exported. But such a test would simply **mirror the implementation**. Code duplication does not give you more confidence, it only increases the cost of change.
+We could sneak into the metadata and check whether certain Services are provided, whether third-party Modules are imported and whether Components are exported.
+
+But such a test would simply **mirror the implementation**. Code duplication does not give you more confidence, it only increases the cost of change.
 
 Should we write tests for Modules at all? If there is a reference error in the Module, the compilation step (`ng build`) fails before the automated tests scrutinize the build. “Failing fast” is good from a software quality perspective.
 
@@ -8518,9 +8531,9 @@ The integration test uses the `TestBed` to import the Module under test. It veri
 
 Code coverage, also called test coverage, tells you which parts of your code are executed by running the unit and integration tests. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
 
-Statements are, broadly speaking, control structures like `if` and `for` as well as code separated by semicolon. Branches refers to the two branches of `if (…) {…} else {…}` and `… ? … : …` conditions. Functions and lines are self-explanatory.
+Statements are, broadly speaking, control structures like `if` and `for` as well as expressions separated by semicolon. Branches refers to the two branches of `if (…) {…} else {…}` and `… ? … : …` conditions. Functions and lines are self-explanatory.
 
-### Istanbul coverage report
+### Coverage report
 
 In Angular’s Karma and Jasmine setup, [Istanbul](https://istanbul.js.org/) is used for measuring test coverage. Istanbul rewrites the code under test to record whether a statement, branch, function and line was called. Then it produces a comprehensive test report.
 
@@ -8530,7 +8543,9 @@ To activate Istanbul when running the tests, add the `--code-coverage` parameter
 ng test --code-coverage
 ```
 
-After the tests have completed, Istanbul saves the report in the `coverage` directory located in the Angular project directory. The report is a bunch of HTML files you can open with a browser. Start by dragging `coverage/index.html` into the browser of your choice.
+After the tests have completed, Istanbul saves the report in the `coverage` directory located in the Angular project directory.
+
+The report is a bunch of HTML files you can open with a browser. Start by opening `coverage/index.html` in the browser of your choice.
 
 The report for the Flickr search example looks like this:
 
@@ -8560,7 +8575,7 @@ Software testing is not a competition. We should not try to reach a particular s
 
 <aside class="margin-note">Find uncovered code</aside>
 
-The coverage report is a valuable tool you should use while writing tests. The report provides guidance by revealing code behavior that is not yet tested. Moreover, it deepens your understanding of how your tests work.
+The coverage report is a valuable tool you should use while writing tests. It *reveals code behavior that is not yet tested*. The report not only guides your testing, it also deepens your understanding of how your tests work.
 
 Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](#tailoring-your-testing-approach), testing should be part of the development routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
 
@@ -8591,11 +8606,11 @@ In the example configuration above, all values are set to 75%. If the coverage d
 
 <aside class="margin-note">Raise the bar</aside>
 
-When new code is added to the project with a test coverage better than average, you can raise the thresholds in the configuration slowly but steadily – for example, from `75` to `75.1`, `75.2`, `75.3` and so on. Soon these small improvements add up.
+When new code is added to the project with a test coverage better than average, you can raise the thresholds slowly but steadily – for example, from `75` to `75.1`, `75.2`, `75.3` and so on. Soon these small improvements add up.
 
 Test coverage should not be a pointless competition that puts developers under pressure and shames those that do not meet an arbitrary mark. Measuring coverage is a tool you should use for your benefit. Keep in mind that writing meaningful, spot-on tests does not necessarily increase the coverage score.
 
-For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For advanced learners, the score may helps to keep up a steady testing practice.
+For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For experienced developers, the score may helps to keep up a steady testing practice.
 
 <div class="book-sources" markdown="1">
 - [karma-coverage-istanbul-reporter: Configuration](https://github.com/mattlewis92/karma-coverage-istanbul-reporter)
@@ -8613,7 +8628,7 @@ Karma and Jasmine tests take a technical perspective. They focus on the front-en
 
 The most effective and reliable way to ensure a working application is *manual testing*: A dedicated software tester walks through the application feature by feature, case by case according to a test plan.
 
-Manual tests are slow, labor-intensive and cannot be repeated often. They are unspecific from a developer perspective: If the test fails, we cannot easily pin down what part of the application is responsible or what code change causes the regression.
+Manual tests are slow, labor-intensive and cannot be repeated often. They are unspecific from a developer perspective: If the test fails, we cannot easily pin down which part of the application is responsible or which code change causes the regression.
 
 We need automated tests that take the user’s perspective. This is what **end-to-end (E2E) tests** do.
 
@@ -8629,13 +8644,14 @@ The unit and integration tests we wrote worked with a fake back-end. We send fak
 
 <aside class="margin-note">Front-end and back-end</aside>
 
-It is much harder to keep the front-end code as well as the fakes in sync with the actual API endpoints and responses from the back-end. Even if the front-end and the back-end share type information about the transferred data, there will be mismatches.
+It is much harder to keep the front-end code in sync with the actual API endpoints and responses from the back-end. Even if the front-end and the back-end share type information about the transferred data, there will be mismatches.
 
 It is the goal of end-to-end tests to catch these bugs that cannot be caught by other automated tests.
 
 ### Deployment for end-to-end tests
 
-Back-end frameworks typically support environment configurations for development, testing and production. End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
+End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
+For that purpose, back-end frameworks typically support configurations for different environments, like development, testing and production. 
 
 <aside class="margin-note">Deterministic environment</aside>
 
@@ -8651,9 +8667,9 @@ An end-to-end test tries to mimic how a user interacts with the application. Typ
 
 <aside class="margin-note">Simulate user actions</aside>
 
-Once the browser is started, the end-to-end test navigates to the application’s URL, reads the page content and makes pointer and keyboard input. For example, the test fills out a form and clicks on the submit button.
+Once the browser is started, the end-to-end test navigates to the application’s URL, reads the page content and makes keyboard and pointer input. For example, the test fills out a form and clicks on the submit button.
 
-Just like unit and integration tests, the end-to-end test then makes expectations: Does the page include a the right content? Did the URL change? This way, whole features and user interfaces are examined.
+Just like unit and integration tests, the end-to-end test then makes expectations: Does the page include the right content? Did the URL change? This way, whole features and user interfaces are examined.
 
 ### End-to-end testing frameworks
 
@@ -8703,7 +8719,7 @@ Protractor is an end-to-end testing framework based on WebDriver, made for Angul
 
 Protractor is an official Angular project and also originates from Google. In a project created with the Angular CLI, Protractor is already installed as the default end-to-end testing framework.
 
-Just like the unit and integration test we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
+Just like the unit and integration tests we have written, Protractor uses Jasmine for test suites and specs. If you are familiar with Jasmine, you quickly get into writing Protractor tests.
 
 Protractor integrates well with an Angular app under test. Protractor waits for Angular to update the page before continuing with the next WebDriver command. This feature seeks to make testing Angular applications more robust.
 
@@ -8715,7 +8731,7 @@ First of all, Protractor is practically unmaintained. The future of the project 
 
 Second, the project underwent fundamental changes that curtail its usability.
 
-Protractor has a feature called *WebDriver control flow*. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if the code was synchronous.
+Protractor has a feature called *WebDriver control flow*. While WebDriver commands are in fact asynchronous, this feature allows you to write tests as if they were synchronous.
 
 The control flow implementation has lead to inconsistencies and bugs. The underlying WebDriverJS library removed the feature, so Protractor deprecated it as well. Today, Protractor recommends to embrace the asynchronous nature of end-to-end tests.
 
@@ -8748,7 +8764,9 @@ Cypress is an end-to-end testing framework that is not based on WebDriver. There
 
 WebDriver-based testing solutions are flexible and powerful but turned out to be slow and unreliable. Cypress aims to improve both the developing experience and the reliability of end-to-end tests.
 
-Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not controlled remotely, but the tests run directly in the browser, supported by a browser plugin. The test runner provides a powerful user interface for inspecting and debugging tests right in the browser.
+Cypress employs a fundamentally different architecture. A Node.js application starts the browser. The browser is not controlled remotely, but the tests run directly in the browser, supported by a browser plugin.
+
+The test runner provides a powerful user interface for inspecting and debugging tests right in the browser.
 
 <aside class="margin-note">Test runner</aside>
 
@@ -8762,7 +8780,7 @@ From our perspective, Cypress has several drawbacks.
 
 - Cypress requires some initial setup. While Cypress works well with Angular applications, it is not pre-installed like Protractor.
 - In place of Jasmine, Cypress uses the Mocha and Chai libraries for writing tests. While both serve the same purpose, you have to learn the subtle differences. If you use Jasmine for unit and integration tests, there will be an inconsistency in your tests.
-- At the time of writing, Cypress only supports Firefox as well as Chromium-based browsers like Chrome and Microsoft Edge. It does not support Safari, legacy Edge or even Internet Explorer.
+- At the time of writing, Cypress only supports Firefox as well as Chromium-based browsers like Google Chrome and Microsoft Edge. It does not support Safari, legacy Edge or even Internet Explorer.
 
 Cypress is not simply better than WebDriver-based frameworks. It tries to solve their problems by narrowing the scope and making trade-offs.
 
@@ -8782,7 +8800,7 @@ In case you do need a WebDriver-based framework, have a look at Webdriver.io ins
 
 An easy way to add Cypress to an existing Angular CLI project is the [Cypress Angular Schematic](https://github.com/briebug/cypress-schematic).
 
-In your Angular project directory, run this shell command::
+In your Angular project directory, run this shell command:
 
 ```
 ng add @briebug/cypress-schematic
@@ -8812,7 +8830,10 @@ UPDATE angular.json (4378 bytes)
 ✔ Packages installed successfully.
 ```
 
-The schematic asks if you would like to remove Protractor from the project. If you opt for “Yes”, the Protractor directory `e2e` is removed and the `ng e2e` command will start Cypress instead. If you opt for “No”, the `e2e` directory will remain untouched.
+The schematic asks if you would like to remove Protractor from the project.
+
+- If you opt for “Yes”, the Protractor directory `e2e` is removed and the `ng e2e` command will start Cypress instead.
+- If you opt for “No”, the `e2e` directory will remain untouched.
 
 If you are unsure, just answer “No” so you can revive the Protractor tests at any time if you feel the need.
 
@@ -8827,7 +8848,9 @@ In the project directory, you will find a sub-directory called `cypress`. It con
 
 The test files in `integration` are TypeScript files with the extension `.ts`.
 
-The tests itself are structured with the test framework Mocha. The assertions (also called expectations) are written using Chai. Mocha and Chai is a popular combination. They roughly do the same as Jasmine, but are much more flexible and rich in features.
+The tests itself are structured with the test framework **Mocha**. The assertions (also called expectations) are written using **Chai**.
+
+Mocha and Chai is a popular combination. They roughly do the same as Jasmine, but are much more flexible and rich in features.
 
 <aside class="margin-note">Test suites</aside>
 
@@ -8887,15 +8910,23 @@ describe('Counter', () => {
 
 Cypress commands are methods of the `cy` namespace object. Here, we are using two commands, `visit` and `title`.
 
-`cy.visit` orders the browser to visit the given URL. In this case, we use the full URL of the development server. Later, we are going to set a `baseUrl` in the Cypress configuration so we can use paths like `/`. Then, Cypress will append the path to the `baseUrl`.
+`cy.visit` orders the browser to visit the given URL. For now, we use the full URL of the development server.
+
+Later, we are going to set a `baseUrl` in the Cypress configuration so we can use paths like `/`. Then, Cypress will append the path to the `baseUrl`.
 
 <aside class="margin-note">Chainers</aside>
 
-`cy.title` returns the page title. To be specific, it returns a Cypress **Chainer**. that wraps a string. A Chainer is an asynchronous wrapper around values, mostly DOM elements but also other values.
+`cy.title` returns the page title. To be specific, it returns a Cypress **Chainer** that wraps a string. A Chainer is an asynchronous wrapper around values, mostly DOM elements but also other values.
 
 <aside class="margin-note">Assertions</aside>
 
-The Chainer has a `should` method for creating an assertion. Cypress relays the call to the Chai library to verify the assertion. We pass two parameters, `'equal'` and the expected title string. `equal` creates an assertion that the subject value (the page title) equals to the given value (`'Angular Workshop: Counters'`). `equal` uses the familiar `===` comparison.
+The Chainer has a `should` method for creating an assertion. Cypress relays the call to the Chai library to verify the assertion.
+
+```typescript
+cy.title().should('equal', 'Angular Workshop: Counters');
+```
+
+We pass two parameters, `'equal'` and the expected title string. `equal` creates an assertion that the subject value (the page title) equals to the given value (`'Angular Workshop: Counters'`). `equal` uses the familiar `===` comparison.
 
 This `should` style of assertions is different from Jasmine expectations, like `expect(…).toBe(…)`. Confusingly, Chai supports three different assertion styles: `should`, `assert`, but also `expect`. In Cypress, you will typically use the `should` method on Chainers and `expect` on other values.
 
@@ -8915,13 +8946,21 @@ Cypress has two shell commands to run the end-to-end tests:
 
 <aside class="margin-note">Test runner</aside>
 
-1. `npx cypress run` – Non-interactive test runner. Runs the tests in a “headless” browser. This means the browser window is not visible. The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output. This command is typically used in the continuous integration environment.
+1. **`npx cypress run` – Non-interactive test runner**. Runs the tests in a “headless” browser. This means the browser window is not visible.
 
-2. `npx cypress open` – Interactive test runner. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests. This command is typically used in the development environment.
+   The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output.
+   
+   This command is typically used in a continuous integration environment.
+
+2. **`npx cypress open` – Interactive test runner**. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. 
+
+   You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests.
+   
+   This command is typically used in the development environment.
 
 <aside class="margin-note">Serve and run tests</aside>
 
-The Cypress schematic we have installed wrap these commands so they integrate with Angular.
+The Cypress schematic we have installed wraps these commands so they integrate with Angular.
 
 - `ng run $project-name$:cypress-run` – Starts an Angular development server (`ng serve`), then calls `npx cypress run`.
 - `ng run $project-name$:cypress-open` – Starts an Angular development server (`ng serve`), then calls `npx cypress open`.
@@ -8942,7 +8981,9 @@ This will open the test runner:
 
 <img src="/img/testing-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
 
-In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”. On the top-right, you can select the browser. Chrome, Firefox and Edge will appear in the list given you have installed them on your machine.
+In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”.
+
+On the top-right, you can select the browser. Chrome, Firefox and Edge will appear in the list given you have installed them on your machine.
 
 This graphical user interface is an Electron application, a framework based on Chromium, the open source foundation of the Chrome browser. You can always run your tests in Electron since it ships with Cypress.
 
@@ -8966,13 +9007,15 @@ You can watch Cypress running the specs command by command. This is especially u
 cy.title().should('equal', 'Fluffy Golden Retrievers');
 ```
 
-<img src="/img/testing-angular/cypress-spec-failed.png" alt="Failed spec in Cypress" class="image-max-full" loading="lazy">
+<img src="/img/testing-angular/cypress-spec-failed.png" alt="Failed spec in Cypress: Time out retrying: expected 'Angular Workshop: Counters' to equal 'Fluffy Golden Retrievers'. Error in counter.ts" class="image-max-full" loading="lazy">
 
 Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
 
 <aside class="margin-note">Time travel</aside>
 
-A unique feature of the in-browser test runner is the ability to see the state of the page at a certain point in time. Cypress creates DOM snapshot when a command is run or an assertion verified. By hovering over a command or assertion, you can travel back in time. The page on the right side then reflects the page when the command or assertion was processed.
+A unique feature of the in-browser test runner is the ability to see the state of the page at a certain point in time. Cypress creates DOM snapshot when a command is run or an assertion verified.
+
+By hovering over a command or assertion, you can travel back in time. The page on the right side then reflects the page when the command or assertion was processed.
 
 <div class="book-sources" markdown="1">
 - [Cypress documentation: The Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html)
@@ -8986,7 +9029,9 @@ Every Cypress command takes some time to execute. But from the spec point of vie
 
 In fact, Cypress commands are merely declarative. The execution happens asynchronously. By calling `cy.visit` and `cy.title`, we add commands to a queue. The queue is processed later.
 
-As a consequence, we do not need to wait for the result of `cy.visit`. Cypress automatically waits for the page to load before proceeding with the next command. For the same reason, `cy.title` does not immediately return a string, but a Chainer that allows more declarations.
+As a consequence, we do not need to wait for the result of `cy.visit`. Cypress automatically waits for the page to load before proceeding with the next command.
+
+For the same reason, `cy.title` does not immediately return a string, but a Chainer that allows more declarations.
 
 In the Jasmine unit and integration tests we wrote, we had to manage time ourselves. When dealing with asynchronous commands and values, we had to use `async` / `await`, `fakeAsync` and other means explicitly.
 
@@ -8994,11 +9039,15 @@ This is not necessary when writing Cypress tests. The Cypress API is designed fo
 
 ### Automatic retries and waiting
 
-A key feature of Cypress is that it retries certain commands and assertions. For example, Cypress queries the document title and compares it with the expected title. If the title does not match instantly, Cypress will retry the `cy.title` command and the `should` assertion for four seconds. When the timeout is reached, the spec fails.
+A key feature of Cypress is that it retries certain commands and assertions.
+
+For example, Cypress queries the document title and compares it with the expected title. If the title does not match instantly, Cypress will retry the `cy.title` command and the `should` assertion for four seconds. When the timeout is reached, the spec fails.
 
 <aside class="margin-note">Wait automatically</aside>
 
-Other commands are not retried, but have a built-in waiting logic. For example, we are going to use Cypress’ `click` method to click on an element. Cypress automatically waits for four seconds for the element to be clickable. Cypress scrolls the element into view and checks if it is visible and not disabled. After several other checks, the Cypress performs the click.
+Other commands are not retried, but have a built-in waiting logic. For example, we are going to use Cypress’ `click` method to click on an element.
+
+Cypress automatically waits for four seconds for the element to be clickable. Cypress scrolls the element into view and checks if it is visible and not disabled. After several other checks, the Cypress performs the click.
 
 The retry and waiting timeout can be configured for all tests or individual commands.
 
@@ -9017,7 +9066,7 @@ These features makes end-to-end tests more reliable, but also easier to write. I
 
 ### Testing the counter increment
 
-In our first Cypress test, we have checked the title of the counter successfully. Let us test the counter’s increment feature.
+In our first Cypress test, we have checked the page title successfully. Let us test the counter’s increment feature.
 
 The test needs to perform the following steps:
 
@@ -9030,11 +9079,13 @@ The test needs to perform the following steps:
 
 We already now how to navigate to an address with `cy.visit('http://localhost:4200')`.
 
-For simplicity, we set the `baseUrl` configuration option to `'http://localhost:4200'` so we can write `cy.visit('/')` instead. Once we write more and more tests, the `baseUrl` comes in handy to avoid repetition. More importantly, it allows you to run the tests against different versions of the application, for example development, staging and production.
+Cypress supports a `baseUrl` configuration option so we do not have to hard-code and repeat the full URL. We set `baseUrl` to `'http://localhost:4200'` so we can simply write `cy.visit('/')`.
+
+The `baseUrl` setting allows you to run the tests against different versions of the application, for example development, staging and production.
 
 <aside class="margin-note">Base URL</aside>
 
-Edit the Cypress configuration file `cypress.json` in the Angular project directory. Add a property `baseUrl` and set it to the Angular development server URL:
+Edit the Cypress configuration file `cypress.json` in the Angular project directory. Add a property `baseUrl` and set it to the development server URL:
 
 ```javascript
 {
@@ -9059,7 +9110,9 @@ Just like with unit and integration test, the immediate question is: Which way t
 
 <aside class="margin-note">Find by test id</aside>
 
-As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids), this guide recommends to mark elements with a **test ids**. These are data attributes like `data-testid="example"`. In the test, we use a corresponding attribute selector like `[data-testid="example"]` to find the elements.
+As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids), this guide recommends to mark elements with **test ids**.
+
+These are data attributes like `data-testid="example"`. In the test, we use a corresponding attribute selector to find the elements, for example:
 
 ```typescript
 cy.get('[data-testid="example"]')
@@ -9069,7 +9122,9 @@ cy.get('[data-testid="example"]')
 
 Test ids are recommended, but other ways to find elements are still useful in some cases. For example, you might want to check the presence and the content of an `h1` element. This element has a special meaning and you should not find it with by arbitrary test id.
 
-The benefit of a test id is that it can be used on any element. Using a test id means ignoring the element type (like `h1`) and other attributes. The test does not fail if those change. But if there is a reason for this particular element type or attribute, your test should verify the usage.
+The benefit of a test id is that it can be used on any element. Using a test id means ignoring the element type (like `h1`) and other attributes. The test does not fail if those change.
+
+But if there is a reason for this particular element type or attribute, your test should verify the usage.
 
 <div class="book-sources" markdown="1">
 - [Cypress API reference: cy.get](https://docs.cypress.io/api/commands/get.html)
@@ -9078,7 +9133,7 @@ The benefit of a test id is that it can be used on any element. Using a test id 
 
 ### Interacting with elements
 
-To test the counter Component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`. So the element finder would be:
+To test the counter Component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`. So the element finder is:
 
 ```typescript
 cy.get('[data-testid="count"]')
@@ -9088,8 +9143,7 @@ cy.get('[data-testid="count"]')
 
 The `cy.get` command already has an assertion built-in: It expects to find at least one element. Otherwise, the test fails.
 
-
-Next, we need to check the element’s text content to verify that the start count is 5. Again, we use the `should` method to create an assertion.
+Next, we check the element’s text content to verify the start count. Again, we use the `should` method to create an assertion.
 
 ```typescript
 cy.get('[data-testid="count"]').should('have.text', '5');
@@ -9101,7 +9155,7 @@ We did it! We have found an element and checked its content.
 
 <aside class="margin-note">Click</aside>
 
-Now let us increment the count. We find and click on the increment button. The button has the test id `increment-button`. Cypress offers the `cy.click` method for this purpose.
+Now let us increment the count. We find and click on the increment button (test id `increment-button`). Cypress offers the `cy.click` method for this purpose.
 
 ```typescript
 cy.get('[data-testid="increment-button"]').click();
@@ -9129,7 +9183,7 @@ describe('Counter', () => {
 });
 ```
 
-The next feature we need to test is the decrement button. The spec works similar to the increment spec. It clicks on the decrement button and checks that the count has decreased.
+The next feature we need to test is the decrement button. The spec works similar to the increment spec. It clicks on the decrement button (test id `decrement-button`) and checks that the count has decreased.
 
 ```typescript
 it('decrements the count', () => {
@@ -9191,7 +9245,7 @@ describe('Counter', () => {
 });
 ```
 
-On the start page of the counter project, there are in fact nine counters instance. The `cy.get` commands therefore returns nine elements instead of one.
+On the start page of the counter project, there are in fact nine counters instance. The `cy.get` command therefore returns nine elements instead of one.
 
 <aside class="margin-note">First match</aside>
 
@@ -9239,13 +9293,13 @@ This would allow us to write `findEl('count')` instead of `cy.get('[data-testid=
 
 This works fine, but we opt for a another way. Cypress supports adding **custom commands** to the `cy` namespace. We are going to add the command `byTestId` so we can write `cy.byTestId('count')`.
 
-Custom commands are placed in `cypress/support/commands.ts` created by the Angular schematic. Using `Cypress.Commands.add`, we can extend Cypress to add our own command as a method of `cy`. The first parameter is the command name, the second is the implementation as a function.
+Custom commands are placed in `cypress/support/commands.ts` created by the Angular schematic. Using `Cypress.Commands.add`, we add our own command as a method of `cy`. The first parameter is the command name, the second is the implementation as a function.
 
 <aside class="margin-note" markdown="1">
   `cy.byTestId`
 </aside>
 
-The simplest version could look like this:
+The simplest version looks like this:
 
 ```typescript
 Cypress.Commands.add(
@@ -9273,7 +9327,7 @@ Cypress.Commands.add(
 );
 ```
 
-You do not have to understand the type definitions in detail. They simply make sure that you can pass the same `options` to `cy.byTestId` as you can pass to `cy.get`.
+You do not have to understand the type definitions in detail. They simply make sure that you can pass the same `options` to `cy.byTestId` that you can pass to `cy.get`.
 
 Save `commands.ts`, then edit `cypress/support/index.ts` and activate the line that imports `command.ts`.
 
@@ -9336,7 +9390,7 @@ describe('Counter (with helpers)', () => {
 });
 ```
 
-Keep in mind that all these `first` calls are only necessary since there are multiple counters on the example page under test. If there is only one element with the given test id on the page, you do not need those `.first()` calls.
+Keep in mind that all these `first` calls are only necessary since there are multiple counters on the example page under test. If there is only one element with the given test id on the page, you do not need them.
 
 <div class="book-sources" markdown="1">
 - [Counter E2E test with helpers](https://github.com/9elements/angular-workshop/blob/main/cypress/integration/counter-helpers.ts)
@@ -9376,14 +9430,14 @@ Before writing any code, let us make a plan what the end-to-end test needs to do
 
 <aside class="margin-note">Nondeterministic API</aside>
 
-The application under test queries a third-party API with production data. The test searches for “flower” and Flickr returns different results with each test run.
+The application under test queries a third-party API with production data. The test searches for “flower” and with each test run, Flickr returns potentially different results.
 
 There are two ways to deal with this dependency during testing:
 
 - Test against the real Flickr API
-- Fake the Flickr API and return a fixed response.
+- Fake the Flickr API and return a fixed response
 
-If we test against the real Flickr API, we cannot be specific in our expectations due to changing search results. We can only test the search results and the full photo superficially. We do not know the URL or title of the clicked photo. We do know that “flower” needs to be in the title or tags.
+If we test against the real Flickr API, we cannot be specific in our expectations due to changing search results. We can only test the search results and the full photo superficially. We merely know that the clicked photo has “flower” in its title or tags.
 
 <aside class="margin-note">Real vs. fake API</aside>
 
@@ -9391,7 +9445,9 @@ This has pros and cons. Testing against the real Flickr API makes the test reali
 
 Running the test against a fake API allows us to inspect the application deeply. Did the application render the photos the API returned? Are the photo details shown correctly?
 
-Keep in mind that unit, integration and end-to-end tests complement each other. The Flickr search is also tested extensively using unit and integration tests. Each type of test should do what it does best. The unit tests already put the different photo Components through their paces. The end-to-end test does not need to achieve that level of detail.
+Keep in mind that unit, integration and end-to-end tests complement each other. The Flickr search is also tested extensively using unit and integration tests.
+
+Each type of test should do what it does best. The unit tests already put the different photo Components through their paces. The end-to-end test does not need to achieve that level of detail.
 
 With Cypress, both type of tests are possible. For a start, we will test against the real Flickr API. Then, we will fake the API.
 
