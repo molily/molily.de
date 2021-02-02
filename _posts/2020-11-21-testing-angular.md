@@ -6217,7 +6217,7 @@ describe('SearchFormComponent with spectator', () => {
 
     spectator.typeInElement(searchTerm, byTestId('search-term-input'));
 
-    spectator.dispatchFakeEvent(byTestId('form'), 'ngSubmit');
+    spectator.dispatchFakeEvent(byTestId('form'), 'submit');
 
     expect(actualSearchTerm).toBe(searchTerm);
   });
@@ -9495,7 +9495,10 @@ We instruct the browser to enter “flower” into the search field (test id `se
 
 ```typescript
 it('searches for a term', () => {
-  cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
+  cy.byTestId('search-term-input')
+    .first()
+    .clear()
+    .type(SEARCH_TERM);
   cy.byTestId('submit-search').first().click();
   /* … */
 });
@@ -9569,13 +9572,18 @@ describe('Flickr search', () => {
   });
 
   it('searches for a term', () => {
-    cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
+    cy.byTestId('search-term-input')
+      .first()
+      .clear()
+      .type(SEARCH_TERM);
     cy.byTestId('submit-search').first().click();
 
     cy.byTestId('photo-item-link')
       .should('have.length', 15)
       .each((link) => {
-        expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
+        expect(link.attr('href')).to.contain(
+          'https://www.flickr.com/photos/'
+        );
       });
     cy.byTestId('photo-item-image').should('have.length', 15);
   });
@@ -9799,7 +9807,9 @@ describe('Flickr search (with page object)', () => {
       .photoItemLinks()
       .should('have.length', 15)
       .each((link) => {
-        expect(link.attr('href')).to.contain('https://www.flickr.com/photos/');
+        expect(link.attr('href')).to.contain(
+          'https://www.flickr.com/photos/'
+        );
       });
     page.photoItemImages().should('have.length', 15);
   });
