@@ -9635,7 +9635,7 @@ cy.byTestId('photo-item-link').first().click();
 
 The click lets the photo details appear. As mentioned above, we cannot check for a specific title, a specific photo URL or specific tags. The clicked photo might be a different one with each test run.
 
-Since have searched for “flower”, we assert that the term is either in the photo title or tags. We check the text content of the wrapper element with the test id `full-photo`.
+Since we have searched for “flower”, the term is either in the photo title or tags. We check the text content of the wrapper element with the test id `full-photo`.
 
 ```typescript
 cy.byTestId('full-photo').should('contain', SEARCH_TERM);
@@ -9645,7 +9645,7 @@ cy.byTestId('full-photo').should('contain', SEARCH_TERM);
 
 The `contain` assertion checks whether the given string is somewhere in the element’s text content. (In contrast, the `have.text` assertion checks whether the content equals the given string. It does not allow additional content.)
 
-Next, we check that a title and tags are present and not empty.
+Next, we check that a title and some tags are present and not empty.
 
 ```typescript
 cy.byTestId('full-photo-title').should('not.have.text', '');
@@ -9686,7 +9686,7 @@ Congratulations, we have successfully tested the Flickr search! This example dem
 
 The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
 
-We will use a design pattern called **page object**. A design pattern is a proven code structure, a best practice to solve a common problem.
+We introduce a design pattern called **page object**. A design pattern is a proven code structure, a best practice to solve a common problem.
 
 <aside class="margin-note">High-level interactions</aside>
 
@@ -9694,7 +9694,7 @@ A page object represents the web page that is scrutinized by an end-to-end test.
 
 So far, we have written low-level end-to-end tests. They find individual elements by hard-coded test id, check their content and click on them. This is fine for small tests.
 
-But if the page logic is complex and there are diverse cases to test, the test becomes an unmanageable pile of low-level instructions. It is hard to find the gist of these tests, and they are hard to change.
+But if the page logic is complex and there are diverse cases to test, the test becomes an unmanageable pile of low-level instructions. It is hard to find the gist of these tests and they are hard to change.
 
 A page object organizes numerous low-level instructions into a few high-level interactions. What are the high-level interactions in the Flickr search app?
 
@@ -9786,7 +9786,7 @@ public fullPhotoImage(): Cypress.Chainable<JQuery<HTMLElement>> {
 
 These methods return element Chainers.
 
-Then we rewrite the end-to-end test to use the page object methods.
+Next, we rewrite the end-to-end test to use the page object methods.
 
 ```typescript
 import { FlickrSearch } from '../pages/flickr-search.page';
@@ -9828,12 +9828,14 @@ describe('Flickr search (with page object)', () => {
 For the Flickr search above, a page object is probably too much of a good thing. Still the example demonstrates the key ideas of page objects:
 
 - Identify repetitive high-level interactions and map them to methods of the page object.
-- Move the finding of elements into the page object. The test ids, tag names, etc. used for finding should live in a central place. When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
+- Move the finding of elements into the page object. The test ids, tag names, etc. used for finding should live in a central place.
+
+  When the markup of a page under test changes, the page object needs an update, but the test should remain unchanged.
 - Leave all assertions (`should` and `expect`) in the specs. Do not move them to the page object.
 
 <aside class="margin-note">High-level tests</aside>
 
-When writing end-to-end tests, you get lost in technical details quickly: finding by certain features, clicking them, filling out form fields, checking fields values and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
+When writing end-to-end tests, you get lost in technical details quickly: finding elements, clicking them, filling out form fields, checking fields values and text content. But end-to-end tests should not revolve around these low-level details. They should describe the user journey on a high level.
 
 The goal of this refactoring is not brevity. Using page objects does not necessarily lead to less code. The purpose of page objects is to separate low-level details – like finding elements by test ids – from the high-level user journey through the application. This makes the specs easier to read and the easier to maintain.
 
@@ -9846,11 +9848,15 @@ You can use the page object pattern when you feel the need to tidy up complex, r
 
 ### Faking the Flickr API
 
-The end-to-end test we wrote for the Flickr search uses the live Flickr API. As discussed, this makes the test realistic. The test provides confidence that the application works hand in hand with the third-party API. But it makes the test slower and only allows unspecific assertions.
+The end-to-end test we wrote for the Flickr search uses the live Flickr API. As discussed, this makes the test realistic.
+
+The test provides confidence that the application works hand in hand with the third-party API. But it makes the test slower and only allows unspecific assertions.
 
 <aside class="margin-note">Intercept XMLHttpRequest</aside>
 
-With Cypress, we can uncouple the dependency. Cypress allows us to intercept HTTP requests and respond with fake data. The requests have to originate from JavaScript using XMLHttpRequest. Luckily, this is what Angular’s HTTP module (`@angular/common/http`) uses under the hood.
+With Cypress, we can uncouple the dependency. Cypress allows us to intercept HTTP requests and respond with fake data.
+
+The requests have to originate from JavaScript using XMLHttpRequest. Luckily, this is what Angular’s HTTP module (`@angular/common/http`) uses under the hood.
 
 First of all, we need to set up the fake data. We have already created fake photo objects for the [`FlickrService` unit test](#testing-a-service-that-sends-http-requests). For simplicity, we just import them:
 
@@ -9880,7 +9886,7 @@ const flickrResponse = {
 };
 ```
 
-Now we need to instruct Cypress to intercept the Flickr API request and answer with fake data. This setup happens in the test’s `beforeEach` block.
+Now we instruct Cypress to intercept the Flickr API request and answer it with fake data. This setup happens in the test’s `beforeEach` block.
 
 <aside class="margin-note">Fake server with route</aside>
 
@@ -9976,9 +9982,9 @@ We are done! Our end-to-end test fakes an API request in order to inspect the ap
 
 <aside class="margin-note">Intercept all requests</aside>
 
-In the case of the Flickr search, we have intercepted an HTTP request to a third-party API. But Cypress allows to fake any XMLHttpRequest, including requests to your own HTTP APIs.
+In the case of the Flickr search, we have intercepted an HTTP request to a third-party API. But Cypress allows to fake any request, including those to your own HTTP APIs.
 
-The `cy.server` and `cy.route` commands only supports intercepting XMLHttpRequest. In addition, Cypress has a new, experimental command named `cy.intercept` for intercepting all kinds of requests. Plus, `intercept` is easier to use and more powerful.
+The `cy.server` and `cy.route` commands only support intercepting XMLHttpRequest. In addition, Cypress has a new command named `cy.intercept` for intercepting all kinds of requests. Plus, `intercept` is easier to use and more powerful.
 
 In the Flickr search repository, you will find the same test with `cy.server` / `cy.route` as well as with `cy.intercept` for comparison.
 
