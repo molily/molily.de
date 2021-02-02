@@ -9520,11 +9520,11 @@ cy.byTestId('photo-item-link')
   .should('have.length', 15)
 ```
 
-By writing `should('have.length', 15)`, we assert that there are 15 elements with the `photo-item-link` test.
+By writing `should('have.length', 15)`, we assert that there are 15 elements.
 
 Each link needs to have an `href` containing `https://www.flickr.com/photos/`. We cannot check for an exact URL since results are the dynamic. But we know that all Flickr photo URLs have the same structure.
 
-There is no direct Chai assertion for checking that each link in the list has an `href` attribute that contains `https://www.flickr.com/photos/`. We need to check each link in the list individually.
+There is no direct Chai assertion for checking that each link in the list has an `href` attribute containing `https://www.flickr.com/photos/`. We need to check each link in the list individually.
 
 The Chainer has an `each` method to call a function for each element. This works similar to JavaScript’s `forEach` array method.
 
@@ -9540,11 +9540,11 @@ Cypress has three surprises for us.
 
 <aside class="margin-note">Synchronous jQuery object</aside>
 
-1. `link` is a synchronous value. Inside the `each` callback, we are back in synchronous JavaScript land. (We could do asynchronous operations here, but there is no need.)
+1. `link` is a synchronous value. Inside the `each` callback, we are in synchronous JavaScript land. (We could do asynchronous operations here, but there is no need.)
 
 2. `link` has the type `JQuery<HTMLElement>`. This is an element wrapped with the popular jQuery library. Cypress chose jQuery because many JavaScript developers are already familiar with it. To read the `href` attribute, we use `link.attr('href')`.
 
-3. We cannot use Cypress’ `should` method since it only exists on Cypress Chainers. But we are dealing with a jQuery object here. We have to use a standard Chai assertions – `expect` or `assert` style, to be specific. We use `expect` together with `to.contain`.
+3. We cannot use Cypress’ `should` method since it only exists on Cypress Chainers. But we are dealing with a jQuery object here. We have to use a standard Chai assertion – `expect` or `assert` style. We use `expect` together with `to.contain`.
 
 This brings us to:
 
