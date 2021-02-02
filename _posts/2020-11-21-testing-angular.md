@@ -6215,7 +6215,7 @@ describe('SearchFormComponent with spectator', () => {
       actualSearchTerm = otherSearchTerm;
     });
 
-    spectator.typeInElement(searchTerm, byTestId('searchTermInput'));
+    spectator.typeInElement(searchTerm, byTestId('search-term-input'));
 
     spectator.dispatchFakeEvent(byTestId('form'), 'ngSubmit');
 
@@ -8673,7 +8673,7 @@ It is the goal of end-to-end tests to catch these bugs that cannot be caught by 
 ### Deployment for end-to-end tests
 
 End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
-For that purpose, back-end frameworks typically support configurations for different environments, like development, testing and production. 
+For that purpose, back-end frameworks typically support configurations for different environments, like development, testing and production.
 
 <aside class="margin-note">Deterministic environment</aside>
 
@@ -8971,13 +8971,13 @@ Cypress has two shell commands to run the end-to-end tests:
 1. **`npx cypress run` – Non-interactive test runner**. Runs the tests in a “headless” browser. This means the browser window is not visible.
 
    The tests are run once, then the browser is closed and the shell command finishes. You can see the test results in the shell output.
-   
+
    This command is typically used in a continuous integration environment.
 
-2. **`npx cypress open` – Interactive test runner**. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion. 
+2. **`npx cypress open` – Interactive test runner**. Opens a window where you can select which tests to run and which browser to use. The browser window is visible and it remains visible after completion.
 
    You can see the test results the browser window. If you make changes on the test files, Cypress automatically re-runs the tests.
-   
+
    This command is typically used in the development environment.
 
 <aside class="margin-note">Serve and run tests</aside>
@@ -9491,12 +9491,12 @@ describe('Flickr search', () => {
 });
 ```
 
-We instruct the browser to enter “flower” into the search field (test id `searchTermInput`). Then we click on the submit button (test id `submitSearch`).
+We instruct the browser to enter “flower” into the search field (test id `search-term-input`). Then we click on the submit button (test id `submit-search`).
 
 ```typescript
 it('searches for a term', () => {
-  cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
-  cy.byTestId('submitSearch').first().click();
+  cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
+  cy.byTestId('submit-search').first().click();
   /* … */
 });
 ```
@@ -9569,8 +9569,8 @@ describe('Flickr search', () => {
   });
 
   it('searches for a term', () => {
-    cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
-    cy.byTestId('submitSearch').first().click();
+    cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
+    cy.byTestId('submit-search').first().click();
 
     cy.byTestId('photo-item-link')
       .should('have.length', 15)
@@ -9615,8 +9615,8 @@ it('shows the full photo', () => {
 First, it searches for “flower”, just like the spec before.
 
 ```typescript
-cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
-cy.byTestId('submitSearch').first().click();
+cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
+cy.byTestId('submit-search').first().click();
 ```
 
 Then we find all photo item links, but not to inspect them, but to click on the first on:
@@ -9654,8 +9654,8 @@ The spec now looks like this:
 
 ```typescript
 it('shows the full photo', () => {
-  cy.byTestId('searchTermInput').first().clear().type(SEARCH_TERM);
-  cy.byTestId('submitSearch').first().click();
+  cy.byTestId('search-term-input').first().clear().type(SEARCH_TERM);
+  cy.byTestId('submit-search').first().click();
 
   cy.byTestId('photo-item-link').first().click();
   cy.byTestId('full-photo').should('contain', SEARCH_TERM);
@@ -9739,8 +9739,8 @@ Let us implement the first high-level interaction on the page object: searching 
 
 ```typescript
 public searchFor(term: string): void {
-  cy.byTestId('searchTermInput').first().clear().type(term);
-  cy.byTestId('submitSearch').first().click();
+  cy.byTestId('search-term-input').first().clear().type(term);
+  cy.byTestId('submit-search').first().click();
 }
 ```
 
@@ -9909,8 +9909,8 @@ We can achieve this by explicitly waiting for the request after starting the sea
 
 ```typescript
 it('searches for a term', () => {
-  cy.byTestId('searchTermInput').first().clear().type(searchTerm);
-  cy.byTestId('submitSearch').first().click();
+  cy.byTestId('search-term-input').first().clear().type(searchTerm);
+  cy.byTestId('submit-search').first().click();
 
   cy.wait('@flickrSearchRequest');
 
@@ -9946,8 +9946,8 @@ We do the same for the other spec.
 
 ```typescript
 it('shows the full photo', () => {
-  cy.byTestId('searchTermInput').first().clear().type(searchTerm);
-  cy.byTestId('submitSearch').first().click();
+  cy.byTestId('search-term-input').first().clear().type(searchTerm);
+  cy.byTestId('submit-search').first().click();
 
   cy.wait('@flickrSearchRequest');
 
