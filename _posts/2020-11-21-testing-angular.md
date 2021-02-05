@@ -713,8 +713,8 @@ plugins: [
   require('karma-jasmine'),
   require('karma-chrome-launcher'),
   require('karma-jasmine-html-reporter'),
-  require('karma-coverage-istanbul-reporter'),
-  require('@angular-devkit/build-angular/plugins/karma'),
+  require('karma-coverage'),
+  require('@angular-devkit/build-angular/plugins/karma')
 ],
 ```
 
@@ -734,7 +734,7 @@ plugins: [
   require('karma-chrome-launcher'),
   require('karma-firefox-launcher'),
   require('karma-jasmine-html-reporter'),
-  require('karma-coverage-istanbul-reporter'),
+  require('karma-coverage'),
   require('@angular-devkit/build-angular/plugins/karma'),
 ],
 ```
@@ -758,7 +758,7 @@ Another important concept of Karma are **reporters**. They format and output the
 
    <img src="/img/testing-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
-3. The coverage reporter (npm package: `karma-coverage-istanbul-reporter`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
+3. The coverage reporter (npm package: `karma-coverage`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
 
 By editing the `reporters` array, you can add reporters or replace the existing ones:
 
@@ -779,7 +779,7 @@ plugins: [
   require('karma-jasmine'),
   require('karma-chrome-launcher'),
   require('karma-jasmine-html-reporter'),
-  require('karma-coverage-istanbul-reporter'),
+  require('karma-coverage'),
   require('karma-junit-reporter'),
   require('@angular-devkit/build-angular/plugins/karma'),
 ],
@@ -6560,19 +6560,22 @@ export class FlickrService {
 
   public searchPublicPhotos(searchTerm: string): Observable<Photo[]> {
     return this.http
-      .get<FlickrAPIResponse>('https://www.flickr.com/services/rest/', {
-        params: {
-          tags: searchTerm,
-          method: 'flickr.photos.search',
-          format: 'json',
-          nojsoncallback: '1',
-          tag_mode: 'all',
-          media: 'photos',
-          per_page: '15',
-          extras: 'tags,date_taken,owner_name,url_q,url_m',
-          api_key: 'XYZ',
-        },
-      })
+      .get<FlickrAPIResponse>(
+        'https://www.flickr.com/services/rest/',
+        {
+          params: {
+            tags: searchTerm,
+            method: 'flickr.photos.search',
+            format: 'json',
+            nojsoncallback: '1',
+            tag_mode: 'all',
+            media: 'photos',
+            per_page: '15',
+            extras: 'tags,date_taken,owner_name,url_q,url_m',
+            api_key: 'XYZ',
+          },
+        }
+      )
       .pipe(map((response) => response.photos.photo));
   }
 }
@@ -7632,6 +7635,8 @@ Attributes Directives are often used for changing the style of an element, eithe
 
 Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
 
+#### ThresholdWarningDirective
+
 None of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
 
 This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
@@ -7739,6 +7744,8 @@ Last but not least, the `overThreshold` property is bound to a class of the same
 @HostBinding('class.overThreshold')
 public overThreshold = false;
 ```
+
+#### ThresholdWarningDirective test
 
 Now that we understand what is going on, we need to replicate the workflow in our test.
 
@@ -8610,10 +8617,9 @@ It is common practice to run the unit and integration tests in a continuous inte
 In `karma.conf.js`, you can add global thresholds for statements, branches, functions and lines.
 
 ```
-coverageIstanbulReporter: {
+coverageReporter: {
   /* … */
-  thresholds: {
-    emitWarning: false,
+  check: {
     global: {
       statements: 75,
       branches: 75,
@@ -8624,7 +8630,7 @@ coverageIstanbulReporter: {
 },
 ```
 
-In the example configuration above, all values are set to 75%. If the coverage drops below that number, the test execution fails even if all specs succeeded.
+In the configuration above, all values are set to 75%. If the coverage drops below that number, the test execution fails even if all specs succeeded.
 
 <aside class="margin-note">Raise the bar</aside>
 
@@ -8635,7 +8641,7 @@ Test coverage should not be a pointless competition that puts developers under p
 For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For experienced developers, the score may helps to keep up a steady testing practice.
 
 <div class="book-sources" markdown="1">
-- [karma-coverage-istanbul-reporter: Configuration](https://github.com/mattlewis92/karma-coverage-istanbul-reporter)
+- [karma-coverage Configuration](https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md)
 </div>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
