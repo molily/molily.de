@@ -41,7 +41,7 @@ robots: noindex, follow
   </div>
 
 <div id="main-container">
-<main id="main" markdown="1">
+<main id="main">
 
 <p id="cover">
   <picture>
@@ -66,6 +66,8 @@ robots: noindex, follow
 <p class="intro"><em class="intro-caps">The Angular framework</em> is a mature and comprehensive solution for enterprise-ready applications based on web technologies. At Angular’s core lies the ability to test all application parts in an automated way. How do we take advantage of Angular’s testability?</p>
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
+
+<div id="chapters" markdown="1">
 
 ## Introduction
 
@@ -10097,10 +10099,12 @@ The Flickr search example application uses the [Flickr API](https://www.flickr.c
 
 Cover photo: Flying probes testing a printed circuit board by genkur, [licensed from iStock](https://www.istockphoto.com/photo/printed-circuit-board-during-a-flying-probe-test-gm1144549508-307752215).
 
-<p><a href="/impressum/" lang="de" hreflang="de">Impressum und Datenschutz</a></p>
+<p><a href="https://molily.de/impressum/" lang="de" hreflang="de">Impressum und Datenschutz</a></p>
+
+</div><!-- /chapters -->
 
 </main>
-</div>
+</div><!-- /main-container -->
 
 <script src="/assets/link-types.js"></script>
 <script src="/assets/testing-angular.js"></script>
