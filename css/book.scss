@@ -3,6 +3,7 @@
 ---
 
 @charset 'utf-8';
+@use "sass:color";
 
 /**
  * Book styles
@@ -128,9 +129,7 @@ pre {
  */
 
 @include large {
-  // #toc-and-main {}
-
-  #toc-container {
+  #sidebar {
     position: fixed;
     left: 0;
     top: 0;
@@ -254,36 +253,46 @@ pre {
 }
 
 #toc-tree {
-  margin: 0;
-
-  @include large {
-    margin: 0 -2rem;
-  }
-
   ol {
     margin: 0.5rem 0;
     font-size: 0.95rem;
   }
+
   li {
-    list-style: none;
     margin-bottom: 0.5rem;
   }
+
   li li {
     margin-bottom: 0;
+    list-style-type: none;
   }
+
+  $a-padding-left: 0.5rem;
+
   a {
-    padding: 0 1rem;
+    padding: 0 1rem 0 $a-padding-left;
   }
+
   ol a {
-    padding: 0 1rem 0 (1rem + 1 * 1.5rem);
+    padding-left: ($a-padding-left + 1 * 1rem);
   }
+
   ol ol a {
-    padding-left: (1rem + 2 * 1.5rem);
+    padding-left: ($a-padding-left + 2 * 1rem);
   }
 
   a {
     display: block;
     text-decoration: none;
+
+    &:hover {
+      @include dark-scheme {
+        background-color: adjust-color(
+          $background-color-inverted,
+          $lightness: -10%
+        );
+      }
+    }
   }
 
   .active {
@@ -298,6 +307,18 @@ pre {
 
   .link-type {
     display: none;
+  }
+}
+
+#cover-toc-tree {
+  ol ol {
+    display: none;
+  }
+}
+
+#sidebar-toc-tree {
+  @include large {
+    margin: 0 -2rem;
   }
 }
 
@@ -325,7 +346,7 @@ pre {
   h4,
   h5,
   h6 {
-    margin: 3rem 0 2rem;
+    margin: 4rem 0 2rem;
 
     @include dark-scheme {
       margin-left: -1rem;
@@ -383,11 +404,46 @@ pre {
 }
 
 /**
+ * Footer
+ */
+
+#page-footer {
+  padding: 2rem;
+  background-color: $background-color-inverted;
+  font-size: 90%;
+
+  @include dark-scheme {
+    background-color: $dark-background-color-inverted;
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
+
+#page-footer-inner {
+  @include large {
+    margin: auto;
+    max-width: $main-max-width;
+  }
+}
+
+#page-footer-contact {
+  & > * {
+    display: block;
+
+    @include large {
+      padding-right: 1rem;
+    }
+  }
+}
+
+/**
  * @section Cover image
  *
  */
 
-#cover {
+#cover-image {
   margin: 4rem 0;
   text-align: center;
   font-size: 0.8rem;
@@ -417,7 +473,7 @@ pre {
 }
 
 /**
- * @section Main
+ * @section Main heading
  *
  */
 
@@ -429,7 +485,7 @@ pre {
 
   @include large {
     margin: 4rem 0;
-    font-size: 3rem;
+    font-size: 4rem;
   }
 
   .subheading {
@@ -442,6 +498,10 @@ pre {
     }
   }
 }
+
+/**
+ * Introduction
+ */
 
 .intro {
   font-size: 1.2rem;
@@ -553,7 +613,7 @@ pre {
 
   @include large {
     // 16:9
-   padding-top: 56.25%;
+    padding-top: 56.25%;
   }
 }
 
@@ -594,7 +654,8 @@ pre {
 $margin-note-inner-width: 8rem;
 $margin-note-gap: 2rem;
 $margin-note-outer-width: $margin-note-inner-width + $margin-note-gap;
-$margin-note-breakpoint: $toc-width + $main-max-width + (2 * $margin-note-outer-width);
+$margin-note-breakpoint: $toc-width + $main-max-width +
+  (2 * $margin-note-outer-width);
 
 .margin-note {
   display: block;
@@ -624,5 +685,17 @@ $margin-note-breakpoint: $toc-width + $main-max-width + (2 * $margin-note-outer-
   p {
     margin: 0;
     line-height: inherit;
+  }
+}
+
+/**
+ * Next chapter link
+ */
+
+#next-chapter-link {
+  text-align: right;
+
+  a {
+    text-decoration: none;
   }
 }

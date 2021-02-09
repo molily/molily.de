@@ -22,28 +22,27 @@ robots: noindex, follow
   <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
 </p>
 
-<div id="toc-and-main">
-  <div id="toc-container">
-    <nav id="toc">
-      <p id="toc-home-link">
-        <a href="/" title="Home">molily.de</a>
-        <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
-      </p>
-      <p style="border: 1px solid red; padding: 1rem; background-color: rgba(255, 0, 0, 0.05); text-align: center; text-transform: uppercase; font-size: 1.5rem; color: red;"><strong>Draft</strong></p>
-      <h1 id="toc-book-title">
-        Testing Angular<br>
-        <small>A Guide to Robust Angular Applications</small>
-      </h1>
-      <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
-      <h2 id="toc-heading">Table of Contents</h2>
-      <ol id="toc-tree"></ol>
-    </nav>
-  </div>
+<div id="sidebar">
+  <nav id="toc">
+    <p id="toc-home-link">
+      <a href="/" title="Home">molily.de</a>
+      <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
+    </p>
+    <p style="border: 1px solid red; padding: 1rem; background-color: rgba(255, 0, 0, 0.05); text-align: center; text-transform: uppercase; font-size: 1.5rem; color: red;"><strong>Draft</strong></p>
+    <h1 id="toc-book-title">
+      Testing Angular<br>
+      <small>A Guide to Robust Angular Applications</small>
+    </h1>
+    <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
+    <h2 id="toc-heading">Table of Contents</h2>
+    <ol id="toc-tree"></ol>
+  </nav>
+</div>
 
 <div id="main-container">
 <main id="main">
 
-<p id="cover">
+<p id="cover-image
   <picture>
     <source type="image/avif" srcset="/img/testing-angular/flying-probe-800-cavif-q60.avif, /img/testing-angular/flying-probe-1600-cavif-q50.avif 2x">
     <source type="image/webp" srcset="/img/testing-angular/flying-probe-800-cwebp-q80.webp, /img/testing-angular/flying-probe-1600.webp 2x">
@@ -10093,7 +10092,7 @@ Published on <time datetime="2021-xx-xx">XX XX, 2021</time>.
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 
-All example code is free and unencumbered software released into the public domain. See [Unlicense](https://unlicense.org/).
+The example code is released into the public domain. See [Unlicense](https://unlicense.org/).
 
 The Flickr search example application uses the [Flickr API](https://www.flickr.com/services/api/) but is not endorsed or certified by Flickr, Inc. or SmugMug, Inc. Flickr is a trademark of Flickr, Inc. The displayed photos are property of their respective owners.
 

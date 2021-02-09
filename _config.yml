@@ -6,6 +6,9 @@ keywords: "HTML, CSS, JavaScript, web design, web development, browsers, web sta
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://molily.de"
 permalink: /:title/
+collections:
+  testing-angular:
+    output: true
 
 # Build settings
 host: 0.0.0.0
