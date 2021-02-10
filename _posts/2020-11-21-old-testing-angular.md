@@ -24,17 +24,17 @@ robots: noindex, follow
 
 <div id="sidebar">
   <nav id="toc">
+    <h2 id="toc-heading">Table of Contents</h2>
     <p id="toc-home-link">
       <a href="/" title="Home">molily.de</a>
       <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
     </p>
     <p style="border: 1px solid red; padding: 1rem; background-color: rgba(255, 0, 0, 0.05); text-align: center; text-transform: uppercase; font-size: 1.5rem; color: red;"><strong>Draft</strong></p>
-    <h1 id="toc-book-title">
+    <p id="toc-book-title">
       Testing Angular<br>
       <small>A Guide to Robust Angular Applications</small>
-    </h1>
+    </p>
     <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
-    <h2 id="toc-heading">Table of Contents</h2>
     <ol id="toc-tree"></ol>
   </nav>
 </div>

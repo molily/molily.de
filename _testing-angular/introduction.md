@@ -1,5 +1,5 @@
 ---
-layout: book
+layout: testing-angular-chapter
 title: "Introduction – Testing Angular"
 description: "How do we take advantage of Angular’s testability?"
 keywords: JavaScript, Angular, testing, automated tests, unit tests, integration tests, end-to-end tests
@@ -8,9 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-{% include_relative _header.html %}
-
-## Introduction
+# Introduction
 
 Most web developers come across automated tests in their career. They fancy the idea of writing code to scrutinize a web application and put it to an acid test. As web developers, as business people, we want to know whether the site works for the user, our customers.
 
@@ -32,6 +30,4 @@ Second, testing has a steep learning curve. If testing can be seen as a tool, it
 
 This is meant to encourage you. Getting started with testing is hard, but it gets easier and easier with more practice. The goal of this guide is to empower you to write tests on a daily basis that cover the important features of your Angular application.
 
-<p id="next-chapter-link"><a href="./target-audience/">Target audience &rarr;</a></p>
-
-{% include_relative _footer.html %}
+<p id="next-chapter-link"><a href="../target-audience/">Target audience</a></p>

@@ -341,6 +341,7 @@ pre {
 
   counter-reset: h2 h3 h4;
 
+  h1,
   h2,
   h3,
   h4,
@@ -363,9 +364,16 @@ pre {
       }
     }
   }
+  
+  // Use percent for heading font-size instead of rem
+  // since #main has its own font-size
+
+  h1 {
+    font-size: 180%;
+    counter-reset: h2 h3 h4;
+  }
 
   h2 {
-    // Do not use rem but inherit font-size
     font-size: 160%;
     counter-reset: h3 h4;
   }
@@ -400,6 +408,14 @@ pre {
     display: inline-block;
     vertical-align: top;
     margin-right: 1rem;
+  }
+
+  &.main-testing-angular {
+    h2::before,
+    h3::before,
+    h4::before {
+      display: none;
+    }
   }
 }
 
@@ -634,16 +650,18 @@ pre {
   display: block;
   width: 100%;
   padding: 0 1rem;
+  border: 0;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
 
-  border: 2px solid $darker-text-color;
-  background-color: $highlight-background-color;
+  background-color: #1976d2;
+  color: white;
   @include dark-scheme {
-    border: 2px solid $dark-background-color-inverted;
     background-color: $highlight-background-color-inverted;
+    background-color: $darker-text-color-inverted;
+    color: black;
   }
 }
 
@@ -693,9 +711,13 @@ $margin-note-breakpoint: $toc-width + $main-max-width +
  */
 
 #next-chapter-link {
-  text-align: right;
-
   a {
+    display: block;
+    text-align: right;
     text-decoration: none;
+
+    &::after {
+      content: " →"; 
+    }
   }
 }
