@@ -235,6 +235,11 @@ pre {
   font-size: 2rem;
   text-align: center;
 
+  small {
+    display: block;
+    line-height: 1.6
+  }
+
   @include large {
     font-size: 1.5rem;
   }
