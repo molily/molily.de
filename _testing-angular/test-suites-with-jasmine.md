@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Test suites with Jasmine
+# Test suites with Jasmine
 
 Angular ships with Jasmine, a JavaScript framework that enables you to write and execute unit and integration tests. Jasmine consists of three important parts:
 
@@ -18,7 +18,7 @@ Angular ships with Jasmine, a JavaScript framework that enables you to write and
 
 If you are new to Jasmine, it is recommended to read the [official Jasmine tutorial](https://jasmine.github.io/tutorials/your_first_suite). This guide provides a short introduction to Jasmine, exploring the basic structure and terminology that will be used throughout this guide.
 
-### Creating a test suite
+## Creating a test suite
 
 In terms of Jasmine, a test consists of one or more **suites**. A suite is declared with a `describe` block:
 
@@ -60,7 +60,7 @@ describe('Suite description', () => {
 
 Nested `describe` blocks add a human-readable description to a group of specs. They can also host their own setup and teardown logic.
 
-### Specifications
+## Specifications
 
 <aside class="margin-note" markdown="1">
   `it`: Spec
@@ -106,7 +106,7 @@ Some people prefer to write `it('should increment the count', /* … */)`, but `
 - [Jasmine tutorial: Your first suite](https://jasmine.github.io/tutorials/your_first_suite)
 </div>
 
-### Structure of a test
+## Structure of a test
 
 Inside the `it` block lies the actual testing code. Irrespective of the testing framework, the testing code typically consists of three phases: **Arrange, Act and Assert**.
 
@@ -145,7 +145,7 @@ This structure makes it easier to come up with a test and also to implement it. 
 
 In Behavior-Driven Development (BDD), the three phases of a test are fundamentally the same. But they are called **Given, When and Then**. These plain English words try to avoid technical jargon and pose a natural way to think of a test’s structure: “*Given* these conditions, *when* the user interacts with the application, *then* it behaves in a certain way.”
 
-### Expectations
+## Expectations
 
 In the *Assert* phase, the test compares the actual output or return value to the expected output or return value. If they are the same, the test passes. If they differ, the test fails.
 
@@ -208,7 +208,7 @@ The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Dri
 - [Jasmine tutorials: Custom matchers](https://jasmine.github.io/tutorials/custom_matcher)
 </div>
 
-### Efficient test suites
+## Efficient test suites
 
 When writing multiple specs in one suite, you quickly realize that the *Arrange* phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the *Arrange* phase always consists of creating an instance of the class and rendering the Component into the document.
 

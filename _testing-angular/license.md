@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## License
+# License
 
 License: <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike (CC BY-SA 4.0)</a>
 

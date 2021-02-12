@@ -8,13 +8,13 @@ draft: true
 robots: noindex, follow
 ---
 
-## Debugging tests
+# Debugging tests
 
 Writing tests is as arduous as writing implementation code. You will be stuck quite often and ask yourself why the test fails – and sometimes why the test passes when it should rather fail.
 
 The good news is that you can apply familiar debugging techniques to tests as well.
 
-### Test focus
+## Test focus
 
 Some tests require an extensive *Arrange* phase, the *Act* phase calls several methods or simulates complex user input. These tests are hard to debug.
 
@@ -86,7 +86,7 @@ Keep in mind to remove the test focus before committing your code. There are sev
 - [Tim Deschryver: Don't commit focused tests](https://timdeschryver.dev/blog/dont-commit-focused-tests)
 </div>
 
-### Developer tools
+## Developer tools
 
 The Jasmine test runner is just another web page made with HTML, CSS and JavaScript. This means you can debug it in the browser using the developer tools.
 
@@ -100,7 +100,7 @@ You can use the developer tools to:
 - Use the JavaScript debugger. You can either set breakpoints in the developer tools or place a `debugger` statement.
 - Inspect the DOM of rendered Components.
 
-### Debug output and the JavaScript debugger
+## Debug output and the JavaScript debugger
 
 The most primitive tool, `console.log`, is in fact invaluable when debugging tests. You can place debug output both in the test code and the implementation code.
 
@@ -169,7 +169,7 @@ exampleObject.name = 'Sailor Moon';
 
 Obviously, this only works for objects that can be serialized as JSON.
 
-### Inspect the DOM
+## Inspect the DOM
 
 In the next chapter, we will learn how to test Components. These tests will render the Component into the DOM of the Jasmine test runner page. This means you can briefly see the states of the rendered Component in the browser.
 
@@ -183,7 +183,7 @@ The root element the Component is rendered into is the last element in the docum
 
 The rendered Component is interactive. For example, you can click on buttons and the click handlers will be called. But as we will learn in the next chapter, there is no automatic change detection in the testing environment. So you might not see the effect of the interaction.
 
-### Jasmine debug runner
+## Jasmine debug runner
 
 The Karma page at [http://localhost:9876](http://localhost:9876) loads an iframe with the actual Jasmine instance (http://localhost:9876/context.html). This iframe complicates debugging because the developer tools operate on the topmost document per default.
 

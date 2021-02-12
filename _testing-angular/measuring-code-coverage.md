@@ -8,13 +8,13 @@ draft: true
 robots: noindex, follow
 ---
 
-## Measuring code coverage
+# Measuring code coverage
 
 Code coverage, also called test coverage, tells you which parts of your code are executed by running the unit and integration tests. Code coverage is typically expressed as percent values, for example, 79% statements, 53% branches, 74% functions, 78% lines.
 
 Statements are, broadly speaking, control structures like `if` and `for` as well as expressions separated by semicolon. Branches refers to the two branches of `if (…) {…} else {…}` and `… ? … : …` conditions. Functions and lines are self-explanatory.
 
-### Coverage report
+## Coverage report
 
 In Angular’s Karma and Jasmine setup, [Istanbul](https://istanbul.js.org/) is used for measuring test coverage. Istanbul rewrites the code under test to record whether a statement, branch, function and line was called. Then it produces a comprehensive test report.
 
@@ -46,7 +46,7 @@ The spec `it('focusses a photo on click', () => {…})` clicks on the photo item
 
 You can tell from the coverage report above that the `handleClick` method is never called. A key Component behavior is untested.
 
-### How to use the coverage report
+## How to use the coverage report
 
 Now that we know how to generate the report, what should we do with it?
 

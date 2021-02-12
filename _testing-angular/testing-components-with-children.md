@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Components with children
+# Testing Components with children
 
 <aside class="margin-note">Presentational Components</aside>
 
@@ -39,7 +39,7 @@ There are two fundamental ways to test Components with children:
 
 Again, both are valid approaches we are going to discuss.
 
-### Shallow vs. deep rendering
+## Shallow vs. deep rendering
 
 In the counter example application, the [`HomeComponent`](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home.component.ts) contains `CounterComponent`s, `ServiceCounterComponent`s and `NgRxCounterComponent`s. From the [template](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home.component.html):
 
@@ -365,7 +365,7 @@ What if `HomeComponent` uses a wrong element name and the test copies that error
 - [HomeComponent: implementation and test code](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/)
 </div>
 
-### Faking a child Component
+## Faking a child Component
 
 There is a middle ground between a naive unit test and an integration test. Instead of working with empty custom elements, we can render *fake* child Components.
 
@@ -578,7 +578,7 @@ We are going to address these shortcomings in the next chapter.
 - [HomeComponent spec that fakes a child Component](https://github.com/9elements/angular-workshop/blob/main/src/app/components/home/home.component.fake-child.spec.ts)
 </div>
 
-### Faking a child Component with ng-mocks
+## Faking a child Component with ng-mocks
 
 We have manually created a Component fake. This is an important exercise to understand how faking Components works, but it does not produce a robust, versatile fake. In this guide, we cannot discuss all necessary bits and pieces of creating airtight fake Components.
 

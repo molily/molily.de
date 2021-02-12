@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Components with Spectator
+# Testing Components with Spectator
 
 We have used Angular’s testing tools to set up modules, render Components, query the DOM and more. These tools are `TestBed`, `ComponentFixture` and `DebugElement`, also `HttpClientTestingModule` and `RouterTestingModule`.
 
@@ -39,7 +39,7 @@ Both [example applications](#example-applications) are tested with our element h
 
 TIn this chapter, we will discuss testing the Flickr search with Spectator.
 
-### Component with an Input
+## Component with an Input
 
 Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
 
@@ -251,7 +251,7 @@ Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers f
 - [Spectator: Custom matchers](https://github.com/ngneat/spectator#custom-matchers)
 </div>
 
-### Component with children and Service dependency
+## Component with children and Service dependency
 
 Spectator really shines when testing [container Components](#testing-components-with-children). These are Components with children and Service dependencies.
 
@@ -577,7 +577,7 @@ Again, the main difference is that we directly work with Inputs and Outputs.
 - [Spectator: Mocking providers](https://github.com/ngneat/spectator#mocking-providers)
 </div>
 
-### Event handling with Spectator
+## Event handling with Spectator
 
 Most Components handle input events like mouse clicks, keypresses or form field changes. To simulate them, we have used the `triggerEventHandler` method on `DebugElement`s. This method does not actually simulate DOM events, it merely calls the event handlers registered by `(click)="handler($event)"` and the like.
 
@@ -655,7 +655,7 @@ Spectator offers many more convenient shortcuts for triggering events. The Flick
 - [Spectator: Events API](https://github.com/ngneat/spectator#events-api)
 </div>
 
-### Spectator: Summary
+## Spectator: Summary
 
 Spectator is a mature library that addresses the practical needs of Angular developers. It offers solutions for common Angular testing problems. The examples above presented only a few of Spectator’s features.
 

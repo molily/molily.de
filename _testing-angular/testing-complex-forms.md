@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing complex forms
+# Testing complex forms
 
 Forms are the powerhouses of large web applications. Especially enterprise applications revolve around entering and editing data via forms. Therefore, implementing complex forms is a vital feature of the Angular framework.
 
@@ -64,7 +64,7 @@ Again, the Node.js service is for demonstration purposes only. The service holds
 
 With 12 form controls, the sign-up form is not particularly large. But there are subtle details we are going to explore.
 
-### Sign-up form Component
+## Sign-up form Component
 
 The form logic lies in the [`SignupFormComponent`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.ts). The Component depends on the [`SignupService`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts) for communicating with the back-end service.
 
@@ -196,7 +196,7 @@ The `SignupService`’s `signup` method takes the `SignupData` and sends it to t
 - [Angular documentation: Reactive forms](https://angular.io/guide/reactive-forms)
 </div>
 
-### Form validation and errors
+## Form validation and errors
 
 <aside class="margin-note">Sync validators</aside>
 
@@ -288,7 +288,7 @@ We are going to test the `SignupFormComponent` in conjunction with `ControlError
 - [ControlErrorsComponent: full code](https://github.com/molily/angular-form-testing/tree/main/client/src/app/components/control-errors)
 </div>
 
-### Test plan
+## Test plan
 
 What are the important parts of the sign-up form that need to be tested?
 
@@ -302,7 +302,7 @@ What are the important parts of the sign-up form that need to be tested?
 5. [Password type toggle](#password-type-toggle)
 6. [Accessibility of the form structure, field labels and error messages](#testing-form-accessibility)
 
-### Test setup
+## Test setup
 
 Before writing the individual specs, we need to set up the suite in [`signup-form.component.spec.ts`](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts). Let us start with the testing Module configuration.
 
@@ -450,7 +450,7 @@ await setup({
 
 Such a `setup` function is just one way to create fakes and avoid repetition. You might come up with a different solution that serves the same purpose.
 
-### Successful form submission
+## Successful form submission
 
 The first case we need to test is the successful form submission. If the user fills out all required fields and the validations pass, we expect the Component to call `SignupService`’s `signup` method with the entered form data.
 
@@ -673,7 +673,7 @@ Because we are testing DOM changes, we have to call `detectChanges` after each *
 - [Angular API reference: tick](https://angular.io/api/core/testing/tick)
 </div>
 
-### Invalid form
+## Invalid form
 
 Now that we have tested the successful form submission, let us check the handling of an invalid form. What happens if we do not fill out any fields, but submit the form?
 
@@ -697,7 +697,7 @@ it('does not submit an invalid form', fakeAsync(async () => {
 
 This spec does less than the previous. We wait for a second and submit the form without entering data. Finally, we expect that no `SignupService` method has been called.
 
-### Form submission failure
+## Form submission failure
 
 We have already tested the successful form submission. Now let us test the form submission failure.
 
@@ -780,7 +780,7 @@ it('handles signup failure', fakeAsync(async () => {
 }));
 ```
 
-### Required fields
+## Required fields
 
 A vital form logic is that certain fields are required and that the user interface conveys the fact clearly. Let us write a spec that checks whether required fields as marked as such.
 
@@ -967,7 +967,7 @@ it('marks fields as required', async () => {
 - [SignupFormComponent: test code](https://github.com/molily/angular-form-testing/blob/main/client/src/app/components/signup-form/signup-form.component.spec.ts)
 </div>
 
-### Asynchronous validators
+## Asynchronous validators
 
 The sign-up form features asynchronous validators for username, email and password. They are asynchronous because they wait for a second and make an HTTP request. Under the hood, they are implemented using RxJS Observables.
 
@@ -1072,7 +1072,7 @@ As stated above, the two other specs `it('fails if the email is taken', /* … *
 - [Angular documentation: Creating asynchronous validators](https://angular.io/guide/form-validation#creating-asynchronous-validators)
 </div>
 
-### Dynamic field relations
+## Dynamic field relations
 
 The sign-up form has a fixed set of fields. But the `addressLine1` field depends on the value of the `plan` field:
 
@@ -1177,7 +1177,7 @@ As a second indicator, we check for the `ng-invalid` class. This class is set by
 
 Alternatively, we could check for the presence of an error message, like we in the required fields spec.
 
-### Password type toggle
+## Password type toggle
 
 Another small feature of the sign-up form is the password type switcher. This button toggles the visibility of the entered password. Under the hood, it changes the input type from `password` to `text` and vice versa.
 
@@ -1271,7 +1271,7 @@ it('toggles the password display', async () => {
 });
 ```
 
-### Testing form accessibility
+## Testing form accessibility
 
 Web accessibility means that all people can use a web site, regardless of their physical or mental abilities or web access technologies. It is is part of a greater effort called Inclusive Design, the process of creating information systems that account for people with diverse abilities and needs.
 
@@ -1299,7 +1299,7 @@ We have tested some of the features above in the `SignupFormComponent`’s integ
 - [Inclusive Design Principles](https://inclusivedesignprinciples.org/)
 </div>
 
-#### pa11y
+### pa11y
 
 In this guide, we will look at **pa11y**, a Node.js program that checks the accessibility of a web page.
 
@@ -1369,7 +1369,7 @@ Each error message contains the violated WCAG rule, the DOM path to the violatin
 - [Web Content Accessibility Guidelines (WCAG) 2.1](https://www.w3.org/TR/WCAG21/)
 </div>
 
-#### pa11y-ci
+### pa11y-ci
 
 For comprehensive test runs both during development and on a build server, we will set up pa11y in the continuous integration mode.
 
@@ -1418,7 +1418,7 @@ Running Pa11y on 1 URLs:
 - [pa11y-ci: CI-centric accessibility test runner](https://github.com/pa11y/pa11y-ci)
 </div>
 
-#### Start server and run pa11y-ci
+### Start server and run pa11y-ci
 
 The configuration above expects that the development server is already running at http://localhost:4200. Both in development and on a build server, it is useful to start the Angular server, run the accessibility tests and then stop the server again.
 
@@ -1451,7 +1451,7 @@ Now, `npm run a11y` starts the Angular development server, then runs pa11y-ci, f
 - [start-server-and-test: Starts server, waits for URL, then runs test command](https://github.com/bahmutov/start-server-and-test)
 </div>
 
-### Form accessibility: Summary
+## Form accessibility: Summary
 
 pa11y is a powerful set of tools with many options. We have barely touched on its features.
 

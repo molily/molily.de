@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## End-to-end testing
+# End-to-end testing
 
 We have successfully written unit and integration tests using Karma, Jasmine and Angular’s own testing tools. These precise tests give confidence that a single application part – like a Component or Service - or a group of connected parts work as intended.
 
@@ -22,7 +22,7 @@ Manual tests are slow, labor-intensive and cannot be repeated often. They are un
 
 We need automated tests that take the user’s perspective. This is what **end-to-end (E2E) tests** do.
 
-### Strengths of end-to-end tests
+## Strengths of end-to-end tests
 
 As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
@@ -38,7 +38,7 @@ It is much harder to keep the front-end code in sync with the actual API endpoin
 
 It is the goal of end-to-end tests to catch these bugs that cannot be caught by other automated tests.
 
-### Deployment for end-to-end tests
+## Deployment for end-to-end tests
 
 End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
 For that purpose, back-end frameworks typically support configurations for different environments, like development, testing and production.
@@ -51,7 +51,7 @@ The back-end services need to answer requests with deterministic responses. Thir
 
 Since this guide is not about DevOps, we will not go into details here and focus on writing end-to-end tests.
 
-### How end-to-end tests work
+## How end-to-end tests work
 
 An end-to-end test tries to mimic how a user interacts with the application. Typically, the test engine launches an ordinary browser and controls it remotely.
 
@@ -61,7 +61,7 @@ Once the browser is started, the end-to-end test navigates to the application’
 
 Just like unit and integration tests, the end-to-end test then makes expectations: Does the page include the right content? Did the URL change? This way, whole features and user interfaces are examined.
 
-### End-to-end testing frameworks
+## End-to-end testing frameworks
 
 Frameworks for end-to-end tests allow navigating to URLs, simulating user input and inspecting the page content. Apart from that, they have little in common. The test syntax and the way the tests are run differ widely.
 
@@ -101,7 +101,7 @@ In this guide, we will learn about two frameworks, one of each category:
 - [Cypress: Official web site](https://www.cypress.io/)
 </div>
 
-### Introducing Protractor
+## Introducing Protractor
 
 Protractor is an end-to-end testing framework based on WebDriver, made for Angular applications.
 
@@ -146,7 +146,7 @@ If you are looking for Protractor examples, have a look at the Protractor end-to
 - [Protractor: async/await](https://www.protractortest.org/#/async-await)
 </div>
 
-### Introducing Cypress
+## Introducing Cypress
 
 Cypress is an end-to-end testing framework that is not based on WebDriver. There are no Angular-specific features. Any web site can be tested with Cypress.
 
@@ -186,7 +186,7 @@ In case you do need a WebDriver-based framework, have a look at Webdriver.io ins
 - [Webdriver.io](https://webdriver.io/)
 </div>
 
-### Installing Cypress
+## Installing Cypress
 
 An easy way to add Cypress to an existing Angular CLI project is the [Cypress Angular Schematic](https://github.com/briebug/cypress-schematic).
 
@@ -227,7 +227,7 @@ The schematic asks if you would like to remove Protractor from the project.
 
 If you are unsure, just answer “No” so you can revive the Protractor tests at any time if you feel the need.
 
-### Writing an end-to-end test with Cypress
+## Writing an end-to-end test with Cypress
 
 In the project directory, you will find a sub-directory called `cypress`. It contains:
 
@@ -263,7 +263,7 @@ describe('… Feature description …', () => {
 });
 ```
 
-### Testing the counter Component
+## Testing the counter Component
 
 Step by step, we are going to write end-to-end tests for the counter example application.
 
@@ -328,7 +328,7 @@ This `should` style of assertions is different from Jasmine expectations, like `
 - [Chai API reference: equal](https://www.chaijs.com/api/bdd/#method_equal)
 </div>
 
-### Running the Cypress tests
+## Running the Cypress tests
 
 Save the minimal test from the last chapter as `cypress/integration/counter.ts`.
 
@@ -411,7 +411,7 @@ By hovering over a command or assertion, you can travel back in time. The page o
 - [Cypress documentation: The Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html)
 </div>
 
-### Asynchronous tests
+## Asynchronous tests
 
 Every Cypress command takes some time to execute. But from the spec point of view, the execution happens instantly.
 
@@ -427,7 +427,7 @@ In the Jasmine unit and integration tests we wrote, we had to manage time oursel
 
 This is not necessary when writing Cypress tests. The Cypress API is designed for expressiveness and readability. Cypress hides the fact that all commands take time.
 
-### Automatic retries and waiting
+## Automatic retries and waiting
 
 A key feature of Cypress is that it retries certain commands and assertions.
 
@@ -454,7 +454,7 @@ These features makes end-to-end tests more reliable, but also easier to write. I
 - [Cypress documentation: Test Retries](https://docs.cypress.io/guides/guides/test-retries.html)
 </div>
 
-### Testing the counter increment
+## Testing the counter increment
 
 In our first Cypress test, we have checked the page title successfully. Let us test the counter’s increment feature.
 
@@ -486,7 +486,7 @@ Edit the Cypress configuration file `cypress.json` in the Angular project direct
 
 From now on, Cypress will expand the URL passed to `cy.visit` to a full URL using the `baseUrl`. The `baseUrl` configuration option can still be overridden on the command line if necessary.
 
-### Finding elements
+## Finding elements
 
 The next step is to find an element in the current page. Cypress provides several ways to find elements. We are going to use the `cy.get` method to find an element by CSS selector.
 
@@ -521,7 +521,7 @@ But if there is a reason for this particular element type or attribute, your tes
 - [Cypress Best Practices: Selecting Elements](https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements)
 </div>
 
-### Interacting with elements
+## Interacting with elements
 
 To test the counter Component, we want to verify that the start count for the first counter is “5”. The current count lives in an element with the test id `count`. So the element finder is:
 
@@ -661,7 +661,7 @@ All counter features are now tested. In the next chapters, we will refactor the 
 - [Cypress FAQ: How do I get an element’s text contents?](https://docs.cypress.io/faq/questions/using-cypress-faq.html#How-do-I-get-an-element%E2%80%99s-text-contents)
 </div>
 
-### Custom Cypress commands
+## Custom Cypress commands
 
 The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over.
 
@@ -790,7 +790,7 @@ Keep in mind that all these `first` calls are only necessary since there are mul
 - [Cypress documentation: Types for custom commands](https://docs.cypress.io/guides/tooling/typescript-support.html#Types-for-custom-commands)
 </div>
 
-### Testing the Flickr search
+## Testing the Flickr search
 
 We have learned the basics of Cypress by testing the counter app. Let us delve into end-to-end testing with Cypress by testing a more complex app, the Flickr search.
 
@@ -841,7 +841,7 @@ Each type of test should do what it does best. The unit tests already put the di
 
 With Cypress, both type of tests are possible. For a start, we will test against the real Flickr API. Then, we will fake the API.
 
-#### Testing the search form
+### Testing the search form
 
 We create a file called `cypress/integration/flickr-search.ts`. We start with a test suite.
 
@@ -976,7 +976,7 @@ Alternatively, you can start the development server (`ng serve`) in one shell an
 - [Chai API reference: include (contain)](https://www.chaijs.com/api/bdd/#method_include)
 </div>
 
-#### Testing the full photo
+### Testing the full photo
 
 When the user clicks on a link in the result list, the click event is caught and the full photo details are shown next to the list. (If the user clicks with the control/command key pressed or right-clicks, they can follow the link to flickr.com.)
 
@@ -1050,7 +1050,7 @@ Congratulations, we have successfully tested the Flickr search! This example dem
 - [Cypress documentation: Chai-jQuery assertions](https://docs.cypress.io/guides/references/assertions.html#Chai-jQuery)
 </div>
 
-### Page objects
+## Page objects
 
 The Flickr search end-to-end test we have written is fully functional. We can improve the code further to increase clarity and maintainability.
 
@@ -1214,7 +1214,7 @@ You can use the page object pattern when you feel the need to tidy up complex, r
 - [Flickr search page object](https://github.com/9elements/angular-flickr-search/blob/main/cypress/pages/flickr-search.page.ts)
 </div>
 
-### Faking the Flickr API
+## Faking the Flickr API
 
 The end-to-end test we wrote for the Flickr search uses the live Flickr API. As discussed, this makes the test realistic.
 
@@ -1367,7 +1367,7 @@ In the Flickr search repository, you will find the same test with `cy.server` / 
 - [Cypress API reference: intercept](https://docs.cypress.io/api/commands/intercept.html)
 </div>
 
-### End-to-end testing: Summary
+## End-to-end testing: Summary
 
 End-to-end tests used to be expensive while the outcome was poor. It was hard to write tests that pass reliably when the application is working correctly. This time could not be invested in writing useful tests that uncover bugs and regressions.
 

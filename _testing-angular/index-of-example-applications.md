@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Index of example applications
+# Index of example applications
 
 All example applications are repositories on GitHub:
 

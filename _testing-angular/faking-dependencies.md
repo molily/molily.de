@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Faking dependencies
+# Faking dependencies
 
 When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
 
@@ -22,7 +22,7 @@ Since these terms are used inconsistently and their difference is subtle, **this
 
 Creating and injecting fake dependencies is essential for unit tests. This technique is double-edged – powerful and dangerous at the same time. Since we will create many fakes throughout this guide, we need to set up **rules for faking dependencies** to apply the technique safely.
 
-### Equivalence of fake and original
+## Equivalence of fake and original
 
 A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same public methods and properties.
 
@@ -46,7 +46,7 @@ We can use TypeScript to **enforce that the fake has a matching type**. The fake
 
 Then, TypeScript assures the equivalence. The compiler reminds us to update the implementation and the fake. The TypeScript code simply does not compile if we forget that. We will learn how to declare matching types in the upcoming examples.
 
-### Effective faking
+## Effective faking
 
 The original dependency code has side effects that need to be suppressed during testing. The fake needs to *effectively* prevent the original code from being executed. Strange errors may happen if a mix of fake and original code is executed.
 
@@ -58,7 +58,7 @@ This is dangerous since we may forget to overwrite methods. When the code under 
 
 This guide will present thorough faking techniques that do not allow a slip. They imitate the original code while shielding the original from calls.
 
-### Faking functions with Jasmine spies
+## Faking functions with Jasmine spies
 
 Jasmine provides simple yet powerful patterns to create fake implementations. The most basic pattern is the **Jasmine spy** for replacing a function dependency.
 
@@ -276,7 +276,7 @@ Again, this is a plain TypeScript example to illustrate the usage of spies. Usua
 - [Jasmine reference: Spies](https://jasmine.github.io/api/edge/Spy.html)
 </div>
 
-### Spying on existing methods
+## Spying on existing methods
 
 We have used `jasmine.createSpy('name')` to create a standalone spy and have injected it into the constructor. Explicit constructor injection is straight-forward and used extensively in Angular code.
 

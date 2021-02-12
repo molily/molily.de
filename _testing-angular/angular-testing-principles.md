@@ -8,9 +8,9 @@ draft: true
 robots: noindex, follow
 ---
 
-## Angular testing principles
+# Angular testing principles
 
-### Testability
+## Testability
 
 In contrast to other popular front-end JavaScript libraries, Angular is an opinionated, comprehensive framework that covers all important aspects of developing a JavaScript web application. Angular provides high-level structure, low-level building blocks and means to bundle everything together into a usable application.
 
@@ -24,7 +24,7 @@ An important reason is **testability**. Angular’s architecture guarantees that
 
 We know from experience that code that is easy to test is also simpler, better structured, easier to read and easier to understand. The main technique of writing testable code is to break code into smaller chunks that “do one thing and do it well”. Then couple the chunks loosely.
 
-### Dependency injection and faking
+## Dependency injection and faking
 
 A major design pattern for loose coupling is **dependency injection** and the underlying **inversion of control**. Instead of creating a dependency itself, an application part merely declares the dependency. The tedious task of creating and providing the dependency is delegated to an *injector* that sits on top.
 
@@ -47,7 +47,7 @@ A large portion of the time spent while writing tests is spent on decoupling an 
 - [Angular guide: Dependency injection](https://angular.io/guide/dependency-injection)
 </div>
 
-### Testing tools
+## Testing tools
 
 Angular provides solid testing tools out of the box. When you create an Angular project using the command line interface, it comes with a fully-working testing setup for unit, integration and end-to-end tests.
 
@@ -65,7 +65,7 @@ These alternatives are not better or worse, they simply make different trade-off
 
 Once you have reached the limits of a particular setup, you should investigate whether alternatives make testing your application easier, faster and more reliable.
 
-### Testing conventions
+## Testing conventions
 
 Angular offers some tools and conventions on testing. By design, they are flexible enough to support different ways of testing. So you need to decide how to apply them.
 
@@ -81,7 +81,7 @@ Therefore, you should create **high-level testing tools** that cast your convent
 
 This guide values strong conventions and introduces helper functions that codify these conventions. Again, your mileage may vary. You are free to adapt these tools to your needs or build other testing helpers.
 
-### Running the unit and integration tests
+## Running the unit and integration tests
 
 The Angular command line interface (CLI) allows you to run the unit, integration and end-to-end tests. If you have not installed the CLI yet or need to update to the latest version, run this command on your shell:
 
@@ -161,7 +161,7 @@ Test-driven development means letting the red-green cycle guide your development
 - [Angular CLI reference: ng test](https://angular.io/cli/test)
 </div>
 
-### Configuring Karma and Jasmine
+## Configuring Karma and Jasmine
 
 Karma and Jasmine are configured in the file `karma.conf.js` in the project’s root directory. There are many configuration options and plenty of plugins, so we will only mention a few.
 

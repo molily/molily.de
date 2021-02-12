@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Components depending on Services
+# Testing Components depending on Services
 
 We have successfully tested the independent `CounterComponent` as well as the container `HomeComponent`. The next Component on our list is the [ServiceCounterComponent](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter).
 
@@ -35,7 +35,7 @@ Again, there are two fundamental ways to test the Component:
 
 This guide will demonstrate both. For your Components, you need to make a decision on an individual basis. These questions may guide you: Which type of test is more beneficial, more meaningful? Which test is easier to set up and to maintain in the long run?
 
-### Service dependency integration test
+## Service dependency integration test
 
 For the `ServiceCounterComponent`, the integration test is much easier to set up than the unit test. The trivial `CounterService` has little logic and no further dependencies. It does not have side effects we need to suppress in the testing environment, like HTTP requests. It only changes its internal state.
 
@@ -105,7 +105,7 @@ If we want an integration test to verify that the Component stores the count in 
 - [ServiceCounterComponent: integration test](https://github.com/9elements/angular-workshop/blob/main/src/app/components/service-counter/service-counter.component.spec.ts)
 </div>
 
-### Faking Service dependencies
+## Faking Service dependencies
 
 Let us move on to the **unit test** for the `ServiceCounterComponent`. To tackle this challenge, we need to learn the art of faking Service dependencies.
 
@@ -388,7 +388,7 @@ describe('ServiceCounterComponent: unit test', () => {
 - [ServiceCounterComponent: implementation and test code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter)
 </div>
 
-### Fake Service with minimal logic
+## Fake Service with minimal logic
 
 The specs above check whether user interaction calls the Service methods. They do not check whether the Component re-renders the new count after having called the Service.
 
@@ -553,7 +553,7 @@ In reality, Services are more complex and Components process the data they recei
 - [ServiceCounterComponent: unit test](https://github.com/9elements/angular-workshop/blob/main/src/app/components/service-counter/service-counter.component.spec.ts)
 </div>
 
-### Faking Services: Summary
+## Faking Services: Summary
 
 Creating fake Service dependencies and verifying their usage is one of the most challenging problems when testing Angular applications. This guide can only catch a glimpse on the subject.
 

@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Directives
+# Testing Directives
 
 Angular beginners quickly encounter four core concepts: Modules, Components, Services and Pipes. A lesser known core concept are Directives. Without knowing, even beginners are using Directives, because Directives are everywhere.
 
@@ -20,7 +20,7 @@ In Angular, there are three types of Directives:
 
 We have already tested Components. We have yet to test the two other types of Directives.
 
-### Testing Attribute Directives
+## Testing Attribute Directives
 
 The name Attribute Directive comes from the attribute selector, for example `[ngModel]`. An Attribute Directive does not have a template and cannot alter the DOM structure.
 
@@ -32,7 +32,7 @@ Attributes Directives are often used for changing the style of an element, eithe
 
 Most styling logic can be implemented using CSS alone, no JavaScript code is necessary. But sometimes JavaScript is required to set inline styles or add classes programmatically.
 
-#### ThresholdWarningDirective
+### ThresholdWarningDirective
 
 None of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
 
@@ -142,7 +142,7 @@ Last but not least, the `overThreshold` property is bound to a class of the same
 public overThreshold = false;
 ```
 
-#### ThresholdWarningDirective test
+### ThresholdWarningDirective test
 
 Now that we understand what is going on, we need to replicate the workflow in our test.
 
@@ -305,7 +305,7 @@ describe('ThresholdWarningDirective', () => {
 - [ThresholdWarningDirective: test code](https://github.com/molily/threshold-warning-directive/blob/main/src/app/threshold-warning.directive.spec.ts)
 </div>
 
-### Testing Structural Directives
+## Testing Structural Directives
 
 A Structural Directive does not have a template like a Component, but operates on an internal `ng-template`. The Directive renders the template into the DOM programmatically, passing context data to the template.
 
@@ -320,7 +320,7 @@ A Structural Directive uses an attribute selector, like `[ngIf]`. The attribute 
 
 This guide assumes that you roughly understand how Structural Directives work and how the microsyntax translates to Directive Inputs. Please refer to the [comprehensive official guide on Structural Directives](https://angular.io/guide/structural-directives).
 
-#### PaginateDirective
+### PaginateDirective
 
 We are introducing and testing the `PaginateDirective`, a complex Structural Directive.
 
@@ -561,7 +561,7 @@ The inner workings of the `PaginateDirective` are not relevant for testing, so w
 - [PaginateDirective: implementation code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.ts)
 </div>
 
-#### PaginateDirective test
+### PaginateDirective test
 
 We have explored all features of `PaginateDirective` and are now ready to test them!
 

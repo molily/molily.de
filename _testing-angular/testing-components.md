@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Components
+# Testing Components
 
 Components are the power houses of an Angular application. Components are composed to form the user interface.
 
@@ -25,7 +25,7 @@ A Component deals with several concerns, among others:
 
 All these tasks need to be tested properly.
 
-### Unit test for the counter Component
+## Unit test for the counter Component
 
 As a first example, we are going to test the [CounterComponent](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter).
 
@@ -57,7 +57,7 @@ Writing down what the Component does already helps to structure the unit test. T
 - [CounterComponent: full code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter)
 </div>
 
-### TestBed
+## TestBed
 
 Several chores are necessary to render a Component in Angular, even the simple counter Component. If you look into the [main.ts](https://github.com/9elements/angular-workshop/blob/main/src/main.ts) and the [AppModule](https://github.com/9elements/angular-workshop/blob/main/src/app/app.module.ts) of a typical Angular application, you find that a “platform” is created, a Module is declared and this Module is bootstrapped.
 
@@ -76,7 +76,7 @@ Instead, the Angular team provides the `TestBed` to ease unit testing. The `Test
 - [Testing Utility APIs: TestBed](https://angular.io/guide/testing-utility-apis#testbed-class-summary)
 </div>
 
-### Configuring the testing Module
+## Configuring the testing Module
 
 The `TestBed` comes with a testing Module that is configured like normal Modules in your application: You can declare Components, Directives and Pipes, provide Services and other Injectables as well as import other Modules. `TestBed` has a static method `configureTestingModule` that accepts a Module definition:
 
@@ -120,7 +120,7 @@ TestBed
 
 You will see this pattern in most Angular tests that rely on the `TestBed`.
 
-### Rendering the Component
+## Rendering the Component
 
 Now we have a fully-configured testing Module with compiled Components. Finally, we can render the Component under test using `createComponent`:
 
@@ -148,7 +148,7 @@ fixture.detectChanges();
 - [Angular API reference: ComponentFixture](https://angular.io/api/core/testing/ComponentFixture)
 </div>
 
-### TestBed and Jasmine
+## TestBed and Jasmine
 
 The code for rendering a Component using the `TestBed` is now complete. Let us wrap the code in a Jasmine test suite.
 
@@ -189,7 +189,7 @@ Per default, Jasmine expects that your testing code is synchronous. The function
 
 Now we have built the scaffold for our test using the `TestBed`, we need to write the first spec. `createComponent` returns a fixture, an instance of `ComponentFixture`. What is the fixture and what does it provide?
 
-### ComponentFixture and DebugElement
+## ComponentFixture and DebugElement
 
 The term fixture is borrowed from real-world testing of mechanical parts or electronic devices. A fixture is a standardized frame into which the test object is mounted. The fixture holds the device under test and connects to electrical contacts so measurements can be taken.
 
@@ -255,7 +255,7 @@ When you use `nativeElement`, you need to learn about the DOM interface of the s
 - [Angular API reference: DebugElement](https://angular.io/api/core/DebugElement)
 </div>
 
-### Writing the first Component spec
+## Writing the first Component spec
 
 We have compiled a test suite that renders the `CounterComponent`. We have met Angular’s primary testing abstractions: `TestBed`, `ComponentFixture` and `DebugElement`.
 
@@ -287,7 +287,7 @@ To click on the increment button, two actions are necessary:
 
 Let us learn about finding elements in the DOM first.
 
-### Querying the DOM with test ids
+## Querying the DOM with test ids
 
 Every `DebugElement` features the methods `query` and `queryAll` for finding descendant elements (children, grandchildren and so forth).
 
@@ -360,7 +360,7 @@ The Angular testing tools are neutral when it comes to DOM querying. They tolera
 - [Angular API reference: By.css](https://angular.io/api/platform-browser/By)
 </div>
 
-### Triggering event handlers
+## Triggering event handlers
 
 Now that we have marked and got hold of the increment button, we need to click on it.
 
@@ -394,7 +394,7 @@ It is worth noting that `triggerEventHandler` does not dispatch a synthetic DOM 
 
 This is fine as long as the event handler is registered on the element itself. If the event handler is registered on a parent and relies on event bubbling, you need to call `triggerEventHandler` directly on that parent. `triggerEventHandler` does not simulate event bubbling or any other effect a real event might have.
 
-### Expecting text output
+## Expecting text output
 
 We have completed the *Act* phase in which the test clicks on the increment button. In the *Assert* phase, we need to expect that the displayed count changes from “0” to “1”.
 
@@ -530,7 +530,7 @@ Congratulations! We have written our first Component test. It is not complete ye
 - [CounterComponent: test code](https://github.com/9elements/angular-workshop/blob/main/src/app/components/counter/counter.component.spec.ts)
 </div>
 
-### Testing helpers
+## Testing helpers
 
 The next `CounterComponent` feature we need to test is the decrement button. It is very similar to the increment button, so the spec looks almost the same.
 
@@ -688,7 +688,7 @@ That is much better to read and less to write! You can tell what the spec is doi
 - [Element spec helpers: full code](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
 </div>
 
-### Filling out forms
+## Filling out forms
 
 We have tested the increment and decrement button successfully. The remaining user-facing feature we need to test is the reset feature.
 
@@ -846,7 +846,7 @@ This is it! We have tested the reset form with both valid and invalid input.
 - [Element spec helpers: full code](https://github.com/9elements/angular-workshop/blob/main/src/app/spec-helpers/element.spec-helper.ts)
 </div>
 
-### Testing Inputs
+## Testing Inputs
 
 `CounterComponent` has an Input `startCount` that sets the initial count. We need to test that the counter handles the Input properly.
 
@@ -941,7 +941,7 @@ describe('CounterComponent', () => {
 
 The `CounterComponent` expects a `number` Input and renders it into the DOM. When reading text from the DOM, we always deal with strings. What is why we pass in a number `123` but expect to find the string `'123'`.
 
-### Testing Outputs
+## Testing Outputs
 
 While Inputs pass data from parent to child, Outputs send data from child to parent. In combination, a Component can perform a specific operation just with the required data.
 
@@ -1078,7 +1078,7 @@ it('emits countChange events on reset', () => {
 });
 ```
 
-### Repetitive Component specs
+## Repetitive Component specs
 
 Testing the `countChange` Output with three specs works fine, but the code is highly repetitive. A testing helper could reduce the repetition. Experts disagree on whether repetitive testing code is a problem at all.
 
@@ -1135,7 +1135,7 @@ This example requires some RxJS knowledge. We are going to encounter RxJS Observ
 - [CounterComponent: test code](https://github.com/9elements/angular-workshop/blob/main/src/app/components/counter/counter.component.spec.ts)
 </div>
 
-### Black vs. white box Component testing
+## Black vs. white box Component testing
 
 Component tests are most meaningful if they closely mimic how the user interacts with the Component. The tests we have written apply this principle. We have worked directly with the DOM to read text, click on buttons and fill out form fields because this is what the user does.
 

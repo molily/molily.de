@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Pipes
+# Testing Pipes
 
 An Angular Pipe is a special function that is called from a Component template. Its purpose is to transform a value: You pass a value to the Pipe, the Pipe computes a new value and returns it.
 
@@ -30,7 +30,7 @@ Examples for built-in Pipes are `DatePipe`, `CurrencyPipe` and `DecimalPipe`. Th
 
 Most Pipes are *pure*, meaning they merely take a value and compute a new value. They do not have *side effects*: They do not change the input value and they do not change the state of other application parts. Like pure functions, pure Pipes are relatively easy to test.
 
-### GreetPipe
+## GreetPipe
 
 Let us study the structure of a Pipe first to find ways to test it. In essence, a Pipe is class with a public `transform` method. Here is a simple Pipe that expects a name and greets the user.
 
@@ -64,7 +64,7 @@ The first way requires minimal setup, is fast and straight-forward. The second c
 
 Both ways allow to test Pipes that depend on Services. Either we provide the original dependencies, writing an integration test. Or we provide fake dependencies, writing a unit test.
 
-### GreetPipe test
+## GreetPipe test
 
 The `GreetPipe` does not have any dependencies. We opt for the first way and write a unit test that examines the single instance.
 
@@ -88,7 +88,7 @@ We call the `transform` method with the string `'Julie'` and expect the output `
 
 This is everything that needs to be tested in the `GreetPipe` example. If the `transform` method contains more logic that needs to be tested, we add more specs that call the method with different input.
 
-### Testing Pipes with dependencies
+## Testing Pipes with dependencies
 
 Many Pipes depend on local settings, including the user interface language, date and number formatting rules, as well as the selected country, region or currency.
 
@@ -111,7 +111,7 @@ See the TranslatePipe in action
 
 The example application lets you change the user interface language during runtime. A popular solution for this task is the [ngx-translate](https://github.com/ngx-translate/core) library. For the purpose of this guide, we will adopt ngx-translate’s proven approach but implement and test the code ourselves.
 
-#### TranslateService
+### TranslateService
 
 The current language is stored in the `TranslateService`. This Service also loads and holds the translations for the current language.
 
@@ -187,7 +187,7 @@ In the example project, the `AppComponent` depends on the `TranslateService`. On
 - [TranslateService: test code](https://github.com/molily/translate-pipe/blob/main/src/app/translate.service.spec.ts)
 </div>
 
-#### TranslatePipe
+### TranslatePipe
 
 To show a translated label, a Component could call the Service’s `get` method manually for each translation key. Instead, we introduce the `TranslatePipe` to do the heavy lifting. It lets us write:
 
@@ -281,7 +281,7 @@ The same process happens when the user changes the language and new translations
 - [Angular API reference: ChangeDetectorRef](https://angular.io/api/core/ChangeDetectorRef)
 </div>
 
-#### TranslatePipe test
+### TranslatePipe test
 
 Now let us test the `TranslatePipe`! We can either write a test that integrates the `TranslateService` dependency. Or we write a unit test that replaces the dependency with a fake.
 

@@ -8,7 +8,7 @@ draft: true
 robots: noindex, follow
 ---
 
-## Testing Services
+# Testing Services
 
 In an Angular application, Services are responsible for fetching, storing and processing data. Services are singletons, meaning there is only one instance of a Service during runtime. They are fit for central data storage, HTTP and WebSocket communication as well as data validation.
 
@@ -38,7 +38,7 @@ So what does a Service do and how do we test it? Services are diverse, but some 
 
   In the unit test, we replace the dependency with a fake that returns canned responses.
 
-### Testing a Service with internal state
+## Testing a Service with internal state
 
 Let us start with testing the [`CounterService`](https://github.com/9elements/angular-workshop/blob/main/src/app/services/counter.service.ts). By now, you should be familiar with the Service. As a reminder, here is the shape including private members:
 
@@ -300,7 +300,7 @@ describe('CounterService', () => {
 - [CounterService: test code](https://github.com/9elements/angular-workshop/blob/main/src/app/services/counter.service.spec.ts)
 </div>
 
-### Testing a Service that sends HTTP requests
+## Testing a Service that sends HTTP requests
 
 Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with a dependency.
 
@@ -382,7 +382,7 @@ Our test will perform the following steps:
 - [Angular API reference: HttpClientTestingModule](https://angular.io/api/common/http/testing/HttpClientTestingModule)
 </div>
 
-#### Call the method under test
+### Call the method under test
 
 In the first step, we call the method under test, `searchPublicPhotos`. The search term is simply a fixed string.
 
@@ -413,7 +413,7 @@ describe('FlickrService', () => {
 
 We subscribe to the Observable returned by `searchPublicPhotos` so the (fake) HTTP request is sent. We will investigate the response, `actualPhotos`, later in step four.
 
-#### Find pending requests
+### Find pending requests
 
 In the second step, we find the pending request using the [`HttpTestingController`](https://angular.io/api/common/http/testing/HttpTestingController). This class is part of the `HttpClientTestingModule`. We get hold of the instance by calling `TestBed.inject(HttpTestingController)`.
 
@@ -462,7 +462,7 @@ describe('FlickrService', () => {
 - [Angular API reference: TestRequest](https://angular.io/api/common/http/testing/TestRequest)
 </div>
 
-#### Respond with fake data
+### Respond with fake data
 
 Now that we have the pending request at hand, we respond to it with an object that mimics the original API response. The Flickr API returns a complex object with an array of photos objects deep within. In the `FlickrService` test, we only care about the payload, the photos array.
 
@@ -474,7 +474,7 @@ We use the request’s `flush` method to respond with fake data. This simulates 
 request.flush({ photos: { photo: photos } });
 ```
 
-#### Check the result of the method call
+### Check the result of the method call
 
 The spec has proven that `searchPublicPhotos` makes a request to the expected URL. It still needs to prove that the method passes through the desired part of the API response. In particular, it needs to prove that the Observable emits the `photos` array.
 
@@ -522,7 +522,7 @@ expect(actualPhotos).toEqual(photos);
 
 The `expect` call is located outside of the `next` callback function to ensure it is definitely called. If the Observable emits no value or a wrong value, the spec fails.
 
-#### Verify that all requests have been answered
+### Verify that all requests have been answered
 
 In the last step, we ensure that there are no pending requests left. We expect the method under test to make *one* request to a specific URL. We have found the request with `expectOne` and have answered it with `flush`.
 
@@ -577,7 +577,7 @@ describe('FlickrService', () => {
 - [Photo spec helper](https://github.com/9elements/angular-flickr-search/blob/main/src/app/spec-helpers/photo.spec-helper.ts)
 </div>
 
-#### Testing the error case
+### Testing the error case
 
 Are we done with testing `searchPublicPhotos`? We have tested the success case in which the server returns a `200 OK`. But we have not tested the error case yet!
 
@@ -717,7 +717,7 @@ This approach is recommended for Service methods that have a dedicated error han
 - [MDN reference: ErrorEvent](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent)
 </div>
 
-#### Alternatives for finding pending requests
+### Alternatives for finding pending requests
 
 We have used `controller.expectOne` to find a request that matches the expected URL. Sometimes it is necessary to specify more criteria, like the method (`GET`, `POST`, etc.), headers or the request body.
 
@@ -819,7 +819,7 @@ We verify the number of requests and also the body of each request. If these che
 - [Angular API reference: TestRequest](https://angular.io/api/common/http/testing/TestRequest)
 </div>
 
-### Testing Services: Summary
+## Testing Services: Summary
 
 All in all, testing Services is easier than testing other Angular application parts. Most Services have a clear purpose and a well-defined public API.
 
