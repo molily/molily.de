@@ -10,7 +10,7 @@ robots: noindex, follow
 
 # Faking dependencies
 
-When testing a piece of code, you need to decide between an [integration test](#integration-tests) and a [unit test](#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
+When testing a piece of code, you need to decide between an [integration test](../testing-principles/#integration-tests) and a [unit test](../testing-principles/#unit-tests). To recap, the integration test includes (“integrates”) the dependencies. In contrast, the unit test replaces the dependencies with fakes in order to isolate the code under test.
 
 <aside class="margin-note">Also known as mocking</aside>
 
@@ -269,7 +269,7 @@ In the *Act* phase, we call the method under test but anticipate that it throws 
 
 In the *Assert* phase, we make two expectations again. Instead of verifying the return value, we make sure the caught error is an `Error` instance with a useful error message. Finally, we verify that the spy has been called with the right value, just like in the spec for the success case.
 
-Again, this is a plain TypeScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](#testing-a-service-that-sends-http-requests)).
+Again, this is a plain TypeScript example to illustrate the usage of spies. Usually, an Angular Service does not use `fetch` directly but uses `HttpClient` instead. We will get to know testing this later (see [Testing a Service that sends HTTP requests](../testing-services/#testing-a-service-that-sends-http-requests)).
 
 <div class="book-sources" markdown="1">
 - [TodoService: Implementation and test code](https://github.com/9elements/angular-workshop/blob/main/src/app/services/todos-service.spec.ts)

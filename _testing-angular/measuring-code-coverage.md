@@ -50,7 +50,7 @@ You can tell from the coverage report above that the `handleClick` method is nev
 
 Now that we know how to generate the report, what should we do with it?
 
-In the chapter [The right amount of testing](#the-right-amount-of-testing), we have identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
+In the chapter [The right amount of testing](../testing-principles/#the-right-amount-of-testing), we have identified code coverage as a useful, but flawed metric. As a quantitative measure, code coverage cannot assess the quality of your tests.
 
 Software testing is not a competition. We should not try to reach a particular score just for the sake of it. For what purpose are we measuring code coverage then?
 
@@ -58,13 +58,13 @@ Software testing is not a competition. We should not try to reach a particular s
 
 The coverage report is a valuable tool you should use while writing tests. It *reveals code behavior that is not yet tested*. The report not only guides your testing, it also deepens your understanding of how your tests work.
 
-Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](#tailoring-your-testing-approach), testing should be part of the development routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
+Whatever your current coverage score is, use the reporting to monitor and improve your testing practice. As described in [Tailoring your testing approach](../testing-principles/#tailoring-your-testing-approach), testing should be part of the development routine. New features should include tests, bug fixes should include a test as proof and to prevent regressions.
 
 <aside class="margin-note">Improve coverage</aside>
 
 Writing new code and changing existing code should not lower the coverage score, but gradually increase it. This means if your existing tests cover 75% lines of code, new code needs to be at least 75% covered. Otherwise the score slowly deteriorates.
 
-It is common practice to run the unit and integration tests in a continuous integration environment and measure the code coverage. To enforce a certain coverage score and to prevent decline, you can configure **thresholds** in the [Karma configuration](#configuring-karma-and-jasmine).
+It is common practice to run the unit and integration tests in a continuous integration environment and measure the code coverage. To enforce a certain coverage score and to prevent decline, you can configure **thresholds** in the [Karma configuration](../angular-testing-principles/#configuring-karma-and-jasmine).
 
 In `karma.conf.js`, you can add global thresholds for statements, branches, functions and lines.
 

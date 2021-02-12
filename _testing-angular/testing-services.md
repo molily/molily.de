@@ -32,7 +32,7 @@ So what does a Service do and how do we test it? Services are diverse, but some 
 
 - Services store data. They hold an internal state. We can get or set the state.
 
-  In the test, we check whether the state is changed correctly. Since the state should be held in private properties, we cannot access the state directly. We test the state change by calling public methods. We should not peek into the [black box](#black-box-vs-white-box-testing).
+  In the test, we check whether the state is changed correctly. Since the state should be held in private properties, we cannot access the state directly. We test the state change by calling public methods. We should not peek into the [black box](../testing-principles/#black-box-vs-white-box-testing).
 
 - Services interact with dependencies. These are often other Services. For example, a Service might send HTTP requests via Angular’s `HttpClient`.
 
@@ -114,7 +114,7 @@ Let us start with writing the spec `it('returns the count', /* … */)`. It test
 
 <aside class="margin-note">Change variable value</aside>
 
-For testing the Observable, we use the same pattern that we have used for [testing a Component Output](#testing-outputs):
+For testing the Observable, we use the same pattern that we have used for [testing a Component Output](../testing-components/#testing-outputs):
 
 1. We declare a variable `actualCount` that is initially undefined.
 2. We subscribe to the Observable. We assign the emitted value to the `actualCount` variable.
@@ -304,7 +304,7 @@ describe('CounterService', () => {
 
 Services without dependencies, like `CounterService`, are relatively easy to test. Let us examine a more complex Service with a dependency.
 
-In the [Flickr search](#the-flickr-photo-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/main/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
+In the [Flickr search](../example-applications/#the-flickr-photo-search), the [FlickrService](https://github.com/9elements/angular-flickr-search/blob/main/src/app/services/flickr.service.ts) is responsible for searching photos via the Flickr API. It makes an HTTP GET request to www.flickr.com. The server responds with JSON. Here is the full code:
 
 ```typescript
 @Injectable()
@@ -498,7 +498,7 @@ flickrService.searchPublicPhotos(searchTerm).subscribe(
 );
 ```
 
-This leads to a problem that is known from [testing Outputs](#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. Despite the defect, Jasmine thinks that all is fine.
+This leads to a problem that is known from [testing Outputs](../testing-components/#testing-outputs): If the code under test is broken, the Observable never emits. The `next` callback with `expect` will not be called. Despite the defect, Jasmine thinks that all is fine.
 
 <aside class="margin-note">Expect changed value</aside>
 

@@ -354,7 +354,7 @@ const incrementButton = debugElement.query(
 
 There is a nuanced discussion around the best way to find elements during testing. Certainly, there are several valid and elaborate approaches. This guide will only present one possible approach that is simple and approachable.
 
-The Angular testing tools are neutral when it comes to DOM querying. They tolerate different approaches. After consideration, you should opt for one specific solution, document it as a [testing convention](#testing-conventions) and apply it consistently across all tests.
+The Angular testing tools are neutral when it comes to DOM querying. They tolerate different approaches. After consideration, you should opt for one specific solution, document it as a [testing convention](../angular-testing-principles/#testing-conventions) and apply it consistently across all tests.
 
 <div class="book-sources" markdown="1">
 - [Angular API reference: By.css](https://angular.io/api/platform-browser/By)
@@ -576,7 +576,7 @@ These tasks are highly generic and they will appear in almost every Component sp
 
 A **testing helper** is a piece of code that makes writing tests easier. It makes test code more concise and more meaningful. Since a spec should describe the implementation, a readable spec is better than an obscure, convoluted one.
 
-Your testing helpers should cast your [testing conventions](#testing-conventions) into code. They not only improve the individual test, but make sure all tests use the same patterns and work the same.
+Your testing helpers should cast your [testing conventions](../angular-testing-principles/#testing-conventions) into code. They not only improve the individual test, but make sure all tests use the same patterns and work the same.
 
 A testing helper can be a simple function, but it can also be an abstraction class or a Jasmine extension. For the start, we extract common tasks into plain functions.
 
@@ -815,7 +815,7 @@ it('resets the count', () => {
 });
 ```
 
-While the reset feature is simple, this is how to test most form logic. Later, we will learn how to [test complex forms](#testing-complex-forms).
+While the reset feature is simple, this is how to test most form logic. Later, we will learn how to [test complex forms](../testing-complex-forms/).
 
 <aside class="margin-note">Invalid input</aside>
 
@@ -1139,7 +1139,7 @@ This example requires some RxJS knowledge. We are going to encounter RxJS Observ
 
 Component tests are most meaningful if they closely mimic how the user interacts with the Component. The tests we have written apply this principle. We have worked directly with the DOM to read text, click on buttons and fill out form fields because this is what the user does.
 
-These tests are black box tests. We have already talked about [black box vs. white box testing](#black-box-vs-white-box-testing) in theory. Both are valid testing methods. As stated, this guide advises to use black box testing first and foremost.
+These tests are black box tests. We have already talked about [black box vs. white box testing](../testing-principles/#black-box-vs-white-box-testing) in theory. Both are valid testing methods. As stated, this guide advises to use black box testing first and foremost.
 
 A common technique to enforce black box testing is to mark internal methods as `private` so they cannot be called in the test. The test should only inspect the documented, public API.
 
@@ -1214,7 +1214,7 @@ That being said, white box testing is viable advanced technique. Experienced tes
 
 The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
 
-<aside class="margin-note">Recommendations</aside>
+<aside class="margin-note">Recommendation</aside>
 
 <div class="wide-table-wrapper">
 <table class="wide-table">

@@ -34,7 +34,7 @@ Most styling logic can be implemented using CSS alone, no JavaScript code is nec
 
 ### ThresholdWarningDirective
 
-None of our [example applications](#example-applications) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
+None of our [example applications](../example-applications/) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
 
 This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
 
@@ -160,7 +160,7 @@ First of all, Attribute and Structural Directives need an existing host element 
 class HostComponent {}
 ```
 
-We are going to render this Component. We need a standard [Component test setup](#testing-components) using the `TestBed`.
+We are going to render this Component. We need a standard [Component test setup](../testing-components/#configuring-the-testing-module) using the `TestBed`.
 
 ```typescript
 describe('ThresholdWarningDirective', () => {
@@ -183,7 +183,7 @@ When configuring the testing Module, we declare both the Directive under test an
 
 <aside class="margin-note">Find input element</aside>
 
-In the following specs, we need to access the input element. We use the standard approach: a `data-testid` attribute and the `findEl` [testing helper](#testing-helpers).
+In the following specs, we need to access the input element. We use the standard approach: a `data-testid` attribute and the `findEl` [testing helper](../testing-components/#testing-helpers).
 
 For convenience, we pick the input element in the `beforeEach` block. We save it in a shared variable named `input`.
 
@@ -634,7 +634,7 @@ class HostComponent {
 }
 ```
 
-The template code already contains `data-testid` attributes. This is how we find and examine the elements in the test (see [Querying the DOM with test ids](#querying-the-dom-with-test-ids)).
+The template code already contains `data-testid` attributes. This is how we find and examine the elements in the test (see [Querying the DOM with test ids](../testing-components/#querying-the-dom-with-test-ids)).
 
 This is quite a setup, but after all, we want to test the `PaginateDirective` under realistic conditions.
 
@@ -706,7 +706,7 @@ it('renders the items of the first page', () => {
 
 The next spec proves that the controls template is rendered passing the current page and the total number of pages.
 
-The elements have have a `data-testid="page"` and `data-testid="pages"`, respectively. We use the [`expectText` testing helper](#testing-helpers) to check their text content.
+The elements have have a `data-testid="page"` and `data-testid="pages"`, respectively. We use the [`expectText` testing helper](../testing-components/#testing-helpers) to check their text content.
 
 ```typescript
 it('renders the current page and total pages', () => {

@@ -12,7 +12,7 @@ robots: noindex, follow
 
 Forms are the powerhouses of large web applications. Especially enterprise applications revolve around entering and editing data via forms. Therefore, implementing complex forms is a vital feature of the Angular framework.
 
-We have already learned how to [fill out form fields](#filling-out-forms) when testing the counter Component. In doing so, we developed the `setFieldValue` testing helper.
+We have already learned how to [fill out form fields](../testing-components/#filling-out-forms) when testing the counter Component. In doing so, we developed the `setFieldValue` testing helper.
 
 The simple forms we have dealt with served the purpose of entering one value. We have tested them by filling out the field and submitting the form. Now we will look at a more complex example.
 
@@ -340,7 +340,7 @@ declarations: [
 
 <aside class="margin-note">Fake Service</aside>
 
-The `SignupFormComponent` depends on the `SignupService`. We do not want HTTP requests to the back-end when the tests run, so we [replace the Service with a fake instance](#faking-service-dependencies).
+The `SignupFormComponent` depends on the `SignupService`. We do not want HTTP requests to the back-end when the tests run, so we [replace the Service with a fake instance](../testing-components-depending-on-services/#faking-service-dependencies).
 
 ```typescript
 providers: [
@@ -376,7 +376,7 @@ Since we are going to test several error cases as well, we need to create `Signu
   `createSpyObj`
 </aside>
 
-This is a job for Jasmine’s `createSpyObj` (see [Faking Service dependencies](#faking-service-dependencies)).
+This is a job for Jasmine’s `createSpyObj` (see [Faking Service dependencies](../testing-components-depending-on-services/#faking-service-dependencies)).
 
 ```typescript
 const signupService = jasmine.createSpyObj<SignupService>(
@@ -517,7 +517,7 @@ const fillForm = () => {
 };
 ```
 
-The `fillForm` function lies in the scope of `describe` so it may access the `fixture` variable. It uses the `setFieldValue` and `checkField` [element testing helpers](#testing-helpers).
+The `fillForm` function lies in the scope of `describe` so it may access the `fixture` variable. It uses the `setFieldValue` and `checkField` [element testing helpers](../testing-components/#testing-helpers).
 
 In the spec, we call `fillForm`:
 
@@ -535,7 +535,7 @@ Let us try to submit the form immediately after. The form under test listens for
 
 <aside class="margin-note">Submit form</aside>
 
-We find the `form` element by its test id and simulate a `submit` event (see [Triggering event handlers](#triggering-event-handlers)).
+We find the `form` element by its test id and simulate a `submit` event (see [Triggering event handlers](../testing-components/#triggering-event-handlers)).
 
 Then we expect the `signup` spy to have been called with the entered data.
 

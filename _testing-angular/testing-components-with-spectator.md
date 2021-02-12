@@ -21,7 +21,7 @@ The built-in tools are fairly low-level and unopinionated. They have several dra
 - There are no default solutions for faking Components and Service dependencies safely.
 - The tests itself get verbose and repetitive. You have to establish testing conventions and write helpers yourself.
 
-We have already used small [element testing helpers](#testing-helpers). They solve isolated problems in order to write more consistent and compact specs.
+We have already used small [element testing helpers](../testing-components/#testing-helpers). They solve isolated problems in order to write more consistent and compact specs.
 
 If you write hundreds or thousands of specs, you will find that these helper functions do not suffice. They do not address the above-mentioned structural problems.
 
@@ -31,17 +31,17 @@ If you write hundreds or thousands of specs, you will find that these helper fun
 
 Spectator simplifies testing Components, Services, Directives, Pipes, routing and HTTP communication. Spectator’s strength are Component tests with Inputs, Outputs, children, event handling, Service dependencies and more.
 
-For [faking child Components](#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
+For [faking child Components](../testing-components-with-children/#faking-a-child-component-with-ng-mocks), Spectator resorts to the ng-mocks library just like we did.
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
-Both [example applications](#example-applications) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+Both [example applications](../example-applications/) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
 TIn this chapter, we will discuss testing the Flickr search with Spectator.
 
 ## Component with an Input
 
-Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo) because it is a [presentational Component](#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
+Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo) because it is a [presentational Component](../testing-components-with-children//), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
 
 The [`FullPhotoComponent` suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/full-photo/full-photo.component.spec.ts) looks like this:
 
@@ -101,7 +101,7 @@ describe('FullPhotoComponent with spectator', () => {
 });
 ```
 
-`createComponentFactory` expects a configuration object. `component: FullPhotoComponent` specifies the Component under test. `shallow: true` means we want [shallow, not deep rendering](#shallow-vs-deep-rendering). It does not make a difference for `FullPhotoComponent` though since it has no children.
+`createComponentFactory` expects a configuration object. `component: FullPhotoComponent` specifies the Component under test. `shallow: true` means we want [shallow, not deep rendering](../testing-components-with-children/#shallow-vs-deep-rendering). It does not make a difference for `FullPhotoComponent` though since it has no children.
 
 The configuration object may include more options for the testing Module, as we will see later.
 
@@ -156,7 +156,7 @@ expect(
   `spectator.query`
 </aside>
 
-The central `spectator.query` method finds an element in the DOM. This guide recommends to [find elements by test ids](#querying-the-dom-with-test-ids) (`data-testid` attributes).
+The central `spectator.query` method finds an element in the DOM. This guide recommends to [find elements by test ids](../testing-components/#querying-the-dom-with-test-ids) (`data-testid` attributes).
 
 Spectator supports test ids out of the box, so we write:
 
@@ -253,7 +253,7 @@ Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers f
 
 ## Component with children and Service dependency
 
-Spectator really shines when testing [container Components](#testing-components-with-children). These are Components with children and Service dependencies.
+Spectator really shines when testing [container Components](../testing-components-with-children/). These are Components with children and Service dependencies.
 
 In the Flickr search, the topmost `FlickrSearchComponent` calls the `FlickrService` and holds the state. It orchestrates three other Components, passes down the state and listens for Outputs.
 
@@ -394,7 +394,7 @@ describe('FlickrSearchComponent', () => {
 
 Without going too much into detail, a few notes:
 
-- We use [shallow rendering](#shallow-vs-deep-rendering). The child Components are not declared and only empty shell elements are rendered (`app-search-form`, `app-photo-list` and `app-full-photo`). This lets us check their presence, their Inputs and Outputs.
+- We use [shallow rendering](../testing-components-with-children/#shallow-vs-deep-rendering). The child Components are not declared and only empty shell elements are rendered (`app-search-form`, `app-photo-list` and `app-full-photo`). This lets us check their presence, their Inputs and Outputs.
 - We use our `findComponent` testing helper to find the child elements.
 - To check the Input values, we use the `properties` of `DebugElement`s.
 - To simulate that an Output emits, we use `triggerEventListener` on `DebugElement`s.
@@ -412,7 +412,7 @@ Without going too much into detail, a few notes:
 
 Rewriting this suite with Spectator brings two major changes:
 
-1. We replace the child Components with fakes created by [ng-mocks](#faking-a-child-component-with-ng-mocks). The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
+1. We replace the child Components with fakes created by [ng-mocks](../testing-components-with-children/#faking-a-child-component-with-ng-mocks). The fake Components mimic the originals regarding their Inputs and Outputs, but they do not render anything. We will work with these Component instances instead of operating on `DebugElement`s.
 2. We use Spectator to create the fake `FlickrService`.
 
 The test suite setup:
@@ -613,7 +613,7 @@ describe('PhotoItemComponent with spectator', () => {
 });
 ```
 
-Another common task is to simulate form field input. So far, we have used the [`setFieldValue` helper](#filling-out-forms) for this purpose.
+Another common task is to simulate form field input. So far, we have used the [`setFieldValue` helper](../testing-components/#filling-out-forms) for this purpose.
 
 <aside class="margin-note">
   <p><code>spectator.&#x200b;typeInElement</code></p>

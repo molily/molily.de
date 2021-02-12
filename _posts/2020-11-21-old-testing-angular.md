@@ -2834,7 +2834,7 @@ That being said, white box testing is viable advanced technique. Experienced tes
 
 The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
 
-<aside class="margin-note">Recommendations</aside>
+<aside class="margin-note">Recommendation</aside>
 
 <div class="wide-table-wrapper">
 <table class="wide-table">
@@ -7763,7 +7763,7 @@ First of all, Attribute and Structural Directives need an existing host element 
 class HostComponent {}
 ```
 
-We are going to render this Component. We need a standard [Component test setup](#testing-components) using the `TestBed`.
+We are going to render this Component. We need a standard [Component test setup](#configuring-the-testing-module) using the `TestBed`.
 
 ```typescript
 describe('ThresholdWarningDirective', () => {

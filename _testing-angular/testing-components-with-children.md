@@ -294,7 +294,7 @@ The second `triggerEventHandler` parameter, `5`, is not an event object as we kn
 
 Under the hood, `triggerEventHandler` runs `handleCountChange($event)` with `$event` being `5`. `handleCountChange` calls `console.log`. This is the observable effect we need to test.
 
-How do we verify that `console.log` has been called? We can [spy on existing methods](#spying-on-existing-methods) with Jasmine’s `spyOn`.
+How do we verify that `console.log` has been called? We can [spy on existing methods](../faking-dependencies/#spying-on-existing-methods) with Jasmine’s `spyOn`.
 
 ```typescript
 spyOn(console, 'log');
@@ -391,7 +391,7 @@ This fake Component lacks a template and any logic, but has the same selector, I
 
 <aside class="margin-note">Same public API</aside>
 
-Remember the [rules for faking dependencies](#faking-dependencies)? We need to make sure the fake resembles the original. `FakeCounterComponent implements Partial<CounterComponent>` requires the class to implement a subset of `CounterComponent`. TypeScript enforces that the given properties and methods have the same types as in the original class.
+Remember the [rules for faking dependencies](../faking-dependencies/)? We need to make sure the fake resembles the original. `FakeCounterComponent implements Partial<CounterComponent>` requires the class to implement a subset of `CounterComponent`. TypeScript enforces that the given properties and methods have the same types as in the original class.
 
 <aside class="margin-note">Declare fake Component</aside>
 

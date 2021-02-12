@@ -135,7 +135,7 @@ It is controversial whether one should strive for 100% code coverage. While it i
 
 If you write tests for the main features of your app from a user’s perspective, you can achieve a code coverage of 60-70%. Every extra percent gain takes more and more time and bears weird and twisted tests that do not reflect the actual usage of your application.
 
-We are going to discuss the [practical use of code coverage tools](#measuring-code-coverage) later.
+We are going to discuss the [practical use of code coverage tools](../measuring-code-coverage/) later.
 
 <div class="book-sources" markdown="1">
 - [Angular guide: Code Coverage](https://angular.io/guide/testing-code-coverage)

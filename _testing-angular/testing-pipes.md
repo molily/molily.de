@@ -401,7 +401,7 @@ At the same time, we are writing an asynchronous spec. That is, Jasmine needs to
   `fakeAsync` and `tick`
 </aside>
 
-Again, there are several ways how to accomplish this. We are going to use Angular’s `fakeAsync` and `tick` functions. We have introduced them when [testing a form with async validators](#successful-form-submission).
+Again, there are several ways how to accomplish this. We are going to use Angular’s `fakeAsync` and `tick` functions. We have introduced them when [testing a form with async validators](../testing-complex-forms/#successful-form-submission).
 
 A quick recap: `fakeAsync` freezes time and prevents asynchronous tasks from being executed. The `tick` function then simulates the passage of time, executing the scheduled tasks.
 

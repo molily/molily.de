@@ -38,8 +38,8 @@ Dependency injection turns tight coupling into loose coupling. A certain applica
 
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
-- We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](#integration-tests) that includes direct and indirect dependencies.
-- Or we provide a **fake** implementation that does not have side effects. In this case, we are writing a [unit test](#unit-tests) that tries to test the application part in *n*.
+- We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](../testing-principles/#integration-tests) that includes direct and indirect dependencies.
+- Or we provide a **fake** implementation that does not have side effects. In this case, we are writing a [unit test](../testing-principles/#unit-tests) that tries to test the application part in *n*.
 
 A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and reconnect it with equivalent fake objects.
 
@@ -59,7 +59,7 @@ This setup is a trade-off with strengths and weaknesses. Since it is just one po
 
 <aside class="margin-note">Alternatives</aside>
 
-For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](#introducing-cypress). Some use [Spectator](#testing-components-with-spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
+For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](../end-to-end-testing/#introducing-cypress). Some use [Spectator](../testing-components-with-spectator/) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
 
 These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests. Later, you will learn about Spectator. For end-to-end tests, this guide deviates from the standard setup by recommending Cypress.
 
@@ -221,7 +221,7 @@ Another important concept of Karma are **reporters**. They format and output the
 
    <img src="/img/testing-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
-3. The coverage reporter (npm package: `karma-coverage`) creates the test coverage report. See [measuring code coverage](#measuring-code-coverage).
+3. The coverage reporter (npm package: `karma-coverage`) creates the test coverage report. See [measuring code coverage](../measuring-code-coverage/).
 
 By editing the `reporters` array, you can add reporters or replace the existing ones:
 
@@ -270,7 +270,7 @@ client: {
 },
 ```
 
-This guide recommends to activate one useful Jasmine configuration option: `failSpecWithNoExpectations` lets the test fail if it does not contain ant least one expectation. (More on [expectations](#expectations) later.) In almost all cases, specs without expectations stem from an error in the test code.
+This guide recommends to activate one useful Jasmine configuration option: `failSpecWithNoExpectations` lets the test fail if it does not contain ant least one expectation. (More on [expectations](../test-suites-with-jasmine/#expectations) later.) In almost all cases, specs without expectations stem from an error in the test code.
 
 ```javascript
 client: {

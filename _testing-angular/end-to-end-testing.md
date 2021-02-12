@@ -24,7 +24,7 @@ We need automated tests that take the user’s perspective. This is what **end-t
 
 ## Strengths of end-to-end tests
 
-As discussed in [distribution of testing efforts](#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
+As discussed in [distribution of testing efforts](../testing-principles/#distribution-of-testing-efforts), all types of automated tests have pros and cons. Unit and integration tests are fast and reliable, but do not guarantee a working application. End-to-end test are slow and often fail incorrectly, but they assess the fitness of the application as a whole.
 
 <aside class="margin-note">Real conditions</aside>
 
@@ -500,7 +500,7 @@ Just like with unit and integration test, the immediate question is: Which way t
 
 <aside class="margin-note">Find by test id</aside>
 
-As discussed in [querying the DOM with test ids](#querying-the-dom-with-test-ids), this guide recommends to mark elements with **test ids**.
+As discussed in [querying the DOM with test ids](../testing-components/#querying-the-dom-with-test-ids), this guide recommends to mark elements with **test ids**.
 
 These are data attributes like `data-testid="example"`. In the test, we use a corresponding attribute selector to find the elements, for example:
 
@@ -665,7 +665,7 @@ All counter features are now tested. In the next chapters, we will refactor the 
 
 The test we wrote is quite repetitive. The pattern `cy.get('[data-testid="…"]')` is repeated over and over.
 
-The first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](#testing-helpers), `findEl` and `findEls`.
+The first improvement is to write a helper that hides this detail. We have already written two similar functions as [unit testing helpers](../testing-components/#testing-helpers), `findEl` and `findEls`.
 
 <aside class="margin-note">Find by test id</aside>
 
@@ -1226,7 +1226,7 @@ With Cypress, we can uncouple the dependency. Cypress allows us to intercept HTT
 
 The requests have to originate from JavaScript using XMLHttpRequest. Luckily, this is what Angular’s HTTP module (`@angular/common/http`) uses under the hood.
 
-First of all, we need to set up the fake data. We have already created fake photo objects for the [`FlickrService` unit test](#testing-a-service-that-sends-http-requests). For simplicity, we just import them:
+First of all, we need to set up the fake data. We have already created fake photo objects for the [`FlickrService` unit test](../testing-services/#testing-a-service-that-sends-http-requests). For simplicity, we just import them:
 
 ```typescript
 import {
