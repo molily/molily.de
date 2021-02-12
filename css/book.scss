@@ -26,6 +26,7 @@ $main-max-width: 42rem;
 
 $toc-background: #fafafa;
 $sticky-menu-background: #f0f0f0;
+$angular-primary-color: #1976d2;
 
 $toc-background-inverted: $dark-background-color-inverted;
 $sticky-menu-background-inverted: $dark-background-color-inverted;
@@ -364,7 +365,7 @@ pre {
       }
     }
   }
-  
+
   // Use percent for heading font-size instead of rem
   // since #main has its own font-size
 
@@ -425,11 +426,11 @@ pre {
 
 #page-footer {
   padding: 2rem;
-  background-color: $background-color-inverted;
+  // background-color: $background-color-inverted;
   font-size: 90%;
 
   @include dark-scheme {
-    background-color: $dark-background-color-inverted;
+    // background-color: $dark-background-color-inverted;
   }
 
   p {
@@ -649,19 +650,26 @@ pre {
 .load-iframe {
   display: block;
   width: 100%;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   border: 0;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
+  cursor: pointer;
 
-  background-color: #1976d2;
+  background-color: $angular-primary-color;
   color: white;
+  &:hover {
+    background-color: adjust-color($angular-primary-color, $lightness: -10%);
+  }
+
   @include dark-scheme {
-    background-color: $highlight-background-color-inverted;
-    background-color: $darker-text-color-inverted;
-    color: black;
+    // TODO
+    // background-color: $highlight-background-color-inverted;
+    // background-color: $darker-text-color-inverted;
+    // background-color: $text-color-inverted;
+    // color: $dark-background-color-inverted;
   }
 }
 
@@ -711,13 +719,15 @@ $margin-note-breakpoint: $toc-width + $main-max-width +
  */
 
 #next-chapter-link {
+  margin: 4rem 0;
+
   a {
     display: block;
     text-align: right;
     text-decoration: none;
 
     &::after {
-      content: " →"; 
+      content: " →";
     }
   }
 }

@@ -2099,7 +2099,9 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 
 Author: [Mathias Schäfer (molily)](/)
 
-Mathias is a software developer with a focus on web development and JavaScript web applications, working at [9elements](https://9elements.com).
+Mathias is a software developer with a focus on web development and JavaScript web applications.
+
+Mathias is working for [9elements](https://9elements.com), a software and design agency.
 
 Twitter: [@molily](https://twitter.com/molily)
 

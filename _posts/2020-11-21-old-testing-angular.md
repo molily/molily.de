@@ -7081,7 +7081,6 @@ We have used the `HttpClientTestingModule` for testing a Service that depends on
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
-
 ## Testing Pipes
 
 An Angular Pipe is a special function that is called from a Component template. Its purpose is to transform a value: You pass a value to the Pipe, the Pipe computes a new value and returns it.
@@ -10072,7 +10071,7 @@ Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for 
 
 Thanks to [Netanel Basal](https://netbasal.com/), [Tim Deschryver](https://timdeschryver.dev/), [Kent C. Dodds](https://kentcdodds.com/), [Kara Erickson](https://twitter.com/karaforthewin), [Asim Hussain](https://asim.dev/), [Tracy Lee](https://twitter.com/ladyleet) and [Brandon Roberts](https://brandonroberts.dev/) for insights on Angular, RxJS and automated testing.
 
-Thanks to [Nils Binder](https://ichimnetz.com/) for contributing the dark color scheme.
+Thanks to [Nils Binder](https://ichimnetz.com/) for helping with the design, including the dark color scheme.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -10080,7 +10079,9 @@ Thanks to [Nils Binder](https://ichimnetz.com/) for contributing the dark color 
 
 Author: [Mathias Schäfer (molily)](https://molily.de)
 
-Mathias is a software developer with a focus on web development and JavaScript web applications, working at [9elements](https://9elements.com).
+Mathias is a software developer with a focus on web development and JavaScript web applications.
+
+Mathias is working for [9elements](https://9elements.com), a software and design agency.
 
 Twitter: [@molily](https://twitter.com/molily)
 

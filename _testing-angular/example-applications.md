@@ -88,3 +88,5 @@ The Flickr search comes in two flavors using different state management solution
 2. The state is managed by an NgRx Store. Components are connected to the store to pull state and dispatch Actions. The state is changed in a Reducer. The side effects of an Action are handled by NgRx Effects.
 
 Once you are able to write automatic tests for this example application, you will be able to test most features of a typical Angular application.
+
+<p id="next-chapter-link"><a href="../angular-testing-principles/">Angular testing principles</a></p>
