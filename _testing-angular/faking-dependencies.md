@@ -356,4 +356,4 @@ Creating standalone spies and spying on existing methods are not mutually exclus
 - [Jasmine reference: spyOn](https://jasmine.github.io/api/edge/global.html#spyOn)
 </div>
 
-<p id="next-chapter-link"><a href="../debugging-tests/">Debugging tests</a></p>
+<p id="next-chapter-link"><a href="../debugging-tests/#debugging-tests">Debugging tests</a></p>

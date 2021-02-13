@@ -60,4 +60,4 @@ describe('FeatureModule', () => {
 
 The integration test uses the `TestBed` to import the Module under test. It verifies that no error occurs when importing the Module.
 
-<p id="next-chapter-link"><a href="../measuring-code-coverage/">Measuring code coverage</a></p>
+<p id="next-chapter-link"><a href="../measuring-code-coverage/#measuring-code-coverage">Measuring code coverage</a></p>

@@ -96,4 +96,4 @@ For beginners and experts alike, the coverage report helps to set up, debug and 
 - [karma-coverage Configuration](https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md)
 </div>
 
-<p id="next-chapter-link"><a href="../end-to-end-testing/">End-to-end testing</a></p>
+<p id="next-chapter-link"><a href="../end-to-end-testing/#end-to-end-testing">End-to-end testing</a></p>

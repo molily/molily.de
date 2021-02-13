@@ -289,4 +289,4 @@ client: {
 - [Jasmine reference: Configuration options](https://jasmine.github.io/api/edge/Configuration.html)
 </div>
 
-<p id="next-chapter-link"><a href="../test-suites-with-jasmine/">Test suites with Jasmine</a></p>
+<p id="next-chapter-link"><a href="../test-suites-with-jasmine/#test-suites-with-jasmine">Test suites with Jasmine</a></p>

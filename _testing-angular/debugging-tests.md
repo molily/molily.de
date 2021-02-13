@@ -203,4 +203,4 @@ The debug test runner does not have an iframe, it loads Jasmine directly. Also i
 
 If you change the test or implementation code, the debug runner does not re-run the tests. You have to reload the page manually.
 
-<p id="next-chapter-link"><a href="../testing-components/">Testing Components</a></p>
+<p id="next-chapter-link"><a href="../testing-components/#testing-components">Testing Components</a></p>

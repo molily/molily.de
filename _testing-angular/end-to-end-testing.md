@@ -1386,4 +1386,4 @@ Even with Cypress, end-to-end tests are much more complex and error-prone than u
 - [Flickr search: Protractor tests](https://github.com/9elements/angular-flickr-search/tree/main/e2e)
 </div>
 
-<p id="next-chapter-link"><a href="../summary/">Summary</a></p>
+<p id="next-chapter-link"><a href="../summary/#summary">Summary</a></p>

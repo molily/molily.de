@@ -694,4 +694,4 @@ This was only a glimpse of ng-mocks. The library not only helps with nested Comp
 - [ng-mocks](https://github.com/ike18t/ng-mocks)
 </div>
 
-<p id="next-chapter-link"><a href="../testing-components-depending-on-services/">Testing Components depending on Services</a></p>
+<p id="next-chapter-link"><a href="../testing-components-depending-on-services/#testing-components-depending-on-services">Testing Components depending on Services</a></p>

@@ -49,14 +49,11 @@
       var id = intersectingHeading.id;
       var tocLinks = Array.from(tocTree.querySelectorAll('a'));
       var link = tocLinks.find(function (linkCandidate) {
-        return (
-          linkCandidate.href.endsWith('/' + id + '/') ||
-          linkCandidate.hash === '#' + id
-        );
+        return linkCandidate.hash === '#' + id;
       });
       if (link) {
         link.classList.add('active');
-        link.scrollIntoView({ block: 'nearest' });
+        link.scrollIntoView({ block: 'center' });
         currentTocLink = link;
       }
     }

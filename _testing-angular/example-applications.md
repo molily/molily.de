@@ -89,4 +89,4 @@ The Flickr search comes in two flavors using different state management solution
 
 Once you are able to write automatic tests for this example application, you will be able to test most features of a typical Angular application.
 
-<p id="next-chapter-link"><a href="../angular-testing-principles/">Angular testing principles</a></p>
+<p id="next-chapter-link"><a href="../angular-testing-principles/#angular-testing-principles">Angular testing principles</a></p>

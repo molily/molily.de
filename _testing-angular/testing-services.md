@@ -831,4 +831,4 @@ Angular ships with crucial Services that are commonly used in your own Services.
 
 We have used the `HttpClientTestingModule` for testing a Service that depends on `HttpClient`. To name another example, there is the [`RouterTestingModule`](https://angular.io/api/router/testing/RouterTestingModule) for testing Services that depend on `Router` and `Location`.
 
-<p id="next-chapter-link"><a href="../testing-pipes/">Testing Pipes</a></p>
+<p id="next-chapter-link"><a href="../testing-pipes/#testing-pipes">Testing Pipes</a></p>

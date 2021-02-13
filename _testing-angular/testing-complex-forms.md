@@ -1472,4 +1472,4 @@ In summary, you need to learn about accessibility and Inclusive Design first, ap
 - [Web Accessibility Tutorial: Forms](https://www.w3.org/WAI/tutorials/forms/)
 </div>
 
-<p id="next-chapter-link"><a href="../testing-components-with-spectator/">Testing Components with Spectator</a></p>
+<p id="next-chapter-link"><a href="../testing-components-with-spectator/#testing-components-with-spectator">Testing Components with Spectator</a></p>

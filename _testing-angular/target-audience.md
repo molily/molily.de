@@ -24,4 +24,4 @@ Furthermore, this guide is not an introduction to JavaScript or TypeScript. It a
 
 The official Angular documentation offers a comprehensive [guide on testing](https://angular.io/guide/testing). It is a recommended reading, but this guide does not assume you have read it.
 
-<p id="next-chapter-link"><a href="../terminology/">Terminology</a></p>
+<p id="next-chapter-link"><a href="../terminology/#terminology">Terminology</a></p>

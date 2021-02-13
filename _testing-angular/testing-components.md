@@ -1246,4 +1246,4 @@ The following table shows which properties and methods of an Angular Component y
 </table>
 </div>
 
-<p id="next-chapter-link"><a href="../testing-components-with-children/">Testing Components with children</a></p>
+<p id="next-chapter-link"><a href="../testing-components-with-children/#testing-components-with-children">Testing Components with children</a></p>

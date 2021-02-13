@@ -22,4 +22,4 @@ When using these terms in the general sense, this guide uses **lower case**:
 
 *module, component, service, input, output*, etc.
 
-<p id="next-chapter-link"><a href="../testing-principles/">Testing principles</a></p>
+<p id="next-chapter-link"><a href="../testing-principles/#testing-principles">Testing principles</a></p>

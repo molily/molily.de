@@ -22,4 +22,4 @@ Testing does not only make your software more reliable, but also evolves your co
 
 Automated software testing is challenging and rewarding for various reasons. Despite all troubles, that makes it fascinating.
 
-<p id="next-chapter-link"><a href="../index-of-example-applications/">Index of example applications</a></p>
+<p id="next-chapter-link"><a href="../index-of-example-applications/#index-of-example-applications">Index of example applications</a></p>

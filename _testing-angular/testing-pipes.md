@@ -537,4 +537,4 @@ We made it! Writing these specs is challenging without doubt.
 </div>
 
 
-<p id="next-chapter-link"><a href="../testing-directives/">Testing Directives</a></p>
+<p id="next-chapter-link"><a href="../testing-directives/#testing-directives">Testing Directives</a></p>

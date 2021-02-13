@@ -24,7 +24,6 @@ robots: noindex, follow
 
 <div id="sidebar">
   <nav id="toc">
-    <h2 id="toc-heading">Table of Contents</h2>
     <p id="toc-home-link">
       <a href="/" title="Home">molily.de</a>
       <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
@@ -35,6 +34,7 @@ robots: noindex, follow
       <small>A Guide to Robust Angular Applications</small>
     </p>
     <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
+    <h2 id="toc-heading">Table of Contents</h2>
     <ol id="toc-tree"></ol>
   </nav>
 </div>

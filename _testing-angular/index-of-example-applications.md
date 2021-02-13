@@ -21,4 +21,4 @@ All example applications are repositories on GitHub:
 - [PaginateDirective](https://github.com/molily/paginate-directive)
 </div>
 
-<p id="next-chapter-link"><a href="../references/">References</a></p>
+<p id="next-chapter-link"><a href="../references/#references">References</a></p>

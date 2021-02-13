@@ -347,4 +347,4 @@ More importantly, white box tests run the risk of forgetting to check the real o
 
 For an Angular Component, Directive, Service, Pipe, etc., a black box test passes a certain input and expects a proper output or measures side effects. The test only calls methods that are marked with `public` in the TypeScript code. Internal methods should be marked with `private`.
 
-<p id="next-chapter-link"><a href="../example-applications/">Example applications</a></p>
+<p id="next-chapter-link"><a href="../example-applications/#example-applications">Example applications</a></p>

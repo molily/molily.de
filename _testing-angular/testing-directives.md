@@ -897,4 +897,4 @@ describe('PaginateDirective', () => {
 - [PaginateDirective: test code](https://github.com/molily/paginate-directive/blob/main/src/app/paginate.directive.spec.ts)
 </div>
 
-<p id="next-chapter-link"><a href="../testing-modules/">Testing Modules</a></p>
+<p id="next-chapter-link"><a href="../testing-modules/#testing-modules">Testing Modules</a></p>

@@ -24,12 +24,22 @@ $breakpoint-large: 55rem;
 $toc-width: 25rem;
 $main-max-width: 42rem;
 
-$toc-background: #fafafa;
-$sticky-menu-background: #f0f0f0;
 $angular-primary-color: #1976d2;
 
+$toc-background: #f9f9f9;
 $toc-background-inverted: $dark-background-color-inverted;
+
+$sticky-menu-background: #f0f0f0;
 $sticky-menu-background-inverted: $dark-background-color-inverted;
+
+$dark-highlight-background-color: adjust-color(
+  $highlight-background-color,
+  $lightness: -2%
+);
+$dark-highlight-background-color-inverted: adjust-color(
+  $highlight-background-color,
+  $lightness: -2%
+);
 
 $font-size-small: percentage(16 / 18);
 
@@ -136,9 +146,9 @@ pre {
     top: 0;
     bottom: 0;
     width: $toc-width;
-    background-color: $toc-background;
     overflow: auto;
     resize: horizontal;
+    background-color: $toc-background;
 
     @include dark-scheme {
       background-color: $toc-background-inverted;
@@ -163,6 +173,7 @@ pre {
   right: 0;
   display: flex;
   justify-content: space-evenly;
+  border-bottom: 1px solid adjust-color($sticky-menu-background, $lightness: -2%);
   margin: -1rem -1rem 1rem;
   height: 2.5rem;
   background-color: $sticky-menu-background;
@@ -174,6 +185,7 @@ pre {
   }
 
   @include dark-scheme {
+    border-bottom: 0;
     background-color: $sticky-menu-background-inverted;
   }
 
@@ -183,16 +195,31 @@ pre {
   }
 
   a:link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 0;
     padding: 0 1rem;
     text-decoration: none;
-    display: flex;
-    align-items: center;
     line-height: 1.4;
   }
 
   .link-type {
     display: none;
+  }
+}
+
+/**
+ * Scroll margins
+ */
+
+[id] {
+  // Larger margin because of the sticky menu
+  scroll-margin-top: 4rem;
+
+  @include large {
+    scroll-margin-top: 2rem;
   }
 }
 
@@ -224,24 +251,24 @@ pre {
     counter-increment: none;
     content: none;
   }
-
-  @include dark-scheme {
-    color: inherit;
-    background-color: transparent;
-  }
 }
 
 #toc-book-title {
   font-size: 2rem;
   text-align: center;
+  color: $heading-color;
+
+  @include large {
+    font-size: 1.5rem;
+  }
+
+  @include dark-scheme {
+    color: inherit;
+  }
 
   small {
     display: block;
     line-height: 1.6;
-  }
-
-  @include large {
-    font-size: 1.5rem;
   }
 }
 
@@ -251,6 +278,10 @@ pre {
 
   @include large {
     @include accessible-hide;
+  }
+
+  @include dark-scheme {
+    color: inherit;
   }
 }
 
@@ -307,6 +338,9 @@ pre {
     text-decoration: none;
 
     &:hover {
+      background-color: $dark-highlight-background-color;
+      color: $link-color;
+
       @include dark-scheme {
         background-color: $highlight-background-color-inverted;
         color: $link-color-inverted;
@@ -314,7 +348,7 @@ pre {
     }
   }
 
-  .active {
+  a.active {
     color: $toc-background;
     background-color: $link-color;
 
@@ -638,8 +672,15 @@ h1#main-heading {
 
     @include dark-scheme {
       background-color: $highlight-background-color-inverted;
+    }
 
-      &:hover {
+    &:hover {
+      background-color: adjust-color(
+        $highlight-background-color,
+        $lightness: -2%
+      );
+
+      @include dark-scheme {
         background-color: adjust-color(
           $highlight-background-color-inverted,
           $lightness: -2%
@@ -736,7 +777,11 @@ $margin-note-breakpoint: $toc-width + $main-max-width +
   letter-spacing: 0.5px;
   word-spacing: 1px;
   page-break-after: avoid;
-  color: $heading-color-inverted;
+  color: $heading-color;
+
+  @include dark-scheme {
+    color: $heading-color-inverted;
+  }
 
   @media screen and (min-width: $margin-note-breakpoint) {
     float: left;

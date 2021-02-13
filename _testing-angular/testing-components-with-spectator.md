@@ -670,4 +670,4 @@ Once you are familiar with the standard tools, you should try out alternatives l
 - [ng-mocks project site](https://github.com/ike18t/ng-mocks)
 </div>
 
-<p id="next-chapter-link"><a href="../testing-services/">Testing Services</a></p>
+<p id="next-chapter-link"><a href="../testing-services/#testing-services">Testing Services</a></p>

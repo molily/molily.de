@@ -576,4 +576,4 @@ There are two guidelines that may help you:
    1. Equivalence of fake and original: The fake must have a type derived from the original.
    2. Effective faking: the original stays untouched.
 
-<p id="next-chapter-link"><a href="../testing-complex-forms/">Testing complex forms</a></p>
+<p id="next-chapter-link"><a href="../testing-complex-forms/#testing-complex-forms">Testing complex forms</a></p>

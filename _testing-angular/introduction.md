@@ -30,4 +30,4 @@ Second, testing has a steep learning curve. If testing can be seen as a tool, it
 
 This is meant to encourage you. Getting started with testing is hard, but it gets easier and easier with more practice. The goal of this guide is to empower you to write tests on a daily basis that cover the important features of your Angular application.
 
-<p id="next-chapter-link"><a href="../target-audience/">Target audience</a></p>
+<p id="next-chapter-link"><a href="../target-audience/#target-audience">Target audience</a></p>

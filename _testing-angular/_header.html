@@ -1,7 +1,7 @@
 {% include_relative _symbols.html %}
 
 <p id="sticky-menu">
-  <a href="#toc" class="toc-link">
+  <a href="#toc-tree" class="toc-link">
     Table of Contents
   </a>
   <a href="/" title="Home">molily.de</a>
@@ -10,7 +10,6 @@
 
 <div id="sidebar">
   <nav id="toc">
-    <h2 id="toc-heading">Table of Contents</h2>
     <p id="toc-home-link">
       <a href="/" title="Home">molily.de</a>
       <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
@@ -20,7 +19,8 @@
       Testing Angular<br>
       <small>A Guide to Robust Angular Applications</small>
     </p>
-    <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
+    <p id="toc-epub-link"><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></p>
+    <h2 id="toc-heading">Table of Contents</h2>
     {% include_relative _toc-tree.html %}
   </nav>
 </div><!-- /sidebar -->

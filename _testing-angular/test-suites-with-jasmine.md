@@ -258,4 +258,4 @@ Called after all specs are run
 
 Most tests we are going to write will have a `beforeEach` block to host the *Arrange* code.
 
-<p id="next-chapter-link"><a href="../faking-dependencies/">Faking dependencies</a></p>
+<p id="next-chapter-link"><a href="../faking-dependencies/#faking-dependencies">Faking dependencies</a></p>

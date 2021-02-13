@@ -22,4 +22,4 @@ Twitter: [@molily](https://twitter.com/molily)
 
 Published on <time datetime="2021-xx-xx">XX XX, 2021</time>.
 
-<p id="next-chapter-link"><a href="../license/">License</a></p>
+<p id="next-chapter-link"><a href="../license/#license">License</a></p>
