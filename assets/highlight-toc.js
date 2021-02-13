@@ -24,7 +24,7 @@
       } else {
         intersectingHeadings.delete(entry.target);
       }
-    })
+    });
     var firstIntersectingHeading = intersectingHeadings.values().next().value;
     var firstEntry = entries[0];
     var intersectingHeading;
@@ -48,9 +48,11 @@
       }
       var id = intersectingHeading.id;
       var tocLinks = Array.from(tocTree.querySelectorAll('a'));
-      var link = tocLinks.find(function(linkCandidate) {
-        var match =  linkCandidate.href.endsWith('/' + id + '/') || linkCandidate.hash === '#' + id;
-        return match
+      var link = tocLinks.find(function (linkCandidate) {
+        return (
+          linkCandidate.href.endsWith('/' + id + '/') ||
+          linkCandidate.hash === '#' + id
+        );
       });
       if (link) {
         link.classList.add('active');
@@ -79,14 +81,11 @@
       tocTree = document.getElementById('toc-tree');
       headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-      intersectionObserver = new IntersectionObserver(
-        headingIntersect,
-        {
-          root: null,
-          rootMargin: '0px 0px -40% 0px',
-          threshold: 0,
-        }
-      );
+      intersectionObserver = new IntersectionObserver(headingIntersect, {
+        root: null,
+        rootMargin: '0px 0px -40% 0px',
+        threshold: 0,
+      });
 
       Array.from(headings)
         .filter(function (heading) {

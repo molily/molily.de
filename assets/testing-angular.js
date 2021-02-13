@@ -1,19 +1,9 @@
 (function () {
   'use strict';
 
-  var arrayFrom =
-    Array.from ||
-    function (list) {
-      var array = [];
-      for (var i = 0, l = list.length; i < l; i++) {
-        array[i] = list[i];
-      }
-      return array;
-    };
-
   function installIframeButtons() {
     var loadIframeButtons = document.querySelectorAll('.load-iframe');
-    arrayFrom(loadIframeButtons).forEach(function (button) {
+    Array.from(loadIframeButtons).forEach(function (button) {
       button.addEventListener('click', function (event) {
         var button = event.target;
         var scriptTemplate = button.parentNode.nextElementSibling;
@@ -26,15 +16,42 @@
     });
   }
 
+  function installCollapseTOC() {
+    var tocTree = document.getElementById('toc-tree');
+    var chapterLinks = tocTree.querySelectorAll(':scope > li > a');
+    Array.from(chapterLinks).forEach(function (chapterLink) {
+      if (chapterLink.pathname !== location.pathname) {
+        var ol = chapterLink.nextElementSibling;
+        if (ol) {
+          ol.classList.add('collapsed');
+        }
+      }
+    });
+  }
+
   function install() {
     if (
       document.createElement &&
       document.querySelectorAll &&
       document.addEventListener &&
+      'nextElementSibling' in document.body &&
       document.body.replaceWith &&
+      document.body.remove &&
+      Array.from &&
       Array.prototype.forEach
     ) {
       installIframeButtons();
+    }
+    if (
+      document.getElementById &&
+      document.body.querySelectorAll &&
+      document.body.classList &&
+      document.body.classList.add &&
+      'nextElementSibling' in document.body &&
+      Array.from &&
+      Array.prototype.forEach
+    ) {
+      installCollapseTOC();
     }
   }
 
