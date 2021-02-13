@@ -724,8 +724,6 @@ $margin-note-breakpoint: $toc-width + $main-max-width +
   (2 * $margin-note-outer-width);
 
 .margin-note {
-  display: flex;
-  align-items: center;
   margin: 0 0 1rem 0;
   font-size: 80%;
   line-height: 2;
@@ -735,27 +733,6 @@ $margin-note-breakpoint: $toc-width + $main-max-width +
   word-spacing: 1px;
   page-break-after: avoid;
   color: $heading-color-inverted;
-
-  &::before,
-  &::after {
-    content: '';
-    display: block;
-    flex: 1;
-
-    border-bottom: 1px solid $heading-color;
-
-    @include dark-scheme {
-      border-bottom: 1px solid $heading-color-inverted;
-    }
-  }
-
-  &::before {
-    margin-right: 1rem;
-  }
-
-  &::after {
-    margin-left: 1rem;
-  }
 
   @media screen and (min-width: $margin-note-breakpoint) {
     float: left;
@@ -769,11 +746,6 @@ $margin-note-breakpoint: $toc-width + $main-max-width +
     letter-spacing: inherit;
     word-spacing: inherit;
     color: inherit;
-
-    &::before,
-    &::after {
-      content: none;
-    }
   }
 
   p {
