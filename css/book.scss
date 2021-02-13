@@ -305,6 +305,7 @@ pre {
     &:hover {
       @include dark-scheme {
         background-color: $highlight-background-color-inverted;
+        color: $link-color-inverted;
       }
     }
   }
