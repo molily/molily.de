@@ -35,13 +35,13 @@ For [faking child Components](../testing-components-with-children/#faking-a-chil
 
 This guide cannot introduce all Spectator features, but we will discuss the basics of Component testing using Spectator.
 
-Both [example applications](../example-applications/) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
+Both [example applications](../example-applications/#example-applications) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
 TIn this chapter, we will discuss testing the Flickr search with Spectator.
 
 ## Component with an Input
 
-Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo) because it is a [presentational Component](../testing-components-with-children//), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
+Let us start with the [`FullPhotoComponent`](https://github.com/9elements/angular-flickr-search/tree/main/src/app/components/full-photo) because it is a [presentational Component](../testing-components-with-children/#testing-components-with-children), a leaf in the Component tree. It expects a `Photo` object as input and renders an image as well as the photo metadata. No Outputs, no children, no Service dependencies.
 
 The [`FullPhotoComponent` suite with our helpers](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/full-photo/full-photo.component.spec.ts) looks like this:
 
@@ -253,7 +253,7 @@ Spectator avoids wrapping DOM elements, but offers convenient Jasmine matchers f
 
 ## Component with children and Service dependency
 
-Spectator really shines when testing [container Components](../testing-components-with-children/). These are Components with children and Service dependencies.
+Spectator really shines when testing [container Components](../testing-components-with-children/#testing-components-with-children). These are Components with children and Service dependencies.
 
 In the Flickr search, the topmost `FlickrSearchComponent` calls the `FlickrService` and holds the state. It orchestrates three other Components, passes down the state and listens for Outputs.
 

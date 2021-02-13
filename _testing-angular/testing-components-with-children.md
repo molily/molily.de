@@ -391,7 +391,7 @@ This fake Component lacks a template and any logic, but has the same selector, I
 
 <aside class="margin-note">Same public API</aside>
 
-Remember the [rules for faking dependencies](../faking-dependencies/)? We need to make sure the fake resembles the original. `FakeCounterComponent implements Partial<CounterComponent>` requires the class to implement a subset of `CounterComponent`. TypeScript enforces that the given properties and methods have the same types as in the original class.
+Remember the [rules for faking dependencies](../faking-dependencies/#faking-dependencies)? We need to make sure the fake resembles the original. `FakeCounterComponent implements Partial<CounterComponent>` requires the class to implement a subset of `CounterComponent`. TypeScript enforces that the given properties and methods have the same types as in the original class.
 
 <aside class="margin-note">Declare fake Component</aside>
 

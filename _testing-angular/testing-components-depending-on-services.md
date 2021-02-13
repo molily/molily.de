@@ -109,7 +109,7 @@ If we want an integration test to verify that the Component stores the count in 
 
 Let us move on to the **unit test** for the `ServiceCounterComponent`. To tackle this challenge, we need to learn the art of faking Service dependencies.
 
-There are several practical approaches with pros and cons. We have discussed two main [requirements on fake dependencies](../faking-dependencies/):
+There are several practical approaches with pros and cons. We have discussed two main [requirements on fake dependencies](../faking-dependencies/#faking-dependencies):
 
 1. Equivalence of fake and original: The fake must have a type derived from the original.
 2. Effective faking: the original stays untouched.
@@ -571,7 +571,7 @@ Arguing about the “right” way of faking a Service is pointless. You need to 
 There are two guidelines that may help you:
 
 1. Is the test valuable? Does it cover the important interaction between Component and Service? Decide whether to test the interaction superficially or in-depth.
-2. Whichever approach you choose, make sure to meet the [basic requirements](../faking-dependencies/):
+2. Whichever approach you choose, make sure to meet the [basic requirements](../faking-dependencies/#faking-dependencies):
 
    1. Equivalence of fake and original: The fake must have a type derived from the original.
    2. Effective faking: the original stays untouched.

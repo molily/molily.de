@@ -34,7 +34,7 @@ Most styling logic can be implemented using CSS alone, no JavaScript code is nec
 
 ### ThresholdWarningDirective
 
-None of our [example applications](../example-applications/) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
+None of our [example applications](../example-applications/#example-applications) contain an Attribute Directive, so we are introducing and testing the **`ThresholdWarningDirective`**.
 
 This Directive applies to `<input type="number">` elements. It toggles a class if the picked number exceeds a given threshold. If the number is higher than the threshold, the field should be marked visually.
 

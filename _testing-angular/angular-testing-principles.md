@@ -59,7 +59,7 @@ This setup is a trade-off with strengths and weaknesses. Since it is just one po
 
 <aside class="margin-note">Alternatives</aside>
 
-For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](../end-to-end-testing/#introducing-cypress). Some use [Spectator](../testing-components-with-spectator/) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
+For example, some Angular developers use [Jest](https://jestjs.io/) instead of Jasmine and Karma. Some swap Protractor with [Cypress](../end-to-end-testing/#introducing-cypress). Some use [Spectator](../testing-components-with-spectator/#testing-components-with-spectator) or the [Angular Testing Library](https://github.com/testing-library/angular-testing-library) instead of using `TestBed` directly.
 
 These alternatives are not better or worse, they simply make different trade-offs. This guide uses Jasmine and Karma for unit and integration tests. Later, you will learn about Spectator. For end-to-end tests, this guide deviates from the standard setup by recommending Cypress.
 
@@ -221,7 +221,7 @@ Another important concept of Karma are **reporters**. They format and output the
 
    <img src="/img/testing-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 
-3. The coverage reporter (npm package: `karma-coverage`) creates the test coverage report. See [measuring code coverage](../measuring-code-coverage/).
+3. The coverage reporter (npm package: `karma-coverage`) creates the test coverage report. See [measuring code coverage](../measuring-code-coverage/#measuring-code-coverage).
 
 By editing the `reporters` array, you can add reporters or replace the existing ones:
 

@@ -815,7 +815,7 @@ it('resets the count', () => {
 });
 ```
 
-While the reset feature is simple, this is how to test most form logic. Later, we will learn how to [test complex forms](../testing-complex-forms/).
+While the reset feature is simple, this is how to test most form logic. Later, we will learn how to [test complex forms](../testing-complex-forms/#testing-complex-forms).
 
 <aside class="margin-note">Invalid input</aside>
 
