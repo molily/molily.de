@@ -41,6 +41,14 @@
       Array.prototype.forEach
     ) {
       installIframeButtons();
+    } else if (
+      document.createElement &&
+      document.createTextNode &&
+      document.head
+    ) {
+      var style = document.createElement('style');
+      style.appendChild(document.createTextNode('.load-iframe { display: none }'));
+      document.head.appendChild(style);
     }
     if (
       document.getElementById &&

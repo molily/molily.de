@@ -3080,7 +3080,7 @@ it('passes a start count', () => {
 ```
 
 <aside class="margin-note" markdown="1">
-  `properties``
+  `properties`
 </aside>
 
 How do we read the Input value? Each `DebugElement` has a `properties` object that contains DOM properties together with its values. In addition, it contains certain property bindings. (The type is `{ [key: string]: any }`).

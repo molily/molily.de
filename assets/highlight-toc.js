@@ -12,7 +12,7 @@
   var intersectionObserver;
 
   /** @type {Set<HTMLHeadingElement>} */
-  var intersectingHeadings = new Set();
+  var intersectingHeadings;
 
   function headingIntersect(entries) {
     if (!matchMedia('screen and (min-width: 55rem)').matches) {
@@ -60,39 +60,40 @@
   }
 
   function installHighlightToc() {
-    if (
-      document.getElementById &&
-      document.querySelectorAll &&
-      window.IntersectionObserver &&
-      window.matchMedia &&
-      document.body.classList &&
-      document.body.scrollIntoView &&
-      Array.from &&
-      Array.prototype.find &&
-      Array.prototype.findIndex &&
-      Array.prototype.filter &&
-      Array.prototype.forEach &&
-      String.prototype.endsWith &&
-      window.Set
-    ) {
-      tocTree = document.getElementById('toc-tree');
-      headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    intersectingHeadings = new Set()
+    tocTree = document.getElementById('toc-tree');
+    headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-      intersectionObserver = new IntersectionObserver(headingIntersect, {
-        root: null,
-        rootMargin: '0px 0px -40% 0px',
-        threshold: 0,
+    intersectionObserver = new IntersectionObserver(headingIntersect, {
+      root: null,
+      rootMargin: '0px 0px -40% 0px',
+      threshold: 0,
+    });
+
+    Array.from(headings)
+      .filter(function (heading) {
+        return heading.id !== 'toc-heading';
+      })
+      .forEach(function (heading) {
+        intersectionObserver.observe(heading);
       });
-
-      Array.from(headings)
-        .filter(function (heading) {
-          return heading.id !== 'toc-heading';
-        })
-        .forEach(function (heading) {
-          intersectionObserver.observe(heading);
-        });
-    }
   }
 
-  installHighlightToc();
+  if (
+    document.getElementById &&
+    document.querySelectorAll &&
+    window.IntersectionObserver &&
+    window.matchMedia &&
+    document.body.classList &&
+    document.body.scrollIntoView &&
+    Array.from &&
+    Array.prototype.find &&
+    Array.prototype.findIndex &&
+    Array.prototype.filter &&
+    Array.prototype.forEach &&
+    String.prototype.endsWith &&
+    window.Set
+  ) {
+    installHighlightToc();
+  }
 })();
