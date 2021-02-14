@@ -551,7 +551,10 @@ h1#main-heading {
   margin: 3rem 0;
   font-size: 2.5rem;
   text-align: center;
-  color: inherit;
+
+  @include dark-scheme {
+   color: inherit;
+  }
 
   @include large {
     margin: 4rem 0;
