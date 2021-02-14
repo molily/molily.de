@@ -477,16 +477,13 @@ pre {
  */
 
 #page-footer {
-  padding: 2rem;
-  // background-color: $background-color-inverted;
   font-size: 90%;
 
   @include dark-scheme {
-    // background-color: $dark-background-color-inverted;
   }
 
   p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 }
 
