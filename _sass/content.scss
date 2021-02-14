@@ -351,7 +351,7 @@ a {
   &:active {
     color: $link-color;
     text-decoration-color: transparent;
-    outline: 1px solid hsl($hue, 100%, 80%);
+    outline: 1px solid hsl($hue, 90%, 75%);
     outline-offset: 2px;
 
     @include dark-scheme {

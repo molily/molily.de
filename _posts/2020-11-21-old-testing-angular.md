@@ -3704,7 +3704,7 @@ This fake is far from perfect, but already a viable replacement for a `CounterSe
 
 The fake implementation above happens to have the same shape as the original. As discussed, it is of utter importance that the fake remains up to date with the original.
 
-The equivalence is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be add a type declaration:
+The equivalence is not yet enforced by TypeScript. We want TypeScript to check whether the fake properly replicates the original. The first attempt would be to add a type declaration:
 
 <div class="erroneous" markdown="1">
 ```typescript
@@ -4051,7 +4051,9 @@ describe('ServiceCounterComponent: unit test with minimal Service logic', () => 
 
     await TestBed.configureTestingModule({
       declarations: [ServiceCounterComponent],
-      providers: [{ provide: CounterService, useValue: fakeCounterService }],
+      providers: [
+        { provide: CounterService, useValue: fakeCounterService }
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ServiceCounterComponent);
@@ -5926,7 +5928,9 @@ describe('FlickrSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [FlickrSearchComponent],
-      providers: [{ provide: FlickrService, useValue: fakeFlickrService }],
+      providers: [
+        { provide: FlickrService, useValue: fakeFlickrService }
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

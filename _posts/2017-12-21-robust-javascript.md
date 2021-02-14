@@ -27,7 +27,7 @@ lang: en
       <a href="/" title="Home">molily.de</a>
       <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
     </p>
-    <h1 id="toc-book-title">Robust Client-Side JavaScript</h1>
+    <p id="toc-book-title">Robust Client-Side JavaScript</p>
     <p id="toc-epub-link">
       <strong><a href="/assets/robust-javascript.epub" download>Download this book as EPUB (724 KB)</a></strong>
     </p>
@@ -222,7 +222,7 @@ lang: en
 </p>
 
 <h1 id="main-heading">
-  Robust Client-Side JavaScript
+  <span class="main-title">Robust Client-Side JavaScript</span><br>
   <span class="subheading">A Developer’s Guide</span>
 </h1>
 

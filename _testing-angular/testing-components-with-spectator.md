@@ -342,7 +342,9 @@ describe('FlickrSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [FlickrSearchComponent],
-      providers: [{ provide: FlickrService, useValue: fakeFlickrService }],
+      providers: [
+        { provide: FlickrService, useValue: fakeFlickrService }
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

@@ -53,7 +53,7 @@
       });
       if (link) {
         link.classList.add('active');
-        link.scrollIntoView({ block: 'center' });
+        link.scrollIntoView({ block: 'nearest' });
         currentTocLink = link;
       }
     }
