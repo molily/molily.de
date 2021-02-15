@@ -18,8 +18,7 @@
   }
 
   function installCollapseTOC() {
-    var tocTree = document.getElementById('toc-tree');
-    var chapterLinks = tocTree.querySelectorAll(':scope > li > a');
+    var chapterLinks = document.querySelectorAll('#toc-tree > li > a');
     for (var i = 0, l = chapterLinks.length; i < l; i++) {
       var chapterLink = chapterLinks[i];
       if (chapterLink.pathname !== location.pathname) {
@@ -42,7 +41,6 @@
       installIframeButtons();
     }
     if (
-      document.getElementById &&
       document.body.querySelectorAll &&
       'nextElementSibling' in document.body
     ) {
