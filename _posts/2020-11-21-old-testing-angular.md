@@ -33,7 +33,7 @@ robots: noindex, follow
       Testing Angular<br>
       <small>A Guide to Robust Angular Applications</small>
     </p>
-    <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (300 KB)</a></strong></p>
+    <p id="toc-epub-link"><strong><a href="/assets/testing-angular.epub" download>Download this book as EPUB (TODO KB)</a></strong></p>
     <h2 id="toc-heading">Table of Contents</h2>
     <ol id="toc-tree"></ol>
   </nav>
@@ -46,8 +46,13 @@ robots: noindex, follow
   <picture>
     <source type="image/avif" srcset="/img/testing-angular/flying-probe-800-cavif-q60.avif, /img/testing-angular/flying-probe-1600-cavif-q50.avif 2x">
     <source type="image/webp" srcset="/img/testing-angular/flying-probe-800-cwebp-q80.webp, /img/testing-angular/flying-probe-1600.webp 2x">
-    <source type="image/jpeg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x">
-    <img id="cover-image-flying-probe" src="/img/testing-angular/flying-probe-800-85.jpg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/robust-js-1600-65.jpg 2x" alt="Photo of flying probes testing a printed circuit board.">
+    <source type="image/jpeg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/flying-probe-1600-65.jpg 2x">
+    <img
+      id="cover-image-flying-probe"
+      src="/img/testing-angular/flying-probe-800-85.jpg"
+      srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/flying-probe-1600-65.jpg 2x"
+      style="aspect-ratio: 800 / 504"
+      alt="Photo of flying probes testing a printed circuit board." />
   </picture>
 
   <span id="cover-credits">
