@@ -43,17 +43,18 @@ robots: noindex, follow
 <main id="main">
 
 <p id="cover-image">
-  <picture>
-    <source type="image/avif" srcset="/img/testing-angular/flying-probe-800-cavif-q60.avif, /img/testing-angular/flying-probe-1600-cavif-q50.avif 2x">
-    <source type="image/webp" srcset="/img/testing-angular/flying-probe-800-cwebp-q80.webp, /img/testing-angular/flying-probe-1600.webp 2x">
-    <source type="image/jpeg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/flying-probe-1600-65.jpg 2x">
-    <img
-      id="cover-image-flying-probe"
-      src="/img/testing-angular/flying-probe-800-85.jpg"
-      srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/flying-probe-1600-65.jpg 2x"
-      style="aspect-ratio: 800 / 504"
-      alt="Photo of flying probes testing a printed circuit board." />
-  </picture>
+  <span id="cover-image-flying-probe-container">
+    <picture>
+      <source type="image/avif" srcset="/img/testing-angular/flying-probe-800-cavif-q60.avif, /img/testing-angular/flying-probe-1600-cavif-q50.avif 2x">
+      <source type="image/webp" srcset="/img/testing-angular/flying-probe-800-cwebp-q80.webp, /img/testing-angular/flying-probe-1600.webp 2x">
+      <source type="image/jpeg" srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/flying-probe-1600-65.jpg 2x">
+      <img
+        id="cover-image-flying-probe"
+        src="/img/testing-angular/flying-probe-800-85.jpg"
+        srcset="/img/testing-angular/flying-probe-800-85.jpg, /img/flying-probe-1600-65.jpg 2x"
+        alt="Photo of flying probes testing a printed circuit board." />
+    </picture>
+  </span>
 
   <span id="cover-credits">
     Flying probes testing a printed circuit board. Photo by genkur from iStock.

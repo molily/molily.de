@@ -512,7 +512,7 @@ pre {
 #cover-image {
   margin: 4rem 0;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 
   @include large {
     margin-left: -2rem;
@@ -527,11 +527,30 @@ pre {
   max-height: 48vh;
 }
 
-#cover-image-flying-probe {
+/* Placeholder with the right aspect ratio
+to prevent layout shifts */
+#cover-image-flying-probe-container {
+  position: relative;
   display: block;
   margin: auto;
-  width: 800px;
-  max-width: 100%;
+  padding-top: percentage(504 / 800);
+  max-width: 800px;
+}
+
+#cover-image-flying-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@supports (aspect-ratio: 800 / 504) {
+  #cover-image-flying-probe-container {
+    padding-top: 0;
+    aspect-ratio: 800 / 504;
+  }
 }
 
 #cover-credits-link {
@@ -705,12 +724,10 @@ h1#main-heading {
   margin-right: auto;
   max-width: 1000px;
   height: 0;
-  // 1:1
-  padding-top: 100%;
+  padding-top: percentage(1 / 1);
 
   @include large {
-    // 16:9
-    padding-top: 56.25%;
+    padding-top: percentage(9 / 16);
   }
 }
 
