@@ -235,7 +235,7 @@ pre {
   }
 }
 
-#toc-home-link {
+#home-link {
   display: none;
 
   @include large {
@@ -519,6 +519,10 @@ pre {
     margin-left: -2rem;
     margin-right: -2rem;
   }
+}
+
+.main-testing-angular #cover-image {
+  margin: 2rem 0;
 }
 
 #cover-image-tokio-tower {

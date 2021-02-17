@@ -23,7 +23,7 @@ lang: en
 
 <div id="sidebar">
   <nav id="toc">
-    <p id="toc-home-link">
+    <p id="home-link">
       <a href="/" title="Home">molily.de</a>
       <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
     </p>
