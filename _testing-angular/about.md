@@ -20,6 +20,6 @@ Twitter: [@molily](https://twitter.com/molily)
 
 **Please send feedback and corrections to [molily@mailbox.org](mailto:molily@mailbox.org).**
 
-Published on <time datetime="2021-xx-xx">XX XX, 2021</time>.
+Published on <time datetime="2021-02-17">February 17th, 2021</time>.
 
 <p id="next-chapter-link"><a href="../license/#license">License</a></p>
