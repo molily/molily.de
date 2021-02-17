@@ -137,7 +137,7 @@ Protractor is a solid project, but today there is no compelling reason to choose
 
 <aside class="margin-note">Tested with Protractor</aside>
 
-If you are looking for Protractor examples, have a look at the Protractor end-to-end tests for the Counter and Flickr search. They come in two variants, one with the control flow and one with `async` / `await`. They are not explained in this guide though.
+If you are looking for Protractor examples, have a look at the Protractor end-to-end tests for the Counter and Flickr search. They are not explained in this guide though.
 
 <div class="book-sources" markdown="1">
 - [Counter: End-to-end tests with Protractor](https://github.com/9elements/angular-workshop/tree/main/e2e)
