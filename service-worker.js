@@ -7,6 +7,7 @@ const CACHED_RESOURCES = [
   '/assets/fonts/noto-sans-normal-normal-latin.woff2',
   '/assets/fonts/noto-sans-normal-bold-latin.woff2',
   '/robust-javascript/',
+  '/testing-angular/',
   '/testing-angular/introduction/',
   '/testing-angular/target-audience/',
   '/testing-angular/terminology/',
@@ -41,7 +42,11 @@ const CACHED_RESOURCES = [
   '/img/testing-angular/flying-probe-800-cwebp-q80.webp',
   '/img/testing-angular/flying-probe-1600.webp',
   '/img/testing-angular/flying-probe-800-85.jpg',
-  '/img/flying-probe-1600-65.jpg'
+  '/img/flying-probe-1600-65.jpg',
+  '/assets/link-types.js',
+  '/assets/highlight-toc.js',
+  '/assets/iframe-buttons.js',
+  '/assets/collapse-toc.js'
 ];
 
 addEventListener('install', (event) => {
