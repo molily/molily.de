@@ -1,15 +1,47 @@
-const VERSION = 'v2';
+const VERSION = 'v3';
 const PAGES_CACHE = `${VERSION}_PAGES`;
 const CACHED_RESOURCES = [
   '/',
   '/css/blog.css',
-  '/img/spidermum.png',
+  '/css/book.css',
   '/assets/fonts/noto-sans-normal-normal-latin.woff2',
   '/assets/fonts/noto-sans-normal-bold-latin.woff2',
   '/robust-javascript/',
-  '/css/book.css',
+  '/testing-angular/introduction/',
+  '/testing-angular/target-audience/',
+  '/testing-angular/terminology/',
+  '/testing-angular/testing-principles/',
+  '/testing-angular/example-applications/',
+  '/testing-angular/angular-testing-principles/',
+  '/testing-angular/test-suites-with-jasmine/',
+  '/testing-angular/faking-dependencies/',
+  '/testing-angular/debugging-tests/',
+  '/testing-angular/testing-components/',
+  '/testing-angular/testing-components-with-children/',
+  '/testing-angular/testing-components-depending-on-services/',
+  '/testing-angular/testing-complex-forms/',
+  '/testing-angular/testing-components-with-spectator/',
+  '/testing-angular/testing-services/',
+  '/testing-angular/testing-pipes/',
+  '/testing-angular/testing-directives/',
+  '/testing-angular/testing-modules/',
+  '/testing-angular/measuring-code-coverage/',
+  '/testing-angular/end-to-end-testing/',
+  '/testing-angular/summary/',
+  '/testing-angular/index-of-example-applications/',
+  '/testing-angular/references/',
+  '/testing-angular/acknowledgements/',
+  '/testing-angular/about/',
+  '/testing-angular/license/',
+  '/img/spidermum.png',
   '/img/robust-js-500-q75.jpg',
-  '/img/robust-js-1000-q40.jpg'
+  '/img/robust-js-1000-q40.jpg',
+  '/img/testing-angular/flying-probe-800-cavif-q60.avif',
+  '/img/testing-angular/flying-probe-1600-cavif-q50.avif',
+  '/img/testing-angular/flying-probe-800-cwebp-q80.webp',
+  '/img/testing-angular/flying-probe-1600.webp',
+  '/img/testing-angular/flying-probe-800-85.jpg',
+  '/img/flying-probe-1600-65.jpg'
 ];
 
 addEventListener('install', (event) => {
