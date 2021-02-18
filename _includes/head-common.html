@@ -22,11 +22,11 @@
 
 <meta property="twitter:account_id" content="1494951763">
 
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="{% if page.twitter_card %}{{ page.twitter_card }}{% else %}summary{% endif %}">
 <meta name="twitter:site" content="@molily">
 <meta name="twitter:title" content="{{ title | strip }}">
 <meta name="twitter:description" content="{{ description | strip }}">
-<meta name="twitter:image" content="{{ site.url }}/img/spidermum-gray-bg-square-small.png">
+<meta name="twitter:image" content="{{ site.url }}{% if page.twitter_image %}{{ page.twitter_image }}{% else %}/img/spidermum-gray-bg-square-small.png{% endif %}">
 
 <meta property="og:url" content="{{ canonical_url }}">
 <meta property="og:type" content="article">

@@ -5,3 +5,5 @@ cavif --quality 50 ~/Documents/testing-angular-flying-probe/flying-probe-1600.pn
 
 cwebp -q 80 ~/Documents/testing-angular-flying-probe/flying-probe-800.png -o flying-probe-800-cwebp-q80.webp
 cwebp -q 80 ~/Documents/testing-angular-flying-probe/flying-probe-1600.png -o flying-probe-1600-cwebp-q80.webp
+cwebp -q 80 ~/Documents/testing-angular-flying-probe/flying-probe-2-1-2085.png -o flying-probe-2-1-2085-cwebp-q80.webp
+
