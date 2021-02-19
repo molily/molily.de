@@ -4,6 +4,18 @@ layout: blog
 
 {% include top.html %}
 
+<article class="post post-short">
+  <header class="post-header">
+    <a href="/testing-angular/" class="post-link">
+      <h1 class="post-title">Testing Angular - A Guide to Robust Angular Applications</h1>
+      <p class="post-sup">
+        <time class="post-date" datetime="2021-02-17">February 17th, 2021</time>
+      </p>
+    </a>
+  </header>
+  <p class="post-excerpt">How do we take advantage of Angular’s testability?</p>
+</article>
+
 {% for post in site.posts limit: 5 %}
   {% unless post.draft %}
     {% include post-short.html %}

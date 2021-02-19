@@ -2,11 +2,9 @@
 layout: testing-angular-chapter
 title: "Testing Services – Testing Angular"
 description: "How do we take advantage of Angular’s testability?"
-keywords: JavaScript, Angular, testing, automated tests, unit tests, integration tests, end-to-end
+keywords: JavaScript, Angular, testing, automated tests, test automation, unit tests, integration tests, end-to-end tests
 twitter_card: summary_large_image
 twitter_image: /img/testing-angular/flying-probe-2-1-2085-cwebp-q80.webp
-draft: true
-robots: noindex, follow
 ---
 
 # Testing Services
