@@ -385,6 +385,7 @@ describe('ServiceCounterComponent: unit test', () => {
 
 <div class="book-sources" markdown="1">
 - [ServiceCounterComponent: implementation and test code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/service-counter)
+- [Angular guide: Dependency providers](https://angular.io/guide/dependency-injection-providers)
 </div>
 
 ## Fake Service with minimal logic

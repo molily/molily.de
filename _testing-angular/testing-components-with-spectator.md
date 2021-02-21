@@ -36,7 +36,7 @@ This guide cannot introduce all Spectator features, but we will discuss the basi
 
 Both [example applications](../example-applications/#example-applications) are tested with our element helpers and also with Spectator. The former specs use the suffix `.spec.ts`, while the latter use the suffix `.spectator.spec.ts`. This way, you can compare the tests side-by-side.
 
-TIn this chapter, we will discuss testing the Flickr search with Spectator.
+In this chapter, we will discuss testing the Flickr search with Spectator.
 
 ## Component with an Input
 
@@ -487,7 +487,7 @@ describe('FlickrSearchComponent with spectator', () => {
 
 Note that `searchForm`, `photoList` and `fullPhoto` are typed as Component instances, not `DebugElement`s. This is accurate because the fakes have the same public interfaces, the same Inputs and Output.
 
-Due to the equivalence of fake and original, we can access Inputs with the pattern *`componentInstance.input`*. And we let an Output emit with the pattern *`componentInstance.output.emit(…)`*.
+Due to the equivalence of fake and original, we can access Inputs with the pattern `componentInstance.input`. And we let an Output emit with the pattern `componentInstance.output.emit(…)`.
 
 The first spec checks the initial state:
 

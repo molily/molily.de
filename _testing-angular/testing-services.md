@@ -339,7 +339,7 @@ There are two ways to test the `FlickrService`: an integration test or a unit te
 
 <aside class="margin-note">Requests against production</aside>
 
-An i**ntegration test** provides the real `HttpClient`. This leads to HTTP requests to the Flickr API when the running the tests. This makes the whole test unreliable.
+An **integration test** provides the real `HttpClient`. This leads to HTTP requests to the Flickr API when the running the tests. This makes the whole test unreliable.
 
 The network or the web service might be slow or unavailable. Also the Flickr API endpoint returns a different response for each request. It is hard to expect a certain `FlickrService` behavior if the input is unknown.
 

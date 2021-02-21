@@ -57,7 +57,7 @@ Please note that this form is for demonstration purposes only. While it follows 
 In contrast to the other example repositories, this one is split into a `client` and a `server` directory:
 
 - The [`client` directory](https://github.com/molily/angular-form-testing/tree/main/client) contains a standard Angular app created with Angular CLI.
-- The [`server` directory](https://github.com/molily/angular-form-testing/tree/main/server) contains a simple Node.js service that simulates a user management and account creation.
+- The [`server` directory](https://github.com/molily/angular-form-testing/tree/main/server) contains a simple Node.js service that simulates the user management and account creation.
 
 Again, the Node.js service is for demonstration purposes only. The service holds the created user accounts in memory and discards them when stopped. Please do not use it in production.
 
@@ -161,7 +161,7 @@ The stripped-down form structure with only one control looks like this:
 
 <aside class="margin-note">Form submission</aside>
 
-When the form is filled out correctly and all validations pass, the user is able to submit to the form. It produces a data object described by the [`SignupData` interface](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts):
+When the form is filled out correctly and all validations pass, the user is able to submit to the form. It produces an object described by the [`SignupData` interface](https://github.com/molily/angular-form-testing/blob/main/client/src/app/services/signup.service.ts):
 
 ```typescript
 export interface SignupData {
@@ -568,7 +568,7 @@ In production, the HTTP request takes additional time, but our fake `SignupServi
 
 <aside class="margin-note">One second debounce</aside>
 
-This technique to reduce the amount of requests is called *debouncing*. Typing the username “fox” for example should send one request with “fox”, not three subsequent requests with “f”, “fo”, “fox”.
+This technique to reduce the amount of requests is called *debouncing*. For example, typing the username “fox” should send *one* request with “fox”, not *three* subsequent requests with “f”, “fo”, “fox”.
 
 The spec above submits the form immediately after filling out the fields. At this point in time, the asynchronous validators have been called but have not returned a value yet. They are still waiting for the debounce period to pass.
 
@@ -718,6 +718,10 @@ When the user submits the form, the Component under tests calls the `SignupServi
 - In the *error case*, the Observable fails with an error. The form displays a status message “Sign-up error”.
 
 Let us test the latter case in a new spec. The structure resembles the spec for the successful submission. But we configure the fake `signup` method to return an Observable that fails with an error.
+
+```typescript
+import { throwError } from 'rxjs';
+```
 
 ```typescript
 it('handles signup failure', fakeAsync(async () => {
