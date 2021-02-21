@@ -9,13 +9,13 @@ twitter_image: /img/testing-angular/flying-probe-2-1-2085-cwebp-q80.webp
 
 # Testing principles
 
-There is a gap between practical introductions – how to test a feature – and fundamental discussions on the core concepts – what does testing achieve, which type of tests are beneficial, etc. Before we dive into the tutorial, we need to reflect on a few basics about testing.
+There is a gap between practical introductions – how to test a feature – and fundamental discussions on the core concepts – what does testing achieve, which types of tests are beneficial, etc. Before we dive into the tutorial, we need to reflect on a few basics about testing.
 
 ## What makes a good test
 
 When writing tests, you need to keep the goals of testing in mind. You need to judge whether a test is valuable with regard to these goals.
 
-Automated testing has several technical, economical and organizational benefits. Let us look pick a few that are useful to judge a test:
+Automated testing has several technical, economical and organizational benefits. Let us pick a few that are useful to judge a test:
 
 1. **Testing saves time and money.** Testing tries to nip software problems in a bud. Tests prevent bugs before they cause real damage, when they are still manageable and under control.
 

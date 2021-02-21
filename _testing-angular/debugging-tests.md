@@ -138,7 +138,7 @@ const exampleObject = { name: 'Usagi Tsukino' };
 console.log(exampleObject);
 ```
 
-It is important to know that the rendering happens asynchronously and lazy. If you change the object shortly after, you might see the changed object, not the object at the time of the `console.log` call.
+It is important to know that the rendering happens asynchronously. If you change the object shortly after, you might see the changed object, not the object at the time of the `console.log` call.
 
 ```typescript
 const exampleObject = { name: 'Usagi Tsukino' };
@@ -178,13 +178,13 @@ In the screenshot above, you see the rendered Component on the left side and the
 
 <aside class="margin-note">Root element</aside>
 
-The root element the Component is rendered into is the last element in the document, below the Jasmine reporter output. Make sure to set a focus on a single spec to see the rendered Component.
+The Component’s root element is rendered into the last element in the document, below the Jasmine reporter output. Make sure to set a focus on a single spec to see the rendered Component.
 
-The rendered Component is interactive. For example, you can click on buttons and the click handlers will be called. But as we will learn in the next chapter, there is no automatic change detection in the testing environment. So you might not see the effect of the interaction.
+The rendered Component is interactive. For example, you can click on buttons and the click handlers will be called. But as we will learn later, there is no automatic change detection in the testing environment. So you might not see the effect of the interaction.
 
 ## Jasmine debug runner
 
-The Karma page at [http://localhost:9876](http://localhost:9876) loads an iframe with the actual Jasmine instance (http://localhost:9876/context.html). This iframe complicates debugging because the developer tools operate on the topmost document per default.
+The Karma page at [http://localhost:9876](http://localhost:9876) loads an iframe with the actual Jasmine instance, http://localhost:9876/context.html. This iframe complicates debugging because the developer tools operate on the topmost document per default.
 
 In the developer tools, you can select the iframe window context (Chrome is pictured):
 
@@ -194,7 +194,7 @@ This way you can access global objects and the DOM of the document where the tes
 
 <aside class="margin-note">Debug runner without iframe</aside>
 
-Another helpful feature is Karma’s debug test runner. Click on the big “DEBUG” button on the top-right. Then a new tab opens with the URL [http://localhost:9876/debug.html](http://localhost:9876/debug.html).
+Another helpful feature is Karma’s debug test runner. Click on the big “DEBUG” button on the top-right. Then a new tab opens with [http://localhost:9876/debug.html](http://localhost:9876/debug.html).
 
 <img src="/img/testing-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
 

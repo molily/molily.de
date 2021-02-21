@@ -184,7 +184,7 @@ First, we pass the actual value to the `expect` function. It returns an expectat
 
 `toBe` is the simplest matcher that applies to all possible JavaScript values. Internally, it uses JavaScript’s strict equality operator `===`. <code>expect(actualValue)&#x200b;.toBe(expectedValue)</code> essentially runs `actualValue === expectedValue`.
 
-`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if both objects are the same. It fails if two objects are not identical, even if they happen to have the same properties and values.
+`toBe` is useful to compare primitive values like strings, numbers and booleans. For objects, `toBe` matches only if the actual and the expected value are the very same object. `toBe` fails if two objects are not identical, even if they happen to have the same properties and values.
 
 For checking the deep equality of two objects, Jasmine offers the `toEqual` matcher. This example illustrates the difference:
 
@@ -200,7 +200,7 @@ Jasmine has numerous useful matchers built-in, `toBe` and `toEqual` being the mo
 
 <aside class="margin-note">Readable sentence</aside>
 
-The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Driven Development (BDD) again. The code forms a human-readable sentence: “Expect the actual value to equal the expected value.” The `expect` function call and the matcher methods starting with `to` form a readable sentence. The goal is to write a specification that is as readable as a plain text but can be verified automatically.
+The pattern `expect(actualValue).toEqual(expectedValue)` originates from Behavior-Driven Development (BDD) again. The `expect` function call and the matcher methods form a human-readable sentence: “Expect the actual value to equal the expected value.” The goal is to write a specification that is as readable as a plain text but can be verified automatically.
 
 <div class="book-sources" markdown="1">
 - [Jasmine documentation: Built-in matchers](https://jasmine.github.io/api/edge/matchers)
@@ -209,7 +209,7 @@ The pattern `expect(actual).toEqual(expectedValue)` originates from Behavior-Dri
 
 ## Efficient test suites
 
-When writing multiple specs in one suite, you quickly realize that the *Arrange* phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the *Arrange* phase always consists of creating an instance of the class and rendering the Component into the document.
+When writing multiple specs in one suite, you quickly realize that the *Arrange* phase is similar or even identical across these specs. For example, when testing the `CounterComponent`, the *Arrange* phase always consists of creating a Component instance and rendering it into the document.
 
 <aside class="margin-note">Repetitive setup</aside>
 

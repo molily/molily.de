@@ -1,6 +1,6 @@
 ---
 layout: testing-angular-chapter
-title: "Faking dependencies – Testing Angular"
+title: "Faking dependencies (Mocking) – Testing Angular"
 description: "How do we take advantage of Angular’s testability?"
 keywords: JavaScript, Angular, testing, automated tests, test automation, unit tests, integration tests, end-to-end tests
 twitter_card: summary_large_image
@@ -23,7 +23,7 @@ Creating and injecting fake dependencies is essential for unit tests. This techn
 
 ## Equivalence of fake and original
 
-A fake implementation must have the same shape the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same public methods and properties.
+A fake implementation must have the same shape of the original. If the dependency is a function, the fake must have the same signature, meaning the same parameters and the same return value. If the dependency is an object, the fake must have the same public API, meaning the same public methods and properties.
 
 <aside class="margin-note">Replaceability</aside>
 
@@ -63,9 +63,15 @@ Jasmine provides simple yet powerful patterns to create fake implementations. Th
 
 <aside class="margin-note">Call record</aside>
 
-In its simplest form, a spy is a function that records its calls. For each call, it records the function parameters. Using this record, we later assert that the spy has been called with particular input values. For example, we declare in a spec: “Expect that the spy has been called two times with the values `mickey` and `minnie`, respectively.”
+In its simplest form, a spy is a function that records its calls. For each call, it records the function parameters. Using this record, we later assert that the spy has been called with particular input values.
+
+For example, we declare in a spec: “Expect that the spy has been called two times with the values `mickey` and `minnie`, respectively.”
 
 Like every other function, a spy can have a meaningful return value. In the simple case, this is a fixed value. The spy will always return the same value, regardless of the input parameters. In a more complex case, the return value originates from an underlying fake function.
+
+<aside class="margin-note" markdown="1">
+  `createSpy`
+</aside>
 
 A standalone spy is created by calling `jasmine.createSpy`:
 

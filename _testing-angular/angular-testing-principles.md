@@ -38,7 +38,7 @@ Dependency injection turns tight coupling into loose coupling. A certain applica
 This is of immense importance for automated testing. In our test, we can decide how to deal with a dependency:
 
 - We can either provide an **original**, fully-functional implementation. In this case, we are writing an [integration test](../testing-principles/#integration-tests) that includes direct and indirect dependencies.
-- Or we provide a **fake** implementation that does not have side effects. In this case, we are writing a [unit test](../testing-principles/#unit-tests) that tries to test the application part in *n*.
+- Or we provide a **fake** implementation that does not have side effects. In this case, we are writing a [unit test](../testing-principles/#unit-tests) that tries to test the application part in *isolation*.
 
 A large portion of the time spent while writing tests is spent on decoupling an application part from its dependencies. This guide will teach you how to set up the test environment, isolate an application part and reconnect it with equivalent fake objects.
 
@@ -126,13 +126,13 @@ In our example application, the `CounterService` is located in [src/app/componen
 
 Second, `ng test` launches Karma, the test runner. Karma starts a development server at [http://localhost:9876/](http://localhost:9876/) that serves the JavaScript bundles compiled by Webpack.
 
-Karma then launches one or more browsers. The idea of Karma is to run the same tests in different browser to ensure cross-browser interoperability. All widely used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
+Karma then launches one or more browsers. The idea of Karma is to run the same tests in different browsers to ensure cross-browser interoperability. All widely used browsers are supported: Chrome, Internet Explorer, Edge, Firefox and Safari. Per default, Karma starts Chrome.
 
 <aside class="margin-note">Test runner</aside>
 
 The launched browser navigates to `http://localhost:9876/`. As mentioned, this site serves the test runner and the test bundle. The tests start immediately. You can track the progress and read the results in the browser and on the shell.
 
-When running the tests in the [counter project](https://github.com/9elements/angular-workshop), the browser output looks like this:
+When running the tests in the [counter project](../example-applications/#the-counter-component), the browser output looks like this:
 
 <img src="/img/testing-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
 

@@ -61,7 +61,7 @@ A **unit test of `HomeComponent`** does not render these children. The host elem
 
 From `HomeComponent`’s perspective, the inner workings of its children are not relevant. We need to test that the template contains the children. Also, we need to check that `HomeComponent` and its children are wired up correctly using Inputs and Outputs.
 
-In particular, the `HomeComponent` unit test checks that an `app-counter` element is present, that the `startCount` Input is passed correctly and that `HomeComponent` handles the `countChange` event. The same is done for the other children, `app-service-counter` and `app-service-counter`.
+In particular, the `HomeComponent` unit test checks that an `app-counter` element is present, that the `startCount` Input is passed correctly and that `HomeComponent` handles the `countChange` event. The same is done for the other children, `app-service-counter` and `app-ngrx-counter`.
 
 <aside class="margin-note">Render children</aside>
 
@@ -69,7 +69,7 @@ An **integration test of `HomeComponent`** renders the child Components. The hos
 
 <aside class="margin-note">Test cooperation</aside>
 
-We need to decide in what level of detail we test the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
+We need to decide the level of detail for testing the nested Components. If separate unit tests for them exist, we do not need to click on each respective increment button. After all, the integration test needs to prove that the four Component work together, without going into the child Component details.
 
 <aside class="margin-note">Unit test</aside>
 
@@ -99,7 +99,7 @@ describe('HomeComponent', () => {
 
 <aside class="margin-note">Smoke test</aside>
 
-This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors.
+This suite has one spec that acts as a *smoke test*. It checks the presence of a Component instance. It does not assert anything specific about the Component behavior yet. It merely proves that the Component renders without errors.
 
 If the smoke test fails, you know that something is wrong with the testing setup.
 
@@ -169,7 +169,7 @@ In this rare occasion, we need to enforce the element `app-counter` because this
 
 Using a test id makes the element type arbitrary. This makes tests more robust in other case. When testing the existence of child Components though, it is the element type that invokes the child.
 
-Our spec still lacks an expectation. The query method returns a `DebugElement` or `null`. We simply assert that the return value is truthy:
+Our spec still lacks an expectation. The query method returns a `DebugElement` or `null`. We simply expect the return value to be truthy:
 
 ```typescript
 it('renders an independent counter', () => {
@@ -563,7 +563,7 @@ The original child Component, `CounterComponent`, is imported only to create the
 
 Instead of searching for an element named `app-counter`, we search for a Component instance. This is more robust. The presence of the host element is a good indicator, but it is more relevant that a Component has been rendered into this element.
 
-Working with the Component instance is more intuitive than working with the `DebugElement` abstraction. We can read the Component class to learn about Inputs and Outputs. Basic JavaScript and Angular knowledge suffices to write specs against such an instance.
+Working with the Component instance is more intuitive than working with the `DebugElement` abstraction. We can read Component properties to learn about Inputs and Outputs. Basic JavaScript and Angular knowledge suffices to write specs against such an instance.
 
 <aside class="margin-note">Manual faking drawbacks</aside>
 

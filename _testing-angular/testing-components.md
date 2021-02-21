@@ -50,7 +50,7 @@ We will test the following features of the `CounterComponent`:
 - When the user enters a number into the reset input field and activates the reset button, the count is set to the given value.
 - When the user changes the count, an Output emits the new count.
 
-Writing down what the Component does already helps to structure the unit test. The features above roughly translate into specs in a test suite.
+Writing down what the Component does already helps to structure the unit test. The features above roughly translate to specs in a test suite.
 
 <div class="book-sources" markdown="1">
 - [CounterComponent: full code](https://github.com/9elements/angular-workshop/tree/main/src/app/components/counter)
@@ -107,12 +107,12 @@ This instructs the Angular compiler to translate the template files into JavaScr
 
 <aside class="margin-note">Configure and compile</aside>
 
-Since `configureTestingModule` returns the `TestBed` class again, we can chain those two calls:
+Since `configureTestingModule` returns the `TestBed` again, we can chain those two calls:
 
 ```typescript
 TestBed
   .configureTestingModule({
-  declarations: [CounterComponent],
+    declarations: [CounterComponent],
   })
   .compileComponents();
 ```
@@ -229,7 +229,7 @@ For accessing elements in the DOM, Angular has another abstraction: The `DebugEl
 const { debugElement } = fixture;
 ```
 
-The `DebugElement` offers handy properties like `properties`, `attributes`, `classes` and `styles` to examine the node itself. The properties `parent`, `children` and `childNodes` help navigating in the DOM tree. They return `DebugElement`s as well.
+The `DebugElement` offers handy properties like `properties`, `attributes`, `classes` and `styles` to examine the DOM element itself. The properties `parent`, `children` and `childNodes` help navigating in the DOM tree. They return `DebugElement`s as well.
 
 <aside class="margin-note" markdown="1">
   `nativeElement`
@@ -266,7 +266,7 @@ it('increments the count', () => {
 });
 ```
 
-The **Arrange, Act and Assert** structure helps us to structure the spec:
+The **Arrange, Act and Assert** phases help us to structure the spec:
 
 - We have already covered the *Arrange* phase in the `beforeEach` block that renders the Component.
 - In the *Act* phase, we click on the increment button.
@@ -303,7 +303,7 @@ Both methods expect a predicate, that is a function judging every element and re
   `By.css`
 </aside>
 
-Angular ships with predefined predicate functions query the DOM using familiar CSS selectors. For this purpose, pass `By.css('…')` with a CSS selector to `query` and `queryAll`.
+Angular ships with predefined predicate functions to query the DOM using familiar CSS selectors. For this purpose, pass `By.css('…')` with a CSS selector to `query` and `queryAll`.
 
 ```typescript
 const { debugElement } = fixture;
@@ -321,7 +321,7 @@ While these selectors are fine when styling Components, using them in a test nee
 
 <aside class="margin-note">Avoid tight coupling</aside>
 
-Type and class selectors introduce a *tight coupling* between the test and the template. HTML elements are picked for semantic reasons. Classes are picked mostly for visual styling. Both change frequently when the Component template is refactored. Should the test fail if the element type or class changes?
+Type and class selectors introduce a *tight coupling* between the test and the template. HTML elements are picked for semantic reasons. Classes are picked mostly for styling. Both change frequently when the Component template is refactored. Should the test fail if the element type or class changes?
 
 Sometimes the element type and the class are crucial for the feature under test. But most of the time, they are not relevant for the feature. The test should better find the element by a feature that never changes and that bears no additional meaning: test ids.
 
@@ -638,7 +638,7 @@ export function makeClickEvent(
 }
 ```
 
-This function returns on partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods of properties of real click events. It is suitable for clicks on buttons and links when the pointer position, the pressed mouse button and modifier keys do not matter.
+This function returns a partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods of properties of real click events. It is suitable for clicks on buttons and links when the pointer position, the pressed mouse button and modifier keys do not matter.
 
 <aside class="margin-note">Click means activate</aside>
 
@@ -664,9 +664,9 @@ export function expectText<T>(
 }
 ```
 
-Again, this is a simple implementation that will be improved later.
+Again, this is a simple implementation we will improve later.
 
-Using these helpers, we are going to rewrite our spec:
+Using these helpers, we rewrite our spec:
 
 ```typescript
 it('decrements the count', () => {
@@ -738,7 +738,7 @@ Angular forms cannot observe `value` changes directly. Instead, Angular listens 
 
 For **compatibility with Template-driven and Reactive Forms**, we need to dispatch a fake `input` event. Such events are also called *synthetic events*.
 
-In newer browsers, we create fake `input` event with `new Event('input')`. To dispatch the event, we use the `dispatchEvent` method of the target element.
+In newer browsers, we create a fake `input` event with `new Event('input')`. To dispatch the event, we use the `dispatchEvent` method of the target element.
 
 ```typescript
 const resetInputEl = findEl(fixture, 'reset-input').nativeElement;
@@ -874,7 +874,7 @@ public ngOnChanges(): void {
 }
 ```
 
-`ngOnChanges` is called whenever a “data-bound property” changes, including Inputs and Outputs.
+`ngOnChanges` is called whenever a “data-bound property” changes, including Inputs.
 
 Let us write a test for the `startCount` Input. We set the Input in the `beforeEach` block, before calling `detectChanges`. The spec itself checks that the correct count is rendered.
 
@@ -938,7 +938,7 @@ describe('CounterComponent', () => {
 });
 ```
 
-The `CounterComponent` expects a `number` Input and renders it into the DOM. When reading text from the DOM, we always deal with strings. What is why we pass in a number `123` but expect to find the string `'123'`.
+The `CounterComponent` expects a `number` Input and renders it into the DOM. When reading text from the DOM, we always deal with strings. That is why we pass in a number `123` but expect to find the string `'123'`.
 
 ## Testing Outputs
 
@@ -1040,9 +1040,9 @@ it('emits countChange events on increment', () => {
 
 This works as well. But if the feature under test is broken and the Output does not emit, `expect` is never called.
 
-Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful. We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
+Per default, Jasmine warns you that the spec has no expectations but treats the spec as successful (see [Configuring Karma and Jasmine](../angular-testing-principles/#configuring-karma-and-jasmine)). We want the spec to fail explicitly in this case, so we make sure the expectation is always run.
 
-Now we have verified that `countChange` emits when the increment button is clicked. We also need to proof that the Output emits when using the decrement or reset features. We could do that by copying the code and adding two more specs:
+Now we have verified that `countChange` emits when the increment button is clicked. We also need to proof that the Output emits on decrement and reset. We can achieve that by adding two more specs that copy the existing spec:
 
 ```typescript
 it('emits countChange events on decrement', () => {
@@ -1079,7 +1079,7 @@ it('emits countChange events on reset', () => {
 
 ## Repetitive Component specs
 
-Testing the `countChange` Output with three specs works fine, but the code is highly repetitive. A testing helper could reduce the repetition. Experts disagree on whether repetitive testing code is a problem at all.
+Testing the `countChange` Output with three specs works fine, but the code is highly repetitive. A testing helper can reduce the repetition. Experts disagree on whether repetitive testing code is a problem at all.
 
 On the one hand, it is hard to grasp the essence of repetitive specs. Testing helpers form a custom language for expressing testing instructions clearly and briefly. For example, if your specs find DOM elements via test ids, a testing helper establishes the convention and hides the implementation details.
 
@@ -1095,7 +1095,7 @@ A test is supposed to reproduce all relevant logical cases. Finding a proper abs
 
 <aside class="margin-note">Carefully reduce repetition</aside>
 
-Your mileage may vary on this question. For completeness, let us discuss how we could reduce the repetition in the `countChange` Output specs.
+Your mileage may vary on this question. For completeness, let us discuss how to reduce the repetition in the `countChange` Output specs.
 
 An Output is an `EventEmitter`, that is a fully-functional RxJS `Observable`. This allows us to transform the `Observable` as we please. Specifically, we can click all three buttons and then expect that the `countChange` Output has emitted three values.
 
@@ -1175,7 +1175,7 @@ public reset(newCount: string): void { /* … */ }
 
 These properties and methods are internal, they are used only within the Component. Yet they need to be `public` so the template may access them. Angular compiles templates into TypeScript code, and TypeScript ensures that the template code only accesses public properties and methods.
 
-In our `CounterComponent` black box test, we increment the count by clicking on the “+” button. In contrast, many Angular testing tutorials conduct Component white box tests. They would call the `increment` method directly:
+In our `CounterComponent` black box test, we increment the count by clicking on the “+” button. In contrast, many Angular testing tutorials conduct Component white box tests. They call the `increment` method directly:
 
 ```typescript
 /* Not recommended! */
@@ -1195,7 +1195,7 @@ This white box test reaches into the Component to access an internal, yet `publi
 
 As we have learned, a Component test is meaningful if it interacts with the Component via Inputs, Outputs and the rendered DOM. If the Component test calls internal methods or accesses internal properties instead, it often misses important template logic and event handling.
 
-The spec above deals with the increment feature. It calls the `increment` method, but does not test the corresponding template code, the increment button:
+The white box spec above calls the `increment` method, but does not test the corresponding template code, the increment button:
 
 ```html
 <button (click)="increment()" data-testid="increment-button">+</button>
@@ -1207,7 +1207,7 @@ If we remove the increment button from the template entirely, the feature is obv
 
 When applied to Angular Components, black box testing is more intuitive and easier for beginners. When writing a black box test, ask what the Component does for the user and for the parent Component. Then imitate the usage in your test.
 
-A white box test does not examine the Component from the DOM perspective. Thereby, it runs the risk of missing crucial Component behavior. It gives the illusion that all code is tested.
+A white box test does not examine the Component strictly from the DOM perspective. Thereby, it runs the risk of missing crucial Component behavior. It gives the illusion that all code is tested.
 
 That being said, white box testing is viable advanced technique. Experienced testers can write efficient white box specs that still test out all Component features and cover all code.
 
