@@ -5,6 +5,7 @@ description: "How do we take advantage of Angular’s testability?"
 keywords: JavaScript, Angular, testing, automated tests, test automation, unit tests, integration tests, end-to-end tests
 twitter_card: summary_large_image
 twitter_image: /img/testing-angular/flying-probe-2-1-2085-cwebp-q80.webp
+og_image: /img/testing-angular/flying-probe-1200-ogimage-85.jpg
 ---
 
 # Testing Components with Spectator

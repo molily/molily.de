@@ -32,7 +32,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="{{ title | strip }}">
 <meta property="og:description" content="{{ description | strip }}">
-<meta property="og:image" content="{{ site.url }}/img/spidermum-gray-bg-square-small.png">
+<meta property="og:image" content="{% if page.og_image %}{{ page.og_image }}{% else %}/img/spidermum-gray-bg-square-small.png{% endif %}">
 
 <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
