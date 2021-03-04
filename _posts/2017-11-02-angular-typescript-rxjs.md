@@ -8,6 +8,8 @@ lang: en
 
 In this post I’d like to share my experience with web development technologies I’ve encountered recently. I won’t give you a thorough introduction to these technologies, only describe my personal viewpoint.
 
+By the way: In 2021, I have published an **[online book on testing Angular applications](/testing-angular/)**. A comprehensive guide to make Angular applications more robust with automated testing.
+
 ## Back story: Backbone, Chaplin, React
 
 I’m developing websites since the late 1990s, and today I’m a mostly writing front-end code with a focus on JavaScript. I’ve never actively chosen to become a “JavaScript expert”. Ten years ago I was a regular in the German [Selfhtml Forum](https://forum.selfhtml.org/). When JavaScript gained traction in the wake of “Ajax”, more JavaScript questions were posted and I tried to answer them. By looking into other people’s problems, I’ve learned the depths and shallows of JavaScript.
