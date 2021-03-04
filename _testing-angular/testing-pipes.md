@@ -225,13 +225,14 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private translateService: TranslateService
   ) {
-    this.onTranslationChangeSubscription = this.translateService.onTranslationChange.subscribe(
-      () => {
-        if (this.lastKey) {
-          this.getTranslation(this.lastKey);
+    this.onTranslationChangeSubscription =
+      this.translateService.onTranslationChange.subscribe(
+        () => {
+          if (this.lastKey) {
+            this.getTranslation(this.lastKey);
+          }
         }
-      }
-    );
+      );
   }
 
   public transform(key: string): string | null {
@@ -450,6 +451,8 @@ it('translates the key, async service response', fakeAsync(() => {
 });
 ```
 
+<aside class="margin-note">Let time pass</aside>
+
 Here comes the interesting part. We want the Observable to emit a value now. We simulate the passage of 100 milliseconds with `tick(100)`.
 
 ```typescript
@@ -492,7 +495,7 @@ it('updates on translation change', /* … */);
 
 The `TranslatePipe` receives the translation asynchronously and stores both the key and the translation. When Angular calls `transform` with the *same key* again, the Pipe returns the translation synchronously. Since the Pipe is marked as *impure*, Angular does not cache the `transform` result.
 
-<aside class="margin-note">Different key and translation</aside>
+<aside class="margin-note">Different key</aside>
 
 When `translate` is called with a *different key*, the Pipe needs to fetch the new translation. We simulate this case by changing the `HostComponent`’s `key` property from `key1` to `key2`.
 
@@ -506,6 +509,8 @@ it('translates a changed key', () => {
 ```
 
 After a change detection, the DOM contains the updated translation for `key2`.
+
+<aside class="margin-note">Translation change</aside>
 
 Last but no least, the Pipe needs to fetch a new translation from the `TranslateService` when the user changes the language and new translations have been loaded. For this purpose, the Pipe subscribes to the Service’s `onTranslationChange` emitter.
 
