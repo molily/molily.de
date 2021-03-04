@@ -18,14 +18,14 @@ lang: en
     Table of Contents
   </a>
   <a href="/" title="Home">molily</a>
-  <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
+  <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">@molily</a>
 </p>
 
 <div id="sidebar">
   <nav id="toc">
     <p id="home-link">
       <a href="/" title="Home">molily</a>
-      <a href="https://twitter.com/molily" target="_blank" title="molily on Twitter">@molily</a>
+      <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">@molily</a>
     </p>
     <p id="toc-book-title">Robust Client-Side JavaScript</p>
     <p id="toc-epub-link">
