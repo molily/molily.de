@@ -1,6 +1,7 @@
 ---
 # By using these dashes, the file will be compiled to a separate .css
 ---
+
 @charset 'utf-8';
 
 /**
@@ -159,7 +160,6 @@ html {
       outline-offset: 0;
       transform: translateX(-50%);
     }
-
   }
 }
 
@@ -214,7 +214,8 @@ html {
  */
 
 .post-header {
-  margin: 0 calc(-1 * (#{$column-padding-min} + #{$column-padding-flexible})) 1rem;
+  margin: 0 calc(-1 * (#{$column-padding-min} + #{$column-padding-flexible}))
+    1rem;
   padding: 1.5rem calc(#{$column-padding-min} + #{$column-padding-flexible});
   background-color: $post-header-background;
   color: white;
@@ -312,62 +313,45 @@ html {
 $sidebar-line-height: 1.5;
 
 #sidebar {
-  @extend %clearfix;
   padding-top: 2.5rem;
   padding-bottom: 0.1px; // Include margins
-
-  h1 {
-    margin-top: 0;
-    margin-bottom: 2rem;
-    font-size: 1rem;
-
-    a {
-      display: block;
-      height: 100px;
-      border: none;
-      text-indent: 101%;
-      overflow: hidden;
-      background: url(/img/spidermum.png) no-repeat center / contain;
-
-      @include dark-scheme {
-        filter: drop-shadow(0 0 10px #666);
-      }
-    }
-  }
+  line-height: $sidebar-line-height;
 
   ul {
     list-style-type: none;
     margin: 0 0 2rem;
-    line-height: $sidebar-line-height;
   }
+}
 
-  li {
-    margin-bottom: 0.5rem;
-  }
+.sidebar-logo {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1rem;
 
-  .linkblock a {
+  a {
     display: block;
+    height: 100px;
+    border: none;
+    text-indent: 101%;
+    overflow: hidden;
+    background: url(/img/spidermum.png) no-repeat center / contain;
+
+    @include dark-scheme {
+      filter: drop-shadow(0 0 10px #666);
+    }
   }
 
   @include medium {
-    h1 {
+    .sidebar-logo {
       float: left;
       width: 120px;
-    }
-
-    #zitate {
-      margin-left: 150px;
     }
   }
 
   @include large {
-    h1 {
+    .sidebar-logo {
       float: none;
       width: auto;
-    }
-
-    #zitate {
-      margin-left: 0;
     }
   }
 }
@@ -379,35 +363,77 @@ $sidebar-line-height: 1.5;
 
 #zitate {
   font-family: $citation-font;
-  font-variant-ligatures: common-ligatures discretionary-ligatures historical-ligatures contextual;
-}
+  font-variant-ligatures: common-ligatures discretionary-ligatures
+    historical-ligatures contextual;
+  line-height: inherit;
 
-#zitate li {
-  margin: 0 0 1rem;
-}
+  @include medium {
+    margin-left: 150px;
+  }
 
-#zitate q {
-  color: black;
+  @include large {
+    margin-left: 0;
+  }
 
-  @include dark-scheme {
-    color: inherit;
+  li {
+    margin: 0 0 1rem;
+  }
+
+  q {
+    color: black;
+
+    @include dark-scheme {
+      color: inherit;
+    }
+  }
+
+  cite {
+    display: block;
+    font-style: normal;
+    font-size: 0.8rem;
+  }
+
+  a {
+    color: $darker-text-color;
+    border-bottom: 0;
+    text-decoration: none;
+
+    @include dark-scheme {
+      color: $darker-text-color-inverted;
+    }
   }
 }
 
-#zitate cite {
-  display: block;
-  font-style: normal;
-  font-size: 0.8rem;
-  line-height: $sidebar-line-height * 1rem;
+/**
+ * @subsection Links
+ *
+ */
+
+.sidebar-links {
+  line-height: inherit;
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  a {
+    display: block;
+  }
 }
 
-#zitate a {
-  color: $darker-text-color;
-  border-bottom: 0;
-  text-decoration: none;
+.sidebar-special-link {
+  line-height: inherit;
 
-  @include dark-scheme {
-    color: $darker-text-color-inverted;
+  a {
+    display: block;
+    text-decoration: none;
+
+    @include dark-scheme {
+      margin-left: -1rem;
+      margin-right: -1rem;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
   }
 }
 
@@ -480,7 +506,7 @@ $sidebar-line-height: 1.5;
   font-size: 1.2rem;
 }
 
-.artikel-titel[hreflang="de"]:before {
+.artikel-titel[hreflang='de']:before {
   content: 'DE  ';
   margin-right: 0.3rem;
   font-size: 60%;
@@ -493,10 +519,24 @@ $sidebar-line-height: 1.5;
  *
  */
 
-.float-container-demo-container { background: gray; width: 12em; border: 1px solid gray; }
-.float-container-demo-container p { margin: 0; }
-.float-container-demo-container .left { background-color: #F99; float: left; width: 5em; }
-.float-container-demo-container .right { background-color: #99F; margin-left: 5em; width: 5em; }
+.float-container-demo-container {
+  background: gray;
+  width: 12em;
+  border: 1px solid gray;
+}
+.float-container-demo-container p {
+  margin: 0;
+}
+.float-container-demo-container .left {
+  background-color: #f99;
+  float: left;
+  width: 5em;
+}
+.float-container-demo-container .right {
+  background-color: #99f;
+  margin-left: 5em;
+  width: 5em;
+}
 #container-mit-generated-content:after {
   display: block;
   content: 'Clear-Element, hier sichtbar zur Demonstration';
@@ -509,4 +549,4 @@ $sidebar-line-height: 1.5;
  *
  */
 
-@import 'js-objects'
+@import 'js-objects';
