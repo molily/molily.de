@@ -20,6 +20,7 @@
  *
  */
 
+$breakpoint-medium: 30rem;
 $breakpoint-large: 55rem;
 $toc-width: 25rem;
 $main-max-width: 42rem;
@@ -47,6 +48,12 @@ $font-size-small: percentage(16 / 18);
  * @section Mixins
  *
  */
+
+ @mixin medium {
+  @media screen and (min-width: $breakpoint-medium) {
+    @content;
+  }
+}
 
 @mixin large {
   @media screen and (min-width: $breakpoint-large) {
@@ -380,11 +387,14 @@ pre {
  */
 
 #main {
-  // Slightly larger font size than the default
-  font-size: 1.125rem;
-  letter-spacing: 0.2px;
-  word-spacing: 0.2px;
   overflow-wrap: break-word;
+
+  @include medium {
+    // Slightly larger font size than the default
+    font-size: 1.125rem;
+    letter-spacing: 0.2px;
+    word-spacing: 0.2px;
+  }
 
   @include large {
     margin: auto;

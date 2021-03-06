@@ -324,9 +324,20 @@ $sidebar-line-height: 1.5;
 }
 
 .sidebar-logo {
-  margin-top: 0;
   margin-bottom: 2rem;
   font-size: 1rem;
+
+  @include medium {
+    float: left;
+    width: 120px;
+    margin-right: 2rem;
+  }
+
+  @include large {
+    float: none;
+    width: auto;
+    margin-right: 0;
+  }
 
   a {
     display: block;
@@ -338,20 +349,6 @@ $sidebar-line-height: 1.5;
 
     @include dark-scheme {
       filter: drop-shadow(0 0 10px #666);
-    }
-  }
-
-  @include medium {
-    .sidebar-logo {
-      float: left;
-      width: 120px;
-    }
-  }
-
-  @include large {
-    .sidebar-logo {
-      float: none;
-      width: auto;
     }
   }
 }
