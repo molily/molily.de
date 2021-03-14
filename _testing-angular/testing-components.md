@@ -635,6 +635,7 @@ export function makeClickEvent(
     currentTarget: target,
     bubbles: true,
     cancelable: true,
+    button: 0
   };
 }
 ```
