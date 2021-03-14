@@ -369,7 +369,9 @@ ng run angular-workshop:cypress-open
 
 This will open the test runner:
 
-<img src="/img/testing-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/cypress-open.png">
+  <img src="/img/testing-angular/cypress-open.png" alt="Interactive Cypress test runner" class="image-max-full" loading="lazy">
+</a>
 
 In the main window pane, all tests are listed. To run a single test, just click on it. To run all, click the “Run all specs”.
 
@@ -381,7 +383,9 @@ This graphical user interface is an Electron application, a framework based on C
 
 Suppose you run the tests in Chrome, the in-browser test runner looks like this:
 
-<img src="/img/testing-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/cypress-browser.png">
+  <img src="/img/testing-angular/cypress-browser.png" alt="Cypress test runner in the browser" class="image-max-full" loading="lazy">
+</a>
 
 On the left side, the specs are listed. On the right side, the web page under test is seen.
 
@@ -389,7 +393,9 @@ On the left side, the specs are listed. On the right side, the web page under te
 
 By clicking on a spec name, you can see all commands and assertions in the spec.
 
-<img src="/img/testing-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/cypress-test-runner-tests.png">
+  <img src="/img/testing-angular/cypress-test-runner-tests.png" alt="Opened Cypress spec with commands" class="image-max-full" loading="lazy">
+</a>
 
 You can watch Cypress running the specs command by command. This is especially useful when a spec fails. Let us break the spec on purpose to see Cypress’ output.
 
@@ -397,7 +403,9 @@ You can watch Cypress running the specs command by command. This is especially u
 cy.title().should('equal', 'Fluffy Golden Retrievers');
 ```
 
-<img src="/img/testing-angular/cypress-spec-failed.png" alt="Failed spec in Cypress: Time out retrying: expected 'Angular Workshop: Counters' to equal 'Fluffy Golden Retrievers'. Error in counter.ts" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/cypress-spec-failed.png">
+  <img src="/img/testing-angular/cypress-spec-failed.png" alt="Failed spec in Cypress: Time out retrying: expected 'Angular Workshop: Counters' to equal 'Fluffy Golden Retrievers'. Error in counter.ts" class="image-max-full" loading="lazy">
+</a>
 
 Cypress provides a helpful error message, pointing to the assertion that failed. You can click on “Open in IDE” to jump to the spec in your code editor.
 

@@ -135,7 +135,9 @@ The launched browser navigates to `http://localhost:9876/`. As mentioned, this s
 
 When running the tests in the [counter project](../example-applications/#the-counter-component), the browser output looks like this:
 
-<img src="/img/testing-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/karma-success.png">
+  <img src="/img/testing-angular/karma-success.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+</a>
 
 This is the shell output:
 
@@ -219,7 +221,9 @@ Another important concept of Karma are **reporters**. They format and output the
 
 2. The standard HTML reporter `kjhtml` (npm package: `karma-jasmine-html-reporter`) renders the results in the browser.
 
-   <img src="/img/testing-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+   <a href="/img/testing-angular/karma-jasmine-html-reporter.png">
+     <img src="/img/testing-angular/karma-jasmine-html-reporter.png" alt="46 specs, 0 failures" class="image-max-full" loading="lazy">
+   </a>
 
 3. The coverage reporter (npm package: `karma-coverage`) creates the test coverage report. See [measuring code coverage](../measuring-code-coverage/#measuring-code-coverage).
 

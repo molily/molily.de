@@ -30,19 +30,25 @@ The report is a bunch of HTML files you can open with a browser. Start by openin
 
 The report for the Flickr search example looks like this:
 
-<img src="/img/testing-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/code-coverage-flickr-search.png">
+  <img src="/img/testing-angular/code-coverage-flickr-search.png" alt="Code coverage report" class="image-max-full" loading="lazy">
+</a>
 
 Istanbul creates an HTML page for every directory and every file. By following the links, you can descend to reports for the individual files.
 
 For example, the coverage report for [photo-item.component.ts](https://github.com/9elements/angular-flickr-search/blob/main/src/app/components/photo-item/photo-item.component.ts) of the Flickr search:
 
-<img src="/img/testing-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/code-coverage-photo-item.png">
+  <img src="/img/testing-angular/code-coverage-photo-item.png" alt="Code coverage report for photo-item.component.ts. All statements, functions and lines are covered. There is one condition with two branches, one of which is not covered." class="image-max-full" loading="lazy">
+</a>
 
 The report renders the source code annotated with the information how many times a line was called. In the example above, the code is fully covered except for an irrelevant `else` branch, marked with an “E”.
 
 The spec `it('focusses a photo on click', () => {…})` clicks on the photo item to test whether the `focusPhoto` Output emits. Let us disable the spec on purpose to see the impact.
 
-<img src="/img/testing-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/code-coverage-photo-item-uncovered.png">
+  <img src="/img/testing-angular/code-coverage-photo-item-uncovered.png" alt="Code coverage report for photo-item.component.ts. The method handleClick is not called by the test." class="image-max-full" loading="lazy">
+</a>
 
 You can tell from the coverage report above that the `handleClick` method is never called. A key Component behavior is untested.
 

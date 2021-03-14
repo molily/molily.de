@@ -124,7 +124,9 @@ Use debug output to answer these questions:
 
 Some people prefer to use `debugger` instead of console output.
 
-<img src="/img/testing-angular/jasmine-debugger.png" alt="Jasmine test with debugger statement in the code under test" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/jasmine-debugger.png">
+  <img src="/img/testing-angular/jasmine-debugger.png" alt="Jasmine test with debugger statement in the code under test" class="image-max-full" loading="lazy">
+</a>
 
 While the debugger certainly gives you more control, it halts the JavaScript execution. It may disturb the processing of asynchronous JavaScript tasks and the order of execution.
 
@@ -173,7 +175,9 @@ Obviously, this only works for objects that can be serialized as JSON.
 
 In the next chapter, we will learn how to test Components. These tests will render the Component into the DOM of the Jasmine test runner page. This means you can briefly see the states of the rendered Component in the browser.
 
-<img src="/img/testing-angular/jasmine-dom.png" alt="DOM of the Component under test in the DOM inspector" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/jasmine-dom.png">
+  <img src="/img/testing-angular/jasmine-dom.png" alt="DOM of the Component under test in the DOM inspector" class="image-max-full" loading="lazy">
+</a>
 
 In the screenshot above, you see the rendered Component on the left side and the inspected DOM on the right side.
 
@@ -189,7 +193,9 @@ The Karma page at [http://localhost:9876](http://localhost:9876) loads an iframe
 
 In the developer tools, you can select the iframe window context (Chrome is pictured):
 
-<img src="/img/testing-angular/karma-select-context.png" alt="Developer tools: Select the context iframe" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/karma-select-context.png">
+  <img src="/img/testing-angular/karma-select-context.png" alt="Developer tools: Select the context iframe" class="image-max-full" loading="lazy">
+</a>
 
 This way you can access global objects and the DOM of the document where the tests run.
 
@@ -197,7 +203,9 @@ This way you can access global objects and the DOM of the document where the tes
 
 Another helpful feature is Karma’s debug test runner. Click on the big “DEBUG” button on the top-right. Then a new tab opens with [http://localhost:9876/debug.html](http://localhost:9876/debug.html).
 
-<img src="/img/testing-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
+<a href="/img/testing-angular/jasmine-debug-runner.png">
+  <img src="/img/testing-angular/jasmine-debug-runner.png" alt="Jasmine debug runner" class="image-max-full" loading="lazy">
+</a>
 
 The debug test runner does not have an iframe, it loads Jasmine directly. Also it automatically logs spec runs on the shell.
 
