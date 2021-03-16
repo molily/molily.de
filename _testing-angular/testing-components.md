@@ -968,7 +968,7 @@ export class CounterComponent implements OnChanges {
 Let us write a spec for the `countChange` Output!
 
 ```typescript
-it('emits countChange events', () => {
+it('emits countChange events on increment', () => {
   /* … */
 });
 ```
@@ -1111,13 +1111,13 @@ it('emits countChange events', () => {
 
   // Transform the Observable, then subscribe
   component.countChange.pipe(
-      // Close the Observable after three values
-      take(3),
-      // Collect all values in an array
-      toArray()
+    // Close the Observable after three values
+    take(3),
+    // Collect all values in an array
+    toArray()
   ).subscribe((counts) => {
-      actualCounts = counts;
-    });
+    actualCounts = counts;
+  });
 
   // Act
   click(fixture, 'increment-button');
@@ -1211,7 +1211,7 @@ When applied to Angular Components, black box testing is more intuitive and easi
 
 A white box test does not examine the Component strictly from the DOM perspective. Thereby, it runs the risk of missing crucial Component behavior. It gives the illusion that all code is tested.
 
-That being said, white box testing is viable advanced technique. Experienced testers can write efficient white box specs that still test out all Component features and cover all code.
+That being said, white box testing is a viable advanced technique. Experienced testers can write efficient white box specs that still test out all Component features and cover all code.
 
 The following table shows which properties and methods of an Angular Component you should access or not in a black box test.
 

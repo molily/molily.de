@@ -106,7 +106,7 @@ If the smoke test fails, you know that something is wrong with the testing setup
 
 From Angular 9 on, the spec passes but produces a bunch of warnings on the shell:
 
-`app-counter' is not a known element:`<br>
+`'app-counter' is not a known element:`<br>
 `1. If 'app-counter' is an Angular component, then verify that it is part of this module.`<br>
 `2. If 'app-counter' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.`
 
