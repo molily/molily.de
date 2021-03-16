@@ -640,7 +640,7 @@ export function makeClickEvent(
 }
 ```
 
-This function returns a partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods of properties of real click events. It is suitable for clicks on buttons and links when the pointer position, the pressed mouse button and modifier keys do not matter.
+This function returns a partial [MouseEvent](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) fake object with the most important methods and properties of real click events. It is suitable for clicks on buttons and links when the pointer position and modifier keys do not matter.
 
 <aside class="margin-note">Click means activate</aside>
 
