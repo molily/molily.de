@@ -20,7 +20,7 @@ The React and Redux ecosystem has many good practices built-in that come in hand
 
 ## Giant leap: Redux
 
-Recently [I was wondering](https://twitter.com/molily/status/917477498409152513) which web development technology improved the way I work most in the last years. There are certainly a few leaps, like Redux, but I think what made web dev easier is the sum of different small tools. Libraries like React and Angular, compile-to-JavaScript languages like Babel and TypeScript, build tools like Gulp, Browserify, Webpack, linters like eslint, testing tools like Karma etc. Today it’s much easier to produce good code.
+Recently I was wondering which web development technology improved the way I work most in the last years. There are certainly a few leaps, like Redux, but I think what made web dev easier is the sum of different small tools. Libraries like React and Angular, compile-to-JavaScript languages like Babel and TypeScript, build tools like Gulp, Browserify, Webpack, linters like eslint, testing tools like Karma etc. Today it’s much easier to produce good code.
 
 Most people would probably say React had a bigger impact on their work than Redux. For me it’s the opposite; Redux was the eye opener. I’ve always struggled with application-wide state management. [Chaplin and Marionette](https://9elements.com/io/comparison-of-marionette-and-chaplin/) made it easier to keep state in central models, but every non-trivial app ended up as a hairball of internal dependencies and confusing model-view bindings.
 
