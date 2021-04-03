@@ -96,7 +96,7 @@ When new code is added to the project with a test coverage better than average, 
 
 Test coverage should not be a pointless competition that puts developers under pressure and shames those that do not meet an arbitrary mark. Measuring coverage is a tool you should use for your benefit. Keep in mind that writing meaningful, spot-on tests does not necessarily increase the coverage score.
 
-For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For experienced developers, the score may helps to keep up a steady testing practice.
+For beginners and experts alike, the coverage report helps to set up, debug and improve their tests. For experienced developers, the score helps to keep up a steady testing practice.
 
 <div class="book-sources" markdown="1">
 - [karma-coverage Configuration](https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md)
