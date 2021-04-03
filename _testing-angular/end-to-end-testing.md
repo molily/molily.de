@@ -40,8 +40,7 @@ It is the goal of end-to-end tests to catch these bugs that cannot be caught by 
 
 ## Deployment for end-to-end tests
 
-End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts.
-For that purpose, back-end frameworks typically support configurations for different environments, like development, testing and production.
+End-to-end tests require a testing environment that closely resembles the production environment. You need to deploy the full application, including the front-end and the relevant back-end parts. For that purpose, back-end frameworks typically support configurations for different environments, like development, testing and production.
 
 <aside class="margin-note">Deterministic environment</aside>
 
