@@ -16,7 +16,7 @@ Thanks to the teams at 9elements, Diebold Nixdorf and Keysight Technologies for 
 
 Thanks to [Netanel Basal](https://netbasal.com/) for valuable feedback on the book, for creating Spectator and for many helpful articles on Angular and testing.
 
-Thanks to [Nils Binder](https://ichimnetz.com/) for helping with the design, including the dark color scheme. Thanks to Melina Jacob for the designing the ebook cover.
+Thanks to [Nils Binder](https://ichimnetz.com/) for helping with the design, including the dark color scheme. Thanks to Melina Jacob for designing the ebook cover.
 
 Thanks to [Tim Deschryver](https://timdeschryver.dev/), [Kent C. Dodds](https://kentcdodds.com/), [Kara Erickson](https://twitter.com/karaforthewin), [Asim Hussain](https://asim.dev/), [Tracy Lee](https://twitter.com/ladyleet), [Brandon Roberts](https://brandonroberts.dev/), [Jesse Palmer](https://jesselpalmer.com/), Corinna Cohn, [Mike Giambalvo](https://twitter.com/heathkit) and [Craig Nishina](https://twitter.com/cnishina) for insights on Angular, RxJS and automated testing.
 
