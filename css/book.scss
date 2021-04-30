@@ -541,32 +541,6 @@ pre {
   max-height: 48vh;
 }
 
-/* Placeholder with the right aspect ratio
-to prevent layout shifts */
-#cover-image-flying-probe-container {
-  position: relative;
-  display: block;
-  margin: auto;
-  padding-top: percentage(504 / 800);
-  max-width: 800px;
-}
-
-#cover-image-flying-probe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-@supports (aspect-ratio: 800 / 504) {
-  #cover-image-flying-probe-container {
-    padding-top: 0;
-    aspect-ratio: 800 / 504;
-  }
-}
-
 #cover-credits-link {
   border: 0;
 }
