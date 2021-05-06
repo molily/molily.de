@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<title>Performance von JavaScript-Closures: 1 Referenzieren</title>
+</head>
+<body>
+
 <script>
 n = 4000000/*@cc_on / 10 @*/;
 arr = [];
@@ -7,5 +16,8 @@ for (var i = 0; i < n; i++) {
   arr.push(f);
 }
 diff = new Date().getTime() - start;
-document.write(diff + "ms, " +  (diff / n * 1000) + " µs/n");
+document.write(diff + "ms, " +  (diff / n * 1000) + " ï¿½s/n");
 </script>
+
+</body>
+</html>

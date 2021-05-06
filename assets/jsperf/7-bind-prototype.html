@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<title>Performance von JavaScript-Closures: 7 Bind Prototype</title>
+</head>
+<body>
+
 <script>
 Function.prototype.bind = function (arg) {
   var func = this;
@@ -18,5 +27,8 @@ for (var i = 0; i < n; i++) {
   o.f = f.bind(o);
 }
 diff = new Date().getTime() - start;
-document.write(diff + "ms, " +  (diff / n * 1000) + " µs/n");
+document.write(diff + "ms, " +  (diff / n * 1000) + " ï¿½s/n");
 </script>
+
+</body>
+</html>
