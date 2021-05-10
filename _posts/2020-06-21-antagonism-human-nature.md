@@ -7,7 +7,7 @@ lang: en
 ---
 
 <p>
-  <video autoplay muted loop playsinline style="display: block; margin; auto; max-width: 100%">
+  <video autoplay muted loop playsinline controls style="display: block; margin; auto; max-width: 100%">
     <source type='video/mp4; codecs="av01.0.05M.08"' src="/assets/factorio-av1.mp4">
   	<source type='video/mp4; codecs="avc1.42E01E"' src="/assets/factorio.mp4">
 	</video>
