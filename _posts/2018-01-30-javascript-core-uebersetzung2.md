@@ -18,6 +18,6 @@ lang: de
 <p><strong style="font-size: 1.1em"><a href="/javascript-core/2/">→ Die Grundlagen von JavaScript:
 Zweite Ausgabe von Dmitry Soshnikov</a></strong></p>
 
-<p>Der Artikel soll gleichzeitig korrekt, originalgetreu und allgemein verständlich sein. Ich bitte daher um Feedback zur Übersetzung. Wer mit der Versionsverwaltung Git bzw. der Community Github vertraut ist, kann <a href="http://github.com/molily/jscore-de">Verbesserungen vorschlagen oder in einem »Fork« direkt vornehmen</a>. Gerne nehme ich auch Feedback <a href="mailto:molily@mailbox.org">per E-Mail</a> entgegen.</p>
+<p>Der Artikel soll gleichzeitig korrekt, originalgetreu und allgemein verständlich sein. Ich bitte daher um Feedback zur Übersetzung. Wer mit der Versionsverwaltung Git bzw. der Community Github vertraut ist, kann <a href="https://github.com/molily/jscore-de">Verbesserungen vorschlagen oder in einem »Fork« direkt vornehmen</a>. Gerne nehme ich auch Feedback <a href="mailto:molily@mailbox.org">per E-Mail</a> entgegen.</p>
 
 <p>Viel Spaß beim Erkunden der ECMAScript-Interna!</p>

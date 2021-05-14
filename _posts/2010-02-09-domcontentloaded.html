@@ -51,8 +51,8 @@ lang: en
 <pre>
 &lt;!DOCTYPE html>
 &lt;head>
-&lt;link rel="stylesheet" href="http://molily.de/weblog/stylesheet.css">
-&lt;script src="http://molily.de/weblog/script.js">&lt;/script>
+&lt;link rel="stylesheet" href="https://molily.de/weblog/stylesheet.css">
+&lt;script src="https://molily.de/weblog/script.js">&lt;/script>
 &lt;/head>
 &lt;body>
 &lt;div id="element">The element&lt;/div>
@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <p>In these browsers, <strong>the loading of stylesheets blocks the execution of external scripts</strong>. Testcase #2 contains the following markup in the document’s head:</p>
 
 <pre>
-&lt;link rel="stylesheet" href="http://molily.de/weblog/stylesheet.css">
-&lt;script src="http://molily.de/weblog/script.js">&lt;/script>
+&lt;link rel="stylesheet" href="https://molily.de/weblog/stylesheet.css">
+&lt;script src="https://molily.de/weblog/script.js">&lt;/script>
 </pre>
 
 <p>Current Gecko and Webkit versions as well as Internet Explorer 8 download the stylesheet and the script in parallel with multiple HTTP connections. <strong>But they don’t execute the script until the stylesheet has been fetched.</strong> And they don’t start to render the page in the mean time. You can verify this observation using Firebug’s Network tab, the Resources tab from Safari’s Web Inspector and, most accurately, the Timeline tab in Chrome’s Developer Tools:</p>
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <p>However, this trick to postpone DOMContentLoaded <strong>does not work for Opera</strong>. Opera executes the script as soon as it’s fetched and goes on with parsing immediately. This leads to incremental rendering, which is good for perceived performance, but also to a <a href="http://en.wikipedia.org/wiki/Flash_of_unstyled_content">flash of unstyled content (FOUC)</a>, which is rather undesirable.</p>
 
-<p>To normalize Opera’s deviation, jQuery 1.2.1 to 1.2.6 performed an additional check after the DOMContentLoaded event. In these jQuery versions, it was guaranteed that all stylesheets were loaded before the DOM ready handlers were called. <a href="http://github.com/jquery/jquery/commit/4c1e12e889f2a70bfa3603fed9d1cabe67d294e0">jQuery 1.3 dropped this workaround</a>. (Prototype and Mootools do not fix and didn't ever try to fix this issue, as far as I know.)</p>
+<p>To normalize Opera’s deviation, jQuery 1.2.1 to 1.2.6 performed an additional check after the DOMContentLoaded event. In these jQuery versions, it was guaranteed that all stylesheets were loaded before the DOM ready handlers were called. <a href="https://github.com/jquery/jquery/commit/4c1e12e889f2a70bfa3603fed9d1cabe67d294e0">jQuery 1.3 dropped this workaround</a>. (Prototype and Mootools do not fix and didn't ever try to fix this issue, as far as I know.)</p>
 
 
 
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <p>Inline scripts also cause different browser behavior.</p>
 
 <pre>
-&lt;link rel="stylesheet" href="http://molily.de/weblog/stylesheet.css">
+&lt;link rel="stylesheet" href="https://molily.de/weblog/stylesheet.css">
 &lt;script> Some inline JavaScript code &lt;/script>
 </pre>
 
@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <p>According to HTML5, DOMContentLoaded is a plain DOM ready event without taking stylesheets into account. <strong>However</strong>, the HTML5 parsing algorithm require browsers to defer the execution of scripts until all previous stylesheets are loaded. Let’s get back to the example from testcase #2:</p>
 
 <pre>
-&lt;link rel="stylesheet" href="http://molily.de/weblog/stylesheet.css">
-&lt;script src="http://molily.de/weblog/script.js">&lt;/script>
+&lt;link rel="stylesheet" href="https://molily.de/weblog/stylesheet.css">
+&lt;script src="https://molily.de/weblog/script.js">&lt;/script>
 </pre>
 
 <p>When the HTML5 parser encounters the <code>&lt;script ..&gt;...&lt;/script&gt;</code> tags, the whole parsing process is halted. First, the browser fetches the script resource, given it’s an external script. Second, the browser waits for the preceding stylesheet to load. Third, the JavaScript engine runs the downloaded script code. Finally, the parser continues to parse the HTML document.</p>

@@ -1,7 +1,7 @@
 /*
 CopyLink 1.0
-http://github.com/molily/selectionmenu
-von molily (molily@mailbox.org, http://molily.de/)
+https://github.com/molily/selectionmenu
+von molily (molily@mailbox.org, https://molily.de/)
 Lizenz: Public Domain / Kopieren, Verteilen und Aendern ohne Einschraenkungen erlaubt
 */
 

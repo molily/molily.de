@@ -115,12 +115,12 @@ new SelectionMenu({
 
 <pre>
 Franz jagt im komplett verwahrlosten Taxi quer durch Bayern
-Quelle: http://molily.de/
+Quelle: https://molily.de/
 </pre>
 
 <p>Cool, nicht? Wenn Sie jetzt denken, dass an direkt an der Zwischenablage herumgepfuscht wurde, so irren Sie sich. Dies ist nämlich nicht browserübergreifend möglich. Die Funktionsweise gleicht dem SelectionMenu weitesgehend.</p>
 
-<p>Der Clou ist die Nutzung des <code>copy</code>-Events. Bei einem solchen Ereignis wird auf die (Text)Range des markierten Text zugegriffen. Es wird, genauso wie bei SelectionMenu, eine (Text)Range am Ende der ausgewählten eingefügt. Beim SelectionMenu enthält sie das Menü, im Falle des CopyLinks enthält sie den HTML-Code <code>&lt;span id="copylink">&lt;br>Quelle: http://molily.de/&lt;/span></code>. Die Markierung wird auf den eingefügten Text ausgedehnt. Nach Abarbeitung des <code>copy</code>-Event-Handlers kopiert der Browser den markierten Text samt Quellenlink in die Zwischenablage.</p>
+<p>Der Clou ist die Nutzung des <code>copy</code>-Events. Bei einem solchen Ereignis wird auf die (Text)Range des markierten Text zugegriffen. Es wird, genauso wie bei SelectionMenu, eine (Text)Range am Ende der ausgewählten eingefügt. Beim SelectionMenu enthält sie das Menü, im Falle des CopyLinks enthält sie den HTML-Code <code>&lt;span id="copylink">&lt;br>Quelle: https://molily.de/&lt;/span></code>. Die Markierung wird auf den eingefügten Text ausgedehnt. Nach Abarbeitung des <code>copy</code>-Event-Handlers kopiert der Browser den markierten Text samt Quellenlink in die Zwischenablage.</p>
 
 <p>Im Gegensatz zum Kontextmenü muss der eingefügte Text nicht sichtbar sein, deshalb verstecken wir ihn mit der Off-Left-Methode. Diese schiebt das <code>span</code>-Element mit absoluter Positionierung aus dem Dokument heraus. Nach dem <code>copy</code>-Event wird das <code>span</code>-Element automatisch aus dem Dokument entfernt und die ursprüngliche Markierung wiederhergestellt. Der Quellenlink wird also nur ganz kurz im Moment des Kopierens in die Markierung eingefügt.</p>
 
@@ -190,7 +190,7 @@ CopyLink.addEvent(window, 'load', function () {
 
 <h2>Scripte bei Github</h2>
 
-<p>Sie können an der Weiterentwicklung der Scripte über Github teilnehmen: <a href="http://github.com/molily/selectionmenu">github.com/molily/selectionmenu</a></p>
+<p>Sie können an der Weiterentwicklung der Scripte über Github teilnehmen: <a href="https://github.com/molily/selectionmenu">github.com/molily/selectionmenu</a></p>
 
 <link rel="stylesheet" href="../assets/domranges/selectionmenu.css">
 <script src="/assets/domranges/selectionmenu.js"></script>
