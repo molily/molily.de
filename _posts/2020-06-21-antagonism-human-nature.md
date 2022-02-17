@@ -51,7 +51,7 @@ Upgrading your weapons is the natural way of handling the negative impact of pol
 
 In addition to static defense structures, there is offensive combat. Again, with a huge complexity and variety. There are plenty of guns, ammunition, armed vehicles, combat robots, armed trains and respective upgrades. Whole industries are connected to these weapons.
 
-The purpose of offensive combat is to conquer new territories. It is necessary that your factory grows steadily to open up new resources. This is due to the fact that in the game world, conservation of mass and energy does not apply. Especially for techology upgrades, matter is consumed and vanishes into thin air. Most resources are finite. Once raw materials have been processed, you cannot disassemble and recycle the products. (You can only throw them away or blow them up.)
+The purpose of offensive combat is to conquer new territories. It is necessary that your factory grows steadily to open up new resources. This is due to the fact that in the game world, conservation of mass and energy does not apply. Especially for technology upgrades, matter is consumed and vanishes into thin air. Most resources are finite. Once raw materials have been processed, you cannot disassemble and recycle the products. (You can only throw them away or blow them up.)
 
 Since there is no recycling, you cannot set up a circular economy. Therefore, expansion, growth and colonization are imperatives of the game. Sustainability and peace are no options.
 

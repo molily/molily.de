@@ -2091,7 +2091,7 @@ If all techniques and tools did not help you to write robust JavaScript, conside
 
 - [ECMAScript® 2017 Language Specification (ECMA-262, 8th edition, June 2017)](http://www.ecma-international.org/ecma-262/8.0/)
 - [JavaScript. The Core: 2nd Edition](http://dmitrysoshnikov.com/ecmascript/javascript-the-core-2nd-edition/) – Dmitry Soshnikov, 2017
-- [Objektabfragen in JavaScript](https://wiki.selfhtml.org/wiki/JavaScript/Objektabfragen) (German) – Mathias Schäfer, 2011
+- [Objektabfragen in JavaScript](https://wiki.selfhtml.org/wiki/JavaScript/Tutorials/OOP/Objektabfrage) (German) – Mathias Schäfer, 2011
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
