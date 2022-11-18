@@ -307,4 +307,4 @@ Please see my other articles on the topic:
 
 For a full list of references, see [my bookmarks tagged with progressive enhancement](https://www.diigo.com/user/molily/progressive-enhancement).
 
-*I’d love to hear your feedback! Send an email to [molily@mailbox.org](mailto:molily@mailbox.org) or [message me on Twitter: @molily](https://twitter.com/molily).*
+I’d love to hear your feedback! Contact me via [email](mailto:molily@mailbox.org), on [Mastodon](https://mastodon.social/@molily) or [Twitter](https://twitter.com/molily).

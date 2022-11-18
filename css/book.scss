@@ -180,9 +180,8 @@ pre {
   border-bottom: 1px solid
     adjust-color($sticky-menu-background, $lightness: -2%);
   margin: -1rem -1rem 1rem;
-  height: 2.5rem;
   background-color: $sticky-menu-background;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-align: center;
 
   @include large {
@@ -205,9 +204,8 @@ pre {
     align-items: center;
     justify-content: center;
     border: 0;
-    padding: 0 1rem;
     text-decoration: none;
-    line-height: 1.4;
+    line-height: 1.5;
   }
 
   .link-type {

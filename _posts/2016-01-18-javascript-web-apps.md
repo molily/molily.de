@@ -142,7 +142,7 @@ Please see my other articles on the topic:
 
 For a full list of references, see [my bookmarks tagged with progressive enhancement](https://www.diigo.com/user/molily/progressive-enhancement).
 
-*I’d love to hear your feedback! Send an email to [molily@mailbox.org](mailto:molily@mailbox.org) or [message me on Twitter: @molily](https://twitter.com/molily).*
+I’d love to hear your feedback! Contact me via [email](mailto:molily@mailbox.org), on [Mastodon](https://mastodon.social/@molily) or [Twitter](https://twitter.com/molily).
 
 <aside class="unwichtig">
   <p style="margin: 2rem 0 0">Edit, 2016-01-20: In a previous version of this article, I linked to the blog post <a href="https://adactio.com/journal/8245">Angular momentum</a> by Jeremy Keith without discussing it properly. I misrepresented Keith’s opinion and I’d like to apologize for this. His article presents a well-balanced stance on the topic, and I recommend reading it.</p>

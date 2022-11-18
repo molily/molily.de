@@ -17,15 +17,17 @@ lang: en
     <span class="tokyo-tower">🗼</span>
     Table of Contents
   </a>
-  <a href="/" title="Home">molily</a>
-  <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">@molily</a>
+  <a href="/">molily</a>
+  <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">Twitter</a>
+  <a href="https://mastodon.social/@molily" target="_blank" rel="noopener" title="molily on Mastodon">Mastodon</a>
 </p>
 
 <div id="sidebar">
   <nav id="toc">
     <p id="home-link">
-      <a href="/" title="Home">molily</a>
-      <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">@molily</a>
+      <a href="/">molily</a>
+      <a href="https://mastodon.social/@molily" target="_blank" rel="noopener" title="molily on Mastodon">Mastodon</a>
+      <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">Twitter</a>
     </p>
     <p id="toc-book-title">Robust Client-Side JavaScript</p>
     <p id="toc-epub-link">
