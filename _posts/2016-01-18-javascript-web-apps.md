@@ -44,7 +44,7 @@ Today, we need to recall the benefits of user interfaces that overcome server ro
 
 JavaScript is the best technology to build excellent interactivity in the browser. Still, the most important skill of a client-side JavaScript developer is to know when not to solve a problem with client-side JavaScript. It’s always more robust to solve a problem further down in the stack.
 
-From a perspective of progressive enhancement, it is necessary to **resolve the ostensible dichotomy of traditional server-side apps versus JavaScript web apps**. The transition from a traditional server-side app to a JavaScript-heavy app needs to be seamless. We need to find ways how to build high without losing the benefits of building low. “[Universal JavaScript](/single-page-apps/)” frameworks are a promising approach.
+From a perspective of progressive enhancement, it is necessary to **resolve the perceived dichotomy of traditional server-side apps versus JavaScript web apps**. The transition from a traditional server-side app to a JavaScript-heavy app needs to be seamless. We need to find ways how to build high without losing the benefits of building low. “[Universal JavaScript](/single-page-apps/)” frameworks are a promising approach.
 
 ## The architecture of web apps
 
