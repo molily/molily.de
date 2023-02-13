@@ -46,7 +46,6 @@ html {
   font-size: #{"clamp(1rem, 0.5vw + 1rem, 1.3rem)"};
   font-family: $base-font;
   text-rendering: optimizeLegibility;
-  font-variant-ligatures: common-ligatures;
   text-decoration-skip-ink: auto;
 
   @include dark-scheme {
