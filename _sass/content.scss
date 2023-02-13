@@ -43,6 +43,7 @@
 html {
   background-color: $background-color;
   color: $text-color;
+  font-size: #{"clamp(1rem, 0.5vw + 1rem, 1.3rem)"};
   font-family: $base-font;
   text-rendering: optimizeLegibility;
   font-variant-ligatures: common-ligatures;
@@ -390,7 +391,6 @@ acronym {
   cursor: help;
   font-style: normal;
 }
-
 /**
  * @section Data tables
  *
