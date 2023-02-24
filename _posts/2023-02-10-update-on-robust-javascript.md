@@ -31,7 +31,7 @@ Certain posts from prominent JavaScript critics are filled with scathing polemic
 
 I am all for radical criticism, especially targeted at billion-dollar tech corporations and powerful project leaders who [try to silence critics](https://hachyderm.io/@zachleat@zachleat.com/109830049815165514). We need to hold them accountable for tech that produces harmful, subpar web experiences. They deserve their decent share of “told you so”.
 
-It is frustrating that influencial people did not listen to the facts or did not deliver on their own promises. Will it help to call them fraudsters in the moment they start to acknowledge the facts? I believe vitriol makes the situation even more dire. I am disappointed that smart and influential people who made valueable contributions to the web engage in mudslinging.
+It is frustrating that influential people did not listen to the facts or did not deliver on their own promises. Will it help to call them fraudsters in the moment they start to acknowledge the facts? I believe vitriol makes the situation even more dire. I am disappointed that smart people who made valueable contributions to the web engage in mudslinging.
 
 Only a few note that such a behavior may harm the developer community that is already toxic and exclusive:
 
