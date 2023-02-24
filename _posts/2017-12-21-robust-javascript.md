@@ -18,8 +18,8 @@ lang: en
     Table of Contents
   </a>
   <a href="/">molily</a>
-  <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">Twitter</a>
   <a href="https://mastodon.social/@molily" target="_blank" rel="noopener" title="molily on Mastodon">Mastodon</a>
+  <a href="https://twitter.com/molily" target="_blank" rel="noopener" title="molily on Twitter">Twitter</a>
 </p>
 
 <div id="sidebar">
