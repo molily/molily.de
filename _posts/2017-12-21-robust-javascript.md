@@ -1701,7 +1701,7 @@ Using a language with strong, static typing like TypeScript has these main benef
 But what are the downsides?
 
 - Although TypeScript is a superset of ECMAScript, learning TypeScript thoroughly takes a lot of effort. Especially for people who have not worked with statically typed languages before, the type system is fundamentally new and hard to grasp.
-- Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knows the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](http://definitelytyped.org/). Since the code still runs in loosely-typed JavaScript land, the type definitions do not always match the reality.
+- Turning JavaScript into a type-safe language is not easy. The TypeScript compiler knows the semantics of all ECMAScript operators and built-in types. In addition, there are [type definitions for browser APIs and libraries](https://github.com/DefinitelyTyped/DefinitelyTyped). Since the code still runs in loosely-typed JavaScript land, the type definitions do not always match the reality.
 - TypeScript may give a false sense of safety. TypeScript aims for type safety on *compile time* given that all code has correct type definitions. After the translation to JavaScript, all type information is discarded. Dynamic code can still create errors during *runtime*. So runtime checks are still necessary and valuable.
 - Like other compile-to-JavaScript languages, writing TypeScript requires setting up the compiler. To enjoy all benefits, you need to use a specific editor and [linter](https://github.com/palantir/tslint).
 
