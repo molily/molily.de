@@ -28,9 +28,9 @@ First of all, do we want to reconcile? Or are we fine with the divide? Are we fi
 
 # Sermons and insults
 
-I hear JavaScript critics yelling: “Just use Progressive Enhancement! Sprinkle some JavaScript on your static HTML! Don't believe those fraudsters, grifters, bastards, idiots that lied to you!”
+I hear JavaScript critics yelling: "Just use Progressive Enhancement! Sprinkle some JavaScript on your static HTML! Don't believe those fraudsters, grifters, bastards, idiots that lied to you!"
 
-Again, I understand the frustration. Nonetheless, I don't think the current situation can be explained in terms of fraud, lies, gaslighting et cetera. While there are powerful actors with certain economic interests, [there is no “Big JavaScript” conspiracy, no JavaScript framework cabal](https://seldo.com/posts/the_case_for_frameworks) that has lied to us to sell us their sub-par products.
+Again, I understand the frustration. Nonetheless, I don't think the current situation can be explained in terms of fraud, lies, gaslighting et cetera. While there are powerful actors with certain economic interests, [there is no "Big JavaScript" conspiracy, no JavaScript framework cabal](https://seldo.com/posts/the_case_for_frameworks) that has lied to us to sell us their sub-par products.
 
 Even if certain individuals would be to blame – critics personally blame JavaScript framework maintainers and the Big Five companies they work for –, I don't see much value in doing so.
 
@@ -38,25 +38,25 @@ I don't have a grande theory that explains how we got into the current mess. I h
 
 We started with DOM Scripting during the Browser Wars, then came Ajax and client-side JavaScript exploded. Libraries like Backbone.js helped to implement dynamic interfaces and to structure client-side JavaScript. Then came React and solved a specific problem, more on that below. React brought up new problems one obviously doesn't face without React, but React users had to deal with them.
 
-There are also several economic explanations for React's rise to power and continued dominance. For example, in 2019, [Charlie Owen described React](http://web.archive.org/web/20210805020051/https://whalecoiner.com/articles/react) as the Fordism moment that commodified the web. With React, Facebook introducing an assembly line that standardized the work for developers, turning them from artisans to factory workers.
+There are also several economic explanations for React's rise to power and continued dominance. For example, in 2019, [Charlie Owen described React](http://web.archive.org/web/20210805020051/https://whalecoiner.com/articles/react) as the Fordism moment that commodified the web further. With React, Facebook introduced an assembly line that standardized the work for developers, turning them from artisans into factory workers.
 
 # Shifting the ecosystem
 
-Back to the message that JavaScript critics are sending right now. I don't think that we can convince anyone with a sermon that is half truism and half insult. We have been shouting “use Progressive Enhancement, duh!” for a decade, just like Sisyphus is sentenced to roll up a boulder ad infinitum after evading and outsmarting death many times. The recent addition – the insults – doesn't make the message more convincing.
+Back to the message that JavaScript critics are sending right now. I don't think that we can convince anyone with a sermon that is half truism and half insult. We have been shouting "use Progressive Enhancement, duh!" for almost two decades – just like Sisyphus is sentenced to roll up a boulder ad infinitum after evading and outsmarting death many times. The recent addition – the insults – doesn't make the message more convincing.
 
 Given the mess web developers are stuck in right now, I don't expect them to act accordingly. There is no easy way out for organizations that have invested in heavy client-side JavaScript architectures. Especially React doesn't provide escape hatches. That is the core problem that critics describe so well, [React is a one-way road](https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react).
 
 So I see no other option than to shift the JavaScript ecosystem gradually, which ironically is what some critics refuse. In particular, I don't understand why they refuse "transitional" concepts like the [Island Architecture](https://jasonformat.com/islands-architecture/):
 
 <blockquote markdown="1">
-“Islands” is the rebranding that progressive enhancement never should have needed.
+"Islands" is the rebranding that progressive enhancement never should have needed.
 
-The problem with progressive enhancement is by nature, it means you have to care about users, whereas “Islands” means developers can continue pretending users don't exist.
+The problem with progressive enhancement is by nature, it means you have to care about users, whereas "Islands" means developers can continue pretending users don't exist.
 
 – [Andy Bell](https://bell.bz/@andy/109919510521244054)
 </blockquote>
 
-Granted, “islands” aren't the user-centric breakthrough that we might have wished for. But it's useful to explain the concept of Progressive Enhancement to someone who is stuck knee-deep in a certain thinking, programming practice, tooling and legacy code. If we want to improve their JavaScript usage, we have to pull them out of that bog. We need to give them better tools that enable them to do the right thing.
+Granted, "islands" aren't the user-centric breakthrough that we might have wished for. But it's useful to explain the concept of Progressive Enhancement to someone who is stuck knee-deep in a certain thinking, programming practice, tooling and legacy code. If we want to improve their JavaScript usage, we have to pull them out of that bog. We need to give them better tools that enable them to do the right thing.
 
 ## Sprinkling JavaScript
 
@@ -64,11 +64,11 @@ At the same time, we should be honest that a web site doesn't magically get more
 
 For more than 20 years, I've sprinkled JavaScript on HTML, I've built with Progressive Enhancement in mind, I've helped people fixing their JavaScript, with and without frameworks.
 
-One thing I have learned and do not get tired to teach is that “vanilla” JavaScript is a clusterfuck as well. I don't recommend writing client-side JavaScript without a proper concept, without proven patterns and tools. Without guidance and guardrails, you'll end up with a buggy, slow, incoherent, insecure and unmaintainable site.
+One thing I have learned and do not get tired mentioning is that "vanilla" JavaScript is a clusterfuck as well. I don't recommend writing client-side JavaScript without a proper concept, without proven patterns and tools. Without guidance and guardrails, you'll end up with a buggy, slow, incoherent, insecure and unmaintainable site.
 
 The beauty and joy of client-side JavaScript is that there is no inherent purpose or limit. That means that Thou Shalt set up rules and restrain yourself to make your JavaScript benefit the user.
 
-Progressive Enhancement provides guardrails, but so does a framework. To illustrate that, let me tell you from the Golden Age of jQuery and Ajax, before component libraries like React took over. What did “sprinkle JavaScript on top of HTML” mean back then?
+Progressive Enhancement provides guardrails, but so do frameworks. To illustrate that, let me tell you from the Golden Age of jQuery and Ajax, before component libraries like React took over. What did "sprinkle JavaScript on top of HTML" mean back then?
 
 Two-thirds of your front-end logic was server-delivered, declarative HTML and CSS. The other two-thirds was imperative, low-level jQuery DOM manipulation, event handling, setting classes and inline styles.
 
@@ -80,19 +80,19 @@ More importantly, such interfaces were error-prone and brittle. They failed thei
 
 It was React that introduced the concept that [the user interface is a function of the application state](https://www.kn8.lt/blog/ui-is-a-function-of-data/). The page DOM should always reflect the application state properly and consistently. This concept is not a fancy legitimation for single-page apps, it addresses problems every tiny JavaScript widget deals with.
 
-React came at the expense that it sucked HTML (JSX) and later CSS (CSS-in-JS) into its dysfunctional vortex. Better libraries and frameworks let you write plain HTML with non-invasive template logic and plain CSS or Sass that is component-scoped per default. They allow to define the intersections of HTML, CSS and JavaScript more clearly so they can render static pages, mangle and optimize the JavaScript code on compile time, then “hydrate partially” or “resume” what is left on the client.
+React came at the expense that it sucked HTML (JSX) and later CSS (CSS-in-JS) into its dysfunctional vortex. Better libraries and frameworks let you write plain HTML with non-invasive template logic and plain CSS or Sass that is component-scoped per default. They allow to define the intersections of HTML, CSS and JavaScript more clearly so they can render static pages, mangle and optimize the JavaScript code on compile time, then "hydrate partially" or "resume" what is left on the client.
 
 These frameworks are still the opposite of sprinkling JavaScript onto your HTML. And I think this is totally fine as long as the outcome is an accessible, performant and robust web site.
 
-# Progressive Enhancement and JavaScript
+# Enhancing progressively with JavaScript
 
-Last but not least, if we tell web developers to “use Progressive Enhancement, duh!”, especially developers bogged down in React single page apps, we need to bring along a bouquet of tutorials, best practices and case studies that reflect their needs.
+Last but not least, if we tell web developers to "use Progressive Enhancement, duh!", especially developers bogged down in React single page apps, we need to bring along a bouquet of tutorials, best practices and case studies that reflect their needs.
 
-Enhancing progressively with JavaScript means that many practical questions pop up. How do users access and use my site? What are the common points of failure? What is my technical baseline, what is the core functionality? Which enhancement steps do I pick assuming that every step needs a user? How do I bundle enhancements? How do I implement the enhancement steps? What can I achieve with server-side logic, HTML, CSS; which interactions are more user-friendly and even more robust in client-side JavaScript? Can the enhancement steps and different experiences incrementally build on each other? If not, how does the switch from one step to the next look and feel for the user? How do I keep steps in sync and reduce duplication? How do I guarantee that enhancements are as robust as possible? How do I prevent failure? How do I deal with failure? How do I measure and verify that my Progressive Enhancement approach improved the experience for the different users and situations? […]
+Enhancing progressively with JavaScript means that many practical questions pop up. How do users access and use my site? What are the common points of failure? What is my technical baseline, what is the core functionality? Which enhancement steps do I pick assuming that every step needs a user? How do I bundle enhancements? How do I implement the enhancement steps? What can I achieve with server-side logic, HTML, CSS; which interactions are more user-friendly and even more robust in client-side JavaScript? Can the enhancement steps and different experiences incrementally build on each other? If not, how does the switch from one step to the next look and feel for the user? How do I keep steps in sync and reduce duplication? How to fight fragmentation? How do I guarantee that enhancements are as robust as possible? How do I prevent failure? How do I deal with failure? How do I measure and verify that my Progressive Enhancement approach improved the experience for the different users and situations? […]
 
 I'll stop here, you get the idea. These are questions me and my colleagues are dealing with every day.
 
-By nature, Progressive Enhancement means deep research and learning by doing. Most advocates though tell you that building web sites with Progressive Enhancement is easier and the resulting site gets simpler. They argue that a “minimal viable product” approach will do away with unnecessary complexity of JavaScript-heavy front-ends. There are certainly sites whose core functionality can be implemented with server-rendered forms and minimal JavaScript logic. Even then, how are the enhancement steps implemented that enable users to achieve their tasks faster? Web developers will not – and in my opinion should not, see above – keep their hands off highly dynamic client-side interactivity.
+By nature, Progressive Enhancement means deep research and learning by doing. Most advocates though tell you that building web sites with Progressive Enhancement is easier and the resulting site gets simpler. They argue that a "minimal viable product" approach will do away with unnecessary complexity of JavaScript-heavy front-ends. There are certainly sites whose core functionality can be implemented with server-rendered forms and minimal JavaScript logic. Even then, how are the enhancement steps implemented that enable users to achieve their tasks faster? Web developers will not – and in my opinion should not, see above – keep their hands off highly dynamic client-side interactivity.
 
 For many years, I've lamented that only a few people discuss and explore practical Progressive Enhancement with JavaScript on complex sites and web applications that currently default to React monoliths. Seriously, I can not read another tutorial on Progressive Enhancement that operates on trivial examples that allow straight-forward no-brainer enhancements or require little client-side JavaScript at all. I wouldn't even recommend them to my colleagues since they don't address their practical problems.
 
