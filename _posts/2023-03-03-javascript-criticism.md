@@ -38,7 +38,7 @@ I don't have a grande theory that explains how we got into the current mess. I h
 
 We started with DOM Scripting during the Browser Wars, then came Ajax and client-side JavaScript exploded. Libraries like Backbone.js helped to implement dynamic interfaces and to structure client-side JavaScript. Then came React and solved a specific problem, more on that below. React brought up new problems one obviously doesn't face without React, but React users had to deal with them.
 
-There are also several economic explanations for React's rise to power and continued dominance. For example, in 2019, [Charlie Owen described React](http://web.archive.org/web/20210805020051/https://whalecoiner.com/articles/react) as the Fordism moment that commodified the web further. With React, Facebook introduced an assembly line that standardized the work for developers, turning them from artisans into factory workers.
+There are also several economic explanations for React's rise to power and continued dominance. For example, in 2019, [Charlie O'Hara described React](http://web.archive.org/web/20210805020051/https://whalecoiner.com/articles/react) as the Fordism moment that commodified the web further. With React, Facebook introduced an assembly line that standardized the work for developers, turning them from artisans into factory workers.
 
 # Shifting the ecosystem
 
