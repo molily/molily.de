@@ -1,14 +1,12 @@
 /**
  * Content Styles
- *
  */
 
 @import 'variables';
 
 /**
   * @section Mixins
-  *
-  */
+   */
 
 @import 'clearfix';
 @import 'accessible-hide';
@@ -16,7 +14,6 @@
 
 /**
  * @section Box model fix
- *
  */
 
 *,
@@ -27,7 +24,6 @@
 
 /**
  * @section Text selection
- *
  */
 
 ::selection {
@@ -37,16 +33,14 @@
 
 /**
  * @section Root element
- *
  */
 
 html {
   background-color: $background-color;
   color: $text-color;
-  font-size: #{"clamp(1rem, 0.5vw + 1rem, 1.3rem)"};
+  font-size: #{'clamp(1rem, calc(0.91rem + 0.43vw), 1.25rem);'};
   font-family: $base-font;
   text-rendering: optimizeLegibility;
-  text-decoration-skip-ink: auto;
 
   @include dark-scheme {
     background-color: $background-color-inverted;
@@ -56,7 +50,6 @@ html {
 
 /**
  * @section Base styles for new HTML5 elements, for old browsers
- *
  */
 
 main,
@@ -71,7 +64,6 @@ footer {
 
 /**
  * @section Headings
- *
  */
 
 h1,
@@ -125,7 +117,6 @@ h6 {
 
 /**
  * @section All copy text elements
- *
  */
 
 p,
@@ -141,7 +132,6 @@ blockquote {
 
 /**
  * @section Lists
- *
  */
 
 ul,
@@ -165,7 +155,6 @@ li p {
 
 /**
  * @subsection Compact lists
- *
  */
 
 .compact-list li,
@@ -198,7 +187,6 @@ li p {
 
 /**
  * @section Definition lists
- *
  */
 
 dt {
@@ -216,7 +204,6 @@ dd p {
 
 /**
  * @section Preformatted text and code
- *
  */
 
 pre,
@@ -269,7 +256,6 @@ td {
 
 /**
  * @section Block quotations
- *
  */
 
 blockquote {
@@ -301,7 +287,6 @@ blockquote {
 
 /**
  * @section Addresses
- *
  */
 
 address {
@@ -311,7 +296,6 @@ address {
 
 /**
  * @section Links
- *
  */
 
 a {
@@ -367,7 +351,6 @@ a {
 
 /**
  * @section Inline quotations
- *
  */
 
 q {
@@ -380,7 +363,6 @@ q {
 
 /**
  * @section Data tables
- *
  */
 
 table {
@@ -418,7 +400,6 @@ td p:last-child {
 
 /**
  * @section Clearfix utility class
- *
  */
 
 .clearfix {
@@ -427,7 +408,6 @@ td p:last-child {
 
 /**
  * @section Accessible hide utility class
- *
  */
 
 .accessible-hide {
@@ -436,7 +416,6 @@ td p:last-child {
 
 /**
  * @section Less important annotations
- *
  */
 
 .unwichtig {
@@ -445,7 +424,6 @@ td p:last-child {
 
 /**
  * @section Images
- *
  */
 
 .image-full {
@@ -461,7 +439,6 @@ td p:last-child {
 
 /**
  * @section Responsive Media (img, picture, video, iframe)
- *
  */
 
 .responsive-media-container {
