@@ -2,7 +2,7 @@
 layout: post
 title: An update on Robust Client-Side JavaScript
 description: Where is client-side JavaScript heading?
-keywords: javascript, single page apps, testing, frameworks, react
+keywords: javascript, single-page apps, testing, frameworks, react
 lang: en
 ---
 
@@ -19,7 +19,7 @@ At the moment I do not have the time for a substantial book update. In this post
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
-Recently, yet another debate sparked over single page apps, client-side frameworks like [React](https://www.zachleat.com/web/react-criticism/) and client-side versus server-side rendering. The arguments are not new. During the last decade, I found criticism of the dominant client-side JavaScript usage necessary and worthwhile. Especially proponents of progressive enhancement challenged the JavaScript ecosystem. Yet the mainstream did not adapt patterns for robustness and performance. Web sites became slower, more fragile, error-prone, inaccessible and exclusive largely due to client-side JavaScript misuse.
+Recently, yet another debate sparked over single-page apps, client-side frameworks like [React](https://www.zachleat.com/web/react-criticism/) and client-side versus server-side rendering. The arguments are not new. During the last decade, I found criticism of the dominant client-side JavaScript usage necessary and worthwhile. Especially proponents of progressive enhancement challenged the JavaScript ecosystem. Yet the mainstream did not adapt patterns for robustness and performance. Web sites became slower, more fragile, error-prone, inaccessible and exclusive largely due to client-side JavaScript misuse.
 
 There always has been a class of full-stack, “universal” JavaScript frameworks with a focus on speed and simplicity – think of [Marko](https://markojs.com/), [Astro](https://astro.build/), [Fresh](https://fresh.deno.dev/) or [Qwik](https://qwik.builder.io/). They render HTML on the server and aim to ship the minimal necessary amount of JavaScript to the client. The client-side JavaScript then picks up where the server-side JavaScript left off, ideally without duplicating the server-side logic. More and more frameworks adapt such a workflow. But the mainstream is still dominated by React monoliths that comprises megabytes of client-side JavaScript.
 
@@ -27,7 +27,7 @@ There always has been a class of full-stack, “universal” JavaScript framewor
 
 Unfortunately, the chasm between the opposite sides of the debate grew wider. The groups are no longer listening and talking to each other, but mock and ridicule each other while talking to their in-group. Echo chambers in social media amplify this divisive discourse.
 
-Certain posts from prominent JavaScript critics are filled with scathing polemic. They personally attack JavaScript project maintainers, calling them [liars, fraudsters and grifters](https://infrequently.org/2023/02/the-market-for-lemons/) because they only recently have “discovered” the downsides of single page apps.
+Certain posts from prominent JavaScript critics are filled with scathing polemic. They personally attack JavaScript project maintainers, calling them [liars, fraudsters and grifters](https://infrequently.org/2023/02/the-market-for-lemons/) because they only recently have “discovered” the downsides of single-page apps.
 
 I am all for radical criticism, especially targeted at billion-dollar tech corporations and powerful project leaders who [try to silence critics](https://hachyderm.io/@zachleat@zachleat.com/109830049815165514). We need to hold them accountable for tech that produces harmful, subpar web experiences. They deserve their decent share of “told you so”.
 
@@ -37,7 +37,7 @@ Only a few note that such a behavior may harm the developer community that is al
 
 <blockquote cite="https://hachyderm.io/@hbuchel/109830004886148541" markdown="1">
 
-I've been wailing on about <abbr title="single page apps">SPA</abbr> frameworks recently (like a lot of us have, probably because we've found more of our people over here) but just to be clear:
+I've been wailing on about <abbr title="single-page apps">SPA</abbr> frameworks recently (like a lot of us have, probably because we've found more of our people over here) but just to be clear:
 
 The world sucks right now. Get a job where you can. If React or Vue or Angular or Next or whatever gets you a job, then that is absolutely fantastic. If you are new in web dev and it introduces you to a love for the web, that is also fantastic.
 
@@ -138,13 +138,13 @@ Angular has some architectural advantages that allows it to evolve in order to i
 
 The Angular team can optimize the compiler to produce more efficient and less code. In fact, the team recently rewrote the whole compiler and rendering engine. Thanks to the ahead-of-time compilation, there is dormant potential in Angular.
 
-I am excited that the Angular ecosystem catches up with projects like [Analog.js](https://github.com/analogjs/analog), a full-stack framework that compares itself to SvelteKit, Nuxt and Next.js. Although Angular will most likely stick with the single page application architecture, folks from the Angular community are building next-generation frameworks. For example, Miško Hevery, the creator of the original AngularJS framework and co-creator of Angular, now works on Qwik.
+I am excited that the Angular ecosystem catches up with projects like [Analog.js](https://github.com/analogjs/analog), a full-stack framework that compares itself to SvelteKit, Nuxt and Next.js. Although Angular will most likely stick with the single-page application architecture, folks from the Angular community are building next-generation frameworks. For example, Miško Hevery, the creator of the original AngularJS framework and co-creator of Angular, now works on Qwik.
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
 While I still deem it necessary to teach basic defensive coding techniques, one cannot talk about robust client-side JavaScript without discussing the whole web site architecture. I have done so in several blog posts, but not prominently in <cite>Robust JavaScript</cite>.
 
-Client-side JavaScript affects performance and accessibility, and I have realized that these are essential aspects of robustness as well. If JavaScript is freezing a mobile browser for 20 seconds, the site is not usable, let alone robust. If a single page application breaks browser navigation features that users of assistive technologies rely on in particular, the site is not robust. And so on.
+Client-side JavaScript affects performance and accessibility, and I have realized that these are essential aspects of robustness as well. If JavaScript is freezing a mobile browser for 20 seconds, the site is not usable, let alone robust. If a single-page application breaks browser navigation features that users of assistive technologies rely on in particular, the site is not robust. And so on.
 
 All things considered, I think we are in a crucial phase of turmoil. My hope is that the JavaScript community convenes in a respectful and productive way, takes criticism seriously and makes radical technical and social changes.
 
