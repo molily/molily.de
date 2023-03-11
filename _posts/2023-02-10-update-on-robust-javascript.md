@@ -12,10 +12,11 @@ lang: en
   </symbol>
 </svg>
 
-
 In 2017, I published the online book **[Robust Client-Side JavaScript – A Developer’s Guide](/robust-javascript/)**. More than five years later, I think my advice is still valuable. JavaScript as a language has not changed much when it come to techniques for writing robust code.
 
 At the moment I do not have the time for a substantial book update. In this post, I would like to describe how I regard the whole issue today and how I would restructure the book today.
+
+*Update from the future:* In March 2023, I've published the continuation [Client-side JavaScript and React criticism: What comes next?](/javascript-criticism/).
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
@@ -147,6 +148,8 @@ While I still deem it necessary to teach basic defensive coding techniques, one 
 Client-side JavaScript affects performance and accessibility, and I have realized that these are essential aspects of robustness as well. If JavaScript is freezing a mobile browser for 20 seconds, the site is not usable, let alone robust. If a single-page application breaks browser navigation features that users of assistive technologies rely on in particular, the site is not robust. And so on.
 
 All things considered, I think we are in a crucial phase of turmoil. My hope is that the JavaScript community convenes in a respectful and productive way, takes criticism seriously and makes radical technical and social changes.
+
+*Read the continuation:* [Client-side JavaScript and React criticism: What comes next?](/javascript-criticism/)
 
 <style>
   .separator {

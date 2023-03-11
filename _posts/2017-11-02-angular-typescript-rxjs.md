@@ -8,7 +8,7 @@ lang: en
 
 In this post I’d like to share my experience with web development technologies I’ve encountered recently. I won’t give you a thorough introduction to these technologies, only describe my personal viewpoint.
 
-By the way: In 2021, I published an **[online book on testing Angular applications](https://testing-angular.com)**. A comprehensive guide to make Angular applications more robust with automated testing.
+*Update from the future:* In 2021, I published an **[online book on testing Angular applications](https://testing-angular.com)**. A comprehensive guide to make Angular applications more robust with automated testing.
 
 ## Back story: Backbone, Chaplin, React
 
