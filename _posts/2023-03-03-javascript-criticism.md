@@ -14,7 +14,7 @@ lang: en
 
 <p><em markdown="1">A continuation of [An update on Robust Client-Side JavaScript – Where is client-side JavaScript heading?](/update-on-robust-javascript/)</em></p>
 
-# The Great Divide is now a Great War
+## The Great Divide is now a Great War
 
 JavaScript critics are effing mad right now. For well-documented reasons. And they do not mince matters any longer. The web development community has never been so divided. The [Great Divide](https://css-tricks.com/the-great-divide/) is now a Great War.
 
@@ -26,7 +26,7 @@ My question is: Given the dire situation we have, the divided web development co
 
 First of all, do we want to reconcile? Or are we fine with the divide? Are we fine with bridges burning? Are we fine with smart people on both sides ridicule and insult each other? Is this the new normal?
 
-# Sermons and insults
+## Sermons and insults
 
 I hear JavaScript critics yelling: "Just use Progressive Enhancement! Sprinkle some JavaScript on your static HTML! Don't believe those fraudsters, grifters, bastards, idiots that lied to you!"
 
@@ -40,7 +40,7 @@ We started with DOM Scripting during the Browser Wars, then came Ajax and client
 
 There are also several economic explanations for React's rise to power and continued dominance. For example, in 2019, [Charlie O'Hara described React](http://web.archive.org/web/20210805020051/https://whalecoiner.com/articles/react) as the Fordism moment that commodified the web further. With React, Facebook introduced an assembly line that standardized the work for developers, turning them from artisans into factory workers.
 
-# Shifting the ecosystem
+## Shifting the ecosystem
 
 Back to the message that JavaScript critics are sending right now. I don't think that we can convince anyone with a sermon that is half truism and half insult. We have been shouting "use Progressive Enhancement, duh!" for almost two decades – just like Sisyphus is sentenced to roll up a boulder ad infinitum after evading and outsmarting death many times. The recent addition – the insults – doesn't make the message more convincing.
 
@@ -84,7 +84,7 @@ React came at the expense of sucking HTML (JSX) and later CSS (CSS-in-JS) into i
 
 These frameworks are still the opposite of sprinkling JavaScript onto your HTML. And I think this is totally fine as long as the outcome is an accessible, performant and robust web site.
 
-# Enhancing progressively with JavaScript
+## Enhancing progressively with JavaScript
 
 Last but not least, if we tell web developers to "use Progressive Enhancement, duh!", especially developers bogged down in React single-page apps, we need to bring along a bouquet of tutorials, best practices and case studies that reflect their needs.
 
