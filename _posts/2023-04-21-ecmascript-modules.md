@@ -38,7 +38,7 @@ It took fierce discussions to agree on how Node handles ECMAScript modules, like
 
 # ECMAScript modules in the browsers
 
-For client-side JavaScript, authors quickly adopted ECMAScript modules when writing their code. Transpilers like Babel and bundlers like Rollup and Webpack understood ECMAScript modules early. The bundlers used the declarative imports and exports to understand the module dependency tree and to optimize the output bundles ("tree shaking").
+For client-side JavaScript, authors quickly adopted ECMAScript modules when writing their code. Transpilers like [Babel](https://babeljs.io/) and bundlers like [Rollup](https://rollupjs.org/) and [Webpack](https://webpack.js.org/) understood ECMAScript modules early. The bundlers used the declarative imports and exports to understand the module dependency tree and to optimize the output bundles ("tree shaking").
 
 However, browsers did not support ECMAScript modules natively yet. They did not understand the `import`/`export` syntax yet. So the bundlers produced JavaScript files without ECMAScript module syntax.
 
