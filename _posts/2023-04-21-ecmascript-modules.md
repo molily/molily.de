@@ -8,9 +8,9 @@ lang: en
 
 One of the biggest changes in JavaScript in the last decade was the switch from loosely-connected scripts to ECMAScript modules (ESM). This affected both client-side and server-side JavaScript code.
 
-JavaScript programmers today take it for granted that they can pull a library dependency into client- or server-side JavaScript code with `npm install` or other package managers that build on the npm registry. A decade ago, this crucial infrastructure was still in its infancy.
+JavaScript programmers today take it for granted that they can pull a library dependency into client-side or server-side JavaScript code with `npm install` or other package managers that build on the npm registry. A decade ago, this crucial infrastructure was still in its infancy.
 
-In client-side JavaScript, an early module format was Asynchronous Module Definition (AMD). It was used together with loaders like RequireJS or [SystemJS](https://github.com/systemjs/systemjs) and bundlers like r.js. In server-side JavaScript runtimes, the CommonJS module specification predates Node.js but Node.js made it made popular from 2009 on.
+In client-side JavaScript, an early module format was Asynchronous Module Definition (AMD). It was used together with pioneer loaders like RequireJS or [SystemJS](https://github.com/systemjs/systemjs) and bundlers like r.js. In server-side JavaScript runtimes, the CommonJS module specification predated Node.js but Node.js made it made popular from 2009 on.
 
 ## ECMAScript modules
 
@@ -44,7 +44,7 @@ However, browsers did not support ECMAScript modules natively yet. They did not 
 
 Webpack used its own mechanism for splitting code into *chunks* and loading them dynamically. Rollup relies on the module loaders RequireJS or SystemJS to be present at runtime.
 
-Later, the HTML specification was extended and a new script type was introduced – module scripts. In these scripts, the familiar `import` and `export` syntax can be used.
+In January 2016, [the HTML specification was extended](https://github.com/whatwg/html/pull/443) to introduce a new script type – module scripts. In these scripts, the familiar `import` and `export` syntax can be used.
 
 ```html
 <script type="module">
@@ -61,7 +61,7 @@ That is, it is executed when the document is ready.
 <script type="module" src="externalModuleScript.js"></script>
 ```
 
-For backwards-compatibility, the `nomodule` attribute for `script` was introduced. Browsers with module support ignore these scripts. Old browser do not recognize the attribute, simply ignore it and execute the script as usual.
+For backwards-compatibility, [the `nomodule` attribute for `script` was introduced](https://github.com/whatwg/html/pull/2261) in January 2017. Browsers with module support ignore these scripts. Old browser do not recognize the attribute, simply ignore it and execute the script as usual.
 
 ```html
 <script nomodule src="scriptForOldBrowsers.js"></script>
@@ -88,7 +88,7 @@ The resulting modern build is smaller and faster. It is a clear win to ship ECMA
 
 ## Dynamic imports
 
-There is one missing piece in the puzzle: We still want to split the bundle into smaller chunks and load them lazily when the page actually needs the JavaScript code. Static imports load code eagerly. Without any dynamic imports, bundlers like Webpack and Rollup emit one gigantic JavaScript file even when an individual page just needs a tiny fraction of JavaScript.
+There is one missing piece in the puzzle: We still want to split the bundle into smaller chunks and load them lazily when the page actually needs the JavaScript code. Static imports load code eagerly. Bundlers like Webpack and Rollup would emit one gigantic JavaScript file even when an individual page just needs a tiny fraction of JavaScript.
 
 Enter dynamic imports. In addition to static, declarative import statements, ECMAScript 11 (2020) introduces [dynamic, programmatic import calls](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import). `import()` is a function that expects the URL of the script and returns a promise:
 
@@ -127,7 +127,7 @@ Shifting the baseline to browsers that support dynamic imports gives us even mor
 
 ## Detecting support for dynamic imports
 
-But how do we serve the legacy build to intermediate browser? When `<script type="module">` was introduced, `<script nomodule>` was introduced alongside. The combination of both allows us to create a conditional loader: If the browser supports ECMAScript modules, load the modern build, otherwise load the legacy build.
+But how do we serve the legacy build to intermediate browser? The combination of `<script type="module">` and `<script nomodule>` allows us to create a conditional loader: If the browser supports ECMAScript modules, load the modern build, otherwise load the legacy build.
 
 Unfortunately, there is no simple conditional loader for scripts using dynamic imports. This feature cannot be detected easily. The reason is that `import` is a reserved word in ECMAScript. Reserved words cannot be used in expressions where an identifier is expected.
 
@@ -143,7 +143,7 @@ helloWorld();
 </script>
 ```
 
-Luckily, this syntax error that prevents execution already hints at a possible solution. To detect support for dynamic imports – we perform a dynamic import! If the browser executes the imported code and the code after the `import()` call, it is a new browser. If the browser does not execute the code, it is an intermediate browser.
+Luckily, the syntax error that prevents execution already hints at a possible solution. To detect support for dynamic imports – we perform a dynamic import! If the browser executes the imported code and the code after the `import()` call, it is a new browser. If the browser does not execute the code, it is an intermediate browser.
 
 We use dynamic imports to load the bundle that in turn uses dynamic imports. This guarantees us that only capable browsers execute the code. All other browsers are served the legacy bundle.
 
@@ -161,6 +161,7 @@ if (!window.__browserSupportsDynamicImports) {
   // Load the legacy build.
   const script = document.createElement('script');
   script.src = './legacy-build.js';
+  document.head.appendChild(script);
 }
 </script>
 <!-- Legacy build for browsers without ECMAScript module support. -->
@@ -198,7 +199,7 @@ Vite is an example for a mature build tool that helps you ship ECMAScript module
 
 For your project, you need to decide which browser capabilities are required and which browsers you can support easily.
 
-For example, I am currently working on a JavaScript library for client. The library does not actively support old browsers without ECMAScript module support, it does so passively. With little effort, old browsers get a basic functionality. We have a pragmatic approach:
+For example, I am currently working on a JavaScript library for a client. The library does not actively support old browsers without ECMAScript module support, it does so passively. With little effort, old browsers get a basic functionality. We have a pragmatic approach:
 
 1. There is ECMAScript syntax that can be transpiled easily and there are browser APIs that can be polyfilled easily. We make sure to include these polyfills and configure Babel to [perform the right transformations to support a certain list of browsers](https://babeljs.io/docs/babel-preset-env). See also the [Vite legacy plugin options](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#targets) `targets` and `polyfills`.
 
@@ -229,7 +230,9 @@ This overview merely describes, but does not judge the different approaches. Whi
 
 ## Cutting the mustard with ECMAScript modules
 
-Back in 2012, developers at the BBC used Progressive Enhancement to deliver a robust site to all browsers. The core experience in plain HTML worked without JavaScript. The developers guarded the JavaScript with feature detects so it only executed in browsers that "[cut the mustard](http://web.archive.org/web/20201209062357/http://responsivenews.co.uk/post/18948466399/cutting-the-mustard)", that is, meet a certain mark. This absolved developers from writing convoluted, backwards-compatible JavaScript. It made the JavaScript simpler and more robust since it did not have to deal with every eventuality.
+Back in 2012, developers at the BBC used Progressive Enhancement to deliver a robust site to all browsers. The core experience in plain HTML worked without JavaScript. The developers guarded the JavaScript with feature detects so it only executed in browsers that "[cut the mustard](http://web.archive.org/web/20201209062357/http://responsivenews.co.uk/post/18948466399/cutting-the-mustard)", that is, meet a certain mark.
+
+This technique absolved developers from writing convoluted, backwards-compatible JavaScript. It made the JavaScript simpler and more robust since it did not have to deal with every eventuality.
 
 Since 2018, several [developers have been proposing ECMAScript modules as a new way to cut the mustard](https://fettblog.eu/cutting-the-mustard-2018/). As you can see in the list above, several frameworks are applying this approach.
 
@@ -239,11 +242,13 @@ It is hard to even find out the minimum requirements of popular frameworks today
 
 ## The compatibility penalty of new ECMAScript syntax
 
-Unfortunately, the bar is often raised unintentionally. For example, I like the [optional chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining). It helps to write more robust code and makes it more readable as well.
+Unfortunately, developers often raise the bar unintentionally. For example, I like the [optional chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining). It helps to write more robust code.
 
 Historically, optional chaining is a relatively new addition to ECMAScript. It was introduced in ECMAScript 11, published in June 2020. The major browser engines already shipped support in February or March 2020 when the corresponding proposal was finished.
 
-Optional chaining [is supported by 93.33 % browsers worldwide, according to Can I Use](https://caniuse.com/mdn-javascript_operators_optional_chaining). 6.67 % of all used browsers do not support it.
+Technically, optional chaining is "syntactic sugar": a shorter, more readable way to write a logic that was already possible before. Syntactic sugar can easily be transpiled into older syntax with broader support.
+
+Today, optional chaining [is supported by 93.33 % browsers worldwide, according to Can I Use](https://caniuse.com/mdn-javascript_operators_optional_chaining). 6.67 % of all used browsers do not support it. Some of them will execute the modern build but will not support optional chaining.
 
 If you use new syntax features, do so consciously and mind the consequences. New syntax raises the bar and may thwart previous efforts of supporting older browsers.
 
@@ -253,8 +258,8 @@ The ECMAScript standard and browser APIs keep evolving. Many innovations make it
 
 There are several upcoming features that will make ECMAScript modules in the browser more powerful. [Import maps](https://github.com/WICG/import-maps) is one of them. Since March 2023, all major browser engine support import maps. With imports maps, you do not necessarily need a traditional package manager and a module bundler to import third-party dependencies.
 
-Luckily, there is a [shim for import maps](https://github.com/guybedford/es-module-shims). Note that it is highly complex since it fetches, parses and rewrites the module code before executing it.
+Luckily, there is a [shim for import maps](https://github.com/guybedford/es-module-shims). Note that it is highly complex since it fetches, parses and rewrites the module code right in the browser before executing it.
 
 Even if we take ECMAScript modules, dynamic imports and potentially more features as a baseline for our JavaScript, we constantly need to think about browser compatibility. The nature of the web has not changed. We always have to deal with diverse browsers with hugely different capabilities.
 
-Therefore we still need Progressive Enhancement and Graceful Degradation. We still need server-side logic when the browser does not cut the mustard. If we use the latest JavaScript features and and support slightly older browsers, we still need two builds. We will still need transpilation, feature detects and polyfills in the future.
+Therefore we still need Progressive Enhancement and Graceful Degradation. If we use the latest JavaScript features and want ti support slightly older browsers, we still need two builds. We will still need transpilation, feature detects and polyfills in the future.
