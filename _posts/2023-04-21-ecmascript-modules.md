@@ -262,4 +262,4 @@ Luckily, there is a [shim for import maps](https://github.com/guybedford/es-modu
 
 Even if we take ECMAScript modules, dynamic imports and potentially more features as a baseline for our JavaScript, we constantly need to think about browser compatibility. The nature of the web has not changed. We always have to deal with diverse browsers with hugely different capabilities.
 
-Therefore we still need Progressive Enhancement and Graceful Degradation. If we use the latest JavaScript features and want ti support slightly older browsers, we still need two builds. We will still need transpilation, feature detects and polyfills in the future.
+Therefore we still need Progressive Enhancement and Graceful Degradation. If we use the latest JavaScript features and want to support slightly older browsers, we still need two builds. We will still need transpilation, feature detects and polyfills in the future.
