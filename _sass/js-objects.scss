@@ -1,5 +1,5 @@
 .js-objects {
-  @extend %clearfix;
+  @include clearfix;
 }
 
 .js-objects .object {

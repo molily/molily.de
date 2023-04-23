@@ -1,9 +1,6 @@
 ---
 # By using these dashes, the file will be compiled to a separate .css
 ---
-
-@charset 'utf-8';
-
 /**
  * Blog styles
  *
@@ -21,9 +18,6 @@
 
 $col-left-width: 67%;
 
-$breakpoint-medium: 30rem;
-$breakpoint-large: 56rem;
-
 $column-padding-min: 1.5rem;
 $column-padding-flexible: 1.5vw;
 
@@ -38,23 +32,6 @@ $body-background-inverted: $background-color-inverted;
 $primary-background-inverted: $medium-background-color-inverted;
 $secondary-background-inverted: $dark-background-color-inverted;
 $post-header-background-inverted: $highlight-background-color-inverted;
-
-/**
- * @section Mixins
- *
- */
-
-@mixin medium {
-  @media (min-width: $breakpoint-medium) {
-    @content;
-  }
-}
-
-@mixin large {
-  @media (min-width: $breakpoint-large) {
-    @content;
-  }
-}
 
 /**
  * @section Base layout

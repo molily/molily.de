@@ -2,15 +2,32 @@
  * Content Styles
  */
 
-@import 'variables';
+/**
+ * @section Variables
+ *
+ */
+
+ @import 'variables';
 
 /**
-  * @section Mixins
-   */
+ * @section Mixins
+ */
 
 @import 'clearfix';
 @import 'accessible-hide';
 @import 'dark-scheme';
+
+@mixin medium {
+  @media (min-width: $breakpoint-medium) {
+    @content;
+  }
+}
+
+@mixin large {
+  @media (min-width: $breakpoint-large) {
+    @content;
+  }
+}
 
 /**
  * @section Box model fix
@@ -43,6 +60,7 @@ html {
   text-rendering: optimizeLegibility;
 
   @include dark-scheme {
+    color-scheme: dark;
     background-color: $background-color-inverted;
     color: $text-color-inverted;
   }
@@ -127,7 +145,10 @@ pre,
 address,
 blockquote {
   margin: 0 0 1rem 0;
-  line-height: $content-line-height;
+  line-height: $content-line-height-small;
+  @include medium {
+    line-height: $content-line-height-medium;
+  }
 }
 
 /**
@@ -171,7 +192,7 @@ li p {
 }
 
 .ultra-compact-list {
-  @extend %clearfix;
+  @include clearfix;
 
   li {
     float: left;
@@ -403,7 +424,7 @@ td p:last-child {
  */
 
 .clearfix {
-  @extend %clearfix;
+  @include clearfix;
 }
 
 /**
@@ -411,7 +432,7 @@ td p:last-child {
  */
 
 .accessible-hide {
-  @extend %accessible-hide;
+  @include accessible-hide;
 }
 
 /**

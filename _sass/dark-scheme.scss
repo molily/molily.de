@@ -1,8 +1,6 @@
 /**
  * Dark color scheme
- *
  */
-
 @mixin dark-scheme {
   @media (prefers-color-scheme: dark) {
     @content;
