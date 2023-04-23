@@ -247,7 +247,7 @@ pre {
   padding: 1rem;
   overflow: auto;
   font-size: 90%;
-  line-height: 1.8;
+  line-height: $content-line-height-small;
   border-radius: 3px;
 
   @include dark-scheme {
