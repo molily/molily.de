@@ -135,12 +135,16 @@ If an intermediate browser parses a script with `import('…')`, it fails with a
 
 ```html
 <script type="module">
-// The next line raises a SyntaxError in intermediate browsers.
-const { helloWorld } = await import('./helloWorld.js');
-// The next line in only executed if the browser supports
-// dynamic imports. It is never executed in intermediate browsers.
-helloWorld();
+// Wrap code in a function to prevent a top-level await.
+(async () => {
+  // The next line raises a SyntaxError in intermediate browsers.
+  const { helloWorld } = await import('./helloWorld.js');
+  // The next line in only executed if the browser supports
+  // dynamic imports. It is never executed in intermediate browsers.
+  helloWorld();
+})();
 </script>
+
 ```
 
 Luckily, the syntax error that prevents execution already hints at a possible solution. To detect support for dynamic imports – we perform a dynamic import! If the browser executes the imported code and the code after the `import()` call, it is a new browser. If the browser does not execute the code, it is an intermediate browser.
