@@ -227,7 +227,7 @@ Here is a quick survey:
 - **Angular CLI**: ECMAScript module build only. [Angular only supports most recent browsers](https://angular.io/guide/browser-support). Angular uses dynamic imports for route-level code splitting. (Angular 16 allows to use Vite as dev server, but the production build works the same.)
 - **Next.js**: Does not use ECMAScript modules. Uses `nomodule` to load polyfills though. Allows to [configure Babel and load polyfills](https://nextjs.org/docs/basic-features/supported-browsers-features).
 - **Nuxt.js**: Does not use ECMAScript modules. One build per default. Allows to [build and serve a modern and a legacy build](https://nuxtjs.org/docs/configuration-glossary/configuration-modern/).
-- **Sveltekit**: Uses dynamic imports without feature detection or fallback. Uses Vite under the hood, but [`@vitejs/plugin-legacy` currently does not work with Sveltekit](https://github.com/sveltejs/kit/issues/12)
+- **Sveltekit**: Uses dynamic imports without feature detection or fallback. Sveltekit uses Vite under the hood, but [`@vitejs/plugin-legacy` currently does not work with Sveltekit](https://github.com/sveltejs/kit/issues/12).
 - **Remix**: ECMAScript modules and dynamic imports only. On purpose, [Remix runs in browsers that support ECMAScript modules](https://remix.run/docs/en/main/guides/browser-support). Remix supports older browser by not serving them JavaScript, falling back to server-side logic.
 
 This overview merely describes, but does not judge the different approaches. While backwards compatibility is a virtue, each framework and site author need to decide on the minimum browser requirements and how to support browsers that do not meet them.
