@@ -242,7 +242,7 @@ Since 2018, several [developers have been proposing ECMAScript modules as a new 
 
 Not all frameworks use Progressive Enhancement or Graceful Degradation. Not all frameworks have a strategy for browsers that do not meet the minimum requirements. For some frameworks, the site is just empty or broken in these browsers.
 
-It is hard to even find out the minimum requirements of popular frameworks today. Only few state them explicitly. Most tacitly use JavaScript APIs or ECMAScript features introduced recently without realizing that this raises the the bar of entry.
+It is hard to even find out the minimum requirements of popular frameworks today. Only few state them explicitly. Most tacitly use JavaScript APIs or ECMAScript features introduced recently without realizing that this raises the bar of entry.
 
 ## The compatibility penalty of new ECMAScript syntax
 
