@@ -152,6 +152,14 @@
 }
 
 // Changes by molily
+
+// Do not use italic for comments, it is hard to read
+.highlight .c { font-style: normal } /* Comment */
+.highlight .ch {  font-style: normal } /* Comment.Hashbang */
+.highlight .cm {  font-style: normal } /* Comment.Multiline */
+.highlight .cpf {  font-style: normal } /* Comment.PreprocFile */
+.highlight .c1 {  font-style: normal } /* Comment.Single */
+
 // In JavaScript/TypeScript, err is used for the `template literal`.
 // Make it look like a normal .s1 (Literal.String.Single) instead of an error.
 .language-typescript, .language-js {
