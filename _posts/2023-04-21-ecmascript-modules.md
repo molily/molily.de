@@ -244,7 +244,7 @@ Not all frameworks use Progressive Enhancement or Graceful Degradation. Not all 
 
 It is hard to even find out the minimum requirements of popular frameworks today. Only few state them explicitly. Most tacitly use JavaScript APIs or ECMAScript features introduced recently without realizing that this raises the bar of entry.
 
-## The compatibility penalty of new ECMAScript syntax
+## New ECMAScript syntax reduces compatibility
 
 Unfortunately, developers often raise the bar unintentionally. For example, I like the [optional chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining). It helps to write more robust code.
 
@@ -253,6 +253,12 @@ Historically, optional chaining is a relatively new addition to ECMAScript. It w
 Technically, optional chaining is "syntactic sugar": a shorter, more readable way to write a logic that was already possible before. Syntactic sugar can easily be transpiled into older syntax with broader support.
 
 Today, optional chaining [is supported by 93.33 % browsers worldwide, according to Can I Use](https://caniuse.com/mdn-javascript_operators_optional_chaining). 6.67 % of all used browsers do not support it. Some of them will execute the modern build but will not support optional chaining.
+
+Recently, Jim Nielsen described in his blog post [The Optional Chaining Operator, "Modern" Browsers, and My Mom](https://blog.jim-nielsen.com/2022/a-web-for-all/) what happens when new JavaScript syntax is used without transpilation:
+
+<blockquote cite="https://blog.jim-nielsen.com/2022/a-web-for-all/">
+The real-life impact of our technical decisions really hit home to me once again: my Mom had trouble volunteering and participating in her local community because somebody shipped the optional chaining operator in their production JavaScript.
+</blockquote>
 
 If you use new syntax features, do so consciously and mind the consequences. New syntax raises the bar and may thwart previous efforts of supporting older browsers.
 
