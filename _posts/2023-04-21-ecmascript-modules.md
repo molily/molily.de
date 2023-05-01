@@ -254,15 +254,22 @@ const user = { name: 'Robin' };
 console.log(user.address?.street);
 ```
 
-Technically, optional chaining is "syntactic sugar": a shorter, more readable way to write a logic that was already possible before. Syntactic sugar can easily be transpiled into older syntax with broader support.
+Technically, optional chaining is "syntactic sugar": a shorter, more readable way to write a logic that was already possible before. Syntactic sugar can easily be transpiled into older syntax with broader support:
+
+```javascript
+const user = { name: 'Robin' };
+// The user might have an address or not
+const street = user.address ? user.address.street : undefined;
+console.log(street);
+```
 
 Historically, optional chaining is a relatively new addition to ECMAScript. It was introduced in ECMAScript 11, published in June 2020. The major browser engines already shipped support in February or March 2020 when the corresponding proposal was finished.
 
-By the way, ECMAScript 11 is the same edition that introduced [dynamic imports described above](dynamic-imports). But browsers started to support dynamic imports much earlier than optional chaining.
+By the way – ECMAScript 11 is the same edition that introduced [dynamic imports described above](dynamic-imports). But browsers started to support dynamic imports much earlier than optional chaining.
 
 Today, optional chaining [is supported by 93.33 % browsers worldwide, according to Can I Use](https://caniuse.com/mdn-javascript_operators_optional_chaining). 6.67 % of all used browsers do not support it. Some of them will execute the modern build but will not support optional chaining.
 
-Recently, Jim Nielsen described in his blog post [The Optional Chaining Operator, "Modern" Browsers, and My Mom](https://blog.jim-nielsen.com/2022/a-web-for-all/) what happens when new JavaScript syntax is used without transpilation:
+Recently, Jim Nielsen described in his blog post [The Optional Chaining Operator, "Modern" Browsers, and My Mom](https://blog.jim-nielsen.com/2022/a-web-for-all/) what happens when new JavaScript syntax is used without caution:
 
 <blockquote cite="https://blog.jim-nielsen.com/2022/a-web-for-all/" markdown="1">
 
@@ -270,11 +277,11 @@ The real-life impact of our technical decisions really hit home to me once again
 
 </blockquote>
 
-If you use new syntax features, do so consciously and mind the consequences. New syntax raises the bar and may thwart previous efforts of supporting older browsers.
+If you use new syntax features, do so consciously and mind the consequences. New syntax raises the bar and may thwart previous efforts to support older browsers.
 
 To use the optional chaining operator safely, we can apply the knowledge from [detecting support for dynamic imports](#detecting-support-for-dynamic-imports).
 
-We can either [transpile it using Babel with @babel/preset-env](https://babeljs.io/docs/babel-plugin-proposal-optional-chaining) – both in the modern and the legacy build.
+We can either [transpile it to more robust syntax using Babel with @babel/preset-env](https://babeljs.io/docs/babel-plugin-proposal-optional-chaining) – both in the modern and the legacy build.
 
 Or we detect the browser support by using optional chaining and setting a flag. If the browser parses the code and sets the flag, we load the modern build that may use optional chaining right away.
 
@@ -286,9 +293,9 @@ We did similar with `window.__browserSupportsDynamicImports` above. As we have l
 // Try to use optional chaining. This code does nothing on
 // new browsers and causes a syntax error on old browsers.
 window.__testingOptionalChaining?.test;
-// Load modern bundle with dynamic import. It is safe to use
-// dynamic imports and optional chaining in the bundle.
-import('./bundle-with-dynamic-imports.js');
+// Load modern build with dynamic import. It is safe to use
+// dynamic imports and optional chaining in the build.
+import('./modern-build.js');
 // Set a global flag that the browser passed the litmus test.
 window.__isModernBrowser = true;
 </script>
