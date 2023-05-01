@@ -82,7 +82,7 @@ The switch to ECMAScript modules for client-side code seems small at first sight
 
 The crucial point is that ECMAScript module support may serve as a litmus test for several ECMAScript features and JavaScript APIs. The ECMAScript modules build is only downloaded and executed by the mentioned browsers. [We know what they are capable of](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/) and may treat them as a baseline for the modern browser build.
 
-To support older browsers, transpiling ECMAScript 6+ code to ECMAScript 5 using Babel is a common practice. For our modern browser build, there is no need to. The targeted browsers fully support ECMAScript 6 and even some features of feature ECMAScript 7 (2016) and 8 (2017). We can skip the transpilation completely if we stick to supported syntax features. We can also skip certain feature detection and omit polyfills for supported APIs.
+To support older browsers, transpiling ECMAScript 6+ code to ECMAScript 5 using Babel is a common practice. For our modern browser build, there is no need to. The targeted browsers fully support ECMAScript 6 and even some features of ECMAScript 7 (2016) and 8 (2017). We can skip the transpilation completely if we stick to supported syntax features. We can also skip certain feature detection and omit polyfills for supported APIs.
 
 The resulting modern build is smaller and faster. It is a clear win to ship ECMAScript module code to browsers that support it. But it requires developers to compile and embed two builds: the ECMAScript modules build and the legacy build for browsers without ECMAScript module support. Since the code of the two builds may differ considerably, developers need to test and debug both.
 
@@ -244,23 +244,68 @@ Not all frameworks use Progressive Enhancement or Graceful Degradation. Not all 
 
 It is hard to even find out the minimum requirements of popular frameworks today. Only few state them explicitly. Most tacitly use JavaScript APIs or ECMAScript features introduced recently without realizing that this raises the bar of entry.
 
-## New ECMAScript syntax reduces compatibility
+## Using new ECMAScript syntax safely: The optional chaining operator
 
 Unfortunately, developers often raise the bar unintentionally. For example, I like the [optional chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining). It helps to write more robust code.
 
-Historically, optional chaining is a relatively new addition to ECMAScript. It was introduced in ECMAScript 11, published in June 2020. The major browser engines already shipped support in February or March 2020 when the corresponding proposal was finished.
+```javascript
+const user = { name: 'Robin' };
+// The user might have an address or not
+console.log(user.address?.street);
+```
 
 Technically, optional chaining is "syntactic sugar": a shorter, more readable way to write a logic that was already possible before. Syntactic sugar can easily be transpiled into older syntax with broader support.
+
+Historically, optional chaining is a relatively new addition to ECMAScript. It was introduced in ECMAScript 11, published in June 2020. The major browser engines already shipped support in February or March 2020 when the corresponding proposal was finished.
+
+By the way, ECMAScript 11 is the same edition that introduced [dynamic imports described above](dynamic-imports). But browsers started to support dynamic imports much earlier than optional chaining.
 
 Today, optional chaining [is supported by 93.33 % browsers worldwide, according to Can I Use](https://caniuse.com/mdn-javascript_operators_optional_chaining). 6.67 % of all used browsers do not support it. Some of them will execute the modern build but will not support optional chaining.
 
 Recently, Jim Nielsen described in his blog post [The Optional Chaining Operator, "Modern" Browsers, and My Mom](https://blog.jim-nielsen.com/2022/a-web-for-all/) what happens when new JavaScript syntax is used without transpilation:
 
-<blockquote cite="https://blog.jim-nielsen.com/2022/a-web-for-all/">
+<blockquote cite="https://blog.jim-nielsen.com/2022/a-web-for-all/" markdown="1">
+
 The real-life impact of our technical decisions really hit home to me once again: my Mom had trouble volunteering and participating in her local community because somebody shipped the optional chaining operator in their production JavaScript.
+
 </blockquote>
 
 If you use new syntax features, do so consciously and mind the consequences. New syntax raises the bar and may thwart previous efforts of supporting older browsers.
+
+To use the optional chaining operator safely, we can apply the knowledge from [detecting support for dynamic imports](#detecting-support-for-dynamic-imports).
+
+We can either [transpile it using Babel with @babel/preset-env](https://babeljs.io/docs/babel-plugin-proposal-optional-chaining) – both in the modern and the legacy build.
+
+Or we detect the browser support by using optional chaining and setting a flag. If the browser parses the code and sets the flag, we load the modern build that may use optional chaining right away.
+
+We did similar with `window.__browserSupportsDynamicImports` above. As we have learned, Vite checks for multiple syntax features and sets `__vite_is_modern_browser`. Let us integrate two syntax checks into one script that sets `window.__isModernBrowser`:
+
+```html
+<!-- Litmus test that uses modern syntax and sets a flag. -->
+<script type="module">
+// Try to use optional chaining. This code does nothing on
+// new browsers and causes a syntax error on old browsers.
+window.__testingOptionalChaining?.test;
+// Load modern bundle with dynamic import. It is safe to use
+// dynamic imports and optional chaining in the bundle.
+import('./bundle-with-dynamic-imports.js');
+// Set a global flag that the browser passed the litmus test.
+window.__isModernBrowser = true;
+</script>
+<script type="module">
+// This script is executed in browsers with ECMAScript module
+// support. If the flag is not set, the browser did not pass
+// the litmus test.
+if (!window.__isModernBrowser) {
+  // Load the legacy build.
+  const script = document.createElement('script');
+  script.src = './legacy-build.js';
+  document.head.appendChild(script);
+}
+</script>
+<!-- Legacy build for browsers without ECMAScript module support. -->
+<script nomodule src="./legacy-build.js"></script>
+```
 
 ## The future
 
