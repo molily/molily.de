@@ -192,7 +192,7 @@ Coming back to the [pursued benefits](https://web.dev/baseline/):
 
 <blockquote><p>When planning a project, rather than needing to list specific browser versions, you can set a requirement to use features that are part of Baseline.</p></blockquote>
 
-Please do not. Please perform a market analysis to find out the browser usage in your audience. Then decide which browsers you want to support and find out how. Use Progressive Enhancement when planning a project.
+That is not enough. Please perform a market analysis to find out the browser usage in your audience. Then decide which browsers you want to support and find out how. Use Progressive Enhancement when planning a project.
 
 <blockquote><p>When publishing a library, you can help potential users understand support of features used (and therefore whether it is safe to use on their site) by declaring support for Baseline.</p></blockquote>
 
