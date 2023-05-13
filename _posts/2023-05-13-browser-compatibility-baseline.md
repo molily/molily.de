@@ -204,6 +204,6 @@ That is not enough. Please explain how old browsers deal with the new code. Plea
 
 With new web technology features being shipped every four weeks, web authors need better practical guidance. I agree we need to unify and simplify browser support information.
 
-A better browser support box should center on practical and safe usage. A concise text should answer these questions: What is the percent of users with browsers supporting the feature? How do old browsers deal with the feature? Can it be used as an enhancement? How can I detect the feature? How to develop a fallback? Do polyfills exist?
+A better browser support box should center on practical and safe usage. A concise text should answer these questions: What is the percent of users with browsers supporting the feature? How do old browsers deal with the feature? Can it be used as an enhancement? How to detect the feature? How to develop a fallback? Do polyfills exist?
 
 I believe this will enable web authors to develop modern sites using the latest browser features without impairing compatibility.
