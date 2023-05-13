@@ -171,7 +171,7 @@ To recap:
 <ul class="compact-list">
 <li>It is not possible to detect support for Cascade Layers in old browsers.</li>
 <li>We cannot use it as an enhancement step (Progressive Enhancement).</li>
-<li>There is no practical fallback possible without rewriting almost all layered styles (Graceful Degradation).</li>
+<li>There is no practical fallback possible without rewriting all layered styles (Graceful Degradation).</li>
 <li>There is no easy way to serve Cascade Layer code to new browsers and legacy code to old browsers.</li>
 <li><span markdown="1">The good news is, there is a PostCSS-based [Cascade Layers polyfill](https://www.oddbird.net/2022/06/21/cascade-layers-polyfill/) that transforms `@layer` code into backwards-compatible code. As you might expect, the polyfill has several limitations.</span></li>
 </ul>
@@ -196,7 +196,7 @@ Please do not. Please perform a market analysis to find out the browser usage in
 
 <blockquote><p>When publishing a library, you can help potential users understand support of features used (and therefore whether it is safe to use on their site) by declaring support for Baseline.</p></blockquote>
 
-That is not enough. Please make deliberate browser support decisions and document them. Please state the individual browser versions the library requires and explain why. Please state how the library behaves in older browsers. Please use feature detection in your library. Please define your own baseline and state it in a machine-readable way using [Browserslist](https://browsersl.ist/).
+That is not enough. Please make deliberate browser support decisions and document them. Please state the individual browser versions the library requires. Please state how the library behaves in older browsers. Please use feature detection in your library. Please define your own baseline and state it in a machine-readable way using [Browserslist](https://browsersl.ist/).
 
 <blockquote><p>When writing a tutorial, you can tell readers that everything described is in Baseline. Your reader then knows this is a solution they can incorporate into a project.</p></blockquote>
 
