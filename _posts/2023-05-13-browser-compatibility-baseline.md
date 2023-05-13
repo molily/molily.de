@@ -6,7 +6,7 @@ keywords: web development, web authoring, browser, compatibility, css, progressi
 lang: en
 ---
 
-## Preface: On asynchrony
+## Preface on asynchrony
 
 One of the defining features of the web is technical asynchrony. Web standards, web clients – like browsers – and web pages are never fully aligned in time. They meet _sometimes_ but _most of the time_ one is ahead or lags behind.
 
