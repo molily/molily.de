@@ -34,7 +34,7 @@ export const helloWorld = () => {
 
 Node.js experimentally supported ECMAScript modules in version 8.5.0 (September 2017). Since version 14 (April 2020), the implementation is no longer experimental. Since version 15.3.0 (November 2020), it is considered stable.
 
-It took fierce discussions to agree on how Node handles ECMAScript modules, like specifying `"type": "module"` in package.json, handling .js, .mjs and .cjs files. The ecosystem-wide migration from CommonJS to ECMAScript modules is far from finished. It still keeps Node authors busy and causes headaches.
+It took fierce discussions to agree on [how Node handles ECMAScript modules](https://nodejs.org/api/packages.html#determining-module-system), like specifying `"type": "module"` in package.json, handling .js, .mjs and .cjs files. The ecosystem-wide migration from CommonJS to ECMAScript modules is far from finished. It still keeps Node authors busy and causes headaches.
 
 # ECMAScript modules in the browsers
 
