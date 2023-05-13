@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "On browser compatibility and support baselines"
-description: "Evaluating and using new web technologies safely"
+description: "Evaluating new web technologies and using them safely"
 keywords: web development, web authoring, browser, compatibility, css, progressive enhancement, graceful degradation
 lang: en
 ---
