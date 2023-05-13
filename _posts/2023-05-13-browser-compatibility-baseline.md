@@ -22,7 +22,7 @@ But browsers may also lag behind web sites. When web authors use web technologie
 
 For web authors, this is daily business. A large part of a web author's work is dealing with browser compatibility and web site interoperability. The situation improved thanks to evergreen browsers. But fundamentally, this is the essence of authoring for the web.
 
-When using an HTML, CSS or JavaScript feature, web authors need to check for its browser support. [Can I Use](https://caniuse.com/) and [MDN](https://developer.mozilla.org/en-US/) are the most comprehensive databases. There is an ecosystem of tools that builds on Can I Use data: [browserslist](https://github.com/browserslist/browserslist) is a way to list browser versions a web site wants to support. [Autoprefixer](https://github.com/postcss/autoprefixer) and [@babel/preset-env](https://babeljs.io/docs/babel-preset-env) use browserslist to generate interoperable code.
+When using an HTML, CSS or JavaScript feature, web authors need to check for its browser support. [Can I Use](https://caniuse.com/) and [MDN](https://developer.mozilla.org/en-US/) are the most comprehensive databases. There is an ecosystem of tools that builds on Can I Use data: [browserslist](https://github.com/browserslist/browserslist) is a way to list browser versions a web site aims to support. [Autoprefixer](https://github.com/postcss/autoprefixer) and [@babel/preset-env](https://babeljs.io/docs/babel-preset-env) use browserslist to generate interoperable code.
 
 # How to deal with old browsers
 
@@ -38,7 +38,7 @@ That is to say I can fully understand that web authors want to make this task ea
 
 # Google's Baseline initiative
 
-At Google's 2023 developer conference, Google recently announced the [Baseline initiative](https://web.dev/baseline/). See also [Introducing Baseline](https://web.dev/introducing-baseline/) and [Rachel Andrew's YouTube video](https://www.youtube.com/watch?v=eZa3BgGaAeA&t=616s).
+At Google's developer conference, Google recently announced the [Baseline initiative](https://web.dev/baseline/). See also [Introducing Baseline](https://web.dev/introducing-baseline/) and [Rachel Andrew's YouTube video](https://www.youtube.com/watch?v=eZa3BgGaAeA&t=616s).
 
 Google Baseline aims to make it easier for web authors and web publishers to think and talk about browser support. Baseline is <q>a line in the sand indicator which web platform features are safe to use. Features in Baseline have cross-browser support, they are interoperable, with no major issues in any browser engine.</q> As Rachel Andrew explains in the video, <q>if a feature is part of Baseline, our aim is that most web teams should feel confident to just use it.</q>
 
@@ -169,7 +169,7 @@ Unfortunately, it hard to use Cascade Layers in a backwards-compatible way. [As 
 To recap:
 
 <ul class="compact-list">
-<li>It is not possible to detect support for Cascade Layers in old browser.</li>
+<li>It is not possible to detect support for Cascade Layers in old browsers.</li>
 <li>We cannot use it as an enhancement step (Progressive Enhancement).</li>
 <li>There is no practical fallback possible without rewriting almost all layered styles (Graceful Degradation).</li>
 <li>There is no easy way to serve Cascade Layer code to new browsers and legacy code to old browsers.</li>
@@ -178,7 +178,7 @@ To recap:
 
 After having investigated the specific feature and the behavior of old browsers, we can ask the questions that Baseline tries to answer:
 
-**Is it okay to start using the feature?** – It depends on the site you are building, your users and how you use the feature. If you are building a site for the global audience and find Cascade Layers useful, you should try whether the polyfill works on your code. If you are building for an audience with newer browsers, like for a corporate intranet, you can start using Cascade Layers without safeguards in place.
+**Is it okay to start using the feature?** – It depends on the site you are building, your users and how you use the feature. If you are building a site for the global audience and find Cascade Layers useful, you should try whether the polyfill works on your code. If you are building for a limited audience with newer browsers, like for a corporate intranet, you can start using Cascade Layers without safeguards in place.
 
 **Is it safe to use?** – Technically yes, since old browsers will ignore the new syntax because their CSS parsers are forwards-compatible. But you should not serve a site without styles to almost 10% of the users. Many sites are still readable without styles. But styles are not just decoration and veneer, they facilitate readability, usability, accessibility and interactivity. You should provide at least some basic styles to all browsers.
 
