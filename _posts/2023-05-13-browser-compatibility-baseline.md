@@ -99,7 +99,7 @@ Evergreen browsers auto-update every month, but some people are still stuck on o
 <li>0.65% are using Firefox < 97.</li>
 </ul>
 
-There is another reason why MDN support table suggests 100% support while the actual global support is 90.19%: The MDN table **omits browsers with small market share**.
+There is another reason why the MDN support table suggests 100% support while the actual global support is rather 90.19%: The MDN table **omits browsers with small market share**.
 
 One of these is [UC Browser for Android](https://en.wikipedia.org/wiki/UC_Browser) published by the Chinese Alibaba Group. This browser has a global market share of 0.95%. It is based on a fork of Chromium 78. You heard right, in May 2023, UC Browser is stuck on a browser engine that was released in October 2019! Web developers in the Western world mostly ignore UC Browser, but it is still popular in India, Indonesia and China. (These countries have a combined population of almost 3.1 billion people.)
 
