@@ -34,7 +34,7 @@ Again, I understand the frustration. Nonetheless, I don't think the current situ
 
 Even if certain individuals would be to blame – critics personally blame JavaScript framework maintainers and the giant tech corporations they work for –, I don't see much value in doing so.
 
-I don't have a grande theory that explains how we got into the current mess. I have a rather technical explanation: [Path dependence](https://en.wikipedia.org/wiki/Path_dependence) and technology lock-in. We didn't start with the React single-page apps we have today. I was a series of small steps where each step seemed rational and logical at the time but lead to a poor outcome.
+I don't have a grande theory that explains how we got into the current mess. I have a rather technical explanation: [Path dependence](https://en.wikipedia.org/wiki/Path_dependence) and technology lock-in. We didn't start with the React single-page apps we have today. It was a series of small steps where each step seemed rational and logical at the time but lead to a poor outcome.
 
 We started with DOM Scripting during the Browser Wars, then came Ajax and client-side JavaScript exploded. Libraries like Backbone.js helped to structure client-side JavaScript in order to implement dynamic interfaces. Then came React and solved a specific problem, more on that later. React brought up new problems one obviously doesn't face without React, but React users had to deal with them.
 
