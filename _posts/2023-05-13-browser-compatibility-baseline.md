@@ -186,7 +186,7 @@ After having investigated the specific feature and the behavior of old browsers,
 
 Google Baseline does not answer crucial browser compatibility questions. Baseline merely states that the latest and the previous versions of certain evergreen browser support a feature interoperably. This is good to know, but not enough to use the feature on your site in a safe manner.
 
-I fear that Google's Baseline initiative oversimplifies the discourse on browser support. Web authors will see "widely supported", all-green checkmarks and alleged 100% browser support and use the feature without further examination. Web publishers will say "we require Baseline" without realizing that it means they only support two-month-old evergreen browsers plus the latest Safari.
+My fear is that Google's Baseline initiative oversimplifies the discourse on browser support. Web authors will see "widely supported", all-green checkmarks and alleged 100% browser support and use the feature without further examination. Web publishers will say "we require Baseline" without realizing that it means they only support two-month-old evergreen browsers plus the latest Safari.
 
 Coming back to the [pursued benefits](https://web.dev/baseline/):
 
