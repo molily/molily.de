@@ -169,9 +169,9 @@ Unfortunately, it hard to use Cascade Layers in a backward-compatible way. [As M
 To recap:
 
 <ul class="compact-list">
-<li>It is not possible to detect support for Cascade Layers in old browsers.</li>
-<li>We cannot use it as an enhancement step (Progressive Enhancement).</li>
+<li>We cannot use Cascade Layers as an enhancement step (Progressive Enhancement).</li>
 <li>There is no practical fallback possible without rewriting all layered styles (Graceful Degradation).</li>
+<li><span markdown="1">It is not possible to detect support for Cascade Layers in old browsers using HTML or CSS alone. It is possible to [detect support for Cascade Layers using JavaScript](https://supportscss.dev/) by checking for `window.CSSLayerBlockRule`.</span></li>
 <li>There is no easy way to serve Cascade Layer code to new browsers and legacy code to old browsers.</li>
 <li><span markdown="1">The good news is, there is a PostCSS-based [Cascade Layers polyfill](https://www.oddbird.net/2022/06/21/cascade-layers-polyfill/) that transforms `@layer` code into backward-compatible code. As you might expect, the polyfill has several limitations.</span></li>
 </ul>
