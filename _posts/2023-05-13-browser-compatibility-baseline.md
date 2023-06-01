@@ -26,7 +26,7 @@ When using an HTML, CSS or JavaScript feature, web authors need to check for its
 
 # How to deal with old browsers
 
-The crucial recurring question since the beginning of the web is: How to deal with browsers that do not support a certain web technology feature? The answer is always: It depends! It depends on how the HTML, CSS, JavaScript feature works, on the browser market share in the target audience, on the importance of the feature for the site, and much more.
+The crucial recurring question since the beginning of the web is: How to deal with browsers that do not support a certain web technology feature? The answer is always: It depends! It depends on how the HTML, CSS, JavaScript feature works, on the browser market partition in the target audience, on the importance of the feature for the site, and much more.
 
 Progressive Enhancement and Graceful Degradation are best practices for dealing with old browsers and building interoperable sites. Based on support data, web authors decide whether to use the feature at all. They can test with browser versions that do not support the feature. How do old browsers deal with the new code? How does it affect the user experience?
 
@@ -95,13 +95,13 @@ Evergreen browsers auto-update every month, but some people are still stuck on o
 
 <ul class="compact-list">
 <li>2.11% of all web users are using Chrome < 99.</li>
-<li>0.95% are using desktop Safari < 15.4 on desktop and 1.74% are using mobile Safari < 15.4.</li>
+<li>0.95% are using desktop Safari < 15.4 and 1.74% are using mobile Safari < 15.4.</li>
 <li>0.65% are using Firefox < 97.</li>
 </ul>
 
 There is another reason why the MDN support table suggests 100% support while the actual global support is rather 90.19%: The MDN table **omits browsers with a small market share**.
 
-One of these is [UC Browser for Android](https://en.wikipedia.org/wiki/UC_Browser) published by the Chinese Alibaba Group. This browser has a global market share of 0.95%. It is based on a fork of Chromium 78. You heard right, in May 2023, UC Browser is stuck on a browser engine that was released in October 2019! Web developers in the Western world mostly ignore UC Browser, but it is still popular in India, Indonesia and China. (These countries have a combined population of almost 3.1 billion people.)
+One of these is [UC Browser for Android](https://en.wikipedia.org/wiki/UC_Browser) published by the Chinese Alibaba Group. This browser has a global market share of 0.95%. It is based on a fork of Chromium 78. You heard right, in May 2023, UC Browser is stuck on a browser engine that was released in October 2019! Web developers in the Western world mostly ignore UC Browser, but it is still popular in India, Indonesia and China. These countries have a combined population of almost 3.1 billion people.
 
 While the individual percent values are rather small, they add up to 9.81%.
 
@@ -122,7 +122,7 @@ This is where we need to examine the feature itself, Cascade Layers. Here is a s
 <style>
 @layer bootstrap, my-own-styles;
 
-@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css") layer(bootstrap);
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css") layer(bootstrap);
 
 @layer my-own-styles {
   button {
@@ -184,7 +184,7 @@ After having investigated the specific feature and the behavior of old browsers,
 
 ## Summary
 
-Google Baseline does not answer crucial browser compatibility questions. Baseline merely states that the latest and the previous versions of certain evergreen browser support a feature interoperably. This is good to know, but not enough to use the feature on your site in a safe manner.
+Google Baseline does not answer crucial browser compatibility questions. Baseline merely states that the latest version and the last but one version of certain evergreen browsers support a feature interoperably. This is good to know, but not enough to use the feature on your site in a safe manner.
 
 My fear is that Google's Baseline initiative oversimplifies the discourse on browser support. Web authors will see "widely supported", all-green checkmarks and alleged 100% browser support and use the feature without further examination. Web publishers will say "we require Baseline" without realizing that it means they only support two-month-old evergreen browsers plus the latest Safari.
 
