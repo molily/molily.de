@@ -73,7 +73,7 @@ The link "See full compatibility" brings you to the [browser compatibility table
 
 This table is very informative. It tells you that Cascade Layers were shipped in the listed browsers _last year_. Firefox was the first (of the listed browsers) to ship support on 2022-02-08. Samsung Internet was the last (of the listed browsers) to ship support on 2022-08-08.
 
-We have learned that all browser engines and evergreen browsers support it since August 2022. That is nine months ago.
+We have learned that all major browser engines and evergreen browsers support it since August 2022. That is _nine months ago_.
 
 ## Reality check: Usage-relative browser support
 
