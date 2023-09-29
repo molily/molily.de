@@ -67,20 +67,6 @@ html {
 }
 
 /**
- * @section Base styles for new HTML5 elements, for old browsers
- */
-
-main,
-section,
-nav,
-article,
-aside,
-header,
-footer {
-  display: block;
-}
-
-/**
  * @section Headings
  */
 
@@ -344,24 +330,13 @@ a {
     }
   }
 
-  &:hover {
-    text-decoration-color: $link-hover-border-color;
-
-    @include dark-scheme {
-      text-decoration-color: $link-hover-border-color-inverted;
-    }
-  }
-
   &:focus,
   &:active {
     color: $link-color;
     text-decoration-color: transparent;
-    outline: 1px solid hsl($hue, 90%, 75%);
-    outline-offset: 2px;
 
     @include dark-scheme {
       color: $link-color-inverted;
-      outline-color: $link-color-inverted;
     }
   }
 

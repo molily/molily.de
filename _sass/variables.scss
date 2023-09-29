@@ -24,21 +24,24 @@ $hue2: 220;
 $background-color: white;
 $text-color: #252527;
 $darker-text-color: #666;
+
 $heading-color: hsl($hue, 60%, 25%);
 $highlight-background-color: hsl($hue2, 50%, 98%);
+
 $code-text-color: #009;
 $citation-text-color: #4a4a60;
 
 // Inverted text and background colors
-$background-color-inverted: #3c3d5b;
-$text-color-inverted: #d7d7db;
-// Original: #8a77b3
-$darker-text-color-inverted: hsl(259, 35%, 70%);
+$background-color-inverted: hsl(238, 21%, 28%);
+$text-color-inverted: hsl(240, 5%, 90%);
+$darker-text-color-inverted: hsl(259, 40%, 80%);
+
 $heading-color-inverted: $darker-text-color-inverted;
-$medium-background-color-inverted: #31324c;
-$dark-background-color-inverted: #140a32;
-$highlight-background-color-inverted: #22233d;
-// TODO
+$highlight-background-color-inverted: hsl(238, 28%, 19%);
+
+$medium-background-color-inverted: hsl(238, 22%, 25%);
+$dark-background-color-inverted: hsl(255, 67%, 12%);
+
 $code-text-color-inverted: hsl(170, 55%, 70%);
 $citation-text-color-inverted: #b0b0b0;
 
@@ -49,18 +52,14 @@ $link-border-color: desaturate(lighten($link-color, 40%), 60%);
 $link-visited-color: $text-color;
 $link-visited-border-color: lighten($link-border-color, 1%);
 
-$link-hover-border-color: #8080c0;
-
 // Inverted link colors
 // $link-color-inverted-hue: 57;
 
-$link-color-inverted: #17c6d4;
-$link-border-color-inverted: #118db9;
+$link-color-inverted: hsl(184, 80%, 55%);
+$link-border-color-inverted: darken($link-color-inverted, 15%);
 
-$link-visited-color-inverted: #0f8e9a;
+$link-visited-color-inverted: darken($link-color-inverted, 5%);
 $link-visited-border-color-inverted: $link-visited-color-inverted;
-
-$link-hover-border-color-inverted: lighten($link-border-color-inverted, 5%);
 
 /**
  * @section Typography

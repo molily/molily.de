@@ -391,9 +391,7 @@ pre {
   overflow-wrap: break-word;
 
   @include medium {
-    // Slightly larger font size than the default
-    font-size: 1.125rem;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.1px;
     word-spacing: 0.2px;
   }
 

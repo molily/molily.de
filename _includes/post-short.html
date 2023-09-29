@@ -1,11 +1,8 @@
-<article class="post post-short"{% if post.lang %} lang="{{ post.lang }}"{% endif %}>
+<article class="post post-short post-header-block"{% if post.lang %} lang="{{ post.lang }}"{% endif %}>
 
   <header class="post-header">
     <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
       <h1 class="post-title">{{ post.title }}</h1>
-      <p class="post-sup">
-        <time class="post-date" datetime="{{ post.date | date: "%F" }}">{{ post.date | date: "%B %-d, %Y" }}</time>
-      </p>
     </a>
   </header>
 
@@ -17,4 +14,7 @@
     {% endif %}
   </p>
 
+  <p class="post-sup">
+    <time class="post-date" datetime="{{ post.date | date: "%F" }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+  </p>
 </article>

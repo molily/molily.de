@@ -1,6 +1,7 @@
 ---
 # By using these dashes, the file will be compiled to a separate .css
 ---
+
 /**
  * Blog styles
  *
@@ -16,22 +17,18 @@
  *
  */
 
-$col-left-width: 67%;
+$col-left-width: 100% / 1.618;
 
 $column-padding-min: 1.5rem;
 $column-padding-flexible: 1.5vw;
 
 // Colors
-$body-background: hsl($hue2, 50%, 95%);
-$primary-background: white;
-$secondary-background: $highlight-background-color;
-$post-header-background: hsl($hue, 40%, 50%);
+$post-header-block-background: hsl($hue, 50%, 95%);
+$post-title-background: hsl($hue, 40%, 50%);
 
 // Inverted colors
-$body-background-inverted: $background-color-inverted;
-$primary-background-inverted: $medium-background-color-inverted;
-$secondary-background-inverted: $dark-background-color-inverted;
-$post-header-background-inverted: $highlight-background-color-inverted;
+$post-header-block-background-inverted: $medium-background-color-inverted;
+$post-title-background-inverted: $highlight-background-color-inverted;
 
 /**
  * @section Base layout
@@ -42,11 +39,6 @@ $post-header-background-inverted: $highlight-background-color-inverted;
 
 html {
   height: 100%;
-  background-color: $body-background;
-
-  @include dark-scheme {
-    background-color: $body-background-inverted;
-  }
 }
 
 /* Wrapper */
@@ -82,12 +74,6 @@ html {
 }
 
 .col-primary {
-  background-color: $primary-background;
-
-  @include dark-scheme {
-    background-color: $primary-background-inverted;
-  }
-
   @include large {
     flex: 0 0 auto;
     width: $col-left-width;
@@ -97,11 +83,6 @@ html {
 .col-secondary {
   padding-top: 0;
   padding-bottom: 0;
-  background-color: $secondary-background;
-
-  @include dark-scheme {
-    background-color: $secondary-background-inverted;
-  }
 
   @include large {
     flex: 0 0 auto;
@@ -134,7 +115,6 @@ html {
       top: 0;
       left: 50%;
       padding: 0.5rem 1rem;
-      outline-offset: 0;
       transform: translateX(-50%);
     }
   }
@@ -146,13 +126,7 @@ html {
 
 /* Document footer */
 
-.document-footer {
-  background-color: $secondary-background;
-
-  @include dark-scheme {
-    background-color: $secondary-background-inverted;
-  }
-}
+// .document-footer {}
 
 .document-footer-list {
   list-style: none;
@@ -164,20 +138,29 @@ html {
   margin-bottom: 0.3rem;
 }
 
+.document-footer-duplicate {
+  display: none;
+}
+
 .document-footer-link {
   display: block;
 }
 
-@include medium {
+@include large {
   .document-footer-list {
     display: flex;
+    justify-content: center;
     margin: 0;
   }
 
   .document-footer-item {
     margin-bottom: 0;
-    flex: 1 0 auto;
+    padding: 0 0.5rem;
     text-align: center;
+  }
+
+  .document-footer-duplicate {
+    display: block;
   }
 
   .document-footer-link {
@@ -190,45 +173,55 @@ html {
  *
  */
 
-.post-header {
+.post-header-block {
   margin: 0 calc(-1 * (#{$column-padding-min} + #{$column-padding-flexible}))
-    1rem;
-  padding: 1.5rem calc(#{$column-padding-min} + #{$column-padding-flexible});
-  background-color: $post-header-background;
-  color: white;
-  text-shadow: 1px 1px 2px #333;
+    2rem;
+  padding: 0 calc(#{$column-padding-min} + #{$column-padding-flexible}) 1rem;
+  border-radius: 1px;
+
+  background-color: $post-header-block-background;
 
   @include dark-scheme {
-    background-color: $post-header-background-inverted;
-    color: inherit;
+    background-color: $post-header-block-background-inverted;
   }
 }
 
 .post-link {
   &:link {
     display: block;
-    border: 0;
     text-decoration: none;
-    color: inherit;
-  }
 
-  &:visited {
-    color: #f0f0f0;
+    color: $text-color;
 
     @include dark-scheme {
-      color: darken($text-color-inverted, 15%);
+      color: $text-color-inverted;
     }
   }
 
-  &:focus {
-    outline-color: white;
+  &:visited {
+    color: darken($text-color, 5%);
+
+    @include dark-scheme {
+      color: darken($text-color-inverted, 5%);
+    }
   }
 }
 
 .post-title {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  color: inherit;
+  margin: 0 calc(-1 * (#{$column-padding-min} + #{$column-padding-flexible}))
+    1rem;
+  padding: 1.5rem calc(#{$column-padding-min} + #{$column-padding-flexible});
+  border-radius: 1px;
+  text-shadow: 1.5px 1.5px 0.5px #333;
+
+  color: white;
+  background-color: $post-title-background;
+
+  @include dark-scheme {
+    background-color: $post-title-background-inverted;
+    color: inherit;
+    text-shadow: none;
+  }
 
   @include large {
     letter-spacing: 0.5px;
@@ -238,26 +231,16 @@ html {
 .post-sup {
   margin-bottom: 0;
   font-size: 0.8em;
-
-  @include large {
-    font-size: 0.9em;
-  }
 }
 
 .post-description {
-  margin: 2.5rem 0;
-  font-size: 1.2rem;
+  margin-bottom: 0;
+  font-size: 1.1rem;
 }
 
 .post-description-strong {
   font-weight: normal;
 }
-
-/*
-.post-read-on {
-  white-space: nowrap;
-}
-*/
 
 .post-body {
   & > p:last-child,
@@ -267,9 +250,7 @@ html {
   }
 }
 
-.post-short {
-  margin-bottom: 2.5rem;
-}
+// .post-short {}
 
 @include large {
   .post-short:last-child {
@@ -392,25 +373,17 @@ $sidebar-line-height: 1.5;
 
   a {
     display: block;
+    text-decoration: none;
   }
 }
 
 .sidebar-special-link {
+  margin-bottom: 2rem;
   line-height: inherit;
 
   a {
     display: block;
-    margin-left: -1rem;
-    margin-right: -1rem;
-    padding: 1rem;
-    background-color: white;
-    border: 1px solid darken($secondary-background, 3%);
     text-decoration: none;
-
-    @include dark-scheme {
-      border-style: none;
-      background-color: rgba(255, 255, 255, 0.08);
-    }
   }
 }
 
@@ -430,14 +403,13 @@ $sidebar-line-height: 1.5;
 
 .article-archive-item {
   display: flex;
-  align-items: center;
   margin-bottom: 0.5rem;
 }
 
 .article-archive-date {
   flex: 0 0 auto;
   width: 5.5rem;
-  padding-right: 1rem;
+  padding: 0.25rem 1rem 0 0;
   font-size: 0.8rem;
   color: $darker-text-color;
 
