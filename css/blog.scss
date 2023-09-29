@@ -2,6 +2,8 @@
 # By using these dashes, the file will be compiled to a separate .css
 ---
 
+@use 'sass:math';
+
 /**
  * Blog styles
  *
@@ -17,7 +19,7 @@
  *
  */
 
-$col-left-width: 100% / 1.618;
+$col-left-width: math.div(100%, 1.618);
 
 $column-padding-min: 1.5rem;
 $column-padding-flexible: 1.5vw;
