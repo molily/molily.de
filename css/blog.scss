@@ -132,13 +132,11 @@ html {
 
 .document-footer-list {
   list-style: none;
-  margin-right: 1.5rem;
-  padding-top: 0.3rem;
+  margin-right: 2rem;
 }
 
-.document-footer-item {
-  margin-bottom: 0.3rem;
-}
+// .document-footer-item {
+// }
 
 .document-footer-duplicate {
   display: none;
@@ -156,16 +154,17 @@ html {
   }
 
   .document-footer-item {
-    margin-bottom: 0;
-    padding: 0 0.5rem;
-    text-align: center;
+    display: flex;
+    align-items: center;
   }
 
-  .document-footer-duplicate {
-    display: block;
+  .document-footer-item:not(:last-child)::after {
+    content: '·';
+    padding: 0 1rem;
   }
 
   .document-footer-link {
+    display: block;
     padding: 1rem 0;
   }
 }
