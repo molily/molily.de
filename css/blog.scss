@@ -229,6 +229,11 @@ html {
   }
 }
 
+.post-excerpt {
+  margin-bottom: 0;
+  font-size: 1.1rem;
+}
+
 .post-sup {
   margin-bottom: 0;
   font-size: 0.8em;
@@ -257,10 +262,6 @@ html {
   .post-short:last-child {
     margin-bottom: 0;
   }
-}
-
-.post-excerpt {
-  margin-bottom: 0.5rem;
 }
 
 /**
@@ -431,6 +432,22 @@ $sidebar-line-height: 1.5;
   border: 1px solid #daa;
   border-radius: 5px;
   padding: 0.5em 1em;
+}
+
+/**
+ * @section Horizontal separator
+ *
+ */
+.separator {
+  display: block;
+  margin: 2rem auto;
+  width: 2rem;
+  height: 2rem;
+  color: #aaa;
+
+  @include dark-scheme {
+    color: #c0c0c0;
+  }
 }
 
 /**
