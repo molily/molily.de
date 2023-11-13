@@ -31,7 +31,7 @@ During that time, nothing was set in stone, everything was in flux. There weren'
 
 <svg class="separator" aria-hidden="true"><use xlink:href="#ornament" /></svg>
 
-JavaScript made a difference in 2010 because user experience of websites lagged way behind that of native apps. Every interaction meant an interruption instead of a meaningful transition. Every web navigation lead to a blank white page, confusing and erratic loading behavior. The browser caching was horrible. There was no back/forward cache, no multiprocess data fetching, processing and rendering. No caching of CSS and JavaScript parse trees, no JavaScript bytecode cache. There were no cross-page transitions (outside of Internet Explorer).
+JavaScript made a difference in 2010 because user experience of websites lagged way behind that of native apps. Every interaction meant an interruption instead of a meaningful transition. Every web navigation led to a blank white page, confusing and erratic loading behavior. The browser caching was horrible. There was no back/forward cache, no multiprocess data fetching, processing and rendering. No caching of CSS and JavaScript parse trees, no JavaScript bytecode cache. There were no cross-page transitions (outside of Internet Explorer).
 
 At the web agency I work for, we used the new methods and tools to demonstrate our clients how smooth interactions on websites could work: Easy and quick browsing through content. Smooth transition between list and item and back. Animating dialogs. Loading new content automatically, live updates. Integrating interaction widgets and social media seamlessly. Authentication with single-sign on.
 
@@ -91,10 +91,10 @@ That said, I love web development and web publishing since 1996. HTML is radical
 
 Last but not least, let me save some knowledge from the far and recent past into the present.
 
-[Tom Dale](https://tomdale.net) wrote [fundamental blog posts](https://tomdale.net/archive/) on frameworks around 2015, like [You’re Missing the Point of Server-Side Rendered JavaScript Apps](https://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/) and [JavaScript Frameworks and Mobile Performance](https://tomdale.net/2015/11/javascript-frameworks-and-mobile-performance/).
+[Tom Dale](https://tomdale.net) wrote [fundamental blog posts](https://tomdale.net/archive/) on frameworks around 2015, like [You’re Missing the Point of Server-Side Rendered JavaScript Apps](https://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/) and [JavaScript Frameworks and Mobile Performance](https://tomdale.net/2015/11/javascript-frameworks-and-mobile-performance/). He also gave a fun talk: [Progressive Enhancement is Dead, Long Live Progressive Enhancement](https://www.youtube.com/watch?v=puOrC7cfjRI&list=PLkJyefyZTdnFyzdh70LWuzhFTBOgMBnmJ&index=6).
 
 [Nolan Lawson](https://nolanlawson.com/) wrote a [series of thoughtful blog posts on Single-Page Apps](https://nolanlawson.com/tag/spas/).
 
 Josh Collinsworth wrote on [The self-fulfilling prophecy of React](https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react) and [Things you forgot (or never knew) because of React](https://joshcollinsworth.com/blog/antiquated-react).
 
-Rich Harris talked about [transitional web apps](https://www.youtube.com/watch?v=860d8usGC0o) to break the dichotomy of single-page versus multi-plage apps.
+Rich Harris talked about [transitional web apps](https://www.youtube.com/watch?v=860d8usGC0o) to break the dichotomy of single-page versus multi-page apps.
