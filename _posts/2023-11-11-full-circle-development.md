@@ -5,7 +5,7 @@ description: Reflecting on 25 years of web publishing
 lang: en
 ---
 
-Around 1996 or 1997, I started writing HTML. My family did not have internet access yet. We but owned a computer with a CD-ROM drive. On a CD-ROM that came with a video gaming magazine, I found some .HTM files. The magazine had shipped its website as HTML files on this CD-ROM because few people had internet access. I opened the files in Internet Explorer, then in a text editor. I changed the code and immediately realized the creative power of Hypertext. I created my first HTML pages and I distributed them via floppy disks.
+Around 1996 or 1997, I started writing HTML. My family did not have internet access yet. But we owned a computer with a CD-ROM drive. On a CD-ROM that came with a video gaming magazine, I found some .HTM files. The magazine had shipped its website as HTML files on this CD-ROM because few people had internet access. I opened the files in Internet Explorer, then in a text editor. I changed the code and immediately realized the creative power of Hypertext. I created my first HTML pages and I distributed them via floppy disks.
 
 A few years later, we got internet access at home. I immediately uploaded a personal website to a free webhoster. I became involved with the German [SELFHTML documentation](), which was to German web developers what the Mozilla Developer Network is today: the definitive guide and reference for web technologies.
 
@@ -96,5 +96,7 @@ Last but not least, let me save some knowledge from the far and recent past into
 [Nolan Lawson](https://nolanlawson.com/) wrote a [series of thoughtful blog posts on Single-Page Apps](https://nolanlawson.com/tag/spas/).
 
 Josh Collinsworth wrote on [The self-fulfilling prophecy of React](https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react) and [Things you forgot (or never knew) because of React](https://joshcollinsworth.com/blog/antiquated-react).
+
+Laurie Voss wrote [The case for frameworks](https://seldo.com/posts/the_case_for_frameworks/).
 
 Rich Harris talked about [transitional web apps](https://www.youtube.com/watch?v=860d8usGC0o) to break the dichotomy of single-page versus multi-page apps.
