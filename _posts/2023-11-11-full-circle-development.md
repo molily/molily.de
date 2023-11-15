@@ -5,7 +5,7 @@ description: Reflecting on 25 years of web publishing
 lang: en
 ---
 
-Around 1996 or 1997, I started writing HTML. My family did not have internet access yet. But we owned a computer with a CD-ROM drive. On a CD-ROM that came with a video gaming magazine, I found some .HTM files. The magazine had shipped its website as HTML files on this CD-ROM because few people had internet access. I opened the files in Internet Explorer, then in a text editor. I changed the code and immediately realized the creative power of Hypertext. I created my first HTML pages and I distributed them via floppy disks.
+Around 1996 or 1997, I started writing HTML. My family did not have internet access yet. But we owned a computer with a CD-ROM drive. On a CD-ROM that came with a video gaming magazine, I found some .HTM files. The magazine had shipped its website as HTML files on this CD-ROM because few people had internet access. I opened the files in Internet Explorer, then in Notepad. I changed the code and immediately realized the creative power of Hypertext. I created my first HTML pages and I distributed them via floppy disks.
 
 A few years later, we got internet access at home. I immediately uploaded a personal website to a free webhoster. I became involved with the German [SELFHTML documentation](), which was to German web developers what the Mozilla Developer Network is today: the definitive guide and reference for web technologies.
 
@@ -91,12 +91,14 @@ That said, I love web development and web publishing since 1996. HTML is radical
 
 Last but not least, let me save some knowledge from the far and recent past into the present.
 
-[Tom Dale](https://tomdale.net) wrote [fundamental blog posts](https://tomdale.net/archive/) on frameworks around 2015, like [You’re Missing the Point of Server-Side Rendered JavaScript Apps](https://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/) and [JavaScript Frameworks and Mobile Performance](https://tomdale.net/2015/11/javascript-frameworks-and-mobile-performance/). He also gave a fun talk: [Progressive Enhancement is Dead, Long Live Progressive Enhancement](https://www.youtube.com/watch?v=puOrC7cfjRI&list=PLkJyefyZTdnFyzdh70LWuzhFTBOgMBnmJ&index=6).
+Pamela Fox wrote on [Server-side HTML vs. JS Widgets vs. Single-Page Web Apps](http://blog.pamelafox.org/2013/05/frontend-architectures-server-side-html.html) summarizing her talk [Frontend Architectures: from the prehistoric to the Post-modern](https://web.archive.org/web/20130428114412/http://frontend-architectures.appspot.com/) in 2013.
 
-[Nolan Lawson](https://nolanlawson.com/) wrote a [series of thoughtful blog posts on Single-Page Apps](https://nolanlawson.com/tag/spas/).
+Tom Dale wrote [fundamental blog posts](https://tomdale.net/archive/) on frameworks around 2015, like [You’re Missing the Point of Server-Side Rendered JavaScript Apps](https://tomdale.net/2015/02/youre-missing-the-point-of-server-side-rendered-javascript-apps/) and [JavaScript Frameworks and Mobile Performance](https://tomdale.net/2015/11/javascript-frameworks-and-mobile-performance/). He also gave a fun talk: [Progressive Enhancement is Dead, Long Live Progressive Enhancement](https://www.youtube.com/watch?v=puOrC7cfjRI&list=PLkJyefyZTdnFyzdh70LWuzhFTBOgMBnmJ&index=6).
+
+Nolan Lawson wrote a [series of thoughtful blog posts on Single-Page Apps](https://nolanlawson.com/tag/spas/).
 
 Josh Collinsworth wrote on [The self-fulfilling prophecy of React](https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react) and [Things you forgot (or never knew) because of React](https://joshcollinsworth.com/blog/antiquated-react).
 
-Laurie Voss wrote [The case for frameworks](https://seldo.com/posts/the_case_for_frameworks/).
+Laurie Voss made [the case for frameworks](https://seldo.com/posts/the_case_for_frameworks/).
 
-Rich Harris talked about [transitional web apps](https://www.youtube.com/watch?v=860d8usGC0o) to break the dichotomy of single-page versus multi-page apps.
+Rich Harris asked "Have Single-Page Apps Ruined the Web?" ("kinda") and advocates for [transitional web apps](https://www.youtube.com/watch?v=860d8usGC0o) to break the dichotomy of single-page versus multi-page apps.
