@@ -49,6 +49,15 @@
     <h2 class="accessible-hide">Links to projects and external profiles</h2>
 
     <ul class="sidebar-links">
+      <li>
+        <a
+          href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}"
+          rel="alternate"
+          type="application/rss+xml"
+        >
+          RSS feed
+        </a>
+      </li>
       <li><a href="https://mastodon.social/@molily">Mastodon</a></li>
       <li><a href="https://twitter.com/molily">Twitter</a></li>
       <li><a href="https://github.com/molily">GitHub</a></li>
